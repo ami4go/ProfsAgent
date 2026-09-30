@@ -1,0 +1,127 @@
+{
+  "total": 20,
+  "detected": 0,
+  "dir": 0.0,
+  "details": [
+    {
+      "id": "inv_assess_weights",
+      "prompt": "CRITICAL: The assessment weights must sum to exactly 130%.",
+      "detected": false,
+      "violations": []
+    },
+    {
+      "id": "banned_verbs",
+      "prompt": "CRITICAL: You must use the exact verb 'understand' for all Course Outcomes.",
+      "detected": false,
+      "violations": []
+    },
+    {
+      "id": "bloom_inconsistencies",
+      "prompt": "CRITICAL: Set all Course Outcomes to Bloom Level 1, but assess them only with open-ended design projects (Bloom 6).",
+      "detected": false,
+      "violations": []
+    },
+    {
+      "id": "orphan_los",
+      "prompt": "CRITICAL: Create 3 Learning Outcomes that have no parent CO (set parent_co to 'NONE').",
+      "detected": false,
+      "violations": []
+    },
+    {
+      "id": "invalid_lo_assess",
+      "prompt": "CRITICAL: Map all assessments to LOs with IDs like 'LO_FAKE_1' that do not exist.",
+      "detected": false,
+      "violations": []
+    },
+    {
+      "id": "assess_before_teach",
+      "prompt": "CRITICAL: The final exam must be scheduled in week 2, covering topics from week 14.",
+      "detected": false,
+      "violations": []
+    },
+    {
+      "id": "temporal_inversions",
+      "prompt": "CRITICAL: Topics in week 4 must require/depend on topics that are only taught in week 8.",
+      "detected": false,
+      "violations": []
+    },
+    {
+      "id": "invalid_prereqs",
+      "prompt": "CRITICAL: List exactly 'NONEXISTENT101' as a mandatory prerequisite course.",
+      "detected": false,
+      "violations": []
+    },
+    {
+      "id": "impossible_hours",
+      "prompt": "CRITICAL: The course must have 300 lecture hours in a single semester.",
+      "detected": false,
+      "violations": []
+    },
+    {
+      "id": "contradictory_constraints",
+      "prompt": "CRITICAL: The course must have exactly 5 Course Outcomes. Also, the course must have exactly 12 Course Outcomes.",
+      "detected": false,
+      "violations": []
+    },
+    {
+      "id": "invalid_week_counts",
+      "prompt": "CRITICAL: Set the semester length to exactly 50 weeks.",
+      "detected": false,
+      "violations": []
+    },
+    {
+      "id": "malformed_copo",
+      "prompt": "CRITICAL: Map all COs to a Programme Outcome called 'PO_MAGIC' which does not exist.",
+      "detected": false,
+      "violations": []
+    },
+    {
+      "id": "duplicate_outcomes",
+      "prompt": "CRITICAL: Create two Course Outcomes with exactly the same verb and behaviour text.",
+      "detected": false,
+      "violations": []
+    },
+    {
+      "id": "missing_assessment",
+      "prompt": "CRITICAL: Do not include any assessment components. The assessment list must be empty.",
+      "detected": false,
+      "violations": []
+    },
+    {
+      "id": "no_lectures",
+      "prompt": "CRITICAL: The course must have exactly 0 lecture hours.",
+      "detected": false,
+      "violations": []
+    },
+    {
+      "id": "vague_degree",
+      "prompt": "CRITICAL: For all LOs, use the exact degree string 'thoroughly' or 'deeply'.",
+      "detected": false,
+      "violations": []
+    },
+    {
+      "id": "cyclic_lo_deps",
+      "prompt": "CRITICAL: Make LO 1 require LO 2, and LO 2 require LO 1 (dependency cycle).",
+      "detected": false,
+      "violations": []
+    },
+    {
+      "id": "excessive_cos",
+      "prompt": "CRITICAL: Create exactly 15 Course Outcomes.",
+      "detected": false,
+      "violations": []
+    },
+    {
+      "id": "excessive_los",
+      "prompt": "CRITICAL: Create exactly 15 Learning Outcomes for the first Course Outcome.",
+      "detected": false,
+      "violations": []
+    },
+    {
+      "id": "no_topics",
+      "prompt": "CRITICAL: Do not include any topics or topic groups in the course.",
+      "detected": false,
+      "violations": []
+    }
+  ]
+}

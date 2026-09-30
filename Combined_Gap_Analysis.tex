@@ -1,0 +1,513 @@
+\documentclass[11pt,a4paper]{article}
+
+% ===== PACKAGES =====
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+
+% ===== COLORS =====
+\definecolor{darkBlue}{RGB}{25,60,120}
+\definecolor{noteBlue}{RGB}{232,244,253}
+\definecolor{noteBorder}{RGB}{66,133,244}
+\definecolor{warnOrange}{RGB}{255,243,224}
+\definecolor{warnBorder}{RGB}{230,126,34}
+\definecolor{greenBox}{RGB}{232,250,237}
+\definecolor{greenBorder}{RGB}{39,174,96}
+\definecolor{purpleBox}{RGB}{240,232,253}
+\definecolor{purpleBorder}{RGB}{142,68,173}
+
+% ===== CUSTOM BOXES =====
+\newtcolorbox{notebox}{
+  colback=noteBlue, colframe=noteBorder,
+  boxrule=0.5pt, left=6pt, right=6pt, top=4pt, bottom=4pt,
+  fontupper=\small\itshape
+}
+\newtcolorbox{warnbox}{
+  colback=warnOrange, colframe=warnBorder,
+  boxrule=0.5pt, left=6pt, right=6pt, top=4pt, bottom=4pt,
+  fontupper=\small\itshape
+}
+\newtcolorbox{greenbox}{
+  colback=greenBox, colframe=greenBorder,
+  boxrule=0.5pt, left=6pt, right=6pt, top=4pt, bottom=4pt,
+  fontupper=\small\itshape
+}
+\newtcolorbox{purplebox}{
+  colback=purpleBox, colframe=purpleBorder,
+  boxrule=0.5pt, left=6pt, right=6pt, top=4pt, bottom=4pt,
+  fontupper=\small\itshape
+}
+
+% ===== HEADER/FOOTER =====
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{\small\textit{ProfsAgent --- Literature Gap Analysis \& System Vision}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ===== TITLE =====
+\title{
+\vspace{-1cm}
+\textbf{ProfsAgent: Literature Gap Analysis}\\[0.3cm]
+\large Identifying Opportunities for an Agentic AI System\\for Course Design and Delivery\\[0.5cm]
+\normalsize Based on Sridhar et al.\ (2023) and Yao et al.\ (2026)
+}
+
+\author{
+BTP Project --- ProfsAgent
+}
+
+\date{August 2026}
+
+% ===== DOCUMENT =====
+\begin{document}
+
+\maketitle
+\thispagestyle{fancy}
+
+% ---------- ABSTRACT ----------
+\begin{abstract}
+Designing a new course involves defining learning outcomes, structuring topics, preparing lecture material, and developing assessments---a process that is time-consuming and particularly challenging for interdisciplinary or evolving subjects. Two recent papers explore using LLMs for this task: Sridhar et al.\ (2023) demonstrate prompt-engineered LO generation with GPT-4, and Yao et al.\ (2026) propose a multi-agent framework for end-to-end course material generation. This document identifies \textbf{13 key gaps} across both papers that inform the design of \textbf{ProfsAgent}---an agentic AI system that assists professors across the entire course-design lifecycle while keeping the professor in control of all academic decisions. The identified gaps directly translate into design requirements and differentiation points for ProfsAgent.
+\end{abstract}
+
+\noindent\rule{\textwidth}{0.4pt}
+\tableofcontents
+\noindent\rule{\textwidth}{0.4pt}
+\vspace{0.3cm}
+
+% ======================================================================
+\section{Context: The ProfsAgent Vision}
+% ======================================================================
+
+\textbf{ProfsAgent} is an agentic AI system to assist professors across the course-design lifecycle. Depending on scope, the system may support:
+
+\begin{itemize}[nosep]
+    \item Curriculum planning and learning-outcome refinement
+    \item Resource discovery and recommendation
+    \item Lecture-note and slide generation
+    \item Assignment and exam design
+    \item Consistency checks across course components
+\end{itemize}
+
+The project may use \textbf{multiple specialized agents}, \textbf{retrieval-augmented generation (RAG)}, and \textbf{knowledge graphs}, while ensuring the professor remains in control. The two suggested readings serve as the foundational literature:
+
+\begin{table}[H]
+\centering
+\caption{Overview of the two foundational papers.}
+\begin{tabular}{@{}lp{5cm}p{5cm}@{}}
+\toprule
+\textbf{Dimension} & \textbf{Paper 1 (Sridhar, CMU)} & \textbf{Paper 2 (Yao, ASU)} \\
+\midrule
+Scope & LO generation only & Full course package \\
+Architecture & Single model, single prompt & 6 agents, ADDIE pipeline \\
+Models & GPT-4 only & gpt-4o, gpt-4o-mini, o1-preview \\
+Courses tested & 1 (AI Practitioner) & 5 CS courses \\
+Evaluators & 3 CS grad students + BERT & 5 expert instructors + LLM judges \\
+Best quality & N/A (qualitative) & 3.74/5 (Co-Pilot mode) \\
+Cost & Not reported & \$0.22--\$0.36 per course \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The following 13 gaps represent what these papers \textbf{did not do} or \textbf{did not do well}---and where ProfsAgent can differentiate itself.
+
+% ======================================================================
+\section{Gap 1: Limited Model Diversity and Benchmarking}
+% ======================================================================
+
+\textbf{Paper~1} uses only GPT-4. \textbf{Paper~2} tests three OpenAI models (gpt-4o, gpt-4o-mini, o1-preview) but excludes all non-OpenAI alternatives. Neither tests Claude, Gemini, Llama, Mistral, or any open-source model.
+
+\subsection{Why This Matters for ProfsAgent}
+Different models have different strengths: Claude for structured reasoning, Gemini for multi-modal tasks, open-source models for data privacy. ProfsAgent should be \textbf{model-agnostic}---allowing institutions to choose based on cost, privacy, and performance needs.
+
+\subsection{Proposed Approach}
+\begin{itemize}[nosep]
+    \item Design ProfsAgent with a \textbf{pluggable model backend} (any OpenAI-compatible API).
+    \item Benchmark the same pipeline across GPT-4o, Claude Sonnet~4, Gemini~2.5 Pro, and Llama~3.1.
+    \item Explore \textbf{heterogeneous model assignment}---stronger models for complex agents (domain expert), cheaper models for formatting/TA tasks.
+\end{itemize}
+
+\begin{notebox}
+\textbf{Key finding from Paper~2:} gpt-4o-mini matched gpt-4o at 1/16th the cost (Friedman test $p=0.789$). Cheaper models may suffice for many tasks.
+\end{notebox}
+
+% ======================================================================
+\section{Gap 2: No Temperature or Hyperparameter Optimization}
+% ======================================================================
+
+\textbf{Paper~1} uses \texttt{temperature=0.7} (default) without justification. Neither paper experiments with hyperparameters.
+
+\subsection{Proposed Approach}
+\begin{itemize}[nosep]
+    \item Conduct a temperature sweep (0.2, 0.5, 0.7, 0.9) measuring quality vs.\ diversity.
+    \item Implement \textbf{Best-of-N}: generate $N$ candidate outputs, select the best via a quality scorer.
+    \item Different agents/tasks may benefit from different temperatures (creative tasks $\to$ higher, structured tasks $\to$ lower).
+\end{itemize}
+
+% ======================================================================
+\section{Gap 3: Region-Specific Validation Missing}
+% ======================================================================
+
+The BERT classifier in Paper~1 was trained on US university LOs. Educational conventions differ dramatically across countries.
+
+\begin{table}[H]
+\centering
+\caption{LO conventions differ across educational systems.}
+\begin{tabular}{@{}lp{3cm}p{3cm}p{3.5cm}@{}}
+\toprule
+\textbf{Aspect} & \textbf{US (ABET)} & \textbf{India (NBA/NAAC)} & \textbf{Europe (Bologna)} \\
+\midrule
+LO Format & ``Students will be able to\ldots'' & ``CO1: Design algorithms\ldots'' & ``Graduate can demonstrate\ldots'' \\
+Taxonomy & Bloom's (6 levels) & Bloom's + SOLO & Dublin Descriptors / EQF \\
+Accreditation & ABET & NBA / NAAC & EUR-ACE \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Proposed Approach for ProfsAgent}
+\begin{itemize}[nosep]
+    \item Let the professor select their \textbf{country and accreditation body} during setup.
+    \item Load region-specific LO templates, action verb lists, and validation rules.
+    \item Use region-specific few-shot examples in prompts (not just CMU examples).
+    \item \textbf{This is critical for Indian universities} (NBA/NAAC requirements are different from ABET).
+\end{itemize}
+
+% ======================================================================
+\section{Gap 4: Homogeneous and Narrow Evaluator Panels}
+% ======================================================================
+
+\textbf{Paper~1} uses 3 CS grad students ($\kappa = 0.31$, fair). \textbf{Paper~2} uses 5 expert instructors (no $\kappa$ reported). Neither includes students.
+
+\subsection{Proposed Evaluation Panel for ProfsAgent}
+
+\begin{table}[H]
+\centering
+\caption{Multi-perspective annotator panel.}
+\begin{tabular}{@{}lcl@{}}
+\toprule
+\textbf{Role} & \textbf{Count} & \textbf{Unique Perspective} \\
+\midrule
+Professor / Subject Expert & 1 & ``Is this pedagogically sound?'' \\
+Strong Students (Top 20\%) & 3 & ``Is this challenging enough?'' \\
+Average Students (Mid 40\%) & 3 & ``Do I understand what's expected?'' \\
+\midrule
+\textbf{Total} & \textbf{7} & \textbf{3 distinct perspectives} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{warnbox}
+\textbf{Key Insight:} Average students are the most important validators. If course material isn't clear to them, it fails its primary purpose. Both papers completely lack this perspective.
+\end{warnbox}
+
+% ======================================================================
+\section{Gap 5: No Baseline Comparison with Human-Created Materials}
+% ======================================================================
+
+Neither paper compares AI-generated outputs against \textbf{existing human-written materials} for the same course.
+
+\subsection{Proposed Approach for ProfsAgent}
+\begin{itemize}[nosep]
+    \item Collect existing professor-written LOs, syllabi, and slides from partner courses.
+    \item Conduct \textbf{blind evaluation}: reviewers score both AI and human outputs without knowing the source.
+    \item Report head-to-head comparison---this is the most convincing evaluation for a publication.
+\end{itemize}
+
+% ======================================================================
+\section{Gap 6: No Iterative Self-Critique in Generation}
+% ======================================================================
+
+\textbf{Paper~1} uses single-shot generation. \textbf{Paper~2}'s agents generate content but don't self-review before presenting to the professor.
+
+\subsection{Proposed Approach for ProfsAgent}
+Build a \textbf{Generate $\to$ Critique $\to$ Refine} loop into every agent:
+\begin{enumerate}[nosep]
+    \item \textbf{Generate:} Produce initial output (LOs, slides, assessments).
+    \item \textbf{Self-Critique:} A reviewer agent evaluates the output against quality criteria, flagging issues (vague terms, Bloom's misalignment, multiple action verbs in one LO).
+    \item \textbf{Refine:} Fix flagged issues automatically.
+    \item \textbf{Present to Professor:} Only show the refined version, with flagged items highlighted for human review.
+\end{enumerate}
+
+This adds minimal cost (one extra LLM call) but consistently improves output quality.
+
+% ======================================================================
+\section{Gap 7: No Measurability Evaluation of Learning Objectives}
+% ======================================================================
+
+Both papers say LOs should be ``measurable'' but never evaluate this. Paper~1 explicitly lists it as future work.
+
+\subsection{Why This Matters for ProfsAgent}
+If an LO like \textit{``Understand neural networks''} is generated, there's no way to design an assessment for it. ProfsAgent should ensure every LO is assessment-mappable.
+
+\subsection{Proposed Approach}
+Build a \textbf{measurability checker} that scores each LO on:
+\begin{itemize}[nosep]
+    \item \textbf{Observable Behavior:} Can you watch a student perform this?
+    \item \textbf{Assessment-Mappable:} Can you design a test question for this?
+    \item \textbf{Success Criteria:} Is the degree of mastery specific?
+\end{itemize}
+
+\textbf{Example:}
+\begin{itemize}[nosep]
+    \item \textcolor{red}{\textbf{Fails:}} \textit{``Understand neural networks.''}
+    \item \textcolor{greenBorder}{\textbf{Passes:}} \textit{``Explain the forward propagation process in a 3-layer neural network, identifying the role of weights, biases, and activation functions.''}
+\end{itemize}
+
+% ======================================================================
+\section{Gap 8: No RAG / Grounding on Actual Course Content}
+% ======================================================================
+
+Both papers generate content from LLM parametric knowledge or module names alone. No access to textbooks, prior syllabi, lecture notes, or institutional data.
+
+\subsection{Why This is Critical for ProfsAgent}
+This is the \textbf{single biggest differentiator} ProfsAgent can offer. Professors have existing materials---textbooks they follow, previous syllabi, departmental guidelines. Ignoring these leads to generic, sometimes inaccurate content.
+
+\subsection{Proposed Approach}
+\begin{itemize}[nosep]
+    \item Build a \textbf{RAG pipeline}: professors upload their textbook PDFs, prior syllabi, and institutional guidelines.
+    \item Chunk and embed documents into a vector store (e.g., ChromaDB, Pinecone).
+    \item Each generation agent retrieves relevant context before producing output.
+    \item This directly solves the ``Python libraries'' vs.\ ``scikit-learn'' specificity problem from Paper~1.
+\end{itemize}
+
+\begin{greenbox}
+\textbf{ProfsAgent advantage:} RAG-grounded generation produces institution-specific, textbook-aligned materials---not generic LLM output. This is what professors actually need.
+\end{greenbox}
+
+% ======================================================================
+\section{Gap 9: CS/STEM Only --- No Cross-Discipline Testing}
+% ======================================================================
+
+\textbf{Paper~1}: 1 AI course. \textbf{Paper~2}: 5 CS courses. No humanities, natural sciences, arts, or professional disciplines.
+
+\subsection{Why This Matters}
+\begin{itemize}[nosep]
+    \item \textbf{Humanities} (History, Philosophy): LOs emphasize argumentation, interpretation, critical thinking.
+    \item \textbf{Natural Sciences} (Physics, Chemistry): LOs involve lab skills, experimental design.
+    \item \textbf{Professional} (Law, Medicine): LOs involve case analysis, clinical reasoning.
+\end{itemize}
+
+ProfsAgent should demonstrate generalizability beyond CS. Even testing on 2--3 non-CS courses would significantly strengthen the contribution.
+
+% ======================================================================
+\section{Gap 10: No Visual or Multimedia Content Generation}
+% ======================================================================
+
+\textbf{Paper~2}'s slides are text-only LaTeX. Reviewers noted: \textit{``Slide design templates were overly uniform, limiting visual variety and student engagement.''}
+
+\subsection{Why This Matters}
+Real lecture slides contain diagrams, charts, code visualizations, and images. Text-only slides are pedagogically weaker.
+
+\subsection{Proposed Approach for ProfsAgent}
+\begin{itemize}[nosep]
+    \item Generate slides as \textbf{PPTX} (via python-pptx) or \textbf{HTML/reveal.js}---not LaTeX.
+    \item Integrate image generation for diagrams and illustrations.
+    \item Use code execution for automated charts, plots, and visualizations.
+    \item Use Mermaid for flowcharts and architecture diagrams.
+    \item This eliminates LaTeX fragility (missing \texttt{[fragile]} tags, unescaped characters).
+\end{itemize}
+
+% ======================================================================
+\section{Gap 11: No Real Classroom Deployment or Student Outcomes}
+% ======================================================================
+
+Neither paper deploys materials to real students. Both acknowledge this as critical future work.
+
+\subsection{Proposed Approach for ProfsAgent}
+While full deployment may be beyond BTP scope, ProfsAgent can:
+\begin{itemize}[nosep]
+    \item Pilot with \textbf{1--2 real courses} at the university---even partial deployment (e.g., AI-generated slides for 2 weeks of a course).
+    \item Collect student feedback via surveys (clarity, engagement, usefulness).
+    \item Compare with the professor's own materials for the same topics.
+    \item This provides the strongest evidence for a publication at AIED or CHI.
+\end{itemize}
+
+% ======================================================================
+\section{Gap 12: LLM-as-Judge is Unreliable for Educational Content}
+% ======================================================================
+
+\textbf{Paper~2} demonstrates that LLM evaluators assign tightly clustered scores (2.9--3.1) while humans produce discriminative scores (1.5--4.5). LLMs cannot distinguish good from mediocre instructional materials.
+
+\subsection{Implication for ProfsAgent}
+Do \textbf{not} rely on LLM-based quality scoring as the primary evaluation metric. Use:
+\begin{itemize}[nosep]
+    \item \textbf{Human evaluation} as the primary quality measure.
+    \item \textbf{LLM reviewers} only for automated sanity checks (formatting, Bloom's verb detection, completeness).
+    \item Consider fine-tuning a \textbf{domain-specific evaluation model} on expert-annotated educational materials.
+\end{itemize}
+
+% ======================================================================
+\section{Gap 13: No Cross-Module Consistency or Curriculum Coherence}
+% ======================================================================
+
+Both papers generate content per-module \textbf{independently}. No verification that the full curriculum is coherent, non-overlapping, and properly sequenced.
+
+\subsection{Proposed Approach for ProfsAgent}
+Build a \textbf{Consistency Engine} that runs after all modules are generated:
+\begin{itemize}[nosep]
+    \item \textbf{Overlap detection:} Flag redundant LOs or content across modules.
+    \item \textbf{Coverage matrix:} Modules $\times$ Bloom's Levels---identify gaps.
+    \item \textbf{Prerequisite ordering:} Verify higher-level LOs appear after foundational ones.
+    \item \textbf{Assessment alignment:} Every LO maps to at least one assessment item.
+    \item Optionally build a \textbf{knowledge graph} of concepts and their dependencies to power this.
+\end{itemize}
+
+\begin{greenbox}
+\textbf{This is a strong differentiator.} Neither paper attempts course-level coherence checking. A knowledge-graph-powered consistency engine would be a novel contribution.
+\end{greenbox}
+
+% ======================================================================
+\section{Summary of Gaps and Relevance to ProfsAgent}
+% ======================================================================
+
+\begin{table}[H]
+\centering
+\caption{All 13 gaps with relevance to ProfsAgent system design.}
+\small
+\begin{tabular}{@{}clcp{4.5cm}@{}}
+\toprule
+\textbf{\#} & \textbf{Gap} & \textbf{Source} & \textbf{ProfsAgent Response} \\
+\midrule
+1 & Limited model diversity & P1+P2 & Pluggable model backend \\
+2 & No hyperparameter optimization & P1 & Temperature tuning, Best-of-N \\
+3 & Region-specific validation & P1 & Country/accreditation selector \\
+4 & No student evaluators & P1+P2 & Multi-perspective panel (7 people) \\
+5 & No human baseline comparison & P1+P2 & Blind AI vs.\ human evaluation \\
+6 & No self-critique in generation & P1+P2 & Generate-Critique-Refine loop \\
+7 & No measurability evaluation & P1 & Built-in measurability checker \\
+8 & No RAG / content grounding & P1+P2 & RAG pipeline with professor's materials \\
+9 & CS-only, no cross-discipline & P1+P2 & Test on 2--3 non-CS courses \\
+10 & No visual/multimedia content & P2 & PPTX/HTML slides + image generation \\
+11 & No classroom deployment & P1+P2 & Pilot with 1--2 real courses \\
+12 & LLM-as-judge unreliable & P2 & Human-primary evaluation \\
+13 & No curriculum coherence check & P1+P2 & Knowledge-graph consistency engine \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ======================================================================
+\section{ProfsAgent: High-Level Implementation Roadmap}
+% ======================================================================
+
+Based on the gaps identified and the BTP scope, we propose the following phased implementation plan:
+
+\subsection{Phase 1: Foundation (Weeks 1--3)}
+\begin{itemize}[nosep]
+    \item Set up project repository, development environment, and CI/CD.
+    \item Design the \textbf{system architecture}: agent framework, model abstraction layer, RAG pipeline.
+    \item Build the \textbf{model abstraction layer}: pluggable backend supporting OpenAI, Claude, Gemini APIs.
+    \item Define the \textbf{agent role specifications}: what each agent does, its system prompt, and inputs/outputs.
+\end{itemize}
+
+\subsection{Phase 2: Core Agent Pipeline (Weeks 4--7)}
+\begin{itemize}[nosep]
+    \item Implement \textbf{LO Generation Agent} with structured output (JSON schema for Behavior, Conditions, Degree, Bloom's level).
+    \item Implement \textbf{Syllabus Generation Agent} that produces weekly topic plans from LOs.
+    \item Implement \textbf{Slide Generation Agent} producing PPTX or HTML slides (not LaTeX).
+    \item Implement \textbf{Assessment Generation Agent} for quizzes, assignments, and exam questions.
+    \item Build the \textbf{Generate-Critique-Refine} loop into every agent.
+\end{itemize}
+
+\subsection{Phase 3: RAG \& Knowledge Pipeline (Weeks 6--9)}
+\begin{itemize}[nosep]
+    \item Build document ingestion pipeline (PDF $\to$ chunks $\to$ embeddings).
+    \item Set up vector store (ChromaDB or FAISS).
+    \item Integrate RAG retrieval into each agent's generation context.
+    \item Optionally: build a \textbf{concept knowledge graph} from syllabus topics for prerequisite ordering.
+\end{itemize}
+
+\subsection{Phase 4: Consistency Engine (Weeks 8--10)}
+\begin{itemize}[nosep]
+    \item Build the \textbf{cross-module consistency checker}: overlap detection, Bloom's coverage matrix.
+    \item Build the \textbf{LO-Assessment alignment verifier}: every LO maps to $\geq$1 assessment.
+    \item Build the \textbf{prerequisite ordering checker}: verify course sequencing makes sense.
+    \item Build the \textbf{measurability checker} for LOs.
+\end{itemize}
+
+\subsection{Phase 5: Professor Interface (Weeks 9--12)}
+\begin{itemize}[nosep]
+    \item Build a web-based UI (Streamlit, Gradio, or Next.js) for professor interaction.
+    \item Support: course setup (name, goals, accreditation body), material review and editing, approval workflow.
+    \item Implement the \textbf{Co-Pilot mode}: professor reviews and refines at each stage.
+    \item Export generated materials as downloadable packages (PPTX, PDF, DOCX).
+\end{itemize}
+
+\subsection{Phase 6: Evaluation \& Publication (Weeks 11--14)}
+\begin{itemize}[nosep]
+    \item Recruit multi-perspective evaluation panel (1 prof + 3 strong + 3 average students).
+    \item Run on 3--5 courses across CS and at least 1 non-CS discipline.
+    \item Conduct blind AI vs.\ human baseline comparison.
+    \item Report inter-rater reliability ($\kappa$), quality scores, cost analysis.
+    \item Pilot deployment in 1 real course (even partially).
+    \item Write paper targeting AIED or CHI.
+\end{itemize}
+
+\begin{purplebox}
+\textbf{Note:} Phases overlap. RAG development (Phase~3) can run in parallel with core agent development (Phase~2). The UI (Phase~5) can start with a simple Streamlit prototype and be refined iteratively.
+\end{purplebox}
+
+% ======================================================================
+% REFERENCES
+% ======================================================================
+
+\begin{thebibliography}{10}
+
+\bibitem{sridhar2023}
+P.~Sridhar, A.~Doyle, A.~Agarwal, C.~Bogart, J.~Savelka, and M.~Sakr.
+\newblock Harnessing {LLMs} in curricular design: Using {GPT-4} to support authoring of learning objectives.
+\newblock In \textit{Workshop on Empowering Education with LLMs, AIED}, 2023.
+\newblock arXiv:2306.17459.
+
+\bibitem{yao2026}
+H.~Yao, W.~Xu, J.~Turnau, N.~Kellam, and H.~Wei.
+\newblock Instructional Agents: {LLM} Agents on automated course material generation for teaching faculties.
+\newblock Arizona State University, 2026.
+\newblock arXiv:2508.19611.
+
+\bibitem{li2022}
+Y.~Li, M.~Rakovic, B.~X.~Poh, D.~Gasevic, and G.~Chen.
+\newblock Automatic classification of learning objectives based on {Bloom's} taxonomy.
+\newblock In \textit{Proceedings of EDM}, pp.~530--537, 2022.
+
+\bibitem{bloom1956}
+B.~S. Bloom, M.~D. Engelhart, E.~Furst, W.~H. Hill, and D.~R. Krathwohl.
+\newblock \textit{Taxonomy of Educational Objectives: Handbook {I} --- Cognitive Domain}.
+\newblock David McKay, New York, 1956.
+
+\bibitem{krathwohl2002}
+D.~R. Krathwohl.
+\newblock A revision of {Bloom's} taxonomy: An overview.
+\newblock \textit{Theory into Practice}, 41:212--218, 2002.
+
+\bibitem{gagne2005}
+R.~M. Gagne, W.~W. Wager, K.~C. Golas, J.~M. Keller, and J.~D. Russell.
+\newblock \textit{Principles of Instructional Design}, 2005.
+
+\bibitem{branch2009}
+R.~M. Branch and {\.I}.~Varank.
+\newblock \textit{Instructional Design: The ADDIE Approach}, volume 722.
+\newblock Springer, 2009.
+
+\bibitem{qm2023}
+Quality Matters.
+\newblock \textit{Higher Education Rubric, Seventh Edition}.
+\newblock MarylandOnline, Inc., 2023.
+
+\end{thebibliography}
+
+\end{document}

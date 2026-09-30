@@ -1,0 +1,341 @@
+{
+    "header": {
+        "course_code": "AI501",
+        "aliases": [
+            "ECE363",
+            "ECE563",
+            "CSE343",
+            "CSE543"
+        ],
+        "name": "Machine Learning",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "Machine Learning has become a core discipline underpinning modern artificial intelligence and data-driven decision making across diverse application domains. This course provides a rigorous treatment of the theoretical foundations and practical methodologies of ML techniques. Through analytical assignments, programming exercises, and a comprehensive course project, students will develop end-to-end machine learning solutions involving data preprocessing, feature engineering, model development, hyperparameter optimization, validation, and performance analysis on real-world datasets. The course emphasizes both methodological understanding and the ability to critically evaluate and design machine learning systems for complex research and industrial applications.",
+        "prerequisites_mandatory": [
+            "Math - I",
+            "Math - II",
+            "Intro to Programming"
+        ],
+        "prerequisites_desirable": [
+            "Math- III",
+            "Signals & Systems"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "Math - I",
+            "Math - II",
+            "Intro to Programming"
+        ],
+        "prerequisites_desirable_resolved": [
+            "Math- III",
+            "Signals & Systems"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students are able to explain different types of learning problems along with some techniques to solve them",
+            "bloom_level": "Apply",
+            "bloom_verb": "solve",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=solve",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students are able to model real-world problems, apply different learning techniques and quantitatively evaluate the performance",
+            "bloom_level": "Evaluate",
+            "bloom_verb": "evaluate",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=evaluate",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students are able to Identify and use advanced techniques through existing machine learning tools and libraries",
+            "bloom_level": "Apply",
+            "bloom_verb": "use",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=use",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Students are able to analyze performance of ML techniques and comment on their limitations",
+            "bloom_level": "Analyze",
+            "bloom_verb": "analyze",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=analyze",
+                "has_object",
+                "has_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Introduction to Machine Learning (ML)",
+                "Learning Problems and Application",
+                "History of ML",
+                "The Risk Minimization Framework"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Tutorial to Scikit-Learn"
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Supervised Learning - I",
+                "Linear and Logistic Regression",
+                "Loss functions, Gradient Descent",
+                "Probalistic Interpretation: MLE vs MAP",
+                "Parametric/Non-Parametric Learning",
+                "Bayes & Naive Bayes Classifier"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Implementing Data pre-processing pipelines: Image, Text, Audio, Time-series, Tabular data"
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "ML Model Evaluation",
+                "Accuracy, Precision, Recall, Confusion Matrix",
+                "Bias-Variance Trade-off",
+                "Overfitting & Underfitting",
+                "Operating Curves: ROC, AUC, EER, DET",
+                "Egar vs Lazy Learning",
+                "Data Splitting & Cross Validation"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": "Implementing Multivariate & Multiple Linear/Logistic Regression\nPerformance Evaluation"
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Overview of Probably Approximately Correct (PAC) learning, Vapnik-Chervonenkis (VC) dimension",
+                "Supervised Learning - I",
+                "Generalized Linear Model: GLM",
+                "Regression with correlated data",
+                "Overview of Regularization"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Discussion on various ML Project Topics"
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Supervised Learning - II",
+                "Decision Trees",
+                "DT splitting criteria (univariate & multivariate): Information Gain, Gain Ratio, Gini Index, CART, CHAD, Variance Reduction",
+                "Ensemble Learning: Random Forest, Boosting & Bagging",
+                "Applications"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Pasting/Bagging/Random Subspaces/Random Patches\nGradient-boosted trees\nXGBoost\nAdaBoost"
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Unsupervised Learning - I",
+                "Introduction to Clustering and its types",
+                "Association",
+                "Dimentionality Reduction",
+                "Applications"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Cluster Validation and Model selection via Silhouette Score, Davies-Bouldin Index, and Elbow Method"
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Supervised Learning - III",
+                "Lagrange Multiplier & Primal/Dual Problem",
+                "KKT Conditions",
+                "Kernel Methods",
+                "SVM Regularization",
+                "Overflow"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Multiclass classification using Linear & Non-Linear SVM"
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Supervised Learning - III",
+                "Support Vector Machines (SVM)",
+                "Geometric & Functional Margin",
+                "Optimal seprating hyperplane",
+                "Optimal Margin Classifier",
+                "Applications"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Support Vector Regression & Clustering"
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Supervised Learning - IV",
+                "Perceptron: Learning algorithm and convergence proof",
+                "Input Domain Partitioning and Multi-layer Perceptron",
+                "Backpropogation algorithm",
+                "Margin Perceptron Algorithm and its link to SVM"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Implementing scalable ML pipelines in Pytorch"
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Unsupervised Learning - II",
+                "Instance-based Learning: KNN, Normalization and Feature weighting, Distance Metrics",
+                "K-Means Clustering & Convergence Proof",
+                "Introduction to Density based Clustring: DBSCAN, OPTICS, Mean-shift clustering",
+                "Applications"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Applications such as\nSegmentation\nCompression\nDenoising/Restoration\nSource Sepration"
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Unsupervised Learning - III",
+                "Introduction to probalistic clustering",
+                "Gaussian Mixture Model (GMM)",
+                "Expectation-Maximization"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Problistic clustering using GMMs with diagonal/full covariance"
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Sequential Models",
+                "State-Machines, Markov Decision Processes, Markov Chains",
+                "Hidden Markov Model",
+                "Applications"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Tutorial on Ethics of AI"
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Complexity of Machine Learning Alogirthms",
+                "Time and Space complexity",
+                "Training and Inference complexity",
+                "Guest Lecture (Industry Expert)"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "HPC/GPU accelerated ML pipelines"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "In-Class Participation",
+            "weight_pct": 5
+        },
+        {
+            "type_label": "Project",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "Assignments",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Quiz (Best N-1)",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 25
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "Machine Learning, Tom M. Mitchell, McGraw Hill, 1997"
+        },
+        {
+            "type_label": "Textbook",
+            "title": "Pattern Recognition and Machine Learning, Christopher M. Bishop, Springer, 2006"
+        },
+        {
+            "type_label": "Textbook",
+            "title": "Probabilistic Machine Learning: An Introduction, Kevin P. Murphy, MIT Press, 2022."
+        },
+        {
+            "type_label": "Mathematical Reference",
+            "title": "Mathematics for Machine Learning, Marc Peter Deisenroth, A. Aldo Faisal, and Cheng Soon Ong, Cambridge University Press, 2020."
+        },
+        {
+            "type_label": "Practical Reference",
+            "title": "Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow, Aur\u00e9lien G\u00e9ron, O\u2019Reilly, 3rd edition."
+        },
+        {
+            "type_label": "Responsible ML Reference",
+            "title": "Fairness and Machine Learning: Limitations and Opportunities, Solon Barocas, Moritz Hardt, and Arvind Narayanan, MIT Press."
+        },
+        {
+            "type_label": "Documentation / Tool Reference",
+            "title": "Scikit-learn, PyTorch/TensorFlow, and related official documentation, as needed for tutorials and assignments."
+        },
+        {
+            "type_label": "Research/Reading Material",
+            "title": "Selected recent papers, articles, and case studies on representation learning, pretrained models, calibration, uncertainty, and responsible ML."
+        }
+    ]
+}

@@ -1,17 +1,25 @@
-# secrets — never commit
+# Environment & secrets
 .env
-# python / tooling
+
+# Python
 __pycache__/
 *.pyc
-.venv/
-.pytest_cache/
-# regenerable data
-data/cache/
+*.pyo
+
+# Raw crawled data (too large for git)
 data/raw/
-data/stub_build.log
-# run artefacts that are machine-local (runs/ itself IS committed)
-runs/*/checkpoint.sqlite*
-runs/_smoke/
-*.sqlite
-*.sqlite-shm
-*.sqlite-wal
+data/parsed/
+
+# Test scripts
+test_key.py
+test_or.py
+
+# Generated images (not needed in repo)
+cse222_knowledge_graph.png
+cse222_knowledge_graph_layered.png
+ffff.jpeg
+image.png
+
+# IDE
+.vscode/
+.idea/

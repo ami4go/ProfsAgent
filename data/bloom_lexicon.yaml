@@ -1,0 +1,22 @@
+# Bloom verb lexicon v0 (revised Bloom, Anderson & Krathwohl 2001). Merge KB_13 into this file when available.
+# A verb appears under its PRIMARY level; `ambiguous` lists alternates the classifier may accept with context.
+levels:
+  1: [define, list, recall, identify, name, state, recognise, recognize, label, match, reproduce, enumerate]
+  2: [explain, describe, summarise, summarize, classify, compare, contrast, illustrate, interpret, paraphrase, exemplify, infer, discuss, trace, distinguish]
+  3: [apply, implement, use, execute, solve, demonstrate, compute, calculate, construct, write, program, configure, deploy, operate, perform, modify, translate, refactor, debug, test, instrument]
+  4: [analyse, analyze, differentiate, examine, decompose, deconstruct, diagnose, organise, organize, attribute, investigate, profile, characterise, characterize, model, map, categorise, deduce]
+  5: [evaluate, assess, critique, judge, justify, validate, verify, appraise, benchmark, defend, prioritise, prioritize, recommend, review, select, argue, measure]
+  6: [design, create, develop, formulate, compose, devise, plan, propose, synthesise, synthesize, architect, invent, generate, build, author, engineer]
+ambiguous:
+  select: [3, 5]
+  build: [3, 6]
+  develop: [3, 6]
+  model: [3, 4]
+  test: [3, 5]
+  construct: [3, 6]
+  compare: [2, 4]
+  distinguish: [2, 4]
+  plan: [5, 6]
+  review: [2, 5]
+banned: [understand, know, learn, appreciate, "be familiar with", "be aware of", "gain knowledge of", grasp, "get exposure to", comprehend, realise, realize, "become acquainted with", "have knowledge of", "familiarity", "understanding"]
+vague_degree_words: [correctly, effectively, properly, appropriately, efficiently, successfully, adequately, well, thoroughly, "in a good manner"]

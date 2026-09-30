@@ -1,0 +1,48 @@
+# LLM routing. Each role lists endpoints in preference order; the client walks the list, and for Gemini
+# models tries every key in GEMINI_API_KEYS before moving on. Cooldowns are persisted in data/cache/llm_state.json.
+#
+# FREE-TIER FACTS (measured 2026-09-30):
+#   Gemini: 20 requests / day / PROJECT / model (GenerateRequestsPerDayPerProjectPerModel-FreeTier = 20).
+#           Keys from the SAME Google Cloud project share that quota — use keys from different projects.
+#           3.x flash models return frequent 503 "high demand"; overload is model-wide, so a 503 cools the model on all keys.
+#           Google-Search grounding works on 2.5-flash only (3.x grounding quota = 0).
+#   Groq:   1000 requests / day / model, 8000 tokens / minute / model → a single request must stay < ~8K tokens.
+#   Ollama: local gemma4 (8B Q4) ~10 tok/s, qwen3.5:9b ~7 tok/s on this CPU (no GPU) — last resort only.
+roles:
+  generate:            # G1–G11, R1, X1: large contexts; quality matters
+    - {provider: gemini, model: gemini-3.8-flash}
+    - {provider: gemini, model: gemini-3.7-flash}
+    - {provider: gemini, model: gemini-3.5-flash}
+    - {provider: gemini, model: gemini-2.5-flash}
+    - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 5500}
+    - {provider: gemini, model: gemini-3.5-flash-lite}
+    - {provider: gemini, model: gemini-3.1-flash-lite}
+    - {provider: gemini, model: gemini-flash-lite-latest}
+    - {provider: groq,   model: qwen/qwen3.8-27b, max_prompt_tokens: 5500}
+    - {provider: ollama, model: "gemma4:latest"}      # LOCAL last resort (CPU, ~10 tok/s): minutes per call, no quota
+    - {provider: ollama, model: "qwen3.5:9b"}
+  extract:             # X2 page reading and other small structured extraction: Groq first to save Gemini quota
+    - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 5500}
+    - {provider: groq,   model: qwen/qwen3.8-27b, max_prompt_tokens: 5500}
+    - {provider: gemini, model: gemini-3.5-flash-lite}
+    - {provider: gemini, model: gemini-3.1-flash-lite}
+    - {provider: gemini, model: gemini-3.7-flash}
+    - {provider: groq,   model: openai/gpt-oss-20b, max_prompt_tokens: 5500}
+    - {provider: ollama, model: "gemma4:latest"}
+    - {provider: ollama, model: "qwen3.5:9b"}
+  search:              # Google-Search grounding: free tier only works on 2.5-flash (3.x grounding quota = 0)
+    - {provider: gemini, model: gemini-2.5-flash}
+embedding:
+  model: gemini-embedding-001
+  dim: 768
+cache:
+  enabled: true        # DEV ONLY: identical (prompt, inputs, role) → cached output. Disable for repeated-sampling experiments.
+limits:
+  min_interval_s: 4.0        # per (key, model) client-side spacing
+  timeout_s: 180
+  cooldown_503_s: 120        # applied to the MODEL on all keys
+  cooldown_timeout_s: 60
+  cooldown_429_default_s: 65
+  schema_retries: 1          # re-ask once with the Pydantic error appended
+  max_wait_s: 600            # when every slot is cooling down, wait up to this long for the soonest
+  ollama_timeout_s: 2400

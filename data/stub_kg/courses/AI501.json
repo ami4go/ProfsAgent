@@ -1,0 +1,320 @@
+{
+ "index": {
+  "uid": "AI501",
+  "aliases": [
+   "AI501",
+   "ECE363",
+   "ECE563",
+   "CSE343",
+   "CSE543"
+  ],
+  "name": "Machine Learning",
+  "credits": 4,
+  "level": 5,
+  "semester": "Monsoon/Winter",
+  "professor": "Saket Anand, Vinayank Abrol",
+  "cluster": "CSE/ECE",
+  "prereq_index": "Math - I Math - II Intro to Programming",
+  "prereq_pref_index": "Math- III, Signals & Systems, Python Programming",
+  "anti_index": "Introduction to Machine Learning, Machine Learning for Biomedical Applications",
+  "csv_url": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRDg_DkVXK_42B9ENKgA-atp1r2aGxqZtVTk9mJIR0fkhcZ8GSCqP92I0L81nO4Mistgd9vGLGRkGcu/pub?output=csv",
+  "catalogue_url": "https://techtree.iiitd.edu.in/viewDescription/filename?=AI501",
+  "is_gold_stub": false
+ },
+ "sheet": {
+  "header": {
+   "code_raw": "AI501 / ECE363 / ECE563 / CSE343/ CSE543",
+   "name": "Machine Learning",
+   "credits": 4,
+   "offered_to": "UG/PG",
+   "description": "Machine Learning has become a core discipline underpinning modern artificial intelligence and data-driven decision making across diverse application domains. This course provides a rigorous treatment of the theoretical foundations and practical methodologies of ML techniques. Through analytical assignments, programming exercises, and a comprehensive course project, students will develop end-to-end machine learning solutions involving data preprocessing, feature engineering, model development, hyperparameter optimization, validation, and performance analysis on real-world datasets. The course emphasizes both methodological understanding and the ability to critically evaluate and design machine learning systems for complex research and industrial applications.",
+   "codes_on_sheet": [
+    "AI501",
+    "ECE363",
+    "ECE563",
+    "CSE343",
+    "CSE543"
+   ]
+  },
+  "prerequisites": [
+   {
+    "kind": "mandatory",
+    "raw": "Math - I\nMath -  II\nIntro to Programming",
+    "row": 9
+   },
+   {
+    "kind": "desirable",
+    "raw": "Math- III, Signals & Systems",
+    "row": 9
+   },
+   {
+    "kind": "other",
+    "raw": "Python Programming",
+    "row": 9
+   },
+   {
+    "kind": "mandatory",
+    "raw": "Anti-requisites",
+    "row": 10
+   },
+   {
+    "kind": "mandatory",
+    "raw": "Introduction to Machine Learning",
+    "row": 11
+   },
+   {
+    "kind": "desirable",
+    "raw": "Machine Learning for Biomedical Applications",
+    "row": 11
+   },
+   {
+    "kind": "mandatory",
+    "raw": "CO1",
+    "row": 12
+   },
+   {
+    "kind": "desirable",
+    "raw": "CO2",
+    "row": 12
+   },
+   {
+    "kind": "other",
+    "raw": "CO3",
+    "row": 12
+   },
+   {
+    "kind": "mandatory",
+    "raw": "Students are able to explain different types of learning problems along with some techniques to solve them",
+    "row": 13
+   },
+   {
+    "kind": "desirable",
+    "raw": "Students are able to model real-world problems, apply different learning techniques and quantitatively evaluate the performance",
+    "row": 13
+   },
+   {
+    "kind": "other",
+    "raw": "Students are able to Identify and use advanced techniques through existing machine learning tools and libraries",
+    "row": 13
+   }
+  ],
+  "cos": [],
+  "lecture_weeks": [
+   {
+    "row": 16,
+    "week": 1,
+    "topic_raw": "Introduction to Machine Learning (ML) \nLearning Problems and Application\nHistory of ML\nThe Risk Minimization Framework",
+    "cos_met_raw": "CO1",
+    "tutorial": "Tutorial to Scikit-Learn",
+    "co_refs": [
+     "CO1"
+    ]
+   },
+   {
+    "row": 17,
+    "week": 2,
+    "topic_raw": "Supervised Learning - I\nLinear and Logistic Regression\nLoss functions, Gradient Descent\nProbalistic Interpretation: MLE vs MAP\nParametric/Non-Parametric Learning\nBayes & Naive Bayes Classifier",
+    "cos_met_raw": "CO1, CO2",
+    "tutorial": "Implementing Data pre-processing pipelines: Image, Text, Audio, Time-series, Tabular data",
+    "co_refs": [
+     "CO1",
+     "CO2"
+    ]
+   },
+   {
+    "row": 18,
+    "week": 3,
+    "topic_raw": "ML Model Evaluation\nAccuracy, Precision, Recall, Confusion Matrix\nBias-Variance Trade-off \nOverfitting & Underfitting\nOperating Curves: ROC, AUC, EER, DET\nEgar vs Lazy Learning\nData Splitting & Cross Validation",
+    "cos_met_raw": "CO2, CO4",
+    "tutorial": "Implementing Multivariate & Multiple Linear/Logistic Regression\nPerformance Evaluation",
+    "co_refs": [
+     "CO2",
+     "CO4"
+    ]
+   },
+   {
+    "row": 19,
+    "week": 4,
+    "topic_raw": "Overview of Probably Approximately Correct (PAC) learning, Vapnik-Chervonenkis (VC) dimension\n\nSupervised Learning - I\nGeneralized Linear Model: GLM\nRegression with correlated data\nOverview of Regularization",
+    "cos_met_raw": "CO1, CO2",
+    "tutorial": "Discussion on various ML Project Topics",
+    "co_refs": [
+     "CO1",
+     "CO2"
+    ]
+   },
+   {
+    "row": 20,
+    "week": 5,
+    "topic_raw": "Supervised Learning - II\nDecision Trees \nDT splitting criteria (univariate & multivariate): Information Gain, Gain Ratio, Gini Index, CART, CHAD, Variance Reduction\nEnsemble Learning: Random Forest, Boosting & Bagging\n\nApplications",
+    "cos_met_raw": "CO1, CO2",
+    "tutorial": "Pasting/Bagging/Random Subspaces/Random Patches\nGradient-boosted trees\nXGBoost\nAdaBoost",
+    "co_refs": [
+     "CO1",
+     "CO2"
+    ]
+   },
+   {
+    "row": 21,
+    "week": 6,
+    "topic_raw": "Unsupervised Learning - I\nIntroduction to Clustering and its types\nAssociation \nDimentionality Reduction\n\nApplications",
+    "cos_met_raw": "CO1, CO2",
+    "tutorial": "Cluster Validation and Model selection via Silhouette Score, Davies-Bouldin Index, and Elbow Method",
+    "co_refs": [
+     "CO1",
+     "CO2"
+    ]
+   },
+   {
+    "row": 23,
+    "week": 7,
+    "topic_raw": "Supervised Learning - III\nLagrange Multiplier & Primal/Dual Problem\nKKT Conditions\nKernel Methods\nSVM Regularization\nOverflow",
+    "cos_met_raw": "CO1, CO2",
+    "tutorial": "Multiclass classification using Linear & Non-Linear SVM",
+    "co_refs": [
+     "CO1",
+     "CO2"
+    ]
+   },
+   {
+    "row": 24,
+    "week": 8,
+    "topic_raw": "Supervised Learning - III\nSupport Vector Machines (SVM)\nGeometric & Functional Margin \nOptimal seprating hyperplane\nOptimal Margin Classifier\n\nApplications",
+    "cos_met_raw": "CO1, CO2",
+    "tutorial": "Support Vector Regression & Clustering",
+    "co_refs": [
+     "CO1",
+     "CO2"
+    ]
+   },
+   {
+    "row": 25,
+    "week": 9,
+    "topic_raw": "Supervised Learning - IV\nPerceptron: Learning algorithm and convergence proof\nInput Domain Partitioning and Multi-layer Perceptron\nBackpropogation algorithm\nMargin Perceptron Algorithm and its link to SVM",
+    "cos_met_raw": "CO3",
+    "tutorial": "Implementing scalable ML pipelines in Pytorch",
+    "co_refs": [
+     "CO3"
+    ]
+   },
+   {
+    "row": 26,
+    "week": 10,
+    "topic_raw": "Unsupervised Learning - II\nInstance-based Learning: KNN, Normalization and Feature weighting, Distance Metrics\nK-Means Clustering & Convergence Proof\nIntroduction to Density based Clustring: DBSCAN, OPTICS, Mean-shift clustering\n\nApplications",
+    "cos_met_raw": "CO1, CO2",
+    "tutorial": "Applications such as\nSegmentation\nCompression\nDenoising/Restoration\nSource Sepration",
+    "co_refs": [
+     "CO1",
+     "CO2"
+    ]
+   },
+   {
+    "row": 27,
+    "week": 11,
+    "topic_raw": "Unsupervised Learning - III\nIntroduction to probalistic clustering\nGaussian Mixture Model (GMM)\nExpectation-Maximization",
+    "cos_met_raw": "CO2, CO3",
+    "tutorial": "Problistic clustering using GMMs with diagonal/full covariance",
+    "co_refs": [
+     "CO2",
+     "CO3"
+    ]
+   },
+   {
+    "row": 28,
+    "week": 12,
+    "topic_raw": "Sequential Models\nState-Machines, Markov Decision Processes, Markov Chains\nHidden Markov Model\n\nApplications",
+    "cos_met_raw": "CO3",
+    "tutorial": "Tutorial on Ethics of AI",
+    "co_refs": [
+     "CO3"
+    ]
+   },
+   {
+    "row": 29,
+    "week": 13,
+    "topic_raw": "Complexity of Machine Learning Alogirthms\nTime and Space complexity\nTraining and Inference complexity\n\n\nGuest Lecture (Industry Expert)",
+    "cos_met_raw": "CO4",
+    "tutorial": "HPC/GPU accelerated ML pipelines",
+    "co_refs": [
+     "CO4"
+    ]
+   }
+  ],
+  "lab_weeks": [],
+  "assessment": [
+   {
+    "raw_label": "In-Class Participation",
+    "weight_raw": "5",
+    "weight_pct": 5.0,
+    "row": 32
+   },
+   {
+    "raw_label": "Project",
+    "weight_raw": "15",
+    "weight_pct": 15.0,
+    "row": 33
+   },
+   {
+    "raw_label": "Assignments",
+    "weight_raw": "20",
+    "weight_pct": 20.0,
+    "row": 34
+   },
+   {
+    "raw_label": "Quiz (Best N-1)",
+    "weight_raw": "15",
+    "weight_pct": 15.0,
+    "row": 35
+   },
+   {
+    "raw_label": "Mid-sem",
+    "weight_raw": "20",
+    "weight_pct": 20.0,
+    "row": 36
+   },
+   {
+    "raw_label": "End-sem",
+    "weight_raw": "25",
+    "weight_pct": 25.0,
+    "row": 37
+   }
+  ],
+  "resources": [
+   {
+    "type_raw": "Textbook",
+    "title_raw": "Machine Learning, Tom M. Mitchell, McGraw Hill, 1997\nPattern Recognition and Machine Learning, Christopher M. Bishop, Springer, 2006\nProbabilistic Machine Learning: An Introduction, Kevin P. Murphy, MIT Press, 2022.",
+    "row": 41
+   },
+   {
+    "type_raw": "Mathematical Reference",
+    "title_raw": "Mathematics for Machine Learning, Marc Peter Deisenroth, A. Aldo Faisal, and Cheng Soon Ong, Cambridge University Press, 2020.",
+    "row": 44
+   },
+   {
+    "type_raw": "Practical Reference",
+    "title_raw": "Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow, Aurélien Géron, O’Reilly, 3rd edition.",
+    "row": 45
+   },
+   {
+    "type_raw": "Responsible ML Reference",
+    "title_raw": "Fairness and Machine Learning: Limitations and Opportunities, Solon Barocas, Moritz Hardt, and Arvind Narayanan, MIT Press.",
+    "row": 46
+   },
+   {
+    "type_raw": "Documentation / Tool Reference",
+    "title_raw": "Scikit-learn, PyTorch/TensorFlow, and related official documentation, as needed for tutorials and assignments.",
+    "row": 47
+   },
+   {
+    "type_raw": "Research/Reading Material",
+    "title_raw": "Selected recent papers, articles, and case studies on representation learning, pretrained models, calibration, uncertainty, and responsible ML.",
+    "row": 48
+   }
+  ],
+  "warnings": [
+   "no COs parsed"
+  ],
+  "template_version": "old",
+  "assessment_weight_sum": 100.0
+ }
+}

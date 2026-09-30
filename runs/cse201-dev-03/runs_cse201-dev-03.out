@@ -1,0 +1,109 @@
+18:22:30 S1 intake → Course Context Object
+18:22:44   [G1] ok via gemini:gemini-3.5-flash-lite:k0 · 7762+5923 tok · 14.8s · schema-retries 1
+18:22:44   CCO: 9 topic groups · level 2 · L-T-P {'L': 3.0, 'T': 1.0, 'P': 0} · 13 weeks · 2 assumptions · conflicts 0
+18:22:44 S2 curriculum positioning
+18:22:45   internal candidates: ['CSE101 0.095', 'CSE584 0.053', 'CSE222 0.0', 'CSE581 0.0', 'CSE231 0.0', 'CSE503 0.0', 'CSE701 0.0', 'CSE202 0.0', 'CSE102 0.0', 'CSE600 0.0', 'CSE583 0.0', 'AI501 0.0']
+18:22:45   external research loaded from research.json (6 accepted)
+18:22:52   [G2] ok via gemini:gemini-3.5-flash-lite:k0 · 11185+1852 tok · 7.1s
+18:22:52   [G2] validators: 0 errors, 0 warnings
+18:22:52 S3 constraints + feasibility
+18:23:03   [G3] ok via gemini:gemini-3.5-flash-lite:k0 · 3086+1091 tok · 10.3s
+18:23:03   17 constraints (9 from professor text) · conflicts 0
+18:23:03 GATE gate1_context: approve by auto (dev run) · froze 40 nodes
+18:23:03 S4 learning design: COs → CO–PO → LOs
+18:23:08   [G4] ok via gemini:gemini-3.5-flash-lite:k0 · 7182+1748 tok · 5.4s
+18:23:08   [G4] validators: 1 errors, 1 warnings
+18:23:11   [R1] ok via gemini:gemini-3.5-flash-lite:k0 · 7049+229 tok · 2.2s
+18:23:11   [R1 round 1] errors 1 → 0 ACCEPT
+18:23:18   [G5] ok via gemini:gemini-3.5-flash-lite:k0 · 3104+1408 tok · 7.2s
+18:23:18   [G5] validators: 0 errors, 0 warnings
+18:23:27   [G6] ok via gemini:gemini-3.5-flash-lite:k0 · 6260+3408 tok · 9.2s
+18:23:27   [G6] validators: 2 errors, 1 warnings
+18:23:29   [R1] ok via gemini:gemini-3.5-flash-lite:k0 · 8309+408 tok · 2.2s
+18:23:29   [R1 round 1] errors 2 → 1 ACCEPT
+18:23:34   [R1] ok via gemini:gemini-3.5-flash-lite:k0 · 8230+340 tok · 4.8s
+18:23:34   [R1 round 2] errors 1 → 0 ACCEPT
+18:23:34 GATE gate2_outcomes: approve by auto (dev run) · froze 15 nodes
+18:23:34 S5 structure (modules/topics) → S6 schedule
+18:23:48   [G7] ok via gemini:gemini-3.5-flash-lite:k0 · 6317+4432 tok · 13.5s
+18:23:48   [G7] validators: 1 errors, 0 warnings
+18:23:48   schedule: feasible · need 39.0 h / 39.0 h
+18:23:48 S7 lab/tutorial plan + assessment blueprint
+18:23:58   [G8] ok via groq:openai/gpt-oss-120b:k0 · 4157+2610 tok · 10.1s
+18:23:58   [G8] validators: 0 errors, 0 warnings
+18:24:06   [G9] ok via gemini:gemini-3.5-flash-lite:k0 · 6839+3176 tok · 8.2s
+18:24:06   [G9] validators: 14 errors, 1 warnings
+18:24:09   [R1] ok via gemini:gemini-3.5-flash-lite:k0 · 9623+507 tok · 2.8s
+18:24:09   [R1 round 1] errors 14 → 14 REJECT (new codes ['VA-PROJ', 'VA-TIME'])
+18:24:09 S8 resources (API candidates → G10 → verification)
+Traceback (most recent call last):
+  File "D:\BTP\scripts\run_design.py", line 65, in <module>
+    main()
+    ~~~~^^
+  File "D:\BTP\scripts\run_design.py", line 54, in main
+    res = app.invoke({"run_id": a.run_id, "auto_approve": a.auto_approve, "done": []}, cfg)
+  File "C:\Users\Lenovo\AppData\Roaming\Python\Python314\site-packages\langgraph\pregel\main.py", line 3913, in invoke
+    for chunk in self.stream(
+                 ~~~~~~~~~~~^
+        input,
+        ^^^^^^
+    ...<11 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    ):
+    ^
+  File "C:\Users\Lenovo\AppData\Roaming\Python\Python314\site-packages\langgraph\pregel\main.py", line 2967, in stream
+    for _ in runner.tick(
+             ~~~~~~~~~~~^
+        [t for t in loop.tasks.values() if not t.writes],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        schedule_task=loop.accept_push,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "C:\Users\Lenovo\AppData\Roaming\Python\Python314\site-packages\langgraph\pregel\_runner.py", line 207, in tick
+    run_with_retry(
+    ~~~~~~~~~~~~~~^
+        t,
+        ^^
+    ...<10 lines>...
+        },
+        ^^
+    )
+    ^
+  File "C:\Users\Lenovo\AppData\Roaming\Python\Python314\site-packages\langgraph\pregel\_retry.py", line 617, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Lenovo\AppData\Roaming\Python\Python314\site-packages\langgraph\_internal\_runnable.py", line 707, in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+  File "C:\Users\Lenovo\AppData\Roaming\Python\Python314\site-packages\langgraph\_internal\_runnable.py", line 447, in invoke
+    ret = self.func(*args, **kwargs)
+  File "D:\BTP\src\profsagent\orchestrator\graph.py", line 47, in node
+    fn(rt)
+    ~~^^^^
+  File "D:\BTP\src\profsagent\agents\pipeline.py", line 418, in s8_resources
+    qp, _ = call(rt, "X3", {"course": {"course_name": st["cco_compact"]["course_name"], "level": st["level"], "description": st["cco_compact"].get("description")},
+            ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                            "modules": [{"id": m["id"], "title": m["title"], "topics": [t["title"] for t in m["topics"]]} for m in st["modules"]],
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                            "external_textbooks": ext_tbs}, role="extract")
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BTP\src\profsagent\agents\loop.py", line 24, in call
+    obj, rec = rt.llm.structured(system=system, user=user, model_cls=OUTPUT_MODELS[pid], role=role, temperature=temp,
+               ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                 prompt_id=pid, prompt_version=p.version, run_id=rt.run_id)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BTP\src\profsagent\llm\client.py", line 266, in structured
+    text, usage, _ = self.raw(role, system, msg_user, temperature, json_mode=True, record=rec)
+                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BTP\src\profsagent\llm\client.py", line 191, in raw
+    return self._raw_once(role, system, user, temperature, json_mode, tools, record)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\BTP\src\profsagent\llm\client.py", line 219, in _raw_once
+    out = self._groq(ep["model"], key, system, user, temperature, json_mode)
+  File "D:\BTP\src\profsagent\llm\client.py", line 158, in _groq
+    raise _HTTPError(r.status_code, r.text)
+profsagent.llm.client._HTTPError: HTTP 400: {"error":{"message":"Failed to generate JSON. Please adjust your prompt. See 'failed_generation' for more details.","type":"invalid_request_error","code":"json_validate_failed","failed_generation":"max completion tokens reached before generating a valid document"}}
+
+During task with name 's8_resources' and id '4ded39ec-8d15-6cc1-9542-016c31f0a2bd'

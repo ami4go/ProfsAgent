@@ -1,0 +1,6781 @@
+{
+ "project_id": "P-CSE201-DEV",
+ "nodes": {
+  "P-CSE201-DEV/COURSE": {
+   "uid": "P-CSE201-DEV/COURSE",
+   "local_id": "COURSE",
+   "label": "NewCourse",
+   "props": {
+    "title": "Advanced Programming",
+    "credits": 4,
+    "ltp": {
+     "L": 3.0,
+     "T": 1.0,
+     "P": 0
+    },
+    "weeks": 13,
+    "level": 2
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": "0.1.0",
+   "model": null,
+   "sources": [],
+   "ts": 1790773394.3722665
+  },
+  "P-CSE201-DEV/CCO.course_name": {
+   "uid": "P-CSE201-DEV/CCO.course_name",
+   "local_id": "CCO.course_name",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "Advanced Programming",
+    "value": "Advanced Programming"
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.course_name"
+    }
+   ],
+   "ts": 1790773394.3722885
+  },
+  "P-CSE201-DEV/CCO.short_description": {
+   "uid": "P-CSE201-DEV/CCO.short_description",
+   "local_id": "CCO.short_description",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "A second programming course that moves students from writing small single-file programs to building larger applications made of several components with clear interfaces. Students learn object-oriented design, how to write code that others can reuse and test, how to structure programs around established design patterns, and how to handle errors, input/output and concurrency. By the end, students working in pairs can take a reasonably well-specified application design and deliver a working, tested, multi-component program. Java is the vehicle, but the course is about program design, not the Java language.",
+    "value": "A second programming course that moves students from writing small single-file programs to building larger applications made of several components with clear interfaces. Students learn object-oriented design, how to write code that others can reuse and test, how to structure programs around established design patterns, and how to handle errors, input/output and concurrency. By the end, students working in pairs can take a reasonably well-specified application design and deliver a working, tested, multi-component program. Java is the vehicle, but the course is about program design, not the Java language."
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.short_description"
+    }
+   ],
+   "ts": 1790773394.3723083
+  },
+  "P-CSE201-DEV/CCO.topics": {
+   "uid": "P-CSE201-DEV/CCO.topics",
+   "local_id": "CCO.topics",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "Treatment of this list: starting hypotheses — may add/drop/reorder with justification.\nA. Object-oriented foundations: classes and objects, encapsulation, modularity, object relationships (association, composition), interfaces\nB. Inheritance and polymorphism: inheritance hierarchies, abstract classes, polymorphism via interfaces and inheritance, method resolution, immutability\nC. Generic and reusable code: generics, comparing and cloning objects, the collections framework\nD. Robust programs: exception handling, assertions, defensive and secure programming, I/O streams and serialization\nE. Testing and tooling: unit testing, debugging, version control as part of everyday development\nF. Designing before coding: use cases, UML class/sequence/use-case diagrams, object-oriented design of a problem\nG. Event-driven programming and GUIs\nH. Concurrency: threads, thread pools, mutual exclusion, race conditions and deadlocks, producer-consumer, speedup\nI. Design patterns: common creational, structural and behavioural patterns applied to real problems",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790773394.3723166
+  },
+  "P-CSE201-DEV/CCO.intent": {
+   "uid": "P-CSE201-DEV/CCO.intent",
+   "local_id": "CCO.intent",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "Central question the course answers: How do you design, build and test a multi-component program so that its parts can be developed independently and reused?\nPedagogical emphasis: design thinking before coding; writing code others can read, reuse and test; learning by building a substantial team project.\nThis course should NOT become:\n- a Java language features course\n- a data-structures course (that is covered by the prerequisite)\n- a lecture-only course without regular hands-on practice",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.intent"
+    }
+   ],
+   "ts": 1790773394.3723226
+  },
+  "P-CSE201-DEV/CCO.target_students": {
+   "uid": "P-CSE201-DEV/CCO.target_students",
+   "local_id": "CCO.target_students",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "Programmes: B.Tech. CSE (core course); also taken by other B.Tech. programmes\nYear: 2nd year (3rd semester)\nAssumed background: CSE101 Introduction to Programming and CSE102 Data Structures and Algorithms — comfortable with procedural programming, functions, arrays, lists, recursion and basic data structures",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.target_students"
+    }
+   ],
+   "ts": 1790773394.3723292
+  },
+  "P-CSE201-DEV/CCO.level_or_code": {
+   "uid": "P-CSE201-DEV/CCO.level_or_code",
+   "local_id": "CCO.level_or_code",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "2xx level (second-year core); code to be assigned",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.level_or_code"
+    }
+   ],
+   "ts": 1790773394.3723357
+  },
+  "P-CSE201-DEV/CCO.credits": {
+   "uid": "P-CSE201-DEV/CCO.credits",
+   "local_id": "CCO.credits",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "4",
+    "value": 4
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.credits"
+    }
+   ],
+   "ts": 1790773394.372342
+  },
+  "P-CSE201-DEV/CCO.ltp": {
+   "uid": "P-CSE201-DEV/CCO.ltp",
+   "local_id": "CCO.ltp",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "3-1-0 (three lecture hours and one tutorial hour per week)",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.ltp"
+    }
+   ],
+   "ts": 1790773394.3723476
+  },
+  "P-CSE201-DEV/CCO.semester_weeks": {
+   "uid": "P-CSE201-DEV/CCO.semester_weeks",
+   "local_id": "CCO.semester_weeks",
+   "label": "ContextField",
+   "props": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED — infer from evidence and flag under RULE A]",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.semester_weeks"
+    }
+   ],
+   "ts": 1790773394.3723533
+  },
+  "P-CSE201-DEV/CCO.weekly_effort_hours": {
+   "uid": "P-CSE201-DEV/CCO.weekly_effort_hours",
+   "local_id": "CCO.weekly_effort_hours",
+   "label": "ContextField",
+   "props": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED — infer from evidence and flag under RULE A]",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.weekly_effort_hours"
+    }
+   ],
+   "ts": 1790773394.3723586
+  },
+  "P-CSE201-DEV/CCO.lab": {
+   "uid": "P-CSE201-DEV/CCO.lab",
+   "local_id": "CCO.lab",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "Lab required: no separate lab slot; hands-on practice happens in tutorials and take-home work\nAvailable infrastructure: students' own laptops; Java JDK, an IDE (Eclipse/IntelliJ), JUnit, Git/GitHub; TAs for tutorials",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.lab"
+    }
+   ],
+   "ts": 1790773394.3723712
+  },
+  "P-CSE201-DEV/CCO.assessment_prefs": {
+   "uid": "P-CSE201-DEV/CCO.assessment_prefs",
+   "local_id": "CCO.assessment_prefs",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "Preferred components: short take-home programming assignments, a pair-programming course project with milestones, quizzes, mid-sem and end-sem exams\nComponents to avoid: none\nRationale: the course is about building software, so a substantial share of the grade should come from programming work, while exams check individual understanding",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.assessment_prefs"
+    }
+   ],
+   "ts": 1790773394.372377
+  },
+  "P-CSE201-DEV/CCO.special_constraints": {
+   "uid": "P-CSE201-DEV/CCO.special_constraints",
+   "local_id": "CCO.special_constraints",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "The course project must be done in pairs and should produce a working application with a graphical interface.",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.special_constraints"
+    }
+   ],
+   "ts": 1790773394.3723826
+  },
+  "P-CSE201-DEV/CCO.curriculum_context": {
+   "uid": "P-CSE201-DEV/CCO.curriculum_context",
+   "local_id": "CCO.curriculum_context",
+   "label": "ContextField",
+   "props": {
+    "status": "missing",
+    "raw": "[NOT SUPPLIED — derive curriculum positioning yourself from the institutional knowledge graph.]",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.curriculum_context"
+    }
+   ],
+   "ts": 1790773394.372388
+  },
+  "P-CSE201-DEV/ASM01": {
+   "uid": "P-CSE201-DEV/ASM01",
+   "local_id": "ASM01",
+   "label": "Assumption",
+   "props": {
+    "id": "ASM01",
+    "what": "mid-semester exam timing",
+    "value": "after teaching week 7",
+    "basis": "mid-semester recess and exam fall roughly mid-way through 13 teaching weeks; confirm from the academic calendar",
+    "confirm_with": "academic calendar (DOAA)",
+    "status": "open"
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "mid-semester recess and exam fall roughly mid-way through 13 teaching weeks; confirm from the academic calendar"
+    }
+   ],
+   "ts": 1790773394.372397
+  },
+  "P-CSE201-DEV/ASM02": {
+   "uid": "P-CSE201-DEV/ASM02",
+   "local_id": "ASM02",
+   "label": "Assumption",
+   "props": {
+    "id": "ASM02",
+    "what": "weekly student effort",
+    "value": null,
+    "basis": "not supplied; effort is reported (contact + take-home estimates), not constrained",
+    "confirm_with": "course instructor / DOAA",
+    "status": "open"
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "not supplied; effort is reported (contact + take-home estimates), not constrained"
+    }
+   ],
+   "ts": 1790773394.3724048
+  },
+  "P-CSE201-DEV/TG1": {
+   "uid": "P-CSE201-DEV/TG1",
+   "local_id": "TG1",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG1",
+    "title": "Object-oriented foundations",
+    "topics": [
+     {
+      "id": "TG1.1",
+      "text": "classes and objects, encapsulation, modularity, object relationships (association, composition), interfaces"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790773394.3724184
+  },
+  "P-CSE201-DEV/TG2": {
+   "uid": "P-CSE201-DEV/TG2",
+   "local_id": "TG2",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG2",
+    "title": "Inheritance and polymorphism",
+    "topics": [
+     {
+      "id": "TG2.1",
+      "text": "inheritance hierarchies, abstract classes, polymorphism via interfaces and inheritance, method resolution, immutability"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790773394.3724282
+  },
+  "P-CSE201-DEV/TG3": {
+   "uid": "P-CSE201-DEV/TG3",
+   "local_id": "TG3",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG3",
+    "title": "Generic and reusable code",
+    "topics": [
+     {
+      "id": "TG3.1",
+      "text": "generics, comparing and cloning objects, the collections framework"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790773394.3724535
+  },
+  "P-CSE201-DEV/TG4": {
+   "uid": "P-CSE201-DEV/TG4",
+   "local_id": "TG4",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG4",
+    "title": "Robust programs",
+    "topics": [
+     {
+      "id": "TG4.1",
+      "text": "exception handling, assertions, defensive and secure programming, I/O streams and serialization"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790773394.372462
+  },
+  "P-CSE201-DEV/TG5": {
+   "uid": "P-CSE201-DEV/TG5",
+   "local_id": "TG5",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG5",
+    "title": "Testing and tooling",
+    "topics": [
+     {
+      "id": "TG5.1",
+      "text": "unit testing, debugging, version control as part of everyday development"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790773394.3724759
+  },
+  "P-CSE201-DEV/TG6": {
+   "uid": "P-CSE201-DEV/TG6",
+   "local_id": "TG6",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG6",
+    "title": "Designing before coding",
+    "topics": [
+     {
+      "id": "TG6.1",
+      "text": "use cases, UML class/sequence/use-case diagrams, object-oriented design of a problem"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790773394.3724852
+  },
+  "P-CSE201-DEV/TG7": {
+   "uid": "P-CSE201-DEV/TG7",
+   "local_id": "TG7",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG7",
+    "title": "Event-driven programming and GUIs",
+    "topics": [
+     {
+      "id": "TG7.1",
+      "text": "Event-driven programming and GUIs"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790773394.3724933
+  },
+  "P-CSE201-DEV/TG8": {
+   "uid": "P-CSE201-DEV/TG8",
+   "local_id": "TG8",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG8",
+    "title": "Concurrency",
+    "topics": [
+     {
+      "id": "TG8.1",
+      "text": "threads, thread pools, mutual exclusion, race conditions and deadlocks, producer-consumer, speedup"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790773394.3725016
+  },
+  "P-CSE201-DEV/TG9": {
+   "uid": "P-CSE201-DEV/TG9",
+   "local_id": "TG9",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG9",
+    "title": "Design patterns",
+    "topics": [
+     {
+      "id": "TG9.1",
+      "text": "common creational, structural and behavioural patterns applied to real problems"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790773394.3725133
+  },
+  "P-CSE201-DEV/EXT:STANFORD/CS108": {
+   "uid": "P-CSE201-DEV/EXT:STANFORD/CS108",
+   "local_id": "EXT:STANFORD/CS108",
+   "label": "ExternalCourse",
+   "props": {
+    "institution": "Stanford University",
+    "course_code": "CS 108",
+    "course_title": "Object-Oriented Systems Design",
+    "url": "https://explorecourses.stanford.edu/search?q=CS108",
+    "summary": "CS 108 introduces software design and construction using large object‑oriented Java libraries. The course covers OOP design principles, design patterns, testing, GUI libraries, and software‑engineering strategies for team programming.",
+    "topics": [
+     "OOP design",
+     "design patterns",
+     "testing",
+     "graphical user interface (GUI) OOP libraries",
+     "software engineering strategies",
+     "approaches to programming in teams"
+    ],
+    "weekly_sequence": [],
+    "assessment": [],
+    "relevance": "medium"
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "X2",
+   "prompt_id": "X2",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "https://explorecourses.stanford.edu/search?q=CS108"
+    }
+   ],
+   "ts": 1790773394.9246833
+  },
+  "P-CSE201-DEV/EXT:NUS/CS2113": {
+   "uid": "P-CSE201-DEV/EXT:NUS/CS2113",
+   "local_id": "EXT:NUS/CS2113",
+   "label": "ExternalCourse",
+   "props": {
+    "institution": "National University of Singapore",
+    "course_code": "CS2113",
+    "course_title": "Software Engineering & Object-Oriented Programming",
+    "url": "https://nusmods.com/courses/CS2113",
+    "summary": "The course equips students with systematic and rigorous software development skills, covering requirements, design, implementation, quality assurance and project management within an object‑oriented paradigm. It emphasizes hands‑on experience with industry‑standard tools such as test automation, build automation and code revisioning. The workload combines lectures, tutorials and substantial project work.",
+    "topics": [
+     "requirements",
+     "design",
+     "implementation",
+     "quality assurance",
+     "project management",
+     "Object Oriented Programming paradigm",
+     "test automation tools",
+     "build automation tools",
+     "code revisioning tools"
+    ],
+    "weekly_sequence": [],
+    "assessment": [],
+    "relevance": "high"
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "X2",
+   "prompt_id": "X2",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "https://nusmods.com/courses/CS2113"
+    }
+   ],
+   "ts": 1790773394.9247084
+  },
+  "P-CSE201-DEV/EXT:STANFORD/CS106B": {
+   "uid": "P-CSE201-DEV/EXT:STANFORD/CS106B",
+   "local_id": "EXT:STANFORD/CS106B",
+   "label": "ExternalCourse",
+   "props": {
+    "institution": "Stanford University",
+    "course_code": "CS 106B",
+    "course_title": "Programming Abstractions",
+    "url": "https://explorecourses.stanford.edu/search?q=CS106B",
+    "summary": "The course introduces the concept of abstraction and its application in programming, emphasizing data abstraction, modularity, and object‑oriented design. It covers fundamental data structures, recursion, and basic algorithmic analysis using the C++ language.",
+    "topics": [
+     "Abstraction",
+     "Data abstraction",
+     "Modularity",
+     "Object‑oriented programming",
+     "Fundamental data structures",
+     "Recursion",
+     "Recursive data structures",
+     "Time and space complexity analysis",
+     "C++ language basics"
+    ],
+    "weekly_sequence": [],
+    "assessment": [],
+    "relevance": "medium"
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "X2",
+   "prompt_id": "X2",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "https://explorecourses.stanford.edu/search?q=CS106B"
+    }
+   ],
+   "ts": 1790773394.9247255
+  },
+  "P-CSE201-DEV/EXT:STANFORD/CS106AX": {
+   "uid": "P-CSE201-DEV/EXT:STANFORD/CS106AX",
+   "local_id": "EXT:STANFORD/CS106AX",
+   "label": "ExternalCourse",
+   "props": {
+    "institution": "Stanford University",
+    "course_code": "CS 106AX",
+    "course_title": "Programming Methodologies in JavaScript and Python (Accelerated)",
+    "url": "https://explorecourses.stanford.edu/search?q=CS106AX",
+    "summary": "This accelerated Stanford course introduces engineering of computer applications using modern software engineering principles such as object‑oriented design, decomposition, encapsulation, abstraction and testing. It is aimed at students with prior programming experience, allowing deeper coverage of the material.",
+    "topics": [],
+    "weekly_sequence": [],
+    "assessment": [],
+    "relevance": "medium"
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "X2",
+   "prompt_id": "X2",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "https://explorecourses.stanford.edu/search?q=CS106AX"
+    }
+   ],
+   "ts": 1790773394.9247398
+  },
+  "P-CSE201-DEV/EXT:STANFORD/CS190": {
+   "uid": "P-CSE201-DEV/EXT:STANFORD/CS190",
+   "local_id": "EXT:STANFORD/CS190",
+   "label": "ExternalCourse",
+   "props": {
+    "institution": "Stanford University",
+    "course_code": "CS 190",
+    "course_title": "Software Design Studio",
+    "url": "https://explorecourses.stanford.edu/search?q=CS190",
+    "summary": "The course introduces software design principles focusing on decomposing large systems into maintainable classes. It covers causes of complexity, modular design, deep‑class techniques, exception handling, documentation and naming, and is delivered in a studio format with iterative implementation, reviews and code reviews.",
+    "topics": [
+     "causes of complexity",
+     "modular design",
+     "techniques for creating deep classes",
+     "minimizing exception complexity",
+     "in‑code documentation",
+     "name selection",
+     "system software implementation",
+     "iterative implementation, review, revision",
+     "studio format with in‑class discussions and code reviews"
+    ],
+    "weekly_sequence": [],
+    "assessment": [],
+    "relevance": "high"
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "X2",
+   "prompt_id": "X2",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "https://explorecourses.stanford.edu/search?q=CS190"
+    }
+   ],
+   "ts": 1790773394.9247544
+  },
+  "P-CSE201-DEV/EXT:STANFORD/CS194": {
+   "uid": "P-CSE201-DEV/EXT:STANFORD/CS194",
+   "local_id": "EXT:STANFORD/CS194",
+   "label": "ExternalCourse",
+   "props": {
+    "institution": "Stanford University",
+    "course_code": "CS 194",
+    "course_title": "Software Project",
+    "url": "https://explorecourses.stanford.edu/search?q=CS194",
+    "summary": "The course involves a team‑based software development project where students design, specify, implement and test a substantial application under faculty supervision. Deliverables include a project rationale, design documentation, weekly progress logs, and a software architecture diagram, culminating in a public demonstration at the quarter’s end.",
+    "topics": [
+     "design",
+     "specification",
+     "coding",
+     "testing",
+     "team programming project",
+     "project rationale",
+     "design documentation",
+     "weekly progress log",
+     "software architecture diagram",
+     "public demonstration"
+    ],
+    "weekly_sequence": [],
+    "assessment": [],
+    "relevance": "medium"
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "X2",
+   "prompt_id": "X2",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "https://explorecourses.stanford.edu/search?q=CS194"
+    }
+   ],
+   "ts": 1790773394.9247692
+  },
+  "P-CSE201-DEV/K01": {
+   "uid": "P-CSE201-DEV/K01",
+   "local_id": "K01",
+   "label": "Constraint",
+   "props": {
+    "id": "K01",
+    "target": "schedule.weeks",
+    "op": "==",
+    "value": 13,
+    "hardness": "hard",
+    "source": {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§2"
+    }
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§2"
+    }
+   ],
+   "ts": 1790773397.9290404
+  },
+  "P-CSE201-DEV/K02": {
+   "uid": "P-CSE201-DEV/K02",
+   "local_id": "K02",
+   "label": "Constraint",
+   "props": {
+    "id": "K02",
+    "target": "course.credits",
+    "op": "==",
+    "value": 4,
+    "hardness": "hard",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.credits"
+    }
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.credits"
+    }
+   ],
+   "ts": 1790773397.9290662
+  },
+  "P-CSE201-DEV/K03": {
+   "uid": "P-CSE201-DEV/K03",
+   "local_id": "K03",
+   "label": "Constraint",
+   "props": {
+    "id": "K03",
+    "target": "schedule.lecture_hours_per_week",
+    "op": "==",
+    "value": 3.0,
+    "hardness": "hard",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.ltp"
+    }
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.ltp"
+    }
+   ],
+   "ts": 1790773397.9290838
+  },
+  "P-CSE201-DEV/K04": {
+   "uid": "P-CSE201-DEV/K04",
+   "local_id": "K04",
+   "label": "Constraint",
+   "props": {
+    "id": "K04",
+    "target": "schedule.tutorial_hours_per_week",
+    "op": "==",
+    "value": 1.0,
+    "hardness": "hard",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.ltp"
+    }
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.ltp"
+    }
+   ],
+   "ts": 1790773397.9291003
+  },
+  "P-CSE201-DEV/K05": {
+   "uid": "P-CSE201-DEV/K05",
+   "local_id": "K05",
+   "label": "Constraint",
+   "props": {
+    "id": "K05",
+    "target": "lab.hours_per_week",
+    "op": "==",
+    "value": 0,
+    "hardness": "hard",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.ltp"
+    }
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.ltp"
+    }
+   ],
+   "ts": 1790773397.9291153
+  },
+  "P-CSE201-DEV/K06": {
+   "uid": "P-CSE201-DEV/K06",
+   "local_id": "K06",
+   "label": "Constraint",
+   "props": {
+    "id": "K06",
+    "target": "assessment.component[midsem].present",
+    "op": "present",
+    "value": true,
+    "hardness": "soft",
+    "source": {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§6.2"
+    }
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§6.2"
+    }
+   ],
+   "ts": 1790773397.9291306
+  },
+  "P-CSE201-DEV/K07": {
+   "uid": "P-CSE201-DEV/K07",
+   "local_id": "K07",
+   "label": "Constraint",
+   "props": {
+    "id": "K07",
+    "target": "assessment.component[endsem].present",
+    "op": "present",
+    "value": true,
+    "hardness": "soft",
+    "source": {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§6.2"
+    }
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§6.2"
+    }
+   ],
+   "ts": 1790773397.929143
+  },
+  "P-CSE201-DEV/K08": {
+   "uid": "P-CSE201-DEV/K08",
+   "local_id": "K08",
+   "label": "Constraint",
+   "props": {
+    "id": "K08",
+    "target": "schedule.midsem_after_week",
+    "op": "==",
+    "value": 7,
+    "hardness": "soft",
+    "source": {
+     "tag": "INFERRED",
+     "ref": "ASM"
+    }
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": "ASM"
+    }
+   ],
+   "ts": 1790773397.9291568
+  },
+  "P-CSE201-DEV/K10": {
+   "uid": "P-CSE201-DEV/K10",
+   "local_id": "K10",
+   "label": "Constraint",
+   "props": {
+    "id": "K10",
+    "target": "assessment.component[programming_assignment].present",
+    "op": "==",
+    "value": true,
+    "hardness": "soft",
+    "raw": "short take-home programming assignments",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.assessment_prefs",
+     "basis": null
+    },
+    "note": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G3",
+   "prompt_id": "G3",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.assessment_prefs",
+     "basis": null
+    }
+   ],
+   "ts": 1790773397.929171
+  },
+  "P-CSE201-DEV/K11": {
+   "uid": "P-CSE201-DEV/K11",
+   "local_id": "K11",
+   "label": "Constraint",
+   "props": {
+    "id": "K11",
+    "target": "assessment.component[project].present",
+    "op": "==",
+    "value": true,
+    "hardness": "soft",
+    "raw": "a pair-programming course project with milestones",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.assessment_prefs",
+     "basis": null
+    },
+    "note": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G3",
+   "prompt_id": "G3",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.assessment_prefs",
+     "basis": null
+    }
+   ],
+   "ts": 1790773397.9291859
+  },
+  "P-CSE201-DEV/K12": {
+   "uid": "P-CSE201-DEV/K12",
+   "local_id": "K12",
+   "label": "Constraint",
+   "props": {
+    "id": "K12",
+    "target": "assessment.component[quiz].present",
+    "op": "==",
+    "value": true,
+    "hardness": "soft",
+    "raw": "quizzes",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.assessment_prefs",
+     "basis": null
+    },
+    "note": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G3",
+   "prompt_id": "G3",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.assessment_prefs",
+     "basis": null
+    }
+   ],
+   "ts": 1790773397.9291995
+  },
+  "P-CSE201-DEV/K13": {
+   "uid": "P-CSE201-DEV/K13",
+   "local_id": "K13",
+   "label": "Constraint",
+   "props": {
+    "id": "K13",
+    "target": "assessment.component[midsem].present",
+    "op": "==",
+    "value": true,
+    "hardness": "soft",
+    "raw": "mid-sem exam",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.assessment_prefs",
+     "basis": null
+    },
+    "note": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G3",
+   "prompt_id": "G3",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.assessment_prefs",
+     "basis": null
+    }
+   ],
+   "ts": 1790773397.9292145
+  },
+  "P-CSE201-DEV/K14": {
+   "uid": "P-CSE201-DEV/K14",
+   "local_id": "K14",
+   "label": "Constraint",
+   "props": {
+    "id": "K14",
+    "target": "assessment.component[endsem].present",
+    "op": "==",
+    "value": true,
+    "hardness": "soft",
+    "raw": "end-sem exam",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.assessment_prefs",
+     "basis": null
+    },
+    "note": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G3",
+   "prompt_id": "G3",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.assessment_prefs",
+     "basis": null
+    }
+   ],
+   "ts": 1790773397.929227
+  },
+  "P-CSE201-DEV/K15": {
+   "uid": "P-CSE201-DEV/K15",
+   "local_id": "K15",
+   "label": "Constraint",
+   "props": {
+    "id": "K15",
+    "target": "content.must_exclude[java language features]",
+    "op": "==",
+    "value": true,
+    "hardness": "hard",
+    "raw": "a Java language features course",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.negative_constraints",
+     "basis": null
+    },
+    "note": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G3",
+   "prompt_id": "G3",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.negative_constraints",
+     "basis": null
+    }
+   ],
+   "ts": 1790773397.9292393
+  },
+  "P-CSE201-DEV/K16": {
+   "uid": "P-CSE201-DEV/K16",
+   "local_id": "K16",
+   "label": "Constraint",
+   "props": {
+    "id": "K16",
+    "target": "content.must_exclude[fundamental data structures]",
+    "op": "==",
+    "value": true,
+    "hardness": "hard",
+    "raw": "a data-structures course (that is covered by the prerequisite)",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.negative_constraints",
+     "basis": null
+    },
+    "note": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G3",
+   "prompt_id": "G3",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.negative_constraints",
+     "basis": null
+    }
+   ],
+   "ts": 1790773397.9292524
+  },
+  "P-CSE201-DEV/K17": {
+   "uid": "P-CSE201-DEV/K17",
+   "local_id": "K17",
+   "label": "Constraint",
+   "props": {
+    "id": "K17",
+    "target": "content.must_include[regular hands-on practice]",
+    "op": "==",
+    "value": true,
+    "hardness": "hard",
+    "raw": "a lecture-only course without regular hands-on practice",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.negative_constraints",
+     "basis": null
+    },
+    "note": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G3",
+   "prompt_id": "G3",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.negative_constraints",
+     "basis": null
+    }
+   ],
+   "ts": 1790773397.9292645
+  },
+  "P-CSE201-DEV/K18": {
+   "uid": "P-CSE201-DEV/K18",
+   "local_id": "K18",
+   "label": "Constraint",
+   "props": {
+    "id": "K18",
+    "target": "lab.present",
+    "op": "==",
+    "value": false,
+    "hardness": "hard",
+    "raw": "lab.required = no",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.lab",
+     "basis": null
+    },
+    "note": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G3",
+   "prompt_id": "G3",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.lab",
+     "basis": null
+    }
+   ],
+   "ts": 1790773397.929278
+  },
+  "P-CSE201-DEV/K19": {
+   "uid": "P-CSE201-DEV/K19",
+   "local_id": "K19",
+   "label": "Constraint",
+   "props": {
+    "id": "K19",
+    "target": "content.must_include[pair programming]",
+    "op": "==",
+    "value": true,
+    "hardness": "hard",
+    "raw": "The course project must be done in pairs",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.special_constraints",
+     "basis": null
+    },
+    "note": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G3",
+   "prompt_id": "G3",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.special_constraints",
+     "basis": null
+    }
+   ],
+   "ts": 1790773397.9292912
+  },
+  "P-CSE201-DEV/K20": {
+   "uid": "P-CSE201-DEV/K20",
+   "local_id": "K20",
+   "label": "Constraint",
+   "props": {
+    "id": "K20",
+    "target": "content.must_include[graphical user interface]",
+    "op": "==",
+    "value": true,
+    "hardness": "hard",
+    "raw": "should produce a working application with a graphical interface",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.special_constraints",
+     "basis": null
+    },
+    "note": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G3",
+   "prompt_id": "G3",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.special_constraints",
+     "basis": null
+    }
+   ],
+   "ts": 1790773397.9293044
+  },
+  "P-CSE201-DEV/APP1": {
+   "uid": "P-CSE201-DEV/APP1",
+   "local_id": "APP1",
+   "label": "Approval",
+   "props": {
+    "gate": "gate1_context",
+    "decision": "approve",
+    "by": "auto (dev run)",
+    "comment": "auto-approved; not a professor decision",
+    "at": 1790773397.9399316,
+    "frozen": 42,
+    "open_errors": 0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "auto (dev run)",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773397.9399724
+  },
+  "P-CSE201-DEV/CO1": {
+   "uid": "P-CSE201-DEV/CO1",
+   "local_id": "CO1",
+   "label": "CO",
+   "props": {
+    "id": "CO1",
+    "statement": "Implement object-oriented classes, inheritance hierarchies, and interfaces, using Java collections and generics, such that all public test cases pass and static analysis warnings are resolved.",
+    "verb": "implement",
+    "behaviour": "object-oriented classes, inheritance hierarchies, and interfaces, using Java collections and generics",
+    "condition": "using Java collections and generics",
+    "degree": "such that all public test cases pass and static analysis warnings are resolved",
+    "bloom_level": 3,
+    "knowledge_dimension": "procedural",
+    "covers_topic_groups": [
+     "TG1",
+     "TG2",
+     "TG3"
+    ],
+    "evidence_types": [
+     "programming_assignment",
+     "exam_question"
+    ],
+    "builds_on_prereq_topics": [
+     "classes, objects, inheritance"
+    ],
+    "differentiation_note": "Builds upon basic introductory classes from CSE101 by requiring advanced polymorphism, interface design, and generics.",
+    "nc_risks": [
+     "NC1"
+    ],
+    "rationale": "Establishes core object-oriented programming skills required for building multi-component applications.",
+    "sources": [
+     {
+      "tag": "USER",
+      "ref": "CCO.topic_groups",
+      "basis": null
+     },
+     {
+      "tag": "CORPUS",
+      "ref": "CSE231/CO2",
+      "basis": null
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G4",
+   "prompt_id": "G4",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topic_groups",
+     "basis": null
+    },
+    {
+     "tag": "CORPUS",
+     "ref": "CSE231/CO2",
+     "basis": null
+    }
+   ],
+   "ts": 1790773423.4282393
+  },
+  "P-CSE201-DEV/CO2": {
+   "uid": "P-CSE201-DEV/CO2",
+   "local_id": "CO2",
+   "label": "CO",
+   "props": {
+    "id": "CO2",
+    "statement": "Apply exception handling, assertions, and I/O serialization to develop robust programs, given a specification with error cases, meeting the stated interface specification for every public method.",
+    "verb": "apply",
+    "behaviour": "exception handling, assertions, and I/O serialization to develop robust programs",
+    "condition": "given a specification with error cases",
+    "degree": "meeting the stated interface specification for every public method",
+    "bloom_level": 3,
+    "knowledge_dimension": "procedural",
+    "covers_topic_groups": [
+     "TG4"
+    ],
+    "evidence_types": [
+     "programming_assignment",
+     "lab_task"
+    ],
+    "builds_on_prereq_topics": [
+     "Exception handling, assertions"
+    ],
+    "differentiation_note": "Extends basic exception handling from prerequisite courses into defensive programming and structured serialization.",
+    "nc_risks": [],
+    "rationale": "Ensures students can write fault-tolerant code capable of handling unexpected inputs and environmental failures.",
+    "sources": [
+     {
+      "tag": "USER",
+      "ref": "CCO.topic_groups",
+      "basis": null
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G4",
+   "prompt_id": "G4",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topic_groups",
+     "basis": null
+    }
+   ],
+   "ts": 1790773423.428304
+  },
+  "P-CSE201-DEV/CO3": {
+   "uid": "P-CSE201-DEV/CO3",
+   "local_id": "CO3",
+   "label": "CO",
+   "props": {
+    "id": "CO3",
+    "statement": "Deconstruct software requirements into UML class, sequence, and use-case diagrams, using object-oriented design principles, covering every use case in the supplied requirements document.",
+    "verb": "deconstruct",
+    "behaviour": "software requirements into UML class, sequence, and use-case diagrams",
+    "condition": "using object-oriented design principles",
+    "degree": "covering every use case in the supplied requirements document",
+    "bloom_level": 4,
+    "knowledge_dimension": "conceptual",
+    "covers_topic_groups": [
+     "TG6",
+     "TG9"
+    ],
+    "evidence_types": [
+     "design_document",
+     "exam_question"
+    ],
+    "builds_on_prereq_topics": [],
+    "differentiation_note": "Shifts focus from coding syntax to upstream architectural planning and pattern-based software structuring.",
+    "nc_risks": [
+     "NC3"
+    ],
+    "rationale": "Teaches design thinking before coding, ensuring students can plan extensible systems before implementation.",
+    "sources": [
+     {
+      "tag": "USER",
+      "ref": "CCO.topic_groups",
+      "basis": null
+     },
+     {
+      "tag": "CORPUS",
+      "ref": "CSE581/CO3",
+      "basis": null
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G4",
+   "prompt_id": "G4",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topic_groups",
+     "basis": null
+    },
+    {
+     "tag": "CORPUS",
+     "ref": "CSE581/CO3",
+     "basis": null
+    }
+   ],
+   "ts": 1790773423.4283402
+  },
+  "P-CSE201-DEV/CO4": {
+   "uid": "P-CSE201-DEV/CO4",
+   "local_id": "CO4",
+   "label": "CO",
+   "props": {
+    "id": "CO4",
+    "statement": "Construct multi-threaded applications using synchronization primitives and thread pools, given a concurrent task specification, such that at least 80% of the provided test cases pass without race conditions.",
+    "verb": "construct",
+    "behaviour": "multi-threaded applications using synchronization primitives and thread pools",
+    "condition": "given a concurrent task specification",
+    "degree": "such that at least 80% of the provided test cases pass without race conditions",
+    "bloom_level": 3,
+    "knowledge_dimension": "procedural",
+    "covers_topic_groups": [
+     "TG8"
+    ],
+    "evidence_types": [
+     "programming_assignment",
+     "lab_task"
+    ],
+    "builds_on_prereq_topics": [],
+    "differentiation_note": "Introduces low-level thread management and synchronization absent in early programming courses.",
+    "nc_risks": [],
+    "rationale": "Enables students to build responsive, concurrent systems capable of handling parallel workloads.",
+    "sources": [
+     {
+      "tag": "USER",
+      "ref": "CCO.topic_groups",
+      "basis": null
+     },
+     {
+      "tag": "CORPUS",
+      "ref": "CSE231/CO2",
+      "basis": null
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G4",
+   "prompt_id": "G4",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topic_groups",
+     "basis": null
+    },
+    {
+     "tag": "CORPUS",
+     "ref": "CSE231/CO2",
+     "basis": null
+    }
+   ],
+   "ts": 1790773423.4283812
+  },
+  "P-CSE201-DEV/CO5": {
+   "uid": "P-CSE201-DEV/CO5",
+   "local_id": "CO5",
+   "label": "CO",
+   "props": {
+    "id": "CO5",
+    "statement": "Evaluate a working multi-component application with a graphical user interface developed in pairs, using version control and unit testing, such that the delivered system satisfies every acceptance criterion agreed at the first milestone.",
+    "verb": "evaluate",
+    "behaviour": "a working multi-component application with a graphical user interface in pairs, using version control and unit testing",
+    "condition": "working in pairs using version control and unit testing tools",
+    "degree": "such that the delivered system satisfies every acceptance criterion agreed at the first milestone",
+    "bloom_level": 5,
+    "knowledge_dimension": "metacognitive",
+    "covers_topic_groups": [
+     "TG5",
+     "TG7"
+    ],
+    "evidence_types": [
+     "project_deliverable",
+     "presentation",
+     "code_review"
+    ],
+    "builds_on_prereq_topics": [],
+    "differentiation_note": "Integrates all course topics into a comprehensive team project with GUI development and automated testing.",
+    "nc_risks": [
+     "NC3"
+    ],
+    "rationale": "Culminating project-based outcome ensuring practical capability in building complete software systems.",
+    "sources": [
+     {
+      "tag": "USER",
+      "ref": "CCO.special_constraints",
+      "basis": null
+     },
+     {
+      "tag": "CORPUS",
+      "ref": "CSE202/CO1",
+      "basis": null
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G4",
+   "prompt_id": "G4",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.special_constraints",
+     "basis": null
+    },
+    {
+     "tag": "CORPUS",
+     "ref": "CSE202/CO1",
+     "basis": null
+    }
+   ],
+   "ts": 1790773423.4284155
+  },
+  "P-CSE201-DEV/CO1.LO1": {
+   "uid": "P-CSE201-DEV/CO1.LO1",
+   "local_id": "CO1.LO1",
+   "label": "LO",
+   "props": {
+    "id": "CO1.LO1",
+    "parent_co": "CO1",
+    "statement": "Implement class encapsulation, association, and composition relationships, using basic object principles, such that all public test cases pass.",
+    "verb": "implement",
+    "behaviour": "class encapsulation, association, and composition relationships",
+    "condition": "using basic object principles",
+    "degree": "such that all public test cases pass",
+    "bloom_level": 3,
+    "knowledge_dimension": "procedural",
+    "is_capstone": false,
+    "requires": [],
+    "topic_hints": [
+     {
+      "phrase": "classes and objects, encapsulation, modularity, object relationships",
+      "topic_uid": "T:classes-objects-inheritance"
+     }
+    ],
+    "hands_on": true,
+    "est_lecture_h": 2.5,
+    "est_tutorial_h": 1.0,
+    "est_lab_h": 0.0,
+    "hours_basis": "two lectures plus one tutorial session",
+    "suggested_task_type": "programming_assignment",
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO1 into foundational class implementation steps."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO1 into foundational class implementation steps."
+    }
+   ],
+   "ts": 1790773469.018208
+  },
+  "P-CSE201-DEV/CO1.LO2": {
+   "uid": "P-CSE201-DEV/CO1.LO2",
+   "local_id": "CO1.LO2",
+   "label": "LO",
+   "props": {
+    "id": "CO1.LO2",
+    "parent_co": "CO1",
+    "statement": "Implement inheritance hierarchies, abstract classes, and interface-based polymorphism, using object-oriented principles, such that all public test cases pass.",
+    "verb": "implement",
+    "behaviour": "inheritance hierarchies, abstract classes, and interface-based polymorphism",
+    "condition": "using object-oriented principles",
+    "degree": "such that all public test cases pass",
+    "bloom_level": 3,
+    "knowledge_dimension": "procedural",
+    "is_capstone": false,
+    "requires": [
+     "CO1.LO1"
+    ],
+    "topic_hints": [
+     {
+      "phrase": "inheritance hierarchies, abstract classes, polymorphism",
+      "topic_uid": "T:polymorphism-and-higher-order-functions"
+     }
+    ],
+    "hands_on": true,
+    "est_lecture_h": 3.0,
+    "est_tutorial_h": 1.0,
+    "est_lab_h": 0.0,
+    "hours_basis": "two lectures plus one tutorial session",
+    "suggested_task_type": "programming_assignment",
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO1 into inheritance and polymorphism steps."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO1 into inheritance and polymorphism steps."
+    }
+   ],
+   "ts": 1790773469.0182521
+  },
+  "P-CSE201-DEV/CO1.LO3": {
+   "uid": "P-CSE201-DEV/CO1.LO3",
+   "local_id": "CO1.LO3",
+   "label": "LO",
+   "props": {
+    "id": "CO1.LO3",
+    "parent_co": "CO1",
+    "statement": "Implement generic classes and methods using the collections framework, given a data processing requirement, such that all public test cases pass and static analysis warnings are resolved.",
+    "verb": "implement",
+    "behaviour": "generic classes and methods using the collections framework",
+    "condition": "given a data processing requirement",
+    "degree": "such that all public test cases pass and static analysis warnings are resolved",
+    "bloom_level": 3,
+    "knowledge_dimension": "procedural",
+    "is_capstone": true,
+    "requires": [
+     "CO1.LO2"
+    ],
+    "topic_hints": [
+     {
+      "phrase": "generics, comparing and cloning objects, the collections framework",
+      "topic_uid": null
+     }
+    ],
+    "hands_on": true,
+    "est_lecture_h": 3.0,
+    "est_tutorial_h": 1.0,
+    "est_lab_h": 0.0,
+    "hours_basis": "two lectures plus one tutorial session for collections and generics",
+    "suggested_task_type": "programming_assignment",
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Capstone LO for CO1 covering collections, generics, and static analysis."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Capstone LO for CO1 covering collections, generics, and static analysis."
+    }
+   ],
+   "ts": 1790773469.0182893
+  },
+  "P-CSE201-DEV/CO2.LO1": {
+   "uid": "P-CSE201-DEV/CO2.LO1",
+   "local_id": "CO2.LO1",
+   "label": "LO",
+   "props": {
+    "id": "CO2.LO1",
+    "parent_co": "CO2",
+    "statement": "Apply exception handling and assertions to validate input conditions, given a specification with error cases, such that at least 80% of the provided test cases pass.",
+    "verb": "apply",
+    "behaviour": "exception handling and assertions to validate input conditions",
+    "condition": "given a specification with error cases",
+    "degree": "such that at least 80% of the provided test cases pass",
+    "bloom_level": 3,
+    "knowledge_dimension": "procedural",
+    "is_capstone": false,
+    "requires": [],
+    "topic_hints": [
+     {
+      "phrase": "exception handling, assertions, defensive programming",
+      "topic_uid": "T:exception-handling-assertions"
+     }
+    ],
+    "hands_on": true,
+    "est_lecture_h": 2.5,
+    "est_tutorial_h": 1.0,
+    "est_lab_h": 0.0,
+    "hours_basis": "two lectures plus one tutorial on robust programming basics",
+    "suggested_task_type": "programming_assignment",
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO2 into exception handling and assertions."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO2 into exception handling and assertions."
+    }
+   ],
+   "ts": 1790773469.0183232
+  },
+  "P-CSE201-DEV/CO2.LO2": {
+   "uid": "P-CSE201-DEV/CO2.LO2",
+   "local_id": "CO2.LO2",
+   "label": "LO",
+   "props": {
+    "id": "CO2.LO2",
+    "parent_co": "CO2",
+    "statement": "Apply I/O streams and object serialization to persist object state, given a specification with error cases, meeting the stated interface specification for every public method.",
+    "verb": "apply",
+    "behaviour": "I/O streams and object serialization to persist object state",
+    "condition": "given a specification with error cases",
+    "degree": "meeting the stated interface specification for every public method",
+    "bloom_level": 3,
+    "knowledge_dimension": "procedural",
+    "is_capstone": true,
+    "requires": [
+     "CO2.LO1"
+    ],
+    "topic_hints": [
+     {
+      "phrase": "I/O streams and serialization",
+      "topic_uid": null
+     }
+    ],
+    "hands_on": true,
+    "est_lecture_h": 2.5,
+    "est_tutorial_h": 1.0,
+    "est_lab_h": 0.0,
+    "hours_basis": "two lectures plus one tutorial on I/O and serialization",
+    "suggested_task_type": "programming_assignment",
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Capstone LO for CO2 covering serialization and interface conformance."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Capstone LO for CO2 covering serialization and interface conformance."
+    }
+   ],
+   "ts": 1790773469.0183504
+  },
+  "P-CSE201-DEV/CO3.LO1": {
+   "uid": "P-CSE201-DEV/CO3.LO1",
+   "local_id": "CO3.LO1",
+   "label": "LO",
+   "props": {
+    "id": "CO3.LO1",
+    "parent_co": "CO3",
+    "statement": "Identify use cases and actor interactions, using object-oriented design principles, covering every use case in the supplied requirements document.",
+    "verb": "identify",
+    "behaviour": "use cases and actor interactions",
+    "condition": "using object-oriented design principles",
+    "degree": "covering every use case in the supplied requirements document",
+    "bloom_level": 4,
+    "knowledge_dimension": "conceptual",
+    "is_capstone": false,
+    "requires": [],
+    "topic_hints": [
+     {
+      "phrase": "use cases, use-case diagrams",
+      "topic_uid": null
+     }
+    ],
+    "hands_on": false,
+    "est_lecture_h": 2.0,
+    "est_tutorial_h": 1.0,
+    "est_lab_h": 0.0,
+    "hours_basis": "one and half lectures plus tutorial",
+    "suggested_task_type": "exam_question",
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO3 into use-case analysis."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO3 into use-case analysis."
+    }
+   ],
+   "ts": 1790773469.0183818
+  },
+  "P-CSE201-DEV/CO3.LO2": {
+   "uid": "P-CSE201-DEV/CO3.LO2",
+   "local_id": "CO3.LO2",
+   "label": "LO",
+   "props": {
+    "id": "CO3.LO2",
+    "parent_co": "CO3",
+    "statement": "Deconstruct software requirements into UML class and sequence diagrams, using object-oriented design principles, covering every use case in the supplied requirements document.",
+    "verb": "deconstruct",
+    "behaviour": "software requirements into UML class and sequence diagrams",
+    "condition": "using object-oriented design principles",
+    "degree": "covering every use case in the supplied requirements document",
+    "bloom_level": 4,
+    "knowledge_dimension": "conceptual",
+    "is_capstone": true,
+    "requires": [
+     "CO3.LO1"
+    ],
+    "topic_hints": [
+     {
+      "phrase": "UML class/sequence diagrams, object-oriented design of a problem",
+      "topic_uid": null
+     }
+    ],
+    "hands_on": false,
+    "est_lecture_h": 3.0,
+    "est_tutorial_h": 1.0,
+    "est_lab_h": 0.0,
+    "hours_basis": "two lectures plus one tutorial on UML class and sequence diagrams",
+    "suggested_task_type": "design_document",
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Capstone LO for CO3 covering UML class and sequence diagrams."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Capstone LO for CO3 covering UML class and sequence diagrams."
+    }
+   ],
+   "ts": 1790773469.0184093
+  },
+  "P-CSE201-DEV/CO4.LO1": {
+   "uid": "P-CSE201-DEV/CO4.LO1",
+   "local_id": "CO4.LO1",
+   "label": "LO",
+   "props": {
+    "id": "CO4.LO1",
+    "parent_co": "CO4",
+    "statement": "Implement threads and mutual exclusion locks, given a concurrent task specification, such that at least 80% of the provided test cases pass without race conditions.",
+    "verb": "implement",
+    "behaviour": "threads and mutual exclusion locks",
+    "condition": "given a concurrent task specification",
+    "degree": "such that at least 80% of the provided test cases pass without race conditions",
+    "bloom_level": 3,
+    "knowledge_dimension": "procedural",
+    "is_capstone": false,
+    "requires": [],
+    "topic_hints": [
+     {
+      "phrase": "threads, mutual exclusion, race conditions and deadlocks",
+      "topic_uid": "T:ipc-synchronization"
+     }
+    ],
+    "hands_on": true,
+    "est_lecture_h": 3.0,
+    "est_tutorial_h": 1.0,
+    "est_lab_h": 0.0,
+    "hours_basis": "two lectures plus one tutorial on threads and locks",
+    "suggested_task_type": "programming_assignment",
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO4 into thread creation and synchronization."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO4 into thread creation and synchronization."
+    }
+   ],
+   "ts": 1790773469.0184407
+  },
+  "P-CSE201-DEV/CO4.LO2": {
+   "uid": "P-CSE201-DEV/CO4.LO2",
+   "local_id": "CO4.LO2",
+   "label": "LO",
+   "props": {
+    "id": "CO4.LO2",
+    "parent_co": "CO4",
+    "statement": "Construct multi-threaded applications using thread pools and coordination patterns, given a concurrent task specification, such that at least 80% of the provided test cases pass without race conditions.",
+    "verb": "construct",
+    "behaviour": "multi-threaded applications using thread pools and coordination patterns",
+    "condition": "given a concurrent task specification",
+    "degree": "such that at least 80% of the provided test cases pass without race conditions",
+    "bloom_level": 3,
+    "knowledge_dimension": "procedural",
+    "is_capstone": true,
+    "requires": [
+     "CO4.LO1"
+    ],
+    "topic_hints": [
+     {
+      "phrase": "thread pools, producer-consumer, speedup",
+      "topic_uid": null
+     }
+    ],
+    "hands_on": true,
+    "est_lecture_h": 3.0,
+    "est_tutorial_h": 1.0,
+    "est_lab_h": 0.0,
+    "hours_basis": "two lectures plus one tutorial on thread pools and producer-consumer",
+    "suggested_task_type": "programming_assignment",
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Capstone LO for CO4 covering thread pools and concurrent applications."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Capstone LO for CO4 covering thread pools and concurrent applications."
+    }
+   ],
+   "ts": 1790773469.0184693
+  },
+  "P-CSE201-DEV/CO5.LO1": {
+   "uid": "P-CSE201-DEV/CO5.LO1",
+   "local_id": "CO5.LO1",
+   "label": "LO",
+   "props": {
+    "id": "CO5.LO1",
+    "parent_co": "CO5",
+    "statement": "Execute unit testing and version control workflows for a multi-component application developed in pairs, working in pairs using version control and unit testing tools, justifying each design decision against at least one stated requirement.",
+    "verb": "execute",
+    "behaviour": "unit testing and version control workflows for a multi-component application in pairs",
+    "condition": "working in pairs using version control and unit testing tools",
+    "degree": "justifying each design decision against at least one stated requirement",
+    "bloom_level": 3,
+    "knowledge_dimension": "procedural",
+    "is_capstone": false,
+    "requires": [
+     "CO1.LO3"
+    ],
+    "topic_hints": [
+     {
+      "phrase": "unit testing, debugging, version control as part of everyday development",
+      "topic_uid": null
+     }
+    ],
+    "hands_on": true,
+    "est_lecture_h": 2.5,
+    "est_tutorial_h": 1.0,
+    "est_lab_h": 0.0,
+    "hours_basis": "two lectures plus one tutorial on testing and tooling",
+    "suggested_task_type": "programming_assignment",
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO5 into testing and version control foundations."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO5 into testing and version control foundations."
+    }
+   ],
+   "ts": 1790773469.0185034
+  },
+  "P-CSE201-DEV/CO5.LO2": {
+   "uid": "P-CSE201-DEV/CO5.LO2",
+   "local_id": "CO5.LO2",
+   "label": "LO",
+   "props": {
+    "id": "CO5.LO2",
+    "parent_co": "CO5",
+    "statement": "Evaluate a working multi-component application with a graphical user interface developed in pairs, working in pairs using version control and unit testing tools, such that the delivered system satisfies every acceptance criterion agreed at the first milestone.",
+    "verb": "evaluate",
+    "behaviour": "a working multi-component application with a graphical user interface in pairs, using version control and unit testing",
+    "condition": "working in pairs using version control and unit testing tools",
+    "degree": "such that the delivered system satisfies every acceptance criterion agreed at the first milestone",
+    "bloom_level": 5,
+    "knowledge_dimension": "metacognitive",
+    "is_capstone": true,
+    "requires": [
+     "CO5.LO1",
+     "CO2.LO2",
+     "CO3.LO2",
+     "CO4.LO2"
+    ],
+    "topic_hints": [
+     {
+      "phrase": "Event-driven programming and GUIs",
+      "topic_uid": null
+     }
+    ],
+    "hands_on": true,
+    "est_lecture_h": 3.0,
+    "est_tutorial_h": 1.0,
+    "est_lab_h": 0.0,
+    "hours_basis": "two lectures plus one tutorial on GUI development and project integration",
+    "suggested_task_type": "project_deliverable",
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Capstone LO for CO5 covering GUI application evaluation and project delivery."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Capstone LO for CO5 covering GUI application evaluation and project delivery."
+    }
+   ],
+   "ts": 1790773469.0185373
+  },
+  "P-CSE201-DEV/APP2": {
+   "uid": "P-CSE201-DEV/APP2",
+   "local_id": "APP2",
+   "label": "Approval",
+   "props": {
+    "gate": "gate2_outcomes",
+    "decision": "approve",
+    "by": "auto (dev run)",
+    "comment": "auto-approved; not a professor decision",
+    "at": 1790773469.032553,
+    "frozen": 16,
+    "open_errors": 3
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "auto (dev run)",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773469.03259
+  },
+  "P-CSE201-DEV/M1": {
+   "uid": "P-CSE201-DEV/M1",
+   "local_id": "M1",
+   "label": "Module",
+   "props": {
+    "title": "Object-Oriented Fundamentals and Principles",
+    "order": 1,
+    "primary_cos": [
+     "CO1"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9497452
+  },
+  "P-CSE201-DEV/M1.T1": {
+   "uid": "P-CSE201-DEV/M1.T1",
+   "local_id": "M1.T1",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M1.T1",
+    "title": "Classes, encapsulation, and regular hands-on practice",
+    "est_hours": 1.5,
+    "hours_basis": "Derived from CO1.LO1 estimate",
+    "serves_los": [
+     "CO1.LO1"
+    ],
+    "covers_topic_groups": [
+     "TG1"
+    ],
+    "requires": [],
+    "topic_uid": "T:classes-objects-inheritance",
+    "hands_on": true,
+    "suggested_order": 1,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO1.LO1 into fundamental class concepts."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO1.LO1 into fundamental class concepts."
+    }
+   ],
+   "ts": 1790773487.9497757
+  },
+  "P-CSE201-DEV/M1.T2": {
+   "uid": "P-CSE201-DEV/M1.T2",
+   "local_id": "M1.T2",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M1.T2",
+    "title": "Object relationships, association, and composition",
+    "est_hours": 1.5,
+    "hours_basis": "Derived from CO1.LO1 estimate",
+    "serves_los": [
+     "CO1.LO1"
+    ],
+    "covers_topic_groups": [
+     "TG1"
+    ],
+    "requires": [
+     "M1.T1"
+    ],
+    "topic_uid": "T:classes-objects-inheritance",
+    "hands_on": true,
+    "suggested_order": 2,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO1.LO1 into object relationships."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO1.LO1 into object relationships."
+    }
+   ],
+   "ts": 1790773487.9498796
+  },
+  "P-CSE201-DEV/M1.T3": {
+   "uid": "P-CSE201-DEV/M1.T3",
+   "local_id": "M1.T3",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M1.T3",
+    "title": "Inheritance hierarchies and abstract classes",
+    "est_hours": 1.5,
+    "hours_basis": "Derived from CO1.LO2 estimate",
+    "serves_los": [
+     "CO1.LO2"
+    ],
+    "covers_topic_groups": [
+     "TG2"
+    ],
+    "requires": [
+     "M1.T2"
+    ],
+    "topic_uid": "T:polymorphism-and-higher-order-functions",
+    "hands_on": true,
+    "suggested_order": 3,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO1.LO2 inheritance structure."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO1.LO2 inheritance structure."
+    }
+   ],
+   "ts": 1790773487.9499414
+  },
+  "P-CSE201-DEV/M1.T4": {
+   "uid": "P-CSE201-DEV/M1.T4",
+   "local_id": "M1.T4",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M1.T4",
+    "title": "Interface-based polymorphism and method resolution",
+    "est_hours": 1.5,
+    "hours_basis": "Derived from CO1.LO2 estimate",
+    "serves_los": [
+     "CO1.LO2"
+    ],
+    "covers_topic_groups": [
+     "TG2"
+    ],
+    "requires": [
+     "M1.T3"
+    ],
+    "topic_uid": "T:polymorphism-and-higher-order-functions",
+    "hands_on": true,
+    "suggested_order": 4,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO1.LO2 polymorphism."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO1.LO2 polymorphism."
+    }
+   ],
+   "ts": 1790773487.9500031
+  },
+  "P-CSE201-DEV/M2": {
+   "uid": "P-CSE201-DEV/M2",
+   "local_id": "M2",
+   "label": "Module",
+   "props": {
+    "title": "Generics, Collections, and Robust Programming",
+    "order": 2,
+    "primary_cos": [
+     "CO1",
+     "CO2"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9500556
+  },
+  "P-CSE201-DEV/M2.T1": {
+   "uid": "P-CSE201-DEV/M2.T1",
+   "local_id": "M2.T1",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M2.T1",
+    "title": "Generic classes and methods",
+    "est_hours": 1.5,
+    "hours_basis": "Derived from CO1.LO3 estimate",
+    "serves_los": [
+     "CO1.LO3"
+    ],
+    "covers_topic_groups": [
+     "TG3"
+    ],
+    "requires": [
+     "M1.T4"
+    ],
+    "topic_uid": null,
+    "hands_on": true,
+    "suggested_order": 1,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO1.LO3 generics."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO1.LO3 generics."
+    }
+   ],
+   "ts": 1790773487.9500763
+  },
+  "P-CSE201-DEV/M2.T2": {
+   "uid": "P-CSE201-DEV/M2.T2",
+   "local_id": "M2.T2",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M2.T2",
+    "title": "Comparing, cloning, and the collections framework",
+    "est_hours": 1.5,
+    "hours_basis": "Derived from CO1.LO3 estimate",
+    "serves_los": [
+     "CO1.LO3"
+    ],
+    "covers_topic_groups": [
+     "TG3"
+    ],
+    "requires": [
+     "M2.T1"
+    ],
+    "topic_uid": null,
+    "hands_on": true,
+    "suggested_order": 2,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO1.LO3 collections."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO1.LO3 collections."
+    }
+   ],
+   "ts": 1790773487.9501276
+  },
+  "P-CSE201-DEV/M2.T3": {
+   "uid": "P-CSE201-DEV/M2.T3",
+   "local_id": "M2.T3",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M2.T3",
+    "title": "Exception handling and assertions",
+    "est_hours": 1.5,
+    "hours_basis": "Derived from CO2.LO1 estimate",
+    "serves_los": [
+     "CO2.LO1"
+    ],
+    "covers_topic_groups": [
+     "TG4"
+    ],
+    "requires": [
+     "M2.T2"
+    ],
+    "topic_uid": "T:exception-handling-assertions",
+    "hands_on": true,
+    "suggested_order": 3,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO2.LO1 exceptions."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO2.LO1 exceptions."
+    }
+   ],
+   "ts": 1790773487.950184
+  },
+  "P-CSE201-DEV/M2.T4": {
+   "uid": "P-CSE201-DEV/M2.T4",
+   "local_id": "M2.T4",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M2.T4",
+    "title": "I/O streams and object serialization",
+    "est_hours": 1.5,
+    "hours_basis": "Derived from CO2.LO2 estimate",
+    "serves_los": [
+     "CO2.LO2"
+    ],
+    "covers_topic_groups": [
+     "TG4"
+    ],
+    "requires": [
+     "M2.T3"
+    ],
+    "topic_uid": null,
+    "hands_on": true,
+    "suggested_order": 4,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO2.LO2 serialization."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO2.LO2 serialization."
+    }
+   ],
+   "ts": 1790773487.9502475
+  },
+  "P-CSE201-DEV/M3": {
+   "uid": "P-CSE201-DEV/M3",
+   "local_id": "M3",
+   "label": "Module",
+   "props": {
+    "title": "Object-Oriented Design and Modeling",
+    "order": 3,
+    "primary_cos": [
+     "CO3"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9502995
+  },
+  "P-CSE201-DEV/M3.T1": {
+   "uid": "P-CSE201-DEV/M3.T1",
+   "local_id": "M3.T1",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M3.T1",
+    "title": "Use cases and actor interactions",
+    "est_hours": 2.0,
+    "hours_basis": "Derived from CO3.LO1 estimate",
+    "serves_los": [
+     "CO3.LO1"
+    ],
+    "covers_topic_groups": [
+     "TG6"
+    ],
+    "requires": [],
+    "topic_uid": null,
+    "hands_on": false,
+    "suggested_order": 1,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO3.LO1 use cases."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO3.LO1 use cases."
+    }
+   ],
+   "ts": 1790773487.9503255
+  },
+  "P-CSE201-DEV/M3.T2": {
+   "uid": "P-CSE201-DEV/M3.T2",
+   "local_id": "M3.T2",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M3.T2",
+    "title": "UML class and sequence diagrams",
+    "est_hours": 2.0,
+    "hours_basis": "Derived from CO3.LO2 estimate",
+    "serves_los": [
+     "CO3.LO2"
+    ],
+    "covers_topic_groups": [
+     "TG6"
+    ],
+    "requires": [
+     "M3.T1"
+    ],
+    "topic_uid": null,
+    "hands_on": false,
+    "suggested_order": 2,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO3.LO2 UML diagrams."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO3.LO2 UML diagrams."
+    }
+   ],
+   "ts": 1790773487.9504042
+  },
+  "P-CSE201-DEV/M4": {
+   "uid": "P-CSE201-DEV/M4",
+   "local_id": "M4",
+   "label": "Module",
+   "props": {
+    "title": "Testing, Tooling, and Design Patterns",
+    "order": 4,
+    "primary_cos": [
+     "CO5"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9504666
+  },
+  "P-CSE201-DEV/M4.T1": {
+   "uid": "P-CSE201-DEV/M4.T1",
+   "local_id": "M4.T1",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M4.T1",
+    "title": "Unit testing and version control workflows",
+    "est_hours": 2.5,
+    "hours_basis": "Derived from CO5.LO1 estimate",
+    "serves_los": [
+     "CO5.LO1"
+    ],
+    "covers_topic_groups": [
+     "TG5"
+    ],
+    "requires": [
+     "M2.T2"
+    ],
+    "topic_uid": null,
+    "hands_on": true,
+    "suggested_order": 1,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO5.LO1 testing."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO5.LO1 testing."
+    }
+   ],
+   "ts": 1790773487.950493
+  },
+  "P-CSE201-DEV/M4.T2": {
+   "uid": "P-CSE201-DEV/M4.T2",
+   "local_id": "M4.T2",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M4.T2",
+    "title": "Common creational, structural, and behavioural design patterns",
+    "est_hours": 2.5,
+    "hours_basis": "Standard allocation for design patterns topic group",
+    "serves_los": [
+     "CO3.LO2"
+    ],
+    "covers_topic_groups": [
+     "TG9"
+    ],
+    "requires": [
+     "M1.T4"
+    ],
+    "topic_uid": null,
+    "hands_on": false,
+    "suggested_order": 2,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Covering TG9 required topic group."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Covering TG9 required topic group."
+    }
+   ],
+   "ts": 1790773487.950568
+  },
+  "P-CSE201-DEV/M5": {
+   "uid": "P-CSE201-DEV/M5",
+   "local_id": "M5",
+   "label": "Module",
+   "props": {
+    "title": "Concurrency, GUIs, and Project Integration",
+    "order": 5,
+    "primary_cos": [
+     "CO4",
+     "CO5"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.950739
+  },
+  "P-CSE201-DEV/M5.T1": {
+   "uid": "P-CSE201-DEV/M5.T1",
+   "local_id": "M5.T1",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M5.T1",
+    "title": "Threads, mutual exclusion, and locks",
+    "est_hours": 2.0,
+    "hours_basis": "Derived from CO4.LO1 estimate",
+    "serves_los": [
+     "CO4.LO1"
+    ],
+    "covers_topic_groups": [
+     "TG8"
+    ],
+    "requires": [],
+    "topic_uid": "T:ipc-synchronization",
+    "hands_on": true,
+    "suggested_order": 1,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO4.LO1 threads."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO4.LO1 threads."
+    }
+   ],
+   "ts": 1790773487.9507694
+  },
+  "P-CSE201-DEV/M5.T2": {
+   "uid": "P-CSE201-DEV/M5.T2",
+   "local_id": "M5.T2",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M5.T2",
+    "title": "Thread pools and producer-consumer patterns",
+    "est_hours": 2.0,
+    "hours_basis": "Derived from CO4.LO2 estimate",
+    "serves_los": [
+     "CO4.LO2"
+    ],
+    "covers_topic_groups": [
+     "TG8"
+    ],
+    "requires": [
+     "M5.T1"
+    ],
+    "topic_uid": null,
+    "hands_on": true,
+    "suggested_order": 2,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO4.LO2 thread pools."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO4.LO2 thread pools."
+    }
+   ],
+   "ts": 1790773487.950838
+  },
+  "P-CSE201-DEV/M5.T3": {
+   "uid": "P-CSE201-DEV/M5.T3",
+   "local_id": "M5.T3",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M5.T3",
+    "title": "Event-driven programming, GUIs, and pair programming workflows",
+    "est_hours": 2.5,
+    "hours_basis": "Derived from CO5.LO2 estimate and GUI project constraint",
+    "serves_los": [
+     "CO5.LO2"
+    ],
+    "covers_topic_groups": [
+     "TG7"
+    ],
+    "requires": [
+     "M1.T4"
+    ],
+    "topic_uid": null,
+    "hands_on": true,
+    "suggested_order": 3,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Decomposing CO5.LO2 GUI development."
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposing CO5.LO2 GUI development."
+    }
+   ],
+   "ts": 1790773487.9509828
+  },
+  "P-CSE201-DEV/W01": {
+   "uid": "P-CSE201-DEV/W01",
+   "local_id": "W01",
+   "label": "Week",
+   "props": {
+    "n": 1,
+    "lecture_hours": 3.0,
+    "tutorial_hours": 1.0,
+    "lab_hours": 0,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9510548
+  },
+  "P-CSE201-DEV/W01.L1": {
+   "uid": "P-CSE201-DEV/W01.L1",
+   "local_id": "W01.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 1.5
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9510713
+  },
+  "P-CSE201-DEV/W01.L2": {
+   "uid": "P-CSE201-DEV/W01.L2",
+   "local_id": "W01.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 1.5
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9511204
+  },
+  "P-CSE201-DEV/W02": {
+   "uid": "P-CSE201-DEV/W02",
+   "local_id": "W02",
+   "label": "Week",
+   "props": {
+    "n": 2,
+    "lecture_hours": 3.0,
+    "tutorial_hours": 1.0,
+    "lab_hours": 0,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.951178
+  },
+  "P-CSE201-DEV/W02.L1": {
+   "uid": "P-CSE201-DEV/W02.L1",
+   "local_id": "W02.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 1.5
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9511921
+  },
+  "P-CSE201-DEV/W02.L2": {
+   "uid": "P-CSE201-DEV/W02.L2",
+   "local_id": "W02.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 1.5
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9512424
+  },
+  "P-CSE201-DEV/W03": {
+   "uid": "P-CSE201-DEV/W03",
+   "local_id": "W03",
+   "label": "Week",
+   "props": {
+    "n": 3,
+    "lecture_hours": 3.0,
+    "tutorial_hours": 1.0,
+    "lab_hours": 0,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.951297
+  },
+  "P-CSE201-DEV/W03.L1": {
+   "uid": "P-CSE201-DEV/W03.L1",
+   "local_id": "W03.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 1.5
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.95131
+  },
+  "P-CSE201-DEV/W03.L2": {
+   "uid": "P-CSE201-DEV/W03.L2",
+   "local_id": "W03.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 1.5
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9513612
+  },
+  "P-CSE201-DEV/W04": {
+   "uid": "P-CSE201-DEV/W04",
+   "local_id": "W04",
+   "label": "Week",
+   "props": {
+    "n": 4,
+    "lecture_hours": 3.0,
+    "tutorial_hours": 1.0,
+    "lab_hours": 0,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.951415
+  },
+  "P-CSE201-DEV/W04.L1": {
+   "uid": "P-CSE201-DEV/W04.L1",
+   "local_id": "W04.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 1.5
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9514267
+  },
+  "P-CSE201-DEV/W04.L2": {
+   "uid": "P-CSE201-DEV/W04.L2",
+   "local_id": "W04.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 1.5
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9514787
+  },
+  "P-CSE201-DEV/W05": {
+   "uid": "P-CSE201-DEV/W05",
+   "local_id": "W05",
+   "label": "Week",
+   "props": {
+    "n": 5,
+    "lecture_hours": 3.0,
+    "tutorial_hours": 1.0,
+    "lab_hours": 0,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9515333
+  },
+  "P-CSE201-DEV/W05.L1": {
+   "uid": "P-CSE201-DEV/W05.L1",
+   "local_id": "W05.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 2.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9515452
+  },
+  "P-CSE201-DEV/W05.L2": {
+   "uid": "P-CSE201-DEV/W05.L2",
+   "local_id": "W05.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.951598
+  },
+  "P-CSE201-DEV/W06": {
+   "uid": "P-CSE201-DEV/W06",
+   "local_id": "W06",
+   "label": "Week",
+   "props": {
+    "n": 6,
+    "lecture_hours": 3.0,
+    "tutorial_hours": 1.0,
+    "lab_hours": 0,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.951653
+  },
+  "P-CSE201-DEV/W06.L1": {
+   "uid": "P-CSE201-DEV/W06.L1",
+   "local_id": "W06.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.951665
+  },
+  "P-CSE201-DEV/W06.L2": {
+   "uid": "P-CSE201-DEV/W06.L2",
+   "local_id": "W06.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 2.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9517176
+  },
+  "P-CSE201-DEV/W07": {
+   "uid": "P-CSE201-DEV/W07",
+   "local_id": "W07",
+   "label": "Week",
+   "props": {
+    "n": 7,
+    "lecture_hours": 3.0,
+    "tutorial_hours": 1.0,
+    "lab_hours": 0,
+    "is_midsem_boundary": true
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9517777
+  },
+  "P-CSE201-DEV/W07.L1": {
+   "uid": "P-CSE201-DEV/W07.L1",
+   "local_id": "W07.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 0.5
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9517894
+  },
+  "P-CSE201-DEV/W07.L2": {
+   "uid": "P-CSE201-DEV/W07.L2",
+   "local_id": "W07.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 2.5
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9518454
+  },
+  "P-CSE201-DEV/W08": {
+   "uid": "P-CSE201-DEV/W08",
+   "local_id": "W08",
+   "label": "Week",
+   "props": {
+    "n": 8,
+    "lecture_hours": 3.0,
+    "tutorial_hours": 1.0,
+    "lab_hours": 0,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9518967
+  },
+  "P-CSE201-DEV/W08.L1": {
+   "uid": "P-CSE201-DEV/W08.L1",
+   "local_id": "W08.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 2.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.951905
+  },
+  "P-CSE201-DEV/W08.L2": {
+   "uid": "P-CSE201-DEV/W08.L2",
+   "local_id": "W08.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9519563
+  },
+  "P-CSE201-DEV/W09": {
+   "uid": "P-CSE201-DEV/W09",
+   "local_id": "W09",
+   "label": "Week",
+   "props": {
+    "n": 9,
+    "lecture_hours": 3.0,
+    "tutorial_hours": 1.0,
+    "lab_hours": 0,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9520144
+  },
+  "P-CSE201-DEV/W09.L1": {
+   "uid": "P-CSE201-DEV/W09.L1",
+   "local_id": "W09.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9520261
+  },
+  "P-CSE201-DEV/W09.L2": {
+   "uid": "P-CSE201-DEV/W09.L2",
+   "local_id": "W09.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 2.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.952083
+  },
+  "P-CSE201-DEV/W10": {
+   "uid": "P-CSE201-DEV/W10",
+   "local_id": "W10",
+   "label": "Week",
+   "props": {
+    "n": 10,
+    "lecture_hours": 3.0,
+    "tutorial_hours": 1.0,
+    "lab_hours": 0,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9521432
+  },
+  "P-CSE201-DEV/W10.L1": {
+   "uid": "P-CSE201-DEV/W10.L1",
+   "local_id": "W10.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 0.5
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9521546
+  },
+  "P-CSE201-DEV/W11": {
+   "uid": "P-CSE201-DEV/W11",
+   "local_id": "W11",
+   "label": "Week",
+   "props": {
+    "n": 11,
+    "lecture_hours": 3.0,
+    "tutorial_hours": 1.0,
+    "lab_hours": 0,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9522145
+  },
+  "P-CSE201-DEV/W12": {
+   "uid": "P-CSE201-DEV/W12",
+   "local_id": "W12",
+   "label": "Week",
+   "props": {
+    "n": 12,
+    "lecture_hours": 3.0,
+    "tutorial_hours": 1.0,
+    "lab_hours": 0,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.952228
+  },
+  "P-CSE201-DEV/W13": {
+   "uid": "P-CSE201-DEV/W13",
+   "local_id": "W13",
+   "label": "Week",
+   "props": {
+    "n": 13,
+    "lecture_hours": 3.0,
+    "tutorial_hours": 1.0,
+    "lab_hours": 0,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773487.9522417
+  },
+  "P-CSE201-DEV/W01.TUT": {
+   "uid": "P-CSE201-DEV/W01.TUT",
+   "local_id": "W01.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 1,
+    "id": "W01.TUT",
+    "activity": "Implement a small class hierarchy with encapsulation, association and composition; run provided test cases in pairs",
+    "practises_los": [
+     "CO1.LO1"
+    ],
+    "uses_topics": [
+     "M1.T1",
+     "M1.T2"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.7069798
+  },
+  "P-CSE201-DEV/W02.TUT": {
+   "uid": "P-CSE201-DEV/W02.TUT",
+   "local_id": "W02.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 2,
+    "id": "W02.TUT",
+    "activity": "Extend previous classes to include inheritance and interfaces; debug failing cases using IDE",
+    "practises_los": [
+     "CO1.LO2"
+    ],
+    "uses_topics": [
+     "M1.T3",
+     "M1.T4"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.7070484
+  },
+  "P-CSE201-DEV/W03.TUT": {
+   "uid": "P-CSE201-DEV/W03.TUT",
+   "local_id": "W03.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 3,
+    "id": "W03.TUT",
+    "activity": "Create generic collection utilities; write unit tests for type safety",
+    "practises_los": [
+     "CO1.LO3"
+    ],
+    "uses_topics": [
+     "M2.T1",
+     "M2.T2"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.7070796
+  },
+  "P-CSE201-DEV/W04.TUT": {
+   "uid": "P-CSE201-DEV/W04.TUT",
+   "local_id": "W04.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 4,
+    "id": "W04.TUT",
+    "activity": "Add exception handling and assertions to previous utilities; verify error paths",
+    "practises_los": [
+     "CO2.LO1"
+    ],
+    "uses_topics": [
+     "M2.T3"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.707106
+  },
+  "P-CSE201-DEV/W05.TUT": {
+   "uid": "P-CSE201-DEV/W05.TUT",
+   "local_id": "W05.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 5,
+    "id": "W05.TUT",
+    "activity": "Discuss use‑case identification and actor mapping for a sample system; produce a brief use‑case list",
+    "practises_los": [
+     "CO3.LO1"
+    ],
+    "uses_topics": [
+     "M3.T1"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.7071314
+  },
+  "P-CSE201-DEV/W06.TUT": {
+   "uid": "P-CSE201-DEV/W06.TUT",
+   "local_id": "W06.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 6,
+    "id": "W06.TUT",
+    "activity": "Draw UML class and sequence diagrams for the sample system; peer‑review diagrams",
+    "practises_los": [
+     "CO3.LO2"
+    ],
+    "uses_topics": [
+     "M3.T2"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.7071586
+  },
+  "P-CSE201-DEV/W07.TUT": {
+   "uid": "P-CSE201-DEV/W07.TUT",
+   "local_id": "W07.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 7,
+    "id": "W07.TUT",
+    "activity": "Introduce version‑control workflow; create a repository and commit initial design artifacts",
+    "practises_los": [
+     "CO5.LO1"
+    ],
+    "uses_topics": [
+     "M4.T1"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.7071865
+  },
+  "P-CSE201-DEV/W08.TUT": {
+   "uid": "P-CSE201-DEV/W08.TUT",
+   "local_id": "W08.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 8,
+    "id": "W08.TUT",
+    "activity": "Implement a synchronized counter using threads and locks; run concurrency tests",
+    "practises_los": [
+     "CO4.LO1"
+    ],
+    "uses_topics": [
+     "M5.T1"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.7072136
+  },
+  "P-CSE201-DEV/W09.TUT": {
+   "uid": "P-CSE201-DEV/W09.TUT",
+   "local_id": "W09.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 9,
+    "id": "W09.TUT",
+    "activity": "Build a thread‑pool based producer‑consumer demo; analyse thread‑safety",
+    "practises_los": [
+     "CO4.LO2"
+    ],
+    "uses_topics": [
+     "M5.T2"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.70724
+  },
+  "P-CSE201-DEV/W10.TUT": {
+   "uid": "P-CSE201-DEV/W10.TUT",
+   "local_id": "W10.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 10,
+    "id": "W10.TUT",
+    "activity": "Create a simple GUI event‑driven application; pair‑program and integrate with version control",
+    "practises_los": [
+     "CO5.LO2"
+    ],
+    "uses_topics": [
+     "M5.T3"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.7072656
+  },
+  "P-CSE201-DEV/W11.TUT": {
+   "uid": "P-CSE201-DEV/W11.TUT",
+   "local_id": "W11.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 11,
+    "id": "W11.TUT",
+    "activity": "Open tutorial for catch‑up, discussion of any pending concepts, and preparation for final assessment",
+    "practises_los": [],
+    "uses_topics": [],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.7072914
+  },
+  "P-CSE201-DEV/W12.TUT": {
+   "uid": "P-CSE201-DEV/W12.TUT",
+   "local_id": "W12.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 12,
+    "id": "W12.TUT",
+    "activity": "Open tutorial for project demo rehearsals and peer feedback",
+    "practises_los": [],
+    "uses_topics": [],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.7073162
+  },
+  "P-CSE201-DEV/W13.TUT": {
+   "uid": "P-CSE201-DEV/W13.TUT",
+   "local_id": "W13.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 13,
+    "id": "W13.TUT",
+    "activity": "Open tutorial for final Q&A and reflection on learning outcomes",
+    "practises_los": [],
+    "uses_topics": [],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.707341
+  },
+  "P-CSE201-DEV/A:Quiz1": {
+   "uid": "P-CSE201-DEV/A:Quiz1",
+   "local_id": "A:Quiz1",
+   "label": "Assessment",
+   "props": {
+    "id": "A:Quiz1",
+    "release_week": 2,
+    "due_week": 2,
+    "format": "MCQ and short-answer quiz",
+    "covers_topics": [
+     "M1.T1",
+     "M1.T2",
+     "M1.T3",
+     "M1.T4"
+    ],
+    "assesses": [
+     {
+      "lo_id": "CO1.LO1",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 3
+     },
+     {
+      "lo_id": "CO1.LO2",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 3
+     }
+    ],
+    "est_student_hours": 2.0,
+    "feeds_from_lab": null,
+    "type": "quiz",
+    "component_weight_pct": 10.0,
+    "activity_types": [
+     "analyse-data",
+     "tool-use"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G9",
+   "prompt_id": "G9",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.7074032
+  },
+  "P-CSE201-DEV/A:Quiz2": {
+   "uid": "P-CSE201-DEV/A:Quiz2",
+   "local_id": "A:Quiz2",
+   "label": "Assessment",
+   "props": {
+    "id": "A:Quiz2",
+    "release_week": 4,
+    "due_week": 4,
+    "format": "MCQ and short-answer quiz",
+    "covers_topics": [
+     "M2.T1",
+     "M2.T2",
+     "M2.T3",
+     "M2.T4"
+    ],
+    "assesses": [
+     {
+      "lo_id": "CO1.LO3",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 3
+     },
+     {
+      "lo_id": "CO2.LO1",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 3
+     }
+    ],
+    "est_student_hours": 2.0,
+    "feeds_from_lab": null,
+    "type": "quiz",
+    "component_weight_pct": 10.0,
+    "activity_types": [
+     "analyse-data",
+     "tool-use"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G9",
+   "prompt_id": "G9",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.7075503
+  },
+  "P-CSE201-DEV/A:Quiz3": {
+   "uid": "P-CSE201-DEV/A:Quiz3",
+   "local_id": "A:Quiz3",
+   "label": "Assessment",
+   "props": {
+    "id": "A:Quiz3",
+    "release_week": 7,
+    "due_week": 7,
+    "format": "MCQ and short-answer quiz",
+    "covers_topics": [
+     "M3.T1",
+     "M3.T2",
+     "M4.T1"
+    ],
+    "assesses": [
+     {
+      "lo_id": "CO3.LO1",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 4
+     },
+     {
+      "lo_id": "CO5.LO1",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 3
+     }
+    ],
+    "est_student_hours": 2.0,
+    "feeds_from_lab": null,
+    "type": "quiz",
+    "component_weight_pct": 10.0,
+    "activity_types": [
+     "analyse-data",
+     "tool-use"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G9",
+   "prompt_id": "G9",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.707695
+  },
+  "P-CSE201-DEV/A:Quiz4": {
+   "uid": "P-CSE201-DEV/A:Quiz4",
+   "local_id": "A:Quiz4",
+   "label": "Assessment",
+   "props": {
+    "id": "A:Quiz4",
+    "release_week": 9,
+    "due_week": 9,
+    "format": "MCQ and short-answer quiz",
+    "covers_topics": [
+     "M5.T1",
+     "M5.T2"
+    ],
+    "assesses": [
+     {
+      "lo_id": "CO4.LO1",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 3
+     },
+     {
+      "lo_id": "CO4.LO2",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 3
+     }
+    ],
+    "est_student_hours": 2.0,
+    "feeds_from_lab": null,
+    "type": "quiz",
+    "component_weight_pct": 10.0,
+    "activity_types": [
+     "analyse-data",
+     "tool-use"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G9",
+   "prompt_id": "G9",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.7078326
+  },
+  "P-CSE201-DEV/A:PA1": {
+   "uid": "P-CSE201-DEV/A:PA1",
+   "local_id": "A:PA1",
+   "label": "Assessment",
+   "props": {
+    "id": "A:PA1",
+    "release_week": 2,
+    "due_week": 4,
+    "format": "Programming assignment",
+    "covers_topics": [
+     "M1.T1",
+     "M1.T2",
+     "M1.T3",
+     "M1.T4"
+    ],
+    "assesses": [
+     {
+      "lo_id": "CO1.LO1",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 3
+     },
+     {
+      "lo_id": "CO1.LO2",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 3
+     }
+    ],
+    "est_student_hours": 10.0,
+    "feeds_from_lab": null,
+    "type": "assignment",
+    "component_weight_pct": 20.0,
+    "activity_types": [
+     "implement",
+     "tool-use"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G9",
+   "prompt_id": "G9",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.7080615
+  },
+  "P-CSE201-DEV/A:PA2": {
+   "uid": "P-CSE201-DEV/A:PA2",
+   "local_id": "A:PA2",
+   "label": "Assessment",
+   "props": {
+    "id": "A:PA2",
+    "release_week": 4,
+    "due_week": 6,
+    "format": "Programming assignment",
+    "covers_topics": [
+     "M2.T1",
+     "M2.T2",
+     "M2.T3",
+     "M2.T4"
+    ],
+    "assesses": [
+     {
+      "lo_id": "CO1.LO3",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 3
+     },
+     {
+      "lo_id": "CO2.LO1",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 3
+     }
+    ],
+    "est_student_hours": 10.0,
+    "feeds_from_lab": null,
+    "type": "assignment",
+    "component_weight_pct": 20.0,
+    "activity_types": [
+     "implement",
+     "tool-use"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G9",
+   "prompt_id": "G9",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.7084084
+  },
+  "P-CSE201-DEV/A:PA3": {
+   "uid": "P-CSE201-DEV/A:PA3",
+   "local_id": "A:PA3",
+   "label": "Assessment",
+   "props": {
+    "id": "A:PA3",
+    "release_week": 7,
+    "due_week": 8,
+    "format": "Programming assignment",
+    "covers_topics": [
+     "M2.T4",
+     "M4.T1"
+    ],
+    "assesses": [
+     {
+      "lo_id": "CO2.LO2",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 3
+     },
+     {
+      "lo_id": "CO5.LO1",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 3
+     }
+    ],
+    "est_student_hours": 10.0,
+    "feeds_from_lab": null,
+    "type": "assignment",
+    "component_weight_pct": 20.0,
+    "activity_types": [
+     "implement",
+     "tool-use"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G9",
+   "prompt_id": "G9",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.7087493
+  },
+  "P-CSE201-DEV/A:PA4": {
+   "uid": "P-CSE201-DEV/A:PA4",
+   "local_id": "A:PA4",
+   "label": "Assessment",
+   "props": {
+    "id": "A:PA4",
+    "release_week": 9,
+    "due_week": 10,
+    "format": "Programming assignment",
+    "covers_topics": [
+     "M5.T1",
+     "M5.T2"
+    ],
+    "assesses": [
+     {
+      "lo_id": "CO4.LO1",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 3
+     },
+     {
+      "lo_id": "CO4.LO2",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 3
+     }
+    ],
+    "est_student_hours": 10.0,
+    "feeds_from_lab": null,
+    "type": "assignment",
+    "component_weight_pct": 20.0,
+    "activity_types": [
+     "implement",
+     "tool-use"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G9",
+   "prompt_id": "G9",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.7088854
+  },
+  "P-CSE201-DEV/A:ProjMilestone1": {
+   "uid": "P-CSE201-DEV/A:ProjMilestone1",
+   "local_id": "A:ProjMilestone1",
+   "label": "Assessment",
+   "props": {
+    "id": "A:ProjMilestone1",
+    "release_week": 4,
+    "due_week": 7,
+    "format": "Design document and use-case specifications",
+    "covers_topics": [
+     "M3.T1",
+     "M3.T2"
+    ],
+    "assesses": [
+     {
+      "lo_id": "CO3.LO1",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 4
+     },
+     {
+      "lo_id": "CO3.LO2",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 4
+     }
+    ],
+    "est_student_hours": 15.0,
+    "feeds_from_lab": null,
+    "type": "project",
+    "component_weight_pct": 25.0,
+    "activity_types": [
+     "design",
+     "implement",
+     "evaluate-critique",
+     "teamwork",
+     "written-communication",
+     "oral-presentation",
+     "tool-use"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G9",
+   "prompt_id": "G9",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.709019
+  },
+  "P-CSE201-DEV/A:ProjMilestone2": {
+   "uid": "P-CSE201-DEV/A:ProjMilestone2",
+   "local_id": "A:ProjMilestone2",
+   "label": "Assessment",
+   "props": {
+    "id": "A:ProjMilestone2",
+    "release_week": 8,
+    "due_week": 13,
+    "format": "Working multi-component GUI application, source code, and evaluation report",
+    "covers_topics": [
+     "M4.T2",
+     "M5.T1",
+     "M5.T2",
+     "M5.T3"
+    ],
+    "assesses": [
+     {
+      "lo_id": "CO4.LO2",
+      "marks_pct_of_instance": 40.0,
+      "bloom_level": 3
+     },
+     {
+      "lo_id": "CO5.LO2",
+      "marks_pct_of_instance": 60.0,
+      "bloom_level": 5
+     }
+    ],
+    "est_student_hours": 30.0,
+    "feeds_from_lab": null,
+    "type": "project",
+    "component_weight_pct": 25.0,
+    "activity_types": [
+     "design",
+     "implement",
+     "evaluate-critique",
+     "teamwork",
+     "written-communication",
+     "oral-presentation",
+     "tool-use"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G9",
+   "prompt_id": "G9",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.709147
+  },
+  "P-CSE201-DEV/A:Midsem": {
+   "uid": "P-CSE201-DEV/A:Midsem",
+   "local_id": "A:Midsem",
+   "label": "Assessment",
+   "props": {
+    "id": "A:Midsem",
+    "release_week": 7,
+    "due_week": 7,
+    "format": "Invigilated written exam",
+    "covers_topics": [
+     "M1.T1",
+     "M1.T2",
+     "M1.T3",
+     "M1.T4",
+     "M2.T1",
+     "M2.T2",
+     "M2.T3",
+     "M2.T4",
+     "M3.T1",
+     "M3.T2",
+     "M4.T1"
+    ],
+    "assesses": [
+     {
+      "lo_id": "CO1.LO1",
+      "marks_pct_of_instance": 20.0,
+      "bloom_level": 3
+     },
+     {
+      "lo_id": "CO1.LO2",
+      "marks_pct_of_instance": 20.0,
+      "bloom_level": 3
+     },
+     {
+      "lo_id": "CO1.LO3",
+      "marks_pct_of_instance": 20.0,
+      "bloom_level": 3
+     },
+     {
+      "lo_id": "CO2.LO1",
+      "marks_pct_of_instance": 20.0,
+      "bloom_level": 3
+     },
+     {
+      "lo_id": "CO3.LO1",
+      "marks_pct_of_instance": 20.0,
+      "bloom_level": 4
+     }
+    ],
+    "est_student_hours": 0.0,
+    "feeds_from_lab": null,
+    "type": "midsem",
+    "component_weight_pct": 20.0,
+    "activity_types": [
+     "design",
+     "implement",
+     "analyse-data"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G9",
+   "prompt_id": "G9",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.7093186
+  },
+  "P-CSE201-DEV/A:Endsem": {
+   "uid": "P-CSE201-DEV/A:Endsem",
+   "local_id": "A:Endsem",
+   "label": "Assessment",
+   "props": {
+    "id": "A:Endsem",
+    "release_week": 13,
+    "due_week": 13,
+    "format": "Invigilated comprehensive written exam",
+    "covers_topics": [
+     "M1.T1",
+     "M1.T2",
+     "M1.T3",
+     "M1.T4",
+     "M2.T1",
+     "M2.T2",
+     "M2.T3",
+     "M2.T4",
+     "M3.T1",
+     "M3.T2",
+     "M4.T1",
+     "M4.T2",
+     "M5.T1",
+     "M5.T2",
+     "M5.T3"
+    ],
+    "assesses": [
+     {
+      "lo_id": "CO1.LO3",
+      "marks_pct_of_instance": 20.0,
+      "bloom_level": 3
+     },
+     {
+      "lo_id": "CO2.LO2",
+      "marks_pct_of_instance": 20.0,
+      "bloom_level": 3
+     },
+     {
+      "lo_id": "CO3.LO2",
+      "marks_pct_of_instance": 20.0,
+      "bloom_level": 4
+     },
+     {
+      "lo_id": "CO4.LO1",
+      "marks_pct_of_instance": 20.0,
+      "bloom_level": 3
+     },
+     {
+      "lo_id": "CO4.LO2",
+      "marks_pct_of_instance": 20.0,
+      "bloom_level": 3
+     }
+    ],
+    "est_student_hours": 0.0,
+    "feeds_from_lab": null,
+    "type": "endsem",
+    "component_weight_pct": 25.0,
+    "activity_types": [
+     "design",
+     "implement",
+     "analyse-data",
+     "evaluate-critique"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G9",
+   "prompt_id": "G9",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773502.709691
+  },
+  "P-CSE201-DEV/RES:OL:OL25783599W": {
+   "uid": "P-CSE201-DEV/RES:OL:OL25783599W",
+   "local_id": "RES:OL:OL25783599W",
+   "label": "Resource",
+   "props": {
+    "candidate_id": "OL:OL25783599W",
+    "role": "primary",
+    "title": "Effective Java",
+    "authors": [
+     "Joshua Bloch"
+    ],
+    "year": 2008,
+    "edition": "2nd",
+    "venue": "Pearson Education, Limited",
+    "identifier": {
+     "isbn": "9780132778046",
+     "doi": null,
+     "arxiv": null,
+     "url": "https://openlibrary.org/works/OL25783599W"
+    },
+    "supports_topics": [
+     {
+      "topic_id": "M1.T1",
+      "reason": "Best practices for writing clean classes, objects, and encapsulation."
+     },
+     {
+      "topic_id": "M2.T1",
+      "reason": "Best practices for writing and using generic types and methods."
+     },
+     {
+      "topic_id": "M2.T3",
+      "reason": "Effective use of exceptions and defensive programming."
+     }
+    ],
+    "sources": [
+     {
+      "tag": "EXTERNAL",
+      "ref": "OL:OL25783599W",
+      "basis": null
+     }
+    ],
+    "verification": {
+     "verified": true,
+     "problems": []
+    }
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G10",
+   "prompt_id": "G10",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "https://openlibrary.org/works/OL25783599W"
+    }
+   ],
+   "ts": 1790773513.8517418
+  },
+  "P-CSE201-DEV/RES:OL:OL6030812W": {
+   "uid": "P-CSE201-DEV/RES:OL:OL6030812W",
+   "local_id": "RES:OL:OL6030812W",
+   "label": "Resource",
+   "props": {
+    "candidate_id": "OL:OL6030812W",
+    "role": "primary",
+    "title": "Design Patterns: Elements of Reusable Object-Oriented Software",
+    "authors": [
+     "Erich Gamma",
+     "John Vlissides",
+     "Richard Helm",
+     "Ralph Johnson"
+    ],
+    "year": 1995,
+    "edition": null,
+    "venue": "Addison-Wesley",
+    "identifier": {
+     "isbn": "9780133052664",
+     "doi": null,
+     "arxiv": null,
+     "url": "https://openlibrary.org/works/OL6030812W"
+    },
+    "supports_topics": [
+     {
+      "topic_id": "M4.T2",
+      "reason": "Comprehensive coverage of creational, structural, and behavioural design patterns."
+     }
+    ],
+    "sources": [
+     {
+      "tag": "EXTERNAL",
+      "ref": "OL:OL6030812W",
+      "basis": null
+     }
+    ],
+    "verification": {
+     "verified": true,
+     "problems": []
+    }
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G10",
+   "prompt_id": "G10",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "https://openlibrary.org/works/OL6030812W"
+    }
+   ],
+   "ts": 1790773513.8519406
+  },
+  "P-CSE201-DEV/RES:OL:OL16512736W": {
+   "uid": "P-CSE201-DEV/RES:OL:OL16512736W",
+   "local_id": "RES:OL:OL16512736W",
+   "label": "Resource",
+   "props": {
+    "candidate_id": "OL:OL16512736W",
+    "role": "reference",
+    "title": "Java Concurrency in Practice",
+    "authors": [
+     "Brian Goetz",
+     "Joshua Bloch",
+     "Joseph Bowbeer",
+     "Doug Lea"
+    ],
+    "year": 2006,
+    "edition": null,
+    "venue": "Pearson Education, Limited",
+    "identifier": {
+     "isbn": "9780132702256",
+     "doi": null,
+     "arxiv": null,
+     "url": "https://openlibrary.org/works/OL16512736W"
+    },
+    "supports_topics": [
+     {
+      "topic_id": "M5.T1",
+      "reason": "Fundamentals of threads, mutual exclusion, and locks."
+     },
+     {
+      "topic_id": "M5.T2",
+      "reason": "Thread pools and producer-consumer implementations."
+     }
+    ],
+    "sources": [
+     {
+      "tag": "EXTERNAL",
+      "ref": "OL:OL16512736W",
+      "basis": null
+     }
+    ],
+    "verification": {
+     "verified": true,
+     "problems": []
+    }
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G10",
+   "prompt_id": "G10",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "https://openlibrary.org/works/OL16512736W"
+    }
+   ],
+   "ts": 1790773513.851994
+  },
+  "P-CSE201-DEV/APP3": {
+   "uid": "P-CSE201-DEV/APP3",
+   "local_id": "APP3",
+   "label": "Approval",
+   "props": {
+    "gate": "gate3_proposal",
+    "decision": "approve",
+    "by": "auto (dev run)",
+    "comment": "auto-approved; not a professor decision",
+    "at": 1790773517.371077,
+    "frozen": 0,
+    "open_errors": 3
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "auto (dev run)",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1790773517.3711174
+  }
+ },
+ "edges": [
+  {
+   "src": "P-CSE201-DEV/COURSE",
+   "rel": "REQUIRES",
+   "dst": "CSE101",
+   "props": {
+    "kind": "mandatory",
+    "relied_topics": [
+     "classes, objects, inheritance",
+     "Exception handling, assertions"
+    ],
+    "justification": "Students need foundational familiarity with basic programming constructs, functions, and introductory object concepts before moving to advanced object-oriented design and application structuring."
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/COURSE",
+   "rel": "REQUIRES",
+   "dst": "CSE102",
+   "props": {
+    "kind": "mandatory",
+    "relied_topics": [
+     "Handling arrays, methods, linear search, sorting",
+     "Linked lists, stacks, queues, trees"
+    ],
+    "justification": "Understanding standard data structures and algorithmic complexity is required before utilizing collection frameworks and building multi-component applications."
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "CSE101",
+   "props": {
+    "weighted_jaccard": 0.095,
+    "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "CSE584",
+   "props": {
+    "weighted_jaccard": 0.053,
+    "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "CSE222",
+   "props": {
+    "weighted_jaccard": 0.0,
+    "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "CSE581",
+   "props": {
+    "weighted_jaccard": 0.0,
+    "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "CSE231",
+   "props": {
+    "weighted_jaccard": 0.0,
+    "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "CSE503",
+   "props": {
+    "weighted_jaccard": 0.0,
+    "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "CSE701",
+   "props": {
+    "weighted_jaccard": 0.0,
+    "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "CSE202",
+   "props": {
+    "weighted_jaccard": 0.0,
+    "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "CSE102",
+   "props": {
+    "weighted_jaccard": 0.0,
+    "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "CSE600",
+   "props": {
+    "weighted_jaccard": 0.0,
+    "method": "stub: no topics"
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "CSE583",
+   "props": {
+    "weighted_jaccard": 0.0,
+    "method": "stub: no topics"
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "AI501",
+   "props": {
+    "weighted_jaccard": 0.0,
+    "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/COURSE",
+   "rel": "COMPARABLE_TO",
+   "dst": "EXT:STANFORD/CS108",
+   "props": {
+    "take": "Incorporate software-engineering strategies for team programming, GUI libraries, and practical design patterns applied to Java libraries.",
+    "avoid": "Avoid excessive focus on platform-specific proprietary GUI frameworks without emphasizing portable object-oriented design principles."
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/COURSE",
+   "rel": "COMPARABLE_TO",
+   "dst": "EXT:NUS/CS2113",
+   "props": {
+    "take": "Adopt industry-standard tools such as test automation, build automation, version control revisioning, and systematic team project management.",
+    "avoid": "Avoid shifting primary focus away from core object-oriented design towards general software engineering life-cycle management."
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/COURSE",
+   "rel": "COMPARABLE_TO",
+   "dst": "EXT:STANFORD/CS190",
+   "props": {
+    "take": "Use studio-style code reviews, discussions on minimizing code complexity, and techniques for creating deep, modular classes.",
+    "avoid": "Avoid relying solely on a studio format without structured milestones for the pair-programming application project."
+   }
+  },
+  {
+   "src": "CO1",
+   "rel": "COVERS_GROUP",
+   "dst": "TG1",
+   "props": {}
+  },
+  {
+   "src": "CO1",
+   "rel": "COVERS_GROUP",
+   "dst": "TG2",
+   "props": {}
+  },
+  {
+   "src": "CO1",
+   "rel": "COVERS_GROUP",
+   "dst": "TG3",
+   "props": {}
+  },
+  {
+   "src": "CO2",
+   "rel": "COVERS_GROUP",
+   "dst": "TG4",
+   "props": {}
+  },
+  {
+   "src": "CO3",
+   "rel": "COVERS_GROUP",
+   "dst": "TG6",
+   "props": {}
+  },
+  {
+   "src": "CO3",
+   "rel": "COVERS_GROUP",
+   "dst": "TG9",
+   "props": {}
+  },
+  {
+   "src": "CO4",
+   "rel": "COVERS_GROUP",
+   "dst": "TG8",
+   "props": {}
+  },
+  {
+   "src": "CO5",
+   "rel": "COVERS_GROUP",
+   "dst": "TG5",
+   "props": {}
+  },
+  {
+   "src": "CO5",
+   "rel": "COVERS_GROUP",
+   "dst": "TG7",
+   "props": {}
+  },
+  {
+   "src": "CO1",
+   "rel": "MAPS_TO",
+   "dst": "BTECH-CSE/PO4",
+   "props": {
+    "strength_provisional": 3,
+    "justification": "The CO requires students to design and implement OO software using modern Java tools, directly exercising PO4.",
+    "evidencing_activities": [
+     "implement"
+    ],
+    "strength_computed": 3,
+    "share": 0.831
+   }
+  },
+  {
+   "src": "CO1",
+   "rel": "MAPS_TO",
+   "dst": "BTECH-CSE/PO9",
+   "props": {
+    "strength_provisional": 2,
+    "justification": "Use of Java collections, generics and static analysis tools reflects advanced programming techniques linked to PO9.",
+    "evidencing_activities": [
+     "tool-use"
+    ],
+    "strength_computed": 2,
+    "share": 0.593
+   }
+  },
+  {
+   "src": "CO2",
+   "rel": "MAPS_TO",
+   "dst": "BTECH-CSE/PO4",
+   "props": {
+    "strength_provisional": 3,
+    "justification": "Robust program development via exception handling and I/O requires implementation skills covered by PO4.",
+    "evidencing_activities": [
+     "implement"
+    ],
+    "strength_computed": 3,
+    "share": 0.894
+   }
+  },
+  {
+   "src": "CO2",
+   "rel": "MAPS_TO",
+   "dst": "BTECH-CSE/PO3",
+   "props": {
+    "strength_provisional": 2,
+    "justification": "Choosing appropriate error‑handling techniques adapts known models to new problem specifications.",
+    "evidencing_activities": [
+     "implement"
+    ],
+    "strength_computed": 3,
+    "share": 0.681
+   }
+  },
+  {
+   "src": "CO3",
+   "rel": "MAPS_TO",
+   "dst": "BTECH-CSE/PO4",
+   "props": {
+    "strength_provisional": 3,
+    "justification": "Creating UML artefacts is a core design activity aligning with PO4.",
+    "evidencing_activities": [
+     "design"
+    ],
+    "strength_computed": 3,
+    "share": 0.928
+   }
+  },
+  {
+   "src": "CO3",
+   "rel": "MAPS_TO",
+   "dst": "BTECH-CSE/PO7",
+   "props": {
+    "strength_provisional": 2,
+    "justification": "UML diagrams communicate system design to stakeholders, fulfilling PO7.",
+    "evidencing_activities": [
+     "written-communication"
+    ],
+    "strength_computed": 2,
+    "share": 0.54
+   }
+  },
+  {
+   "src": "CO4",
+   "rel": "MAPS_TO",
+   "dst": "BTECH-CSE/PO4",
+   "props": {
+    "strength_provisional": 3,
+    "justification": "Building concurrent applications is a primary implementation task covered by PO4.",
+    "evidencing_activities": [
+     "implement"
+    ],
+    "strength_computed": 3,
+    "share": 0.857
+   }
+  },
+  {
+   "src": "CO4",
+   "rel": "MAPS_TO",
+   "dst": "BTECH-CSE/PO9",
+   "props": {
+    "strength_provisional": 2,
+    "justification": "Use of threads, synchronization, and thread pools employs advanced concurrency techniques linked to PO9.",
+    "evidencing_activities": [
+     "tool-use"
+    ],
+    "strength_computed": 3,
+    "share": 1.0
+   }
+  },
+  {
+   "src": "CO5",
+   "rel": "MAPS_TO",
+   "dst": "BTECH-CSE/PO5",
+   "props": {
+    "strength_provisional": 3,
+    "justification": "The CO explicitly requires pair work with version control, directly exercising teamwork (PO5).",
+    "evidencing_activities": [
+     "teamwork"
+    ],
+    "strength_computed": 3,
+    "share": 0.643
+   }
+  },
+  {
+   "src": "CO5",
+   "rel": "MAPS_TO",
+   "dst": "BTECH-CSE/PO4",
+   "props": {
+    "strength_provisional": 3,
+    "justification": "Evaluation of a complete system using modern tools aligns with PO4.",
+    "evidencing_activities": [
+     "evaluate-critique"
+    ],
+    "strength_computed": 3,
+    "share": 0.857
+   }
+  },
+  {
+   "src": "CO5",
+   "rel": "MAPS_TO",
+   "dst": "BTECH-CSE/PO7",
+   "props": {
+    "strength_provisional": 2,
+    "justification": "Presentation of the project and code review require effective communication.",
+    "evidencing_activities": [
+     "oral-presentation"
+    ],
+    "strength_computed": 3,
+    "share": 0.643
+   }
+  },
+  {
+   "src": "CO1",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO1.LO1",
+   "props": {}
+  },
+  {
+   "src": "CO1",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO1.LO2",
+   "props": {}
+  },
+  {
+   "src": "CO1.LO2",
+   "rel": "REQUIRES",
+   "dst": "CO1.LO1",
+   "props": {}
+  },
+  {
+   "src": "CO1",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO1.LO3",
+   "props": {}
+  },
+  {
+   "src": "CO1.LO3",
+   "rel": "REQUIRES",
+   "dst": "CO1.LO2",
+   "props": {}
+  },
+  {
+   "src": "CO2",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO2.LO1",
+   "props": {}
+  },
+  {
+   "src": "CO2",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO2.LO2",
+   "props": {}
+  },
+  {
+   "src": "CO2.LO2",
+   "rel": "REQUIRES",
+   "dst": "CO2.LO1",
+   "props": {}
+  },
+  {
+   "src": "CO3",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO3.LO1",
+   "props": {}
+  },
+  {
+   "src": "CO3",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO3.LO2",
+   "props": {}
+  },
+  {
+   "src": "CO3.LO2",
+   "rel": "REQUIRES",
+   "dst": "CO3.LO1",
+   "props": {}
+  },
+  {
+   "src": "CO4",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO4.LO1",
+   "props": {}
+  },
+  {
+   "src": "CO4",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO4.LO2",
+   "props": {}
+  },
+  {
+   "src": "CO4.LO2",
+   "rel": "REQUIRES",
+   "dst": "CO4.LO1",
+   "props": {}
+  },
+  {
+   "src": "CO5",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO5.LO1",
+   "props": {}
+  },
+  {
+   "src": "CO5.LO1",
+   "rel": "REQUIRES",
+   "dst": "CO1.LO3",
+   "props": {}
+  },
+  {
+   "src": "CO5",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO5.LO2",
+   "props": {}
+  },
+  {
+   "src": "CO5.LO2",
+   "rel": "REQUIRES",
+   "dst": "CO5.LO1",
+   "props": {}
+  },
+  {
+   "src": "CO5.LO2",
+   "rel": "REQUIRES",
+   "dst": "CO2.LO2",
+   "props": {}
+  },
+  {
+   "src": "CO5.LO2",
+   "rel": "REQUIRES",
+   "dst": "CO3.LO2",
+   "props": {}
+  },
+  {
+   "src": "CO5.LO2",
+   "rel": "REQUIRES",
+   "dst": "CO4.LO2",
+   "props": {}
+  },
+  {
+   "src": "M1",
+   "rel": "CONTAINS",
+   "dst": "M1.T1",
+   "props": {
+    "order": 1
+   }
+  },
+  {
+   "src": "CO1.LO1",
+   "rel": "TAUGHT_VIA",
+   "dst": "M1.T1",
+   "props": {}
+  },
+  {
+   "src": "M1.T1",
+   "rel": "SAME_AS",
+   "dst": "T:classes-objects-inheritance",
+   "props": {}
+  },
+  {
+   "src": "M1",
+   "rel": "CONTAINS",
+   "dst": "M1.T2",
+   "props": {
+    "order": 2
+   }
+  },
+  {
+   "src": "CO1.LO1",
+   "rel": "TAUGHT_VIA",
+   "dst": "M1.T2",
+   "props": {}
+  },
+  {
+   "src": "M1.T2",
+   "rel": "REQUIRES",
+   "dst": "M1.T1",
+   "props": {}
+  },
+  {
+   "src": "M1.T2",
+   "rel": "SAME_AS",
+   "dst": "T:classes-objects-inheritance",
+   "props": {}
+  },
+  {
+   "src": "M1",
+   "rel": "CONTAINS",
+   "dst": "M1.T3",
+   "props": {
+    "order": 3
+   }
+  },
+  {
+   "src": "CO1.LO2",
+   "rel": "TAUGHT_VIA",
+   "dst": "M1.T3",
+   "props": {}
+  },
+  {
+   "src": "M1.T3",
+   "rel": "REQUIRES",
+   "dst": "M1.T2",
+   "props": {}
+  },
+  {
+   "src": "M1.T3",
+   "rel": "SAME_AS",
+   "dst": "T:polymorphism-and-higher-order-functions",
+   "props": {}
+  },
+  {
+   "src": "M1",
+   "rel": "CONTAINS",
+   "dst": "M1.T4",
+   "props": {
+    "order": 4
+   }
+  },
+  {
+   "src": "CO1.LO2",
+   "rel": "TAUGHT_VIA",
+   "dst": "M1.T4",
+   "props": {}
+  },
+  {
+   "src": "M1.T4",
+   "rel": "REQUIRES",
+   "dst": "M1.T3",
+   "props": {}
+  },
+  {
+   "src": "M1.T4",
+   "rel": "SAME_AS",
+   "dst": "T:polymorphism-and-higher-order-functions",
+   "props": {}
+  },
+  {
+   "src": "M2",
+   "rel": "CONTAINS",
+   "dst": "M2.T1",
+   "props": {
+    "order": 1
+   }
+  },
+  {
+   "src": "CO1.LO3",
+   "rel": "TAUGHT_VIA",
+   "dst": "M2.T1",
+   "props": {}
+  },
+  {
+   "src": "M2.T1",
+   "rel": "REQUIRES",
+   "dst": "M1.T4",
+   "props": {}
+  },
+  {
+   "src": "M2",
+   "rel": "CONTAINS",
+   "dst": "M2.T2",
+   "props": {
+    "order": 2
+   }
+  },
+  {
+   "src": "CO1.LO3",
+   "rel": "TAUGHT_VIA",
+   "dst": "M2.T2",
+   "props": {}
+  },
+  {
+   "src": "M2.T2",
+   "rel": "REQUIRES",
+   "dst": "M2.T1",
+   "props": {}
+  },
+  {
+   "src": "M2",
+   "rel": "CONTAINS",
+   "dst": "M2.T3",
+   "props": {
+    "order": 3
+   }
+  },
+  {
+   "src": "CO2.LO1",
+   "rel": "TAUGHT_VIA",
+   "dst": "M2.T3",
+   "props": {}
+  },
+  {
+   "src": "M2.T3",
+   "rel": "REQUIRES",
+   "dst": "M2.T2",
+   "props": {}
+  },
+  {
+   "src": "M2.T3",
+   "rel": "SAME_AS",
+   "dst": "T:exception-handling-assertions",
+   "props": {}
+  },
+  {
+   "src": "M2",
+   "rel": "CONTAINS",
+   "dst": "M2.T4",
+   "props": {
+    "order": 4
+   }
+  },
+  {
+   "src": "CO2.LO2",
+   "rel": "TAUGHT_VIA",
+   "dst": "M2.T4",
+   "props": {}
+  },
+  {
+   "src": "M2.T4",
+   "rel": "REQUIRES",
+   "dst": "M2.T3",
+   "props": {}
+  },
+  {
+   "src": "M3",
+   "rel": "CONTAINS",
+   "dst": "M3.T1",
+   "props": {
+    "order": 1
+   }
+  },
+  {
+   "src": "CO3.LO1",
+   "rel": "TAUGHT_VIA",
+   "dst": "M3.T1",
+   "props": {}
+  },
+  {
+   "src": "M3",
+   "rel": "CONTAINS",
+   "dst": "M3.T2",
+   "props": {
+    "order": 2
+   }
+  },
+  {
+   "src": "CO3.LO2",
+   "rel": "TAUGHT_VIA",
+   "dst": "M3.T2",
+   "props": {}
+  },
+  {
+   "src": "M3.T2",
+   "rel": "REQUIRES",
+   "dst": "M3.T1",
+   "props": {}
+  },
+  {
+   "src": "M4",
+   "rel": "CONTAINS",
+   "dst": "M4.T1",
+   "props": {
+    "order": 1
+   }
+  },
+  {
+   "src": "CO5.LO1",
+   "rel": "TAUGHT_VIA",
+   "dst": "M4.T1",
+   "props": {}
+  },
+  {
+   "src": "M4.T1",
+   "rel": "REQUIRES",
+   "dst": "M2.T2",
+   "props": {}
+  },
+  {
+   "src": "M4",
+   "rel": "CONTAINS",
+   "dst": "M4.T2",
+   "props": {
+    "order": 2
+   }
+  },
+  {
+   "src": "CO3.LO2",
+   "rel": "TAUGHT_VIA",
+   "dst": "M4.T2",
+   "props": {}
+  },
+  {
+   "src": "M4.T2",
+   "rel": "REQUIRES",
+   "dst": "M1.T4",
+   "props": {}
+  },
+  {
+   "src": "M5",
+   "rel": "CONTAINS",
+   "dst": "M5.T1",
+   "props": {
+    "order": 1
+   }
+  },
+  {
+   "src": "CO4.LO1",
+   "rel": "TAUGHT_VIA",
+   "dst": "M5.T1",
+   "props": {}
+  },
+  {
+   "src": "M5.T1",
+   "rel": "SAME_AS",
+   "dst": "T:ipc-synchronization",
+   "props": {}
+  },
+  {
+   "src": "M5",
+   "rel": "CONTAINS",
+   "dst": "M5.T2",
+   "props": {
+    "order": 2
+   }
+  },
+  {
+   "src": "CO4.LO2",
+   "rel": "TAUGHT_VIA",
+   "dst": "M5.T2",
+   "props": {}
+  },
+  {
+   "src": "M5.T2",
+   "rel": "REQUIRES",
+   "dst": "M5.T1",
+   "props": {}
+  },
+  {
+   "src": "M5",
+   "rel": "CONTAINS",
+   "dst": "M5.T3",
+   "props": {
+    "order": 3
+   }
+  },
+  {
+   "src": "CO5.LO2",
+   "rel": "TAUGHT_VIA",
+   "dst": "M5.T3",
+   "props": {}
+  },
+  {
+   "src": "M5.T3",
+   "rel": "REQUIRES",
+   "dst": "M1.T4",
+   "props": {}
+  },
+  {
+   "src": "W01.L1",
+   "rel": "IN_WEEK",
+   "dst": "W01",
+   "props": {}
+  },
+  {
+   "src": "M1.T1",
+   "rel": "DELIVERED_IN",
+   "dst": "W01.L1",
+   "props": {
+    "hours": 1.5
+   }
+  },
+  {
+   "src": "W01.L2",
+   "rel": "IN_WEEK",
+   "dst": "W01",
+   "props": {}
+  },
+  {
+   "src": "M1.T2",
+   "rel": "DELIVERED_IN",
+   "dst": "W01.L2",
+   "props": {
+    "hours": 1.5
+   }
+  },
+  {
+   "src": "W02.L1",
+   "rel": "IN_WEEK",
+   "dst": "W02",
+   "props": {}
+  },
+  {
+   "src": "M1.T3",
+   "rel": "DELIVERED_IN",
+   "dst": "W02.L1",
+   "props": {
+    "hours": 1.5
+   }
+  },
+  {
+   "src": "W02.L2",
+   "rel": "IN_WEEK",
+   "dst": "W02",
+   "props": {}
+  },
+  {
+   "src": "M1.T4",
+   "rel": "DELIVERED_IN",
+   "dst": "W02.L2",
+   "props": {
+    "hours": 1.5
+   }
+  },
+  {
+   "src": "W03.L1",
+   "rel": "IN_WEEK",
+   "dst": "W03",
+   "props": {}
+  },
+  {
+   "src": "M2.T1",
+   "rel": "DELIVERED_IN",
+   "dst": "W03.L1",
+   "props": {
+    "hours": 1.5
+   }
+  },
+  {
+   "src": "W03.L2",
+   "rel": "IN_WEEK",
+   "dst": "W03",
+   "props": {}
+  },
+  {
+   "src": "M2.T2",
+   "rel": "DELIVERED_IN",
+   "dst": "W03.L2",
+   "props": {
+    "hours": 1.5
+   }
+  },
+  {
+   "src": "W04.L1",
+   "rel": "IN_WEEK",
+   "dst": "W04",
+   "props": {}
+  },
+  {
+   "src": "M2.T3",
+   "rel": "DELIVERED_IN",
+   "dst": "W04.L1",
+   "props": {
+    "hours": 1.5
+   }
+  },
+  {
+   "src": "W04.L2",
+   "rel": "IN_WEEK",
+   "dst": "W04",
+   "props": {}
+  },
+  {
+   "src": "M2.T4",
+   "rel": "DELIVERED_IN",
+   "dst": "W04.L2",
+   "props": {
+    "hours": 1.5
+   }
+  },
+  {
+   "src": "W05.L1",
+   "rel": "IN_WEEK",
+   "dst": "W05",
+   "props": {}
+  },
+  {
+   "src": "M3.T1",
+   "rel": "DELIVERED_IN",
+   "dst": "W05.L1",
+   "props": {
+    "hours": 2.0
+   }
+  },
+  {
+   "src": "W05.L2",
+   "rel": "IN_WEEK",
+   "dst": "W05",
+   "props": {}
+  },
+  {
+   "src": "M3.T2",
+   "rel": "DELIVERED_IN",
+   "dst": "W05.L2",
+   "props": {
+    "hours": 1.0
+   }
+  },
+  {
+   "src": "W06.L1",
+   "rel": "IN_WEEK",
+   "dst": "W06",
+   "props": {}
+  },
+  {
+   "src": "M3.T2",
+   "rel": "DELIVERED_IN",
+   "dst": "W06.L1",
+   "props": {
+    "hours": 1.0
+   }
+  },
+  {
+   "src": "W06.L2",
+   "rel": "IN_WEEK",
+   "dst": "W06",
+   "props": {}
+  },
+  {
+   "src": "M4.T1",
+   "rel": "DELIVERED_IN",
+   "dst": "W06.L2",
+   "props": {
+    "hours": 2.0
+   }
+  },
+  {
+   "src": "W07.L1",
+   "rel": "IN_WEEK",
+   "dst": "W07",
+   "props": {}
+  },
+  {
+   "src": "M4.T1",
+   "rel": "DELIVERED_IN",
+   "dst": "W07.L1",
+   "props": {
+    "hours": 0.5
+   }
+  },
+  {
+   "src": "W07.L2",
+   "rel": "IN_WEEK",
+   "dst": "W07",
+   "props": {}
+  },
+  {
+   "src": "M4.T2",
+   "rel": "DELIVERED_IN",
+   "dst": "W07.L2",
+   "props": {
+    "hours": 2.5
+   }
+  },
+  {
+   "src": "W08.L1",
+   "rel": "IN_WEEK",
+   "dst": "W08",
+   "props": {}
+  },
+  {
+   "src": "M5.T1",
+   "rel": "DELIVERED_IN",
+   "dst": "W08.L1",
+   "props": {
+    "hours": 2.0
+   }
+  },
+  {
+   "src": "W08.L2",
+   "rel": "IN_WEEK",
+   "dst": "W08",
+   "props": {}
+  },
+  {
+   "src": "M5.T2",
+   "rel": "DELIVERED_IN",
+   "dst": "W08.L2",
+   "props": {
+    "hours": 1.0
+   }
+  },
+  {
+   "src": "W09.L1",
+   "rel": "IN_WEEK",
+   "dst": "W09",
+   "props": {}
+  },
+  {
+   "src": "M5.T2",
+   "rel": "DELIVERED_IN",
+   "dst": "W09.L1",
+   "props": {
+    "hours": 1.0
+   }
+  },
+  {
+   "src": "W09.L2",
+   "rel": "IN_WEEK",
+   "dst": "W09",
+   "props": {}
+  },
+  {
+   "src": "M5.T3",
+   "rel": "DELIVERED_IN",
+   "dst": "W09.L2",
+   "props": {
+    "hours": 2.0
+   }
+  },
+  {
+   "src": "W10.L1",
+   "rel": "IN_WEEK",
+   "dst": "W10",
+   "props": {}
+  },
+  {
+   "src": "M5.T3",
+   "rel": "DELIVERED_IN",
+   "dst": "W10.L1",
+   "props": {
+    "hours": 0.5
+   }
+  },
+  {
+   "src": "W01.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W01",
+   "props": {}
+  },
+  {
+   "src": "W02.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W02",
+   "props": {}
+  },
+  {
+   "src": "W03.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W03",
+   "props": {}
+  },
+  {
+   "src": "W04.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W04",
+   "props": {}
+  },
+  {
+   "src": "W05.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W05",
+   "props": {}
+  },
+  {
+   "src": "W06.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W06",
+   "props": {}
+  },
+  {
+   "src": "W07.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W07",
+   "props": {}
+  },
+  {
+   "src": "W08.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W08",
+   "props": {}
+  },
+  {
+   "src": "W09.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W09",
+   "props": {}
+  },
+  {
+   "src": "W10.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W10",
+   "props": {}
+  },
+  {
+   "src": "W11.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W11",
+   "props": {}
+  },
+  {
+   "src": "W12.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W12",
+   "props": {}
+  },
+  {
+   "src": "W13.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W13",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz1",
+   "rel": "RELEASED_IN",
+   "dst": "W02",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz1",
+   "rel": "DUE_IN",
+   "dst": "W02",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz1",
+   "rel": "ASSESSES",
+   "dst": "CO1.LO1",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz1",
+   "rel": "ASSESSES",
+   "dst": "CO1.LO2",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz1",
+   "rel": "COVERS",
+   "dst": "M1.T1",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz1",
+   "rel": "COVERS",
+   "dst": "M1.T2",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz1",
+   "rel": "COVERS",
+   "dst": "M1.T3",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz1",
+   "rel": "COVERS",
+   "dst": "M1.T4",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz2",
+   "rel": "RELEASED_IN",
+   "dst": "W04",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz2",
+   "rel": "DUE_IN",
+   "dst": "W04",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz2",
+   "rel": "ASSESSES",
+   "dst": "CO1.LO3",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz2",
+   "rel": "ASSESSES",
+   "dst": "CO2.LO1",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz2",
+   "rel": "COVERS",
+   "dst": "M2.T1",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz2",
+   "rel": "COVERS",
+   "dst": "M2.T2",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz2",
+   "rel": "COVERS",
+   "dst": "M2.T3",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz2",
+   "rel": "COVERS",
+   "dst": "M2.T4",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz3",
+   "rel": "RELEASED_IN",
+   "dst": "W07",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz3",
+   "rel": "DUE_IN",
+   "dst": "W07",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz3",
+   "rel": "ASSESSES",
+   "dst": "CO3.LO1",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 4
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz3",
+   "rel": "ASSESSES",
+   "dst": "CO5.LO1",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz3",
+   "rel": "COVERS",
+   "dst": "M3.T1",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz3",
+   "rel": "COVERS",
+   "dst": "M3.T2",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz3",
+   "rel": "COVERS",
+   "dst": "M4.T1",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz4",
+   "rel": "RELEASED_IN",
+   "dst": "W09",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz4",
+   "rel": "DUE_IN",
+   "dst": "W09",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz4",
+   "rel": "ASSESSES",
+   "dst": "CO4.LO1",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz4",
+   "rel": "ASSESSES",
+   "dst": "CO4.LO2",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz4",
+   "rel": "COVERS",
+   "dst": "M5.T1",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Quiz4",
+   "rel": "COVERS",
+   "dst": "M5.T2",
+   "props": {}
+  },
+  {
+   "src": "A:PA1",
+   "rel": "RELEASED_IN",
+   "dst": "W02",
+   "props": {}
+  },
+  {
+   "src": "A:PA1",
+   "rel": "DUE_IN",
+   "dst": "W04",
+   "props": {}
+  },
+  {
+   "src": "A:PA1",
+   "rel": "ASSESSES",
+   "dst": "CO1.LO1",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "A:PA1",
+   "rel": "ASSESSES",
+   "dst": "CO1.LO2",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "A:PA1",
+   "rel": "COVERS",
+   "dst": "M1.T1",
+   "props": {}
+  },
+  {
+   "src": "A:PA1",
+   "rel": "COVERS",
+   "dst": "M1.T2",
+   "props": {}
+  },
+  {
+   "src": "A:PA1",
+   "rel": "COVERS",
+   "dst": "M1.T3",
+   "props": {}
+  },
+  {
+   "src": "A:PA1",
+   "rel": "COVERS",
+   "dst": "M1.T4",
+   "props": {}
+  },
+  {
+   "src": "A:PA2",
+   "rel": "RELEASED_IN",
+   "dst": "W04",
+   "props": {}
+  },
+  {
+   "src": "A:PA2",
+   "rel": "DUE_IN",
+   "dst": "W06",
+   "props": {}
+  },
+  {
+   "src": "A:PA2",
+   "rel": "ASSESSES",
+   "dst": "CO1.LO3",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "A:PA2",
+   "rel": "ASSESSES",
+   "dst": "CO2.LO1",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "A:PA2",
+   "rel": "COVERS",
+   "dst": "M2.T1",
+   "props": {}
+  },
+  {
+   "src": "A:PA2",
+   "rel": "COVERS",
+   "dst": "M2.T2",
+   "props": {}
+  },
+  {
+   "src": "A:PA2",
+   "rel": "COVERS",
+   "dst": "M2.T3",
+   "props": {}
+  },
+  {
+   "src": "A:PA2",
+   "rel": "COVERS",
+   "dst": "M2.T4",
+   "props": {}
+  },
+  {
+   "src": "A:PA3",
+   "rel": "RELEASED_IN",
+   "dst": "W07",
+   "props": {}
+  },
+  {
+   "src": "A:PA3",
+   "rel": "DUE_IN",
+   "dst": "W08",
+   "props": {}
+  },
+  {
+   "src": "A:PA3",
+   "rel": "ASSESSES",
+   "dst": "CO2.LO2",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "A:PA3",
+   "rel": "ASSESSES",
+   "dst": "CO5.LO1",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "A:PA3",
+   "rel": "COVERS",
+   "dst": "M2.T4",
+   "props": {}
+  },
+  {
+   "src": "A:PA3",
+   "rel": "COVERS",
+   "dst": "M4.T1",
+   "props": {}
+  },
+  {
+   "src": "A:PA4",
+   "rel": "RELEASED_IN",
+   "dst": "W09",
+   "props": {}
+  },
+  {
+   "src": "A:PA4",
+   "rel": "DUE_IN",
+   "dst": "W10",
+   "props": {}
+  },
+  {
+   "src": "A:PA4",
+   "rel": "ASSESSES",
+   "dst": "CO4.LO1",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "A:PA4",
+   "rel": "ASSESSES",
+   "dst": "CO4.LO2",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "A:PA4",
+   "rel": "COVERS",
+   "dst": "M5.T1",
+   "props": {}
+  },
+  {
+   "src": "A:PA4",
+   "rel": "COVERS",
+   "dst": "M5.T2",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:ProjMilestone1",
+   "rel": "RELEASED_IN",
+   "dst": "W04",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:ProjMilestone1",
+   "rel": "DUE_IN",
+   "dst": "W07",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:ProjMilestone1",
+   "rel": "ASSESSES",
+   "dst": "CO3.LO1",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 4
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:ProjMilestone1",
+   "rel": "ASSESSES",
+   "dst": "CO3.LO2",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 4
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:ProjMilestone1",
+   "rel": "COVERS",
+   "dst": "M3.T1",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:ProjMilestone1",
+   "rel": "COVERS",
+   "dst": "M3.T2",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:ProjMilestone2",
+   "rel": "RELEASED_IN",
+   "dst": "W08",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:ProjMilestone2",
+   "rel": "DUE_IN",
+   "dst": "W13",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:ProjMilestone2",
+   "rel": "ASSESSES",
+   "dst": "CO4.LO2",
+   "props": {
+    "marks_pct": 40.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:ProjMilestone2",
+   "rel": "ASSESSES",
+   "dst": "CO5.LO2",
+   "props": {
+    "marks_pct": 60.0,
+    "bloom_level": 5
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:ProjMilestone2",
+   "rel": "COVERS",
+   "dst": "M4.T2",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:ProjMilestone2",
+   "rel": "COVERS",
+   "dst": "M5.T1",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:ProjMilestone2",
+   "rel": "COVERS",
+   "dst": "M5.T2",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:ProjMilestone2",
+   "rel": "COVERS",
+   "dst": "M5.T3",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Midsem",
+   "rel": "RELEASED_IN",
+   "dst": "W07",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Midsem",
+   "rel": "DUE_IN",
+   "dst": "W07",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Midsem",
+   "rel": "ASSESSES",
+   "dst": "CO1.LO1",
+   "props": {
+    "marks_pct": 20.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:Midsem",
+   "rel": "ASSESSES",
+   "dst": "CO1.LO2",
+   "props": {
+    "marks_pct": 20.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:Midsem",
+   "rel": "ASSESSES",
+   "dst": "CO1.LO3",
+   "props": {
+    "marks_pct": 20.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:Midsem",
+   "rel": "ASSESSES",
+   "dst": "CO2.LO1",
+   "props": {
+    "marks_pct": 20.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:Midsem",
+   "rel": "ASSESSES",
+   "dst": "CO3.LO1",
+   "props": {
+    "marks_pct": 20.0,
+    "bloom_level": 4
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:Midsem",
+   "rel": "COVERS",
+   "dst": "M1.T1",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Midsem",
+   "rel": "COVERS",
+   "dst": "M1.T2",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Midsem",
+   "rel": "COVERS",
+   "dst": "M1.T3",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Midsem",
+   "rel": "COVERS",
+   "dst": "M1.T4",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Midsem",
+   "rel": "COVERS",
+   "dst": "M2.T1",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Midsem",
+   "rel": "COVERS",
+   "dst": "M2.T2",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Midsem",
+   "rel": "COVERS",
+   "dst": "M2.T3",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Midsem",
+   "rel": "COVERS",
+   "dst": "M2.T4",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Midsem",
+   "rel": "COVERS",
+   "dst": "M3.T1",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Midsem",
+   "rel": "COVERS",
+   "dst": "M3.T2",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Midsem",
+   "rel": "COVERS",
+   "dst": "M4.T1",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "RELEASED_IN",
+   "dst": "W13",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "DUE_IN",
+   "dst": "W13",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "ASSESSES",
+   "dst": "CO1.LO3",
+   "props": {
+    "marks_pct": 20.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "ASSESSES",
+   "dst": "CO2.LO2",
+   "props": {
+    "marks_pct": 20.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "ASSESSES",
+   "dst": "CO3.LO2",
+   "props": {
+    "marks_pct": 20.0,
+    "bloom_level": 4
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "ASSESSES",
+   "dst": "CO4.LO1",
+   "props": {
+    "marks_pct": 20.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "ASSESSES",
+   "dst": "CO4.LO2",
+   "props": {
+    "marks_pct": 20.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M1.T1",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M1.T2",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M1.T3",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M1.T4",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M2.T1",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M2.T2",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M2.T3",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M2.T4",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M3.T1",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M3.T2",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M4.T1",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M4.T2",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M5.T1",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M5.T2",
+   "props": {}
+  },
+  {
+   "src": "P-CSE201-DEV/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M5.T3",
+   "props": {}
+  },
+  {
+   "src": "M1.T1",
+   "rel": "READING",
+   "dst": "RES:OL:OL25783599W",
+   "props": {}
+  },
+  {
+   "src": "M2.T1",
+   "rel": "READING",
+   "dst": "RES:OL:OL25783599W",
+   "props": {}
+  },
+  {
+   "src": "M2.T3",
+   "rel": "READING",
+   "dst": "RES:OL:OL25783599W",
+   "props": {}
+  },
+  {
+   "src": "M4.T2",
+   "rel": "READING",
+   "dst": "RES:OL:OL6030812W",
+   "props": {}
+  },
+  {
+   "src": "M5.T1",
+   "rel": "READING",
+   "dst": "RES:OL:OL16512736W",
+   "props": {}
+  },
+  {
+   "src": "M5.T2",
+   "rel": "READING",
+   "dst": "RES:OL:OL16512736W",
+   "props": {}
+  }
+ ],
+ "history_len": 0
+}

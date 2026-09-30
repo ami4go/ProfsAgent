@@ -1,0 +1,17 @@
+# secrets — never commit
+.env
+# python / tooling
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+# regenerable data
+data/cache/
+data/raw/
+data/stub_build.log
+# run artefacts that are machine-local (runs/ itself IS committed)
+runs/*/checkpoint.sqlite*
+runs/_smoke/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal

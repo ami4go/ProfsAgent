@@ -1,0 +1,1075 @@
+{
+ "form": {
+  "1. COURSE NAME": "Advanced Programming",
+  "2. SHORT COURSE DESCRIPTION": "A second programming course that moves students from writing small single-file programs to building larger applications made of several components with clear interfaces. Students learn object-oriented design, how to write code that others can reuse and test, how to structure programs around established design patterns, and how to handle errors, input/output and concurrency. By the end, students working in pairs can take a reasonably well-specified application design and deliver a working, tested, multi-component program. Java is the vehicle, but the course is about program design, not the Java language.",
+  "3. TOPICS / CONTENT AREAS": "Treatment of this list: starting hypotheses — may add/drop/reorder with justification.\nA. Object-oriented foundations: classes and objects, encapsulation, modularity, object relationships (association, composition), interfaces\nB. Inheritance and polymorphism: inheritance hierarchies, abstract classes, polymorphism via interfaces and inheritance, method resolution, immutability\nC. Generic and reusable code: generics, comparing and cloning objects, the collections framework\nD. Robust programs: exception handling, assertions, defensive and secure programming, I/O streams and serialization\nE. Testing and tooling: unit testing, debugging, version control as part of everyday development\nF. Designing before coding: use cases, UML class/sequence/use-case diagrams, object-oriented design of a problem\nG. Event-driven programming and GUIs\nH. Concurrency: threads, thread pools, mutual exclusion, race conditions and deadlocks, producer-consumer, speedup\nI. Design patterns: common creational, structural and behavioural patterns applied to real problems\n",
+  "4. COURSE INTENT": "Central question the course answers: How do you design, build and test a multi-component program so that its parts can be developed independently and reused?\nPedagogical emphasis: design thinking before coding; writing code others can read, reuse and test; learning by building a substantial team project.\nThis course should NOT become:\n- a Java language features course\n- a data-structures course (that is covered by the prerequisite)\n- a lecture-only course without regular hands-on practice\n",
+  "5. TARGET STUDENTS": "Programmes: B.Tech. CSE (core course); also taken by other B.Tech. programmes\nYear: 2nd year (3rd semester)\nAssumed background: CSE101 Introduction to Programming and CSE102 Data Structures and Algorithms — comfortable with procedural programming, functions, arrays, lists, recursion and basic data structures\n",
+  "6. EXPECTED LEVEL / COURSE CODE": "2xx level (second-year core); code to be assigned",
+  "7. CREDITS": "4",
+  "8. L-T-P / CONTACT HOURS": "3-1-0 (three lecture hours and one tutorial hour per week)",
+  "9. SEMESTER LENGTH": "[NOT SPECIFIED — infer from evidence and flag under RULE A]",
+  "10. WEEKLY STUDENT EFFORT": "[NOT SPECIFIED — infer from evidence and flag under RULE A]",
+  "11. LAB / PRACTICAL COMPONENT": "Lab required: no separate lab slot; hands-on practice happens in tutorials and take-home work\nAvailable infrastructure: students' own laptops; Java JDK, an IDE (Eclipse/IntelliJ), JUnit, Git/GitHub; TAs for tutorials\n",
+  "12. ASSESSMENT PREFERENCES": "Preferred components: short take-home programming assignments, a pair-programming course project with milestones, quizzes, mid-sem and end-sem exams\nComponents to avoid: none\nRationale: the course is about building software, so a substantial share of the grade should come from programming work, while exams check individual understanding\n",
+  "13. SPECIAL CONSTRAINTS": "The course project must be done in pairs and should produce a working application with a graphical interface.",
+  "14. CURRICULUM CONTEXT": "[NOT SUPPLIED — derive curriculum positioning yourself from the institutional knowledge graph.]"
+ },
+ "run_cfg": {
+  "project_id": "P-CSE201-DEV",
+  "exclude_courses": [
+   "CSE201"
+  ],
+  "blocklist": {
+   "domains": [
+    "iiitd.ac.in",
+    "iiitd.edu.in",
+    "techtree.iiitd.edu.in"
+   ],
+   "course_codes": [
+    "CSE201"
+   ],
+   "title_fragments": []
+  },
+  "external_research": true
+ },
+ "traces": {
+  "intake": {
+   "generator": {
+    "prompt_id": "G1",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-2.5-flash:k0",
+    "tokens": 10825
+   }
+  }
+ },
+ "violations": {
+  "intake": []
+ },
+ "concerns": {},
+ "approvals": [],
+ "cco": {
+  "concerns": [],
+  "missing": [
+   {
+    "field": "semester_weeks",
+    "reason": "Professor explicitly stated '[NOT SPECIFIED]'"
+   },
+   {
+    "field": "weekly_effort_hours",
+    "reason": "Professor explicitly stated '[NOT SPECIFIED]'"
+   },
+   {
+    "field": "curriculum_context",
+    "reason": "Professor explicitly stated '[NOT SUPPLIED]'"
+   }
+  ],
+  "fields": {
+   "course_name": {
+    "status": "given",
+    "raw": "Advanced Programming",
+    "value": "Advanced Programming"
+   },
+   "short_description": {
+    "status": "given",
+    "raw": "A second programming course that moves students from writing small single-file programs to building larger applications made of several components with clear interfaces. Students learn object-oriented design, how to write code that others can reuse and test, how to structure programs around established design patterns, and how to handle errors, input/output and concurrency. By the end, students working in pairs can take a reasonably well-specified application design and deliver a working, tested, multi-component program. Java is the vehicle, but the course is about program design, not the Java language.",
+    "value": "A second programming course that moves students from writing small single-file programs to building larger applications made of several components with clear interfaces. Students learn object-oriented design, how to write code that others can reuse and test, how to structure programs around established design patterns, and how to handle errors, input/output and concurrency. By the end, students working in pairs can take a reasonably well-specified application design and deliver a working, tested, multi-component program. Java is the vehicle, but the course is about program design, not the Java language."
+   },
+   "topics": {
+    "status": "given",
+    "raw": "Treatment of this list: starting hypotheses — may add/drop/reorder with justification.\nA. Object-oriented foundations: classes and objects, encapsulation, modularity, object relationships (association, composition), interfaces\nB. Inheritance and polymorphism: inheritance hierarchies, abstract classes, polymorphism via interfaces and inheritance, method resolution, immutability\nC. Generic and reusable code: generics, comparing and cloning objects, the collections framework\nD. Robust programs: exception handling, assertions, defensive and secure programming, I/O streams and serialization\nE. Testing and tooling: unit testing, debugging, version control as part of everyday development\nF. Designing before coding: use cases, UML class/sequence/use-case diagrams, object-oriented design of a problem\nG. Event-driven programming and GUIs\nH. Concurrency: threads, thread pools, mutual exclusion, race conditions and deadlocks, producer-consumer, speedup\nI. Design patterns: common creational, structural and behavioural patterns applied to real problems\n",
+    "value": null,
+    "topics_treatment": "hypotheses",
+    "topic_groups": [
+     {
+      "id": "TG1",
+      "title": "Object-oriented foundations",
+      "topics": [
+       {
+        "id": "TG1.1",
+        "text": "classes and objects"
+       },
+       {
+        "id": "TG1.2",
+        "text": "encapsulation"
+       },
+       {
+        "id": "TG1.3",
+        "text": "modularity"
+       },
+       {
+        "id": "TG1.4",
+        "text": "object relationships (association, composition)"
+       },
+       {
+        "id": "TG1.5",
+        "text": "interfaces"
+       }
+      ]
+     },
+     {
+      "id": "TG2",
+      "title": "Inheritance and polymorphism",
+      "topics": [
+       {
+        "id": "TG2.1",
+        "text": "inheritance hierarchies"
+       },
+       {
+        "id": "TG2.2",
+        "text": "abstract classes"
+       },
+       {
+        "id": "TG2.3",
+        "text": "polymorphism via interfaces and inheritance"
+       },
+       {
+        "id": "TG2.4",
+        "text": "method resolution"
+       },
+       {
+        "id": "TG2.5",
+        "text": "immutability"
+       }
+      ]
+     },
+     {
+      "id": "TG3",
+      "title": "Generic and reusable code",
+      "topics": [
+       {
+        "id": "TG3.1",
+        "text": "generics"
+       },
+       {
+        "id": "TG3.2",
+        "text": "comparing and cloning objects"
+       },
+       {
+        "id": "TG3.3",
+        "text": "the collections framework"
+       }
+      ]
+     },
+     {
+      "id": "TG4",
+      "title": "Robust programs",
+      "topics": [
+       {
+        "id": "TG4.1",
+        "text": "exception handling"
+       },
+       {
+        "id": "TG4.2",
+        "text": "assertions"
+       },
+       {
+        "id": "TG4.3",
+        "text": "defensive and secure programming"
+       },
+       {
+        "id": "TG4.4",
+        "text": "I/O streams and serialization"
+       }
+      ]
+     },
+     {
+      "id": "TG5",
+      "title": "Testing and tooling",
+      "topics": [
+       {
+        "id": "TG5.1",
+        "text": "unit testing"
+       },
+       {
+        "id": "TG5.2",
+        "text": "debugging"
+       },
+       {
+        "id": "TG5.3",
+        "text": "version control as part of everyday development"
+       }
+      ]
+     },
+     {
+      "id": "TG6",
+      "title": "Designing before coding",
+      "topics": [
+       {
+        "id": "TG6.1",
+        "text": "use cases"
+       },
+       {
+        "id": "TG6.2",
+        "text": "UML class/sequence/use-case diagrams"
+       },
+       {
+        "id": "TG6.3",
+        "text": "object-oriented design of a problem"
+       }
+      ]
+     },
+     {
+      "id": "TG7",
+      "title": "Event-driven programming and GUIs",
+      "topics": [
+       {
+        "id": "TG7.1",
+        "text": "Event-driven programming and GUIs"
+       }
+      ]
+     },
+     {
+      "id": "TG8",
+      "title": "Concurrency",
+      "topics": [
+       {
+        "id": "TG8.1",
+        "text": "threads"
+       },
+       {
+        "id": "TG8.2",
+        "text": "thread pools"
+       },
+       {
+        "id": "TG8.3",
+        "text": "mutual exclusion"
+       },
+       {
+        "id": "TG8.4",
+        "text": "race conditions and deadlocks"
+       },
+       {
+        "id": "TG8.5",
+        "text": "producer-consumer"
+       },
+       {
+        "id": "TG8.6",
+        "text": "speedup"
+       }
+      ]
+     },
+     {
+      "id": "TG9",
+      "title": "Design patterns",
+      "topics": [
+       {
+        "id": "TG9.1",
+        "text": "common creational, structural and behavioural patterns applied to real problems"
+       }
+      ]
+     }
+    ]
+   },
+   "intent": {
+    "status": "given",
+    "raw": "Central question the course answers: How do you design, build and test a multi-component program so that its parts can be developed independently and reused?\nPedagogical emphasis: design thinking before coding; writing code others can read, reuse and test; learning by building a substantial team project.\nThis course should NOT become:\n- a Java language features course\n- a data-structures course (that is covered by the prerequisite)\n- a lecture-only course without regular hands-on practice\n",
+    "value": null,
+    "central_question": "How do you design, build and test a multi-component program so that its parts can be developed independently and reused?",
+    "pedagogical_emphasis": "design thinking before coding; writing code others can read, reuse and test; learning by building a substantial team project.",
+    "negative_constraints": [
+     {
+      "id": "NC1",
+      "raw": "a Java language features course",
+      "checkable_form": "The course should not primarily focus on Java language features.",
+      "checkable": true
+     },
+     {
+      "id": "NC2",
+      "raw": "a data-structures course (that is covered by the prerequisite)",
+      "checkable_form": "The course should not cover data structures, as this is a prerequisite.",
+      "checkable": true
+     },
+     {
+      "id": "NC3",
+      "raw": "a lecture-only course without regular hands-on practice",
+      "checkable_form": "The course must include regular hands-on practice and not be lecture-only.",
+      "checkable": true
+     }
+    ]
+   },
+   "target_students": {
+    "status": "given",
+    "raw": "Programmes: B.Tech. CSE (core course); also taken by other B.Tech. programmes\nYear: 2nd year (3rd semester)\nAssumed background: CSE101 Introduction to Programming and CSE102 Data Structures and Algorithms — comfortable with procedural programming, functions, arrays, lists, recursion and basic data structures\n",
+    "value": null,
+    "programmes": [
+     "BTECH-CSE"
+    ],
+    "unmapped_programmes": [
+     "other B.Tech. programmes"
+    ],
+    "years": [
+     2
+    ],
+    "assumed_background": [
+     "CSE101 Introduction to Programming",
+     "CSE102 Data Structures and Algorithms — comfortable with procedural programming, functions, arrays, lists, recursion and basic data structures"
+    ]
+   },
+   "level_or_code": {
+    "status": "given",
+    "raw": "2xx level (second-year core); code to be assigned",
+    "value": null,
+    "code": null,
+    "level": 2
+   },
+   "credits": {
+    "status": "given",
+    "raw": "4",
+    "value": 4
+   },
+   "ltp": {
+    "status": "given",
+    "raw": "3-1-0 (three lecture hours and one tutorial hour per week)",
+    "value": null,
+    "L": 3.0,
+    "T": 1.0,
+    "P": 0.0
+   },
+   "semester_weeks": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED — infer from evidence and flag under RULE A]",
+    "value": null
+   },
+   "weekly_effort_hours": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED — infer from evidence and flag under RULE A]",
+    "value": null
+   },
+   "lab": {
+    "status": "given",
+    "raw": "Lab required: no separate lab slot; hands-on practice happens in tutorials and take-home work\nAvailable infrastructure: students' own laptops; Java JDK, an IDE (Eclipse/IntelliJ), JUnit, Git/GitHub; TAs for tutorials\n",
+    "value": null,
+    "required": "no",
+    "infrastructure": [
+     "students' own laptops",
+     "Java JDK",
+     "an IDE (Eclipse/IntelliJ)",
+     "JUnit",
+     "Git/GitHub",
+     "TAs for tutorials"
+    ]
+   },
+   "assessment_prefs": {
+    "status": "given",
+    "raw": "Preferred components: short take-home programming assignments, a pair-programming course project with milestones, quizzes, mid-sem and end-sem exams\nComponents to avoid: none\nRationale: the course is about building software, so a substantial share of the grade should come from programming work, while exams check individual understanding\n",
+    "value": null,
+    "preferred": [
+     "short take-home programming assignments",
+     "a pair-programming course project with milestones",
+     "quizzes",
+     "mid-sem and end-sem exams"
+    ],
+    "avoid": [],
+    "rationale": "the course is about building software, so a substantial share of the grade should come from programming work, while exams check individual understanding"
+   },
+   "special_constraints": {
+    "status": "given",
+    "raw": "The course project must be done in pairs and should produce a working application with a graphical interface.",
+    "value": null,
+    "items": [
+     {
+      "id": "SC1",
+      "text": "The course project must be done in pairs and should produce a working application with a graphical interface."
+     }
+    ]
+   },
+   "curriculum_context": {
+    "status": "missing",
+    "raw": "[NOT SUPPLIED — derive curriculum positioning yourself from the institutional knowledge graph.]",
+    "value": null,
+    "answers": {
+     "Q1": null,
+     "Q2": null,
+     "Q3": null,
+     "Q4": null,
+     "Q5": null,
+     "Q6": null
+    }
+   }
+  },
+  "ambiguities": [],
+  "conflicts": []
+ },
+ "defaults": {
+  "ltp": {
+   "L": 3.0,
+   "T": 1.0,
+   "P": 0
+  },
+  "weeks": 13,
+  "credits": 4,
+  "level": 2,
+  "midsem_after_week": 7,
+  "constraints": [
+   {
+    "id": "K01",
+    "target": "schedule.weeks",
+    "op": "==",
+    "value": 13,
+    "hardness": "hard",
+    "source": {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§2"
+    }
+   },
+   {
+    "id": "K02",
+    "target": "course.credits",
+    "op": "==",
+    "value": 4,
+    "hardness": "hard",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.credits"
+    }
+   },
+   {
+    "id": "K03",
+    "target": "schedule.lecture_hours_per_week",
+    "op": "==",
+    "value": 3.0,
+    "hardness": "hard",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.ltp"
+    }
+   },
+   {
+    "id": "K04",
+    "target": "schedule.tutorial_hours_per_week",
+    "op": "==",
+    "value": 1.0,
+    "hardness": "hard",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.ltp"
+    }
+   },
+   {
+    "id": "K05",
+    "target": "lab.hours_per_week",
+    "op": "==",
+    "value": 0,
+    "hardness": "hard",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.ltp"
+    }
+   },
+   {
+    "id": "K06",
+    "target": "assessment.component[midsem].present",
+    "op": "present",
+    "value": true,
+    "hardness": "soft",
+    "source": {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§6.2"
+    }
+   },
+   {
+    "id": "K07",
+    "target": "assessment.component[endsem].present",
+    "op": "present",
+    "value": true,
+    "hardness": "soft",
+    "source": {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§6.2"
+    }
+   },
+   {
+    "id": "K08",
+    "target": "schedule.midsem_after_week",
+    "op": "==",
+    "value": 7,
+    "hardness": "soft",
+    "source": {
+     "tag": "INFERRED",
+     "ref": "ASM"
+    }
+   }
+  ],
+  "assumptions": [
+   {
+    "id": "ASM01",
+    "what": "mid-semester exam timing",
+    "value": "after teaching week 7",
+    "basis": "mid-semester recess and exam fall roughly mid-way through 13 teaching weeks; confirm from the academic calendar",
+    "confirm_with": "academic calendar (DOAA)",
+    "status": "open"
+   },
+   {
+    "id": "ASM02",
+    "what": "weekly student effort",
+    "value": null,
+    "basis": "not supplied; effort is reported (contact + take-home estimates), not constrained",
+    "confirm_with": "course instructor / DOAA",
+    "status": "open"
+   }
+  ]
+ },
+ "ltp": {
+  "L": 3.0,
+  "T": 1.0,
+  "P": 0
+ },
+ "weeks": 13,
+ "level": 2,
+ "midsem_after_week": 7,
+ "lab_required": "no",
+ "topic_groups": [
+  {
+   "id": "TG1",
+   "title": "Object-oriented foundations",
+   "topics": [
+    {
+     "id": "TG1.1",
+     "text": "classes and objects"
+    },
+    {
+     "id": "TG1.2",
+     "text": "encapsulation"
+    },
+    {
+     "id": "TG1.3",
+     "text": "modularity"
+    },
+    {
+     "id": "TG1.4",
+     "text": "object relationships (association, composition)"
+    },
+    {
+     "id": "TG1.5",
+     "text": "interfaces"
+    }
+   ]
+  },
+  {
+   "id": "TG2",
+   "title": "Inheritance and polymorphism",
+   "topics": [
+    {
+     "id": "TG2.1",
+     "text": "inheritance hierarchies"
+    },
+    {
+     "id": "TG2.2",
+     "text": "abstract classes"
+    },
+    {
+     "id": "TG2.3",
+     "text": "polymorphism via interfaces and inheritance"
+    },
+    {
+     "id": "TG2.4",
+     "text": "method resolution"
+    },
+    {
+     "id": "TG2.5",
+     "text": "immutability"
+    }
+   ]
+  },
+  {
+   "id": "TG3",
+   "title": "Generic and reusable code",
+   "topics": [
+    {
+     "id": "TG3.1",
+     "text": "generics"
+    },
+    {
+     "id": "TG3.2",
+     "text": "comparing and cloning objects"
+    },
+    {
+     "id": "TG3.3",
+     "text": "the collections framework"
+    }
+   ]
+  },
+  {
+   "id": "TG4",
+   "title": "Robust programs",
+   "topics": [
+    {
+     "id": "TG4.1",
+     "text": "exception handling"
+    },
+    {
+     "id": "TG4.2",
+     "text": "assertions"
+    },
+    {
+     "id": "TG4.3",
+     "text": "defensive and secure programming"
+    },
+    {
+     "id": "TG4.4",
+     "text": "I/O streams and serialization"
+    }
+   ]
+  },
+  {
+   "id": "TG5",
+   "title": "Testing and tooling",
+   "topics": [
+    {
+     "id": "TG5.1",
+     "text": "unit testing"
+    },
+    {
+     "id": "TG5.2",
+     "text": "debugging"
+    },
+    {
+     "id": "TG5.3",
+     "text": "version control as part of everyday development"
+    }
+   ]
+  },
+  {
+   "id": "TG6",
+   "title": "Designing before coding",
+   "topics": [
+    {
+     "id": "TG6.1",
+     "text": "use cases"
+    },
+    {
+     "id": "TG6.2",
+     "text": "UML class/sequence/use-case diagrams"
+    },
+    {
+     "id": "TG6.3",
+     "text": "object-oriented design of a problem"
+    }
+   ]
+  },
+  {
+   "id": "TG7",
+   "title": "Event-driven programming and GUIs",
+   "topics": [
+    {
+     "id": "TG7.1",
+     "text": "Event-driven programming and GUIs"
+    }
+   ]
+  },
+  {
+   "id": "TG8",
+   "title": "Concurrency",
+   "topics": [
+    {
+     "id": "TG8.1",
+     "text": "threads"
+    },
+    {
+     "id": "TG8.2",
+     "text": "thread pools"
+    },
+    {
+     "id": "TG8.3",
+     "text": "mutual exclusion"
+    },
+    {
+     "id": "TG8.4",
+     "text": "race conditions and deadlocks"
+    },
+    {
+     "id": "TG8.5",
+     "text": "producer-consumer"
+    },
+    {
+     "id": "TG8.6",
+     "text": "speedup"
+    }
+   ]
+  },
+  {
+   "id": "TG9",
+   "title": "Design patterns",
+   "topics": [
+    {
+     "id": "TG9.1",
+     "text": "common creational, structural and behavioural patterns applied to real problems"
+    }
+   ]
+  }
+ ],
+ "hours_budget": {
+  "weeks": 13,
+  "lecture_hours_per_week": 3.0,
+  "lecture_hours_total": 39.0,
+  "tutorial_hours_total": 13.0,
+  "lab_hours_total": 0
+ },
+ "bloom_band": {
+  "floor": 2,
+  "ceiling": 5,
+  "basis": "level 2xx band [2,5] — provisional table (docs/01 §6.4); to be refit from quality-filtered corpus priors",
+  "source_tag": "INFERRED"
+ },
+ "programmes": [
+  "BTECH-CSE"
+ ],
+ "programme_pos": [
+  {
+   "uid": "BTECH-CSE/PO1",
+   "text": "Understanding of theoretical foundations and limits of computing",
+   "short_label": "Theoretical foundations"
+  },
+  {
+   "uid": "BTECH-CSE/PO2",
+   "text": "Understanding of computing at different levels of abstraction including circuits and computer architecture, operating systems, algorithms, and applications.",
+   "short_label": "Levels of abstraction"
+  },
+  {
+   "uid": "BTECH-CSE/PO3",
+   "text": "Ability to adapt established models, techniques, algorithms, data structures, etc., for efficiently solving new problems",
+   "short_label": "Adapt techniques to new problems"
+  },
+  {
+   "uid": "BTECH-CSE/PO4",
+   "text": "Ability to design, implement, and evaluate computer based system or application to meet the desired needs using modern tools and methodologies",
+   "short_label": "Design/implement/evaluate systems"
+  },
+  {
+   "uid": "BTECH-CSE/PO5",
+   "text": "Ability to function effectively in teams to accomplish a common goal",
+   "short_label": "Teamwork"
+  },
+  {
+   "uid": "BTECH-CSE/PO6",
+   "text": "An understanding of professional and ethical responsibility.",
+   "short_label": "Professional ethics"
+  },
+  {
+   "uid": "BTECH-CSE/PO7",
+   "text": "Ability to communicate effectively with a wide range of audience",
+   "short_label": "Communication"
+  },
+  {
+   "uid": "BTECH-CSE/PO8",
+   "text": "Ability to self-learn and engage in life-long learning",
+   "short_label": "Life-long learning"
+  },
+  {
+   "uid": "BTECH-CSE/PO9",
+   "text": "Understanding and ability to use advanced techniques and tools in different areas of computing",
+   "short_label": "Advanced techniques and tools"
+  },
+  {
+   "uid": "BTECH-CSE/PO10",
+   "text": "Ability to undertake small research tasks and projects",
+   "short_label": "Research tasks"
+  },
+  {
+   "uid": "BTECH-CSE/PO11",
+   "text": "Ability to take an idea and develop into a business plan for an entrepreneurial venture (if desired)",
+   "short_label": "Entrepreneurship"
+  },
+  {
+   "uid": "BTECH-CSE/PO12",
+   "text": "An understanding of the impact of solutions in an economic, societal, and environment context.",
+   "short_label": "Societal impact"
+  }
+ ],
+ "activity_po_map": {
+  "design": [
+   "BTECH-CSE/PO4"
+  ],
+  "implement": [
+   "BTECH-CSE/PO4",
+   "BTECH-CSE/PO3"
+  ],
+  "analyse-data": [
+   "BTECH-CSE/PO3"
+  ],
+  "evaluate-critique": [
+   "BTECH-CSE/PO4",
+   "BTECH-CSE/PO9"
+  ],
+  "teamwork": [
+   "BTECH-CSE/PO5"
+  ],
+  "written-communication": [
+   "BTECH-CSE/PO7"
+  ],
+  "oral-presentation": [
+   "BTECH-CSE/PO7"
+  ],
+  "ethics-reflection": [
+   "BTECH-CSE/PO6",
+   "BTECH-CSE/PO12"
+  ],
+  "self-directed-learning": [
+   "BTECH-CSE/PO8"
+  ],
+  "research-investigation": [
+   "BTECH-CSE/PO10"
+  ],
+  "tool-use": [
+   "BTECH-CSE/PO9"
+  ]
+ },
+ "cco_compact": {
+  "course_name": "Advanced Programming",
+  "description": "A second programming course that moves students from writing small single-file programs to building larger applications made of several components with clear interfaces. Students learn object-oriented design, how to write code that others can reuse and test, how to structure programs around established design patterns, and how to handle errors, input/output and concurrency. By the end, students working in pairs can take a reasonably well-specified application design and deliver a working, tested, multi-component program. Java is the vehicle, but the course is about program design, not the Java language.",
+  "topic_groups": [
+   {
+    "id": "TG1",
+    "title": "Object-oriented foundations",
+    "topics": [
+     {
+      "id": "TG1.1",
+      "text": "classes and objects"
+     },
+     {
+      "id": "TG1.2",
+      "text": "encapsulation"
+     },
+     {
+      "id": "TG1.3",
+      "text": "modularity"
+     },
+     {
+      "id": "TG1.4",
+      "text": "object relationships (association, composition)"
+     },
+     {
+      "id": "TG1.5",
+      "text": "interfaces"
+     }
+    ]
+   },
+   {
+    "id": "TG2",
+    "title": "Inheritance and polymorphism",
+    "topics": [
+     {
+      "id": "TG2.1",
+      "text": "inheritance hierarchies"
+     },
+     {
+      "id": "TG2.2",
+      "text": "abstract classes"
+     },
+     {
+      "id": "TG2.3",
+      "text": "polymorphism via interfaces and inheritance"
+     },
+     {
+      "id": "TG2.4",
+      "text": "method resolution"
+     },
+     {
+      "id": "TG2.5",
+      "text": "immutability"
+     }
+    ]
+   },
+   {
+    "id": "TG3",
+    "title": "Generic and reusable code",
+    "topics": [
+     {
+      "id": "TG3.1",
+      "text": "generics"
+     },
+     {
+      "id": "TG3.2",
+      "text": "comparing and cloning objects"
+     },
+     {
+      "id": "TG3.3",
+      "text": "the collections framework"
+     }
+    ]
+   },
+   {
+    "id": "TG4",
+    "title": "Robust programs",
+    "topics": [
+     {
+      "id": "TG4.1",
+      "text": "exception handling"
+     },
+     {
+      "id": "TG4.2",
+      "text": "assertions"
+     },
+     {
+      "id": "TG4.3",
+      "text": "defensive and secure programming"
+     },
+     {
+      "id": "TG4.4",
+      "text": "I/O streams and serialization"
+     }
+    ]
+   },
+   {
+    "id": "TG5",
+    "title": "Testing and tooling",
+    "topics": [
+     {
+      "id": "TG5.1",
+      "text": "unit testing"
+     },
+     {
+      "id": "TG5.2",
+      "text": "debugging"
+     },
+     {
+      "id": "TG5.3",
+      "text": "version control as part of everyday development"
+     }
+    ]
+   },
+   {
+    "id": "TG6",
+    "title": "Designing before coding",
+    "topics": [
+     {
+      "id": "TG6.1",
+      "text": "use cases"
+     },
+     {
+      "id": "TG6.2",
+      "text": "UML class/sequence/use-case diagrams"
+     },
+     {
+      "id": "TG6.3",
+      "text": "object-oriented design of a problem"
+     }
+    ]
+   },
+   {
+    "id": "TG7",
+    "title": "Event-driven programming and GUIs",
+    "topics": [
+     {
+      "id": "TG7.1",
+      "text": "Event-driven programming and GUIs"
+     }
+    ]
+   },
+   {
+    "id": "TG8",
+    "title": "Concurrency",
+    "topics": [
+     {
+      "id": "TG8.1",
+      "text": "threads"
+     },
+     {
+      "id": "TG8.2",
+      "text": "thread pools"
+     },
+     {
+      "id": "TG8.3",
+      "text": "mutual exclusion"
+     },
+     {
+      "id": "TG8.4",
+      "text": "race conditions and deadlocks"
+     },
+     {
+      "id": "TG8.5",
+      "text": "producer-consumer"
+     },
+     {
+      "id": "TG8.6",
+      "text": "speedup"
+     }
+    ]
+   },
+   {
+    "id": "TG9",
+    "title": "Design patterns",
+    "topics": [
+     {
+      "id": "TG9.1",
+      "text": "common creational, structural and behavioural patterns applied to real problems"
+     }
+    ]
+   }
+  ],
+  "topics_treatment": "hypotheses",
+  "central_question": "How do you design, build and test a multi-component program so that its parts can be developed independently and reused?",
+  "pedagogical_emphasis": "design thinking before coding; writing code others can read, reuse and test; learning by building a substantial team project.",
+  "negative_constraints": [
+   {
+    "id": "NC1",
+    "raw": "a Java language features course",
+    "checkable_form": "The course should not primarily focus on Java language features.",
+    "checkable": true
+   },
+   {
+    "id": "NC2",
+    "raw": "a data-structures course (that is covered by the prerequisite)",
+    "checkable_form": "The course should not cover data structures, as this is a prerequisite.",
+    "checkable": true
+   },
+   {
+    "id": "NC3",
+    "raw": "a lecture-only course without regular hands-on practice",
+    "checkable_form": "The course must include regular hands-on practice and not be lecture-only.",
+    "checkable": true
+   }
+  ],
+  "target_students": {
+   "programmes": [
+    "BTECH-CSE"
+   ],
+   "years": [
+    2
+   ],
+   "assumed_background": [
+    "CSE101 Introduction to Programming",
+    "CSE102 Data Structures and Algorithms — comfortable with procedural programming, functions, arrays, lists, recursion and basic data structures"
+   ]
+  },
+  "level": 2,
+  "credits": 4,
+  "ltp": {
+   "L": 3.0,
+   "T": 1.0,
+   "P": 0
+  },
+  "weeks": 13,
+  "lab": {
+   "required": "no",
+   "infrastructure": [
+    "students' own laptops",
+    "Java JDK",
+    "an IDE (Eclipse/IntelliJ)",
+    "JUnit",
+    "Git/GitHub",
+    "TAs for tutorials"
+   ]
+  },
+  "assessment_prefs": {
+   "preferred": [
+    "short take-home programming assignments",
+    "a pair-programming course project with milestones",
+    "quizzes",
+    "mid-sem and end-sem exams"
+   ],
+   "avoid": [],
+   "rationale": "the course is about building software, so a substantial share of the grade should come from programming work, while exams check individual understanding"
+  },
+  "special_constraints": [
+   {
+    "id": "SC1",
+    "text": "The course project must be done in pairs and should produce a working application with a graphical interface."
+   }
+  ]
+ },
+ "stages_done": [
+  "s1_intake"
+ ]
+}

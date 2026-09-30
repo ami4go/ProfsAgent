@@ -1,0 +1,36 @@
+# Provisional pedagogy parameters. EVERY value here needs advisor sign-off (docs/01 §11).
+bloom_bands:            # by course level digit; [floor, ceiling]
+  "1": [1, 3]
+  "2": [2, 5]
+  "3": [3, 5]
+  "4": [3, 6]
+  "5": [3, 6]
+  "6": [4, 6]
+  "7": [4, 6]
+bloom_band_basis: "provisional table (docs/01 §6.4); to be refit from quality-filtered corpus priors"
+co_count: {min: 4, max: 6, basis: "IIIT-D sheets typically list 4-5 COs (stub corpus); provisional"}
+lo_count: {per_co_min: 2, per_co_max: 4, total_min: 10, total_max: 20}
+thresholds:
+  anti_requisite_overlap: 0.35
+  substantial_overlap: 0.15
+  topic_match_sim: 0.87      # gemini-embedding-001 SEMANTIC_SIMILARITY: wrong pairs <= 0.85, true >= 0.89 (10-pair calibration, 2026-09-30)
+  co_po_strength: {three: 0.6, two: 0.3}
+  weight_band_fallback: {quiz: [5, 15], assignment: [15, 30], lab: [10, 25], project: [15, 40], midsem: [15, 30], endsem: [20, 40], presentation: [5, 20], report: [5, 20], participation: [0, 10]}
+  component_count: {min: 3, max: 6}
+  max_events_per_week: 2
+assessment_evidence_types: [exam_question, lab_task, programming_assignment, project_deliverable, design_document, presentation, report, code_review, quiz]
+activity_vocabulary: [design, implement, analyse-data, evaluate-critique, teamwork, written-communication, oral-presentation, ethics-reflection, self-directed-learning, research-investigation, tool-use]
+# activity_type -> BTECH-CSE PO uids. PROPOSAL, needs faculty sign-off before computed strengths are reported as final.
+activity_po_map:
+  BTECH-CSE:
+    design: [BTECH-CSE/PO4]
+    implement: [BTECH-CSE/PO4]
+    analyse-data: [BTECH-CSE/PO3]
+    evaluate-critique: [BTECH-CSE/PO4, BTECH-CSE/PO9]
+    teamwork: [BTECH-CSE/PO5]
+    written-communication: [BTECH-CSE/PO7]
+    oral-presentation: [BTECH-CSE/PO7]
+    ethics-reflection: [BTECH-CSE/PO6, BTECH-CSE/PO12]
+    self-directed-learning: [BTECH-CSE/PO8]
+    research-investigation: [BTECH-CSE/PO10]
+    tool-use: [BTECH-CSE/PO9]

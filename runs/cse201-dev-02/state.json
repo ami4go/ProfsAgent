@@ -1,0 +1,4795 @@
+{
+ "form": {
+  "1. COURSE NAME": "Advanced Programming",
+  "2. SHORT COURSE DESCRIPTION": "A second programming course that moves students from writing small single-file programs to building larger applications made of several components with clear interfaces. Students learn object-oriented design, how to write code that others can reuse and test, how to structure programs around established design patterns, and how to handle errors, input/output and concurrency. By the end, students working in pairs can take a reasonably well-specified application design and deliver a working, tested, multi-component program. Java is the vehicle, but the course is about program design, not the Java language.",
+  "3. TOPICS / CONTENT AREAS": "Treatment of this list: starting hypotheses — may add/drop/reorder with justification.\nA. Object-oriented foundations: classes and objects, encapsulation, modularity, object relationships (association, composition), interfaces\nB. Inheritance and polymorphism: inheritance hierarchies, abstract classes, polymorphism via interfaces and inheritance, method resolution, immutability\nC. Generic and reusable code: generics, comparing and cloning objects, the collections framework\nD. Robust programs: exception handling, assertions, defensive and secure programming, I/O streams and serialization\nE. Testing and tooling: unit testing, debugging, version control as part of everyday development\nF. Designing before coding: use cases, UML class/sequence/use-case diagrams, object-oriented design of a problem\nG. Event-driven programming and GUIs\nH. Concurrency: threads, thread pools, mutual exclusion, race conditions and deadlocks, producer-consumer, speedup\nI. Design patterns: common creational, structural and behavioural patterns applied to real problems\n",
+  "4. COURSE INTENT": "Central question the course answers: How do you design, build and test a multi-component program so that its parts can be developed independently and reused?\nPedagogical emphasis: design thinking before coding; writing code others can read, reuse and test; learning by building a substantial team project.\nThis course should NOT become:\n- a Java language features course\n- a data-structures course (that is covered by the prerequisite)\n- a lecture-only course without regular hands-on practice\n",
+  "5. TARGET STUDENTS": "Programmes: B.Tech. CSE (core course); also taken by other B.Tech. programmes\nYear: 2nd year (3rd semester)\nAssumed background: CSE101 Introduction to Programming and CSE102 Data Structures and Algorithms — comfortable with procedural programming, functions, arrays, lists, recursion and basic data structures\n",
+  "6. EXPECTED LEVEL / COURSE CODE": "2xx level (second-year core); code to be assigned",
+  "7. CREDITS": "4",
+  "8. L-T-P / CONTACT HOURS": "3-1-0 (three lecture hours and one tutorial hour per week)",
+  "9. SEMESTER LENGTH": "[NOT SPECIFIED — infer from evidence and flag under RULE A]",
+  "10. WEEKLY STUDENT EFFORT": "[NOT SPECIFIED — infer from evidence and flag under RULE A]",
+  "11. LAB / PRACTICAL COMPONENT": "Lab required: no separate lab slot; hands-on practice happens in tutorials and take-home work\nAvailable infrastructure: students' own laptops; Java JDK, an IDE (Eclipse/IntelliJ), JUnit, Git/GitHub; TAs for tutorials\n",
+  "12. ASSESSMENT PREFERENCES": "Preferred components: short take-home programming assignments, a pair-programming course project with milestones, quizzes, mid-sem and end-sem exams\nComponents to avoid: none\nRationale: the course is about building software, so a substantial share of the grade should come from programming work, while exams check individual understanding\n",
+  "13. SPECIAL CONSTRAINTS": "The course project must be done in pairs and should produce a working application with a graphical interface.",
+  "14. CURRICULUM CONTEXT": "[NOT SUPPLIED — derive curriculum positioning yourself from the institutional knowledge graph.]"
+ },
+ "run_cfg": {
+  "project_id": "P-CSE201-DEV",
+  "exclude_courses": [
+   "CSE201"
+  ],
+  "blocklist": {
+   "domains": [
+    "iiitd.ac.in",
+    "iiitd.edu.in",
+    "techtree.iiitd.edu.in"
+   ],
+   "course_codes": [
+    "CSE201"
+   ],
+   "title_fragments": []
+  },
+  "external_research": true
+ },
+ "traces": {
+  "intake": {
+   "generator": {
+    "prompt_id": "G1",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash:k1",
+    "tokens": 9806
+   }
+  },
+  "positioning": {
+   "generator": {
+    "prompt_id": "G2",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash-lite:k0",
+    "tokens": 12895
+   },
+   "initial_errors": 0,
+   "initial_warnings": 0,
+   "repairs": [],
+   "final_errors": 0,
+   "final_warnings": 0
+  },
+  "constraints": {
+   "generator": {
+    "prompt_id": "G3",
+    "prompt_version": "0.1.0",
+    "endpoint": "groq:openai/gpt-oss-120b:k0",
+    "tokens": 5238
+   }
+  },
+  "cos": {
+   "generator": {
+    "prompt_id": "G4",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash-lite:k0",
+    "tokens": 8516
+   },
+   "initial_errors": 0,
+   "initial_warnings": 0,
+   "repairs": [],
+   "final_errors": 0,
+   "final_warnings": 0
+  },
+  "copo": {
+   "generator": {
+    "prompt_id": "G5",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash-lite:k0",
+    "tokens": 4368
+   },
+   "initial_errors": 0,
+   "initial_warnings": 0,
+   "repairs": [],
+   "final_errors": 0,
+   "final_warnings": 0
+  },
+  "los": {
+   "generator": {
+    "prompt_id": "G6",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash-lite:k0",
+    "tokens": 8536
+   },
+   "initial_errors": 0,
+   "initial_warnings": 1,
+   "repairs": [],
+   "final_errors": 0,
+   "final_warnings": 1
+  },
+  "structure": {
+   "generator": {
+    "prompt_id": "G7",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash-lite:k0",
+    "tokens": 7656
+   },
+   "initial_errors": 0,
+   "initial_warnings": 4,
+   "repairs": [],
+   "final_errors": 0,
+   "final_warnings": 4
+  },
+  "labs": {
+   "generator": {
+    "prompt_id": "G8",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash-lite:k0",
+    "tokens": 5360
+   },
+   "initial_errors": 0,
+   "initial_warnings": 0,
+   "repairs": [],
+   "final_errors": 0,
+   "final_warnings": 0
+  },
+  "assessment": {
+   "generator": {
+    "prompt_id": "G9",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash-lite:k0",
+    "tokens": 8908
+   },
+   "initial_errors": 11,
+   "initial_warnings": 0,
+   "repairs": [
+    {
+     "round": 1,
+     "accepted": true,
+     "errors_before": 11,
+     "errors_after": 2,
+     "new_error_codes": [],
+     "ops": 10,
+     "notes": [],
+     "unfixable": [],
+     "endpoint": "gemini:gemini-3.5-flash-lite:k0"
+    },
+    {
+     "round": 2,
+     "accepted": true,
+     "errors_before": 2,
+     "errors_after": 0,
+     "new_error_codes": [],
+     "ops": 3,
+     "notes": [],
+     "unfixable": [],
+     "endpoint": "gemini:gemini-3.5-flash-lite:k0"
+    }
+   ],
+   "final_errors": 0,
+   "final_warnings": 0
+  },
+  "resources": {
+   "generator": {
+    "prompt_id": "G10",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash-lite:k0",
+    "tokens": 5850
+   }
+  },
+  "narrative": {
+   "generator": {
+    "prompt_id": "G11",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash-lite:k0",
+    "tokens": 3911
+   }
+  }
+ },
+ "violations": {
+  "intake": [],
+  "positioning": [],
+  "constraints": [],
+  "cos": [],
+  "copo": [],
+  "los": [
+   {
+    "code": "VLO-COUNT",
+    "severity": "warning",
+    "nodes": [],
+    "message": "8 LOs in total (expected 10–20)",
+    "evidence": {},
+    "stage": "los"
+   }
+  ],
+  "structure": [
+   {
+    "code": "VT-SIZE",
+    "severity": "warning",
+    "nodes": [
+     "M5.T3"
+    ],
+    "message": "topic M5.T3 is 5.0 h (> 3 h; split it)",
+    "evidence": {},
+    "stage": "structure"
+   },
+   {
+    "code": "VT-SIZE",
+    "severity": "warning",
+    "nodes": [
+     "M6.T1"
+    ],
+    "message": "topic M6.T1 is 4.0 h (> 3 h; split it)",
+    "evidence": {},
+    "stage": "structure"
+   },
+   {
+    "code": "VT-SIZE",
+    "severity": "warning",
+    "nodes": [
+     "M6.T2"
+    ],
+    "message": "topic M6.T2 is 4.0 h (> 3 h; split it)",
+    "evidence": {},
+    "stage": "structure"
+   },
+   {
+    "code": "V6",
+    "severity": "warning",
+    "nodes": [
+     "W13"
+    ],
+    "message": "weeks with no lecture topics: [13]",
+    "evidence": {},
+    "stage": "schedule"
+   }
+  ],
+  "labs": [],
+  "assessment": [],
+  "resources": [],
+  "narrative": []
+ },
+ "concerns": {
+  "intake": [
+   {
+    "about": "level_or_code",
+    "detail": "The course code is not yet assigned (currently 2xx level)."
+   },
+   {
+    "about": "lab",
+    "detail": "The professor specifies 'no separate lab slot' but requires a pair-programming project producing a working application with a GUI, which might require significant practical support."
+   }
+  ],
+  "positioning": [
+   {
+    "about": "programme_structure",
+    "detail": "Programme core/elective structure is not available in the KG stub, making exact cohort placement reliant on year level tags."
+   }
+  ],
+  "constraints": [
+   {
+    "about": "assessment weight distribution",
+    "detail": "Professor's rationale mentions a substantial share of grade from programming work, but no numeric weight is specified."
+   }
+  ],
+  "copo": [
+   {
+    "about": "CO5/PO5 mapping gap",
+    "detail": "Although po_gap_hints mentions modern tool usage, teamwork (PO5) is not explicitly evidenced by the provided CO evidence types (programming_assignment, exam_question, code_review, design_document, project_deliverable without explicit group criteria)."
+   }
+  ],
+  "los": [
+   {
+    "about": "lecture hours total",
+    "detail": "Sum of LO lecture hours is 34.0 against a budget of 39.0 hours. Additional hours can be distributed across topics during scheduling."
+   }
+  ],
+  "labs": [
+   {
+    "about": "V18",
+    "detail": "P=0 and lab is not required, but hands-on LOs exist. Hands-on practice has been integrated into tutorial sessions as per rule 7."
+   }
+  ],
+  "resources": [
+   {
+    "about": "Candidate Resources",
+    "detail": "Corpus resources provided are primarily for Python (CSE101) and Algorithms (CSE102), and retrieved external records contain irrelevant books (e.g., Jane Austen novels), necessitating additional targeted search requests for advanced Java topics like concurrency and design patterns."
+   }
+  ]
+ },
+ "approvals": [
+  {
+   "gate": "gate1_context",
+   "decision": "approve",
+   "by": "auto (dev run)",
+   "comment": "auto-approved; not a professor decision",
+   "at": 1790772519.664669,
+   "frozen": 41,
+   "open_errors": 0
+  },
+  {
+   "gate": "gate2_outcomes",
+   "decision": "approve",
+   "by": "auto (dev run)",
+   "comment": "auto-approved; not a professor decision",
+   "at": 1790772538.7326145,
+   "frozen": 12,
+   "open_errors": 0
+  },
+  {
+   "gate": "gate3_proposal",
+   "decision": "approve",
+   "by": "auto (dev run)",
+   "comment": "auto-approved; not a professor decision",
+   "at": 1790772584.4053788,
+   "frozen": 0,
+   "open_errors": 0
+  }
+ ],
+ "cco": {
+  "concerns": [
+   {
+    "about": "level_or_code",
+    "detail": "The course code is not yet assigned (currently 2xx level)."
+   },
+   {
+    "about": "lab",
+    "detail": "The professor specifies 'no separate lab slot' but requires a pair-programming project producing a working application with a GUI, which might require significant practical support."
+   }
+  ],
+  "missing": [
+   {
+    "field": "semester_weeks",
+    "reason": "Semester length is not specified in the intake form. It needs to be defined (typically 13 weeks of teaching as per UGREG-2025§2)."
+   },
+   {
+    "field": "weekly_effort_hours",
+    "reason": "Weekly student effort hours are not specified in the intake form."
+   },
+   {
+    "field": "curriculum_context",
+    "reason": "Curriculum context was not supplied by the professor."
+   }
+  ],
+  "fields": {
+   "course_name": {
+    "status": "given",
+    "raw": "Advanced Programming",
+    "value": "Advanced Programming"
+   },
+   "short_description": {
+    "status": "given",
+    "raw": "A second programming course that moves students from writing small single-file programs to building larger applications made of several components with clear interfaces. Students learn object-oriented design, how to write code that others can reuse and test, how to structure programs around established design patterns, and how to handle errors, input/output and concurrency. By the end, students working in pairs can take a reasonably well-specified application design and deliver a working, tested, multi-component program. Java is the vehicle, but the course is about program design, not the Java language.",
+    "value": "A second programming course that moves students from writing small single-file programs to building larger applications made of several components with clear interfaces. Students learn object-oriented design, how to write code that others can reuse and test, how to structure programs around established design patterns, and how to handle errors, input/output and concurrency. By the end, students working in pairs can take a reasonably well-specified application design and deliver a working, tested, multi-component program. Java is the vehicle, but the course is about program design, not the Java language."
+   },
+   "topics": {
+    "status": "given",
+    "raw": "Treatment of this list: starting hypotheses — may add/drop/reorder with justification.\nA. Object-oriented foundations: classes and objects, encapsulation, modularity, object relationships (association, composition), interfaces\nB. Inheritance and polymorphism: inheritance hierarchies, abstract classes, polymorphism via interfaces and inheritance, method resolution, immutability\nC. Generic and reusable code: generics, comparing and cloning objects, the collections framework\nD. Robust programs: exception handling, assertions, defensive and secure programming, I/O streams and serialization\nE. Testing and tooling: unit testing, debugging, version control as part of everyday development\nF. Designing before coding: use cases, UML class/sequence/use-case diagrams, object-oriented design of a problem\nG. Event-driven programming and GUIs\nH. Concurrency: threads, thread pools, mutual exclusion, race conditions and deadlocks, producer-consumer, speedup\nI. Design patterns: common creational, structural and behavioural patterns applied to real problems\n",
+    "value": null,
+    "topics_treatment": "hypotheses",
+    "topic_groups": [
+     {
+      "id": "TG1",
+      "title": "Object-oriented foundations",
+      "topics": [
+       {
+        "id": "TG1.1",
+        "text": "classes and objects, encapsulation, modularity, object relationships (association, composition), interfaces"
+       }
+      ]
+     },
+     {
+      "id": "TG2",
+      "title": "Inheritance and polymorphism",
+      "topics": [
+       {
+        "id": "TG2.1",
+        "text": "inheritance hierarchies, abstract classes, polymorphism via interfaces and inheritance, method resolution, immutability"
+       }
+      ]
+     },
+     {
+      "id": "TG3",
+      "title": "Generic and reusable code",
+      "topics": [
+       {
+        "id": "TG3.1",
+        "text": "generics, comparing and cloning objects, the collections framework"
+       }
+      ]
+     },
+     {
+      "id": "TG4",
+      "title": "Robust programs",
+      "topics": [
+       {
+        "id": "TG4.1",
+        "text": "exception handling, assertions, defensive and secure programming, I/O streams and serialization"
+       }
+      ]
+     },
+     {
+      "id": "TG5",
+      "title": "Testing and tooling",
+      "topics": [
+       {
+        "id": "TG5.1",
+        "text": "unit testing, debugging, version control as part of everyday development"
+       }
+      ]
+     },
+     {
+      "id": "TG6",
+      "title": "Designing before coding",
+      "topics": [
+       {
+        "id": "TG6.1",
+        "text": "use cases, UML class/sequence/use-case diagrams, object-oriented design of a problem"
+       }
+      ]
+     },
+     {
+      "id": "TG7",
+      "title": "Event-driven programming and GUIs",
+      "topics": [
+       {
+        "id": "TG7.1",
+        "text": "Event-driven programming and GUIs"
+       }
+      ]
+     },
+     {
+      "id": "TG8",
+      "title": "Concurrency",
+      "topics": [
+       {
+        "id": "TG8.1",
+        "text": "threads, thread pools, mutual exclusion, race conditions and deadlocks, producer-consumer, speedup"
+       }
+      ]
+     },
+     {
+      "id": "TG9",
+      "title": "Design patterns",
+      "topics": [
+       {
+        "id": "TG9.1",
+        "text": "common creational, structural and behavioural patterns applied to real problems"
+       }
+      ]
+     }
+    ]
+   },
+   "intent": {
+    "status": "given",
+    "raw": "Central question the course answers: How do you design, build and test a multi-component program so that its parts can be developed independently and reused?\nPedagogical emphasis: design thinking before coding; writing code others can read, reuse and test; learning by building a substantial team project.\nThis course should NOT become:\n- a Java language features course\n- a data-structures course (that is covered by the prerequisite)\n- a lecture-only course without regular hands-on practice\n",
+    "value": null,
+    "central_question": "How do you design, build and test a multi-component program so that its parts can be developed independently and reused?",
+    "pedagogical_emphasis": "design thinking before coding; writing code others can read, reuse and test; learning by building a substantial team project.",
+    "negative_constraints": [
+     {
+      "id": "NC1",
+      "raw": "a Java language features course",
+      "checkable_form": "The course syllabus and assessments must not focus primarily on Java-specific language features.",
+      "checkable": true
+     },
+     {
+      "id": "NC2",
+      "raw": "a data-structures course (that is covered by the prerequisite)",
+      "checkable_form": "The course must not re-teach basic data structures covered in CSE102.",
+      "checkable": true
+     },
+     {
+      "id": "NC3",
+      "raw": "a lecture-only course without regular hands-on practice",
+      "checkable_form": "The course must include regular hands-on programming practice and a project.",
+      "checkable": true
+     }
+    ]
+   },
+   "target_students": {
+    "status": "given",
+    "raw": "Programmes: B.Tech. CSE (core course); also taken by other B.Tech. programmes\nYear: 2nd year (3rd semester)\nAssumed background: CSE101 Introduction to Programming and CSE102 Data Structures and Algorithms — comfortable with procedural programming, functions, arrays, lists, recursion and basic data structures\n",
+    "value": null,
+    "programmes": [
+     "BTECH-CSE"
+    ],
+    "unmapped_programmes": [
+     "other B.Tech. programmes"
+    ],
+    "years": [
+     2
+    ],
+    "assumed_background": [
+     "CSE101 Introduction to Programming",
+     "CSE102 Data Structures and Algorithms — comfortable with procedural programming, functions, arrays, lists, recursion and basic data structures"
+    ]
+   },
+   "level_or_code": {
+    "status": "given",
+    "raw": "2xx level (second-year core); code to be assigned",
+    "value": null,
+    "code": null,
+    "level": 2
+   },
+   "credits": {
+    "status": "given",
+    "raw": "4",
+    "value": 4
+   },
+   "ltp": {
+    "status": "given",
+    "raw": "3-1-0 (three lecture hours and one tutorial hour per week)",
+    "value": null,
+    "L": 3.0,
+    "T": 1.0,
+    "P": 0.0
+   },
+   "semester_weeks": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED — infer from evidence and flag under RULE A]",
+    "value": null
+   },
+   "weekly_effort_hours": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED — infer from evidence and flag under RULE A]",
+    "value": null
+   },
+   "lab": {
+    "status": "given",
+    "raw": "Lab required: no separate lab slot; hands-on practice happens in tutorials and take-home work\nAvailable infrastructure: students' own laptops; Java JDK, an IDE (Eclipse/IntelliJ), JUnit, Git/GitHub; TAs for tutorials\n",
+    "value": null,
+    "required": "no",
+    "infrastructure": [
+     "students' own laptops",
+     "Java JDK",
+     "an IDE (Eclipse/IntelliJ)",
+     "JUnit",
+     "Git/GitHub",
+     "TAs for tutorials"
+    ]
+   },
+   "assessment_prefs": {
+    "status": "given",
+    "raw": "Preferred components: short take-home programming assignments, a pair-programming course project with milestones, quizzes, mid-sem and end-sem exams\nComponents to avoid: none\nRationale: the course is about building software, so a substantial share of the grade should come from programming work, while exams check individual understanding\n",
+    "value": null,
+    "preferred": [
+     "short take-home programming assignments",
+     "a pair-programming course project with milestones",
+     "quizzes",
+     "mid-sem and end-sem exams"
+    ],
+    "avoid": [],
+    "rationale": "the course is about building software, so a substantial share of the grade should come from programming work, while exams check individual understanding"
+   },
+   "special_constraints": {
+    "status": "given",
+    "raw": "The course project must be done in pairs and should produce a working application with a graphical interface.",
+    "value": null,
+    "items": [
+     {
+      "id": "SC1",
+      "text": "The course project must be done in pairs and should produce a working application with a graphical interface."
+     }
+    ]
+   },
+   "curriculum_context": {
+    "status": "missing",
+    "raw": "[NOT SUPPLIED — derive curriculum positioning yourself from the institutional knowledge graph.]",
+    "value": null,
+    "answers": {
+     "Q1": null,
+     "Q2": null,
+     "Q3": null,
+     "Q4": null,
+     "Q5": null,
+     "Q6": null
+    }
+   }
+  },
+  "ambiguities": [],
+  "conflicts": []
+ },
+ "defaults": {
+  "ltp": {
+   "L": 3.0,
+   "T": 1.0,
+   "P": 0
+  },
+  "weeks": 13,
+  "credits": 4,
+  "level": 2,
+  "midsem_after_week": 7,
+  "constraints": [
+   {
+    "id": "K01",
+    "target": "schedule.weeks",
+    "op": "==",
+    "value": 13,
+    "hardness": "hard",
+    "source": {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§2"
+    }
+   },
+   {
+    "id": "K02",
+    "target": "course.credits",
+    "op": "==",
+    "value": 4,
+    "hardness": "hard",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.credits"
+    }
+   },
+   {
+    "id": "K03",
+    "target": "schedule.lecture_hours_per_week",
+    "op": "==",
+    "value": 3.0,
+    "hardness": "hard",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.ltp"
+    }
+   },
+   {
+    "id": "K04",
+    "target": "schedule.tutorial_hours_per_week",
+    "op": "==",
+    "value": 1.0,
+    "hardness": "hard",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.ltp"
+    }
+   },
+   {
+    "id": "K05",
+    "target": "lab.hours_per_week",
+    "op": "==",
+    "value": 0,
+    "hardness": "hard",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.ltp"
+    }
+   },
+   {
+    "id": "K06",
+    "target": "assessment.component[midsem].present",
+    "op": "present",
+    "value": true,
+    "hardness": "soft",
+    "source": {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§6.2"
+    }
+   },
+   {
+    "id": "K07",
+    "target": "assessment.component[endsem].present",
+    "op": "present",
+    "value": true,
+    "hardness": "soft",
+    "source": {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§6.2"
+    }
+   },
+   {
+    "id": "K08",
+    "target": "schedule.midsem_after_week",
+    "op": "==",
+    "value": 7,
+    "hardness": "soft",
+    "source": {
+     "tag": "INFERRED",
+     "ref": "ASM"
+    }
+   }
+  ],
+  "assumptions": [
+   {
+    "id": "ASM01",
+    "what": "mid-semester exam timing",
+    "value": "after teaching week 7",
+    "basis": "mid-semester recess and exam fall roughly mid-way through 13 teaching weeks; confirm from the academic calendar",
+    "confirm_with": "academic calendar (DOAA)",
+    "status": "open"
+   },
+   {
+    "id": "ASM02",
+    "what": "weekly student effort",
+    "value": null,
+    "basis": "not supplied; effort is reported (contact + take-home estimates), not constrained",
+    "confirm_with": "course instructor / DOAA",
+    "status": "open"
+   }
+  ]
+ },
+ "ltp": {
+  "L": 3.0,
+  "T": 1.0,
+  "P": 0
+ },
+ "weeks": 13,
+ "level": 2,
+ "midsem_after_week": 7,
+ "lab_required": "no",
+ "topic_groups": [
+  {
+   "id": "TG1",
+   "title": "Object-oriented foundations",
+   "topics": [
+    {
+     "id": "TG1.1",
+     "text": "classes and objects, encapsulation, modularity, object relationships (association, composition), interfaces"
+    }
+   ]
+  },
+  {
+   "id": "TG2",
+   "title": "Inheritance and polymorphism",
+   "topics": [
+    {
+     "id": "TG2.1",
+     "text": "inheritance hierarchies, abstract classes, polymorphism via interfaces and inheritance, method resolution, immutability"
+    }
+   ]
+  },
+  {
+   "id": "TG3",
+   "title": "Generic and reusable code",
+   "topics": [
+    {
+     "id": "TG3.1",
+     "text": "generics, comparing and cloning objects, the collections framework"
+    }
+   ]
+  },
+  {
+   "id": "TG4",
+   "title": "Robust programs",
+   "topics": [
+    {
+     "id": "TG4.1",
+     "text": "exception handling, assertions, defensive and secure programming, I/O streams and serialization"
+    }
+   ]
+  },
+  {
+   "id": "TG5",
+   "title": "Testing and tooling",
+   "topics": [
+    {
+     "id": "TG5.1",
+     "text": "unit testing, debugging, version control as part of everyday development"
+    }
+   ]
+  },
+  {
+   "id": "TG6",
+   "title": "Designing before coding",
+   "topics": [
+    {
+     "id": "TG6.1",
+     "text": "use cases, UML class/sequence/use-case diagrams, object-oriented design of a problem"
+    }
+   ]
+  },
+  {
+   "id": "TG7",
+   "title": "Event-driven programming and GUIs",
+   "topics": [
+    {
+     "id": "TG7.1",
+     "text": "Event-driven programming and GUIs"
+    }
+   ]
+  },
+  {
+   "id": "TG8",
+   "title": "Concurrency",
+   "topics": [
+    {
+     "id": "TG8.1",
+     "text": "threads, thread pools, mutual exclusion, race conditions and deadlocks, producer-consumer, speedup"
+    }
+   ]
+  },
+  {
+   "id": "TG9",
+   "title": "Design patterns",
+   "topics": [
+    {
+     "id": "TG9.1",
+     "text": "common creational, structural and behavioural patterns applied to real problems"
+    }
+   ]
+  }
+ ],
+ "hours_budget": {
+  "weeks": 13,
+  "lecture_hours_per_week": 3.0,
+  "lecture_hours_total": 39.0,
+  "tutorial_hours_total": 13.0,
+  "lab_hours_total": 0
+ },
+ "bloom_band": {
+  "floor": 2,
+  "ceiling": 5,
+  "basis": "level 2xx band [2,5] — provisional table (docs/01 §6.4); to be refit from quality-filtered corpus priors",
+  "source_tag": "INFERRED"
+ },
+ "programmes": [
+  "BTECH-CSE"
+ ],
+ "programme_pos": [
+  {
+   "uid": "BTECH-CSE/PO1",
+   "text": "Understanding of theoretical foundations and limits of computing",
+   "short_label": "Theoretical foundations"
+  },
+  {
+   "uid": "BTECH-CSE/PO2",
+   "text": "Understanding of computing at different levels of abstraction including circuits and computer architecture, operating systems, algorithms, and applications.",
+   "short_label": "Levels of abstraction"
+  },
+  {
+   "uid": "BTECH-CSE/PO3",
+   "text": "Ability to adapt established models, techniques, algorithms, data structures, etc., for efficiently solving new problems",
+   "short_label": "Adapt techniques to new problems"
+  },
+  {
+   "uid": "BTECH-CSE/PO4",
+   "text": "Ability to design, implement, and evaluate computer based system or application to meet the desired needs using modern tools and methodologies",
+   "short_label": "Design/implement/evaluate systems"
+  },
+  {
+   "uid": "BTECH-CSE/PO5",
+   "text": "Ability to function effectively in teams to accomplish a common goal",
+   "short_label": "Teamwork"
+  },
+  {
+   "uid": "BTECH-CSE/PO6",
+   "text": "An understanding of professional and ethical responsibility.",
+   "short_label": "Professional ethics"
+  },
+  {
+   "uid": "BTECH-CSE/PO7",
+   "text": "Ability to communicate effectively with a wide range of audience",
+   "short_label": "Communication"
+  },
+  {
+   "uid": "BTECH-CSE/PO8",
+   "text": "Ability to self-learn and engage in life-long learning",
+   "short_label": "Life-long learning"
+  },
+  {
+   "uid": "BTECH-CSE/PO9",
+   "text": "Understanding and ability to use advanced techniques and tools in different areas of computing",
+   "short_label": "Advanced techniques and tools"
+  },
+  {
+   "uid": "BTECH-CSE/PO10",
+   "text": "Ability to undertake small research tasks and projects",
+   "short_label": "Research tasks"
+  },
+  {
+   "uid": "BTECH-CSE/PO11",
+   "text": "Ability to take an idea and develop into a business plan for an entrepreneurial venture (if desired)",
+   "short_label": "Entrepreneurship"
+  },
+  {
+   "uid": "BTECH-CSE/PO12",
+   "text": "An understanding of the impact of solutions in an economic, societal, and environment context.",
+   "short_label": "Societal impact"
+  }
+ ],
+ "activity_po_map": {
+  "design": [
+   "BTECH-CSE/PO4"
+  ],
+  "implement": [
+   "BTECH-CSE/PO4",
+   "BTECH-CSE/PO3"
+  ],
+  "analyse-data": [
+   "BTECH-CSE/PO3"
+  ],
+  "evaluate-critique": [
+   "BTECH-CSE/PO4",
+   "BTECH-CSE/PO9"
+  ],
+  "teamwork": [
+   "BTECH-CSE/PO5"
+  ],
+  "written-communication": [
+   "BTECH-CSE/PO7"
+  ],
+  "oral-presentation": [
+   "BTECH-CSE/PO7"
+  ],
+  "ethics-reflection": [
+   "BTECH-CSE/PO6",
+   "BTECH-CSE/PO12"
+  ],
+  "self-directed-learning": [
+   "BTECH-CSE/PO8"
+  ],
+  "research-investigation": [
+   "BTECH-CSE/PO10"
+  ],
+  "tool-use": [
+   "BTECH-CSE/PO9"
+  ]
+ },
+ "cco_compact": {
+  "course_name": "Advanced Programming",
+  "description": "A second programming course that moves students from writing small single-file programs to building larger applications made of several components with clear interfaces. Students learn object-oriented design, how to write code that others can reuse and test, how to structure programs around established design patterns, and how to handle errors, input/output and concurrency. By the end, students working in pairs can take a reasonably well-specified application design and deliver a working, tested, multi-component program. Java is the vehicle, but the course is about program design, not the Java language.",
+  "topic_groups": [
+   {
+    "id": "TG1",
+    "title": "Object-oriented foundations",
+    "topics": [
+     {
+      "id": "TG1.1",
+      "text": "classes and objects, encapsulation, modularity, object relationships (association, composition), interfaces"
+     }
+    ]
+   },
+   {
+    "id": "TG2",
+    "title": "Inheritance and polymorphism",
+    "topics": [
+     {
+      "id": "TG2.1",
+      "text": "inheritance hierarchies, abstract classes, polymorphism via interfaces and inheritance, method resolution, immutability"
+     }
+    ]
+   },
+   {
+    "id": "TG3",
+    "title": "Generic and reusable code",
+    "topics": [
+     {
+      "id": "TG3.1",
+      "text": "generics, comparing and cloning objects, the collections framework"
+     }
+    ]
+   },
+   {
+    "id": "TG4",
+    "title": "Robust programs",
+    "topics": [
+     {
+      "id": "TG4.1",
+      "text": "exception handling, assertions, defensive and secure programming, I/O streams and serialization"
+     }
+    ]
+   },
+   {
+    "id": "TG5",
+    "title": "Testing and tooling",
+    "topics": [
+     {
+      "id": "TG5.1",
+      "text": "unit testing, debugging, version control as part of everyday development"
+     }
+    ]
+   },
+   {
+    "id": "TG6",
+    "title": "Designing before coding",
+    "topics": [
+     {
+      "id": "TG6.1",
+      "text": "use cases, UML class/sequence/use-case diagrams, object-oriented design of a problem"
+     }
+    ]
+   },
+   {
+    "id": "TG7",
+    "title": "Event-driven programming and GUIs",
+    "topics": [
+     {
+      "id": "TG7.1",
+      "text": "Event-driven programming and GUIs"
+     }
+    ]
+   },
+   {
+    "id": "TG8",
+    "title": "Concurrency",
+    "topics": [
+     {
+      "id": "TG8.1",
+      "text": "threads, thread pools, mutual exclusion, race conditions and deadlocks, producer-consumer, speedup"
+     }
+    ]
+   },
+   {
+    "id": "TG9",
+    "title": "Design patterns",
+    "topics": [
+     {
+      "id": "TG9.1",
+      "text": "common creational, structural and behavioural patterns applied to real problems"
+     }
+    ]
+   }
+  ],
+  "topics_treatment": "hypotheses",
+  "central_question": "How do you design, build and test a multi-component program so that its parts can be developed independently and reused?",
+  "pedagogical_emphasis": "design thinking before coding; writing code others can read, reuse and test; learning by building a substantial team project.",
+  "negative_constraints": [
+   {
+    "id": "NC1",
+    "raw": "a Java language features course",
+    "checkable_form": "The course syllabus and assessments must not focus primarily on Java-specific language features.",
+    "checkable": true
+   },
+   {
+    "id": "NC2",
+    "raw": "a data-structures course (that is covered by the prerequisite)",
+    "checkable_form": "The course must not re-teach basic data structures covered in CSE102.",
+    "checkable": true
+   },
+   {
+    "id": "NC3",
+    "raw": "a lecture-only course without regular hands-on practice",
+    "checkable_form": "The course must include regular hands-on programming practice and a project.",
+    "checkable": true
+   }
+  ],
+  "target_students": {
+   "programmes": [
+    "BTECH-CSE"
+   ],
+   "years": [
+    2
+   ],
+   "assumed_background": [
+    "CSE101 Introduction to Programming",
+    "CSE102 Data Structures and Algorithms — comfortable with procedural programming, functions, arrays, lists, recursion and basic data structures"
+   ]
+  },
+  "level": 2,
+  "credits": 4,
+  "ltp": {
+   "L": 3.0,
+   "T": 1.0,
+   "P": 0
+  },
+  "weeks": 13,
+  "lab": {
+   "required": "no",
+   "infrastructure": [
+    "students' own laptops",
+    "Java JDK",
+    "an IDE (Eclipse/IntelliJ)",
+    "JUnit",
+    "Git/GitHub",
+    "TAs for tutorials"
+   ]
+  },
+  "assessment_prefs": {
+   "preferred": [
+    "short take-home programming assignments",
+    "a pair-programming course project with milestones",
+    "quizzes",
+    "mid-sem and end-sem exams"
+   ],
+   "avoid": [],
+   "rationale": "the course is about building software, so a substantial share of the grade should come from programming work, while exams check individual understanding"
+  },
+  "special_constraints": [
+   {
+    "id": "SC1",
+    "text": "The course project must be done in pairs and should produce a working application with a graphical interface."
+   }
+  ]
+ },
+ "stages_done": [
+  "s1_intake",
+  "s2_positioning",
+  "s3_constraints",
+  "s4_outcomes",
+  "s5_structure",
+  "s7_activities_assessment",
+  "s8_resources",
+  "s9_narrative"
+ ],
+ "overlap_computed": [
+  {
+   "course_uid": "CSE101",
+   "weighted_jaccard": 0.095,
+   "shared_topics": [
+    "classes and objects, encapsulation, modularity, object relationships (association, composition), interfaces ≈ classes, objects, inheritance",
+    "exception handling, assertions, defensive and secure programming, I/O streams and serialization ≈ Exception handling, assertions"
+   ],
+   "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+  },
+  {
+   "course_uid": "CSE584",
+   "weighted_jaccard": 0.053,
+   "shared_topics": [
+    "inheritance hierarchies, abstract classes, polymorphism via interfaces and inheritance, method resolution, immutability ≈ Polymorphism and higher order functions"
+   ],
+   "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+  },
+  {
+   "course_uid": "CSE222",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+  },
+  {
+   "course_uid": "CSE581",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+  },
+  {
+   "course_uid": "CSE231",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+  },
+  {
+   "course_uid": "CSE503",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+  },
+  {
+   "course_uid": "CSE701",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+  },
+  {
+   "course_uid": "CSE202",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+  },
+  {
+   "course_uid": "CSE102",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+  },
+  {
+   "course_uid": "CSE600",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "stub: no topics"
+  },
+  {
+   "course_uid": "CSE583",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "stub: no topics"
+  },
+  {
+   "course_uid": "AI501",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+  }
+ ],
+ "known_course_uids": [
+  "DES537A",
+  "BIO101",
+  "BIO102",
+  "BIO201",
+  "BIO211",
+  "BIO213",
+  "BIO214",
+  "BIO221",
+  "BIO222",
+  "BIO321",
+  "BIO361",
+  "BIO506",
+  "BIO511",
+  "BIO512",
+  "BIO513",
+  "BIO516",
+  "BIO522",
+  "BIO523",
+  "BIO524",
+  "BIO525",
+  "BIO531",
+  "BIO532",
+  "BIO533",
+  "BIO534",
+  "BIO541",
+  "BIO542",
+  "BIO543",
+  "BIO544",
+  "BIO545",
+  "BIO546",
+  "BIO548",
+  "BIO549",
+  "BIO551A",
+  "BIO561",
+  "X18",
+  "COM101",
+  "COM301A",
+  "CSE101",
+  "CSE102",
+  "CSE112",
+  "CSE121",
+  "CSE140",
+  "CSE202",
+  "CSE222",
+  "CSE223",
+  "CSE231",
+  "CSE232",
+  "CSE233",
+  "CSE319",
+  "CSE320",
+  "CSE322",
+  "CSE333",
+  "CSE340",
+  "CSE342",
+  "CSE344",
+  "CSE345",
+  "CSE347",
+  "CSE350",
+  "CSE354",
+  "CSE421",
+  "CSE441",
+  "CSE501",
+  "CSE502",
+  "CSE503",
+  "CSE504",
+  "CSE506",
+  "CSE507",
+  "CSE508",
+  "CSE511",
+  "CSE513",
+  "CSE515",
+  "CSE516",
+  "CSE518",
+  "CSE523",
+  "CSE524",
+  "CSE525",
+  "CSE526",
+  "CSE528",
+  "CSE529",
+  "CSE530",
+  "CSE531",
+  "CSE535",
+  "CSE538",
+  "CSE546",
+  "CSE552",
+  "CSE553",
+  "CSE555",
+  "CSE556",
+  "CSE557",
+  "CSE558",
+  "CSE559",
+  "CSE560",
+  "CSE561",
+  "CSE562",
+  "CSE563",
+  "CSE565",
+  "CSE566",
+  "CSE567",
+  "CSE568",
+  "CSE569",
+  "CSE570",
+  "CSE571",
+  "CSE572",
+  "CSE573",
+  "CSE576",
+  "CSE577",
+  "CSE580A",
+  "CSE581",
+  "CSE582",
+  "CSE583",
+  "CSE584",
+  "CSE586",
+  "CSE587",
+  "CSE587A",
+  "CSE588",
+  "CSE589",
+  "CSE592",
+  "CSE593",
+  "CSE594A",
+  "CSE595",
+  "CSE596",
+  "CSE597",
+  "X124",
+  "CSE600",
+  "CSE600A",
+  "CSE601",
+  "CSE605A",
+  "CSE606",
+  "CSE606A",
+  "CSE609",
+  "CSE615",
+  "CSE618",
+  "CSE619",
+  "CSE621",
+  "CSE622",
+  "CSE622A",
+  "CSE624A",
+  "CSE631",
+  "CSE632",
+  "CSE633",
+  "CSE633A",
+  "CSE634",
+  "CSE634A",
+  "CSE636",
+  "CSE637",
+  "CSE638",
+  "CSE640",
+  "CSE642",
+  "CSE643",
+  "CSE645",
+  "CSE651",
+  "CSE653",
+  "CSE654",
+  "CSE655",
+  "CSE656",
+  "CSE660",
+  "CSE661",
+  "CSE662A",
+  "CSE663",
+  "CSE663A",
+  "CSE665",
+  "CSE665A",
+  "CSE666",
+  "CSE667",
+  "CSE694F",
+  "CSE701",
+  "CSE734",
+  "CSE749",
+  "DES101",
+  "DES102",
+  "DES130",
+  "DES201",
+  "DES202",
+  "DES204",
+  "DES205",
+  "DES206",
+  "DES302",
+  "DES303",
+  "DES305",
+  "DES501",
+  "DES502",
+  "DES503",
+  "DES504",
+  "DES506",
+  "DES509",
+  "DES512",
+  "DES513",
+  "DES514",
+  "DES515",
+  "DES516",
+  "X192",
+  "DES518",
+  "DES520",
+  "DES521",
+  "DES522",
+  "DES523",
+  "DES524",
+  "DES526",
+  "DES527",
+  "DES529",
+  "DES530",
+  "DES531",
+  "DES532A",
+  "DES533",
+  "DES534",
+  "DES535",
+  "DES536",
+  "DES539",
+  "DES591",
+  "ECE111",
+  "ECE113",
+  "ECE210",
+  "ECE211",
+  "ECE214",
+  "ECE215",
+  "ECE230",
+  "ECE240",
+  "ECE250",
+  "ECE270",
+  "ECE314",
+  "ECE315",
+  "ECE318",
+  "ECE321",
+  "ECE323",
+  "ECE331",
+  "ECE340",
+  "ECE343",
+  "ECE351",
+  "ECE366",
+  "ECE412",
+  "ECE431",
+  "ECE432",
+  "ECE452",
+  "ECE501",
+  "ECE510",
+  "ECE513",
+  "ECE516",
+  "ECE519",
+  "ECE520",
+  "ECE522",
+  "ECE523A",
+  "ECE524",
+  "ECE525",
+  "ECE527",
+  "ECE529",
+  "ECE530",
+  "ECE532",
+  "ECE533",
+  "ECE534",
+  "X127",
+  "ECE537",
+  "ECE539",
+  "ECE543",
+  "ECE545",
+  "ECE546",
+  "ECE548",
+  "AI502",
+  "ECE554",
+  "ECE557",
+  "ECE558",
+  "X263",
+  "ECE560",
+  "ECE564",
+  "ECE564A",
+  "ECE565",
+  "ECE567",
+  "ECE570",
+  "ECE571",
+  "ECE572",
+  "ECE573",
+  "ECE577",
+  "ECE579",
+  "ECE581",
+  "ECE582",
+  "ECE600A",
+  "ECE611",
+  "ECE613",
+  "ECE614",
+  "ECE634",
+  "ECE666",
+  "ECE667A",
+  "ECE672",
+  "ECE677",
+  "ECO201",
+  "ECO221",
+  "ECO223",
+  "ECO301",
+  "ECO311",
+  "ECO312",
+  "ECO313",
+  "ECO314",
+  "ECO322",
+  "ECO323",
+  "ECO324",
+  "ECO325",
+  "ECO331",
+  "ECO332",
+  "ECO333",
+  "ECO341",
+  "ECO502",
+  "ECO503",
+  "X154",
+  "ENT405",
+  "ENT202",
+  "ENT302",
+  "ENT303A",
+  "ENT304",
+  "ENT305",
+  "ENT306",
+  "ENT307",
+  "ENT308",
+  "ENT411",
+  "ENT412",
+  "ENT413",
+  "ENT414",
+  "ENT415",
+  "ENT416",
+  "ENT421",
+  "X321",
+  "ESC205",
+  "ESC207A",
+  "MGT310",
+  "MGT311",
+  "MTH580A",
+  "MTH100",
+  "MTH201",
+  "MTH203",
+  "MTH204",
+  "MTH210",
+  "MTH211",
+  "MTH212",
+  "MTH240",
+  "MTH270",
+  "MTH300",
+  "MTH302",
+  "MTH310",
+  "MTH311",
+  "MTH340",
+  "MTH341",
+  "MTH343",
+  "MTH359",
+  "MTH371",
+  "MTH372",
+  "MTH373",
+  "MTH375",
+  "MTH376",
+  "MTH501",
+  "MTH504A",
+  "MTH506",
+  "MTH510",
+  "MTH512",
+  "MTH513",
+  "MTH514",
+  "MTH515",
+  "MTH516",
+  "MTH517",
+  "MTH518",
+  "MTH519A",
+  "MTH521A",
+  "MTH523",
+  "MTH535",
+  "MTH536",
+  "MTH542",
+  "MTH544",
+  "MTH545",
+  "MTH546",
+  "MTH547",
+  "MTH548",
+  "MTH550",
+  "MTH551",
+  "MTH552A",
+  "MTH561",
+  "MTH562",
+  "MTH562A",
+  "MTH563",
+  "MTH564A",
+  "MTH566",
+  "MTH570",
+  "MTH571",
+  "MTH576",
+  "MTH577",
+  "MTH578A",
+  "MTH579",
+  "MTH598",
+  "MTH599",
+  "PSY201",
+  "PSY202",
+  "PSY301",
+  "PSY302",
+  "PSY305",
+  "PSY306",
+  "PSY307",
+  "PSY308",
+  "SOC101",
+  "SOC202",
+  "SOC204",
+  "SOC205",
+  "SOC206",
+  "SOC207",
+  "SOC208",
+  "SOC209",
+  "SOC210",
+  "SOC211",
+  "SOC212",
+  "SOC213",
+  "SOC214",
+  "SOC216",
+  "SOC302",
+  "SOC306",
+  "SOC307",
+  "SOC308",
+  "SOC309",
+  "SOC310",
+  "SOC311",
+  "SOC313",
+  "SOC314",
+  "SOC315",
+  "SOC502",
+  "SOC504",
+  "SOC513",
+  "SOC702",
+  "SOC719A",
+  "SSH101",
+  "SSH121",
+  "SSH124",
+  "SSH201",
+  "SSH211",
+  "SSH214",
+  "SSH215",
+  "SSH216",
+  "SSH217",
+  "SSH221",
+  "SSH222",
+  "SSH223",
+  "SSH224",
+  "SSH225A",
+  "SSH240",
+  "SSH261",
+  "SSH300",
+  "SSH311",
+  "SSH321",
+  "SSH323",
+  "SSH324",
+  "SSH325",
+  "SSH326",
+  "SSH327A",
+  "SSH341",
+  "SSH342",
+  "SSH361",
+  "SSH362",
+  "X453",
+  "SSH526",
+  "X455",
+  "SSH700",
+  "SSH711",
+  "SSH721",
+  "SSH728",
+  "MTH552B",
+  "ENT309",
+  "ENT417",
+  "CSE200A",
+  "MTH504",
+  "ENT201",
+  "MTH578",
+  "SOC515",
+  "SSH544",
+  "ECE615A",
+  "ECE517",
+  "AI201",
+  "AI501",
+  "AI203",
+  "SSH529",
+  "MTH547A"
+ ],
+ "course_levels": {
+  "DES537A": 5,
+  "BIO101": 1,
+  "BIO102": 1,
+  "BIO201": 2,
+  "BIO211": 2,
+  "BIO213": 2,
+  "BIO214": 2,
+  "BIO221": 2,
+  "BIO222": 2,
+  "BIO321": 3,
+  "BIO361": 3,
+  "BIO506": 5,
+  "BIO511": 5,
+  "BIO512": 5,
+  "BIO513": 5,
+  "BIO516": 5,
+  "BIO522": 5,
+  "BIO523": 5,
+  "BIO524": 5,
+  "BIO525": 5,
+  "BIO531": 5,
+  "BIO532": 5,
+  "BIO533": 5,
+  "BIO534": 5,
+  "BIO541": 5,
+  "BIO542": 5,
+  "BIO543": 5,
+  "BIO544": 5,
+  "BIO545": 5,
+  "BIO546": 5,
+  "BIO548": 5,
+  "BIO549": 5,
+  "BIO551A": 5,
+  "BIO561": 5,
+  "X18": 1,
+  "COM101": 1,
+  "COM301A": 3,
+  "CSE101": 1,
+  "CSE102": 1,
+  "CSE112": 1,
+  "CSE121": 1,
+  "CSE140": 1,
+  "CSE202": 2,
+  "CSE222": 2,
+  "CSE223": 2,
+  "CSE231": 2,
+  "CSE232": 2,
+  "CSE233": 2,
+  "CSE319": 3,
+  "CSE320": 3,
+  "CSE322": 3,
+  "CSE333": 3,
+  "CSE340": 3,
+  "CSE342": 3,
+  "CSE344": 3,
+  "CSE345": 3,
+  "CSE347": 3,
+  "CSE350": 3,
+  "CSE354": 3,
+  "CSE421": 4,
+  "CSE441": 4,
+  "CSE501": 5,
+  "CSE502": 5,
+  "CSE503": 5,
+  "CSE504": 5,
+  "CSE506": 5,
+  "CSE507": 5,
+  "CSE508": 5,
+  "CSE511": 5,
+  "CSE513": 5,
+  "CSE515": 5,
+  "CSE516": 5,
+  "CSE518": 5,
+  "CSE523": 5,
+  "CSE524": 5,
+  "CSE525": 5,
+  "CSE526": 5,
+  "CSE528": 5,
+  "CSE529": 5,
+  "CSE530": 5,
+  "CSE531": 5,
+  "CSE535": 5,
+  "CSE538": 5,
+  "CSE546": 5,
+  "CSE552": 5,
+  "CSE553": 5,
+  "CSE555": 5,
+  "CSE556": 5,
+  "CSE557": 5,
+  "CSE558": 5,
+  "CSE559": 5,
+  "CSE560": 5,
+  "CSE561": 5,
+  "CSE562": 5,
+  "CSE563": 5,
+  "CSE565": 5,
+  "CSE566": 5,
+  "CSE567": 5,
+  "CSE568": 5,
+  "CSE569": 5,
+  "CSE570": 5,
+  "CSE571": 5,
+  "CSE572": 5,
+  "CSE573": 5,
+  "CSE576": 5,
+  "CSE577": 5,
+  "CSE580A": 5,
+  "CSE581": 5,
+  "CSE582": 5,
+  "CSE583": 5,
+  "CSE584": 5,
+  "CSE586": 5,
+  "CSE587": 5,
+  "CSE587A": 5,
+  "CSE588": 5,
+  "CSE589": 5,
+  "CSE592": 5,
+  "CSE593": 5,
+  "CSE594A": 5,
+  "CSE595": 5,
+  "CSE596": 5,
+  "CSE597": 5,
+  "X124": 1,
+  "CSE600": 6,
+  "CSE600A": 6,
+  "CSE601": 6,
+  "CSE605A": 6,
+  "CSE606": 6,
+  "CSE606A": 6,
+  "CSE609": 6,
+  "CSE615": 6,
+  "CSE618": 6,
+  "CSE619": 6,
+  "CSE621": 6,
+  "CSE622": 6,
+  "CSE622A": 6,
+  "CSE624A": 6,
+  "CSE631": 6,
+  "CSE632": 6,
+  "CSE633": 6,
+  "CSE633A": 6,
+  "CSE634": 6,
+  "CSE634A": 6,
+  "CSE636": 6,
+  "CSE637": 6,
+  "CSE638": 6,
+  "CSE640": 6,
+  "CSE642": 6,
+  "CSE643": 6,
+  "CSE645": 6,
+  "CSE651": 6,
+  "CSE653": 6,
+  "CSE654": 6,
+  "CSE655": 6,
+  "CSE656": 6,
+  "CSE660": 6,
+  "CSE661": 6,
+  "CSE662A": 6,
+  "CSE663": 6,
+  "CSE663A": 6,
+  "CSE665": 6,
+  "CSE665A": 6,
+  "CSE666": 6,
+  "CSE667": 6,
+  "CSE694F": 6,
+  "CSE701": 7,
+  "CSE734": 7,
+  "CSE749": 7,
+  "DES101": 1,
+  "DES102": 1,
+  "DES130": 1,
+  "DES201": 2,
+  "DES202": 2,
+  "DES204": 2,
+  "DES205": 2,
+  "DES206": 2,
+  "DES302": 3,
+  "DES303": 3,
+  "DES305": 3,
+  "DES501": 5,
+  "DES502": 5,
+  "DES503": 5,
+  "DES504": 5,
+  "DES506": 5,
+  "DES509": 5,
+  "DES512": 5,
+  "DES513": 5,
+  "DES514": 5,
+  "DES515": 5,
+  "DES516": 5,
+  "X192": 1,
+  "DES518": 5,
+  "DES520": 5,
+  "DES521": 5,
+  "DES522": 5,
+  "DES523": 5,
+  "DES524": 5,
+  "DES526": 5,
+  "DES527": 5,
+  "DES529": 5,
+  "DES530": 5,
+  "DES531": 5,
+  "DES532A": 5,
+  "DES533": 5,
+  "DES534": 5,
+  "DES535": 5,
+  "DES536": 5,
+  "DES539": 5,
+  "DES591": 5,
+  "ECE111": 1,
+  "ECE113": 1,
+  "ECE210": 2,
+  "ECE211": 2,
+  "ECE214": 2,
+  "ECE215": 2,
+  "ECE230": 2,
+  "ECE240": 2,
+  "ECE250": 2,
+  "ECE270": 2,
+  "ECE314": 3,
+  "ECE315": 3,
+  "ECE318": 3,
+  "ECE321": 3,
+  "ECE323": 3,
+  "ECE331": 3,
+  "ECE340": 3,
+  "ECE343": 3,
+  "ECE351": 3,
+  "ECE366": 3,
+  "ECE412": 4,
+  "ECE431": 4,
+  "ECE432": 4,
+  "ECE452": 4,
+  "ECE501": 5,
+  "ECE510": 5,
+  "ECE513": 5,
+  "ECE516": 5,
+  "ECE519": 5,
+  "ECE520": 5,
+  "ECE522": 5,
+  "ECE523A": 5,
+  "ECE524": 5,
+  "ECE525": 5,
+  "ECE527": 5,
+  "ECE529": 5,
+  "ECE530": 5,
+  "ECE532": 5,
+  "ECE533": 5,
+  "ECE534": 5,
+  "X127": 1,
+  "ECE537": 5,
+  "ECE539": 5,
+  "ECE543": 5,
+  "ECE545": 5,
+  "ECE546": 5,
+  "ECE548": 5,
+  "AI502": 5,
+  "ECE554": 5,
+  "ECE557": 5,
+  "ECE558": 5,
+  "X263": 2,
+  "ECE560": 5,
+  "ECE564": 5,
+  "ECE564A": 5,
+  "ECE565": 5,
+  "ECE567": 5,
+  "ECE570": 5,
+  "ECE571": 5,
+  "ECE572": 5,
+  "ECE573": 5,
+  "ECE577": 5,
+  "ECE579": 5,
+  "ECE581": 5,
+  "ECE582": 5,
+  "ECE600A": 6,
+  "ECE611": 6,
+  "ECE613": 6,
+  "ECE614": 6,
+  "ECE634": 6,
+  "ECE666": 6,
+  "ECE667A": 6,
+  "ECE672": 6,
+  "ECE677": 6,
+  "ECO201": 2,
+  "ECO221": 2,
+  "ECO223": 2,
+  "ECO301": 3,
+  "ECO311": 3,
+  "ECO312": 3,
+  "ECO313": 3,
+  "ECO314": 3,
+  "ECO322": 3,
+  "ECO323": 3,
+  "ECO324": 3,
+  "ECO325": 3,
+  "ECO331": 3,
+  "ECO332": 3,
+  "ECO333": 3,
+  "ECO341": 3,
+  "ECO502": 5,
+  "ECO503": 5,
+  "X154": 1,
+  "ENT405": 4,
+  "ENT202": 2,
+  "ENT302": 3,
+  "ENT303A": 3,
+  "ENT304": 3,
+  "ENT305": 3,
+  "ENT306": 3,
+  "ENT307": 3,
+  "ENT308": 3,
+  "ENT411": 4,
+  "ENT412": 4,
+  "ENT413": 4,
+  "ENT414": 4,
+  "ENT415": 4,
+  "ENT416": 4,
+  "ENT421": 4,
+  "X321": 3,
+  "ESC205": 2,
+  "ESC207A": 2,
+  "MGT310": 3,
+  "MGT311": 3,
+  "MTH580A": 5,
+  "MTH100": 1,
+  "MTH201": 2,
+  "MTH203": 2,
+  "MTH204": 2,
+  "MTH210": 2,
+  "MTH211": 2,
+  "MTH212": 2,
+  "MTH240": 2,
+  "MTH270": 2,
+  "MTH300": 3,
+  "MTH302": 3,
+  "MTH310": 3,
+  "MTH311": 3,
+  "MTH340": 3,
+  "MTH341": 3,
+  "MTH343": 3,
+  "MTH359": 3,
+  "MTH371": 3,
+  "MTH372": 3,
+  "MTH373": 3,
+  "MTH375": 3,
+  "MTH376": 3,
+  "MTH501": 5,
+  "MTH504A": 5,
+  "MTH506": 5,
+  "MTH510": 5,
+  "MTH512": 5,
+  "MTH513": 5,
+  "MTH514": 5,
+  "MTH515": 5,
+  "MTH516": 5,
+  "MTH517": 5,
+  "MTH518": 5,
+  "MTH519A": 5,
+  "MTH521A": 5,
+  "MTH523": 5,
+  "MTH535": 5,
+  "MTH536": 5,
+  "MTH542": 5,
+  "MTH544": 5,
+  "MTH545": 5,
+  "MTH546": 5,
+  "MTH547": 5,
+  "MTH548": 5,
+  "MTH550": 5,
+  "MTH551": 5,
+  "MTH552A": 5,
+  "MTH561": 5,
+  "MTH562": 5,
+  "MTH562A": 5,
+  "MTH563": 5,
+  "MTH564A": 5,
+  "MTH566": 5,
+  "MTH570": 5,
+  "MTH571": 5,
+  "MTH576": 5,
+  "MTH577": 5,
+  "MTH578A": 5,
+  "MTH579": 5,
+  "MTH598": 5,
+  "MTH599": 5,
+  "PSY201": 2,
+  "PSY202": 2,
+  "PSY301": 3,
+  "PSY302": 3,
+  "PSY305": 3,
+  "PSY306": 3,
+  "PSY307": 3,
+  "PSY308": 3,
+  "SOC101": 1,
+  "SOC202": 2,
+  "SOC204": 2,
+  "SOC205": 2,
+  "SOC206": 2,
+  "SOC207": 2,
+  "SOC208": 2,
+  "SOC209": 2,
+  "SOC210": 2,
+  "SOC211": 2,
+  "SOC212": 2,
+  "SOC213": 2,
+  "SOC214": 2,
+  "SOC216": 2,
+  "SOC302": 3,
+  "SOC306": 3,
+  "SOC307": 3,
+  "SOC308": 3,
+  "SOC309": 3,
+  "SOC310": 3,
+  "SOC311": 3,
+  "SOC313": 3,
+  "SOC314": 3,
+  "SOC315": 3,
+  "SOC502": 5,
+  "SOC504": 5,
+  "SOC513": 5,
+  "SOC702": 7,
+  "SOC719A": 7,
+  "SSH101": 1,
+  "SSH121": 1,
+  "SSH124": 1,
+  "SSH201": 2,
+  "SSH211": 2,
+  "SSH214": 2,
+  "SSH215": 2,
+  "SSH216": 2,
+  "SSH217": 2,
+  "SSH221": 2,
+  "SSH222": 2,
+  "SSH223": 2,
+  "SSH224": 2,
+  "SSH225A": 2,
+  "SSH240": 2,
+  "SSH261": 2,
+  "SSH300": 3,
+  "SSH311": 3,
+  "SSH321": 3,
+  "SSH323": 3,
+  "SSH324": 3,
+  "SSH325": 3,
+  "SSH326": 3,
+  "SSH327A": 3,
+  "SSH341": 3,
+  "SSH342": 3,
+  "SSH361": 3,
+  "SSH362": 3,
+  "X453": 4,
+  "SSH526": 5,
+  "X455": 4,
+  "SSH700": 7,
+  "SSH711": 7,
+  "SSH721": 7,
+  "SSH728": 7,
+  "MTH552B": 5,
+  "ENT309": 3,
+  "ENT417": 4,
+  "CSE200A": 2,
+  "MTH504": 5,
+  "ENT201": 2,
+  "MTH578": 5,
+  "SOC515": 5,
+  "SSH544": 5,
+  "ECE615A": 6,
+  "ECE517": 5,
+  "AI201": 2,
+  "AI501": 5,
+  "AI203": 2,
+  "SSH529": 5,
+  "MTH547A": 5
+ },
+ "external_courses": [
+  {
+   "id": "EXT:STANFORD/CS108",
+   "institution_id": "STANFORD",
+   "institution": "Stanford University",
+   "url": "https://explorecourses.stanford.edu/search?q=CS108",
+   "via": "recovered-from-log",
+   "page_type": "course_catalogue_entry",
+   "course_code": "CS 108",
+   "course_title": "Object-Oriented Systems Design",
+   "term": null,
+   "level": null,
+   "summary": "CS 108 introduces software design and construction using large object‑oriented Java libraries. The course covers OOP design principles, design patterns, testing, GUI libraries, and software‑engineering strategies for team programming.",
+   "learning_outcomes": [],
+   "topics": [
+    "OOP design",
+    "design patterns",
+    "testing",
+    "graphical user interface (GUI) OOP libraries",
+    "software engineering strategies",
+    "approaches to programming in teams"
+   ],
+   "weekly_sequence": [],
+   "assessment": [],
+   "prerequisites": [
+    "107"
+   ],
+   "textbooks": [],
+   "tools": [
+    "Java"
+   ],
+   "pedagogy_notes": null,
+   "evidence_quotes": [
+    "CS 108: Object-Oriented Systems Design",
+    "Software design and construction in the context of large OOP libraries. Taught in Java.",
+    "Topics: OOP design, design patterns, testing, graphical user interface (GUI) OOP libraries, software engineering strategies, approaches to programming in teams.",
+    "Prerequisite: 107."
+   ],
+   "relevance": "medium",
+   "relevance_reason": "The page covers OOP design, design patterns, testing, GUI libraries and team programming, matching several target topic groups (TG1, TG5, TG7, TG9) but lacks coverage of inheritance, generics, robustness, concurrency and other groups.",
+   "quotes_verified": 4
+  },
+  {
+   "id": "EXT:NUS/CS2113",
+   "institution_id": "NUS",
+   "institution": "National University of Singapore",
+   "url": "https://nusmods.com/courses/CS2113",
+   "via": "recovered-from-log",
+   "page_type": "course_catalogue_entry",
+   "course_code": "CS2113",
+   "course_title": "Software Engineering & Object-Oriented Programming",
+   "term": null,
+   "level": null,
+   "summary": "The course equips students with systematic and rigorous software development skills, covering requirements, design, implementation, quality assurance and project management within an object‑oriented paradigm. It emphasizes hands‑on experience with industry‑standard tools such as test automation, build automation and code revisioning. The workload combines lectures, tutorials and substantial project work.",
+   "learning_outcomes": [],
+   "topics": [
+    "requirements",
+    "design",
+    "implementation",
+    "quality assurance",
+    "project management",
+    "Object Oriented Programming paradigm",
+    "test automation tools",
+    "build automation tools",
+    "code revisioning tools"
+   ],
+   "weekly_sequence": [],
+   "assessment": [],
+   "prerequisites": [
+    "If undertaking an Undergraduate DegreeTHEN( must have completed CS2040C at a grade of at least DOR( must have completed 1 of CS2030/CS2030DE/CS2030S at a grade of at least DANDmust have completed 1 of CS2040/CS2040DE/CS2040HS/CS2040S at a grade of at least D))"
+   ],
+   "textbooks": [],
+   "tools": [
+    "test automation tools",
+    "build automation tools",
+    "code revisioning tools"
+   ],
+   "pedagogy_notes": "Hands‑on practice of industry tools integrated throughout the project work",
+   "evidence_quotes": [
+    "CS2113: Software Engineering & Object-Oriented Programming",
+    "This course introduces the necessary skills for systematic and rigorous development of software systems.",
+    "Students of this course will receive hands‑on practice of tools commonly used in the industry, such as test automation tools, build automation tools, and code revisioning tools will be covered.",
+    "Prerequisite: If undertaking an Undergraduate DegreeTHEN( must have completed CS2040C at a grade of at least DOR( must have completed 1 of CS2030/CS2030DE/CS2030S at a grade of at least DANDmust have completed 1 of CS2040/CS2040DE/CS2040HS/CS2040S at a grade of at least D))"
+   ],
+   "relevance": "high",
+   "relevance_reason": "Covers object‑oriented foundations (TG1), testing and tooling (TG5), design before coding (TG6) and mentions design aspects, aligning with many target topic groups; missing explicit coverage of inheritance, generics, robust programming, event‑driven GUIs, concurrency and design patterns.",
+   "quotes_verified": 3
+  },
+  {
+   "id": "EXT:STANFORD/CS106B",
+   "institution_id": "STANFORD",
+   "institution": "Stanford University",
+   "url": "https://explorecourses.stanford.edu/search?q=CS106B",
+   "via": "recovered-from-log",
+   "page_type": "course_catalogue_entry",
+   "course_code": "CS 106B",
+   "course_title": "Programming Abstractions",
+   "term": null,
+   "level": null,
+   "summary": "The course introduces the concept of abstraction and its application in programming, emphasizing data abstraction, modularity, and object‑oriented design. It covers fundamental data structures, recursion, and basic algorithmic analysis using the C++ language.",
+   "learning_outcomes": [],
+   "topics": [
+    "Abstraction",
+    "Data abstraction",
+    "Modularity",
+    "Object‑oriented programming",
+    "Fundamental data structures",
+    "Recursion",
+    "Recursive data structures",
+    "Time and space complexity analysis",
+    "C++ language basics"
+   ],
+   "weekly_sequence": [],
+   "assessment": [],
+   "prerequisites": [
+    "106A or equivalent"
+   ],
+   "textbooks": [],
+   "tools": [
+    "C++"
+   ],
+   "pedagogy_notes": null,
+   "evidence_quotes": [
+    "CS 106B: Programming Abstractions",
+    "Abstraction and its relation to programming.",
+    "Prerequisite: 106A or equivalent."
+   ],
+   "relevance": "medium",
+   "relevance_reason": "Covers object‑oriented programming and abstraction, aligning with TG1, but lacks many advanced topics such as inheritance, generics, concurrency, testing, and design patterns required by the target course.",
+   "quotes_verified": 3
+  },
+  {
+   "id": "EXT:STANFORD/CS106AX",
+   "institution_id": "STANFORD",
+   "institution": "Stanford University",
+   "url": "https://explorecourses.stanford.edu/search?q=CS106AX",
+   "via": "recovered-from-log",
+   "page_type": "course_catalogue_entry",
+   "course_code": "CS 106AX",
+   "course_title": "Programming Methodologies in JavaScript and Python (Accelerated)",
+   "term": null,
+   "level": null,
+   "summary": "This accelerated Stanford course introduces engineering of computer applications using modern software engineering principles such as object‑oriented design, decomposition, encapsulation, abstraction and testing. It is aimed at students with prior programming experience, allowing deeper coverage of the material.",
+   "learning_outcomes": [],
+   "topics": [],
+   "weekly_sequence": [],
+   "assessment": [],
+   "prerequisites": [],
+   "textbooks": [],
+   "tools": [],
+   "pedagogy_notes": "Accelerated format that leverages prior programming experience to cover material in greater depth.",
+   "evidence_quotes": [
+    "CS 106AX: Programming Methodologies in JavaScript and Python (Accelerated)",
+    "Introduction to the engineering of computer applications emphasizing modern software engineering principles: object-oriented design, decomposition, encapsulation, abstraction, and testing.",
+    "This course targets an audience with prior programming experience, and that prior experience is leveraged so material can be covered in greater depth."
+   ],
+   "relevance": "medium",
+   "relevance_reason": "Covers object‑oriented design and testing (matching TG1 and TG4/TG5) but lacks many other target topic groups such as inheritance, generics, concurrency, and design patterns.",
+   "quotes_verified": 3
+  },
+  {
+   "id": "EXT:STANFORD/CS190",
+   "institution_id": "STANFORD",
+   "institution": "Stanford University",
+   "url": "https://explorecourses.stanford.edu/search?q=CS190",
+   "via": "recovered-from-log",
+   "page_type": "course_catalogue_entry",
+   "course_code": "CS 190",
+   "course_title": "Software Design Studio",
+   "term": null,
+   "level": null,
+   "summary": "The course introduces software design principles focusing on decomposing large systems into maintainable classes. It covers causes of complexity, modular design, deep‑class techniques, exception handling, documentation and naming, and is delivered in a studio format with iterative implementation, reviews and code reviews.",
+   "learning_outcomes": [],
+   "topics": [
+    "causes of complexity",
+    "modular design",
+    "techniques for creating deep classes",
+    "minimizing exception complexity",
+    "in‑code documentation",
+    "name selection",
+    "system software implementation",
+    "iterative implementation, review, revision",
+    "studio format with in‑class discussions and code reviews"
+   ],
+   "weekly_sequence": [],
+   "assessment": [],
+   "prerequisites": [
+    "CS 140 or equivalent"
+   ],
+   "textbooks": [],
+   "tools": [],
+   "pedagogy_notes": "Studio format with in‑class discussions and code reviews in addition to lectures.",
+   "evidence_quotes": [
+    "CS 190: Software Design Studio",
+    "This course teaches the art of software design: how to decompose large complex systems into classes that can be implemented and maintained easily.",
+    "Topics include the causes of complexity, modular design, techniques for creating deep classes, minimizing the complexity associated with exceptions, in-code documentation, and name selection.",
+    "The class involves significant system software implementation and uses an iterative approach consisting of implementation, review, and revision.",
+    "The course is taught in a studio format with in-class discussions and code reviews in addition to lectures."
+   ],
+   "relevance": "high",
+   "relevance_reason": "Matches object‑oriented foundations, modularity, exception handling and design‑before‑coding topics of the target course, though it lacks coverage of concurrency, testing, generics, and design patterns.",
+   "quotes_verified": 5
+  },
+  {
+   "id": "EXT:STANFORD/CS194",
+   "institution_id": "STANFORD",
+   "institution": "Stanford University",
+   "url": "https://explorecourses.stanford.edu/search?q=CS194",
+   "via": "recovered-from-log",
+   "page_type": "course_catalogue_entry",
+   "course_code": "CS 194",
+   "course_title": "Software Project",
+   "term": null,
+   "level": null,
+   "summary": "The course involves a team‑based software development project where students design, specify, implement and test a substantial application under faculty supervision. Deliverables include a project rationale, design documentation, weekly progress logs, and a software architecture diagram, culminating in a public demonstration at the quarter’s end.",
+   "learning_outcomes": [],
+   "topics": [
+    "design",
+    "specification",
+    "coding",
+    "testing",
+    "team programming project",
+    "project rationale",
+    "design documentation",
+    "weekly progress log",
+    "software architecture diagram",
+    "public demonstration"
+   ],
+   "weekly_sequence": [],
+   "assessment": [],
+   "prerequisites": [
+    "CS109",
+    "CS161"
+   ],
+   "textbooks": [],
+   "tools": [],
+   "pedagogy_notes": "Team‑based project with senior preference; repeatable for credit; emphasis on documentation and public demo.",
+   "evidence_quotes": [
+    "CS 194: Software Project",
+    "Design, specification, coding, and testing of a significant team programming project under faculty supervision.",
+    "Documentation includes capture of project rationale, design and discussion of key performance indicators, a weekly progress log and a software architecture diagram.",
+    "Public demonstration of the project at the end of the quarter.",
+    "Preference given to seniors.",
+    "Prerequisites: CS109 and CS161."
+   ],
+   "relevance": "medium",
+   "relevance_reason": "The page covers software design, testing, documentation and project execution, which align with the target’s design, testing and tooling groups, but lacks core object‑oriented, inheritance, generics, concurrency and pattern topics.",
+   "quotes_verified": 6
+  }
+ ],
+ "research": {
+  "plan": null,
+  "rejected": []
+ },
+ "positioning": {
+  "concerns": [
+   {
+    "about": "programme_structure",
+    "detail": "Programme core/elective structure is not available in the KG stub, making exact cohort placement reliant on year level tags."
+   }
+  ],
+  "missing": [],
+  "existence": {
+   "verdict": "distinct",
+   "closest": [
+    "CSE600"
+   ],
+   "reason": "CSE600 is an upper-level/graduate object-oriented course with an anti-requisite link to CSE101/CSE201, whereas this course is designed as a core 200-level undergraduate programming continuation covering component design, testing, tooling, and concurrency.",
+   "recommendation": "Proceed as a distinct undergraduate second-year core course."
+  },
+  "overlaps": [
+   {
+    "course_uid": "CSE101",
+    "weighted_jaccard": 0.095,
+    "shared_topics": [
+     "classes and objects, encapsulation, modularity, object relationships (association, composition), interfaces ≈ classes, objects, inheritance",
+     "exception handling, assertions, defensive and secure programming, I/O streams and serialization ≈ Exception handling, assertions"
+    ],
+    "verdict": "complementary",
+    "differentiation": "CSE101 introduces basic syntax, procedural elements, and simple object usage in Python. This course builds on that foundation by requiring students to design multi-component applications, implement design patterns, handle concurrency, and perform rigorous unit testing in Java."
+   },
+   {
+    "course_uid": "CSE584",
+    "weighted_jaccard": 0.053,
+    "shared_topics": [
+     "inheritance hierarchies, abstract classes, polymorphism via interfaces and inheritance, method resolution, immutability ≈ Polymorphism and higher order functions"
+    ],
+    "verdict": "superficial",
+    "differentiation": "CSE584 focuses on formal program verification and dependent types using Coq/F*. This course focuses on practical object-oriented application design, software architecture, and concurrency."
+   }
+  ],
+  "prerequisites": [
+   {
+    "kind": "mandatory",
+    "course_uid": "CSE101",
+    "alternatives": [],
+    "relied_topics": [
+     "classes, objects, inheritance",
+     "Exception handling, assertions"
+    ],
+    "needed_by": [
+     "TG1",
+     "TG2",
+     "TG4"
+    ],
+    "justification": "Students must know basic procedural constructs, functions, and elementary object concepts before moving to multi-component software design.",
+    "level_check": "lower_level",
+    "sources": [
+     {
+      "tag": "CATALOGUE",
+      "ref": "CSE101",
+      "basis": null
+     }
+    ]
+   },
+   {
+    "kind": "mandatory",
+    "course_uid": "CSE102",
+    "alternatives": [],
+    "relied_topics": [
+     "basic data structures",
+     "arrays",
+     "linked lists"
+    ],
+    "needed_by": [
+     "TG3"
+    ],
+    "justification": "Students must be comfortable with basic data structures and algorithmic problem solving before building larger applications using collections and generics.",
+    "level_check": "lower_level",
+    "sources": [
+     {
+      "tag": "CATALOGUE",
+      "ref": "CSE102",
+      "basis": null
+     }
+    ]
+   }
+  ],
+  "background_mapping": [
+   {
+    "background_item": "CSE101 Introduction to Programming",
+    "supplied_by": [
+     "CSE101"
+    ],
+    "status": "mapped"
+   },
+   {
+    "background_item": "CSE102 Data Structures and Algorithms — comfortable with procedural programming, functions, arrays, lists, recursion and basic data structures",
+    "supplied_by": [
+     "CSE102"
+    ],
+    "status": "mapped"
+   }
+  ],
+  "anti_requisites": [],
+  "checked_candidates": [
+   {
+    "course_uid": "CSE101",
+    "weighted_jaccard": 0.095
+   },
+   {
+    "course_uid": "CSE584",
+    "weighted_jaccard": 0.053
+   },
+   {
+    "course_uid": "CSE222",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "CSE581",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "CSE231",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "CSE503",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "CSE701",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "CSE202",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "CSE102",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "CSE600",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "CSE583",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "AI501",
+    "weighted_jaccard": 0.0
+   }
+  ],
+  "comparable": [
+   {
+    "kind": "internal",
+    "ref": "CSE583",
+    "title": "Software Development using Open Source",
+    "take": "Integration of version control, testing tools, and collaborative team-based workflows.",
+    "avoid": "Focusing heavily on open-source ecosystem licensing and service-oriented microservices instead of core object-oriented programming design."
+   },
+   {
+    "kind": "external",
+    "ref": "EXT:NUS/CS2113",
+    "title": "CS2113 Software Engineering & Object-Oriented Programming",
+    "take": "Systematic software development processes, test automation, and building maintainable object-oriented applications.",
+    "avoid": "Overemphasizing formal project management methodologies suited for senior-year software engineering courses."
+   },
+   {
+    "kind": "external",
+    "ref": "EXT:STANFORD/CS190",
+    "title": "CS 190 Software Design Studio",
+    "take": "Emphasis on managing code complexity, structuring deep classes, and conducting code reviews.",
+    "avoid": "Studio-only delivery format without adequate lecture and tutorial support for second-year foundational concepts."
+   }
+  ],
+  "po_gap_hints": [
+   {
+    "po_uid": "BTECH-CSE/PO5",
+    "reason": "The course strongly addresses modern engineering tool usage, testing frameworks, and version control in everyday development."
+   }
+  ]
+ },
+ "constraints": [
+  {
+   "id": "K01",
+   "target": "schedule.weeks",
+   "op": "==",
+   "value": 13,
+   "hardness": "hard",
+   "source": {
+    "tag": "REGULATION",
+    "ref": "UGREG-2025§2"
+   }
+  },
+  {
+   "id": "K02",
+   "target": "course.credits",
+   "op": "==",
+   "value": 4,
+   "hardness": "hard",
+   "source": {
+    "tag": "USER",
+    "ref": "CCO.credits"
+   }
+  },
+  {
+   "id": "K03",
+   "target": "schedule.lecture_hours_per_week",
+   "op": "==",
+   "value": 3.0,
+   "hardness": "hard",
+   "source": {
+    "tag": "USER",
+    "ref": "CCO.ltp"
+   }
+  },
+  {
+   "id": "K04",
+   "target": "schedule.tutorial_hours_per_week",
+   "op": "==",
+   "value": 1.0,
+   "hardness": "hard",
+   "source": {
+    "tag": "USER",
+    "ref": "CCO.ltp"
+   }
+  },
+  {
+   "id": "K05",
+   "target": "lab.hours_per_week",
+   "op": "==",
+   "value": 0,
+   "hardness": "hard",
+   "source": {
+    "tag": "USER",
+    "ref": "CCO.ltp"
+   }
+  },
+  {
+   "id": "K06",
+   "target": "assessment.component[midsem].present",
+   "op": "present",
+   "value": true,
+   "hardness": "soft",
+   "source": {
+    "tag": "REGULATION",
+    "ref": "UGREG-2025§6.2"
+   }
+  },
+  {
+   "id": "K07",
+   "target": "assessment.component[endsem].present",
+   "op": "present",
+   "value": true,
+   "hardness": "soft",
+   "source": {
+    "tag": "REGULATION",
+    "ref": "UGREG-2025§6.2"
+   }
+  },
+  {
+   "id": "K08",
+   "target": "schedule.midsem_after_week",
+   "op": "==",
+   "value": 7,
+   "hardness": "soft",
+   "source": {
+    "tag": "INFERRED",
+    "ref": "ASM"
+   }
+  },
+  {
+   "id": "K10",
+   "target": "assessment.component[assignment].present",
+   "op": "==",
+   "value": true,
+   "hardness": "soft",
+   "raw": "short take-home programming assignments",
+   "source": {
+    "tag": "USER",
+    "ref": "CCO.assessment_prefs",
+    "basis": null
+   },
+   "note": null
+  },
+  {
+   "id": "K11",
+   "target": "assessment.component[project].present",
+   "op": "==",
+   "value": true,
+   "hardness": "soft",
+   "raw": "a pair-programming course project with milestones",
+   "source": {
+    "tag": "USER",
+    "ref": "CCO.assessment_prefs",
+    "basis": null
+   },
+   "note": null
+  },
+  {
+   "id": "K12",
+   "target": "assessment.component[quiz].present",
+   "op": "==",
+   "value": true,
+   "hardness": "soft",
+   "raw": "quizzes",
+   "source": {
+    "tag": "USER",
+    "ref": "CCO.assessment_prefs",
+    "basis": null
+   },
+   "note": null
+  },
+  {
+   "id": "K13",
+   "target": "assessment.component[midsem].present",
+   "op": "==",
+   "value": true,
+   "hardness": "soft",
+   "raw": "mid-sem exam",
+   "source": {
+    "tag": "USER",
+    "ref": "CCO.assessment_prefs",
+    "basis": null
+   },
+   "note": null
+  },
+  {
+   "id": "K14",
+   "target": "assessment.component[endsem].present",
+   "op": "==",
+   "value": true,
+   "hardness": "soft",
+   "raw": "end-sem exam",
+   "source": {
+    "tag": "USER",
+    "ref": "CCO.assessment_prefs",
+    "basis": null
+   },
+   "note": null
+  },
+  {
+   "id": "K15",
+   "target": "content.must_exclude[Java-specific language features]",
+   "op": "==",
+   "value": true,
+   "hardness": "hard",
+   "raw": "The course syllabus and assessments must not focus primarily on Java-specific language features.",
+   "source": {
+    "tag": "USER",
+    "ref": "CCO.negative_constraints",
+    "basis": null
+   },
+   "note": null
+  },
+  {
+   "id": "K16",
+   "target": "content.must_exclude[basic data structures]",
+   "op": "==",
+   "value": true,
+   "hardness": "hard",
+   "raw": "The course must not re-teach basic data structures covered in CSE102.",
+   "source": {
+    "tag": "USER",
+    "ref": "CCO.negative_constraints",
+    "basis": null
+   },
+   "note": null
+  },
+  {
+   "id": "K17",
+   "target": "content.must_include[regular hands-on programming practice]",
+   "op": "==",
+   "value": true,
+   "hardness": "hard",
+   "raw": "The course must include regular hands-on programming practice and a project.",
+   "source": {
+    "tag": "USER",
+    "ref": "CCO.negative_constraints",
+    "basis": null
+   },
+   "note": null
+  },
+  {
+   "id": "K18",
+   "target": "lab.present",
+   "op": "==",
+   "value": false,
+   "hardness": "hard",
+   "raw": "Lab not required for the course.",
+   "source": {
+    "tag": "USER",
+    "ref": "CCO.lab",
+    "basis": null
+   },
+   "note": null
+  },
+  {
+   "id": "K19",
+   "target": "other",
+   "op": "==",
+   "value": true,
+   "hardness": "hard",
+   "raw": "The course project must be done in pairs and should produce a working application with a graphical interface.",
+   "source": {
+    "tag": "USER",
+    "ref": "CCO.special_constraints",
+    "basis": null
+   },
+   "note": "Expressed as an 'other' constraint because no exact vocabulary matches."
+  }
+ ],
+ "constraint_conflicts": [],
+ "constraints_untranslatable": [],
+ "feasibility": {
+  "lecture_hours_available": 39.0,
+  "tutorial_hours_available": 13.0,
+  "lab_hours_available": 0,
+  "note": "topic-level feasibility is checked after S5 by the scheduler"
+ },
+ "weight_priors": {
+  "participation": {
+   "median": 5.0,
+   "iqr": [
+    5.0,
+    16.25
+   ],
+   "n": 4
+  },
+  "project": {
+   "median": 20.0,
+   "iqr": [
+    18.75,
+    38.75
+   ],
+   "n": 6
+  },
+  "assignment": {
+   "median": 20.0,
+   "iqr": [
+    10.0,
+    30.0
+   ],
+   "n": 9
+  },
+  "quiz": {
+   "median": 10.0,
+   "iqr": [
+    10.0,
+    20.0
+   ],
+   "n": 11
+  },
+  "midsem": {
+   "median": 20.0,
+   "iqr": [
+    20.0,
+    25.0
+   ],
+   "n": 11
+  },
+  "endsem": {
+   "median": 25.0,
+   "iqr": [
+    20.0,
+    30.0
+   ],
+   "n": 13
+  },
+  "lab": {
+   "median": 25.0,
+   "iqr": [
+    16.25,
+    37.5
+   ],
+   "n": 4
+  },
+  "other": {
+   "median": 10.0,
+   "iqr": [
+    5.0,
+    20.0
+   ],
+   "n": 3
+  },
+  "presentation": {
+   "median": 20.0,
+   "iqr": [
+    20.0,
+    20.0
+   ],
+   "n": 1
+  },
+  "report": {
+   "median": 20.0,
+   "iqr": [
+    20.0,
+    20.0
+   ],
+   "n": 1
+  }
+ },
+ "cos": [
+  {
+   "id": "CO1",
+   "statement": "Implement object-oriented hierarchies and reusable generic components, using an object-oriented programming language and standard collections libraries, such that at least 80% of the provided test cases pass.",
+   "verb": "implement",
+   "behaviour": "object-oriented hierarchies and reusable generic components",
+   "condition": "using an object-oriented programming language and standard collections libraries",
+   "degree": "such that at least 80% of the provided test cases pass",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "covers_topic_groups": [
+    "TG1",
+    "TG2",
+    "TG3"
+   ],
+   "evidence_types": [
+    "programming_assignment",
+    "exam_question"
+   ],
+   "builds_on_prereq_topics": [
+    "classes, objects, inheritance",
+    "basic data structures"
+   ],
+   "differentiation_note": "Extends basic procedural and single-class concepts from CSE101 into multi-class inheritance and generic collection usage.",
+   "nc_risks": [
+    "NC2"
+   ],
+   "rationale": "Establishes foundational object-oriented and generic programming skills required for building structured applications.",
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topic_groups",
+     "basis": null
+    },
+    {
+     "tag": "CORPUS",
+     "ref": "CSE231/CO2",
+     "basis": null
+    }
+   ]
+  },
+  {
+   "id": "CO2",
+   "statement": "Construct robust multi-component programs, using defensive programming techniques, exception handling mechanisms, and input/output streams, meeting the stated interface specification for every public method.",
+   "verb": "construct",
+   "behaviour": "robust multi-component programs",
+   "condition": "using defensive programming techniques, exception handling mechanisms, and input/output streams",
+   "degree": "meeting the stated interface specification for every public method",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "covers_topic_groups": [
+    "TG4"
+   ],
+   "evidence_types": [
+    "programming_assignment",
+    "code_review"
+   ],
+   "builds_on_prereq_topics": [
+    "Exception handling, assertions"
+   ],
+   "differentiation_note": "Moves beyond simple exception syntax to robust multi-component I/O and defensive design.",
+   "nc_risks": [
+    "NC1"
+   ],
+   "rationale": "Ensures students can handle errors and external data reliably in larger programs.",
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topic_groups",
+     "basis": null
+    },
+    {
+     "tag": "CORPUS",
+     "ref": "CSE202/CO1",
+     "basis": null
+    }
+   ]
+  },
+  {
+   "id": "CO3",
+   "statement": "Analyze concurrent multi-threaded execution traces, using synchronization primitives and thread pools, identifying at least two distinct race conditions or deadlocks with supporting log evidence.",
+   "verb": "analyze",
+   "behaviour": "concurrent multi-threaded execution traces",
+   "condition": "using synchronization primitives and thread pools",
+   "degree": "identifying at least two distinct race conditions or deadlocks with supporting log evidence",
+   "bloom_level": 4,
+   "knowledge_dimension": "conceptual",
+   "covers_topic_groups": [
+    "TG8"
+   ],
+   "evidence_types": [
+    "exam_question",
+    "programming_assignment"
+   ],
+   "builds_on_prereq_topics": [],
+   "differentiation_note": "Introduces concurrent execution and thread safety concepts not covered in introductory programming.",
+   "nc_risks": [],
+   "rationale": "Builds competence in reasoning about concurrent operations and thread safety in applications.",
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topic_groups",
+     "basis": null
+    },
+    {
+     "tag": "CORPUS",
+     "ref": "CSE231/CO3",
+     "basis": null
+    }
+   ]
+  },
+  {
+   "id": "CO4",
+   "statement": "Design an object-oriented software architecture and unit test suite, for a given multi-component requirements document, justifying each design choice against stated requirements.",
+   "verb": "design",
+   "behaviour": "an object-oriented software architecture and unit test suite",
+   "condition": "for a given multi-component requirements document",
+   "degree": "justifying each design choice against stated requirements",
+   "bloom_level": 5,
+   "knowledge_dimension": "metacognitive",
+   "covers_topic_groups": [
+    "TG5",
+    "TG6",
+    "TG7",
+    "TG9"
+   ],
+   "evidence_types": [
+    "design_document",
+    "project_deliverable"
+   ],
+   "builds_on_prereq_topics": [],
+   "differentiation_note": "Requires upfront design and testing methodology rather than ad-hoc coding.",
+   "nc_risks": [
+    "NC3"
+   ],
+   "rationale": "Integrates design patterns, testing frameworks, and graphical interfaces into a cohesive team project.",
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topic_groups",
+     "basis": null
+    },
+    {
+     "tag": "CORPUS",
+     "ref": "CSE581/CO3",
+     "basis": null
+    }
+   ]
+  }
+ ],
+ "topic_group_proposals": [],
+ "copo": [
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSE/PO4",
+   "strength_provisional": 3,
+   "co_phrase": "Implement object-oriented hierarchies and reusable generic components, using an object-oriented programming language and standard collections libraries",
+   "po_phrase": "Ability to design, implement, and evaluate computer based system or application to meet the desired needs using modern tools and methodologies",
+   "justification": "Directly involves implementing object-oriented software components using standard language features and libraries, aligning with system implementation.",
+   "evidencing_activities": [
+    "implement",
+    "tool-use"
+   ]
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSE/PO3",
+   "strength_provisional": 2,
+   "co_phrase": "Implement object-oriented hierarchies and reusable generic components",
+   "po_phrase": "Ability to adapt established models, techniques, algorithms, data structures, etc., for efficiently solving new problems",
+   "justification": "Uses standard collections libraries and generic components to adapt techniques for software development.",
+   "evidencing_activities": [
+    "implement"
+   ]
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSE/PO4",
+   "strength_provisional": 3,
+   "co_phrase": "Construct robust multi-component programs, using defensive programming techniques, exception handling mechanisms, and input/output streams",
+   "po_phrase": "Ability to design, implement, and evaluate computer based system or application to meet the desired needs using modern tools and methodologies",
+   "justification": "Focuses on constructing robust multi-component programs meeting interface specifications through standard methodologies.",
+   "evidencing_activities": [
+    "implement",
+    "evaluate-critique"
+   ]
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSE/PO3",
+   "strength_provisional": 2,
+   "co_phrase": "Analyze concurrent multi-threaded execution traces, using synchronization primitives and thread pools",
+   "po_phrase": "Ability to adapt established models, techniques, algorithms, data structures, etc., for efficiently solving new problems",
+   "justification": "Applies synchronization primitives and thread pools to analyze concurrency and execution traces.",
+   "evidencing_activities": [
+    "analyse-data"
+   ]
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSE/PO9",
+   "strength_provisional": 2,
+   "co_phrase": "identifying at least two distinct race conditions or deadlocks with supporting log evidence",
+   "po_phrase": "Understanding and ability to use advanced techniques and tools in different areas of computing",
+   "justification": "Involves advanced multithreading analysis and identifying complex synchronization anomalies.",
+   "evidencing_activities": [
+    "analyse-data",
+    "tool-use"
+   ]
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSE/PO4",
+   "strength_provisional": 3,
+   "co_phrase": "Design an object-oriented software architecture and unit test suite, for a given multi-component requirements document",
+   "po_phrase": "Ability to design, implement, and evaluate computer based system or application to meet the desired needs using modern tools and methodologies",
+   "justification": "Directly covers designing object-oriented software architecture and evaluation through unit test suites against requirements.",
+   "evidencing_activities": [
+    "design",
+    "evaluate-critique"
+   ]
+  }
+ ],
+ "los": [
+  {
+   "id": "CO1.LO1",
+   "parent_co": "CO1",
+   "statement": "Implement class hierarchies with inheritance and polymorphism, using an object-oriented programming language, such that at least 80% of the provided test cases pass.",
+   "verb": "implement",
+   "behaviour": "class hierarchies with inheritance and polymorphism",
+   "condition": "using an object-oriented programming language",
+   "degree": "such that at least 80% of the provided test cases pass",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "is_capstone": false,
+   "requires": [],
+   "topic_hints": [
+    {
+     "phrase": "classes, objects, inheritance",
+     "topic_uid": "T:classes-objects-inheritance"
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 4.0,
+   "est_tutorial_h": 0,
+   "est_lab_h": 0.0,
+   "hours_basis": "Four lecture hours and one tutorial hour covering foundational object relationships and inheritance.",
+   "suggested_task_type": "programming_assignment",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Decomposed from CO1 to establish base OOP inheritance before generics."
+    }
+   ]
+  },
+  {
+   "id": "CO1.LO2",
+   "parent_co": "CO1",
+   "statement": "Implement reusable generic components and standard collections libraries, using an object-oriented programming language, such that at least 80% of the provided test cases pass.",
+   "verb": "implement",
+   "behaviour": "reusable generic components and standard collections libraries",
+   "condition": "using an object-oriented programming language",
+   "degree": "such that at least 80% of the provided test cases pass",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "is_capstone": true,
+   "requires": [
+    "CO1.LO1"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "generics and collections",
+     "topic_uid": null
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 5.0,
+   "est_tutorial_h": 0,
+   "est_lab_h": 0.0,
+   "hours_basis": "Five lecture hours and two tutorial hours covering generics and standard collections framework usage.",
+   "suggested_task_type": "programming_assignment",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Capstone LO for CO1 covering generics and collections."
+    }
+   ]
+  },
+  {
+   "id": "CO2.LO1",
+   "parent_co": "CO2",
+   "statement": "Construct exception handling mechanisms and defensive programming checks, using exception handling features, meeting the stated interface specification for every public method.",
+   "verb": "construct",
+   "behaviour": "exception handling mechanisms and defensive programming checks",
+   "condition": "using exception handling features",
+   "degree": "meeting the stated interface specification for every public method",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "is_capstone": false,
+   "requires": [],
+   "topic_hints": [
+    {
+     "phrase": "exception handling and assertions",
+     "topic_uid": "T:exception-handling-assertions"
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 4.0,
+   "est_tutorial_h": 0,
+   "est_lab_h": 0.0,
+   "hours_basis": "Four lecture hours and one tutorial hour covering exceptions and defensive checks.",
+   "suggested_task_type": "programming_assignment",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Initial step for CO2 focusing on robust error handling."
+    }
+   ]
+  },
+  {
+   "id": "CO2.LO2",
+   "parent_co": "CO2",
+   "statement": "Construct robust multi-component programs with input/output streams and serialization, using defensive programming techniques, meeting the stated interface specification for every public method.",
+   "verb": "construct",
+   "behaviour": "robust multi-component programs with input/output streams and serialization",
+   "condition": "using defensive programming techniques",
+   "degree": "meeting the stated interface specification for every public method",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "is_capstone": true,
+   "requires": [
+    "CO2.LO1"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "I/O streams and serialization",
+     "topic_uid": null
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 5.0,
+   "est_tutorial_h": 0,
+   "est_lab_h": 0.0,
+   "hours_basis": "Five lecture hours and one tutorial hour covering I/O streams and robust multi-component design.",
+   "suggested_task_type": "programming_assignment",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Capstone LO for CO2 integrating streams and error handling."
+    }
+   ]
+  },
+  {
+   "id": "CO3.LO1",
+   "parent_co": "CO3",
+   "statement": "Examine concurrent threads and synchronization primitives, using thread execution traces, identifying at least two distinct race conditions or deadlocks with supporting log evidence.",
+   "verb": "examine",
+   "behaviour": "concurrent threads and synchronization primitives",
+   "condition": "using thread execution traces",
+   "degree": "identifying at least two distinct race conditions or deadlocks with supporting log evidence",
+   "bloom_level": 4,
+   "knowledge_dimension": "conceptual",
+   "is_capstone": false,
+   "requires": [],
+   "topic_hints": [
+    {
+     "phrase": "threads and mutual exclusion",
+     "topic_uid": "T:ipc-synchronization"
+    }
+   ],
+   "hands_on": false,
+   "est_lecture_h": 4.0,
+   "est_tutorial_h": 0,
+   "est_lab_h": 0.0,
+   "hours_basis": "Four lecture hours and one tutorial hour covering thread creation and synchronization.",
+   "suggested_task_type": "exam_question",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Foundational analysis step for concurrency in CO3."
+    }
+   ]
+  },
+  {
+   "id": "CO3.LO2",
+   "parent_co": "CO3",
+   "statement": "Analyze concurrent multi-threaded execution traces, using synchronization primitives and thread pools, identifying at least two distinct race conditions or deadlocks with supporting log evidence.",
+   "verb": "analyze",
+   "behaviour": "concurrent multi-threaded execution traces",
+   "condition": "using synchronization primitives and thread pools",
+   "degree": "identifying at least two distinct race conditions or deadlocks with supporting log evidence",
+   "bloom_level": 4,
+   "knowledge_dimension": "conceptual",
+   "is_capstone": true,
+   "requires": [
+    "CO3.LO1"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "thread pools and race conditions",
+     "topic_uid": null
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 5.0,
+   "est_tutorial_h": 0,
+   "est_lab_h": 0.0,
+   "hours_basis": "Five lecture hours and two tutorial hours covering thread pools, deadlocks, and trace analysis.",
+   "suggested_task_type": "exam_question",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Capstone LO for CO3 covering advanced concurrency analysis."
+    }
+   ]
+  },
+  {
+   "id": "CO4.LO1",
+   "parent_co": "CO4",
+   "statement": "Illustrate object-oriented software architecture and unit test suites, for a given multi-component requirements document, justifying each design choice against stated requirements.",
+   "verb": "illustrate",
+   "behaviour": "object-oriented software architecture and unit test suites",
+   "condition": "for a given multi-component requirements document",
+   "degree": "justifying each design choice against stated requirements",
+   "bloom_level": 2,
+   "knowledge_dimension": "metacognitive",
+   "is_capstone": false,
+   "requires": [],
+   "topic_hints": [
+    {
+     "phrase": "UML diagrams and unit testing",
+     "topic_uid": null
+    }
+   ],
+   "hands_on": false,
+   "est_lecture_h": 4.0,
+   "est_tutorial_h": 0,
+   "est_lab_h": 0.0,
+   "hours_basis": "Four lecture hours and two tutorial hours covering UML modelling and unit testing frameworks.",
+   "suggested_task_type": "design_document",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Preparatory design and testing step for CO4."
+    }
+   ]
+  },
+  {
+   "id": "CO4.LO2",
+   "parent_co": "CO4",
+   "statement": "Design an object-oriented software architecture and unit test suite, for a given multi-component requirements document, justifying each design choice against stated requirements.",
+   "verb": "design",
+   "behaviour": "an object-oriented software architecture and unit test suite",
+   "condition": "for a given multi-component requirements document",
+   "degree": "justifying each design choice against stated requirements",
+   "bloom_level": 5,
+   "knowledge_dimension": "metacognitive",
+   "is_capstone": true,
+   "requires": [
+    "CO4.LO1"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "design patterns and architecture",
+     "topic_uid": null
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 4.0,
+   "est_tutorial_h": 0,
+   "est_lab_h": 0.0,
+   "hours_basis": "Four lecture hours and three tutorial hours covering design patterns and architectural trade-offs.",
+   "suggested_task_type": "project_deliverable",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Capstone LO for CO4 covering architecture design and pattern application."
+    }
+   ]
+  }
+ ],
+ "modules": [
+  {
+   "id": "M1",
+   "title": "Object-Oriented Hierarchies and Polymorphism",
+   "order": 1,
+   "primary_cos": [
+    "CO1"
+   ],
+   "topics": [
+    {
+     "id": "M1.T1",
+     "title": "Classes and Objects Fundamentals",
+     "est_hours": 1.5,
+     "hours_basis": "Introduces basic class structures and instantiation building on CO1.LO1.",
+     "serves_los": [
+      "CO1.LO1"
+     ],
+     "requires": [],
+     "topic_uid": "T:classes-objects-inheritance",
+     "hands_on": true,
+     "suggested_order": 1,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Decomposed from CO1.LO1 for object fundamentals."
+      }
+     ]
+    },
+    {
+     "id": "M1.T2",
+     "title": "Inheritance and Polymorphism",
+     "est_hours": 2.5,
+     "hours_basis": "Covers subclasses, method overriding, and dynamic dispatch for CO1.LO1.",
+     "serves_los": [
+      "CO1.LO1"
+     ],
+     "requires": [
+      "M1.T1"
+     ],
+     "topic_uid": "T:classes-objects-inheritance",
+     "hands_on": true,
+     "suggested_order": 2,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Directly serves CO1.LO1 inheritance behaviour."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "M2",
+   "title": "Generics and Standard Collections",
+   "order": 2,
+   "primary_cos": [
+    "CO1"
+   ],
+   "topics": [
+    {
+     "id": "M2.T1",
+     "title": "Generic Classes and Methods",
+     "est_hours": 2.5,
+     "hours_basis": "Covers parameterised types and reusable component design for CO1.LO2.",
+     "serves_los": [
+      "CO1.LO2"
+     ],
+     "requires": [
+      "M1.T2"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "suggested_order": 1,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Covers generics aspect of CO1.LO2."
+      }
+     ]
+    },
+    {
+     "id": "M2.T2",
+     "title": "Standard Collections Framework",
+     "est_hours": 2.5,
+     "hours_basis": "Covers standard collection interfaces and implementations for CO1.LO2.",
+     "serves_los": [
+      "CO1.LO2"
+     ],
+     "requires": [
+      "M2.T1"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "suggested_order": 2,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Covers collections aspect of CO1.LO2."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "M3",
+   "title": "Exception Handling and Defensive Programming",
+   "order": 3,
+   "primary_cos": [
+    "CO2"
+   ],
+   "topics": [
+    {
+     "id": "M3.T1",
+     "title": "Exception Handling Mechanisms",
+     "est_hours": 2.0,
+     "hours_basis": "Covers try-catch blocks, propagation, and custom exceptions for CO2.LO1.",
+     "serves_los": [
+      "CO2.LO1"
+     ],
+     "requires": [
+      "M1.T2"
+     ],
+     "topic_uid": "T:exception-handling-assertions",
+     "hands_on": true,
+     "suggested_order": 1,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Decomposed from CO2.LO1 for exception handling."
+      }
+     ]
+    },
+    {
+     "id": "M3.T2",
+     "title": "Defensive Programming and Assertions",
+     "est_hours": 2.0,
+     "hours_basis": "Covers precondition checks, postconditions, and assertions for CO2.LO1.",
+     "serves_los": [
+      "CO2.LO1"
+     ],
+     "requires": [
+      "M3.T1"
+     ],
+     "topic_uid": "T:exception-handling-assertions",
+     "hands_on": true,
+     "suggested_order": 2,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Decomposed from CO2.LO1 for defensive checks."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "M4",
+   "title": "Input/Output Streams and Serialization",
+   "order": 4,
+   "primary_cos": [
+    "CO2"
+   ],
+   "topics": [
+    {
+     "id": "M4.T1",
+     "title": "Stream Architectures and Byte/Character I/O",
+     "est_hours": 2.5,
+     "hours_basis": "Covers reader/writer and input/output stream hierarchies for CO2.LO2.",
+     "serves_los": [
+      "CO2.LO2"
+     ],
+     "requires": [
+      "M3.T2"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "suggested_order": 1,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Serves I/O streams requirement of CO2.LO2."
+      }
+     ]
+    },
+    {
+     "id": "M4.T2",
+     "title": "Object Serialization and Robust Persistence",
+     "est_hours": 2.5,
+     "hours_basis": "Covers object persistence and serialization protocols for CO2.LO2.",
+     "serves_los": [
+      "CO2.LO2"
+     ],
+     "requires": [
+      "M4.T1"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "suggested_order": 2,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Serves serialization requirement of CO2.LO2."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "M5",
+   "title": "Concurrency and Synchronization",
+   "order": 5,
+   "primary_cos": [
+    "CO3"
+   ],
+   "topics": [
+    {
+     "id": "M5.T1",
+     "title": "Threads and Mutual Exclusion",
+     "est_hours": 2.0,
+     "hours_basis": "Covers thread lifecycle, creation, and locks for CO3.LO1.",
+     "serves_los": [
+      "CO3.LO1"
+     ],
+     "requires": [
+      "M1.T1"
+     ],
+     "topic_uid": "T:ipc-synchronization",
+     "hands_on": false,
+     "suggested_order": 1,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Decomposed from CO3.LO1 for thread basics."
+      }
+     ]
+    },
+    {
+     "id": "M5.T2",
+     "title": "Synchronization Primitives and Deadlocks",
+     "est_hours": 2.0,
+     "hours_basis": "Covers monitors, critical sections, and deadlock conditions for CO3.LO1.",
+     "serves_los": [
+      "CO3.LO1"
+     ],
+     "requires": [
+      "M5.T1"
+     ],
+     "topic_uid": "T:ipc-synchronization",
+     "hands_on": false,
+     "suggested_order": 2,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Decomposed from CO3.LO1 for synchronization."
+      }
+     ]
+    },
+    {
+     "id": "M5.T3",
+     "title": "Thread Pools and Trace Analysis",
+     "est_hours": 5.0,
+     "hours_basis": "Covers executor services, thread pools, and concurrent execution log analysis for CO3.LO2.",
+     "serves_los": [
+      "CO3.LO2"
+     ],
+     "requires": [
+      "M5.T2"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "suggested_order": 3,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Capstone topic for CO3 concurrency analysis."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "M6",
+   "title": "Software Architecture, Design Patterns, and Testing",
+   "order": 6,
+   "primary_cos": [
+    "CO4"
+   ],
+   "topics": [
+    {
+     "id": "M6.T1",
+     "title": "UML Modelling and Unit Testing Suites",
+     "est_hours": 4.0,
+     "hours_basis": "Covers architectural design representation and unit testing frameworks for CO4.LO1.",
+     "serves_los": [
+      "CO4.LO1"
+     ],
+     "requires": [
+      "M1.T2",
+      "M3.T2"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "suggested_order": 1,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Decomposed from CO4.LO1 for UML and unit testing."
+      }
+     ]
+    },
+    {
+     "id": "M6.T2",
+     "title": "Object-Oriented Design Patterns",
+     "est_hours": 4.0,
+     "hours_basis": "Covers design patterns and architectural trade-off evaluations for CO4.LO2.",
+     "serves_los": [
+      "CO4.LO2"
+     ],
+     "requires": [
+      "M6.T1"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "suggested_order": 2,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Capstone topic for CO4 design patterns."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "structure_meta": {
+  "cut_candidates": [
+   {
+    "topic_id": "M5.T3",
+    "hours": 1.0,
+    "impact": "Slight reduction in thread pool trace analysis depth."
+   }
+  ],
+  "constraint_notes": [],
+  "hours_total": 36.0
+ },
+ "schedule": {
+  "weeks": [
+   {
+    "week": 1,
+    "items": [
+     {
+      "topic_id": "M1.T1",
+      "hours": 1.5
+     },
+     {
+      "topic_id": "M1.T2",
+      "hours": 1.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 2,
+    "items": [
+     {
+      "topic_id": "M1.T2",
+      "hours": 1.0
+     },
+     {
+      "topic_id": "M2.T1",
+      "hours": 2.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 3,
+    "items": [
+     {
+      "topic_id": "M2.T1",
+      "hours": 0.5
+     },
+     {
+      "topic_id": "M2.T2",
+      "hours": 2.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 4,
+    "items": [
+     {
+      "topic_id": "M3.T1",
+      "hours": 2.0
+     },
+     {
+      "topic_id": "M3.T2",
+      "hours": 1.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 5,
+    "items": [
+     {
+      "topic_id": "M3.T2",
+      "hours": 1.0
+     },
+     {
+      "topic_id": "M4.T1",
+      "hours": 2.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 6,
+    "items": [
+     {
+      "topic_id": "M4.T1",
+      "hours": 0.5
+     },
+     {
+      "topic_id": "M4.T2",
+      "hours": 2.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 7,
+    "items": [
+     {
+      "topic_id": "M5.T1",
+      "hours": 2.0
+     },
+     {
+      "topic_id": "M5.T2",
+      "hours": 1.0
+     }
+    ],
+    "is_midsem_boundary": true
+   },
+   {
+    "week": 8,
+    "items": [
+     {
+      "topic_id": "M5.T2",
+      "hours": 1.0
+     },
+     {
+      "topic_id": "M5.T3",
+      "hours": 2.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 9,
+    "items": [
+     {
+      "topic_id": "M5.T3",
+      "hours": 3.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 10,
+    "items": [
+     {
+      "topic_id": "M6.T1",
+      "hours": 3.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 11,
+    "items": [
+     {
+      "topic_id": "M6.T1",
+      "hours": 1.0
+     },
+     {
+      "topic_id": "M6.T2",
+      "hours": 2.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 12,
+    "items": [
+     {
+      "topic_id": "M6.T2",
+      "hours": 2.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 13,
+    "items": [],
+    "is_midsem_boundary": false
+   }
+  ],
+  "topic_weeks": {
+   "M1.T1": [
+    1
+   ],
+   "M1.T2": [
+    1,
+    2
+   ],
+   "M2.T1": [
+    2,
+    3
+   ],
+   "M2.T2": [
+    3
+   ],
+   "M3.T1": [
+    4
+   ],
+   "M3.T2": [
+    4,
+    5
+   ],
+   "M4.T1": [
+    5,
+    6
+   ],
+   "M4.T2": [
+    6
+   ],
+   "M5.T1": [
+    7
+   ],
+   "M5.T2": [
+    7,
+    8
+   ],
+   "M5.T3": [
+    8,
+    9
+   ],
+   "M6.T1": [
+    10,
+    11
+   ],
+   "M6.T2": [
+    11,
+    12
+   ]
+  },
+  "feasible": true,
+  "explanation": null,
+  "hours_needed": 35.0,
+  "hours_available": 39.0,
+  "dropped_edges": [],
+  "order": [
+   "M1.T1",
+   "M1.T2",
+   "M2.T1",
+   "M2.T2",
+   "M3.T1",
+   "M3.T2",
+   "M4.T1",
+   "M4.T2",
+   "M5.T1",
+   "M5.T2",
+   "M5.T3",
+   "M6.T1",
+   "M6.T2"
+  ]
+ },
+ "labs_tutorials": {
+  "concerns": [
+   {
+    "about": "V18",
+    "detail": "P=0 and lab is not required, but hands-on LOs exist. Hands-on practice has been integrated into tutorial sessions as per rule 7."
+   }
+  ],
+  "missing": [],
+  "labs": [],
+  "tutorials": [
+   {
+    "week": 1,
+    "id": "W01.TUT",
+    "activity": "Worked trace-diagnosis of 3 class hierarchy and polymorphism code snippets, in pairs",
+    "practises_los": [
+     "CO1.LO1"
+    ],
+    "uses_topics": [
+     "M1.T1",
+     "M1.T2"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 2,
+    "id": "W02.TUT",
+    "activity": "Problem-solving on implementing generic methods and collection wrappers for custom types",
+    "practises_los": [
+     "CO1.LO2"
+    ],
+    "uses_topics": [
+     "M1.T2",
+     "M2.T1"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 3,
+    "id": "W03.TUT",
+    "activity": "Practical exercises on sorting and searching using the Standard Collections Framework",
+    "practises_los": [
+     "CO1.LO2"
+    ],
+    "uses_topics": [
+     "M2.T1",
+     "M2.T2"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 4,
+    "id": "W04.TUT",
+    "activity": "Writing defensive assertions and custom exception propagation logic for a given buggy module",
+    "practises_los": [
+     "CO2.LO1"
+    ],
+    "uses_topics": [
+     "M3.T1",
+     "M3.T2"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 5,
+    "id": "W05.TUT",
+    "activity": "Peer review of defensive programming checks and input stream reader implementations",
+    "practises_los": [
+     "CO2.LO1",
+     "CO2.LO2"
+    ],
+    "uses_topics": [
+     "M3.T2",
+     "M4.T1"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 6,
+    "id": "W06.TUT",
+    "activity": "Debugging object serialization routines and handling persistent state corruption issues",
+    "practises_los": [
+     "CO2.LO2"
+    ],
+    "uses_topics": [
+     "M4.T1",
+     "M4.T2"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 7,
+    "id": "W07.TUT",
+    "activity": "Analysis of thread execution logs to identify race conditions and mutual exclusion failures",
+    "practises_los": [
+     "CO3.LO1"
+    ],
+    "uses_topics": [
+     "M5.T1",
+     "M5.T2"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 8,
+    "id": "W08.TUT",
+    "activity": "Tracing deadlock scenarios and evaluating thread pool configuration parameters",
+    "practises_los": [
+     "CO3.LO1",
+     "CO3.LO2"
+    ],
+    "uses_topics": [
+     "M5.T2",
+     "M5.T3"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 9,
+    "id": "W09.TUT",
+    "activity": "Trace analysis and debugging exercise on multi-threaded producer-consumer implementations",
+    "practises_los": [
+     "CO3.LO2"
+    ],
+    "uses_topics": [
+     "M5.T3"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 10,
+    "id": "W10.TUT",
+    "activity": "Designing UML class diagrams and writing unit test suites for a case study specification",
+    "practises_los": [
+     "CO4.LO1"
+    ],
+    "uses_topics": [
+     "M6.T1"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 11,
+    "id": "W11.TUT",
+    "activity": "Evaluating design pattern applicability and refactoring monolithic classes",
+    "practises_los": [
+     "CO4.LO1",
+     "CO4.LO2"
+    ],
+    "uses_topics": [
+     "M6.T1",
+     "M6.T2"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 12,
+    "id": "W12.TUT",
+    "activity": "Design review and architectural critique of student project design patterns",
+    "practises_los": [
+     "CO4.LO2"
+    ],
+    "uses_topics": [
+     "M6.T2"
+    ],
+    "hours": 1.0
+   }
+  ],
+  "infra_requirements": [
+   {
+    "item": "Java JDK",
+    "for_weeks": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12
+    ],
+    "status": "available",
+    "source": "CCO.lab"
+   },
+   {
+    "item": "an IDE (Eclipse/IntelliJ)",
+    "for_weeks": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12
+    ],
+    "status": "available",
+    "source": "CCO.lab"
+   },
+   {
+    "item": "JUnit",
+    "for_weeks": [
+     10,
+     11,
+     12
+    ],
+    "status": "available",
+    "source": "CCO.lab"
+   }
+  ]
+ },
+ "assessment": {
+  "concerns": [],
+  "missing": [],
+  "components": [
+   {
+    "type": "quiz",
+    "weight_pct": 10.0,
+    "weight_justification": null,
+    "best_k": 3,
+    "n": 4,
+    "activity_types": [
+     "analyse-data"
+    ],
+    "integrity": "Conctrolled environment or individual submission.",
+    "instances": [
+     {
+      "id": "A:Quiz1",
+      "release_week": 3,
+      "due_week": 3,
+      "format": "MCQ and Short Answer",
+      "covers_topics": [
+       "M1.T1",
+       "M1.T2",
+       "M2.T1"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO1.LO1",
+        "marks_pct_of_instance": 100.0,
+        "bloom_level": 3
+       }
+      ],
+      "est_student_hours": 2.0,
+      "feeds_from_lab": null
+     },
+     {
+      "id": "A:Quiz2",
+      "release_week": 6,
+      "due_week": 6,
+      "format": "MCQ and Short Answer",
+      "covers_topics": [
+       "M2.T2",
+       "M3.T1",
+       "M3.T2"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO1.LO2",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO2.LO1",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 3
+       }
+      ],
+      "est_student_hours": 2.0,
+      "feeds_from_lab": null
+     },
+     {
+      "id": "A:Quiz3",
+      "release_week": 9,
+      "due_week": 9,
+      "format": "MCQ and Short Answer",
+      "covers_topics": [
+       "M4.T1",
+       "M4.T2",
+       "M5.T1"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO2.LO2",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO3.LO1",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 4
+       }
+      ],
+      "est_student_hours": 2.0,
+      "feeds_from_lab": null
+     },
+     {
+      "id": "A:Quiz4",
+      "release_week": 11,
+      "due_week": 11,
+      "format": "MCQ and Short Answer",
+      "covers_topics": [
+       "M5.T2",
+       "M5.T3",
+       "M6.T1"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO3.LO2",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 4
+       },
+       {
+        "lo_id": "CO4.LO1",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 2
+       }
+      ],
+      "est_student_hours": 2.0,
+      "feeds_from_lab": null
+     }
+    ]
+   },
+   {
+    "type": "assignment",
+    "weight_pct": 20.0,
+    "weight_justification": null,
+    "best_k": null,
+    "n": null,
+    "activity_types": [
+     "implement",
+     "tool-use"
+    ],
+    "integrity": "Code similarity check via plagiarism detection tools and random viva checks.",
+    "instances": [
+     {
+      "id": "A:PA1",
+      "release_week": 3,
+      "due_week": 4,
+      "format": "Programming Assignment",
+      "covers_topics": [
+       "M2.T1",
+       "M2.T2"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO1.LO1",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO1.LO2",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 3
+       }
+      ],
+      "est_student_hours": 10.0,
+      "feeds_from_lab": null
+     },
+     {
+      "id": "A:PA2",
+      "release_week": 6,
+      "due_week": 8,
+      "format": "Programming Assignment",
+      "covers_topics": [
+       "M4.T1",
+       "M4.T2"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO2.LO1",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO2.LO2",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 3
+       }
+      ],
+      "est_student_hours": 12.0,
+      "feeds_from_lab": null
+     }
+    ]
+   },
+   {
+    "type": "project",
+    "weight_pct": 25.0,
+    "weight_justification": null,
+    "best_k": null,
+    "n": null,
+    "activity_types": [
+     "design",
+     "implement",
+     "evaluate-critique",
+     "teamwork",
+     "written-communication"
+    ],
+    "integrity": "Git commit history tracking, milestone demos, and individual viva.",
+    "instances": [
+     {
+      "id": "A:ProjectMilestone1",
+      "release_week": 11,
+      "due_week": 11,
+      "format": "Design Document and Initial Implementation",
+      "covers_topics": [
+       "M5.T3",
+       "M6.T1"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO3.LO2",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 4
+       },
+       {
+        "lo_id": "CO4.LO1",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 2
+       }
+      ],
+      "est_student_hours": 15.0,
+      "feeds_from_lab": null
+     },
+     {
+      "id": "A:ProjectMilestone2",
+      "release_week": 12,
+      "due_week": 13,
+      "format": "Project Deliverable & Code Review",
+      "covers_topics": [
+       "M6.T1",
+       "M6.T2"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO4.LO2",
+        "marks_pct_of_instance": 100.0,
+        "bloom_level": 5
+       }
+      ],
+      "est_student_hours": 20.0,
+      "feeds_from_lab": null
+     }
+    ]
+   },
+   {
+    "type": "midsem",
+    "weight_pct": 20.0,
+    "weight_justification": null,
+    "best_k": null,
+    "n": null,
+    "activity_types": [
+     "analyse-data"
+    ],
+    "integrity": "Proctored examination hall setting.",
+    "instances": [
+     {
+      "id": "A:Midsem",
+      "release_week": 7,
+      "due_week": 7,
+      "format": "Written Examination",
+      "covers_topics": [
+       "M1.T1",
+       "M1.T2",
+       "M2.T1",
+       "M2.T2",
+       "M3.T1",
+       "M3.T2",
+       "M4.T1",
+       "M4.T2",
+       "M5.T1"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO1.LO1",
+        "marks_pct_of_instance": 33.33,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO1.LO2",
+        "marks_pct_of_instance": 33.33,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO2.LO1",
+        "marks_pct_of_instance": 33.34,
+        "bloom_level": 3
+       }
+      ],
+      "est_student_hours": 3.0,
+      "feeds_from_lab": null
+     }
+    ]
+   },
+   {
+    "type": "endsem",
+    "weight_pct": 25.0,
+    "weight_justification": null,
+    "best_k": null,
+    "n": null,
+    "activity_types": [
+     "analyse-data",
+     "design"
+    ],
+    "integrity": "Proctored examination hall setting.",
+    "instances": [
+     {
+      "id": "A:Endsem",
+      "release_week": 13,
+      "due_week": 13,
+      "format": "Comprehensive Written Examination",
+      "covers_topics": [
+       "M1.T1",
+       "M1.T2",
+       "M2.T1",
+       "M2.T2",
+       "M3.T1",
+       "M3.T2",
+       "M4.T1",
+       "M4.T2",
+       "M5.T1",
+       "M5.T2",
+       "M5.T3",
+       "M6.T1",
+       "M6.T2"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO2.LO2",
+        "marks_pct_of_instance": 25.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO3.LO2",
+        "marks_pct_of_instance": 25.0,
+        "bloom_level": 4
+       },
+       {
+        "lo_id": "CO4.LO1",
+        "marks_pct_of_instance": 25.0,
+        "bloom_level": 2
+       },
+       {
+        "lo_id": "CO4.LO2",
+        "marks_pct_of_instance": 25.0,
+        "bloom_level": 5
+       }
+      ],
+      "est_student_hours": 3.0,
+      "feeds_from_lab": null
+     }
+    ]
+   }
+  ],
+  "weight_sum": 100.0,
+  "unsupported_po_predictions": []
+ },
+ "copo_computed": [
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSE/PO3",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": 2,
+   "claimed": true
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSE/PO4",
+   "share": 0.353,
+   "strength_computed": 2,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSE/PO9",
+   "share": 0.353,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSE/PO3",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSE/PO4",
+   "share": 0.619,
+   "strength_computed": 3,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSE/PO9",
+   "share": 0.381,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSE/PO3",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": 2,
+   "claimed": true
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSE/PO4",
+   "share": 0.789,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSE/PO5",
+   "share": 0.395,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSE/PO7",
+   "share": 0.395,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSE/PO9",
+   "share": 0.395,
+   "strength_computed": 2,
+   "strength_provisional": 2,
+   "claimed": true
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSE/PO3",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSE/PO4",
+   "share": 0.949,
+   "strength_computed": 3,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSE/PO5",
+   "share": 0.57,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSE/PO7",
+   "share": 0.57,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSE/PO9",
+   "share": 0.57,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  }
+ ],
+ "co_marks_share": {
+  "CO1": 28.33,
+  "CO2": 26.25,
+  "CO3": 15.83,
+  "CO4": 32.92
+ },
+ "resources": [
+  {
+   "candidate_id": "OL:OL11967463W",
+   "role": "primary",
+   "title": "Objects first with Java",
+   "authors": [
+    "David J. Barnes",
+    "Michael Kolling",
+    "David Barnes",
+    "Kolling Barnes"
+   ],
+   "year": 2002,
+   "edition": null,
+   "venue": "Pearson",
+   "identifier": {
+    "isbn": "9780136060864",
+    "doi": null,
+    "arxiv": null,
+    "url": "https://openlibrary.org/works/OL11967463W"
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M1.T1",
+     "reason": "Covers fundamental classes and objects"
+    },
+    {
+     "topic_id": "M1.T2",
+     "reason": "Covers inheritance and polymorphism"
+    },
+    {
+     "topic_id": "M3.T1",
+     "reason": "Covers error handling and exceptions"
+    }
+   ],
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "OL:OL11967463W",
+     "basis": null
+    }
+   ],
+   "verification": {
+    "verified": true,
+    "problems": []
+   }
+  },
+  {
+   "candidate_id": "DOI:10.1007/978-1-84628-963-7_12",
+   "role": "reference",
+   "title": "Generics and Collections Framework",
+   "authors": [
+    "Danny Poo",
+    "Derek Kiong",
+    "Swarnalatha Ashok"
+   ],
+   "year": 2008,
+   "edition": null,
+   "venue": "Object-Oriented Programming and Java",
+   "identifier": {
+    "isbn": null,
+    "doi": "10.1007/978-1-84628-963-7_12",
+    "arxiv": null,
+    "url": "https://doi.org/10.1007/978-1-84628-963-7_12"
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M2.T1",
+     "reason": "Covers generic classes and methods"
+    },
+    {
+     "topic_id": "M2.T2",
+     "reason": "Covers standard collections framework"
+    }
+   ],
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "DOI:10.1007/978-1-84628-963-7_12",
+     "basis": null
+    }
+   ],
+   "verification": {
+    "verified": true,
+    "problems": []
+   }
+  }
+ ],
+ "resource_policy": {
+  "textbook_policy": "mixed",
+  "reason": "The course covers standard object-oriented programming concepts alongside specialized topics like concurrency and design patterns, making a mix of standard textbooks and targeted chapters appropriate.",
+  "search_requests": [
+   {
+    "need": "Textbook or references for concurrency, thread pools, and synchronization primitives in Java",
+    "for_topics": [
+     "M5.T1",
+     "M5.T2",
+     "M5.T3"
+    ]
+   },
+   {
+    "need": "References for object-oriented design patterns and software architecture",
+    "for_topics": [
+     "M6.T2"
+    ]
+   }
+  ]
+ },
+ "narrative": {
+  "concerns": [],
+  "missing": [],
+  "course_description": "Advanced Programming is a second-tier course designed for second-year Bachelor of Technology students in Computer Science and Engineering. The course transitions students from writing small, single-file programs to developing robust, multi-component applications with clear interfaces. Students learn to implement object-oriented hierarchies and reusable generic components, construct robust multi-component programs using defensive programming and input/output streams, analyze concurrent multi-threaded execution traces, and design object-oriented software architectures with corresponding unit test suites. The instructional methodology comprises lectures and tutorials. By the conclusion of the course, students are able to design, build, and test applications such that their constituent parts can be developed independently and reused.",
+  "sequencing_rationale": "The modules progress from foundational object-oriented principles and generics to exception handling, I/O streams, concurrency, and architecture design, relying directly on the prerequisite competencies established in CSE101 and CSE102.",
+  "assessment_rationale": "The assessment mix of quizzes, assignments, a project, a mid-semester examination, and an end-semester examination aligns with the course outcomes by balancing practical programming and application design through project work with individual evaluation via exams and quizzes.",
+  "positioning_rationale": "This course differs from CSE101 by focusing on multi-component application design and concurrency rather than basic syntax, and differs from CSE584 by emphasizing practical object-oriented design instead of formal program verification.",
+  "grounding": [
+   "CO1",
+   "CO2",
+   "CO3",
+   "CO4",
+   "M1",
+   "M2",
+   "M3",
+   "M4",
+   "M5",
+   "M6",
+   "CSE101",
+   "CSE102",
+   "CSE584"
+  ]
+ }
+}

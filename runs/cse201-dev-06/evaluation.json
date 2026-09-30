@@ -1,0 +1,201 @@
+{
+ "run_id": "cse201-dev-06",
+ "topics": {
+  "generated": 13,
+  "reference": 39,
+  "matched": 10,
+  "recall": 0.256,
+  "coverage_recall": 0.513,
+  "precision": 0.769,
+  "sequence_kendall_tau": 0.907,
+  "threshold": 0.87,
+  "missed_reference_topics": [
+   "Examples of OOP",
+   "Data encapsulation, modularity, code reuse",
+   "Identifying classes and objects",
+   "Working with objects (constructors, variable reassignment, instance variables)",
+   "Class relationship (association, composition, dependency)",
+   "Interfaces",
+   "Polymorphism using interfaces",
+   "Inheritance",
+   "Method resolution",
+   "Interfaces v/s Inheritance",
+   "Constructor invocation in inheritance tree",
+   "Abstract classes",
+   "Immutable classes",
+   "Object class in Java",
+   "Object cloning",
+   "Generic programming",
+   "Exception handling",
+   "Assertions",
+   "Collection framework",
+   "IO Streams",
+   "Unit testing using JUnit",
+   "Introduction to multithreading",
+   "Amdahls law, speedup, parallel efficiency",
+   "Thread creation (Runnable interface, Thread class)",
+   "Multithreaded client server application",
+   "Parallel performance analysis by controlling task granularity",
+   "Java memory model",
+   "Producer-consumer application",
+   "Introduction to design patterns (iterator, singleton, flyweight, adapter, strategy)"
+  ],
+  "extra_generated_topics": [
+   "Unit testing, debugging and version control workflows",
+   "Use cases and actor interactions",
+   "Pair programming and collaborative version control workflows"
+  ],
+  "pairs": [
+   {
+    "generated": "UML class and sequence diagrams",
+    "gen_week": 7,
+    "reference": "Unified Modelling Language (sequence diagram, class diagram, use case diagram)",
+    "ref_week": 8,
+    "sim": 0.95
+   },
+   {
+    "generated": "Threads, mutual exclusion and race conditions",
+    "gen_week": 8,
+    "reference": "Mutual exclusion (race conditions, monitor locks, deadlocks)",
+    "ref_week": 10,
+    "sim": 0.943
+   },
+   {
+    "generated": "I/O streams and object serialization",
+    "gen_week": 5,
+    "reference": "Object serialization and deserialization",
+    "ref_week": 7,
+    "sim": 0.941
+   },
+   {
+    "generated": "Inheritance hierarchies, abstract classes and polymorphism",
+    "gen_week": 2,
+    "reference": "Polymorphism using inheritance",
+    "ref_week": 3,
+    "sim": 0.936
+   },
+   {
+    "generated": "Thread pools and producer-consumer synchronization patterns",
+    "gen_week": 9,
+    "reference": "Thread pool (ExecutorService, ForkJoinPool)",
+    "ref_week": 10,
+    "sim": 0.912
+   },
+   {
+    "generated": "Exception handling, assertions and defensive programming",
+    "gen_week": 4,
+    "reference": "Introduction to defensive and secure programming",
+    "ref_week": 6,
+    "sim": 0.901
+   },
+   {
+    "generated": "Generics, comparing and cloning objects, and the collections framework",
+    "gen_week": 3,
+    "reference": "Comparing objects (equals method, Comparable and Comparator interfaces)",
+    "ref_week": 5,
+    "sim": 0.9
+   },
+   {
+    "generated": "Event-driven programming and graphical user interfaces",
+    "gen_week": 10,
+    "reference": "Introduction to event driven programming using JavaFX",
+    "ref_week": 8,
+    "sim": 0.895
+   },
+   {
+    "generated": "Regular hands-on practice: Classes, objects, encapsulation and object relationships",
+    "gen_week": 1,
+    "reference": "Introduction to Object Oriented Paradigm",
+    "ref_week": 1,
+    "sim": 0.878
+   },
+   {
+    "generated": "Design patterns applied to real problems",
+    "gen_week": 11,
+    "reference": "Introduction to design patterns (template, prototype, factory, facade, decorator, composite, proxy, chain of responsibility, observer, state)",
+    "ref_week": 12,
+    "sim": 0.878
+   }
+  ]
+ },
+ "cos": {
+  "generated": 5,
+  "reference": 5,
+  "generated_bloom": [
+   3,
+   3,
+   3,
+   4,
+   5
+  ],
+  "reference_bloom_lexicon": [
+   3,
+   3,
+   4,
+   5,
+   3
+  ]
+ },
+ "prerequisites": {
+  "generated": [
+   "CSE101",
+   "CSE102"
+  ],
+  "reference": [
+   "CSE101",
+   "CSE102"
+  ]
+ },
+ "assessment_weights": {
+  "generated": {
+   "quiz": 10.0,
+   "assignment": 25.0,
+   "project": 25.0,
+   "midsem": 20.0,
+   "endsem": 20.0
+  },
+  "reference": {
+   "quiz": 10.0,
+   "assignment": 20.0,
+   "project": 20.0,
+   "midsem": 20.0,
+   "endsem": 30.0
+  }
+ },
+ "resources": {
+  "generated": [
+   "Effective Java",
+   "Head First design patterns",
+   "Java Concurrency in Practice",
+   "Applying UML and patterns",
+   "Clean Code: A Handbook of Agile Software Craftsmanship"
+  ],
+  "reference": [
+   "Core Java - Volumes I and II",
+   "Design Patterns: Elements of Reusable Object-Oriented Software",
+   "Program Development in Java - Abstraction, Specification, and Object-Oriented Design."
+  ],
+  "verified": 5
+ },
+ "validators": {
+  "errors": {
+   "VLO-COPY": 2
+  },
+  "warnings": {
+   "V11": 3,
+   "VCOPO-ACT": 1,
+   "VB": 1,
+   "V21": 1,
+   "VA-LOAD": 1
+  }
+ },
+ "external_courses": [
+  "Stanford University: CS 108 Object-Oriented Systems Design",
+  "National University of Singapore: CS2113 Software Engineering & Object-Oriented Programming",
+  "Stanford University: CS 106B Programming Abstractions",
+  "Stanford University: CS 106AX Programming Methodologies in JavaScript and Python (Accelerated)",
+  "Stanford University: CS 190 Software Design Studio",
+  "Stanford University: CS 194 Software Project"
+ ],
+ "llm_calls": 22
+}

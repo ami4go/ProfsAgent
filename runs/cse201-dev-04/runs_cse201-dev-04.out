@@ -1,0 +1,52 @@
+18:31:14 S1 intake → Course Context Object
+18:31:14   [G1] ok via cache(gemini:gemini-3.5-flash-lite:k0) · 0+0 tok · 0.0s
+18:31:14   CCO: 9 topic groups · level 2 · L-T-P {'L': 3.0, 'T': 1.0, 'P': 0} · 13 weeks · 2 assumptions · conflicts 0
+18:31:14 S2 curriculum positioning
+18:31:14   internal candidates: ['CSE101 0.095', 'CSE584 0.053', 'CSE222 0.0', 'CSE581 0.0', 'CSE231 0.0', 'CSE503 0.0', 'CSE701 0.0', 'CSE202 0.0', 'CSE102 0.0', 'CSE600 0.0', 'CSE583 0.0', 'AI501 0.0']
+18:31:14   external research loaded from research.json (6 accepted)
+18:31:14   [G2] ok via cache(gemini:gemini-3.5-flash-lite:k0) · 0+0 tok · 0.0s
+18:31:14   [G2] validators: 0 errors, 0 warnings
+18:31:14 S3 constraints + feasibility
+18:31:14   [G3] ok via cache(gemini:gemini-3.5-flash-lite:k0) · 0+0 tok · 0.0s
+18:31:14   17 constraints (9 from professor text) · conflicts 0
+18:31:14 GATE gate1_context: approve by auto (dev run) · froze 40 nodes
+18:31:14 S4 learning design: COs → CO–PO → LOs
+18:31:14   [G4] ok via cache(gemini:gemini-3.5-flash-lite:k0) · 0+0 tok · 0.0s
+18:31:14   [G4] validators: 1 errors, 1 warnings
+18:31:14   [R1] ok via cache(gemini:gemini-3.5-flash-lite:k0) · 0+0 tok · 0.0s
+18:31:14   [R1 round 1] errors 1 → 0 ACCEPT
+18:31:14   [G5] ok via cache(gemini:gemini-3.5-flash-lite:k0) · 0+0 tok · 0.0s
+18:31:14   [G5] validators: 0 errors, 0 warnings
+18:31:14   [G6] ok via cache(gemini:gemini-3.5-flash-lite:k0) · 0+0 tok · 0.0s
+18:31:14   [G6] validators: 2 errors, 1 warnings
+18:31:14   [R1] ok via cache(gemini:gemini-3.5-flash-lite:k0) · 0+0 tok · 0.0s
+18:31:14   [R1 round 1] errors 2 → 1 ACCEPT
+18:31:14   [R1] ok via cache(gemini:gemini-3.5-flash-lite:k0) · 0+0 tok · 0.0s
+18:31:14   [R1 round 2] errors 1 → 0 ACCEPT
+18:31:14 GATE gate2_outcomes: approve by auto (dev run) · froze 15 nodes
+18:31:14 S5 structure (modules/topics) → S6 schedule
+18:31:14   [G7] ok via cache(gemini:gemini-3.5-flash-lite:k0) · 0+0 tok · 0.0s
+18:31:15   [G7] validators: 0 errors, 3 warnings
+18:31:15   schedule: feasible · need 39.0 h / 39.0 h
+18:31:15 S7 lab/tutorial plan + assessment blueprint
+18:31:15   [G8] ok via cache(groq:openai/gpt-oss-120b:k0) · 0+0 tok · 0.0s
+18:31:15   [G8] validators: 0 errors, 0 warnings
+18:31:15   [G9] ok via cache(gemini:gemini-3.5-flash-lite:k0) · 0+0 tok · 0.0s
+18:31:15   [G9] validators: 10 errors, 1 warnings
+18:31:19   [R1] ok via gemini:gemini-3.5-flash-lite:k0 · 9351+485 tok · 4.6s
+18:31:19   [R1 round 1] errors 10 → 2 ACCEPT
+18:31:21   [R1] ok via gemini:gemini-3.5-flash-lite:k0 · 8815+158 tok · 1.7s
+18:31:21   [R1 round 2] errors 2 → 1 ACCEPT
+18:31:25   [R1] ok via gemini:gemini-3.5-flash-lite:k0 · 8748+126 tok · 3.9s
+18:31:25   [R1 round 3] errors 1 → 0 ACCEPT
+18:31:25 S8 resources (API candidates → G10 → verification)
+18:31:27   [X3] ok via groq:openai/gpt-oss-120b:k0 · 1839+485 tok · 2.0s
+18:31:38   17 API candidates from 9 X3 queries
+18:32:02   [G10] ok via gemini:gemini-3.5-flash-lite:k0 · 6854+1537 tok · 23.9s
+18:32:02   resources: 5/5 verified
+18:32:02 S9 narrative
+18:32:04   [G11] ok via groq:openai/gpt-oss-120b:k0 · 3597+478 tok · 1.9s
+18:32:04 rendered proposal.md + proposal.csv (0 errors, 11 warnings)
+18:32:04 GATE gate3_proposal: approve by auto (dev run) · froze 0 nodes
+
+finished: D:\BTP\runs\cse201-dev-04\proposal.md

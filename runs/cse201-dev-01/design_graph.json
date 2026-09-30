@@ -1,0 +1,747 @@
+{
+ "project_id": "P-CSE201-DEV",
+ "nodes": {
+  "P-CSE201-DEV/COURSE": {
+   "uid": "P-CSE201-DEV/COURSE",
+   "local_id": "COURSE",
+   "label": "NewCourse",
+   "props": {
+    "title": "Advanced Programming",
+    "credits": 4,
+    "ltp": {
+     "L": 3.0,
+     "T": 1.0,
+     "P": 0
+    },
+    "weeks": 13,
+    "level": 2
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": "0.1.0",
+   "model": null,
+   "sources": [],
+   "ts": 1790770974.8125825
+  },
+  "P-CSE201-DEV/CCO.course_name": {
+   "uid": "P-CSE201-DEV/CCO.course_name",
+   "local_id": "CCO.course_name",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "Advanced Programming",
+    "value": "Advanced Programming"
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.course_name"
+    }
+   ],
+   "ts": 1790770974.812601
+  },
+  "P-CSE201-DEV/CCO.short_description": {
+   "uid": "P-CSE201-DEV/CCO.short_description",
+   "local_id": "CCO.short_description",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "A second programming course that moves students from writing small single-file programs to building larger applications made of several components with clear interfaces. Students learn object-oriented design, how to write code that others can reuse and test, how to structure programs around established design patterns, and how to handle errors, input/output and concurrency. By the end, students working in pairs can take a reasonably well-specified application design and deliver a working, tested, multi-component program. Java is the vehicle, but the course is about program design, not the Java language.",
+    "value": "A second programming course that moves students from writing small single-file programs to building larger applications made of several components with clear interfaces. Students learn object-oriented design, how to write code that others can reuse and test, how to structure programs around established design patterns, and how to handle errors, input/output and concurrency. By the end, students working in pairs can take a reasonably well-specified application design and deliver a working, tested, multi-component program. Java is the vehicle, but the course is about program design, not the Java language."
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.short_description"
+    }
+   ],
+   "ts": 1790770974.812611
+  },
+  "P-CSE201-DEV/CCO.topics": {
+   "uid": "P-CSE201-DEV/CCO.topics",
+   "local_id": "CCO.topics",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "Treatment of this list: starting hypotheses — may add/drop/reorder with justification.\nA. Object-oriented foundations: classes and objects, encapsulation, modularity, object relationships (association, composition), interfaces\nB. Inheritance and polymorphism: inheritance hierarchies, abstract classes, polymorphism via interfaces and inheritance, method resolution, immutability\nC. Generic and reusable code: generics, comparing and cloning objects, the collections framework\nD. Robust programs: exception handling, assertions, defensive and secure programming, I/O streams and serialization\nE. Testing and tooling: unit testing, debugging, version control as part of everyday development\nF. Designing before coding: use cases, UML class/sequence/use-case diagrams, object-oriented design of a problem\nG. Event-driven programming and GUIs\nH. Concurrency: threads, thread pools, mutual exclusion, race conditions and deadlocks, producer-consumer, speedup\nI. Design patterns: common creational, structural and behavioural patterns applied to real problems\n",
+    "value": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790770974.8126185
+  },
+  "P-CSE201-DEV/CCO.intent": {
+   "uid": "P-CSE201-DEV/CCO.intent",
+   "local_id": "CCO.intent",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "Central question the course answers: How do you design, build and test a multi-component program so that its parts can be developed independently and reused?\nPedagogical emphasis: design thinking before coding; writing code others can read, reuse and test; learning by building a substantial team project.\nThis course should NOT become:\n- a Java language features course\n- a data-structures course (that is covered by the prerequisite)\n- a lecture-only course without regular hands-on practice\n",
+    "value": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.intent"
+    }
+   ],
+   "ts": 1790770974.812624
+  },
+  "P-CSE201-DEV/CCO.target_students": {
+   "uid": "P-CSE201-DEV/CCO.target_students",
+   "local_id": "CCO.target_students",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "Programmes: B.Tech. CSE (core course); also taken by other B.Tech. programmes\nYear: 2nd year (3rd semester)\nAssumed background: CSE101 Introduction to Programming and CSE102 Data Structures and Algorithms — comfortable with procedural programming, functions, arrays, lists, recursion and basic data structures\n",
+    "value": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.target_students"
+    }
+   ],
+   "ts": 1790770974.812629
+  },
+  "P-CSE201-DEV/CCO.level_or_code": {
+   "uid": "P-CSE201-DEV/CCO.level_or_code",
+   "local_id": "CCO.level_or_code",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "2xx level (second-year core); code to be assigned",
+    "value": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.level_or_code"
+    }
+   ],
+   "ts": 1790770974.8126345
+  },
+  "P-CSE201-DEV/CCO.credits": {
+   "uid": "P-CSE201-DEV/CCO.credits",
+   "local_id": "CCO.credits",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "4",
+    "value": 4
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.credits"
+    }
+   ],
+   "ts": 1790770974.8126426
+  },
+  "P-CSE201-DEV/CCO.ltp": {
+   "uid": "P-CSE201-DEV/CCO.ltp",
+   "local_id": "CCO.ltp",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "3-1-0 (three lecture hours and one tutorial hour per week)",
+    "value": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.ltp"
+    }
+   ],
+   "ts": 1790770974.8126476
+  },
+  "P-CSE201-DEV/CCO.semester_weeks": {
+   "uid": "P-CSE201-DEV/CCO.semester_weeks",
+   "local_id": "CCO.semester_weeks",
+   "label": "ContextField",
+   "props": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED — infer from evidence and flag under RULE A]",
+    "value": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.semester_weeks"
+    }
+   ],
+   "ts": 1790770974.8126528
+  },
+  "P-CSE201-DEV/CCO.weekly_effort_hours": {
+   "uid": "P-CSE201-DEV/CCO.weekly_effort_hours",
+   "local_id": "CCO.weekly_effort_hours",
+   "label": "ContextField",
+   "props": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED — infer from evidence and flag under RULE A]",
+    "value": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.weekly_effort_hours"
+    }
+   ],
+   "ts": 1790770974.8126574
+  },
+  "P-CSE201-DEV/CCO.lab": {
+   "uid": "P-CSE201-DEV/CCO.lab",
+   "local_id": "CCO.lab",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "Lab required: no separate lab slot; hands-on practice happens in tutorials and take-home work\nAvailable infrastructure: students' own laptops; Java JDK, an IDE (Eclipse/IntelliJ), JUnit, Git/GitHub; TAs for tutorials\n",
+    "value": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.lab"
+    }
+   ],
+   "ts": 1790770974.812663
+  },
+  "P-CSE201-DEV/CCO.assessment_prefs": {
+   "uid": "P-CSE201-DEV/CCO.assessment_prefs",
+   "local_id": "CCO.assessment_prefs",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "Preferred components: short take-home programming assignments, a pair-programming course project with milestones, quizzes, mid-sem and end-sem exams\nComponents to avoid: none\nRationale: the course is about building software, so a substantial share of the grade should come from programming work, while exams check individual understanding\n",
+    "value": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.assessment_prefs"
+    }
+   ],
+   "ts": 1790770974.8126676
+  },
+  "P-CSE201-DEV/CCO.special_constraints": {
+   "uid": "P-CSE201-DEV/CCO.special_constraints",
+   "local_id": "CCO.special_constraints",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "The course project must be done in pairs and should produce a working application with a graphical interface.",
+    "value": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.special_constraints"
+    }
+   ],
+   "ts": 1790770974.812672
+  },
+  "P-CSE201-DEV/CCO.curriculum_context": {
+   "uid": "P-CSE201-DEV/CCO.curriculum_context",
+   "local_id": "CCO.curriculum_context",
+   "label": "ContextField",
+   "props": {
+    "status": "missing",
+    "raw": "[NOT SUPPLIED — derive curriculum positioning yourself from the institutional knowledge graph.]",
+    "value": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.curriculum_context"
+    }
+   ],
+   "ts": 1790770974.8126771
+  },
+  "P-CSE201-DEV/ASM01": {
+   "uid": "P-CSE201-DEV/ASM01",
+   "local_id": "ASM01",
+   "label": "Assumption",
+   "props": {
+    "id": "ASM01",
+    "what": "mid-semester exam timing",
+    "value": "after teaching week 7",
+    "basis": "mid-semester recess and exam fall roughly mid-way through 13 teaching weeks; confirm from the academic calendar",
+    "confirm_with": "academic calendar (DOAA)",
+    "status": "open"
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "mid-semester recess and exam fall roughly mid-way through 13 teaching weeks; confirm from the academic calendar"
+    }
+   ],
+   "ts": 1790770974.8126855
+  },
+  "P-CSE201-DEV/ASM02": {
+   "uid": "P-CSE201-DEV/ASM02",
+   "local_id": "ASM02",
+   "label": "Assumption",
+   "props": {
+    "id": "ASM02",
+    "what": "weekly student effort",
+    "value": null,
+    "basis": "not supplied; effort is reported (contact + take-home estimates), not constrained",
+    "confirm_with": "course instructor / DOAA",
+    "status": "open"
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "not supplied; effort is reported (contact + take-home estimates), not constrained"
+    }
+   ],
+   "ts": 1790770974.8126924
+  },
+  "P-CSE201-DEV/TG1": {
+   "uid": "P-CSE201-DEV/TG1",
+   "local_id": "TG1",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG1",
+    "title": "Object-oriented foundations",
+    "topics": [
+     {
+      "id": "TG1.1",
+      "text": "classes and objects"
+     },
+     {
+      "id": "TG1.2",
+      "text": "encapsulation"
+     },
+     {
+      "id": "TG1.3",
+      "text": "modularity"
+     },
+     {
+      "id": "TG1.4",
+      "text": "object relationships (association, composition)"
+     },
+     {
+      "id": "TG1.5",
+      "text": "interfaces"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790770974.8127127
+  },
+  "P-CSE201-DEV/TG2": {
+   "uid": "P-CSE201-DEV/TG2",
+   "local_id": "TG2",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG2",
+    "title": "Inheritance and polymorphism",
+    "topics": [
+     {
+      "id": "TG2.1",
+      "text": "inheritance hierarchies"
+     },
+     {
+      "id": "TG2.2",
+      "text": "abstract classes"
+     },
+     {
+      "id": "TG2.3",
+      "text": "polymorphism via interfaces and inheritance"
+     },
+     {
+      "id": "TG2.4",
+      "text": "method resolution"
+     },
+     {
+      "id": "TG2.5",
+      "text": "immutability"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790770974.8127294
+  },
+  "P-CSE201-DEV/TG3": {
+   "uid": "P-CSE201-DEV/TG3",
+   "local_id": "TG3",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG3",
+    "title": "Generic and reusable code",
+    "topics": [
+     {
+      "id": "TG3.1",
+      "text": "generics"
+     },
+     {
+      "id": "TG3.2",
+      "text": "comparing and cloning objects"
+     },
+     {
+      "id": "TG3.3",
+      "text": "the collections framework"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790770974.8127396
+  },
+  "P-CSE201-DEV/TG4": {
+   "uid": "P-CSE201-DEV/TG4",
+   "local_id": "TG4",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG4",
+    "title": "Robust programs",
+    "topics": [
+     {
+      "id": "TG4.1",
+      "text": "exception handling"
+     },
+     {
+      "id": "TG4.2",
+      "text": "assertions"
+     },
+     {
+      "id": "TG4.3",
+      "text": "defensive and secure programming"
+     },
+     {
+      "id": "TG4.4",
+      "text": "I/O streams and serialization"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790770974.8127522
+  },
+  "P-CSE201-DEV/TG5": {
+   "uid": "P-CSE201-DEV/TG5",
+   "local_id": "TG5",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG5",
+    "title": "Testing and tooling",
+    "topics": [
+     {
+      "id": "TG5.1",
+      "text": "unit testing"
+     },
+     {
+      "id": "TG5.2",
+      "text": "debugging"
+     },
+     {
+      "id": "TG5.3",
+      "text": "version control as part of everyday development"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790770974.8127623
+  },
+  "P-CSE201-DEV/TG6": {
+   "uid": "P-CSE201-DEV/TG6",
+   "local_id": "TG6",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG6",
+    "title": "Designing before coding",
+    "topics": [
+     {
+      "id": "TG6.1",
+      "text": "use cases"
+     },
+     {
+      "id": "TG6.2",
+      "text": "UML class/sequence/use-case diagrams"
+     },
+     {
+      "id": "TG6.3",
+      "text": "object-oriented design of a problem"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790770974.8127735
+  },
+  "P-CSE201-DEV/TG7": {
+   "uid": "P-CSE201-DEV/TG7",
+   "local_id": "TG7",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG7",
+    "title": "Event-driven programming and GUIs",
+    "topics": [
+     {
+      "id": "TG7.1",
+      "text": "Event-driven programming and GUIs"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790770974.8127801
+  },
+  "P-CSE201-DEV/TG8": {
+   "uid": "P-CSE201-DEV/TG8",
+   "local_id": "TG8",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG8",
+    "title": "Concurrency",
+    "topics": [
+     {
+      "id": "TG8.1",
+      "text": "threads"
+     },
+     {
+      "id": "TG8.2",
+      "text": "thread pools"
+     },
+     {
+      "id": "TG8.3",
+      "text": "mutual exclusion"
+     },
+     {
+      "id": "TG8.4",
+      "text": "race conditions and deadlocks"
+     },
+     {
+      "id": "TG8.5",
+      "text": "producer-consumer"
+     },
+     {
+      "id": "TG8.6",
+      "text": "speedup"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790770974.812795
+  },
+  "P-CSE201-DEV/TG9": {
+   "uid": "P-CSE201-DEV/TG9",
+   "local_id": "TG9",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG9",
+    "title": "Design patterns",
+    "topics": [
+     {
+      "id": "TG9.1",
+      "text": "common creational, structural and behavioural patterns applied to real problems"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1790770974.8128011
+  }
+ },
+ "edges": [],
+ "history_len": 0
+}

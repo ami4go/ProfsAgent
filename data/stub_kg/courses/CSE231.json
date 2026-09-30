@@ -1,0 +1,223 @@
+{
+ "index": {
+  "uid": "CSE231",
+  "aliases": [
+   "CSE231"
+  ],
+  "name": "Operating Systems",
+  "credits": 4,
+  "level": 2,
+  "semester": "Monsoon",
+  "professor": "Sambuddho Chakravarty, Arani Bhattacharya",
+  "cluster": "CSE",
+  "prereq_index": "CSE102",
+  "prereq_pref_index": "C Programming ( students must know how to write reasonable length C programs before this course )",
+  "anti_index": null,
+  "csv_url": "https://docs.google.com/spreadsheets/d/e/2PACX-1vTSROsPM6BIuDWGT_9n_4eNejN0eGVSwZd2CgTH8JjLoGkqSmUb6TUMLRlXJczwow/pub?output=csv",
+  "catalogue_url": "https://techtree.iiitd.edu.in/viewDescription/filename?=CSE231",
+  "is_gold_stub": false
+ },
+ "sheet": {
+  "header": {
+   "code_raw": "CSE 231",
+   "name": "Operating Systems",
+   "credits": 4,
+   "offered_to": "UG",
+   "description": "Operating system is the interface between the hardware and the user; it is responsible for the management and coordination of activities and the sharing of the resources of the computer. Operating system offers a number of services to application programs and users. Applications access these services through application programming interfaces (APIs) or system calls. By invoking these interfaces, the application can request a service from the operating system, pass parameters, and receive the results of the operation. The course on Operating System has two components: theory and programming. Theory component covers the underline concepts and principles of operating system whereas programming component involves the practical implementation of theoretical concepts.",
+   "codes_on_sheet": [
+    "CSE231"
+   ]
+  },
+  "prerequisites": [
+   {
+    "kind": "mandatory",
+    "raw": "CSE102 Data Structures & Algorithms",
+    "row": 8
+   },
+   {
+    "kind": "desirable",
+    "raw": "C Programming",
+    "row": 8
+   }
+  ],
+  "cos": [
+   {
+    "label": "CO1",
+    "text": "Students are able to create a Unix shell with complete clarity about process creation and process execution.",
+    "row": 13
+   },
+   {
+    "label": "CO2",
+    "text": "Students are able to write multi- threaded applications with synchronization primitives and ability to analyze effects of concurrency on process execution and correctness.",
+    "row": 13
+   },
+   {
+    "label": "CO3",
+    "text": "Students are able to analyze the impact of OS concepts, e.g. virtual memory, concurrency, on program execution and ability to fine-tune the program to run efficiently on a given OS.",
+    "row": 13
+   },
+   {
+    "label": "CO4",
+    "text": "Students are able to demonstrate deeper understanding of the Unix-like OSes and kernel programming.",
+    "row": 13
+   }
+  ],
+  "lecture_weeks": [
+   {
+    "row": 16,
+    "week": 1,
+    "topic_raw": "Introduction to Operating Systems",
+    "cos_met_raw": "C01",
+    "tutorial": "Assembly programming, Compilers",
+    "co_refs": [
+     "CO1"
+    ]
+   },
+   {
+    "row": 17,
+    "week": 2,
+    "topic_raw": "x86/x86_64 architecture, compiler tool chain, writing C/Assembly mixed programs",
+    "cos_met_raw": "C01, C02",
+    "co_refs": [
+     "CO1",
+     "CO2"
+    ]
+   },
+   {
+    "row": 18,
+    "week": 3,
+    "week_end": 4,
+    "topic_raw": "Process and thread management - creation, deletion, waiting, context switching, relevant system calls and their implementations",
+    "cos_met_raw": "C01, C02",
+    "tutorial": "Rudimentary shell using process creation and management, kernel programming - writing your own system call",
+    "co_refs": [
+     "CO1",
+     "CO2"
+    ]
+   },
+   {
+    "row": 20,
+    "week": 5,
+    "topic_raw": "IPC, Synchronization",
+    "cos_met_raw": "C01, C02",
+    "tutorial": "Synchronization primitives and using appropriate system calls.",
+    "co_refs": [
+     "CO1",
+     "CO2"
+    ]
+   },
+   {
+    "row": 21,
+    "week": 6,
+    "week_end": 7,
+    "topic_raw": "Process Scheduling",
+    "cos_met_raw": "C01, C04",
+    "tutorial": "Kernel scheduler programming - Modifying the kernel CFS scheduler",
+    "co_refs": [
+     "CO1",
+     "CO4"
+    ]
+   },
+   {
+    "row": 22,
+    "week": 8,
+    "topic_raw": "Deadlocks",
+    "cos_met_raw": "CO2,CO3",
+    "co_refs": [
+     "CO2",
+     "CO3"
+    ]
+   },
+   {
+    "row": 23,
+    "week": 9,
+    "topic_raw": "Memory management/virtual memory",
+    "cos_met_raw": "CO3 , CO4",
+    "co_refs": [
+     "CO3",
+     "CO4"
+    ]
+   },
+   {
+    "row": 24,
+    "week": 10,
+    "topic_raw": "Page fault and page fault handling",
+    "cos_met_raw": "CO3 , CO4",
+    "tutorial": "Programming assignments - Memory management unit in OS",
+    "co_refs": [
+     "CO3",
+     "CO4"
+    ]
+   },
+   {
+    "row": 25,
+    "week": 11,
+    "week_end": 12,
+    "topic_raw": "File system: File system management, VFS, file allocation/file system",
+    "cos_met_raw": "CO3 , CO4",
+    "co_refs": [
+     "CO3",
+     "CO4"
+    ]
+   },
+   {
+    "row": 26,
+    "week": 13,
+    "topic_raw": "I/O management , device drivers, kernel modules",
+    "cos_met_raw": "CO3 , CO4",
+    "tutorial": "Programming assignments - File system, device driver",
+    "co_refs": [
+     "CO3",
+     "CO4"
+    ]
+   }
+  ],
+  "lab_weeks": [],
+  "assessment": [
+   {
+    "raw_label": "Assignment",
+    "weight_raw": "50",
+    "weight_pct": 50.0,
+    "row": 35
+   },
+   {
+    "raw_label": "Midsem",
+    "weight_raw": "20",
+    "weight_pct": 20.0,
+    "row": 36
+   },
+   {
+    "raw_label": "Quiz",
+    "weight_raw": "10",
+    "weight_pct": 10.0,
+    "row": 37
+   },
+   {
+    "raw_label": "End sem",
+    "weight_raw": "20",
+    "weight_pct": 20.0,
+    "row": 38
+   }
+  ],
+  "resources": [
+   {
+    "type_raw": "Text/Other resources:",
+    "title_raw": "Operating System Concepts, 9th Edition, Wiley\nby Silberschatz (Author), Galvin (Author), Gagne (Author)",
+    "row": 42
+   },
+   {
+    "type_raw": "Other reference books are:",
+    "title_raw": "Linux Systems Programming - Robert Love",
+    "row": 43
+   },
+   {
+    "type_raw": null,
+    "title_raw": "Linux Kernel Development - Robert Love",
+    "row": 44
+   }
+  ],
+  "warnings": [],
+  "template_version": "old",
+  "assessment_weight_sum": 100.0
+ }
+}

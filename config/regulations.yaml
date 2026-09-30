@@ -1,0 +1,19 @@
+# Regulation facts with stable ids. Text is quoted/paraphrased minimally from the source; `values` are what
+# the deterministic default-filler uses. Everything here is tagged REGULATION when used.
+source_docs:
+  UGREG-2025: {title: "IIIT-Delhi UG Regulations, October 2025", url: "https://iiitd.ac.in/sites/default/files/docs/education/2025/2025-October-UG%20Regulations.pdf"}
+facts:
+  - id: "UGREG-2025§2"
+    text: "A semester is of about four months in duration with 13 weeks of teaching, a mid-semester recess, a mid-semester examination, and an end-semester examination. Generally, the last 10 days in the semester are reserved for the end-semester examination, presentations, demos, etc."
+    values: {teaching_weeks: 13}
+  - id: "UGREG-2025§4(2)a"
+    text: "A 4-credit course will have 3 hours of lectures per week, with a total of about 39 hours of lectures (13 weeks). In addition, one hour of interaction per week is expected, which may be in form of structured tutorials. There may also be labs in the course."
+    values: {credits: 4, lecture_h_per_week: 3, tutorial_h_per_week: 1, lab: optional}
+  - id: "UGREG-2025§4(2)b"
+    text: "A 2-credit course will have 1.5 hours of lectures per week for the whole semester, or 3 hours of lectures per week for half the semester. The total lectures hours will be about 20."
+    values: {credits: 2, lecture_h_per_week: 1.5}
+  - id: "UGREG-2025§6.2"
+    text: "The two main exams - the mid-semester exam and the end-semester exam - shall normally be scheduled as per the academic calendar while the schedule of the rest will be decided by the Instructor."
+    values: {midsem: required_normally, endsem: required_normally}
+assumptions:   # NOT regulation; used as Assumption nodes until confirmed from the academic calendar
+  midsem_after_week: {value: 7, basis: "mid-semester recess and exam fall roughly mid-way through 13 teaching weeks; confirm from the academic calendar"}

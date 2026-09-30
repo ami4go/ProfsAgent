@@ -1,0 +1,33 @@
+# Whitelist for external comparable-course research. Only pages on these domains are accepted as
+# "comparable courses". A page must additionally be classified as a SINGLE course's page (prompt X2).
+# `adapters` are deterministic catalogue APIs tried before web search.
+institutions:
+  - {id: MIT,       name: Massachusetts Institute of Technology, country: US, domains: [mit.edu, ocw.mit.edu, csail.mit.edu]}
+  - {id: STANFORD,  name: Stanford University,                  country: US, domains: [stanford.edu], adapters: [stanford_explorecourses]}
+  - {id: CMU,       name: Carnegie Mellon University,           country: US, domains: [cmu.edu]}
+  - {id: BERKELEY,  name: University of California Berkeley,    country: US, domains: [berkeley.edu]}
+  - {id: HARVARD,   name: Harvard University,                   country: US, domains: [harvard.edu]}
+  - {id: PRINCETON, name: Princeton University,                 country: US, domains: [princeton.edu]}
+  - {id: CORNELL,   name: Cornell University,                   country: US, domains: [cornell.edu]}
+  - {id: UW,        name: University of Washington,             country: US, domains: [washington.edu]}
+  - {id: UIUC,      name: University of Illinois Urbana-Champaign, country: US, domains: [illinois.edu]}
+  - {id: GATECH,    name: Georgia Institute of Technology,      country: US, domains: [gatech.edu]}
+  - {id: OXFORD,    name: University of Oxford,                 country: UK, domains: [ox.ac.uk]}
+  - {id: CAMBRIDGE, name: University of Cambridge,              country: UK, domains: [cam.ac.uk]}
+  - {id: IMPERIAL,  name: Imperial College London,              country: UK, domains: [imperial.ac.uk]}
+  - {id: UCL,       name: University College London,           country: UK, domains: [ucl.ac.uk]}
+  - {id: EDINBURGH, name: University of Edinburgh,              country: UK, domains: [ed.ac.uk]}
+  - {id: ETH,       name: ETH Zurich,                           country: CH, domains: [ethz.ch]}
+  - {id: EPFL,      name: EPFL,                                 country: CH, domains: [epfl.ch]}
+  - {id: NUS,       name: National University of Singapore,     country: SG, domains: [nus.edu.sg, nusmods.com], adapters: [nusmods]}
+  - {id: NTU,       name: Nanyang Technological University,     country: SG, domains: [ntu.edu.sg]}
+  - {id: TORONTO,   name: University of Toronto,                country: CA, domains: [utoronto.ca]}
+  - {id: WATERLOO,  name: University of Waterloo,               country: CA, domains: [uwaterloo.ca]}
+  - {id: TUM,       name: Technical University of Munich,       country: DE, domains: [tum.de]}
+  - {id: TSINGHUA,  name: Tsinghua University,                  country: CN, domains: [tsinghua.edu.cn]}
+search:
+  max_queries: 4
+  max_candidate_pages: 8
+  max_accepted: 6
+  max_per_institution: 2      # diversity: at most 2 comparable courses per institution
+  page_text_chars: 14000

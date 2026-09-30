@@ -1,0 +1,57 @@
+19:08:08 S1 intake → Course Context Object
+19:08:17   [G1] ok via groq:openai/gpt-oss-120b:k98ae7752 · 3296+2191 tok · 9.0s
+19:08:17   CCO: 6 topic groups · level 3 · L-T-P {'L': 3, 'T': 1, 'P': 2} · 13 weeks · 5 assumptions · conflicts 0
+19:08:17 S2 curriculum positioning
+19:08:19   internal candidates: ['CSE701 0.118', 'CSE581 0.062', 'CSE582 0.118', 'CSE594A 0.077', 'CSE201 0.0', 'CSE583 0.0', 'AI501 0.0', 'CSE665 0.0']
+19:08:22 [research] plan: titles=['AI-Assisted Software Engineering', 'Programming with Generative AI', 'Software Development with AI', 'Agentic Software Development', 'AI-Native Software Construction'] queries=4
+19:08:22 [research] search failed for 'AI assisted software engineering course syllabus site:mit.edu': all endpoints for role 'search' unavailable; last: None
+19:08:22 [research] search failed for 'generative AI software development course homepage site:stanford.edu': all endpoints for role 'search' unavailable; last: None
+19:08:22 [research] search failed for 'AI coding agents software engineering syllabus site:cmu.edu': all endpoints for role 'search' unavailable; last: None
+19:08:22 [research] search failed for 'AI native software construction course syllabus site:ethz.ch': all endpoints for role 'search' unavailable; last: None
+19:09:32 [research] candidates=55 kept=53 examined=4 accepted=4 rejected-by={}
+19:09:38   [G2] ok via gemini:gemini-3.5-flash-lite:ke1251668 · 9314+1650 tok · 5.8s
+19:09:38   [G2] validators: 0 errors, 0 warnings
+19:09:38 S3 constraints + feasibility
+19:09:40   [G3] ok via groq:openai/gpt-oss-120b:k98ae7752 · 2799+685 tok · 2.2s
+19:09:40   17 constraints (8 from professor text) · conflicts 0
+19:09:40 GATE gate1_context: approve by auto (dev run) · froze 37 nodes
+19:09:40 S4 learning design: COs → CO–PO → LOs
+19:09:47   [G4] ok via gemini:gemini-3.5-flash-lite:ke1251668 · 6864+1862 tok · 6.3s
+19:09:47   [G4] validators: 2 errors, 1 warnings
+19:09:48   [R1] ok via gemini:gemini-3.5-flash-lite:ke1251668 · 6920+301 tok · 1.7s
+19:09:48   [R1 round 1] errors 2 → 1 ACCEPT
+19:09:52   [R1] ok via gemini:gemini-3.5-flash-lite:ke1251668 · 6873+177 tok · 3.7s
+19:09:52   [R1 round 2] errors 1 → 0 ACCEPT
+19:09:59   [G5] ok via gemini:gemini-3.5-flash-lite:ke1251668 · 3058+1476 tok · 7.2s
+19:09:59   [G5] validators: 0 errors, 0 warnings
+19:10:10   [G6] ok via gemini:gemini-3.5-flash-lite:ke1251668 · 5776+3796 tok · 10.4s
+19:10:10   [G6] validators: 7 errors, 7 warnings
+19:10:13   [R1] ok via gemini:gemini-3.5-flash-lite:ke1251668 · 8708+1122 tok · 3.7s
+19:10:13   [R1 round 1] errors 7 → 3 ACCEPT
+19:10:16   [R1] ok via gemini:gemini-3.5-flash-lite:ke1251668 · 8200+423 tok · 2.3s
+19:10:16   [R1 round 2] errors 3 → 0 ACCEPT
+19:10:16 GATE gate2_outcomes: approve by auto (dev run) · froze 16 nodes
+19:10:16 S5 structure (modules/topics) → S6 schedule
+19:10:24   [G7] ok via gemini:gemini-3.5-flash-lite:ke1251668 · 6127+2502 tok · 8.4s
+19:10:24   [G7] validators: 5 errors, 1 warnings
+19:10:29   [R1] ok via gemini:gemini-3.5-flash-lite:ke1251668 · 5001+1663 tok · 4.8s
+19:10:29   [R1 round 1] errors 5 → 0 ACCEPT
+19:10:29   schedule: feasible · need 35.0 h / 39 h
+19:10:29 S7 lab/tutorial plan + assessment blueprint
+19:10:38   [G8] ok via gemini:gemini-3.5-flash-lite:ke1251668 · 4017+3547 tok · 9.2s
+19:10:38   [G8] validators: 0 errors, 0 warnings
+19:10:44   [G9] ok via gemini:gemini-3.5-flash-lite:ke1251668 · 7083+1969 tok · 5.4s
+19:10:44   [G9] validators: 4 errors, 2 warnings
+19:10:45   [R1] ok via gemini:gemini-3.5-flash-lite:ke1251668 · 8246+154 tok · 1.5s
+19:10:45   [R1 round 1] errors 4 → 1 ACCEPT
+19:10:49   [R1] ok via gemini:gemini-3.5-flash-lite:ke1251668 · 7949+108 tok · 3.9s
+19:10:49   [R1 round 2] errors 1 → 0 ACCEPT
+19:10:49 S8 resources (API candidates → G10 → verification)
+19:10:56   [X3] ok via gemini:gemini-3.5-flash-lite:ke1251668 · 1723+396 tok · 6.5s
+19:11:03   15 API candidates from 6 X3 queries
+19:11:08   [G10] ok via gemini:gemini-3.5-flash-lite:ke1251668 · 5930+1830 tok · 5.2s
+19:11:08   resources: 5/5 verified
+19:11:08 S9 narrative
+19:11:10   [G11] ok via groq:openai/gpt-oss-120b:k98ae7752 · 3335+570 tok · 1.7s
+19:11:10 rendered proposal.md + proposal.csv (0 errors, 10 warnings)
+19:11:10 GATE gate3_proposal: approve by auto (dev run) · froze 0 nodes

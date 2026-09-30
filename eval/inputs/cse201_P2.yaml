@@ -1,0 +1,56 @@
+# DEV test case (prompt tuning allowed). Reference: eval/reference/cse201_sheet.tsv (never shown to the system).
+# Condition P2: fields 1–13 filled, field 14 not supplied (the system derives positioning from the KG).
+# Written in a requester's own words from the course intent; the reference COs / weekly plan are NOT copied.
+run:
+  project_id: P-CSE201-DEV
+  exclude_courses: [CSE201]                 # hide the target's own sheet from the KG + RAG
+  blocklist:
+    domains: [iiitd.ac.in, iiitd.edu.in, techtree.iiitd.edu.in]
+    course_codes: [CSE201]
+    title_fragments: []
+  external_research: true
+form:
+  "1. COURSE NAME": "Advanced Programming"
+  "2. SHORT COURSE DESCRIPTION": >-
+    A second programming course that moves students from writing small single-file programs to building
+    larger applications made of several components with clear interfaces. Students learn object-oriented
+    design, how to write code that others can reuse and test, how to structure programs around established
+    design patterns, and how to handle errors, input/output and concurrency. By the end, students working in
+    pairs can take a reasonably well-specified application design and deliver a working, tested, multi-component
+    program. Java is the vehicle, but the course is about program design, not the Java language.
+  "3. TOPICS / CONTENT AREAS": |
+    Treatment of this list: starting hypotheses — may add/drop/reorder with justification.
+    A. Object-oriented foundations: classes and objects, encapsulation, modularity, object relationships (association, composition), interfaces
+    B. Inheritance and polymorphism: inheritance hierarchies, abstract classes, polymorphism via interfaces and inheritance, method resolution, immutability
+    C. Generic and reusable code: generics, comparing and cloning objects, the collections framework
+    D. Robust programs: exception handling, assertions, defensive and secure programming, I/O streams and serialization
+    E. Testing and tooling: unit testing, debugging, version control as part of everyday development
+    F. Designing before coding: use cases, UML class/sequence/use-case diagrams, object-oriented design of a problem
+    G. Event-driven programming and GUIs
+    H. Concurrency: threads, thread pools, mutual exclusion, race conditions and deadlocks, producer-consumer, speedup
+    I. Design patterns: common creational, structural and behavioural patterns applied to real problems
+  "4. COURSE INTENT": |
+    Central question the course answers: How do you design, build and test a multi-component program so that its parts can be developed independently and reused?
+    Pedagogical emphasis: design thinking before coding; writing code others can read, reuse and test; learning by building a substantial team project.
+    This course should NOT become:
+    - a Java language features course
+    - a data-structures course (that is covered by the prerequisite)
+    - a lecture-only course without regular hands-on practice
+  "5. TARGET STUDENTS": |
+    Programmes: B.Tech. CSE (core course); also taken by other B.Tech. programmes
+    Year: 2nd year (3rd semester)
+    Assumed background: CSE101 Introduction to Programming and CSE102 Data Structures and Algorithms — comfortable with procedural programming, functions, arrays, lists, recursion and basic data structures
+  "6. EXPECTED LEVEL / COURSE CODE": "2xx level (second-year core); code to be assigned"
+  "7. CREDITS": "4"
+  "8. L-T-P / CONTACT HOURS": "3-1-0 (three lecture hours and one tutorial hour per week)"
+  "9. SEMESTER LENGTH": "[NOT SPECIFIED — infer from evidence and flag under RULE A]"
+  "10. WEEKLY STUDENT EFFORT": "[NOT SPECIFIED — infer from evidence and flag under RULE A]"
+  "11. LAB / PRACTICAL COMPONENT": |
+    Lab required: no separate lab slot; hands-on practice happens in tutorials and take-home work
+    Available infrastructure: students' own laptops; Java JDK, an IDE (Eclipse/IntelliJ), JUnit, Git/GitHub; TAs for tutorials
+  "12. ASSESSMENT PREFERENCES": |
+    Preferred components: short take-home programming assignments, a pair-programming course project with milestones, quizzes, mid-sem and end-sem exams
+    Components to avoid: none
+    Rationale: the course is about building software, so a substantial share of the grade should come from programming work, while exams check individual understanding
+  "13. SPECIAL CONSTRAINTS": "The course project must be done in pairs and should produce a working application with a graphical interface."
+  "14. CURRICULUM CONTEXT": "[NOT SUPPLIED — derive curriculum positioning yourself from the institutional knowledge graph.]"

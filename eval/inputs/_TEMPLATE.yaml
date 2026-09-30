@@ -1,0 +1,42 @@
+# Copy this file to eval/inputs/<your_course>.yaml, fill it in, then run:
+#   python scripts/run_design.py --input eval/inputs/<your_course>.yaml --run-id <your_course>-01
+# Leave a field as "[NOT SPECIFIED]" when you want the system to infer it (it will appear in the assumption ledger).
+run:
+  project_id: P-MYCOURSE                  # any short id
+  exclude_courses: []                     # IIIT-D course codes to hide from the KG (e.g. if the course already exists)
+  blocklist:                              # things external research must never retrieve (held-out test courses)
+    domains: []                           # e.g. [themodernsoftware.dev]
+    course_codes: []                      # e.g. [CS146S]
+    title_fragments: []
+  external_research: true                 # search top universities for comparable courses
+form:
+  "1. COURSE NAME": ""
+  "2. SHORT COURSE DESCRIPTION": >-
+    3–6 sentences: what the course is about and what students can do at the end.
+  "3. TOPICS / CONTENT AREAS": |
+    Treatment of this list: starting hypotheses — may add/drop/reorder with justification
+    A. <group>: <topic>, <topic>
+    B. <group>: <topic>, <topic>
+  "4. COURSE INTENT": |
+    Central question the course answers: <one sentence>
+    Pedagogical emphasis: <what kind of thinking>
+    This course should NOT become:
+    - <negative constraint>
+  "5. TARGET STUDENTS": |
+    Programmes: B.Tech. CSE
+    Year: 3rd/4th year
+    Assumed background: <e.g. CSE201 Advanced Programming — what they already know>
+  "6. EXPECTED LEVEL / COURSE CODE": "[NOT SPECIFIED]"
+  "7. CREDITS": "[NOT SPECIFIED]"
+  "8. L-T-P / CONTACT HOURS": "[NOT SPECIFIED]"
+  "9. SEMESTER LENGTH": "[NOT SPECIFIED]"
+  "10. WEEKLY STUDENT EFFORT": "[NOT SPECIFIED]"
+  "11. LAB / PRACTICAL COMPONENT": |
+    Lab required: [NOT SPECIFIED]
+    Available infrastructure: <machines, compute, API access, TA support>
+  "12. ASSESSMENT PREFERENCES": |
+    Preferred components: [NOT SPECIFIED]
+    Components to avoid: none
+    Rationale:
+  "13. SPECIAL CONSTRAINTS": "[NONE]"
+  "14. CURRICULUM CONTEXT": "[NOT SUPPLIED — derive curriculum positioning from the institutional knowledge graph.]"

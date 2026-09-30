@@ -34,6 +34,22 @@ Outputs in `runs/<run-id>/`:
 - `run.log`
 - `evaluation.json`
 
+## Contributed: Layer A ingestion + evaluation harness (parked)
+`contrib/ingestion_v0/` holds a teammate contribution, kept verbatim:
+- Layer A ingestion to Neo4j (sheet parsing, E1–E4 extractors, programme/PO loading, derived overlap and precedence edges)
+- an evaluation harness (defect injector, alternative validator set, LLM-reviewer baseline, ablation study, benchmark scripts)
+
+**It is not wired into the main package and does not run as delivered.** Read `contrib/ingestion_v0/README.md` before using it:
+- It imports modules that are missing.
+- Its LLM-reviewer baseline and ablations are **simulated**, so their numbers must not be reported as results.
+- Its benchmark flags 100% of clean courses.
+- Its `btech_cse.json` is not IIIT-D programme data; use `data/programmes/btech_cse.yaml`.
+
+The defect injector (five mutation categories, including deliberate blind spots) is the part ready for reuse. The next step is to port it onto this pipeline's `state.json` and `validate/rules.py`.
+
+## Other scripts
+- `scripts/export_course_sheet_pdf.py --run-id <id>`: renders `runs/<id>/course_sheet.pdf` with only the IIIT-D course-directory fields.
+
 ## Code map
 | Path | What |
 |---|---|

@@ -1,0 +1,191 @@
+{
+    "header": {
+        "course_code": "ECE 636",
+        "aliases": [
+            "CSE 636"
+        ],
+        "name": "Communications Networking - An analytical approach",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "The course introduces the student to analytical tools that help analyze a communications network. We will learn to apply simple queueing models to analyze the delay, throughput, and timeliness performance of networks. We will analyze randomized multiaccess and scheduling. We will study and compare congestion control algorithms for optimizing the utilities like throughput and age of information over an end-to-end path.",
+        "prerequisites_mandatory": [
+            "MTH201 Probability & Statistics"
+        ],
+        "prerequisites_desirable": [
+            "ECE501 Probability and Random Processes",
+            "Programming in MATLAB and C++"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "MTH201"
+        ],
+        "prerequisites_desirable_resolved": [
+            "ECE501",
+            "Programming in MATLAB and C++"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "The student will be able to apply queueing models to analyze the metrics of throughput, delay, and age of information.",
+            "bloom_level": "Analyze",
+            "bloom_verb": "analyze",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=analyze",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "The student will be able to analyze common randomized multiaccess and network scheduling algorithms",
+            "bloom_level": "Analyze",
+            "bloom_verb": "analyze",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=analyze",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "The student will be able to explain, compare and contrast flow and congestion control algorithms of the transmission control protocol.",
+            "bloom_level": "Understand",
+            "bloom_verb": "contrast",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=contrast",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "The student will be able to use simulations and real world experiments to reproduce network behaviors of interest",
+            "bloom_level": "Apply",
+            "bloom_verb": "use",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=use",
+                "has_object",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1,2",
+            "lecture_topics": [
+                "OSI and TCP/IP Layers",
+                "Protocols",
+                "Applications and their requirements (in terms of common metrics of throughput, delay, and age of information)",
+                "Application abstractions",
+                "Network Abstractions"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Students handpick a few protocols at each layer and discuss their functionalities. List the queues in the protocol stack."
+        },
+        {
+            "week": "2, 3, 4,5",
+            "lecture_topics": [
+                "Review of Discrete Time Markov Chains",
+                "Poisson Process",
+                "Continuous Time Markov Chains",
+                "Delay, throughput and age analysis for queues (Little\u2019s theorem, M/M/* queues, M/G/1, networks of queues)"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4"
+            ],
+            "tutorial_assignment": "Word problems, paper readings, and simulations of queues, delay, throughput, and age measurements in a real setting"
+        },
+        {
+            "week": "6,7,8",
+            "lecture_topics": [
+                "Throughput analysis of ALOHA and CSMA",
+                "Saturation throughput analysis of 802.11 DCF",
+                "Access and Time Fairness"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": "Word problems, ns3 simulations/ WiFi experiments"
+        },
+        {
+            "week": "9, 10",
+            "lecture_topics": [
+                "Scheduling in networks (Priority, MaxWeight, Randomized)"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Paper Reading"
+        },
+        {
+            "week": "11, 12, 13",
+            "lecture_topics": [
+                "TCP Congestion and Flow Control Algorithms (loss-based, delay-based, and hybrid)",
+                "End-to-end Age Control"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Paper Reading and Real-world experiments that bring forth the salient features of the algorithms"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Quiz",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "Assignment",
+            "weight_pct": 5
+        },
+        {
+            "type_label": "Project",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 25
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Reference",
+            "title": "Data Networks by Gallager"
+        },
+        {
+            "type_label": "Reference",
+            "title": "Queueing Systems, Vol 1, by Kleinrock"
+        },
+        {
+            "type_label": "Reference",
+            "title": "Fundamentals of Queueing Theory By Donald Gross"
+        },
+        {
+            "type_label": "Reference",
+            "title": "Communication Networks By R. Srikant and Lei Ying"
+        },
+        {
+            "type_label": "Reference",
+            "title": "Research Publications"
+        }
+    ]
+}

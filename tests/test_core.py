@@ -114,3 +114,21 @@ def test_new_rules_catch_review_defects():
 def test_fix_hints_attached():
     vs = rules.run(_state())
     assert all("fix_hint" in x for x in vs if x["code"] in ("V10", "V11", "V12", "T2"))
+
+
+@pytest.mark.parametrize("level, code, years, expected", [
+    (400, None, [3], 4),        # G1 wrote the course number instead of the level digit (crashed bloom_band before)
+    (4, None, [3], 4),
+    (None, "CSE401", [3], 4),
+    (None, "CSE901", [3], 3),   # no Bloom band for level 9: fall back to the lowest target year
+    (0, None, [], 3),
+])
+def test_course_level_normalised(level, code, years, expected):
+    missing = {"status": "missing", "value": None}
+    cco = {"fields": {"credits": missing, "semester_weeks": missing, "weekly_effort_hours": missing,
+                      "ltp": {"status": "missing", "L": None, "T": None, "P": None}, "lab": {"required": "yes"},
+                      "level_or_code": {"status": "ambiguous", "level": level, "code": code},
+                      "target_students": {"years": years}}}
+    d = det.apply_defaults(cco)
+    assert d["level"] == expected
+    assert det.bloom_band(d["level"])["floor"] >= 1

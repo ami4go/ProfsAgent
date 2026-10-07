@@ -1,0 +1,198 @@
+{
+    "header": {
+        "course_code": "NAI",
+        "aliases": [
+            "CSAI",
+            "CSD",
+            "CSAM"
+        ],
+        "name": "Networks for AI/ML Systems",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": "CSE",
+        "description": "Modern datacenter networks have undergone a rapid transformation to support unprecedented bandwidth demands (i.e., multi-Tbps) driven largely by the scale and performance requirements of large-scale machine learning and cloud workloads. Managing this volume of intra-datacenter traffic introduces complex challenges in the transport, resource isolation, and multi-tenant operation. At the same time, these environments demand reimagined security architectures and high-performance networking stacks. This course explores the next generation of transport protocols and standards (e.g., UltraEthernet Transport (UET) and Google's Falcon), data plane security mechanisms, hardware accelerator architectures, and user-space networking frameworks (e.g., netmap, PF_RING, DPDK, eBPF). The course comprises a semester-long project running in parallel to lectures, with project discussions once in two weeks.",
+        "prerequisites_mandatory": [
+            "CSE232"
+        ],
+        "prerequisites_desirable": [
+            "CSE112/ECE111",
+            "CSE231"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Discuss traditional transport protocols and congestion control in datacenter networks"
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Determine the requirements for next generation transport protocol for AI/ML workloads, and analyze existing designs"
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Analyze various user-space networking techniques and hardware accelerator architectures for high performance networking"
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Critique state-of-the-art and construct novel ideas for next generation network design"
+        },
+        {
+            "label": "CO5",
+            "raw_text": "Produce technical surveys on next generation networking architectures and protocols"
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Traditional networking concepts: TCP/UDP",
+                "Performance overheads of a standard kernel-based network stack"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Overview of emerging trends in networking: Software-defined networking, programmable data planes, AI/ML in networking.",
+                "Project Orientation: Introduction to course project themes and team formation."
+            ],
+            "cos_met": [
+                "CO3",
+                "CO5"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Congestion control: Traditional TCP congestion control, congestion control in data center networks, congestion control requirements for AI/ML workloads"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Quiz-1"
+        },
+        {
+            "week": "4,5",
+            "lecture_topics": [
+                "User-space networking: kernel bypass techniques such as netmap, PF_RING, DPDK, VPP, and RDMA",
+                "In-kernel packet processing: eBPF/XDP",
+                "Host network stack: mTCP, Demikernel"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3"
+            ],
+            "tutorial_assignment": "Quiz-2"
+        },
+        {
+            "week": "6, 7",
+            "lecture_topics": [
+                "Link and network layer security protocols: MACsec, IPsec, and WireGuard",
+                "Introduction to cryptographic primitives and key exchange mechanisms.",
+                "Transport Layer and Application Security: Examination of TLS and QUIC protocols, focusing on handshake mechanisms, encryption modes, and performance trade-offs.",
+                "Hardware offload strategies: Design choices for network security protocol offload."
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3"
+            ],
+            "tutorial_assignment": "Quiz-3"
+        },
+        {
+            "week": "8, 9",
+            "lecture_topics": [
+                "NextGen Networks: Introduction to distributed AI/ML architecture",
+                "Role of networking in distributed AI/ML workloads",
+                "Hardware and software infrastructure, Topologies, Collective communication"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO5"
+            ],
+            "tutorial_assignment": "Mid-semester project review. Teams present progress, receive technical feedback, and refine implementation plans."
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Next-Generation Transport Protocols: Study of emerging transport protocols such as Falcon and UltraEthernet.",
+                "Analysis of their design goals, congestion control strategies, and suitability for high-throughput, low-latency environments."
+            ],
+            "cos_met": [
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "11, 12",
+            "lecture_topics": [
+                "Accelerated Network Processing Architectures: Overview of hardware acceleration for networking: packet parsing, flow classification, and offloading.",
+                "Case study on Marvell OCTEON architecture and its role in high-performance network processing."
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Quiz-4"
+        },
+        {
+            "week": "12, 13",
+            "lecture_topics": [
+                "Cloud-Native Networking and Security: Exploration of Kubernetes networking models, service meshes, and network policy enforcement.",
+                "Introduction to popular CNIs."
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Final Project Presentations: Final project demonstrations and evaluations.",
+                "Teams present their solutions, discuss design decisions, and reflect on technical challenges and outcomes."
+            ],
+            "cos_met": [
+                "CO3",
+                "CO5"
+            ],
+            "tutorial_assignment": "Project outcome: New system design, existing system setup and evaluation, or tehnical surveys in one of the following forms (a) Publish a blog, (b) Upload a video, or (c) short research/survey paper"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Project",
+            "weight_pct": 40
+        },
+        {
+            "type_label": "Class quiz",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 30
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Books",
+            "title": "There are no official textbooks for this course. Students are expected to read research papers and white papers specified by the instructor. \\n\\nThe following text books provide the fundamentals.\\n(1) Computer Networking: A Top-Down Approach (7th edition), by James F. Kurose and Keith W. Ross.\\n(2) Computer Networks: A Systems Approach, by Larry Peterson and Bruce Davie. Online link: https://book.systemsapproach.org/"
+        },
+        {
+            "type_label": "Web references",
+            "title": "[1] Ultra Ethernet Specifications v1.0, June 2025 https://ultraethernet.org/wp-content/uploads/sites/20/2025/06/UE-Specification-6.11.25.pdf"
+        }
+    ]
+}

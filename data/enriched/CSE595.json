@@ -1,0 +1,276 @@
+{
+    "header": {
+        "course_code": "CSE 5xx",
+        "aliases": [],
+        "name": "Multicore Parallel Programming and Runtime Systems",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "Computing hardware is becoming increasingly complex and is constrained by power and energy limits. As a result, contemporary platforms rely on multicore processors that scale to over one hundred cores, feature wide vector units, maintain complex memory hierarchies, and often share memory with accelerators such as GPUs. Conventional thread-based programming models impose significant complexity in organizing code into multiple threads of control and balancing work to ensure efficient resource utilization. These limitations have driven the development of parallel runtime systems that assist programmers by efficiently scheduling parallel tasks across available compute resources. This course introduces the fundamentals of parallel programming on multicore processors and explores the design and implementation of low-overhead runtime systems that manage task scheduling and resource allocation to improve performance and energy efficiency.",
+        "prerequisites_mandatory": [
+            "Operating System",
+            "Experience with C/C++ programming"
+        ],
+        "prerequisites_desirable": [
+            "Computer Organization"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "Operating System",
+            "Experience with C/C++ programming"
+        ],
+        "prerequisites_desirable_resolved": [
+            "Computer Organization"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students will be able to explain the fundamentals of parallel programming and the different programming models widely supported in industry for multicore processors",
+            "bloom_level": "Understand",
+            "bloom_verb": "explain",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=explain",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students will be able to design and implement a low-overhead load-balancing runtime for a task-based parallel programming model",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students will be able to implement runtime solutions to improve the performance of parallel applications on modern multiprocessor servers",
+            "bloom_level": "Apply",
+            "bloom_verb": "implement",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=implement",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Students will be able to develop an understanding of and assess runtime techniques that improve the energy efficiency of parallel applications on multicore processors",
+            "bloom_level": "Create",
+            "bloom_verb": "develop",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=develop",
+                "has_object",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Course overview",
+                "shared memory parallel programming using POSIX Thread APIs"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Pthread programming"
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Introduction to task-based parallel programming models",
+                "concurrency decomposition"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Async-finish programming"
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Ideal parallelism",
+                "critical path",
+                "greedy scheduling using work-sharing and work-stealing"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Async-finish overheads"
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Stealing types and loop-level parallelism",
+                "mutual exclusion and isolation"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Loop level parallelism"
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Futures",
+                "promises",
+                "data driven tasks",
+                "locality in parallel programming"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Futures and promises"
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Non-Uniform Memory Access (NUMA)",
+                "programming models and runtimes for improving locality on a NUMA machine"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Hierarchical place trees"
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Sequential overheads in dynamic load balancing",
+                "runtime techniques to dynamically control task granularity and minimize deque overheads"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Async-finish overheads"
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Memory consistency",
+                "sequential consistency",
+                "x86 TSO memory model",
+                "C++ memory model"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Atomic variables"
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Cache coherency protocols",
+                "runtime techniques for detecting and avoiding false sharing"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "False sharing"
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Achieving energy efficiency in parallel programming using runtime techniques, such as DVFS, and dynamic concurrency throttling"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Boost context"
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "User-level threads",
+                "Boost.Fibers",
+                "Boost.Context"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Boost fibers"
+        },
+        {
+            "week": "12, 13",
+            "lecture_topics": [
+                "SIMD programming on multicore processors",
+                "introduction to GPU computing using Boost.Compute",
+                "heterogeneous parallel programming",
+                "applying maching learning techniques in parallel runtimes"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Vector compute library"
+        },
+        {
+            "week": "14",
+            "lecture_topics": [
+                "OpenMP programming model",
+                "work-sharing pragmas",
+                "tasking pragmas"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "OpenMP"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Quiz",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "Lab",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Group Project",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 30
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "There is no textbook for the course, so students should be sure to come to every class. We would provide course notes or web links to online materials depending on the lecture."
+        },
+        {
+            "type_label": "Reference Book",
+            "title": "An Introduction to Parallel Programming by Peter S. Pacheco, A premier on memory consistency and cache coherence (https://pages.cs.wisc.edu/~markhill/papers/primer2020_2nd_edition.pdf)"
+        },
+        {
+            "type_label": "Reading materials",
+            "title": "They will be provided with the lecture slides"
+        }
+    ]
+}

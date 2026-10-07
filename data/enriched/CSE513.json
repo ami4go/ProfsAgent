@@ -1,0 +1,239 @@
+{
+    "header": {
+        "course_code": "CSE 513",
+        "aliases": [],
+        "name": "Parallel Runtimes for Modern Processors (https://hipec.github.io/courses/cse513.html)",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "Computing hardware is becoming more and more complex. Today and in the foreseeable future, performance will be delivered principally by increased hardware parallelism. Modern multicore processors scale to over one hundred cores, have wide vector units, maintain a complex memory hierarchy and even share the memory with accelerators such as GPU. Conventional programming models using threads impose significant complexity to organize code into multiple threads of control and balance work amongst threads to ensure proper utilization of computing resources. This shortcoming has helped the advent of parallel runtimes that assist the programmer by efficiently scheduling the parallel tasks over available resources. This course introduces the design and implementation of such a parallel runtime and explores the challenges in achieving performance and energy efficiency over modern processors.",
+        "prerequisites_mandatory": [
+            "Operating System",
+            "Experience with C/C++ programming",
+            "Advanced Programming (CSE201), or any other programming intensive course"
+        ],
+        "prerequisites_desirable": [
+            "Computer Organization"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "Operating System",
+            "Experience with C/C++ programming",
+            "Advanced Programming (CSE201), or any other programming intensive course"
+        ],
+        "prerequisites_desirable_resolved": [
+            "Computer Organization"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students develop insights on parallel programming abstractions and their corresponding hardware and software implementations",
+            "bloom_level": "Create",
+            "bloom_verb": "develop",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=develop",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students have the ability to design and implement a low-overhead load balancing runtime for modern processors",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students have the ability to implement runtime solutions for improving the performance of a parallel application over a modern processor",
+            "bloom_level": "Apply",
+            "bloom_verb": "implement",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=implement",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Students develop insights on runtime techniques to improve the energy efficiency of a parallel application over a modern processor",
+            "bloom_level": "Create",
+            "bloom_verb": "develop",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=develop",
+                "has_object",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Introduction to modern processors: Multicore, vector units, GPUs, bandwidth and latency"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2-3",
+            "lecture_topics": [
+                "Parallel programming on modern processors: Introduction to a modern lightweight low-level threading framework",
+                "Task parallellism and work-stealing runtime",
+                "SIMD parallelism using vectorization",
+                "runtime techniques for extracting SIMD parallelism from recursive task-parallel programs",
+                "hardware performance counters"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4-5",
+            "lecture_topics": [
+                "Optimizing task parallel runtimes: techniques for controlling task granularity",
+                "scalable datastructures for task storage",
+                "assigning priorities to tasks",
+                "trace and replay of tasks in iterative parallel applications"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "6-7",
+            "lecture_topics": [
+                "Effect of caches and shared memory: cache coherency protocols",
+                "memory consistency",
+                "runtime techniques for detecting and avoiding false sharing",
+                "Non-Uniform Memory Access (NUMA)",
+                "programming models and runtimes for improving locality on a NUMA machine"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Resilency: efficiently supporting resiliency in runtime systems"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Energy efficient runtimes: Dynamic Voltage and Frequency Scaling (DVFS)",
+                "power capping",
+                "dynamically concurrency throttling"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Advanced optimizations: Applying maching learning techniques in parallel runtimes"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Implementing synchronization: data race detection (using vector clocks, etc.)",
+                "phasers"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Heterogeneous runtime: unified runtime for hybrid CPU-GPU parallelism",
+                "automatic task partitioning across multicore CPU-GPU"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Student seminars"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Quiz",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "Group Project",
+            "weight_pct": 50
+        },
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 20
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "There is no textbook for the course, so students should be sure to come to every class. We would provide course notes or web links to online materials depending on the lecture."
+        },
+        {
+            "type_label": "Reference Book",
+            "title": "A premier on memory consistency and cache coherence (https://pages.cs.wisc.edu/~markhill/papers/primer2020_2nd_edition.pdf)"
+        },
+        {
+            "type_label": "Reading materials",
+            "title": "They will be provided with the lecture slides"
+        }
+    ]
+}

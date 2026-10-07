@@ -1,0 +1,197 @@
+{
+    "header": {
+        "course_code": "CSE 502",
+        "aliases": [],
+        "name": "Foundations of Parallel Programming",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "Constrained by the heat and power usage, today all computing devices are composed of multicore processors, with little or no increase in clock speed per core. In order to harness the power of the multicore processors, software applications being developed also needs to be parallelized. This makes parallel programming a very important paradigm of computing.This course introduces the fundamentals of parallel programming. It will cover both traditional approaches and new advancements in the area of parallel programming. A key aim of this course is to provide hands-on knowledge on parallel programming by writing parallel programs in different programming models taught in this course.",
+        "prerequisites_mandatory": [
+            "CSE101",
+            "CSE102",
+            "CSE201"
+        ],
+        "prerequisites_desirable": [
+            "Experience with C/C++ programming"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Discuss the fundamentals of parallel programming and different programming models for parallel programming that are supported by wide range of industry"
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Write shared memory parallel programs using the traditional thread based approach, widely used OpenMP library and the modern asynchronous dynamic task programming model"
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Write distributed memory parallel programs as well as hybrid distributed-shared memory parallel program"
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Reason between the productivity and performance offered by different parallel programming models"
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Course overview",
+                "shared memory parallel programming using POSIX Thread APIs"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Introduction to parallel programming models and architectures",
+                "concurrency decomposition"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Introduction to dynamic task parallelism",
+                "ideal parallelism",
+                "critical path"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Greedy scheduling using work-sharing and work-stealing"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Loop level parallelism and mutual exclusion in asynchronous tasks"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "False sharing and locality in parallel programming"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Futures, promises, data driven tasks",
+                "introduction to OpenMP"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "8, 9, 10",
+            "lecture_topics": [
+                "Cilk, Intel TBB, and OpenMP parallel programming model"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "11 and 12",
+            "lecture_topics": [
+                "Distributed memory parallel programming using MPI",
+                "point-to-point communication in MPI and collective communications in MPI",
+                "Hybrid parallel programming using MPI+OpenMP",
+                "Introduction to Partitioned Global Address Space (PGAS) programming model (UPC++)"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Spill over"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignments",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Quiz",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "Laboratory",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 30
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "An Introduction to Parallel Programming by Peter S. Pacheco"
+        },
+        {
+            "type_label": "Reading Materials",
+            "title": "We would also provide course notes or web links to online materials depending on the lecture."
+        }
+    ]
+}

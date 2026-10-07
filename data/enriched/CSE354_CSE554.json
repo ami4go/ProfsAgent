@@ -1,0 +1,280 @@
+{
+    "header": {
+        "course_code": "CSE354",
+        "aliases": [
+            "CSE554"
+        ],
+        "name": "Networks and Systems Security II",
+        "credits": "4",
+        "offered_to": [
+            "Btech 3rd / 4th year",
+            "M.Tech",
+            "PhD"
+        ],
+        "department": null,
+        "description": "This course derives is sequel to the Networks and Systems Security (CSE352/552) that was taught in Winter 2019. The core theoretical concepts build up on where Networks and System Security left. However, a significant volume of the course material focuses largely on hands-on networks and systems security tools, and how to use them to exploit network and system vulnerabilities, besides the traditional system development exercises.",
+        "prerequisites_mandatory": [
+            "CSE231",
+            "CSE232",
+            "C/C++ Programming",
+            "Python",
+            "Operating Systems",
+            "Computer Networks"
+        ],
+        "prerequisites_desirable": [
+            "Foundations of Computer Security (FCS)"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "CSE231",
+            "CSE232",
+            "C/C++ Programming",
+            "Python",
+            "Operating Systems",
+            "Computer Networks"
+        ],
+        "prerequisites_desirable_resolved": [
+            "Foundations of Computer Security (FCS)"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Ability to use various network security tools.",
+            "bloom_level": "Apply",
+            "bloom_verb": "use",
+            "quality_score": 1,
+            "quality_reasons": [
+                "action_verb=use",
+                "too_short",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Abilitiy to identify of basic network and system level vulnerabilities and learning techniques/tools to identify them.",
+            "bloom_level": "Remember",
+            "bloom_verb": "identify",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=identify",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Ability to design and implement various network access control and security postures.",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Ability to design and implement various security postures using system and network based cryptographic frameworks like OpenSSL.",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO5",
+            "raw_text": "Ability to design and use various network evasion tools",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Basics of systems and network security",
+                "TCP/IP networks",
+                "historical security models"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Network access controls - Firewalls"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment \u2013 Designing your own rudimentary kernel firewall"
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Network access controls - ISP scale blacklists/DNS filtering/DNS injection/middleboxes"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Exercise - Using Linux iptables; Lab: Hands on experience with linux firewalling system viz. iptables"
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Network security assesment tools/engines --  wireshark, tcping, tcptraceroute, iperf, dig, nslookup, nmap, zmap, shodan , censys"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3"
+            ],
+            "tutorial_assignment": "Exercise - Using network reconnaisance tools and services to identify and report vulnerabilities; Lab: Hands on with various security and reconnaissance tools"
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Buffer overflow vulnerabilities - stack smashing",
+                "R2Libc"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment - basic shell code injection attack"
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Offensive tools to exploit remote vulnerabilities - shell code generation and injection injection, password sniffing, cracking etc. using Metasploit"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Exercise - using metaspoilt to design and inject shell code; Lab: Hand on experience using metaspolit to do shell code injection"
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "More on offensive tools - threat hunting"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Exercise - using metaspoilt for remote server exploitation; Lab: Hand on experience using metaspolit for remote server exploitation"
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Basics of confidentiality, integrity and authentication paradigms"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Exercise -- OpenSSL framework for file encryption and integrity protection; Lab: Hands on experince using openssl framework for file encryption and decryption"
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "CIA implementations - case study SSL v1/v2/v3",
+                "TLS v1.1/v1.2/v.1.3"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment -- Text based version WinSCP"
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "CIA implementations - VPNs and tunnelling protocols"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Exercise -- Using openVPN and IKE tools; Lab: VPNs"
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "SSL MITM tools -- ssltrip, burp suite, etc."
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Exercise - using various MITM tools and scraping web traffic.; Lab: SSL MITM"
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Basics of Network Anonymity - Mix Networks and Onion Routing"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment --Basic timing attack on Tor."
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Practical Network Anonymity and Privacy - Tor"
+            ],
+            "cos_met": [
+                "CO5"
+            ],
+            "tutorial_assignment": "Exercise - Setting up your own private Tor network with configurable parameters; Lab: Private Tor setup"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignments",
+            "weight_pct": 40
+        },
+        {
+            "type_label": "Exercises",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Midterms",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "Final",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "Quiz",
+            "weight_pct": 5
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "The Hacker Playbook 2 and 3: Practical Guide to Penetration Testing. Peter Kim."
+        },
+        {
+            "type_label": "Textbook",
+            "title": "Network Security. PRIVATE Communication in a PUBLIC World. Charlie Kaufman, Radia Perlman and Mike Speciner. PHI Learning Pvt. Ltd"
+        },
+        {
+            "type_label": "Textbook",
+            "title": "Computer Security. Principles and Practices. William Stallings and Lawrie Brown. Pearson Education"
+        }
+    ]
+}

@@ -1,0 +1,313 @@
+{
+    "header": {
+        "course_code": "CSE 344/544",
+        "aliases": [
+            "ECE 344/544"
+        ],
+        "name": "Computer Vision",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "This is an introductory course on Computer Vision offered to undergraduate and graduate students. The goal is to develop understanding of the fundamental concepts in computer vision and enable students to understand and develop applications using existing tools. Students will be given theoretical and programming assignments targeted towards solving real-world computer vision problems. Groups of two or three will do a course project and show a demonstration at the end of the semester.",
+        "prerequisites_mandatory": [
+            "Linear Algebra",
+            "Introduction to Programming"
+        ],
+        "prerequisites_desirable": [
+            "Image Analysis (CSE)",
+            "Digital Signal Image Processing (ECE)",
+            "Machine Learning / Statistical Machine Learning",
+            "Deep Learning"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "Linear Algebra",
+            "Introduction to Programming"
+        ],
+        "prerequisites_desirable_resolved": [
+            "Image Analysis (CSE)",
+            "Digital Signal Image Processing (ECE)",
+            "Machine Learning / Statistical Machine Learning",
+            "Deep Learning"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Apply techniques for feature extraction and representation, tracking, segmentation, object detection and recognition.",
+            "bloom_level": "Apply",
+            "bloom_verb": "apply",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=apply",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Apply ideas from single and multi-view geometry in applications requiring depth/3D estimation.",
+            "bloom_level": "Apply",
+            "bloom_verb": "apply",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=apply",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Look up relevant literature and identify potential solutions for a given computer vision problem and implement them using existing tools/libraries (Python/OpenCV).",
+            "bloom_level": "Apply",
+            "bloom_verb": "implement",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=implement",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Evaluate and compare quantitative performance of vision algorithms by using appropriate metrics.",
+            "bloom_level": "Evaluate",
+            "bloom_verb": "evaluate",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=evaluate",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO5",
+            "raw_text": "Integration of computer vision techniques into application systems like robotics via appropriate frameworks (e.g., ROS).",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 1,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Introduction to Computer Vision",
+                "ML/DL overview (Loss functions, Training/Validation, Overfitting / Underfitting)"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Visual recognition (image classification)",
+                "Visual recognition (object detection & tracking; semantic, instance & panoptic segmentation)"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3",
+                "CO4",
+                "CO5"
+            ],
+            "tutorial_assignment": "(HW-1) (Quiz 1)"
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Camera geometry and co-ordinate transformations; Camera Calibration (mono and stereo / cross-calibration)",
+                "Stereo (Epipolar) geometry - Fundamental and Essential Matrices"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO4",
+                "CO5"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Stereo (Epipolar) geometry - Rectification and Depth Estimation",
+                "Image Processing basics (filtering, edge detection)"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4",
+                "CO5"
+            ],
+            "tutorial_assignment": "Project Proposal"
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Keypoint detection and matching; RANSAC and Least Squares Estimation",
+                "Projective Geometry fundamentals; Homogeneous coordinates"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "(Quiz 2), (HW-2)"
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "2D Transformations (Euclidean, Similarity, Affine and Projective)",
+                "Panorama generation",
+                "Mid-sem Exam",
+                "Mid Recess"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Simultaneous Localization and Mapping (SLAM) and Visual Odometry"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO5"
+            ],
+            "tutorial_assignment": "Mid-sem project report"
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Structure from Motion (SfM) and 3D Reconstruction"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO5"
+            ],
+            "tutorial_assignment": "(Quiz-3) (HW-3)"
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "3D point cloud processing; Point cloud registration",
+                "3D Gaussian Splatting (3DGS)"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO5"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Neural Rendering and Neural Radiance Fields (NeRFs)",
+                "Vision Language Models"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "(HW-4)"
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "VLMs and applications (VQA, Open-set recognition, etc.)"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Image Generation with GANs, VAE, and Diffusion Models"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3",
+                "CO5"
+            ],
+            "tutorial_assignment": "(Quiz-4)"
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Computer Vision, Ethics, and Society",
+                "Overflow"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignment",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "Project",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Quiz",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 25
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Reference",
+            "title": "Richard Szeliski's draft \"Computer Vision: Algorithms and Applications\", 2nd. Edition (2022)"
+        },
+        {
+            "type_label": "Reference",
+            "title": "Richard Hartley and Andrew Zisserman, \"Multiple View Geometry\", Cambridge University Press, 2004"
+        },
+        {
+            "type_label": "Reference",
+            "title": "David Forsyth, Jean Ponce, \"Computer Vision: A Modern Approach\", Pearson Education, second edition."
+        },
+        {
+            "type_label": "Reference",
+            "title": "Simon J. D. Prince, \"Computer Vision: Models, Learning, and Inference\", 1st Edition, Cambridge University Press, 2012"
+        },
+        {
+            "type_label": "Reference",
+            "title": "Notes and references posted on course page"
+        }
+    ]
+}

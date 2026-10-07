@@ -1,0 +1,169 @@
+{
+    "header": {
+        "course_code": "CSE624A",
+        "aliases": [],
+        "name": "Introduction to Computational Complexity",
+        "credits": "2",
+        "offered_to": [
+            "senior UG",
+            "masters",
+            "PhD students"
+        ],
+        "department": "CSE",
+        "description": "One of the many beautiful results in the theory of computation is the equivalence of \u201cdeterministic\u201d and \u201cnon-deterministic\u201d variants of different models of computation, like Turing machines. One may ask whether this equivalence holds if we restrict the running time (or number of steps) of a Turing machine. This gives rise to one of the most important open problems in computer science, popularly known as the P versus NP question. This will be the starting point of our course. After briefly recalling Turing machines and discussing formal definitions of the classes \u2018P\u2019 and \u2018NP\u2019, we will see the notion of \u2018reductions\u2019, which will allow us to talk about the \u2018hardest\u2019 problems in NP, known as NP-complete problems. We will discuss some important NP-complete problems from different areas like logic, graph theory, etc. After that, we will briefly talk about other important classes corresponding to the running time of a Turing machine, like \u2018co-NP\u2019, \u2018EXP\u2019, and \u2018NEXP\u2019. Following this, we will see a classification of computational problems based on the space used by the Turing machine. We will discuss some important classes like PSPACE and NPSPACE (the space-variants of P and NP, respectively), their relations with P and NP, a \u2018PSPACE-complete\u2019 problem, the equivalence of PSPACE and NPSPACE, and other space complexity classes. Then, we will see the concept of \u2018polynomial hierarchy\u2019, which generalizes P, NP, and co-NP and is contained in PSPACE. If time permits, we will see a high-level introduction of randomness in computation.",
+        "prerequisites_mandatory": [
+            "CSE121",
+            "CSE322",
+            "CSE102",
+            "MTH201"
+        ],
+        "prerequisites_desirable": []
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Descibe different variants of Turing machines and different classes of computational problems"
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Determine \"reductions\" between various computational problems"
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Discuss complete problems for different computational classes and relationships between various classes"
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Explain important results and open problems in computational complexity"
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Review of Turing machines",
+                "formal introduction of P and NP"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Karp reduction",
+                "NP-completeness",
+                "the first NP-complete language - Satisfiability"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "More NP-complete problems",
+                "the class co-NP"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Time Hierarchy theorems",
+                "the class EXP",
+                "space complexity classes - PSPACE and NPSPACE"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Space hierarchy theorems",
+                "PSPACE = NPSPACE",
+                "PSPACE-complete language"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Logspace reductions",
+                "L, NL and co-NL",
+                "polynomial hierarchy (PH)",
+                "complete problems in PH"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "A high-level overview of randomness in computation"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "2 Assignments",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "1 exam",
+            "weight_pct": 40
+        },
+        {
+            "type_label": "A report on a specific topic not taught in the class",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "A summary report on the content of the course",
+            "weight_pct": 10
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "Computational Complexity: A modern approach by Arora and Barak"
+        },
+        {
+            "type_label": "Other Books",
+            "title": "Mathematics and computation by Wigderson"
+        },
+        {
+            "type_label": "Other Books",
+            "title": "Introduction to the Theory of Computation by Sipser"
+        }
+    ]
+}

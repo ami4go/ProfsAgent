@@ -1,0 +1,215 @@
+{
+    "header": {
+        "course_code": "CSE567",
+        "aliases": [],
+        "name": "Programmable Networking",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": "CSE",
+        "description": "There has been a massive revolution in networking research in the last decade, leading to newer networking infrastructure designs that are highly performant, scalable, and flexible. This evolution has opened up exciting opportunities for both networking and non-networking application domains.  This course will discuss networking advancements such as Software-defined Networks (SDN), programmable network hardware such as smartNICs and programmable switches, kernel bypass networking, RDMA, and high-speed host network stacks. We will discuss a few seminal research papers to understand each networking design advancement.",
+        "prerequisites_mandatory": [
+            "CSE102",
+            "CSE231",
+            "CSE232"
+        ],
+        "prerequisites_desirable": [
+            "Fluency in working with scripts, C/C++ and python programming. Readiness to learn a new programming language"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students will be able to recall the basics of network layer. They will be able to understand the design principles for a high-performant, scalable, and flexible networking infrastructure."
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students will be able to anlayze the reasons for the performance overheads in traditional network packet processing. They will be able to identify and exploit the benefits of kernel-bypass, in-network, and in-kernel packet processing techniques."
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students will understand the research ideas and the challenges addressed to build a high-speed, flexible networking infrastructure. They will be able to analyze research findings to gauge the impact."
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Students will be able to construct novel ideas for networking/non-networking applications. They will be able to  design, and implement these applications for  SDN/programmable data plane infrastructure, and evaluate the performance improvements of in-network packet processing over traditional packet processing."
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Introduction: networking infrastructure evolution, network layer recap, working of a router",
+                "Software-defined networking I: motivation and concept, Openflow SDN protocol"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Software-defined networking II: centralized SDN controllers, distributed SDN controllers, Google\u2019s software-defined WAN (B4), SDN limitations"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment 1: \nGoal: Implement a MAC-based learning and forwarding switch\nComponents: mininet, OpenVSwitch (OVS), POX SDN controller\nIntent: This assignment will help understand SDN concepts. The mininet infrastructure set up will help set up the subset of infrastructure for assignment 2\nNote: The course project requires infrastructure setup and aquaintance to new tools. These preliminary requirements are satisfied via the two assignments. Students will build their project over the infrastructure set up during the assignments. Therefore, the students technically start their project from week 2."
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Programmable data planes:  programmable data plane concepts and  architecture",
+                "Hardware programmable data planes: programmable switching device hardware, reconfigurable match-action tables"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Language for programmable hardware I: architecture model, P4 data types, expressions, statements, packet parser, control blocks, packet deparser"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment 2:  \nGoal: Implement a stateless firewall using P4\nComponents: mininet, bmv2 switch, thrift API\nIntent: This is a warm-up exercise that helps building the basic infrastructure for the course project"
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Language for programmable hardware II: control plane API, P4 stateful elements (tables, registers, counters, and meters), P4Runtime"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Course project: \nTopic selection deadline"
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Introduction to programmable hardware infrastructure: FPGA based SmartNICs (e.g., Xilinx NetFPGA-SUME), SoC based SmartNICs (e.g., Netronome), ASIC based programmable switch (e.g., Intel Tofino)"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": "Course project:  \nProblem statement and preliminary design document submission deadline"
+        },
+        {
+            "week": "7, 8",
+            "lecture_topics": [
+                "Offload network functionality to programmable hardware: network telemetry, heavy-hitter detection for traffic engineering, ML model for traffic classification (any two)"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Offload application to programmable hardware I: caching, application level load balancing (any one)"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Course project: \nPhase 1 presentations \nIntent: track project progress and resolve roadblocks (if any)"
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Offload application to programmable hardware II: fault tolerance, consensus management (any one)"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Software data planes I: performance overheads of a standard kernel-based network stack, motivation, kernel bypass techniques (DPDK), host network stacks (mTCP or IX)"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Software data planes II: in-kernel packet processing (eBPF, XDP)"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Introduction to current trends: The 5G mobile network and edge computing, offload network stack to NIC hardware using Remote Direct Memory Access (RDMA)"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Course project:  \nFinal presentations and report submission"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Project",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Assignment",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Research paper review",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 20
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Books",
+            "title": "There are no official textbooks for this course. Students are expected to read research papers. The following text books provide the fundamentals.\n\n(1) Computer Networking: A Top-Down Approach (7th edition), by James F. Kurose and Keith W. Ross.\n(2) Computer Networks: A Systems Approach, by Larry Peterson and Bruce Davie. \nOnline link: https://book.systemsapproach.org/\n(3) 5G Mobile Networks: A Systems Approach, by Larry Peterson and Oguz Sunay. \nOnline link: https://5g.systemsapproach.org/"
+        },
+        {
+            "type_label": "Web references",
+            "title": "The following web references will help the students in programming assignments and projects.\n\n(1) Mininet & Openflow (VM+ tutorial)\nhttps://github.com/mininet/openflow-tutorial/wiki/Installing-Required-Software\n(2) P4 infrastructure setup tutorial\nhttps://github.com/p4lang/tutorials/tree/sigcomm19\n(3) P4-16 specifications \nhttps://p4.org/p4-spec/docs/P4-16-v1.2.2.html\n(4) P4Runtime specifications https://p4.org/p4-spec/p4runtime/v1.3.0/P4Runtime-Spec.html\n(5) Sample P4 programs for bmv2 platform https://github.com/p4lang/tutorials\n(6) Sample P4 programs for Netronome smartNIC \nhttps://github.com/open-nfpsw/"
+        },
+        {
+            "type_label": "Research papers",
+            "title": "The following research papers will help the students learn course topics.\n(1) Albert Greenberg, et al. A clean slate 4D approach to network control and management. ACM SIGCOMM Computer Communication Review 35.5 (2005): 41-54.\n(2) Nick McKeown, et al. OpenFlow: enabling innovation in campus networks. ACM SIGCOMM computer communication review 38.2 (2008): 69-74.\n(3) Natasha Gude, et al. NOX: towards an operating system for networks. ACM SIGCOMM computer communication review 38.3 (2008): 105-110.\n(4) Sushant Jain, et al. B4: experience with a globally-deployed software defined WAN. In Proceedings of the ACM SIGCOMM 2013.\n(5) Pat Bosshart, et al. Forwarding metamorphosis: Fast programmable match-action processing in hardware for SDN. ACM SIGCOMM Computer Communication Review 43.4 (2013): 99-110.\n(6) Pat Bosshart, et al. P4: programming protocol-independent packet processors. SIGCOMM Computer Communication Rev. 44, 3 (July 2014), 87\u201395.\n(7) Dan RK Ports, and Jacob Nelson. When should the network be the computer? Proceedings of the Workshop on Hot Topics in Operating Systems. 2019.\n(8) James McCauley, et al. Thoughts on load distribution and the role of programmable switches. ACM SIGCOMM Computer Communication Review 49.1 (2019): 18-23.\n(9) Ran Ben Basat, et al. Pint: Probabilistic in-band network telemetry. Proceedings of the Annual conference of the ACM Special Interest Group on Data Communication on the applications, technologies, architectures, and protocols for computer communication. 2020.\n(10) Vibhaalakshmi Sivaraman, et al. Heavy-hitter detection entirely in the data plane. Proceedings of the Symposium on SDN Research. 2017.\n(11) Zhaoqi Xiong, and Noa Zilberman. Do switches dream of machine learning? Toward in-network classification. Proceedings of the 18th ACM workshop on hot topics in networks. 2019.\n(12) Xin Jin, et al. Netcache: Balancing key-value stores with fast in-network caching. Proceedings of the 26th Symposium on Operating Systems Principles. 2017.\n(13) Rui Miao, et al. Silkroad: Making stateful layer-4 load balancing fast and cheap using switching ASICs. Proceedings of the Conference of the ACM Special Interest Group on Data Communication. 2017.\n(14) Marcos A. M. Vieira, et al. Fast Packet Processing with eBPF and XDP: Concepts, Code, Challenges, and Applications. ACM Computing Surveys. 53, 1, Article 16 (May 2020), 36 pages. \n(15) Aleksandar Dragojevi\u0107, et al. FaRM: Fast remote memory. 11th USENIX Symposium on Networked Systems Design and Implementation (NSDI 14).\n(16) YoungGyoun Moon, et al. AccelTCP: accelerating network applications with stateful TCP offloading. In Proceedings of the 17th Usenix Conference on Networked Systems Design and Implementation (NSDI'20).\n(17) EunYoung Jeong, et al. mTCP: a highly scalable user-level TCP stack for multicore systems. 11th {USENIX} Symposium on Networked Systems Design and Implementation (NSDI 14). \n(18) Adam Belay, et al. IX: A Protected Dataplane Operating System for High Throughput and Low Latency. 11th USENIX Symposium on Operating Systems Design and Implementation (OSDI 14)."
+        }
+    ]
+}

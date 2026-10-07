@@ -1,0 +1,298 @@
+{
+    "header": {
+        "course_code": "CSE565",
+        "aliases": [],
+        "name": "Software Defined Networking",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "Traditionally, networking equipments consists of proprietary switching hardware with embedded software. This not only made manageability of networks complex but also stymied innovation. SDN paradigm proposed to change this, primarily by separating networking software into data and control planes. The data plane\u2019s goal is to do switching in distributed hardware equipments. The control plane centrally governs what will be the switching rules at the data plane. As the control plane is separated from the switching hardware, it is easier to change its software, thereby speeding up software development cycle and in turn lowering the barrier for innovation. The separation of planes and centralization of control plane simplifies manageability of networks. In addition to these two benefits, SDN also facilitates network virtualization, which is a key enabler Cloud Computing. In this course, we will begin by getting familiarized to the aforementioned functions in the traditional networks. We will then learn how SDN changes the way networks will function now. We will look at open source technologies that enable deployment of SDN on real hardware and in simulation. We will see how all of networking functions, e.g. switching, routing, firewall, load balancers, and VPN, are instrumented in the new paradigm. We will explore SDN via lectures from the instructor, assignments, presentations of research papers by students, and a course project.",
+        "prerequisites_mandatory": [
+            "CSE232 Computer Networks"
+        ],
+        "prerequisites_desirable": [],
+        "prerequisites_mandatory_resolved": [
+            "CSE232"
+        ],
+        "prerequisites_desirable_resolved": []
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Use Mininet to simulate network",
+            "bloom_level": "Apply",
+            "bloom_verb": "use",
+            "quality_score": 1,
+            "quality_reasons": [
+                "action_verb=use",
+                "too_short",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Use controller-switch architecture",
+            "bloom_level": "Apply",
+            "bloom_verb": "use",
+            "quality_score": 1,
+            "quality_reasons": [
+                "action_verb=use",
+                "too_short",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Execute routing algorithm for SDN",
+            "bloom_level": "Apply",
+            "bloom_verb": "execute",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=execute",
+                "too_short",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Create a firewall in SDN",
+            "bloom_level": "Create",
+            "bloom_verb": "create",
+            "quality_score": 1,
+            "quality_reasons": [
+                "action_verb=create",
+                "too_short",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO5",
+            "raw_text": "Design  a  data  center  in virtualized environment",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 1,
+            "quality_reasons": [
+                "action_verb=design",
+                "too_short",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "L2 switching",
+                "L3 routing",
+                "Firewall",
+                "Load balancer",
+                "VPN"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "L2 switching",
+                "L3 routing",
+                "Firewall",
+                "Load balancer",
+                "VPN"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": "Non-programming assignment on L2, L3, and Firewall (2 hours)"
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Data and control together",
+                "Active networks",
+                "Attempts towards virtualization: VLAN, Tempest, VINI, Click",
+                "SDN as separation of control and data plane",
+                "Role of OpenFlow",
+                "Details of OpenFlow"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Data and control together",
+                "Active networks",
+                "Attempts towards virtualization: VLAN, Tempest, VINI, Click",
+                "SDN as separation of control and data plane",
+                "Role of OpenFlow",
+                "Details of OpenFlow"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": "Non-programming assignment on OpenFlow (4 hours)"
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Control Plane",
+                "Controller",
+                "Flow matching",
+                "Mininet",
+                "Open source controllers: NOX/POX, OVN, Ryu, Floodlight, OpenDaylight",
+                "Making Hub and Learning Switch",
+                "Making Firewall"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Mininet programming (8 hours)"
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Control Plane",
+                "Controller",
+                "Flow matching",
+                "Mininet",
+                "Open source controllers: NOX/POX, OVN, Ryu, Floodlight, OpenDaylight",
+                "Making Hub and Learning Switch",
+                "Making Firewall"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": "Project proposal (4 hours)"
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Virtualization: ESXi, KVM, Tunneling",
+                "Open vSwitch",
+                "FlowVisor",
+                "Data centers: Multi-tenancy and need for network virtualization and centralization"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Non-programming assignment on controller (4 hours)"
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Virtualization: ESXi, KVM, Tunneling",
+                "Open vSwitch",
+                "FlowVisor",
+                "Data centers: Multi-tenancy and need for network virtualization and centralization"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Implement routing (10 hours)"
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Programmable data plane",
+                "Software-based routers can be fast",
+                "OpenFlow Chip",
+                "RISC Architecture",
+                "Tables",
+                "Processor",
+                "Switch Blade",
+                "Configurable packet parser",
+                "Flow of control from table to table",
+                "Network assembly language"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": "Midsem project demo"
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Programmable data plane",
+                "Software-based routers can be fast",
+                "OpenFlow Chip",
+                "RISC Architecture",
+                "Tables",
+                "Processor",
+                "Switch Blade",
+                "Configurable packet parser",
+                "Flow of control from table to table",
+                "Network assembly language"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Implement firewall (10 hours)"
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Northbound APIs and Southbound APIs",
+                "Dynamically adding rules",
+                "Policies: Frenetic, Pyretic, Resonance",
+                "Event-based network control"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": "Paper critique (10 hours)"
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Northbound APIs and Southbound APIs",
+                "Dynamically adding rules",
+                "Policies: Frenetic, Pyretic, Resonance",
+                "Event-based network control"
+            ],
+            "cos_met": [
+                "CO5"
+            ],
+            "tutorial_assignment": "Implement policies at the controller (10 hours)"
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "OpenStack",
+                "Containers",
+                "Data center"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignment",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Paper presentation",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "Project",
+            "weight_pct": 20
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Reference",
+            "title": "SDN : software defined networks by Nadeau, Thomas D."
+        },
+        {
+            "type_label": "Reference",
+            "title": "Network innovation through openflow and SDN : principles and design by Hu, Fei"
+        },
+        {
+            "type_label": "Reference",
+            "title": "Software defined networks : a comprehensive approach by Goransson, Paul and Black, Chuck"
+        }
+    ]
+}

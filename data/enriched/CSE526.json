@@ -1,0 +1,289 @@
+{
+    "header": {
+        "course_code": "CSEXXXX",
+        "aliases": [],
+        "name": "Lattices in Computer Science",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "A lattice is a dicrete addtive sub-group of an n-dimensional Euclidean space. Lattices have been extensively studied both in computer science and mathematics. Over the last couple of decades lattices have found numerous applications across varied fields like combinatorial optimization, cryptography, algorithms, complexity theory and algebraic number theory.\n\nThis course will focus on first building some basic backgroud on n-dimensional Euclidean lattices. This will be followed up by discussing some (believed to be) hard problems on lattices and their associated complexity results. This will be followed by looking at some applications of lattices in areas like combinatorial optimizations (the integer programming problem), number theory and cryptanalysis. Finally we will look at how the lattice-based hardness assumptions can be used to build cryptographic protocols that are secure against quantum adversaries. In particular we will end the course by looking at Regev\u2019s polytime quantum reduction from (worst-case) approximate SIVP to (average-case) LWE.",
+        "prerequisites_mandatory": [
+            "Linear Algebra (MTH100)",
+            "Probability and Statistics (MTH201) (or Probability and Random Process (ECE501))",
+            "Algorithm Design and Analysis (CSE222)"
+        ],
+        "prerequisites_desirable": [
+            "Applied Cryptography (CSE546) or equivalent",
+            "Introduction to Quantum computing (CSE622)"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "Linear Algebra (MTH100)",
+            "Probability and Statistics (MTH201) (or Probability and Random Process (ECE501))",
+            "Algorithm Design and Analysis (CSE222)"
+        ],
+        "prerequisites_desirable_resolved": [
+            "Applied Cryptography (CSE546) or equivalent",
+            "Introduction to Quantum computing (CSE622)"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students should be able to learn the basics of lattces, some hard problems on lattices and some related complexity results.",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 1,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students should learn some basic lattice based cryptographic protocols and cryptanalytic techniques.",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 1,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students should be able to appreciate why some of the schemes mentioned in CO2 are post-quantum secure.",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 1,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Students should be able to apply the mathematical techniques learnt here, elsewhere.",
+            "bloom_level": "Apply",
+            "bloom_verb": "apply",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=apply",
+                "has_object",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Recap: Norm, distance or metirc, inner product space, Gram-Schmidt Orthogonalization, definition of module",
+                "Lattice definition, fundamental parallelpiped, Unimodular matrix, Determinant of a lattice"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Gram-Schmidt Orthogonalization \u2013 matrix representation, successive minima",
+                "Bounds on Successive Minima: Blichfeldt\u2019s Theorem, Blichfeldt\u2019s Theorem, Minkowski\u2019s First Theorem, Minkowski\u2019s Second Theorem"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Dual Lattices: Geometric interpretation, dual basis, Two Transference theorems",
+                "An application: Fermat\u2019s Theorem on Sums of Two Squares, Hernite normal form (HNF), Basis reduction to HNF"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Sub-lattices, Groups, Smith Normal form, Size of elements, sampling elements from finite group",
+                "Basis reduction in 2-dimension \u2013 Gauss\u2019s Algorithm"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "LLL-reduction",
+                "Applications of LLL algorithm:Low exponent attack on RSA"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "CVP-problem and Babai\u2019s nearest plane algorithm",
+                "SVP-problem, Complexity results for SVP and CVP, Relation between GapSVP and GapCVP"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Integer Programming Problem, Lenstra\u2019s Algorithm",
+                "Definitions of BPP-class, Arthur-Merlin (AM) class and Co-AM class; Definition of Periodic distributions; The Goldreich-Goldwasser protocol and it\u2019s proof (i.e., GapCVP_{\\sqrt{n}} \\in NP \\cap Co-AM)"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "A simply exponential algorithm for SVP (Ajtai-Kumar-Sivakumar)",
+                "Fourier Transformation \u2013 one dimensional and n-dimensional;"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Fourier Series \u2013 one dimensional and n-dimensional; Poission summation formula;",
+                "Dual Lattices; Minkowski\u2019s reduced basis, Korkine Zolotarev Basis (KZ-basis) \u2013 Block KZ basis, Hermite KZ basis;"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Definition of primitive vector; Lagarias, Lenstra and Schnorr\u2019s result on approximate SVP",
+                "Transference Theorem \u2013 Bauaszyczyk; Application - GapSVP_{n} \\in Co-NP; Coverting radius;"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Proof of Bauaszyczyk\u2019s Theorem",
+                "Approximate SIVP problem; Smoothing parameter;"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Cryptograhic Constructions - Collision resistant hash functions (CRHF) (a.k.a. Ajtai-GGH hash function), Regev\u2019s encryption scheme, etc."
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "The Learning with Errors (LWE) problem (and it's relation to lattice problems) \u2013 Regev\u2019s polytime quantum reduction from approximate SIVP to LWE"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Mid Semester",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "End Semester",
+            "weight_pct": 40
+        },
+        {
+            "type_label": "Paper Presentation",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Assignments",
+            "weight_pct": 10
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Books Referred",
+            "title": "1. COMPLEXITY OF LATTICE PROBLEMS: A Cryptographic Perspective by Daniele Micciancio and Shafi Goldwasser"
+        },
+        {
+            "type_label": "Books Referred",
+            "title": "2. The LLL Algorithm: Survey and Applications by various authors"
+        },
+        {
+            "type_label": "Lecture Notes",
+            "title": "1. Oded Regev's course on Lattices in Computer Science"
+        },
+        {
+            "type_label": "Lecture Notes",
+            "title": "2. Daniele Micciancio's course on Lattices Algorithms and Applications"
+        },
+        {
+            "type_label": "Lecture Notes",
+            "title": "3. Vinod Vaikuntanathan's course on Lattices, Learning with Errors and Post-Quantum Cryptography"
+        },
+        {
+            "type_label": "Lecture Notes",
+            "title": "4. Chris Peikert's course on Lattices in Cryptography"
+        },
+        {
+            "type_label": "Lecture Notes",
+            "title": "5. Leo Ducas and Daniel Dadush's course on Introduction to Lattice Algorithms and Cryptography"
+        },
+        {
+            "type_label": "Lecture Notes",
+            "title": "6. Venkata Koppula course on Lattices in Cryptography"
+        },
+        {
+            "type_label": "Wrokshops on Lattices",
+            "title": "1. Simons Institute- Semester on Lattices: Algorithms, Complexity, and Cryptography"
+        },
+        {
+            "type_label": "Wrokshops on Lattices",
+            "title": "2. BIU Winter School on Lattice-Based Cryptography and Applications"
+        }
+    ]
+}

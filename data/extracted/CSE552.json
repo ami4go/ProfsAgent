@@ -1,0 +1,207 @@
+{
+    "header": {
+        "course_code": "CSE552",
+        "aliases": [],
+        "name": "Security Engineering",
+        "credits": "4",
+        "offered_to": [
+            "Btech 3rd / 4th year",
+            "M.Tech",
+            "PhD"
+        ],
+        "department": null,
+        "description": "This course is designed to present the students a \"host\" centric approach to various aspects of computer software security. Broadly, the course would cover: Traditional multi-level security models (Bell La-Padula, Biba etc.), access controls, security in traditional computer programs and attacks against them (buffer/heap overflow attacks), defences against such attacks, writing secure programs (Secure Coding), Viruses/Malware and Trojans, OS level hardening, application and system level security primitives and APIs, cryptographic system primitives and APIs (how to (not) use (and break) them), system level authentication frameworks, introduction to allied topics \u2013 IDS, network security etc.",
+        "prerequisites_mandatory": [
+            "CSE231 C/C++",
+            "Operating Systems"
+        ],
+        "prerequisites_desirable": [
+            "Foundations of Computer Security (FCS)"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Able to comprehend and put to practice different forms of access control primitives in different software systems"
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Able to identify software vulnerabilities especially those related to buffer overflows, and ways to overcome such vulnerabilities."
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Have hands on experience with different security primitives in modern Oses and platforms,"
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Able to use various libraries to achieve various security postures \u2013 e.g. confidentiality, integrity protection and authentication"
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Introductions - Basics of Computer Systems Security, thinking wrt security, traditional security models -- their applicability and their drawbacks"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": "Assignment \u2013 Basic file system \u2013 tests the basic systems\u2019 programming skills of students"
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Access controls -- implementations in various OSes, usage, vulnerabilities and defenses"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Assignment \u2013 Basic DAC"
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Introduction to Buffer Overflow Vulnerabilities"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Stack Smashing Attack"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Stack Smashing Demo, formatted output"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment \u2013 Basic buffer overflow vulnerabilities"
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Formatted output wrap-up, Dynamic memory allocation"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Lab \u2013 formatted output vulnerability"
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Dynamic memory allocation vulnerabilities wrap-up. Mid-term review"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Return2Libc attacks,"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment \u2013 Return 2 Libc"
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Crash course in applied cryptography -- history, stream ciphers, block ciphers -- DES, AES, modes of operation. Encryption using OpenSSL."
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Lab \u2013 using crypto programs"
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Message authentication and integrity, Public Key Cryptography. Generating hashes and digests using OpenSSL"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Lab \u2013 using GPG for signatures"
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Miscellaneous -- Key Derivation Function, PBKDF, Disk Encryption DH Key Exchange, Web of Trust (GPG)"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment \u2013 Confidentiality and authentication using libraries"
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Authentication: Needham Schroeder Protocol, Kerberos, PKI"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "X.509 Certificates, OpenSSL Certificates, Introduction to Linux PAM"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment \u2013 Public private crypto libraries \u2013 using X.509 cetificates"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignments",
+            "weight_pct": 55.0
+        },
+        {
+            "type_label": "Midterms",
+            "weight_pct": 15.0
+        },
+        {
+            "type_label": "Final",
+            "weight_pct": 20.0
+        },
+        {
+            "type_label": "Quiz",
+            "weight_pct": 10.0
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "Craft of Systems Security, S. Smith and J. Marchesini, Addison-Wesley, 2007, ISBN 0-32143483-8"
+        },
+        {
+            "type_label": "Textbook",
+            "title": "Secure Coding in C/C++, Second Edition, Robert C. Seacord, ISBN-13: 978-0321822130"
+        },
+        {
+            "type_label": "Textbook",
+            "title": "Computer Security: Principles and Practices, Second Edition, W. Stallings and L. Browne, 2011, ISBN-13: 978-0312775069"
+        }
+    ]
+}

@@ -1,0 +1,223 @@
+{
+    "header": {
+        "course_code": "CSE638",
+        "aliases": [],
+        "name": "Graduate Systems (GS)",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": "CSE",
+        "description": "This course is an advanced form of computer systems. The objective is to refresh the foundations of computer architecture, operating systems, and computer networks, and then learn the advanced concepts to build real-life high-performance, scalable, reliable, and fault-tolerant distributed systems.",
+        "prerequisites_mandatory": [],
+        "prerequisites_desirable": [
+            "Fluency in working with scripts, C/C++"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students will be able to explain the basic concepts of operating systems and computer networks"
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students will be able to understand the principles of design an end-to-end distributed system application"
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students will be able to determine the reasons for the performance bottlenecks and suggest solutions."
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Students will be able to design real-life applications, benchmark their performance."
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Principles of computer system design: Modularity, Abstraction, Layering, Virtualization, Hierarchy, Indirection, Parallelism, Caching, Fixed sizing, Indexing, Separation of state from computation, Replication.",
+                "Process: system calls (fork, exec, exit, wait), shell, kernel mode of execution, hardware trap"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Tut 1: Virtualbox and docker installation\n\nAssignment 1: related to Linux shell in C"
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Threads: Race condition, critical section, locks, hardware atomic instructions",
+                "Multicore scheduling: design choices"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Tut 2: Multithreading using pthreads"
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Virtualization: Virtual machines (trap-and-emulate, paravirtualization, full virtualisation), Containers (namespaces, cgroups)",
+                "Memory virtualization: Address translation, MMU, TLB, Extended page tables (EPT), Shadow page tables, design decisions"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3"
+            ],
+            "tutorial_assignment": "Tut 3: Performance analysis using \"perf\" tool"
+        },
+        {
+            "week": "4, 5, 6",
+            "lecture_topics": [
+                "Introduction to computer networks: The end-to-end argument",
+                "Internet routing: IP addressing, routing protocols, SDN concept",
+                "Transport protocol: TCP, UDP, SCTP, Bandwidth delay product, congestion control, end-to-end delays",
+                "Application layer protocols: HTTP, data serialization formats (e.g., json, protobuf, flatbuffers), RPC (gRPC)"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Tut 4: Socket programming\nTut 5: Network debugging tools\nTut 6: Packet capture with Wireshark/tshark/tcpdump\n\nAssignment 2: Related to socket programming and performance analysis"
+        },
+        {
+            "week": "7, 8",
+            "lecture_topics": [
+                "Multi-threaded server design: synchronization, atomicity, deadlocks, producer-consumer), event-driven multi-threaded server (e.g., nginx)",
+                "Multi-tier application design: Storage options (RDBMS, NoSQL), API design (REST, RPC, publish-subscribe)",
+                "End-to-end application design: Use cases such as e-commerce, video streaming systems, social networking, instant messaging, etc."
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Tut 7: Kubernetes (with service mesh) installation (minikube)\nTut 8: Interprocess communication using FIFO\n\nProject: Starts in Week 7"
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Deployment of computer systems: cloud deployment, cloud orchestration, network architecture (firewall, DMZ)",
+                "Performance measurement and tuning: performance metrics, load testing, performance profiling"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Project milestone 1: \n(a) Demo on initial system setup and configuration \n(b) Report on suggested additional features"
+        },
+        {
+            "week": "10, 11",
+            "lecture_topics": [
+                "Optimizations: caching in computer systems",
+                "Scalability: multicore speedup, load balancer design, building efficient systems using the given resources",
+                "Reliability and fault-tolerance: replication and consistency, atomicity"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12, 13",
+            "lecture_topics": [
+                "Distributed transactions: sharding, consistent hashing, 2-phase commit",
+                "Putting all pieces together: Case studies of distributed systems design"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Project milestone 2: \n(a) Final project demo\n(b) Final report"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Project",
+            "weight_pct": 35
+        },
+        {
+            "type_label": "Programming assignments",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 30
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Books",
+            "title": "Operating Systems: Three Easy Pieces, by Remzi H. Arpaci-Dusseau and Andrea C. Arpaci-Dusseau"
+        },
+        {
+            "type_label": "Books",
+            "title": "Computer Networking: a Top Down Approach (8th edition), by Jim Kurose and Keith Ross"
+        },
+        {
+            "type_label": "Books",
+            "title": "Principles of Distributed Computing, by Roger Wattenhofer"
+        },
+        {
+            "type_label": "Books",
+            "title": "Computer Systems: A Programmer's Perspective, by Randal E. Bryant and David R. O'Hallaron"
+        },
+        {
+            "type_label": "Books",
+            "title": "Cloud Native Networking Deep-Dive, by Chander Govindarajan, Priyanka Naik"
+        },
+        {
+            "type_label": "Web references",
+            "title": "Virtual Machine Monitors: Current Technology and Future Trends"
+        },
+        {
+            "type_label": "Web references",
+            "title": "Virtual Machine Monitors, by OSTEP"
+        },
+        {
+            "type_label": "Web references",
+            "title": "Containers and Cgroups"
+        },
+        {
+            "type_label": "Web references",
+            "title": "Linux namespaces"
+        },
+        {
+            "type_label": "Web references",
+            "title": "kvm: the Linux Virtual Machine Monitor"
+        },
+        {
+            "type_label": "Web references",
+            "title": "Distributed systems reading list https://github.com/theanalyst/awesome-distributed-systems"
+        },
+        {
+            "type_label": "Web references",
+            "title": "Relevant research papers for real-world use cases"
+        },
+        {
+            "type_label": "Homework/Tutorials/Assignments",
+            "title": "Tutorials:\n0: Linux familiarity: using the shell, creating a VM, compiling C program --> recall SP refresher & OOPD\n1: Virtualbox and docker installation\n2: Multithreading using pthreads\n3. Performance analysis using \"perf\" tool to monitor hardware performance monitoring units (PMUs)\n4: Socket programming\n5: Network debugging tools\n6. Packet capture with Wireshark/tshark/tcpdump\n7: Kubernetes and service mesh installation (minikube)\n8: Interprocess communication using FIFO"
+        },
+        {
+            "type_label": "Homework/Tutorials/Assignments",
+            "title": "Sample assignments:\n1: Write a simple Linux shell in C\n2: Performance analysis of Multi-threaded & Event-driven TCP server"
+        },
+        {
+            "type_label": "Project",
+            "title": "Sample examples:\nReal-life use case code is given. Students will deploy it over docker platform, implement few additional features, analyze performance, enable scale and reliability.\nExample real-life applications:\nVideo streaming service, Social media networking, Online storage of files and documents, Online banking, E-commerce service, Swarm service."
+        },
+        {
+            "type_label": "Project",
+            "title": "References:\n1. An Open-Source Benchmark Suite for Microservices and Their Hardware-Software Implications for Cloud & Edge Systems, ASPLOS 2019\n2. Starter code-base available here"
+        }
+    ]
+}

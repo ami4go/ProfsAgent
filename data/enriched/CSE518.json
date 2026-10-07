@@ -1,0 +1,275 @@
+{
+    "header": {
+        "course_code": "CSE518",
+        "aliases": [],
+        "name": "Concurrent and Learned Data Structures",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG",
+            "Ph.D."
+        ],
+        "department": "CSE",
+        "description": "This course aims to introduce the concurrent and learned data structures to senior undergraduate, master's and Ph.D. students who have familiarity with data structures. The course will interleavingly cover both the concepts. The concurrent data structures teaching will consist of the concepts of consistency, progress guarantees, and amortized step compexity. We will delve in to the design and implementation of concurrent lock-based and lock-free linked-lists, binary search trees, hash tables, skip-lists and queries such as range search. The learned data structures teaching will first introduce the concept of learned query. We will then cover the learned index structures such as recursive model index and its variants and learned bloom filters. Finally, some very recent developments on relaxed and persistent concurrent data structures will be discussed.",
+        "prerequisites_mandatory": [
+            "CSE 101",
+            "CSE 102",
+            "CSE 201",
+            "CSE 231",
+            "Programming Skills in C++/Java and Python"
+        ],
+        "prerequisites_desirable": [
+            "Having familiarity with C++/Java multithreading and basic machine learning models/algorithm will definitely help. However, these topics will be covered in the course."
+        ],
+        "prerequisites_mandatory_resolved": [
+            "CSE101",
+            "CSE102",
+            "CSE201",
+            "CSE231",
+            "Programming Skills in C++/Java and Python"
+        ],
+        "prerequisites_desirable_resolved": [
+            "Having familiarity with C++/Java multithreading and basic machine learning models/algorithm will definitely help. However, these topics will be covered in the course."
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "To develop insights into the concepts of concurrency, synchronization, safety and progress properties of concurrent objects.",
+            "bloom_level": "Create",
+            "bloom_verb": "develop",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=develop",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "To deconstruct and analyse existing concurrent data structures and their extensions such as relaxed and persistent concurrent data structures.",
+            "bloom_level": "Analyze",
+            "bloom_verb": "deconstruct",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=deconstruct",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "To develop insights into the concept of learned queries over big data utilizing machine learning inference, thereby deconstruct and critique learned data structures.",
+            "bloom_level": "Create",
+            "bloom_verb": "develop",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=develop",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "To plan, design, implement and analyse potentially new concurrent and learned data structures.",
+            "bloom_level": "Create",
+            "bloom_verb": "plan",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=plan",
+                "has_object",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Introduction to concurrency and shared memory system",
+                "concurrent objects",
+                "synchronization",
+                "consensus"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Assignment"
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Safety and progress properties",
+                "linearizability",
+                "blocking and non-blocking progress",
+                "amortized step complexity",
+                "concurrent (lock-free and locking) stack",
+                "queues"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Lock-free and locking linked-lists",
+                "binary search trees"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Introduction to learned queries",
+                "Recursive Model Index"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Adaptive Single Layer Model and Adaptive Learned index"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment Due"
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Lock-free Range and Nearest Neighbour Queries"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Project"
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Lock-free Graph Queries"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Learned Multidimensional Index and Learned Bloom Filters"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Comparison between learned index structures"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Concurrency with learned queries",
+                "X-index"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Practical Wait-freedom"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Relaxed Concurrency"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Persistent Concurrent Data Structures"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Project Due"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignment (Report on an existing sequential data structure with queries)",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "Project (Design and implementation of concurrent and/or learned version of the reported data structure)",
+            "weight_pct": 50
+        },
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 25
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Book",
+            "title": "The Art of Multiprocessor Programming, Maurice Herlihy and Nir Shavit, 2012"
+        },
+        {
+            "type_label": "Web-reference",
+            "title": "Learned data structures, Paolo Ferragina and Giorgio Vinciguerra, 2020"
+        },
+        {
+            "type_label": "Web-reference",
+            "title": "Benchmarking learned indexes, Ryan Marcus et al., VLDB 2020"
+        },
+        {
+            "type_label": "Web-reference",
+            "title": "The computability of relaxed data structures: queues and stacks as examples, Nir Shavit & Gadi Taubenfeld, Distributed Computing 2016"
+        },
+        {
+            "type_label": "Web-reference",
+            "title": "Fast Nonblocking Persistence for Concurrent Data Structures, Wentao Cai et al., DISC 2021"
+        },
+        {
+            "type_label": "Monograph",
+            "title": "Lock-free Concurrent Search, Bapi Chatterjee, 2017"
+        }
+    ]
+}

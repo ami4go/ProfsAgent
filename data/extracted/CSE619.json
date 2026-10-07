@@ -1,0 +1,135 @@
+{
+    "header": {
+        "course_code": "CSE619",
+        "aliases": [],
+        "name": "Parameterized Algorithms",
+        "credits": "4",
+        "offered_to": [
+            "PG",
+            "UG"
+        ],
+        "department": null,
+        "description": "It is well known that most of the well-known optimization problems are computationally hard. It means that solving them by using a naive approach may take several years even for moderate sized input instances. Algorithms that run in polynomial-time are usually considered as feasible computation. Parameterized Complexity is an approach that attempts to extends the notion of feasible computation for NP-hard problems. The idea is to introduce a paramter in addition to the input instance for a classical problem. The running time of a algorithm allows exponential blow-up with respect to the paramter but the algorithm runs in polynomial-time otherwise. Another important part to design paramterized algorithms is polynomial-time preprocessing, also known as kernelization. Theory of parameterized preprocessing aims to build a theoretical foundations towards the greedy heuristics. One objective of this course is to understand how the basic algorithm paradigms, e.g. use of divide and conquer, dynamic programming, and greedy methods can be used to design kernelization and fixed-parameter algorithms. Another objective of this course is to understand the theory of computational intractability in the world of paramterized complexity. This objective involves expositions to parameterized complexity classes W[1], W[2] etc. and eventually designing algorithms that reduces one parameterized problem to another parameterized problem in addition to preserving the parameters. This part also involves understanding the differences between classical polynomial-time reductions and parameterized reductions. The third obejctive of this course is to understand how the classical complexity-theoretic ideas relate to the theory of lower bounds for kernelization (paramterized preprocessing).",
+        "prerequisites_mandatory": [
+            "CSE222 (ADA)",
+            "CSE525 (Graduate Algorithms)",
+            "Discrete Mathematics (DM)"
+        ],
+        "prerequisites_desirable": [
+            "Knowledge of graph theory, discrete probability, theory of compuation including classical complexity classes (P, NP etc) are desirable."
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students can apply graph theoretic and combinatorial tools to develop reduction rules to design polynomial-time preprocessing/kernelization algorithms"
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students are able to design fixed-parameter algorithms for NP-hard problems using bounded search trees, iterative compression, and dynamic programming (if applicable) techniques"
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students are able to design fixed-parameter algorithms for NP-hard problems using randomization methods, derandomization techniques and representative families on matroids to design fixed-parameter algorithms"
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Students are able to design parameterized reductions to prove fixed-parameter intractability and kernelization lower bounds for parameterized problems"
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Introduction to Parameterized Algorithms and polynomial-time preprocessing."
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2 - 5",
+            "lecture_topics": [
+                "Some buss-rule based kernelization algorithms",
+                "Crown Decomposition",
+                "Expansion Lemma",
+                "LP-Based Kernelizations"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Assignment, Quiz"
+        },
+        {
+            "week": "6 - 8",
+            "lecture_topics": [
+                "Bounded Search Trees",
+                "Iterative Compression"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment, Quiz"
+        },
+        {
+            "week": "9 - 11",
+            "lecture_topics": [
+                "Randomized Methods and Representative Families"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment, Quiz"
+        },
+        {
+            "week": "12 - 13",
+            "lecture_topics": [
+                "Parameterized Intractability",
+                "W-hardness",
+                "Kernelization Lower Bounds"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Quiz, Assignment"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignment",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Mid-sem test",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "Paper Presentation",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "Quiz",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "End-sem test",
+            "weight_pct": 30
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Reference",
+            "title": "[1] Parameterized Algorithms: Marek Cygan, Fedor Fomin, Lukasz Kowalick, Daniel Lokshtanov, Daniel Marx, Marcin Pilipczuk, Michal Pilipczuk, and Saket Saurabh"
+        },
+        {
+            "type_label": "Reference",
+            "title": "[2] Kernelization - Theory of Parameterized Preprocessing: Fedor Fomin, Daniel Lokhsntanov, Saket Saurabh, and Meirav Zehavi."
+        },
+        {
+            "type_label": "Reference",
+            "title": "[3] Fundamentals of Parameterized Complexity: Rod Downey and Mike Fellows"
+        }
+    ]
+}

@@ -1,0 +1,285 @@
+{
+    "header": {
+        "course_code": "ECE 511",
+        "aliases": [
+            "CSE 511"
+        ],
+        "name": "Computer Architecture",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "This course forms a strong foundation in the understanding and design of modern computing systems. Building on a computer organization base, this course explores techniques that go into designing a modern microprocessor. Fundamental understanding of computer architecture is key not only for students interested in hardware and processor design, but is a foundation for students interested in compilers, operating systems, and high performance programming. This course will explore how the computer architect can utilize the increasing number of transistors available to improve the performance of a processor. Focus will be given to architectures that can exploit different forms of parallelism, whether they be implicit or explicit. This course covers architectural techniques such as multi-issue superscalar processors, out-of-order processors, Very Long Instruction Word (VLIW) processors, advanced caching, and multiprocessor systems.",
+        "prerequisites_mandatory": [],
+        "prerequisites_desirable": [],
+        "prerequisites_mandatory_resolved": [],
+        "prerequisites_desirable_resolved": []
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Able to explain basic concepts like micro-architecture, ISA, pipeline and related hazards, caches etc.",
+            "bloom_level": "Understand",
+            "bloom_verb": "explain",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=explain",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Able to explain common issues of superscalar architectures, different kinds of out-of-order processors along with common methods to improve their performance.",
+            "bloom_level": "Understand",
+            "bloom_verb": "explain",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=explain",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Able to use concepts like VLIW, branch prediction, mechanism to improve cache performance, memory management, vector processors etc.",
+            "bloom_level": "Apply",
+            "bloom_verb": "use",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=use",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Able to use simulators like Gem5 to evaluate and understand hardware and software optimization techniques.",
+            "bloom_level": "Evaluate",
+            "bloom_verb": "evaluate",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=evaluate",
+                "has_object",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Introduction: Architecture and Micro-architecture",
+                "Machine Models",
+                "ISA Characteristics"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Assignment"
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Introduction: Architecture and Micro-architecture",
+                "Machine Models",
+                "ISA Characteristics"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Assignment and Tutorial"
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Pipelining: Basics",
+                "Structural Hazards",
+                "Data Hazards",
+                "Control Hazards"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Assignment and Quiz"
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Superscalar: In-Order",
+                "Out-of-Order",
+                "Bypassing",
+                "Interrupts",
+                "Exceptions",
+                "Speculation",
+                "Register Renaming"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment, Quiz and Project"
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Superscalar: In-Order",
+                "Out-of-Order",
+                "Bypassing",
+                "Interrupts",
+                "Exceptions",
+                "Speculation",
+                "Register Renaming"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment, Quiz and Project"
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "VLIW: Compiler Optimizations",
+                "Challenges",
+                "Predication",
+                "Case Study"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment, Quiz and Project"
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Branch Prediction: Static and Dynamic Outcome Prediction",
+                "Target Address Prediction"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment, Quiz and Project"
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Caches: Motivation",
+                "Performance",
+                "Optimizations"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment, Quiz and Project"
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Memory Management: Base and Bound Registers",
+                "Page based Memory Systems",
+                "Translation and Protection",
+                "TLB",
+                "Cache and Memory Protection Interaction"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment, Quiz and Project"
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Vector Processor and GPU: Vector Parallelism",
+                "Vector Hardware Optimizations",
+                "Vector Software and Compiler Optimizations",
+                "Reduction",
+                "Scatter/Gather",
+                "SIMD",
+                "GPU"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment, Quiz and Project"
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Parallelism: Coarse grain Multithreading",
+                "SMT",
+                "Synchronization",
+                "Sequential Consistency",
+                "Cache Coherence Protocols",
+                "Message Passing"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment, Quiz and Project"
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Multiprocessor Interconnections: Interconnect Design",
+                "Topology",
+                "Network Performance",
+                "Routing and Flow Control"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Project"
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Architectures for AI/ ML"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Project"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignment",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "Quiz",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "Project",
+            "weight_pct": 25
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "Computer Architecture: A Quantitative Approach, 5th Edition: John L Hennessy and David A Patterson (Elsevier)"
+        }
+    ]
+}

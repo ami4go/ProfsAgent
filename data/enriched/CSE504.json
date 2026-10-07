@@ -1,0 +1,259 @@
+{
+    "header": {
+        "course_code": "CSE 504",
+        "aliases": [],
+        "name": "Decision Procedures",
+        "credits": "4",
+        "offered_to": [
+            "PG",
+            "UG"
+        ],
+        "department": "CSE",
+        "description": "A decision procedure is an algorithm that, given a decision problem, terminates with a correct yes/no answer. Decision procedures have been actively used in numerous applications ranging from program analysis and verification to security and constraint solving. The more popular term that describes this field is Satisfiability Modulo Theories or SMT. The technology due to the recent developments in SAT solvers has attracted researchers as well as practitioners. In this course, we will learn about theories that are expressive enough to model real problems, but are still decidable. Specifically, we will focus on decision procedures for first-order theories that are commonly used in automated verification and reasoning, theorem-proving, compiler optimization and operations research. The techniques are based on foundational topics including logic and are routinely used in industry. Therefore familiarity with first order logic as well as some experience in (preferably) C/C++ or Java programming language is assumed. At the end of the course, students will learn about SAT, DPLL, Satisfiability Modulo theories (SMT), and the DPLL(T) framework. They will study equalities and uninterpreted functions, linear arithmetic, arrays, and pointer logic. If time permits we will study the SMT applications in software engineering and/or computational biology. As a part of the course, students will implement a project such as extending the support for exisiting theories using a popular SAT solver such as MiniSAT.",
+        "prerequisites_mandatory": [
+            "C/C++ or Java programming (equivalents of DSA and AP)",
+            "A basic course in discrete mathematics and logic"
+        ],
+        "prerequisites_desirable": [],
+        "prerequisites_mandatory_resolved": [
+            "C/C++ or Java programming (equivalents of DSA and AP)",
+            "A basic course in discrete mathematics and logic"
+        ],
+        "prerequisites_desirable_resolved": []
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Understand and implement DPLL framework for SAT solving.",
+            "bloom_level": "Apply",
+            "bloom_verb": "implement",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=implement",
+                "too_short",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Implement decision procedures for theory of equality and uninterpreted functions.",
+            "bloom_level": "Apply",
+            "bloom_verb": "implement",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=implement",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Understand and apply DPLL(T) framework and decision procedures for linear arithmetic, arrays, and bit-vectors on paper.",
+            "bloom_level": "Apply",
+            "bloom_verb": "apply",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=apply",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Can reason about the correctness of a program using weakest-precondition, strongest-postcondition, and loop-invariants on paper. Get some hands-on experience with program verification tools.",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 2,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "has_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Basic concepts and introduction"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Propositional logic",
+                "Tseitin transformation",
+                "DPLL"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Assignment"
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "First order logic"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "DPLL(T) framework"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment"
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Equalities and uninterpreted functions"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Equalities and uninterpreted functions"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment"
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Linear arithmetic - Simplex algorithm"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Fourier-Motzkin",
+                "The Omega test",
+                "Difference Logic"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Bit-Vectors",
+                "Bit flattening"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Homework"
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Combining decision procedures",
+                "Theory of arrays"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Qunatifier elimination",
+                "E-Matching"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Project"
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Program correctness",
+                "Hoare logic"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Weakest precondition",
+                "Strongest postcondition",
+                "Loop invariant",
+                "Termination"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Homework"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Project",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "Assignments",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Quizzes + homeworks",
+            "weight_pct": 5
+        },
+        {
+            "type_label": "Mid-Sem",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "End-Sem",
+            "weight_pct": 30
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "\"Decision Procedures\" by Daniel Kroening and Ofer Strichman (2nd Edition)"
+        },
+        {
+            "type_label": "Textbook",
+            "title": "\"The Calculus of Computation\" by Aaron Bradley and Zohar Manna"
+        },
+        {
+            "type_label": "Reference book",
+            "title": "\"Handbook of Satisfiability\" by Biere et al."
+        },
+        {
+            "type_label": "Research Papers",
+            "title": "Will be given to the students"
+        }
+    ]
+}

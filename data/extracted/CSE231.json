@@ -1,0 +1,188 @@
+{
+    "header": {
+        "course_code": "CSE 231",
+        "aliases": [],
+        "name": "Operating Systems",
+        "credits": "4",
+        "offered_to": [
+            "UG"
+        ],
+        "department": null,
+        "description": "Operating system is the interface between the hardware and the user; it is responsible for the management and coordination of activities and the sharing of the resources of the computer. Operating system offers a number of services to application programs and users. Applications access these services through application programming interfaces (APIs) or system calls. By invoking these interfaces, the application can request a service from the operating system, pass parameters, and receive the results of the operation. The course on Operating System has two components: theory and programming. Theory component covers the underline concepts and principles of operating system whereas programming component involves the practical implementation of theoretical concepts.",
+        "prerequisites_mandatory": [
+            "CSE102 Data Structures & Algorithms"
+        ],
+        "prerequisites_desirable": [
+            "C Programming"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students are able to create a Unix shell with complete clarity about process creation and process execution."
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students are able to write multi- threaded applications with synchronization primitives and ability to analyze effects of concurrency on process execution and correctness."
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students are able to analyze the impact of OS concepts, e.g. virtual memory, concurrency, on program execution and ability to fine-tune the program to run efficiently on a given OS."
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Students are able to demonstrate deeper understanding of the Unix-like OSes and kernel programming."
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Introduction to Operating Systems"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Assembly programming, Compilers"
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "x86/x86_64 architecture",
+                "compiler tool chain",
+                "writing C/Assembly mixed programs"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "3,4",
+            "lecture_topics": [
+                "Process and thread management - creation, deletion, waiting, context switching",
+                "relevant system calls and their implementations"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Rudimentary shell using process creation and management, kernel programming - writing your own system call"
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "IPC",
+                "Synchronization"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Synchronization primitives and using appropriate system calls."
+        },
+        {
+            "week": "6-7",
+            "lecture_topics": [
+                "Process Scheduling"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4"
+            ],
+            "tutorial_assignment": "Kernel scheduler programming - Modifying the kernel CFS scheduler"
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Deadlocks"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Memory management/virtual memory"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Page fault and page fault handling"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Programming assignments - Memory management unit in OS"
+        },
+        {
+            "week": "11,12",
+            "lecture_topics": [
+                "File system: File system management",
+                "VFS",
+                "file allocation/file system"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "I/O management",
+                "device drivers",
+                "kernel modules"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Programming assignments - File system, device driver"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignment",
+            "weight_pct": 50
+        },
+        {
+            "type_label": "Midsem",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Quiz",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "End sem",
+            "weight_pct": 20
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "Operating System Concepts, 9th Edition, Wiley by Silberschatz (Author), Galvin (Author), Gagne (Author)"
+        },
+        {
+            "type_label": "Reference",
+            "title": "Linux Systems Programming - Robert Love"
+        },
+        {
+            "type_label": "Reference",
+            "title": "Linux Kernel Development - Robert Love"
+        }
+    ]
+}

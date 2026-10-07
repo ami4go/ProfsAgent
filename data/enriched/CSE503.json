@@ -1,0 +1,154 @@
+{
+    "header": {
+        "course_code": "CSE 503",
+        "aliases": [],
+        "name": "Program Analysis",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "This course covers classic and advanced topics in static and dynamic program analysis, including dataflow analysis, interprocedural analysis, symbolic execution, and runtime monitoring.",
+        "prerequisites_mandatory": [
+            "CSE201 Advanced Programming",
+            "CSE102 Data Structures and Algorithms"
+        ],
+        "prerequisites_desirable": [
+            "CSE322 Theory of Computation"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "CSE201",
+            "CSE102"
+        ],
+        "prerequisites_desirable_resolved": [
+            "CSE322"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Implement a dataflow analysis using Soot static analyzer.",
+            "bloom_level": "Apply",
+            "bloom_verb": "implement",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=implement",
+                "too_short",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Use a symbolic execution tool to generate test cases.",
+            "bloom_level": "Create",
+            "bloom_verb": "generate",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=generate",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Implement a simple flow-sensitive inter-procedural analysis.",
+            "bloom_level": "Apply",
+            "bloom_verb": "implement",
+            "quality_score": 1,
+            "quality_reasons": [
+                "action_verb=implement",
+                "too_short",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Develop aspects to analyze a program dynamically.",
+            "bloom_level": "Create",
+            "bloom_verb": "develop",
+            "quality_score": 1,
+            "quality_reasons": [
+                "action_verb=develop",
+                "too_short",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1-6",
+            "lecture_topics": [
+                "Classic problems in static program analysis",
+                "monotone data flow framework including lattice concepts",
+                "control flow graph",
+                "pointer analysis",
+                "analysis with Soot"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "A programming assignment to implement basic dataflow analyses using Soot."
+        },
+        {
+            "week": "9-10",
+            "lecture_topics": [
+                "Introduction to advanced topics including interprocedural analysis and symbolic execution"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "A programming assignment involving an implementation of a simple interprocedural dataflow analysis using Soot. Another assignment will involve using a symbolic execution tool to generate test cases."
+        },
+        {
+            "week": "11-13",
+            "lecture_topics": [
+                "Runtime monitoring concepts",
+                "finite state properties",
+                "aspects",
+                "security automata"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "A programming assignment to implement runtime monitors using aspects."
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "End-sem",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "Quiz",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "Programming assignments",
+            "weight_pct": 40
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Reference",
+            "title": "Principles of Program Analysis by Nielson, Nielson and Hankin."
+        },
+        {
+            "type_label": "Reference",
+            "title": "Data Flow Analysis: Theory and Practice by Khedker, Sanyal and Karkare."
+        },
+        {
+            "type_label": "Reference",
+            "title": "Compilers: Principles, Techniques, and Tools by Aho, Lam, Sethi and Ullman."
+        },
+        {
+            "type_label": "Reference",
+            "title": "Research papers as assigned by the instructor"
+        }
+    ]
+}

@@ -1,0 +1,244 @@
+{
+    "header": {
+        "course_code": "CSE584",
+        "aliases": [],
+        "name": "Program Verification",
+        "credits": "4",
+        "offered_to": [
+            "PG",
+            "UG"
+        ],
+        "department": null,
+        "description": "Program verification is proving the correctness of programs with respect to certain properties. It is useful for proving absence of bugs in a program, or for checking that arbitrary assertions (properties) hold without even executing the program. These techniques have been successfully applied to problems such as proving network protocols, cryptographic protocols, hardware, algorithms, and safety-critical systems.\\n\\nThere have been recent techniques toward making program verification practical for general-purpose programs, and this course will focus on these techniques. In most of these techniques, programmers provide richer types for variables and functions which are sufficient to mathematically prove their properties of interest. This may look like providing extra infomation with types (e.g. specifying that a variable x is of type int but also greater than 3 and an even number, or specifying  a variable y can be an integer or a string depending on if another variable x is negative or positive). Afterwards, the programmer writes their assertion and a proof of that assertion in an IDE-like envrionment, which can often automatically complete large parts of the proof for you.\\n\\nThe course will look at the language Coq, a mature dependent typed functional programming language which has been used to prove program correctness of various programs since a few decades, and F*: a newer functional programming language by Inria and Microsoft Research with programming verification goal and with more features for general-purpose programs. The course is self-contained: the necessary functional language programming will be covered in the class and the level of logic and the mathematical maturity expected should be covered in the first years of the undergraduate CSE as well as other courses. In short, this course does not require any special skills or prerequisites and is designed for advanced (3rd/4th year) undergraduates and postgraduated who have a strong interest in Computer Science and are interested in the applications of logic.",
+        "prerequisites_mandatory": [
+            "CSE121 or MTH210 A basic course in discrete mathematics and logic or equivalent knowledge. This material is typically covered in the first two years of the CSE and related undergraduate courses. In case of any doubts, please see the instructor."
+        ],
+        "prerequisites_desirable": [
+            "Knowledge of DSA and some general-purpose programming language such as Python, C, C++, or Java."
+        ],
+        "prerequisites_mandatory_resolved": [
+            "CSE121"
+        ],
+        "prerequisites_desirable_resolved": [
+            "Knowledge of DSA and some general-purpose programming language such as Python, C, C++, or Java."
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "(a) Comprehend and (b) write functional programs with dependent types in Coq/F*",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 1,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Express the program as a mathematical object and apply basic proof strategies (first-order logic, structural induction)",
+            "bloom_level": "Apply",
+            "bloom_verb": "apply",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=apply",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Apply advanced proof techniques to real-world programs (involving higher-order functions, complicated types), including proof automation",
+            "bloom_level": "Apply",
+            "bloom_verb": "apply",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=apply",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Understand interactive theorem prover's proof deduction and checking mechanisms",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 1,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Overview",
+                "Functional programming in Coq"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Simple programs and proof techniques"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Homework/Assignment"
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Structured data: Inductive types and proofs"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Structured data: Inductive types and proofs"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Homework/Assignment"
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Polymorphism and higher order functions"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Polymorphism and higher order functions"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Homework/Assignment"
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Refinement types in F*"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Writing complex functional programs and advanced proof tactics"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Homework/Assignment"
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Writing complex functional programs and advanced proof tactics"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Theory: Curry-Howard Correspondance"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Homework/Assignment"
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Theory: predicate abstraction, automatically inferring dependent types"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Theory: BMC and imperative programs"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Homework/Assignment"
+        },
+        {
+            "week": "13-14",
+            "lecture_topics": [
+                "Optional Topics: Hoare Logic/ Operational Semantics/ Typed Lambda Calculus"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Class project",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Homeworks/Assignments",
+            "weight_pct": 40
+        },
+        {
+            "type_label": "Mid-Sem (Homework/Assignment this year)",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "End-Sem  (Homework/Assignment this year)",
+            "weight_pct": 20
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "Free e-book: https://softwarefoundations.cis.upenn.edu/lf-current/index.html"
+        }
+    ]
+}

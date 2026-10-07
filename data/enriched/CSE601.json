@@ -1,0 +1,269 @@
+{
+    "header": {
+        "course_code": "CSE 301",
+        "aliases": [
+            "CSE 601"
+        ],
+        "name": "Compilers",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": "CSE",
+        "description": "The course covers principles of compiler design. It provides an overview of a compiler followed by an in-depth study of various phases and components of compilers, including lexical analysis, syntax analysis, semantic analysis, intermediate code generation, run time environment, machine code generation, and optimizations. The student will write different compiler components through intensive lab assignments and will be exposed to some advanced topics in compilers.",
+        "prerequisites_mandatory": [
+            "CSE101",
+            "CSE201",
+            "CSE102"
+        ],
+        "prerequisites_desirable": [
+            "Automata theory"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "CSE101",
+            "CSE201",
+            "CSE102"
+        ],
+        "prerequisites_desirable_resolved": [
+            "Automata theory"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Get hands-on experience with the compiler's optimizations and can design new optimizations.",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Get hands-on experience with the runtime systems.",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 0,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "too_short",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Get hands-on experience with the automated tools to generate the front end of a compiler and can explain the lexical and syntax analyses on paper.",
+            "bloom_level": "Create",
+            "bloom_verb": "generate",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=generate",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Can write type inference and code generation rules on paper and get hands-on experience with type checking or code generation.",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 1,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "Week 1",
+            "lecture_topics": [
+                "Compiler introduction",
+                "overview"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "Week 2",
+            "lecture_topics": [
+                "Assembly language",
+                "Calling convention"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4"
+            ],
+            "tutorial_assignment": "Homework"
+        },
+        {
+            "week": "Week 3",
+            "lecture_topics": [
+                "IR",
+                "CFG",
+                "Local optimizations"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Homework/Assignment"
+        },
+        {
+            "week": "Week 4",
+            "lecture_topics": [
+                "Data flow analysis",
+                "Constant propagation",
+                "Natural loops"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Assignment"
+        },
+        {
+            "week": "Week 5",
+            "lecture_topics": [
+                "Live-variable analysis",
+                "Reaching definitions",
+                "Dominator analysis"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Homework"
+        },
+        {
+            "week": "Week 6",
+            "lecture_topics": [
+                "SSA",
+                "Register allocation",
+                "Memory management",
+                "Garbage collection"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "Week 7",
+            "lecture_topics": [
+                "Mark and sweep",
+                "Copying collector",
+                "Reference counting"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment"
+        },
+        {
+            "week": "Week 8",
+            "lecture_topics": [
+                "Lexical analysis",
+                "Regular expressions",
+                "NFA",
+                "DFA"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Homework"
+        },
+        {
+            "week": "Week 9",
+            "lecture_topics": [
+                "Parsing",
+                "Context free grammers"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "Week 10",
+            "lecture_topics": [
+                "Recursive descent parsing",
+                "Predictive parsing",
+                "Error recovery"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Homework"
+        },
+        {
+            "week": "Week 11",
+            "lecture_topics": [
+                "Abstract syntax tree",
+                "Types"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment"
+        },
+        {
+            "week": "Week 12",
+            "lecture_topics": [
+                "Symbol table",
+                "Type inference"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "Week 13",
+            "lecture_topics": [
+                "Code generation"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignment",
+            "weight_pct": 35
+        },
+        {
+            "type_label": "Homeworks+quizzes",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "Mid-Sem",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "End-Sem",
+            "weight_pct": 25
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "Compiler Principles, Techniques and Tools by A. Aho, M. Lam, R. Sethi and J. Ullman"
+        },
+        {
+            "type_label": "Reference book",
+            "title": "Engineering a Compiler, Keith Cooper and Linda Torczon"
+        }
+    ]
+}

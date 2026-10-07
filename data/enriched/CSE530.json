@@ -1,0 +1,240 @@
+{
+    "header": {
+        "course_code": "CSE530",
+        "aliases": [],
+        "name": "Distributed Systems",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": "CSE",
+        "description": "This objective of this course is to train students in understanding fundamental concepts of distributed systems as well as develop the ability to design and implement distributed systems. The course will also cover a number of case studies of real world distributed systems  such as MapReduce/Hadoop, Hadoop File System, BitTorrent, Amazon Dynamo. For each case study, various design decisions and corresponding tradeoffs will be critiqued. The course will require and instill system programming skills.",
+        "prerequisites_mandatory": [
+            "CSE231 Operating Systems",
+            "Students must have good programming skills with at least one of the following languages: Java, Scala, Go, Python."
+        ],
+        "prerequisites_desirable": [
+            "CSE232 Computer Networks"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "CSE231",
+            "Students must have good programming skills with at least one of the following languages: Java, Scala, Go, Python."
+        ],
+        "prerequisites_desirable_resolved": [
+            "CSE232"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students shall understand the fundamental concepts of of distributed systems such as consistency, availability, scalability, fault tolerance, concurrency and communication.",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 1,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students shall understand some important algorithms for consensus and election and how they are employed in large scale distributed systems (including various cloud platforms).",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 2,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students will be able to develop distributed applications using communication libraries/frameworks such as RPC, ZeroMQ, RabbitMQ.",
+            "bloom_level": "Create",
+            "bloom_verb": "develop",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=develop",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Students will be able to analyze and critique real world systems (such as Apache Hadoop and Amazon Dynamo) in terms of how these systems are being used to solve compute and data intensive problems (such as storing large amounts of data, building a index for web search engines)",
+            "bloom_level": "Evaluate",
+            "bloom_verb": "critique",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=critique",
+                "has_object",
+                "has_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Introduction: Goals and architectures"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Communication: RPC and message-oriented communication"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Coordination: Clock synchronization, logical clocks, vector clocks"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment 1"
+        },
+        {
+            "week": "4 and 5",
+            "lecture_topics": [
+                "Consistency and Replication"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "6 and 7",
+            "lecture_topics": [
+                "Leader Election, Consensus and Fault Tolerance (Zookeeper, Raft, Paxos, etc.)"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment 2"
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Distributed File Systems: Hadoop File System (HDFS) / Google File System (GFS)"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Distributed Computation: MapReduce, Hadoop and Spark"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Peer-to-Peer Systems: BitTorrent and Distributed Hash Tables"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment 3"
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Transactions, Concurrency control and Recovery (Two Phase Commit, Chandy-Lamport\u2019s Distributed Snapshots)"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Distributed databases and key-value stores: Amazon Dynamo / Google Spanner"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Resource Scheduling and Management: Google Borg and Kubernetes"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "In-class Quizzes",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Assignments (Programming-based)",
+            "weight_pct": 40
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 30
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "Distributed Systems by Tannenbaum and Van Steen, 3rd Edition and Distributed Systems: Concepts and Design by Coulouris et al, 5th edition, Pearson"
+        },
+        {
+            "type_label": "Textbook",
+            "title": "Virtual Machines: Versatile Platforms for Systems and Processes. (Morgan Kaufmann. 2005) By Jim Smith and Ravi Nair"
+        },
+        {
+            "type_label": "Research papers",
+            "title": "Proceeding of IEEE/ACM transactions and conferences, e.g. OSDI, NSDI, SOSP, EuroSys etc. on Distributed Systems and related areas All the papers will be made available by the instructor and posted on course website."
+        }
+    ]
+}

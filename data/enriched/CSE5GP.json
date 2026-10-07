@@ -1,0 +1,220 @@
+{
+    "header": {
+        "course_code": "CSE5GP",
+        "aliases": [],
+        "name": "Geometry Processing",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "This course is about providing a structured learning of digital shape representation and processing. 3D shapes around us can be acquired through various means. We will learn about data structures to efficiently store these shapes in digital form, theoretical background to understand various properties of curves and surfaces, analysis and editing of shapes. Understanding geometric representations and manipulations have wide applications in scientific simulations, spatial data analysis, CAD/CAM, computer game develepment, medical imaging, computer vision, and 3D printing.",
+        "prerequisites_mandatory": [
+            "CSE101 Intro to Programming"
+        ],
+        "prerequisites_desirable": [
+            "CSE102 Data Structures & Algorithms",
+            "C/C++ Programming"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "CSE101"
+        ],
+        "prerequisites_desirable_resolved": [
+            "CSE102",
+            "C/C++ Programming"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Understand 3D geometry representations including point-based representations, triangle meshes, and parametric and implicit surfaces.",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 2,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Understand 3D geometry processing algorithms for surface reconstruction, smoothing, parameterization, and interactive surface deformation.",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 2,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Understand basics of differential geometry and its application in a discrete setting",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 1,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Introduction and overview",
+                "Shape representations: parametric implicit, explicit"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "a) About 4 to 6 programming assignments on key topics\nb) Labs to reinfornce learning and help with assignments"
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Mesh data structures: face-based, edge- based, Half-edge, Quad-edge, etc.",
+                "Software library for mesh manipulation"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "3-4",
+            "lecture_topics": [
+                "A gentle introduction to differential Geometry of curves and surfaces: parameterisation, gauss map, fundamental forms, curvature",
+                "Discrete differential geometry for polygonal meshes"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Signed distance",
+                "voxelization",
+                "polygonization of implicit surfaces (marching cubes, dual contouring, marching tetrahedra)"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Convex hull",
+                "Delaunay triangulation (constrained, unconstrained)",
+                "Voronoi diagram",
+                "alpha shapes (concave hull, crust)"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "7-8",
+            "lecture_topics": [
+                "3D surface reconstruction: mesh reconstruction from points: poisson, RBF",
+                "mesh reconstruction from planar cross- sections"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Mesh subdivision: Loop, Catmull-Clarke, Modified butterfly",
+                "Mesh simplification: mesh decimation, quadratic error metric"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10-11",
+            "lecture_topics": [
+                "Remeshing",
+                "mesh alignment and registration (Hausdorff distance, Iterative Closest Point (ICP))",
+                "surface smoothing (mesh smoothing, edge-aware smoothing)"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Mesh parameterization"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Shape deformation",
+                "Discrete Exterior Calculus (tentative)"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Paper presentation",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "Assignment",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Quiz",
+            "weight_pct": 10
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Reference",
+            "title": "Polygon Mesh Processing. Mario Botsch, Leif Kobbelt, Mark Pauly, Pierre Alliez, and Bruno Levy, 2008"
+        },
+        {
+            "type_label": "Reference",
+            "title": "Computational Geometry in C. Joseph O'Rourke, 1994."
+        },
+        {
+            "type_label": "Reference",
+            "title": "Course notes, papers"
+        }
+    ]
+}

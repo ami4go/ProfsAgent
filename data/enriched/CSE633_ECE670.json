@@ -1,0 +1,223 @@
+{
+    "header": {
+        "course_code": "ECE 670",
+        "aliases": [
+            "CSE 633"
+        ],
+        "name": "Robotics",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "This course will provide a comprehensive knowledge in robotics from theory to implementation. The course will cover fundamental concepts related to mathematical modelling, path planning and control of various robotic systems including robot manipulators, ground robots and drones. We will use several software platforms like Simulink, Matlab Robotics Toolbox, ROS and Gezebo for simulations and projects. Further hardware demos will be shown using Qbot 2e (ground robot), 3dr solo (drone) and rotary inverted pendulum (robot arm) available in control lab.",
+        "prerequisites_mandatory": [],
+        "prerequisites_desirable": [
+            "Linear Algebra"
+        ],
+        "prerequisites_mandatory_resolved": [],
+        "prerequisites_desirable_resolved": [
+            "Linear Algebra"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Explain the Physical behaviour (working principles) of several robotics systems",
+            "bloom_level": "Understand",
+            "bloom_verb": "explain",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=explain",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Develop a solid foundation in path and trajectory planning algorithms",
+            "bloom_level": "Create",
+            "bloom_verb": "develop",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=develop",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Utilise stability theory and controller design methods for robots",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Implement computer programs to simulate and actuate robot's behaviour",
+            "bloom_level": "Apply",
+            "bloom_verb": "implement",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=implement",
+                "has_object",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Introduction to robotic systems (manipulator, ground robot, drone etc.)",
+                "overview of robotics engineering : modelling, planning and control"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Mathematical Modelling - Coordinate transformation",
+                "rigid body representation"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "manipulators : forward kinematics, inverse kinematics, velocity kinematics"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4-5",
+            "lecture_topics": [
+                "Euler-Lagrange and Newton-Euler formulation of dynamics",
+                "quarternion representation (discussion on dynamics of quadrotors)",
+                "mobile robots : nonholonomic constraints",
+                "kinematic model : unicycle and bicycle"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment"
+        },
+        {
+            "week": "6-7",
+            "lecture_topics": [
+                "Path and Trajectory Planning - graph-based planning : Dijkstra and A star",
+                "configuration space",
+                "obstacles"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "8-9",
+            "lecture_topics": [
+                "sampling based planning : probabilistic road map and randomly exploring rapid trees",
+                "artificial potential fields",
+                "introduction to trajectory planning"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment"
+        },
+        {
+            "week": "10-11",
+            "lecture_topics": [
+                "Controls - state space representation, linearization",
+                "linear Control : pole placement and LQR",
+                "Lyapunov stability theory"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "nonlinear control"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment"
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Project Presentation - Tentative topics : SLAM, Perception (Visual Servoing), Machine learning based path planning etc."
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Homework",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "Quiz",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "Project",
+            "weight_pct": 20
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Reference",
+            "title": "Robotics: Modelling, Planning and Control by Bruno Siciliano, Lorenzo Sciavicco, Luigi Villani and Giuseppe Oriolo"
+        },
+        {
+            "type_label": "Reference",
+            "title": "Robotics, Vision and Control : Fundamental Algorithms in Matlab by Peter Corke"
+        },
+        {
+            "type_label": "Reference",
+            "title": "Robot Dynamics and Control by Mark W. Spong, Seth Hutchinson and M. Vidyasagar"
+        },
+        {
+            "type_label": "Reference",
+            "title": "Learning Robotics using Python by Lentin Joseph"
+        }
+    ]
+}

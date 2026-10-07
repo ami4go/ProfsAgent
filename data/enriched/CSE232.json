@@ -1,0 +1,301 @@
+{
+    "header": {
+        "course_code": "CSE232",
+        "aliases": [],
+        "name": "Computer Networks",
+        "credits": "4",
+        "offered_to": [
+            "UG"
+        ],
+        "department": null,
+        "description": "This course teaches the standard layers in network, circuit and packet switching, protocols at the link layer, routing algorithms, TCP/IP protocol, and new challenges in wireless networks.",
+        "prerequisites_mandatory": [
+            "CSE231"
+        ],
+        "prerequisites_desirable": [],
+        "prerequisites_mandatory_resolved": [
+            "CSE231"
+        ],
+        "prerequisites_desirable_resolved": []
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Explain the architecture of the Internet and the functions of the application, transport, network, data link, and physical layers in the TCP/IP protocol stack.",
+            "bloom_level": "Understand",
+            "bloom_verb": "explain",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=explain",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Analyze the performance and behavior of computer networks by examining protocol interactions, routing mechanisms, congestion control, and packet traces using network analysis tools.",
+            "bloom_level": "Analyze",
+            "bloom_verb": "analyze",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=analyze",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Apply networking concepts to configure IP addressing, subnetting, routing, and develop simple client\u2013server applications using socket programming and networking tools.",
+            "bloom_level": "Create",
+            "bloom_verb": "develop",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=develop",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Design and evaluate a secure and scalable network solution for a given application scenario by integrating appropriate protocols, technologies, and network services.",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "has_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Course introduction",
+                "What is the Internet?",
+                "Network edge",
+                "network core",
+                "access networks",
+                "packet vs. circuit switching Delay",
+                "loss",
+                "throughput",
+                "Protocols and layered architecture",
+                "OSI vs. TCP/IP models"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Tutorials: A weekly tutorial, primarily to help students clarify their doubts. Labs: No scheduled labs but programming assignment to be done by students at the beginning of the course."
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Application Layer: Principles of network applications",
+                "Client-server and peer-to-peer architectures",
+                "Socket interface",
+                "Transport services required by applications",
+                "Web and HTTP"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Persistent HTTP",
+                "Cookies",
+                "Web caching",
+                "DNS: hierarchy, resource records, name resolution"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Electronic mail (SMTP, POP3, IMAP)",
+                "FTP",
+                "DHCP"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Application Level Security",
+                "Security principles",
+                "Cryptography fundamentals",
+                "Symmetric and asymmetric encryption",
+                "Authentication",
+                "Digital signatures",
+                "Certificates",
+                "Hash functions"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Tansport Layer fundamentals",
+                "multiplecing and demultiplecing",
+                "Connectionless transport (UDP)",
+                "Checksum",
+                "Reliable data transfer principles"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Reliable data transfer: Stop-and-Wait",
+                "Pipelining",
+                "TCP: Connection establishment, reliable byte stream, flow control"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "TCP congestion control",
+                "Fairness",
+                "performance analysis",
+                "QUIC overview"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Network Layer: Forwarding and routing",
+                "Router architecture",
+                "IPv4 addressing",
+                "subnetting",
+                "CIDR",
+                "DHCP",
+                "NAT"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "IPv6",
+                "ICMP",
+                "Routing algorithms (Link State and Distance Vector)"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Internet routing protocols: RIP, OSPF, BGP (overview)",
+                "Link Layer: Error detection and correction"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Multiple access protocols",
+                "Ethernet",
+                "Switches",
+                "VLANs",
+                "ARP",
+                "Link-layer addressing"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "CSMA - CD/CA",
+                "Review of all protocol layers",
+                "End-to-end communication walkthrough",
+                "Case Studies: TCP & AI traffic, TCP & WiFi, CDN"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignment",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Midsem",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Quiz",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "End sem",
+            "weight_pct": 40
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "J.F.Kurose and K.W.Ross, Computer Networking: A Top-Down Approach, Pearson, 8th Edition, 2024."
+        },
+        {
+            "type_label": "Reference",
+            "title": "A. S. Tanenbaum and D. J. Wetherall, Computer Networks, Pearson, sixth Edition."
+        },
+        {
+            "type_label": "Reference",
+            "title": "L L Peterson and B S Davie, Computer Networks: A Systems Approach, Morgan Kaufmann, Fifth Edition."
+        }
+    ]
+}

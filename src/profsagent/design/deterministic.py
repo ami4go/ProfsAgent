@@ -54,9 +54,13 @@ def apply_defaults(cco: dict) -> dict:
     weeks = int(weeks)
 
     level = f["level_or_code"].get("level")
+    if level is not None and int(level) >= 10:   # G1 sometimes writes the course number (400) instead of its level digit (4)
+        level = int(str(int(level))[0])
     if level is None and f["level_or_code"].get("code"):
         digits = [c for c in f["level_or_code"]["code"] if c.isdigit()]
         level = int(digits[0]) if digits else None
+    if level is not None and str(level) not in pedagogy()["bloom_bands"]:   # no Bloom band for it: fall back below
+        level = None
     if level is None:
         yrs = f["target_students"].get("years") or []
         level = min(yrs) if yrs else 3

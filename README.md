@@ -8,7 +8,7 @@ Code: `src/profsagent/ingest/`
 **Layer B (The Course Design Pipeline):** Built by Vihan. The agentic pipeline that takes professor input → curriculum positioning (internal KG + external research at top universities) → constraints → COs / CO–PO / LOs → structure → schedule → labs & assessment → resources → rendered proposal. It handles the LangGraph pipeline, RAG, prompts, validators, and evaluation.
 Code: `src/profsagent/agents/`, `src/profsagent/validate/`, `src/profsagent/rag/`, etc.
 
-Design docs: `docs/01_stage1_architecture.md`, `Institutional_KG/01_stage1_architecture.md`. Prompts: `prompts/README.md`.
+Design docs: `docs/01_stage1_architecture.md`. Prompts: `prompts/README.md`.
 
 ## Run
 ```bash

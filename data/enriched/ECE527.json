@@ -1,0 +1,311 @@
+{
+    "header": {
+        "course_code": "ECE527",
+        "aliases": [],
+        "name": "Advanced Digital Design and Verification",
+        "credits": "4",
+        "offered_to": [
+            "PG",
+            "UG"
+        ],
+        "department": "ECE",
+        "description": "This course aims to develop a basic understanding of the methods, tools, and technologies involved in designing and verifying a complex digital system. This course is intended to give an overall perspective of various tasks involved in implementing a digital system at the pre-RTL level, such as hardware-software co-design, creating abstract models, high-level synthesis, and integrating IPs for an SoC. This course also covers advanced functional and clock-domain verification methodologies. It will offer ample opportunities to employ CAD tools and gain a practical understanding of the design and verification methodologies.",
+        "prerequisites_mandatory": [
+            "VLSI Design Flow (ECE313/ECE513)"
+        ],
+        "prerequisites_desirable": [
+            "C++ or Concepts of Object-oriented Programming"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "VLSI Design Flow (ECE313/ECE513)"
+        ],
+        "prerequisites_desirable_resolved": [
+            "C++ or Concepts of Object-oriented Programming"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Clearly understand and apply various tasks involved in designing complex digital systems at the pre-RTL level",
+            "bloom_level": "Apply",
+            "bloom_verb": "apply",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=apply",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Can evaluate various trade-offs that need to be made at various stages of pre-RTL design",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Clearly understand and apply various advanced functional verification techniques",
+            "bloom_level": "Apply",
+            "bloom_verb": "apply",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=apply",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Can design and verify a digital system at various abstraction levels using computer-aided design (CAD) tools.",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "has_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Introduction",
+                "Digital Systems: Hardware and Software components",
+                "Software Development Process",
+                "Hardware Design and Verification Flow",
+                "Manufacturing and Test"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Electronic System Level (ESL) Design: SystemC Models",
+                "Transaction-level Models (TLM)",
+                "Virtual Platforms and Platform-based Design",
+                "Applications"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Hardware-software co-design: models",
+                "design space exploration",
+                "partitioning",
+                "co-simulation"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Tool-based Assignment"
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "High-level Synthesis: Flow, Tasks, Control Data Flow Graph (CDFG), Optimizations",
+                "Scheduling",
+                "Resource Allocation",
+                "Handling loops, arrays and functions",
+                "Pipelining"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "System-on-Chip (SoC) Design Methodology: IPs",
+                "IP Packaging",
+                "IP-XACT",
+                "IP Assembly",
+                "Generating RTL",
+                "Challenges"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": "Tool-based Assignment"
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Introduction to SystemVerilog: Data Types",
+                "Improvements over Verilog for Synthesis and Simulation",
+                "Object-oriented Programming Constructs"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "SystemVerilog: Interfaces",
+                "Clocking Block",
+                "Program Block",
+                "Mechanism of simulation",
+                "Inter-process Communications"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Tool-based Assignment"
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Advanced Concepts on Simulation: random vector-based verification",
+                "coverage-driven constrained-random verification",
+                "SystemVerilog features for randomization, applying constraints and developing coverage models."
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Assertion-based Verification: Fundamentals of Property Checking",
+                "Simulation and Formal checking",
+                "Assumptions and Covers"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Advanced Concepts on Formal Verification: Mechanism of Formal Verification",
+                "Bounded model Checking",
+                "Applications"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Tool-based Assignment"
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Universal Verification Methodology (UVM): Motivation, TLM, Phases, Factory, Classes, Example"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Universal Verification Methodology (UVM): Objections, Configs, Sequence-Driver Interactions, Monitor-Subscriber Interactions",
+                "Scenario-based Software-driven Testing",
+                "Portable Test and Stimulus Standard (PSS)",
+                "Hardware-assisted Verification"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Clock Domain Crossing (CDC): Problem, Solutions, Verification",
+                "Reset Domain Crossing (RDC)"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignments (CAD tool based)",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "Mid-Sem",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "End-Sem",
+            "weight_pct": 45
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Reference book",
+            "title": "S. Saurabh, \u201cIntroduction to VLSI Design Flow\u201d. Cambridge: Cambridge University Press, 2023."
+        },
+        {
+            "type_label": "Reference book",
+            "title": "Scheffer, Louis, Luciano Lavagno, and Grant Martin, eds. EDA for IC system design, verification, and testing. CRC press, 2018."
+        },
+        {
+            "type_label": "Reference book",
+            "title": "Spear, Chris. SystemVerilog for verification: a guide to learning the testbench language features. Springer Science & Business Media, 2008."
+        },
+        {
+            "type_label": "Reference book",
+            "title": "Mehta, Ashok B. SystemVerilog Assertions and Functional Coverage. Springer International Publishing,"
+        },
+        {
+            "type_label": "Reference book",
+            "title": "Micheli, Giovanni De. Synthesis and optimization of digital circuits. McGraw-Hill Higher Education, 1994."
+        }
+    ]
+}

@@ -1,0 +1,211 @@
+{
+    "header": {
+        "course_code": "ECE270",
+        "aliases": [],
+        "name": "Embedded Logic Design",
+        "credits": "4",
+        "offered_to": [
+            "UG"
+        ],
+        "department": null,
+        "description": "This course will introduce students to the various programmable logic devices (PLDs) available in the market and get them started with how to program such devices to develop simple applications. First half of this course will cover FPGA programming using Verilog and second half will focus on ARM processor programming using C followed by an integration of ARM with FPGA using Zynq board.",
+        "prerequisites_mandatory": [],
+        "prerequisites_desirable": [],
+        "prerequisites_mandatory_resolved": [],
+        "prerequisites_desirable_resolved": []
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students are able to design and implement combinational circuits on FPGA",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students are able to design and implement sequential circuits on FPGA",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students are able to explain the heterogenous system-on-chip architecture and its applications",
+            "bloom_level": "Understand",
+            "bloom_verb": "explain",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=explain",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Students are able to design, implement and compare the performance of a given algorithm on ARM processor, NEON co-processor and ARM+FPGA SoC",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "has_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1 & 2",
+            "lecture_topics": [
+                "FPGA architecture",
+                "Verilog Basics"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Introduction to Vivado and FPGA design flow using Encoder and Adder examples"
+        },
+        {
+            "week": "3 & 4",
+            "lecture_topics": [
+                "Synchronous and asynchronous logic design",
+                "arithmetic circuits",
+                "FSM",
+                "Advanced Verilog"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Verilog code, simulation and implementation: Counters, pulse-width modulation, Fibonacci sequence"
+        },
+        {
+            "week": "5 & 6",
+            "lecture_topics": [
+                "Finite state machines",
+                "Advanced Verilog"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Verilog code, simulation and implementation: FSMs"
+        },
+        {
+            "week": "7 & 8",
+            "lecture_topics": [
+                "FPGA Memory",
+                "Introduction to Embedded Systems"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Verilog code, simulation and implementation:Floating and fixed point arithemetic"
+        },
+        {
+            "week": "9 & 10",
+            "lecture_topics": [
+                "ARM Architecture",
+                "AXI Protocol"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Design of AXI Compatiable IPs and performance analysis, Hello World lab for SoC"
+        },
+        {
+            "week": "11 & 12",
+            "lecture_topics": [
+                "Zynq SoC architecture (ARM + FPGA)",
+                "C programming for ARM"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Labs for integration of ARM with FPGA on Zynq board"
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Zynq architecture (ARM + FPGA)",
+                "C programming for ARM"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Hardware accelerator design and comparison with software based accelerators"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Lab",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "Quiz",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 30
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "Engineering Circuit analysis, William H. Hayt Jr., Jack E. Kemmerly and Steven M. Durbin, 8thEdition, Tata McGraw Hill"
+        },
+        {
+            "type_label": "book",
+            "title": "\u201cVerilog HDL\u201d by Samir Palnitkar"
+        },
+        {
+            "type_label": "datasheets",
+            "title": "Xilinx Zynq Family, Xilinx Vivado"
+        },
+        {
+            "type_label": "reference manuals",
+            "title": "Basys3 and Zedboard reference manual"
+        },
+        {
+            "type_label": "schematics",
+            "title": "Basys3 and Zedboard Schematics"
+        },
+        {
+            "type_label": "Softwares",
+            "title": "Vivado"
+        },
+        {
+            "type_label": "Hardwares",
+            "title": "Basys3 and Zedboard by Digilent"
+        },
+        {
+            "type_label": "book",
+            "title": "D. Harris and S. Harris, \u201cDigital Design and Computer Architecture\u201d, Morgan Kauffmann, 2012."
+        },
+        {
+            "type_label": "Internet Resource",
+            "title": "Verilog tutorials: http://www.asic-world.com/verilog/veritut.html"
+        }
+    ]
+}

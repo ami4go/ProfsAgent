@@ -1,0 +1,197 @@
+{
+    "header": {
+        "course_code": "ECE523A",
+        "aliases": [],
+        "name": "Digital Processor Design",
+        "credits": "2",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "This course will introduce students to the evolution of processor architecture with focus on RISC V Processors. Various building blocks of RISC V processors along with their implemention using System Verilog will be discussed. Various processor architectures such as single, multi cycle and pipelined versions will be realized using system verilog and compared in terms of their performance.",
+        "prerequisites_mandatory": [
+            "ECE111 Digital Circuits"
+        ],
+        "prerequisites_desirable": [
+            "ECE 270 Embedded Logic Design"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "ECE111"
+        ],
+        "prerequisites_desirable_resolved": [
+            "ECE270"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students are able to design and implement Sequential and combinational circuits using System Verilog",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students are able to design and implement Single Cycle RISC V Processor using System Verilog",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students are able to compare Single Cycle, Multiple cycle and pipelined architectures of RISC V processors",
+            "bloom_level": "Understand",
+            "bloom_verb": "compare",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=compare",
+                "has_object",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Introduction to Processor Evolution"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2-3",
+            "lecture_topics": [
+                "Synchronous and asynchronous logic design",
+                "arithmetic circuits",
+                "FSM",
+                "System Verilog"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Introduction to Vivado and Combinational circuit using System Verilog"
+        },
+        {
+            "week": "4-5",
+            "lecture_topics": [
+                "System Verilog",
+                "Single cycle RISC V Architecture",
+                "Instruction set"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Sequential circuits using System Verilog"
+        },
+        {
+            "week": "6-7",
+            "lecture_topics": [
+                "Multi-cycle RISC V Architecture"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Sequential circuits using System Verilog"
+        },
+        {
+            "week": "8-9",
+            "lecture_topics": [
+                "Pipelined RISC V Architecture",
+                "Comparison between various architectures"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Design of Single Cycle Processor building blocks (Phase 1)"
+        },
+        {
+            "week": "10-11",
+            "lecture_topics": [
+                "Processor Microarchitectures: Deep pipelines, Branch Predictions, Out-of-order processing, Superscalar processors, Multi-threading"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Design of Single Cycle Processor building blocks (Phase 2)"
+        },
+        {
+            "week": "12-13",
+            "lecture_topics": [
+                "Evolution of RISC V Architecture in last decade",
+                "Future research directions (Case Studies of Architectures and open source tools)"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "End-to-end Design of single and multi cycle processor"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "Assignment",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "Quiz",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 35
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "Engineering Circuit analysis, William H. Hayt Jr., Jack E. Kemmerly and Steven M. Durbin, 8thEdition, Tata McGraw Hill"
+        },
+        {
+            "type_label": "book",
+            "title": "S. Harris and D. Harris, \u201cDigital Design and Computer Architecture: RISC V Edition\u201d, Morgan Kauffmann, 2022."
+        },
+        {
+            "type_label": "book",
+            "title": "D. Patterson and J. Hennessy, \u201cComputer Organization and Design: RISC V Edition\u201d, Morgan Kauffmann, 2018."
+        },
+        {
+            "type_label": "datasheets",
+            "title": "Xilinx Vivado"
+        },
+        {
+            "type_label": "reference manuals",
+            "title": "Basys3"
+        },
+        {
+            "type_label": "schematics",
+            "title": "Basys3 Schematics"
+        },
+        {
+            "type_label": "Softwares",
+            "title": "Vivado"
+        },
+        {
+            "type_label": "Hardwares",
+            "title": "Basys3 by Digilent"
+        }
+    ]
+}

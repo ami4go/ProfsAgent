@@ -1,0 +1,231 @@
+{
+    "header": {
+        "course_code": "ECE577",
+        "aliases": [],
+        "name": "Machine Learning Techniques for Real-time Control",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "This course will provide an in-depth understanding of how to apply machine learning (ML) tools for real-time control applications, where no a-priopri data is available for the training phase of the ML component. The course focuses on online applications like control of robotics, aircraft type plants, which can be modelled as nonlinear dynamical systems. The uncertainties associated with the plant dynamics would be learned online using ML components (like neural networks), while simultaneously ensuring stability of the plant. Further model-based reinforcement learning (RL) inspired techniques will be introduced to design an approximate optimal controller. Lyapunov-based stability analysis will be instrumental for designing all the mentioned controllers.",
+        "prerequisites_mandatory": [
+            "No pre-requisite as such. A basic familiarity with concepts of Linear Systems, Linear Algebra"
+        ],
+        "prerequisites_desirable": [
+            "Machine Learning",
+            "Reinforcement Learning",
+            "Control Theory (ECE570) (although not mandatory)"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "No pre-requisite as such. A basic familiarity with concepts of Linear Systems, Linear Algebra"
+        ],
+        "prerequisites_desirable_resolved": [
+            "Machine Learning",
+            "Reinforcement Learning",
+            "Control Theory (ECE570) (although not mandatory)"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Understand the fundamentals of nonlinear dynamical systems and control, familiarize with basic tools for stability analysis and controller design",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Understand the principles of adaptive control design",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 1,
+            "quality_reasons": [
+                "action_verb=design",
+                "too_short",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Extend the philosophy of adaptive control to ML-based real-time control with various robust modifications",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 1,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Understand RL-inspired Control design principles, which ensure approximate optimality",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO5",
+            "raw_text": "Analyze the controllers while ensuring stability, convergence, optimality and performance bounds",
+            "bloom_level": "Analyze",
+            "bloom_verb": "analyze",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=analyze",
+                "has_object",
+                "has_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Introduction to Nonlinear Dynamical Systems and Control"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2,3",
+            "lecture_topics": [
+                "Equilibrium points",
+                "Linearization",
+                "Lyapunov Stability Theory",
+                "Barbalat's Lemma"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4,5",
+            "lecture_topics": [
+                "Adaptive Control techniques for structured uncertainty"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO5"
+            ],
+            "tutorial_assignment": "Assignment"
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Machine Learning based real-time control design for unstructured uncertainty using various learning mechanisms",
+                "issue of parameter drift",
+                "introduction to robust modifications like dead-zone"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO5"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "7,8",
+            "lecture_topics": [
+                "sigma-modification, e-modification based learning control"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO5"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "projection based learning control"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO5"
+            ],
+            "tutorial_assignment": "Assignment"
+        },
+        {
+            "week": "10, 11",
+            "lecture_topics": [
+                "Reinforcement learning-based algorithms for approximate optimal control (AOC) design",
+                "policy iteration: on-plicy and off-policy methods for AOC design"
+            ],
+            "cos_met": [
+                "CO4",
+                "CO5"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "value iteration",
+                "Q-learning based AOC"
+            ],
+            "cos_met": [
+                "CO4",
+                "CO5"
+            ],
+            "tutorial_assignment": "Assignment"
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Term Paper Presentation"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Homework",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "Quiz",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "Term Paper/Project",
+            "weight_pct": 15
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Reference",
+            "title": "Neural Network Control of Robot Manipulators and Nonlinear Systems by Lewis, Jagannathan and Yesildirek"
+        },
+        {
+            "type_label": "Reference",
+            "title": "Optimal Adaptive Control and Differential Games by Reinforcement Learning Principles by Vrabie, Vamvoudakis and Lewis"
+        },
+        {
+            "type_label": "Reference",
+            "title": "Applied Nonlinear Control by Slotine and Li"
+        }
+    ]
+}

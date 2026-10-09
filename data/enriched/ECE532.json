@@ -1,0 +1,382 @@
+{
+    "header": {
+        "course_code": "ECE532",
+        "aliases": [],
+        "name": "Optical Fiber Networks for Industry 4.0",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "In this course, students will be familiar with Optical transport network architecture for supporting heterogenious applications of Industry 4.0 (envisioned 5G application) as per the International Telecom Union standards that drive technology towards commercialization. Further, they will get a good exposure to optimally allocate spectral resources in 5G datacenter optical networks to protect it during failures. Finally students will learn about Fronthaul technology to enable 5G slicing for low latency CloudRan and other 5G applications. This course will provide students with in-depth knowledge about network components and systems; including optical switches, multiplexers and intelligent optical amplifiers. Students will be trained on state-of-the-art simulation tools and Machine learning based physical layer noise models to calculate the signal quality of an optical lightpath.",
+        "prerequisites_mandatory": [],
+        "prerequisites_desirable": [
+            "Optical Communication Systems (ECE534)",
+            "Digital Communication Systems (ECE340/ECE543)",
+            "Introduction to Programming (CSE101)"
+        ],
+        "prerequisites_mandatory_resolved": [],
+        "prerequisites_desirable_resolved": [
+            "Optical Communication Systems (ECE534)",
+            "Digital Communication Systems (ECE340/ECE543)",
+            "Introduction to Programming (CSE101)"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students can explain the working principle of various optical network components and systems, e.g., Couplers, Switches, Reconfigurable Add-Drop Multiplexers, ML-assited Programmable Amplfiers etc.",
+            "bloom_level": "Understand",
+            "bloom_verb": "explain",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=explain",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students are able to analyze the key concepts of the Coherent Optical receivers and Noise models for lightpath OSNR estimation, BER classifications.",
+            "bloom_level": "Analyze",
+            "bloom_verb": "analyze",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=analyze",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students can design Optimum Backhaul network for heterogenious application oriented Industry 4.0 with optimum allocation of spectrum and power resources.",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Evolution of Optical Backhaul to FrontHaul and Midhaul while considering the key performance parameters (latency, dense deployment and jitter) to provide isolated network slicing in optical transport network for Industry 4.0 applications.",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 2,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "has_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1 (L1)",
+            "lecture_topics": [
+                "Module 1: Introduction to Optical Components"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "1 (L2)",
+            "lecture_topics": [
+                "Introduction to Optical Networks"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2 (L1)",
+            "lecture_topics": [
+                "Physical Layer: Components (Couplers, Filters)"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2 (L2)",
+            "lecture_topics": [
+                "Physical Layer: Components (Filters, Multiplexers and Switches)"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "3 (L1)",
+            "lecture_topics": [
+                "Amplifiers enabling Backbone Networks (EDFA and Raman Amplifier)"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Tutorial 1"
+        },
+        {
+            "week": "3 (L2)",
+            "lecture_topics": [
+                "Application of ML for optical amplifiers using in Python (SciKit Learn library)"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": "Assignment 1\nQuiz 1"
+        },
+        {
+            "week": "4 (L1)",
+            "lecture_topics": [
+                "Module 2: Low Computation Complexity OSNR Estimators",
+                "Coherent Technology (Optical Modulation and Demodulation)"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4 (L2)",
+            "lecture_topics": [
+                "OSNR Estimation Models: Linear Noise Model"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "5 (L1)",
+            "lecture_topics": [
+                "OSNR Estimation Models: Introduction to Nonlinear Interference"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Tutorial 2"
+        },
+        {
+            "week": "5 (L2)",
+            "lecture_topics": [
+                "Machine Learning based Noise Model (DNN: OSNR Estimation) in Python (SciKit Learn library)"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment 2"
+        },
+        {
+            "week": "6 (L1)",
+            "lecture_topics": [
+                "Machine Learning based Noise Model (DNN: BER Classification) in Python (SciKit Learn library)"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Quiz 2"
+        },
+        {
+            "week": "6 (L2)",
+            "lecture_topics": [
+                "Module 3: Backbone/Core Optical Networks",
+                "Optical networks and its Standards: WDM, DWDM, EON"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "7 (L1)",
+            "lecture_topics": [
+                "Backhaul/Core Wavength Routed Networks (ILP formulation , Computational Complexity)"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "7 (L2)",
+            "lecture_topics": [
+                "Backhaul/Core Wavength Routed Networks (ILP formulation , Computational Complexity)"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "8 (L1)",
+            "lecture_topics": [
+                "Backbone/ DC Optical Netowkrs : Routing and Spectrum Assignment in GLPK/ IBM CPLEX"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Tutorial 3"
+        },
+        {
+            "week": "8 (L2)",
+            "lecture_topics": [
+                "Backbone/ DC Optical Netowkrs : Routing and Spectrum Assignment in GLPK/ IBM CPLEX"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment 3"
+        },
+        {
+            "week": "9 (L1)",
+            "lecture_topics": [
+                "Failure and Protection in Backbone Optical Networks"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Quiz 3"
+        },
+        {
+            "week": "9 (L2)",
+            "lecture_topics": [
+                "ML (DNN) assisted Failure and Protection schemes in Python (SciKit Learn library)"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10 (L1)",
+            "lecture_topics": [
+                "Optical Transport Network (OTN) Architecture and Applications (ITU-T G.872)"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10 (L2)",
+            "lecture_topics": [
+                "Application of OTN for IP over DWDM for 4G Backhaul."
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "11 (L1)",
+            "lecture_topics": [
+                "Module 4: FrontHaul and MidHaul",
+                "Evolution of Optical Transport Architecture for 5G (ITU-T G. 8300)"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "11 (L2)",
+            "lecture_topics": [
+                "Cloud RAN",
+                "Functional Split Analysis",
+                "Introduction to PON"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12 (L1)",
+            "lecture_topics": [
+                "Introduction to TDM-PON and WDM-PON standards"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12 (L2)",
+            "lecture_topics": [
+                "DBA and TCONT mapping for traffic latency requirements in Fronthaul"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Tutorial 4"
+        },
+        {
+            "week": "13 (L1)",
+            "lecture_topics": [
+                "MidHaul or XHaul Architecture",
+                "Introduction to 5G Slicing"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment 4"
+        },
+        {
+            "week": "13 (L2)",
+            "lecture_topics": [
+                "Enabling 5G slicing in Optical Networks."
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Quiz 4"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignments (including quizzes)",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Mid Term Exam",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Project",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Final Exam",
+            "weight_pct": 20
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "Optical Networks by R. Ramaswami and K.N. Sivarajan"
+        },
+        {
+            "type_label": "Textbook",
+            "title": "Multiwavelength Optical Networks by T.E. Stern and K. Bala"
+        },
+        {
+            "type_label": "Textbook",
+            "title": "Optical Communication Networks by Biswanath Mukherjee"
+        },
+        {
+            "type_label": "Textbook",
+            "title": "Optical Communications by Gerd Keiser"
+        },
+        {
+            "type_label": "Reading Materials",
+            "title": "Relevant research article links will be given"
+        }
+    ]
+}

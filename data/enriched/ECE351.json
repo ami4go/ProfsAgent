@@ -1,0 +1,217 @@
+{
+    "header": {
+        "course_code": "ECE351",
+        "aliases": [],
+        "name": "Digital Signal Processing",
+        "credits": "4",
+        "offered_to": [
+            "UG"
+        ],
+        "department": null,
+        "description": "Digital signal processing has rapidly developed over a past few decades due to significant developments in digital computer technology. This course develops on the foundations of the pe-requisite course on \u201cSignals and Systems.\u201d In this course, students are introduced to the basic analysis tools and techniques for the processing of digital signals. The course deals with the conversion of analog to digital signals, Fourier domain approach for the analysis of discrete-time signals and systems, design of filters, and introduction to multirate digital systems.",
+        "prerequisites_mandatory": [
+            "ECE250 Signals & Systems"
+        ],
+        "prerequisites_desirable": [],
+        "prerequisites_mandatory_resolved": [
+            "ECE250"
+        ],
+        "prerequisites_desirable_resolved": []
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Analyze discrete time systems in time domain, z domain and frequency domain",
+            "bloom_level": "Analyze",
+            "bloom_verb": "analyze",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=analyze",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Analyze and implement digital systems using DFT and FFT",
+            "bloom_level": "Analyze",
+            "bloom_verb": "analyze",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=analyze",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Realize digital filters using different structures",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 1,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "too_short",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Apply design techniques for digital filters according to specifications",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO5",
+            "raw_text": "Use Python for analysis and design of DSP systems",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "has_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1,2",
+            "lecture_topics": [
+                "Review of LTI systems",
+                "DTFT",
+                "Z-transform",
+                "stability",
+                "causality"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO5"
+            ],
+            "tutorial_assignment": "Assignment 1"
+        },
+        {
+            "week": "3,4,5",
+            "lecture_topics": [
+                "DFT",
+                "Circular Convolution",
+                "Overlap-and-save",
+                "Overlap-and-methods",
+                "FFT algorithms"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO5"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "6,7",
+            "lecture_topics": [
+                "Digital filtering: Block diagram, signal flow graph representation",
+                "structures of IIR and FIR filters (direct, cascade, parallel, feedback, lattice, lattice-ladder structures)",
+                "direct to lattice conversion",
+                "Finite precision numerical effects",
+                "effect of coefficient quantization",
+                "effect of round-off noise"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment 2"
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Midsem"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Recess"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10, 11",
+            "lecture_topics": [
+                "LTI systems: Phase and group delays",
+                "ideal frequency select filters",
+                "all-pass and minimum phase systems",
+                "all pass decomposition",
+                "properties of minimum phase systems",
+                "systems with linear phase characteristics"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4",
+                "CO5"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12, 13",
+            "lecture_topics": [
+                "Digital filter design - Finite impulse response (FIR) filters: [1] Window design techniques, Kaiser window design technique, Equiripple approximations",
+                "Infinite impulse response (IIR) filters - Bilinear transform method"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4",
+                "CO5"
+            ],
+            "tutorial_assignment": "Assignment 3"
+        },
+        {
+            "week": "14, 15",
+            "lecture_topics": [
+                "Review of sampling",
+                "bandpass and fractional sampling",
+                "introduction to multirate systems"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO5"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignment",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Mid-sem test",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "End-sem test",
+            "weight_pct": 40
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "References",
+            "title": "Digital Signal Processing: A Computer-Based Approach, S. K. Mitra, McGraw-Hill, Third edition, 2006."
+        },
+        {
+            "type_label": "References",
+            "title": "Digital Signal Processing by John Proakis & D. G. Manolakis, 4/E. Pearson, 2006."
+        },
+        {
+            "type_label": "References",
+            "title": "Discrete-Time Signal Processing, A. Oppenheim and R. Schafer, Prentice Hall, Second edition, 1999"
+        }
+    ]
+}

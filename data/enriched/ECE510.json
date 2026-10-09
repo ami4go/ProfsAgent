@@ -1,0 +1,171 @@
+{
+    "header": {
+        "course_code": "ECE510",
+        "aliases": [],
+        "name": "Digital Hardware Design (DHD)",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "Field programmable gate arrays (FPGAs) are the first choice for implementation of digital systems due to their distributed and parallel architecture. FPGAs also allows complete control over arithmetic",
+        "prerequisites_mandatory": [
+            "ECE270 Embedded Logic Design"
+        ],
+        "prerequisites_desirable": [],
+        "prerequisites_mandatory_resolved": [
+            "ECE270"
+        ],
+        "prerequisites_desirable_resolved": []
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students are able to design and implement sequential and combinational logic design on FPGA",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students are able to write Verilog code to integrate on-board FPGA switches, VGA interface, memory, embedded hardware units etc.",
+            "bloom_level": "Analyze",
+            "bloom_verb": "integrate",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=integrate",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students are able to implement the algorithms using HLS.",
+            "bloom_level": "Apply",
+            "bloom_verb": "implement",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=implement",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Students are able to design new IP with appropriate AXI interface",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1-3",
+            "lecture_topics": [
+                "Theory: FPGA Architecture (CLB, BRAM, DSP48)",
+                "Lab: Combinational logic design, Synchronous and asynchronous logic design and arithmetic circuits"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3"
+            ],
+            "tutorial_assignment": "Lab + Homework: Verilog code, simulation and implementation: Comparators, Decoders/Encoders, code converters, ALU, counters, pulse-width modulation, Fibonacci"
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Theory: FPGA Architecture (Clock)",
+                "Lab: IP, Finite state machines"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3"
+            ],
+            "tutorial_assignment": "Lab + Homework: Door lock code, traffic lights, sequence detectors etc."
+        },
+        {
+            "week": "5-6",
+            "lecture_topics": [
+                "Theory: AXI protocol",
+                "Lab: VGA based game design"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Lab + Homework: VGA stripes, screen saver, Video game"
+        },
+        {
+            "week": "7-9",
+            "lecture_topics": [
+                "Theory: HLS Design flow",
+                "Lab: Algorithms to Architecture"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Lab + Homework: Algorithms to Architecture"
+        },
+        {
+            "week": "10-13",
+            "lecture_topics": [
+                "Theory: Ultrascale Architecture",
+                "Lab: HLS Design Flow"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Lab + Homework: HLS Design Flow"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Quiz",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Assignment",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 35
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "D. Harris and S. Harris, \u201cDigital Design and Computer Architecture\u201d, Morgan Kauffmann, 2012."
+        },
+        {
+            "type_label": "Textbook",
+            "title": "R. Haskell and D. Hanna, \u201cLearning by example using Verilog advanced digital design\u201d, LBE Books, 2014"
+        },
+        {
+            "type_label": "Textbook",
+            "title": "Uwe Meyer-Baese, Digital Signal Processing with Field Programmable Gate Arrays, Springer, 2007"
+        },
+        {
+            "type_label": "Internet Resource",
+            "title": "Verilog tutorials: http://www.asic-world.com/verilog/veritut.html"
+        }
+    ]
+}

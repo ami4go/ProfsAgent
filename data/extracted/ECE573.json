@@ -1,0 +1,32 @@
+{"header": {"course_code": "ECE573", "aliases": [], "name": "Advanced Embedded Logic Design", "credits": "4", "offered_to": ["UG", "PG"], "department": null,
+  "description": "Embedded systems consisting of multi-core processors with co-processors as well as accelerators such as GPU and FPGA are widely being used in various wireless, multimedia, data centers, video processing and computer vision applications. The main focus of this course is to introduce various embedded system concepts via theory and lab sessions followed by building real-world embedded systems. In this course, students will learn hardware software co-design approach to learn how to implement the embedded systems on heterogenos SoC and optimize their area and power performance. In the theory part of the course, various concepts such as processor architecture, interrupts, cache system, direct memory access (DMA), co-processors, hardware-software co-design along with AXI protocol will be discussed in detail. Labs and assignments will focus on developing working programs that use various features and ports of SoC (Zybo, Zedboard and ZC706 platform) including GPIO, UART, ethernet, floating point unit (FPU), SIMD co-processor, interrupts, timers, DMA, DDR memory etc. Few weeks will be dedicated to implementation of machine learning algorithms on SoC via hardware-software co-design approach followed by projects exploring dynamic partial reconfigurations enabling real-time switch between the various ML algorithms.",
+  "prerequisites_mandatory": ["C/C++ programming concepts", "Digital Circuits", "Microcontrollers/Microprocessors (UG level)"], "prerequisites_desirable": ["ELD"]},
+ "outcomes": [
+  {"label": "CO1", "raw_text": "Students are able to explain the SoC architecture and its usefulness for embedded systems"},
+  {"label": "CO2", "raw_text": "Students are able to integrate ARM and FPGA using AXI ports, DMA, interrupts GPIO and DDR memory."},
+  {"label": "CO3", "raw_text": "Students are able to design, implement and analyze complete algorithm on SoC via hardware-software co-design approach"},
+  {"label": "CO4", "raw_text": "Students are able to analyze the trade-off between homogenous and heterogenous platforms for any given application"}],
+ "weekly_plan": [
+  {"week": "1 & 2", "lecture_topics": ["Embedded systems basics", "AXI protocol"], "cos_met": ["CO1"], "tutorial_assignment": "See the lab details\nLab: Introduction to Vivado + SDK Design flow for Microblaze (RISC) processor\nLab: Accelerator Design: ALU (Comparison between Microblaze and Microblaze+FPGA architectures)"},
+  {"week": "3", "lecture_topics": ["FPGA refesher", "IP design"], "cos_met": ["CO1"], "tutorial_assignment": "See the lab details\nLab: Introduction to SDSoC Design Flow for Zynq SoC (ARM+FPGA) and Hello world lab"},
+  {"week": "4 & 5", "lecture_topics": ["SoC design flow", "Zynq SoC Architecture Introduction", "hardware software co-design approach", "boot and configuarion process"], "cos_met": ["CO1", "CO2"], "tutorial_assignment": "See the lab details\nLab: Hardware software co-design for Zynq SoC using FPGA as coprocessor\nLab: Accelerator Design: ALU (Comparison between ARM, ARM+NEON and ARM+FPGA architectures)"},
+  {"week": "6 & 7", "lecture_topics": ["Interrupts", "Timers", "Cache system", "DMA", "SoC ports (SPI, I2C, UART, USB)"], "cos_met": ["CO1", "CO2"], "tutorial_assignment": "See the lab details\nLab: Accelerator Design: Explore different interfaces between ARM and FPGA\nLab: Accelerator Design: FIR Filter and architecture optimization"},
+  {"week": "8 & 9", "lecture_topics": ["Co-processors", "Floating point unit (FPU)", "clock and reset systems"], "cos_met": ["CO2", "CO3", "CO4"], "tutorial_assignment": "See the lab details\nLab: Accelerator Design: DFT/FFT and architecture optimization\nLab: Accelerator Design: Explore different DMA options between ARM and FPGA"},
+  {"week": "10", "lecture_topics": ["Reconfigurable and Intelligent Architectures"], "cos_met": ["CO2", "CO3", "CO4"], "tutorial_assignment": "See the lab details\nLab: Accelerator Design: Sparse and non-sparse Matrix Multiplications and architecture optimization"},
+  {"week": "11", "lecture_topics": ["Accelerator design and analysis: FFT, Matrix multiplication, matrix inversion, ML algorithms"], "cos_met": ["CO2", "CO3", "CO4"], "tutorial_assignment": "See the lab details\nLab: Accelerator Design: Multi-armed bandit algorithms (UCB)"},
+  {"week": "12 and 13", "lecture_topics": ["Zynq MPSoC Architecture"], "cos_met": ["CO3", "CO4"], "tutorial_assignment": "See the lab details\nLab: Accelerator Design: Simple Deep Learning Algorithms\nLab: Accelerator Design: Simple Deep Learning Algorithms"},
+  {"week": "Additional Topics", "lecture_topics": ["Detailed co-processor (NEON, FPU) architecture", "Accelerator for GNU Radio for wireless prototyping", "Hardware software co-design for wireless PHY"], "cos_met": [], "tutorial_assignment": null}],
+ "assessments": [
+  {"type_label": "Mid-sem (Lab + Theory)", "weight_pct": 30},
+  {"type_label": "Project", "weight_pct": 25},
+  {"type_label": "Quiz (Theory)", "weight_pct": 10},
+  {"type_label": "Quiz (Lab)", "weight_pct": 10},
+  {"type_label": "End-sem (Lab + Theory)", "weight_pct": 25}],
+ "resources": [
+  {"type_label": "book", "title": "Zynq Technical reference manual"},
+  {"type_label": "datasheets", "title": "Xilinx Zynq Family, ARM, Xilinx PR tutorials, Xilinx SDSoC tutorials"},
+  {"type_label": "reference manuals", "title": "Zedboard, Zybo and ZC702 reference manual"},
+  {"type_label": "schematics", "title": "Zybo, ZC706 and Zedboard Schematics"},
+  {"type_label": "Softwares", "title": "Vivado"},
+  {"type_label": "Hardwares", "title": "Zybo, ZC706 and Zedboard"},
+  {"type_label": "Internet Resource", "title": "Various online tutorials"}]}

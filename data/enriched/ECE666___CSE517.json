@@ -1,0 +1,277 @@
+{
+    "header": {
+        "course_code": "ECE666",
+        "aliases": [
+            "CSE517"
+        ],
+        "name": "Applied Optimization methods for machine learning (AOMML)",
+        "credits": "4",
+        "offered_to": [
+            "UG (third and fourth year)",
+            "PG"
+        ],
+        "department": null,
+        "description": "In this course, we will discuss the foundations required for solving optimization problems in the context of machine learning through various case-studies/running-examples. This course will cover basics of linear algebra required for learning optimization theory. Further, this course provides a platform to set up an optimization problem, which could be linear and nonlinear; unconstrained and constrained; convex and non-convex; continuous and discrete; deterministic and stochastic. We also cover the machine learning based context of different topics.",
+        "prerequisites_mandatory": [],
+        "prerequisites_desirable": [
+            "Machine learning",
+            "Linear Algebra",
+            "Numerical Methods",
+            "Good to have a background in Convex Optimization and Linear Optimization."
+        ],
+        "prerequisites_mandatory_resolved": [],
+        "prerequisites_desirable_resolved": [
+            "Machine learning",
+            "Linear Algebra",
+            "Numerical Methods",
+            "Good to have a background in Convex Optimization and Linear Optimization."
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students should be able to formulate and solve optimization problems for training machine learning models.",
+            "bloom_level": "Create",
+            "bloom_verb": "formulate",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=formulate",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students should be able to implement optimization algorithms like stochastic gradient descent, Newton's method, etc.",
+            "bloom_level": "Apply",
+            "bloom_verb": "implement",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=implement",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students should be able to derive the convergence properties (Order and rate for non-asymptotic, otherwise asymptotic convergence) of optimization algorithms based on their analytical properties (convexity, smoothness, optimality conditions).",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 2,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Students should be able to develop insights into applying suitable optimization algorithms for a given machine-learning task.",
+            "bloom_level": "Create",
+            "bloom_verb": "develop",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=develop",
+                "has_object",
+                "has_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Basic Linear Algebra (Vectors, Vector spaces and subspaces, Rank, Orthogonality of vectors)"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Basic multi-variable calculus (Gradient, Jacobian, Hessian, Semidefinite matrices)",
+                "Basic Probability (Random Variables, Expectation)"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Convex Sets and Functions",
+                "Smoothness",
+                "Convexity",
+                "Stationary points"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Motivation: Training machine/deep learning models as an Optimization problem",
+                "Regression",
+                "Classification",
+                "Intro to Pytorch Optim module."
+            ],
+            "cos_met": [
+                "CO2",
+                "CO5"
+            ],
+            "tutorial_assignment": "Quiz 1, Assignment 1"
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "First-order methods: Gradient Descent, Subgradient"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4",
+                "CO5"
+            ],
+            "tutorial_assignment": "Lab/Tutorial Pytorch"
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "First-order methods: Proximal Gradient Descent, Stochastic Gradient Descent"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4",
+                "CO5"
+            ],
+            "tutorial_assignment": "Programming assignment"
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Variants of Gradient Descent: Projected, Accelerated"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4",
+                "CO5"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Variants of Stochastic Gradient Descent: Minibatch, Momentum, Adaptive Momentum, YOGI"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4",
+                "CO5"
+            ],
+            "tutorial_assignment": "Lab/Tutorial Pytorch"
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Concept of Duality",
+                "KKT Conditions"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Second Order Methods: Newton's Method, Quasi-Newton's Method"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4",
+                "CO5"
+            ],
+            "tutorial_assignment": "Quiz 2, Assignment 2"
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Advanced Techniques: Coordinate Descent"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4",
+                "CO5"
+            ],
+            "tutorial_assignment": "Lab/Tutorial Pytorch"
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Advanced Techniques: Mirror Descent, Dual Decomposition"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4",
+                "CO5"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Advanced Techniques: Alternative direction method of multipliers, Frank Wolfe method"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4",
+                "CO5"
+            ],
+            "tutorial_assignment": "Lab for presentation"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Written Assignments",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Programming Assignment",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "Quizzes",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "Midsemester",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Endsemester",
+            "weight_pct": 30
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Book",
+            "title": "S. Boyd and L. Vandenberghe, Convex optimization"
+        },
+        {
+            "type_label": "Book",
+            "title": "Gilbert Strang, Linear Algebra and its Applications 4 Edition"
+        },
+        {
+            "type_label": "Book",
+            "title": "Nocedal and Wright\u2019s Numerical Optimization, Second Edition: https://users.iems.northwestern.edu/~nocedal/book/num-opt.html"
+        },
+        {
+            "type_label": "Book",
+            "title": "Sebastian Bubeck: Convex Optimization: Algorithms and Complexity"
+        }
+    ]
+}

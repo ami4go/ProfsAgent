@@ -1,0 +1,239 @@
+{
+    "header": {
+        "course_code": "CSE654",
+        "aliases": [
+            "ECE654"
+        ],
+        "name": "High-Dimensional Statistics and Optimization",
+        "credits": "4",
+        "offered_to": [
+            "PG"
+        ],
+        "department": null,
+        "description": "This course introduces the theoretical and algorithmic foundations of high-dimensional statistics with a focus on applications to deep learning and large language models. It emphasizes non-asymptotic analysis, optimization behavior in high dimensions, and phenomena unique to overparameterized models. Students will explore concentration inequalities, random matrix theory, and optimization landscapes through both mathematical rigor and hands-on experiments.",
+        "prerequisites_mandatory": [
+            "Linear Algebra (MTH 100)",
+            "Probability and Statistics (MTH 201)",
+            "Machine Learning (ECE363/ECE563/CSE343/543 or ECE666 / CSE517)"
+        ],
+        "prerequisites_desirable": [
+            "Convex Optimization",
+            "Statistical Learning Theory"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Understand the importance of HD stats in ML/LLMs. Should should be able to Describe key inequalities and use cases"
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students should be able to apply Wigner's and MP laws to deep nets and use Use JL Lemma to evaluate generalization. Compare flat vs sharp regions using NTK"
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Interpret double descent & complexity and Explain SGD's regularization behavior. Understand optimisation algorithms"
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Identify problem settings in high dimesional data case where the data point dimension and number of points are of similar size. Analyse such settings and implement appropriate measures to mitigate issues arising from above."
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Introduction & Motivation",
+                "High-dimensional data",
+                "Curse of dimensionality",
+                "Deep learning generalization"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Concentration Inequalities I",
+                "Hoeffding, Bernstein, McDiarmid inequalities"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Concentration Inequalities II",
+                "JL Lemma",
+                "Generalization bounds"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Random Matrix Theory I",
+                "Wigner's Semicircle Law",
+                "Marchenko-Pastur Law"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Random Matrix Theory II"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Overparameterization & Generalization",
+                "Double descent",
+                "norm-based bounds",
+                "margin theory"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Optimization Landscapes I",
+                "Hessians",
+                "flat vs sharp minima"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Optimization Landscapes II",
+                "Neural Tangent Kernel",
+                "curvature analysis"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "SGD and Implicit Bias I",
+                "SGD behavior",
+                "batch size effects",
+                "implicit regularization"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "SGD and Implicit Bias II",
+                "Adaptive methods (Adam, Adagrad) and generalization"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Recent advances in high dimensional stats and LLMs",
+                "Scaling laws",
+                "memorization vs generalization"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12-13",
+            "lecture_topics": [
+                "LLMs + Project Presentations",
+                "Scaling laws",
+                "memorization vs generalization",
+                "team presentations"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "14",
+            "lecture_topics": [
+                "Project Week",
+                "Final implementation and report submission"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Quiz",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "Assignments (3)",
+            "weight_pct": 40
+        },
+        {
+            "type_label": "Project",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Mid-Sem",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "End-Exam",
+            "weight_pct": 15
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Books",
+            "title": "Martin J. Wainwright \u2014 High-Dimensional Statistics: A Non-Asymptotic Viewpoint"
+        },
+        {
+            "type_label": "Web references",
+            "title": "Research articles from various conferences/journals"
+        }
+    ]
+}

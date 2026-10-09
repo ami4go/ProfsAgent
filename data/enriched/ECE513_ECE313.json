@@ -1,0 +1,290 @@
+{
+    "header": {
+        "course_code": "ECE313",
+        "aliases": [
+            "ECE513"
+        ],
+        "name": "VLSI Design Flow",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "The objective of this course is to develop a basic understanding of the methods, tools and technologies that go into transforming an \u201cidea\u201d into an \u201cintegrated circuit\u201d. This course is intended to give an overall perspective of the VLSI design flow, going through various stages of designing such as synthesis, floorplanning, placement, routing etc. and various steps of verification such as simulation, formal methods and timing/power analysis. In this course, ample opportunities will be provided to employ the-state-of-the-art CAD tools and gain a practical understanding of the VLSI design flow. A few representative algorithms that work inside the CAD tools will also be discussed.",
+        "prerequisites_mandatory": [
+            "Digital Circuits",
+            "Basics of CMOS Inverter"
+        ],
+        "prerequisites_desirable": [],
+        "prerequisites_mandatory_resolved": [
+            "Digital Circuits",
+            "Basics of CMOS Inverter"
+        ],
+        "prerequisites_desirable_resolved": []
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students are able to explain the design and verification steps in the VLSI design flow and their purpose and significance",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students are able to evaluate various trade-offs that need to be made at various steps in the VLSI design flow.",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students are able to design and verify simple VLSI circuits using the state-of-the-art computer aided design (CAD) tools at different levels of abstractions.",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Students are able to apply representative algorithms that are used in implementing CAD tools to design and verify integrated circuits.",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Introduction: Basic Concepts",
+                "Design Styles",
+                "Designing vs. Fabrication",
+                "Processes involved in taking an \"Idea\" to RTL: Software/Hardware Partitioning, Behavioral Synthesis"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Introduction to UNIX and TCL\nLab: Assignment 1 (Unix, TCL) [Weeks 1 -- 3]\nLab: Project Part 1 [Weeks 1 -- 8]"
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Overview of \"RTL to GDS\" Design Implementation, Verification and Test Flow",
+                "Processes after GDS Tapeout to Final Chip"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment 1: Based on UNIX and TCL"
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Design capture: HDL (Verilog), RTL Simulation and Synthesis"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment 2: RTL Designing\nLab: Assignment 2 (Logic Synthesis & Formal Verification) [Weeks 3 -- 7]"
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Introduction to Formal Methods: Equivalence Checking, BDD, SAT"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment 2: RTL Simulation and Synthesis"
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Library and Constraints",
+                "Static Timing Analysis",
+                "Power Analysis"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment 2: Equivalence Checking"
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Logic Synthesis: Optimization, Technology Mapping"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment 3: STA and Logic Optimization"
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Design for Test (DFT): Fault Models, Scan Insertion"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment 3: Scan Chain Insertion\nLab: Assignment 3 (STA & DFT) [Weeks 7 -- 9]"
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "ATPG",
+                "BIST"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment 3: continued"
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Basic Concepts for Physical Design"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment 3: continued\nLab: Assignment 4 (Physical Design) [Weeks 9 -- 12]\nLab: Project Part 2 [Weeks 9 -- 12]"
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Partitioning",
+                "Floorplanning",
+                "Power Planning"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment 4: Floorplanning and Placement"
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Placement: Techniques and Optimization",
+                "Clock Tree Synthesis: Distribution, Skew Optimization"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment 4: Clock Tree Synthesis"
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Routing: Global and Detailed",
+                "Physical Verification: Extraction, LVS, ERC, DRC"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment 4: Routing"
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "ECO",
+                "Sign-off"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignment",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 45
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "Saurabh, S. (2023). Introduction to VLSI Design Flow. Cambridge: Cambridge University Press."
+        },
+        {
+            "type_label": "Reference",
+            "title": "Synthesis and Optimization of Digital Circuits, Giovanni De Micheli, McGraw-Hill, 1994"
+        },
+        {
+            "type_label": "Reference",
+            "title": "Static Timing Analysis For Nanometer Designs: A Practical Approach, by J. Bhasker, Rakesh Chadha, Springer; 2009 edition"
+        },
+        {
+            "type_label": "Reference",
+            "title": "Electronic Design Automation for Integrated Circuits Handbook, Second Edition, Luciano Lavagno, Igor L. Markov, Grant E. Martin, Louis K. Scheffer, - 2016, - CRC Press"
+        },
+        {
+            "type_label": "Reference",
+            "title": "Verilog HDL synthesis : a practical primer, J. Bhaskar"
+        },
+        {
+            "type_label": "Reference",
+            "title": "User Guides of CAD Tools."
+        }
+    ]
+}

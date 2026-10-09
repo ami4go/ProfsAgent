@@ -1,0 +1,268 @@
+{
+    "header": {
+        "course_code": "MTH270",
+        "aliases": [],
+        "name": "Numerical Methods",
+        "credits": "4",
+        "offered_to": [
+            "UG"
+        ],
+        "department": null,
+        "description": "This is a first course on Numerical Methods to be offered to 2nd / 3rd year undergraduate students. It covers basic topics in root finding, interpolation, numerical differentiation and integration and then moves to methods to numerically solve linear systems of equations as well as ordinary and partial differential equations. The theory involved in deriving methods as well as their error and stability properties is given due attention alongside an insistence on applying the methods, writing computer programs, obtaining numerical solutions and comparing them with analytical solutions whenever possible.",
+        "prerequisites_mandatory": [
+            "MTH 100 (Linear Algebra)",
+            "Co-requisite: MTH204 (Differential Equations)."
+        ],
+        "prerequisites_desirable": [],
+        "prerequisites_mandatory_resolved": [
+            "MTH100",
+            "Co-requisite: MTH204 (Differential Equations)."
+        ],
+        "prerequisites_desirable_resolved": []
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students can find roots of equations of the form f(x) = 0, interpolate functions and numerically differentiate and integrate functions with a clear understanding of convergence and accuracy.",
+            "bloom_level": "Analyze",
+            "bloom_verb": "integrate",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=integrate",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students are able to solve systems of linear equations using direct as well as iterative methods.",
+            "bloom_level": "Apply",
+            "bloom_verb": "solve",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=solve",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students are able to write computer programs to solve ordinary differential equations numerically and interpret / visualize results.",
+            "bloom_level": "Apply",
+            "bloom_verb": "solve",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=solve",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Students are able to derive / analyze finite difference methods for solving partial differential equations with a clear understanding of their properties vis a vis their accuracy and stability.",
+            "bloom_level": "Analyze",
+            "bloom_verb": "analyze",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=analyze",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO5",
+            "raw_text": "Students are able to solve physical problems that can be modeled using partial differential equations numerically : generate mathematical model, specify initial and boundary conditions, apply an appropriate",
+            "bloom_level": "Create",
+            "bloom_verb": "generate",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=generate",
+                "has_object",
+                "has_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Preliminaries (floating point, round-off, error propagation, stability of algorithms)",
+                "Solutions of equations by iteration: Fixed point iteration, Newton's method, Secant method",
+                "Interpolation"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Interpolation (contd.)",
+                "Splines",
+                "Numerical integration and differentiation"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Assignment 1"
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Linear systems: Gauss elimination, LU-factorization, matrix inversion, solution by iteration"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment 2"
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Linear systems (contd.): Ill conditioning, Norms",
+                "Least squares method"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment 3"
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Linear systems (contd.): Matrix eigenvalue problems, Approximations and error bounds for eigenvalues, power method for eigenvalues"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment 4"
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Linear systems (contd.): Tridiagonalization: Householder's method, QR- factorization"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment 5"
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Methods for first order ODEs: Euler method, Improved Euler (Heun) method, Runge Kutta methods"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment 6"
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Multistep methods: Adams-Bashforth, Adams-Moulton",
+                "Methods for higher order and systems of ODEs: Euler method, Runge-Kutta methods, Runge-Kutta-Nystrom methods, Stiff systems"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment 7"
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Introduction to partial differential equations",
+                "first order PDEs",
+                "mathematical classification of second order PDEs",
+                "characteristics"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment 8"
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Finite difference representation of PDEs: Truncation, round off & discretization errors, Consistency, Stability, Convergence",
+                "Obtaining finite difference equations using Taylor series",
+                "Fourier or von Neumann stability analysis of finite difference schemes"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment 9"
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Applications to model problems: Hyperbolic: Advection equation: Euler explicit, first order upwinding",
+                "Wave equation"
+            ],
+            "cos_met": [
+                "CO5"
+            ],
+            "tutorial_assignment": "Assignment 10"
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Applications to model problems (contd.): Parabolic: Heat equation: Forward time central space method, Crank Nicolson method",
+                "Elliptic: Difference equatons for Laplace and Poisson equations"
+            ],
+            "cos_met": [
+                "CO5"
+            ],
+            "tutorial_assignment": "Assignment 11"
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Elliptic PDEs (contd.): Dirichlet problem: Liebmann's method, ADI method",
+                "Neumann and mixed problems",
+                "Irreuglar boundary"
+            ],
+            "cos_met": [
+                "CO5"
+            ],
+            "tutorial_assignment": "Assignment 12"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Quiz 1",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "Midsem",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Quiz 2",
+            "weight_pct": 10
+        },
+        {
+            "type_label": "Endsem",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Assignments (Theory + Programming)",
+            "weight_pct": 30
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "Advanced Engineering Mathematics (9th Edition) by Erwin Kreyszig [Chapters 19: Numerics in General, 20: Numeric linear algebra, 21: Numerics for ODEs and PDEs]"
+        },
+        {
+            "type_label": "Rererence",
+            "title": "Computational Fluid Mechanics and Heat Transfer (3rd Edition) by Richard H. Pletcher, John C. Tannehill and Dale A. Anderson [Chapters 2: Partial Differential Equations, 3: Basics of Discretization Methods and 4: Applications of Numerical Methods to Selected Model Equations]"
+        },
+        {
+            "type_label": "Reference",
+            "title": "Computational Fluid Dynamics : The Basics with Applications by John D. Anderson, Jr. [Chapter 4: Basic Aspects of Discretization]"
+        }
+    ]
+}

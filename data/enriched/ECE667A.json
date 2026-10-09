@@ -1,0 +1,209 @@
+{
+    "header": {
+        "course_code": "ECE667A",
+        "aliases": [],
+        "name": "Introduction to AI in Medical Imaging",
+        "credits": "2",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "The course introduces the topics of (a) Understanding medical imaging data (b) Overview of radiological image formation in computed tomography (CT) (c) Overview of radiological image formation in magnetic resonance imaging (MRI) (d) Imaging artifacts and how to tackle them (e) AI in medical imaging : Introduction, Upstream (Raw data based denoising and reconstruction)and Downstream AI applications (segmentation, registration and visualization) (f) Radiologist perspective of medical data and clinical decision making",
+        "prerequisites_mandatory": [
+            "Basic Probability/Statistics",
+            "Linear algebra",
+            "Vector calculus"
+        ],
+        "prerequisites_desirable": [
+            "A good working knowledge of any programming language (python, MATLAB)",
+            "Basic Machine Learning course / Computer Vision course-work"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "Basic Probability/Statistics",
+            "Linear algebra",
+            "Vector calculus"
+        ],
+        "prerequisites_desirable_resolved": [
+            "A good working knowledge of any programming language (python, MATLAB)",
+            "Basic Machine Learning course / Computer Vision course-work"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students will understand how to interpret medical imaging data in terms of geometry, standards such as dicom, data anonymization, compliance (HIPPA, GDPR) etc",
+            "bloom_level": "Understand",
+            "bloom_verb": "interpret",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=interpret",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students will be able to comprehend the basics of image reconstruction chain for CT and MRI image formation. This would also cover traditional methods for image acceleration. They should be able to use this knowledge to understand the artifacts formed in MRI and CT imaging and how these could be mitigated by modifying acquisition strategies",
+            "bloom_level": "Apply",
+            "bloom_verb": "use",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=use",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students will now understand how AI has helped in improving the quality of the imaging in both CT and MRI by means of accelerated data acquisition and AI enabled reconstruction, AI enabled denoising and artifact removal. Students will also be able to gain knowledge about how AI-based image analysis methods (segmentation , registration) have enabled faster and improved clinical decision support.",
+            "bloom_level": "Evaluate",
+            "bloom_verb": "support",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=support",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "All medical images are finally interpreted by radiologists. Students will now understand the nuances involved in radiologist perception of images, what metric to quantify them and how imaging chain is modified vis-\u00e0-vis other factors such as imaging throughput and patient conditions",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 2,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "has_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Understand the medical image data [read, write, header, processing, ITKSnap, RadiAnt DICOM Viewer, anonymization tools (GDPR, HIPPA)]"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Hands on experience handling medical imaging data using SimpleITK tool. Getting familiarity with open source reconstruction toolkits : Michigan Image Reconstruction Toolbox (MIRT), BART MR"
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Overview of radiological image formation in computed tomography (CT) [system components in a CT system, imaging physics, forward modelling, and inverse problem]"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment on CT sinogram generation using Radon transform on phantom data and reconstruct using simple Back Projection (BP) and Filter Back Projection (FBP) techniques."
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Overview of radiological image formation in magnetic resonance imaging (MRI) [system components in MR imaging, MR imaging physics, magnet types, RF pulses, K-space, trajectories]"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment on MRI image generation using sample data, imaging contrasts etc."
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Recognizing imaging artifacts in MRI and CT imaging",
+                "their sources",
+                "amelioration using image acquisition modifications and AI"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "assignment on image artifact generation, identifying complex artifacts and suggestions to avoid them"
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Radiologist perspective of analysing medical data"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Metrics based visualization of imaging data"
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "AI application for upstream [signal enhancement/filtering, noise reduction, image recon acceleration, data variety, clustering]"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "We would like students to participate in open source challenge : BRATS, STROKE ISLES and present their results. Group of 2-3 students will be allowed. Evaluation criterion is how the problem is solved rather than final result."
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "AI application for downstream [segmentation, registration, classification]"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Assignment",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Project",
+            "weight_pct": 30
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook (MRI)",
+            "title": "Principles of Magnetic Resonance Imaging: A Signal Processing Perspective: 4 (IEEE Press Series on Biomedical Engineering), by Zhi-Pei Liang (Author), Paul C. Lauterbur (Author)"
+        },
+        {
+            "type_label": "Textbook (MRI)",
+            "title": "Handbook of MRI Pulse Sequences,MATT A. BERNSTEIN, KEVIN F. KING and XIAOHONG JOE ZHOU"
+        },
+        {
+            "type_label": "Textbook (MRI)",
+            "title": "Magnetic Resonance Imaging: Physical Principles and Sequence Design, by Robert W. Brown , Y.-C. Norman Cheng , E. Mark Haacke, Michael R. Thompson , Ramesh Venkatesan"
+        },
+        {
+            "type_label": "TextBook (CT)",
+            "title": "\"Principles of Computerized Tomographic Imaging\" Avinash C. Kak and Malcolm Saney https://engineering.purdue.edu/~malcolm/pct/"
+        },
+        {
+            "type_label": "TextBook (CT)",
+            "title": "Fundamentals of Computerized Tomography: Image Reconstruction from Projections, by Gabor T. Herman"
+        },
+        {
+            "type_label": "Deep Learning",
+            "title": "https://www.deeplearningbook.org/"
+        },
+        {
+            "type_label": "Deep Learning",
+            "title": "Deep Learning (Adaptive Computation and Machine Learning series) Illustrated Edition by Ian Goodfellow (Author), Yoshua Bengio (Author), Aaron Courville (Author)"
+        }
+    ]
+}

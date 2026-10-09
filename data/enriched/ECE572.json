@@ -1,0 +1,200 @@
+{
+    "header": {
+        "course_code": "ECE572",
+        "aliases": [],
+        "name": "Estimation Theory for dynamic systems",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "Estimation Theory is an advanced course designed for M.Tech and PhD students. With the ever-increasing use of autonomous systems, the use of estimation algorithms to extract useful information from noisy sensor data are now almost ubiquitous. This course aims to expose students to the estimation problems in a generalized manner so that they can identify, formulate and solve estimation problems.\n\nThe course will start with an introduction to optimal linear estimation in static systems. Then continuous and discrete linear dynamic systems with random noise will be discussed. After discussing the celebrated Kalman Filter, the course will focus on estimation problems for non-linear dynamic systems. Subsequently, the Extended Kalman Filter, the Unscented Kalman Filter, and the Particle Filter will be introduced. Additionally, adaptive estimation for maneuvering targets will also be discussed.\n\nUsing MATLAB in their assignments, students will simulate dynamic systems and apply various estimation techniques in some practical problems.",
+        "prerequisites_mandatory": [
+            "Probability and random process"
+        ],
+        "prerequisites_desirable": [
+            "Control Theory"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "Probability and random process"
+        ],
+        "prerequisites_desirable_resolved": [
+            "Control Theory"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students are able to identify and formulate estimation problem",
+            "bloom_level": "Create",
+            "bloom_verb": "formulate",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=formulate",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students are able to judge the suitability of various estimation algorithms",
+            "bloom_level": "Evaluate",
+            "bloom_verb": "judge",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=judge",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students are able to design and implement estimation algorithms for dynamic systems",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Students are able to explain working of linear and non-linear sequential estimators",
+            "bloom_level": "Understand",
+            "bloom_verb": "explain",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=explain",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO5",
+            "raw_text": "Students get exposure to recent research developments in estimation theory",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 1,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1, 2",
+            "lecture_topics": [
+                "Linear estimation in static systems - estimation of Gaussian random vector",
+                "Linear minimum mean square error estimator",
+                "Least square estimation"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment - Least Square Estimation implementation"
+        },
+        {
+            "week": "3, 4",
+            "lecture_topics": [
+                "Linear dynamic system with random inputs - Continuous-time linear stochastic dynamic system",
+                "discrete-time linear stochastic dynamic system"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "5, 6",
+            "lecture_topics": [
+                "State estimation in the discrete-time linear dynamic system - Kalman Filter",
+                "Consistency of state estimator",
+                "initialization"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment -Discrete KF implementation"
+        },
+        {
+            "week": "7, 8",
+            "lecture_topics": [
+                "Continuous-time linear state estimation - Continuous-time Kalman-Bucy Filter",
+                "Noise statistics relation"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment -Continuous - Discrete KF implementation"
+        },
+        {
+            "week": "9, 10, 11",
+            "lecture_topics": [
+                "State estimation for non-linear dynamic systems - The Extended Kalman Filter",
+                "the Unscented Kalman Filter",
+                "Particle Filter"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4",
+                "CO5"
+            ],
+            "tutorial_assignment": "Assignment - EKF and UKF implementation"
+        },
+        {
+            "week": "12, 13",
+            "lecture_topics": [
+                "Adaptive estimation and maneuvering target - Adjusting process noise",
+                "input estimation",
+                "Interacting Multiple Model Estimator"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4",
+                "CO5"
+            ],
+            "tutorial_assignment": "Assignment - Particle Filter implementation"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignments",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Mid Term Exam",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Quiz",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "Final Exam",
+            "weight_pct": 35
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Book",
+            "title": "Y. Bar-Shalom, X. R. Li, and T. Kirubarajan, Estimation with applications to tracking and navigation: theory algorithms and software. John Wiley & Sons, 2004."
+        },
+        {
+            "type_label": "Book",
+            "title": "Poor, H. Vincent. An introduction to signal detection and estimation. Springer Science & Business Media, 2013."
+        }
+    ]
+}

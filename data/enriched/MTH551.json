@@ -1,0 +1,265 @@
+{
+    "header": {
+        "course_code": "MTH551",
+        "aliases": [
+            "ECEyyy",
+            "CSEzzz"
+        ],
+        "name": "An Introduction to Quantum Information Theory",
+        "credits": "4",
+        "offered_to": [
+            "PG",
+            "UG"
+        ],
+        "department": null,
+        "description": "The course aims to equip students with the prerequisites \u2014 mathematical, quantum-mechanical, and information-theoretical \u2014 for understanding and further studying, in both academic as well as industry settings, the broad field of quantum information theory and quantum computing. The focus will be on the formal presentation of the various definitions, theorems and proofs, and these will be supplemented with a wide-variety of examples and exercises.\n\nThe course is broadly divided into three parts. In the first part, we will cover the necessary mathematical prerequisites followed by the basic postulates of quantum mechanics that serve as the background. We then study the qubit system which is the usual framework of quantum information and computing. We shall then build some of the basics of quantum channels and discuss transformation of states through quantum channels (majorization); these concepts are necessary in the study of quantum communication.\n\nIn the second part, we discuss the concept of quantum entanglement, talk about a few tests to distinguish entangled states from the ones that are not entangled (that is, separable states), followed by two essential protocols \u2014 the quantum teleportation and superdense coding \u2014 which highlight how entanglement allows us to do non-trivial tasks.\n\nIn the final part, we discuss information-theoretic concepts. We first briefly introduce the classical Shannon entropy and related cousins, followed by their quantum generalizations (von Neumann entropy). We end the course with a discussion on Shannon's source coding theorem and its quantum analogue \u2014 Schumacher's quantum source coding theorem.\n\nIf time permits, we would like to discuss quantum nonlocality (for which the Nobel prize in Physics, 2022 was awarded) through the framework of nonlocal games. For that we discuss an example \u2014 the CHSH game \u2014 which serves as the key component in a variety of quantum communication and information protocols.",
+        "prerequisites_mandatory": [
+            "MTH 100 (Linear Algebra)",
+            "MTH 240 (Real Analysis-I) or MTH 203 (Multivariate Calculus)"
+        ],
+        "prerequisites_desirable": [
+            "ECE 634/CSE 646 (Classical Information Theory)",
+            "ECE 525 (Quantum Mechanics)"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "MTH100",
+            "MTH240"
+        ],
+        "prerequisites_desirable_resolved": [
+            "ECE634",
+            "ECE525"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students shall be able to identify, describe, and work with quantum states and quantum channels, especially in the case of qubit and two-qubit systems. In addition to these, they shall be able to describe and discuss transformation of states through quantum channels.",
+            "bloom_level": "Understand",
+            "bloom_verb": "discuss",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=discuss",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students shall be able to appreciate and explain the concept of \u201centanglement\u201d and will be able to, in simple scenarios, distinguish entangled states from those that are not. Moreover, they shall be able to explain two basic protocols: teleportation and super-dense coding.",
+            "bloom_level": "Understand",
+            "bloom_verb": "distinguish",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=distinguish",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students shall be able to compute different entropies of quantum states in simple scenarios.",
+            "bloom_level": "Apply",
+            "bloom_verb": "compute",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=compute",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Students shall be able to understand and describe the CHSH inequality and Bell violation (if quantum nonlocality is covered).",
+            "bloom_level": "Remember",
+            "bloom_verb": "describe",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=describe",
+                "has_object",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1 and 2",
+            "lecture_topics": [
+                "Mathematical Preliminaries",
+                "Linear algebra: complex Euclidean spaces",
+                "linear mappings and matrices",
+                "special types of matrices (hermitian, PSD, isometry, unitary, projection)",
+                "spectral theorem",
+                "singular value decomposition",
+                "polar decomposition",
+                "Schmidt expansion",
+                "Shatten norms and Hilbert-Schmidt inner product",
+                "direct sums and tensor products of matrices",
+                "cone of separable PSD matrices",
+                "partial trace",
+                "Analysis: Euclidean norm, open & closed sets, continuity, convexity in n-dimensional real euclidean space",
+                "probability theory"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Basics of Quantum Mechanics",
+                "States (pure states, mixed states, purification of mixed states, Schmidt decomposition, examples)",
+                "evolution of a quantum system (optional; if time permits)",
+                "quantum measurements"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Assignment 1"
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Quantum Channels",
+                "Linear maps on the space of matrices",
+                "quantum channels (Choi-Kraus representations and Stinesprings representations)",
+                "composite quantum system (tensor product formalism)"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Qubit",
+                "Bra-Ket notation",
+                "qubit systems",
+                "Bloch sphere",
+                "gates",
+                "Pauli matrices",
+                "channels on qubit systems",
+                "quantum circuits"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment 2"
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Unital Channels and Majorization",
+                "Unital channels and their properties",
+                "various subclasses of unital channels",
+                "majorization"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Quiz 1"
+        },
+        {
+            "week": "7 and 8",
+            "lecture_topics": [
+                "Mid-Semester Examination and Mid Recess"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Entanglement",
+                "Separability and entanglement: basic properties and examples",
+                "a few tests of entanglement (PPT, Entanglement witness)"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Two basic protocols",
+                "Quantum teleportation",
+                "superdense coding"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment 3"
+        },
+        {
+            "week": "11, 12, 13 and 14",
+            "lecture_topics": [
+                "Quantum Entropy and Source Coding",
+                "Classical entroy: Shannon entropy and classical relative entropy",
+                "quantum entropy: von Neumann entropy and quantum relative entropy",
+                "Shannon's source coding theorem",
+                "Schumacher's quantum source coding theorem",
+                "encoding classical information into quantum states."
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment 4"
+        },
+        {
+            "week": "15",
+            "lecture_topics": [
+                "Quantum Nonlocality (Special Topic; if time permits)",
+                "Nonlocal games: definition, strategies \u2014 classical and quantum",
+                "non-signalling property",
+                "the CHSH game: classical bound, quantum violation, quantum bound (Tsirelson\u2019s theorem), non-signalling bound."
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Quiz 2"
+        },
+        {
+            "week": "16",
+            "lecture_topics": [
+                "Final Examination"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignments",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Quizzes",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Mid-semester examination",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "Final examination (comprehensive)",
+            "weight_pct": 35
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Reference",
+            "title": "Quantum Information Theory by Mark M. Wilde."
+        },
+        {
+            "type_label": "Reference",
+            "title": "The Theory of Quantum Information by John Watrous."
+        },
+        {
+            "type_label": "Reference",
+            "title": "Quantum Computation and Quantum Information by Michael A. Nielsen and Isaac L. Chuang."
+        }
+    ]
+}

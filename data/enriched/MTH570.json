@@ -1,0 +1,270 @@
+{
+    "header": {
+        "course_code": "MTH570",
+        "aliases": [],
+        "name": "Numerical Solutions Differential Equations",
+        "credits": "4",
+        "offered_to": [
+            "3rd/4th year UG; PG students"
+        ],
+        "department": null,
+        "description": "This course will be provide an overview of two standard numerical methods for partial differential equations (PDEs). The focus will be on essential theoretical analysis as well parabolic and hyperbolic partial differential equations. This will be followed by a short foray into linear system solvers and finite difference scheme for two-dimensional Poisson\u2019s (elliptic) problem. The second part of the course will deal with finite element methods exclusively for elliptic problems. The core ideas in functional analysis, variational formulation, error analysis, and computer implementation will be presented for the one-dimensional problem. This will be followed be a more practical treatment of two-dimensional problems. The last part will consist of an overview of the specialized topics of mixed and adaptive finite element methods.as computer implementation. The first part will be on finite difference methods. Key numerical schemes and underlying theory will be provided for one- dimensional",
+        "prerequisites_mandatory": [
+            "Math I",
+            "Math III/Real Analysis I"
+        ],
+        "prerequisites_desirable": [
+            "Numerical Methods (MTH 270)",
+            "Math IV",
+            "Python experience"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "Math I",
+            "Math III/Real Analysis I"
+        ],
+        "prerequisites_desirable_resolved": [
+            "Numerical Methods (MTH 270)",
+            "Math IV",
+            "Python experience"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Students learn about basics of partial differential equations, some qualitative and quantitative aspects of their analytical and general solutions.",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 1,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students can derive and analyze finite difference methods for solving model problems of parabolic and hyperbolic partial differential equations.",
+            "bloom_level": "Analyze",
+            "bloom_verb": "analyze",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=analyze",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Students can write computer code to solve model problems, interpret and visualize their solutions. They also learn to make appropriate choices for numerical linear algebraic methods.",
+            "bloom_level": "Apply",
+            "bloom_verb": "solve",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=solve",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Students understand basics of functional analysis, variational formulation and finite element spaces. They also learn stability analysis in the setting of Hilbert spaces.",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 2,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "has_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Introduction to partial differential equations (PDEs) including classification, initial- and boundary-value problems, boundary conditions and common PDEs",
+                "Python tutorial"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "HW0"
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Overview of one-dimensional parabolic PDEs (heat and convection-diffusion equations)",
+                "introduction to finite differences",
+                "explicit and implicit schemes for one-dimensional parabolic equations"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "HW1"
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Consistency, stability and Fourier analysis",
+                "maximum principle in parabolic PDEs"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Overview of one-dimensional hyperbolic PDEs (advection equation)",
+                "finite difference schemes (method of lines discretizations and Lax Wendroff schemes) for one-dimensional hyperbolic PDEs",
+                "Courant-Friedrichs-Lewy (CFL) condition"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "HW2"
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Lax equivalence theorem",
+                "von-Neumann analysis and stability condition"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Order of accuracy of solution",
+                "dissipation and dispersion in finite difference schemes for advection equation"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "HW3"
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Overview of two-dimensional elliptic PDEs (Laplacian)",
+                "Maximum principle for Laplacians",
+                "reentrant corner singularities"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Interregnum: Direct and iterative methods for linear system solution",
+                "finite differences for two-dimensional Poisson\u2019s"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "HW4"
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Sobolev norms and spaces",
+                "weak derivatives",
+                "variational formulation",
+                "finite element method in one- dimensions and error estimates"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Hilbert spaces",
+                "Riesz representation theorem",
+                "Lax- Milgram theorem"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "HW5"
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Meshing",
+                "quadrature",
+                "two-dimensional finite element spaces"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Implementation of two-dimensional linear finite element for Poisson\u2019s",
+                "Use of FEniCS package for other elements"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "HW6"
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Adaptive and mixed finite elements in one-dimension",
+                "FEniCS implementation"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignments",
+            "weight_pct": 50
+        },
+        {
+            "type_label": "Midsem",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Endsem",
+            "weight_pct": 30
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "Partial Differential Equations with Numerical Methods by Stig Larsson and Vidar Thom\u00e9e"
+        },
+        {
+            "type_label": "Reference 1",
+            "title": "Finite Difference Schemes and Partial Differential Equations (Second Edition) by John Strikwerda"
+        },
+        {
+            "type_label": "Reference 2",
+            "title": "Numerical Solution of Partial Differential Equations (Second Edition) by K. W. Morton and David Meyers"
+        },
+        {
+            "type_label": "Reference 3",
+            "title": "The Mathematical Theory of Finite Element Methods (Third Edition) by Susanne Brenner and Ridgway Scott"
+        }
+    ]
+}

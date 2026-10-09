@@ -1,0 +1,247 @@
+{
+    "header": {
+        "course_code": "ECE634",
+        "aliases": [],
+        "name": "Information Theory",
+        "credits": "4",
+        "offered_to": [
+            "PG",
+            "UG"
+        ],
+        "department": null,
+        "description": "Algorithms have always been designed to make communication systems, or for that matter any system, more reliable, less memory consuming, more efficient in using system resources, etc. This then begs the question, how does one know if an algorithm is optimal, i.e., whether it ensures the minimum possible usage of system resources in accomplishing its task? In other words, we want to ask, what are the fundamental limitations that a system and a given task imposes on all possible algorithms that can solve that given task? One possible way to tackle such questions is through the discipline of information theory, and this course is meant as an intorduction to this field. The course will broadly cover three canonical systems: The lossless storage system requiring minimal storage space consumption with perfect recovery, the noisy communication channel requiring maximum communication rates for arbitrarily low probability of decoding error, and the lossy storage system requiring minimal storage space while allowing a pre-defined level of distortion in the recovered data. To tackle these three broad problems, we shall first introduce the fundamental information theoretic quantities such as entropy, relative entropy, mutual information, and study their properties. Next, we shall introduce various tools required for proofs such as asymptotic equipartition property, Fano's inequality, method of types, data processing inequality. Finally, the student will be introduced to the probabilistic method for obtaining proofs. We shall then leverage these proof techniqes to see how the fundamental limits of the above-mentioned systems can be expressed in terms of the quantities such as entropy, relative entropy, and mutual infomation. Individual or groups of students (depending on the number of attendees) will be asked to choose and explore one further topic from a curated list of topics from areas such as network information theory, applications of information theory, information theoretic security, common information. The students would be required to prepare a report summarising their understanding of their chosen topic, as part of their evaluation.",
+        "prerequisites_mandatory": [
+            "ECE501 Probability and Random Process (also okay if one takes this course in parallel) OR MTH201 Probability and Statistics"
+        ],
+        "prerequisites_desirable": [],
+        "prerequisites_mandatory_resolved": [
+            "ECE501"
+        ],
+        "prerequisites_desirable_resolved": []
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Formulate and solve data compression problems and evaluate their fundamental limits",
+            "bloom_level": "Create",
+            "bloom_verb": "formulate",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=formulate",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Evaluate the fundamental limits of information transmission",
+            "bloom_level": "Evaluate",
+            "bloom_verb": "evaluate",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=evaluate",
+                "too_short",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Analyze and evaluate fundamental information theoretic quantities",
+            "bloom_level": "Evaluate",
+            "bloom_verb": "evaluate",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=evaluate",
+                "too_short",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Differentiate between and achievability and a converse parts of a proof",
+            "bloom_level": "Analyze",
+            "bloom_verb": "differentiate",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=differentiate",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO5",
+            "raw_text": "Apply probabilistic methods",
+            "bloom_level": "Apply",
+            "bloom_verb": "apply",
+            "quality_score": 1,
+            "quality_reasons": [
+                "action_verb=apply",
+                "too_short",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Fixed length source coding",
+                "Entropy",
+                "Weak Law of Large Numbers review",
+                "Asymptotic Equipartition Property"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2, 3",
+            "lecture_topics": [
+                "Hypothesis Testing",
+                "Relative Entropy",
+                "Properties of entropy and relative entropy",
+                "f-Divergences"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Variable length source coding",
+                "Kraft inequality",
+                "Shannon-Fano Codes",
+                "Huffman Codes",
+                "Optimality of Huffman Codes"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Assignment 1"
+        },
+        {
+            "week": "5, 6",
+            "lecture_topics": [
+                "Method of types",
+                "Pinsker's Inequality",
+                "Continuity of entropy",
+                "Universal source coding"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Midsem"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Recess"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Mutual information",
+                "properties of mutual information",
+                "data processing inequality"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10, 11, 12",
+            "lecture_topics": [
+                "Channel coding theorem for discrete memoryless channels",
+                "Channel capacity",
+                "Fano's inequality",
+                "differential entropy and its properties",
+                "channel coding for Gaussian channels",
+                "channels with feedback",
+                "Joint source-channel coding theorem"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4",
+                "CO5"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Lossy compression",
+                "Rate Distortion Theory"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4",
+                "CO5"
+            ],
+            "tutorial_assignment": "Assignment 2"
+        },
+        {
+            "week": "14",
+            "lecture_topics": [
+                "Buffer weeks",
+                "Extra topics if previous weekly plan is met: Packing Lemma, Covering Lemma, Slepian Wolf Theorem, Wyner-Ziv Coding"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3",
+                "CO5"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignment",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Mid-sem test",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Report",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "End-sem test",
+            "weight_pct": 30
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "References",
+            "title": "Elements of Information Theory by Thomas Cover and Joy Thomas."
+        },
+        {
+            "type_label": "References",
+            "title": "Information Theory: Coding Theorems for Discrete Memoryless Systems by Imre Csiszar and Janos Korner."
+        },
+        {
+            "type_label": "References",
+            "title": "Network Information Theory by Abbas El Gamal and Young Han Kim."
+        }
+    ]
+}

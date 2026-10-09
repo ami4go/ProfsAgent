@@ -21,15 +21,21 @@ from google.genai import types
 DATA_PARSED_DIR = BASE_DIR / "data" / "parsed"
 DATA_EXTRACTED_DIR = BASE_DIR / "data" / "extracted"
 
-def setup_client():
+def setup_clients():
     load_dotenv(BASE_DIR / ".env")
-    key = os.getenv("GEMINI_API_KEY_7")
-    if not key:
-        raise ValueError("GEMINI_API_KEY_7 not found")
-    return genai.Client(api_key=key)
+    clients = []
+    for i in range(1, 9):
+        key = os.getenv(f"GEMINI_API_KEY_{i}")
+        if key:
+            clients.append(genai.Client(api_key=key))
+    if not clients:
+        raise ValueError("No GEMINI_API_KEYs found in .env")
+    return clients
 
-def call_gemini(client, prompt_text, max_retries=4):
-    for attempt in range(1, max_retries + 1):
+def call_gemini(clients, prompt_text, max_retries=14):
+    for attempt in range(max_retries):
+        # Pick a client based on the attempt number to rotate through keys
+        client = clients[attempt % len(clients)]
         def _do():
             return client.models.generate_content(
                 model='gemini-3.5-flash',
@@ -46,9 +52,11 @@ def call_gemini(client, prompt_text, max_retries=4):
                 return future.result(timeout=90)
         except Exception as e:
             err = str(e)[:100]
-            if attempt < max_retries:
-                wait = 10 * attempt
-                print(f"\n    Error: {err}. Retry {attempt+1}/{max_retries} in {wait}s...", end="", flush=True)
+            if attempt < max_retries - 1:
+                # With 7 keys, we can afford much shorter waits between retries
+                # because we immediately swap to a fresh key
+                wait = 2
+                print(f"\n    Error: {err}. Rotating to next key (Retry {attempt+1}/{max_retries})...", end="", flush=True)
                 time.sleep(wait)
             else:
                 raise
@@ -69,7 +77,7 @@ def build_prompt(parsed_path):
 
 def main():
     DATA_EXTRACTED_DIR.mkdir(parents=True, exist_ok=True)
-    client = setup_client()
+    clients = setup_clients()
     
     all_parsed = sorted(glob.glob(str(DATA_PARSED_DIR / "*.json")))
     todo = []
@@ -107,7 +115,7 @@ def main():
             continue
         
         try:
-            resp = call_gemini(client, prompt)
+            resp = call_gemini(clients, prompt)
             parsed = json.loads(resp.text)
             with open(out, "w", encoding="utf-8") as f:
                 json.dump(parsed, f, indent=4)

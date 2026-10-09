@@ -1,0 +1,253 @@
+{
+    "header": {
+        "course_code": "ECE452",
+        "aliases": [
+            "ECE552"
+        ],
+        "name": "Statistical Signal Processing",
+        "credits": "4",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": null,
+        "description": "This post graduate course is designed to cover techniques for statistical signal processing, detection and parameter estimation. It will briefly review the preliminaries on linear algebra and statistics. The rest of the course is broadly divided into three parts. The first part will deal with the design, implementation and performance evaluation of detectors; this would cover composite and M-ary hypothesis testing. The second part of the course deals with estimation techniques like Maximum Likelihood, MAP and MMSE estimation. The third part introduces adaptive filtering approaches; this will cover stochastic and data-driven approach with emphasis on least squares based techniques. Homework will be a mix of theory and programming assignments.",
+        "prerequisites_mandatory": [
+            "Signals & Systems",
+            "Probability and Statistics",
+            "Linear Algebra"
+        ],
+        "prerequisites_desirable": [
+            "Matlab Programming",
+            "Probability and Random Processes"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "Signals & Systems",
+            "Probability and Statistics",
+            "Linear Algebra"
+        ],
+        "prerequisites_desirable_resolved": [
+            "Matlab Programming",
+            "Probability and Random Processes"
+        ]
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Apply hypothesis testing to signal and event detection problems.",
+            "bloom_level": "Apply",
+            "bloom_verb": "apply",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=apply",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Evaluate detector performance using ROC curves, sensitivity/specificity etc.",
+            "bloom_level": "Evaluate",
+            "bloom_verb": "evaluate",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=evaluate",
+                "too_short",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Choose among MLE, MAP and MMSE estimators given a parameter estimation tasks.",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 2,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Apply and design least squares based adaptive filters for stochastic signals.",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "has_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Linear Algebra & Prob Review"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Sufficient Statistics",
+                "Significance Testing"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": "HW 1 ( Sufficient Statistics, Prob, Stats, MC Sampling)"
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "MMSE",
+                "CRLB",
+                "MVUE"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "General MVUE",
+                "BLUE"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "MLE",
+                "MAP Estimation"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "HW 2 (Estimation - MLE, MAP, BLUE)"
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "NP Detector",
+                "LRT",
+                "ROC Curves"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Generalized Matched Filters",
+                "Estimator-Correlator"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Estimator-Correlator",
+                "GLRT"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "HW 3 (Detection - NP, LRT, GLRT)"
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Wiener Filtering",
+                "Steepest Descent"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "LMS Adaptive Filters",
+                "Variants of Least Squares"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "HW 4 (Adaptive Filtering)"
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "RLS",
+                "Kalman Filtering"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Robust Least Squares"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "HW 5 (Kalman Filtering/ RLS)"
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Overflow"
+            ],
+            "cos_met": [],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignment",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Quiz",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Mid-sem",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "End-sem",
+            "weight_pct": 20
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "Fundamentals of Statistical Signal Processing (Vol. 1 & 2) \u2013 Steven Kay"
+        },
+        {
+            "type_label": "Textbook",
+            "title": "Adaptive Filter Theory \u2013 Simon Haykin, 4th Ed."
+        }
+    ]
+}

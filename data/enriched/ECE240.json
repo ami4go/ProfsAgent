@@ -1,0 +1,210 @@
+{
+    "header": {
+        "course_code": "ECE240",
+        "aliases": [],
+        "name": "Principles of Communication Systems",
+        "credits": "4",
+        "offered_to": [],
+        "department": null,
+        "description": "The course is intended to be a broad introduction to Communication Systems. The course will develop understanding of the principles underlying communication systems, describe basic methods for communication and develop requisite mathematical background required for noise analysis of communication systems. The lectures will be supplemented by PyLab simulation exercises, a final term paper/project.",
+        "prerequisites_mandatory": [
+            "Signals and Systems",
+            "Probability and Statistics"
+        ],
+        "prerequisites_desirable": [],
+        "prerequisites_mandatory_resolved": [
+            "Signals and Systems",
+            "Probability and Statistics"
+        ],
+        "prerequisites_desirable_resolved": []
+    },
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Apply the ideas of various transforms (Fourier, Z etc) for AM, FM and other digital communication systems ( e.g, power, bandwidth, demodulation etc)",
+            "bloom_level": "Apply",
+            "bloom_verb": "apply",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=apply",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Students should be able to differentiate between an analog and a digital comm system.",
+            "bloom_level": "Analyze",
+            "bloom_verb": "differentiate",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=differentiate",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Simulate simple communication systems and their blocks in MATLAB/PYTHON.",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 1,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Ability to perform SNR calculations for simple analog and digital modulation scenarios.",
+            "bloom_level": "Unclassified",
+            "bloom_verb": "",
+            "quality_score": 2,
+            "quality_reasons": [
+                "no_bloom_verb",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO5",
+            "raw_text": "Apply the ideas of entropy and Huffman coding.",
+            "bloom_level": "Apply",
+            "bloom_verb": "apply",
+            "quality_score": 1,
+            "quality_reasons": [
+                "action_verb=apply",
+                "too_short",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "Lecture 1-5",
+            "lecture_topics": [
+                "Revision of Signals and Systems",
+                "Fourier Transforms",
+                "Fourier Series",
+                "Channel and Convolution",
+                "Complex representation of signals",
+                "Baseband passband representation of Signals"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Assignment 1"
+        },
+        {
+            "week": "Lecture 6-10",
+            "lecture_topics": [
+                "Basic Analog Modulation - AM (DSB, SSB, VSB)",
+                "FM",
+                "PM (noise free analysis)"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment 2"
+        },
+        {
+            "week": "Lecture 11-12",
+            "lecture_topics": [
+                "Sampling",
+                "Nyquist sampling theorem",
+                "Digital Baseband Communication: Quantization, PCM, PPM, PDM"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": "Assignment 3"
+        },
+        {
+            "week": "Lecture 13-16",
+            "lecture_topics": [
+                "Probability theory review",
+                "Random Processes - definitions",
+                "Wide sense stationarity",
+                "Auto-correlations and power spectral density (PSD)"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": "Assignment 4"
+        },
+        {
+            "week": "Lecture 17-21",
+            "lecture_topics": [
+                "Line Coding: PSD of various line codes",
+                "Pulse Shaping: ISI, Nyquist\u2019s Criterion, Eye diagrams",
+                "Digital Bandpass Modulation schemes: ASK, PSK, QAM"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignment 5"
+        },
+        {
+            "week": "Lecture 22-23",
+            "lecture_topics": [
+                "Optimum Linear Detector for Binary Polar Signaling (BIT Error Rate Analysis)"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "Lecture 24-25",
+            "lecture_topics": [
+                "Entropy",
+                "Huffman coding",
+                "Intro to Info theory"
+            ],
+            "cos_met": [
+                "CO5"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignments",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Quiz",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "Mid sem",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "End sem",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Class Participation",
+            "weight_pct": 10
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "B. P. Lathi and Z. Ding, Modern Digital and Analog Communication Systems, Oxford Univ. Press, January 2009, 4/e."
+        },
+        {
+            "type_label": "Textbook",
+            "title": "Introduction to Communications Systems by Upamanyu Madhow."
+        }
+    ]
+}

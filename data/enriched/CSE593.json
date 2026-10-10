@@ -1,15 +1,239 @@
 {
     "header": {
-        "course_code": "N/A",
-        "name": "N/A",
-        "credits": "N/A",
-        "offered_to": [],
-        "description": "No course information was provided in the input data. The input only contained Bloom's Taxonomy definitions and suggested verbs.",
-        "prerequisites_mandatory_resolved": [],
-        "prerequisites_desirable_resolved": []
+        "course_code": "CSE593",
+        "aliases": [],
+        "name": "Quantum Cryptography",
+        "credits": "2",
+        "offered_to": [
+            "UG",
+            "PG"
+        ],
+        "department": "CSE",
+        "description": "",
+        "prerequisites_mandatory": [
+            "Introduction to Quantum Computing (CSE622)"
+        ],
+        "prerequisites_desirable": [
+            "An Introduction to Quantum Information Theory (MTH551)"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "Introduction to Quantum Computing (CSE622)"
+        ],
+        "prerequisites_desirable_resolved": [
+            "An Introduction to Quantum Information Theory (MTH551)"
+        ]
     },
-    "outcomes": [],
-    "weekly_plan": [],
-    "assessments": [],
-    "resources": []
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Explain the fundamental principles of classical cryptography, including design goals, symmetric and asymmetric systems, and security models.",
+            "bloom_level": "Create",
+            "bloom_verb": "design",
+            "quality_score": 3,
+            "quality_reasons": [
+                "action_verb=design",
+                "has_object",
+                "has_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Describe and analyze the working of key quantum algorithms (Simon\u2019s, Shor\u2019s, Grover\u2019s) and their computational implications.",
+            "bloom_level": "Analyze",
+            "bloom_verb": "analyze",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=analyze",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Evaluate the impact of quantum algorithms on classical cryptographic schemes such as RSA and symmetric key cryptography.",
+            "bloom_level": "Evaluate",
+            "bloom_verb": "evaluate",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=evaluate",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Apply and compare post-classical techniques such as Quantum Key Distribution (QKD) and cryptography with deletion to modern security challenges.",
+            "bloom_level": "Apply",
+            "bloom_verb": "apply",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=apply",
+                "has_object",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Classical Cryptography Recap"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Written Assignments"
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Cryptographic Design Principles and Security Models"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": "Written Assignments"
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Quantum Algorithms - Simon's Algorithm and Period Finding"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Qiskit Assignment"
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Quantum Algorithms -Shor's Algorithm"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Written Assignments"
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Quantum Algorithms - Grovers Algorithm"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": "Qiskit Assignment"
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Implications on Classical Cryptography"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Written Assignments"
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Grovers and Symmetric Key Cryptography"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Qiskit Assignment"
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Shor's and RSA"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Qiskit Assignment"
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Quantum Key Distribution (QKD)"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Written Assignments"
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "E91 Protocol: entanglement-based QKD",
+                "Bell inequalities"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Written Assignments"
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Cryptograpy with Deletion"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Written Assignments"
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Certified Deletion"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": "Written Assignments"
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "Assignments (short problem sets and readings)",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Mini-project (simulation of Quantum Algorithms in Python/Qiskit OR survey of PQC candidate)",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Final Exam",
+            "weight_pct": 40
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "Nielsen, M. A., & Chuang, I. L., Quantum Computation and Quantum Information,Cambridge University Press."
+        },
+        {
+            "type_label": "Textbook",
+            "title": "Gisin, N., Ribordy, G., Tittel, W., & Zbinden, H. (2002). Quantum cryptography. Reviews of Modern Physics, 74(1), 145."
+        },
+        {
+            "type_label": "Reference",
+            "title": "NIST Post-Quantum Cryptography Standardization Project, https://csrc.nist.gov/projects/post-quantum-cryptography"
+        },
+        {
+            "type_label": "Open source reference and simulators",
+            "title": "Qiskit: https://www.ibm.com/quantum/qiskit"
+        },
+        {
+            "type_label": "Open Source simulator",
+            "title": "Quantum Simulator: https://wybiral.github.io/quantum/"
+        },
+        {
+            "type_label": "Online notes",
+            "title": "lecture notes of Ronald de Wolf: https://arxiv.org/abs/1907.09415v5"
+        }
+    ]
 }

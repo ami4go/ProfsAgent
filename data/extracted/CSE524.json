@@ -1,17 +1,234 @@
 {
     "header": {
-        "course_code": "UNKNOWN",
+        "course_code": "CSE524",
         "aliases": [],
-        "name": "Unknown Course",
-        "credits": "0",
-        "offered_to": [],
-        "department": null,
-        "description": "No course description available in the provided input.",
-        "prerequisites_mandatory": [],
-        "prerequisites_desirable": []
+        "name": "Theory of modern cryptography",
+        "credits": "4",
+        "offered_to": [
+            "senior UG",
+            "masters",
+            "PhD students"
+        ],
+        "department": "CSE",
+        "description": "In this course, we will discuss the theoretical foundations of cryptography. It is one of the most important areas of computer science, and the applications of cryptography are ubiquitous in the digital age. There are various aspects of cryptography, but we will mainly focus on encryption, which deals with communicating securely in the presence of a malicious party. In the first half of this course, we will cover various mathematical concepts that guarantee the securities of existing cryptographic systems, like perfect secrecy, one-way functions, hard-core predicates, pseudorandom generators, pseudorandom permutations and functions, trapdoor one-way functions, etc. We will spend most of our time in this part on pseudorandomness, where we will cover various important properties like an \u201cequivalence\u201d of one-way functions and pseudorandom generators, the unpredictability of a pseudorandom generator, etc.  Then, in the second half, we will see how to use these mathematical concepts to design some of the important cryptographic systems, like the one-time pad, Data Encryption Standard, Advanced Encryption Standard, the RSA cryptosystem, etc. Towards the end of this course, we will cover the concepts of interactive and zero-knowledge proofs.",
+        "prerequisites_mandatory": [
+            "CSE121 or MTH210"
+        ],
+        "prerequisites_desirable": [
+            "MTH201 or any other introductory course on probability"
+        ]
     },
-    "outcomes": [],
-    "weekly_plan": [],
-    "assessments": [],
-    "resources": []
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Describe different notions of security of a cryptographic system."
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Discuss different types of encryption schemes"
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Discuss various mathematical tools in modern cryptography"
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Explain important results and open problems in modern cryptography"
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Introduction to cryptography and encryption scheme"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Perfect secrecy - three equivalent definitions and One-time pad"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Shannon's theorem on perfect secrecy and introduction to modern cryptography"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "One-way functions (OWF) - equivalence of strong and weak one-way functions"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Candidate one-way functions and hard-core predicates"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Pseudorandom generators (PRG) and computational indistinguishability"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Increasing the expansion factor of a PRG",
+                "applications of PRGs",
+                "PRGs and unpredictability"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "\"Equivalence\" of OWFs and PRGs",
+                "pseudorandom functions and pseudorandom permutations"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Data Encryption Standard (DES)",
+                "Advanced Encryption Standard (AES)"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Security against Chosen-Plaintext attacks (CPA) and Chosen-Ciphertext attacks(CCA)",
+                "Trapdoor OWF"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Public-key cryptosystem and RSA cryptosystem"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Interactive proof system",
+                "Interactive Proof for Graph non-isomorphism",
+                "Zero-Knowledge proofs"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Zero-Knowledge proof for Graph Isomorphism",
+                "Zero-Knowledge proofs for NP"
+            ],
+            "cos_met": [
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "3 assignments",
+            "weight_pct": 24
+        },
+        {
+            "type_label": "1 mid-sem exam",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "1 end-sem exam",
+            "weight_pct": 30
+        },
+        {
+            "type_label": "Reading project with an oral examination",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "A summary report on the content of the course",
+            "weight_pct": 6
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "Foundations of Cryptography (Volume 1 and 2) by Oded Goldreich"
+        },
+        {
+            "type_label": "Textbook",
+            "title": "Introduction to Modern Cryptography by Jonathan Katz and Yehuda Lindell"
+        },
+        {
+            "type_label": "Lecture note",
+            "title": "Lecture notes on Shafi Goldwasser and Mihir Bellare"
+        }
+    ]
 }

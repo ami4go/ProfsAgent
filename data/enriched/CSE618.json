@@ -1,19 +1,234 @@
 {
     "header": {
-        "course_code": "UNKNOWN",
+        "course_code": "CSE618",
         "aliases": [],
-        "name": "Unknown Course",
-        "credits": "0",
-        "offered_to": [],
-        "department": null,
-        "description": "No course description available in the provided input.",
-        "prerequisites_mandatory": [],
-        "prerequisites_desirable": [],
-        "prerequisites_mandatory_resolved": [],
-        "prerequisites_desirable_resolved": []
+        "name": "Meta-learning",
+        "credits": "4",
+        "offered_to": [
+            "senior UG",
+            "masters",
+            "PhD students"
+        ],
+        "department": "CSE",
+        "description": "Meta-learning will cover recent research papers focusing on the broad goal of out-of-distribution generalization in machine-learning. Thus, in addition to the basic model, metric and optimization based meta-learning techniques, we will also cover papers at the intersection of meta-learning and continual learning, representation learning,  test-time adaptation and neurosymbolic reasoning. We will apply these techniques to solve reppresentative problems in few-shot, online and analogical learning/reasoning.",
+        "prerequisites_mandatory": [
+            "At least one of the following courses: ECE363/ECE563/CSE343/CSE543/CSE342/CSE542/ECE356/ECE556/CSE642/ECE553/CSE641"
+        ],
+        "prerequisites_desirable": [
+            "Experience in developing neural network models using pytorch"
+        ],
+        "prerequisites_mandatory_resolved": [
+            "At least one of the following courses: ECE363/ECE563/CSE343/CSE543/CSE342/CSE542/ECE356/ECE556/CSE642/ECE553/CSE641"
+        ],
+        "prerequisites_desirable_resolved": [
+            "Experience in developing neural network models using pytorch"
+        ]
     },
-    "outcomes": [],
-    "weekly_plan": [],
-    "assessments": [],
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Understanding of basic meta-learning techniques and proficieny at applying meta-learning to any new machine-learning problem. Ability to apply these techniques to real-life problems.",
+            "bloom_level": "Apply",
+            "bloom_verb": "apply",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=apply",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Understanding the challenges of out-of-distribution generalization and continual learning in supervised learning, and familiarity with a approaches such as generative replay, neuromodulation, test-time adaptation, etc. and meta-learning techniques used to address these challenges. Ability to use these techniques to attack real-life problems.",
+            "bloom_level": "Evaluate",
+            "bloom_verb": "test",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=test",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Understanding the challenges of analogical reasoning, and approaches such as neuo-symbolic techniques and program synthesis as well as the use of LLMs to augment these.",
+            "bloom_level": "Apply",
+            "bloom_verb": "use",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=use",
+                "has_object",
+                "no_context"
+            ]
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Experience of attempting to generalize/combine ideas from multiple papers as well as with other ideas of one\u2019s own and validate/invalidate these on the challenge problems posed in the course assignments, i.e.,taking the first steps towards research.",
+            "bloom_level": "Evaluate",
+            "bloom_verb": "validate",
+            "quality_score": 2,
+            "quality_reasons": [
+                "action_verb=validate",
+                "has_object",
+                "no_context"
+            ]
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Deep-learning refresher: MLP, RNNs, CNNs, Transformers"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Overview of assignments"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignments Begin"
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "Basics of meta-learning: optimization-based meta-learning and MAML"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "Basics of meta-learning: model-based and metric-based meta-learning"
+            ],
+            "cos_met": [
+                "CO1"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "Introduction to neuro-symbolic reasoning and program synthesis"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Overview of LLMs and their use for neuro-symbolic program synthesis"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Recent papers in meta-learning"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Recent papers in meta-learning"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Recent papers in meta-learning"
+            ],
+            "cos_met": [
+                "CO2"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Recent papers in neuro-symbolic learning and reasoning"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Recent papers in neuro-symbolic learning and reasoning"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Recent papers in neuro-symbolic learning and reasoning"
+            ],
+            "cos_met": [
+                "CO3"
+            ],
+            "tutorial_assignment": "Assignments Due"
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Assignment 1 Presentations"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "14",
+            "lecture_topics": [
+                "Assignment 2 Presentations"
+            ],
+            "cos_met": [
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "3 Quizzes",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "2 Assignments",
+            "weight_pct": 45
+        },
+        {
+            "type_label": "Exams (2)",
+            "weight_pct": 40
+        }
+    ],
     "resources": []
 }

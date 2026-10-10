@@ -1,17 +1,254 @@
 {
     "header": {
-        "course_code": "UNKNOWN",
+        "course_code": "CSE621",
         "aliases": [],
-        "name": "Unknown Course",
-        "credits": "0",
-        "offered_to": [],
-        "department": null,
-        "description": "No course description available in the provided input.",
-        "prerequisites_mandatory": [],
-        "prerequisites_desirable": []
+        "name": "Computational Complexity Theory",
+        "credits": "4",
+        "offered_to": [
+            "senior UG",
+            "masters",
+            "PhD students"
+        ],
+        "department": "CSE",
+        "description": "One of the many beautiful results in the theory of computation is the equivalence of \u201cdeterministic\u201d and \u201cnon-deterministic\u201d variants of different models of computation, like Turing machines. One may ask whether this equivalence holds if we restrict the running time (or number of steps) of a Turing machine. This gives rise to one of the most important open problems in computer science, popularly known as the \u2018P versus NP\u2019 question. This will be the starting point of our course. After briefly recalling Turing machines and discussing formal definitions of the classes \u2018P\u2019 and \u2018NP\u2019, we will see the notion of \u2018reductions\u2019, which will allow us to talk about the \u2018hardest\u2019 problems in NP, known as NP-complete problems. We will discuss some important NP-complete problems from different areas, like logic, graph theory, etc. After that, we will briefly talk about other important classes corresponding to the running time of a Turing machine, like \u2018co-NP\u2019, \u2018EXP\u2019, and \u2018NEXP\u2019. Following this, we will see a classification of computational problems based on the space used by the Turing machine. We will discuss some important classes like PSPACE and NPSPACE (the space-variants of P and NP, respectively), L and NL (the log-space versions of P and NP), their relations with P and NP, a \u2018PSPACE-complete\u2019 problem, the equivalence of PSPACE and NPSPACE, and other space complexity classes. Then, we will explore the concept of the \u2018polynomial hierarchy\u2019, which generalises P, NP, and co-NP, and is contained within PSPACE. After that, we will delve into Boolean circuits, the \u2018non-uniform\u2019 variant of Turing machines. We will cover some classical lower bounds on Boolean circuits and discuss recent developments. After this, we will start randomization in computation. At the end, I will talk about catalytic computation, a rapidly developing research area and will conclude with a recent breakthrough of Ryan Williams, which shows that deterministic time can be \u2018simulated\u2019 by square-root space.",
+        "prerequisites_mandatory": [
+            "CSE121 (or MTH210)",
+            "CSE222 (can be waived if a student has a deep understanding of design and analysis of algorithms)",
+            "CSE322 (I will cover Turing machines in the first week. I will conduct a short quiz after that. If students perform well, TOC can be waived off)"
+        ],
+        "prerequisites_desirable": [
+            "MTH201"
+        ]
     },
-    "outcomes": [],
-    "weekly_plan": [],
-    "assessments": [],
-    "resources": []
+    "outcomes": [
+        {
+            "label": "CO1",
+            "raw_text": "Describe different models of computation and different classes of computational problems"
+        },
+        {
+            "label": "CO2",
+            "raw_text": "Determine \"reductions\" between various computational problems and discuss lower bounds on various models of computation"
+        },
+        {
+            "label": "CO3",
+            "raw_text": "Discuss complete problems for different computational classes and relationships between various classes"
+        },
+        {
+            "label": "CO4",
+            "raw_text": "Explain important results and open problems in computational complexity"
+        }
+    ],
+    "weekly_plan": [
+        {
+            "week": "1",
+            "lecture_topics": [
+                "Review of Turing machines",
+                "formal introduction of P and NP"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "2",
+            "lecture_topics": [
+                "Karp reduction",
+                "NP-completeness",
+                "the first NP-complete language - Satisfiability"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "3",
+            "lecture_topics": [
+                "More NP-complete problems",
+                "the class co-NP",
+                "Time Hierarchy theorems"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "4",
+            "lecture_topics": [
+                "The classes EXP and NEXP",
+                "space complexity classes - PSPACE and NPSPACE",
+                "PSPACE = NPSPACE"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "5",
+            "lecture_topics": [
+                "PSPACE-complete language",
+                "Logspace reductions",
+                "L, NL and co-NL",
+                "NL-completeness"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "6",
+            "lecture_topics": [
+                "Polynomial hierarchy (PH)",
+                "complete problems in the PH"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "7",
+            "lecture_topics": [
+                "Boolean circuits",
+                "P/poly",
+                "Karp-Lipton theorem",
+                "parallel computation - AC, NC circuits"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "8",
+            "lecture_topics": [
+                "Probabilistic Turing machines and their examples",
+                "randomised complexity classes - BPP, RP, co-RP, ZPP"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO3"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "9",
+            "lecture_topics": [
+                "Error reduction",
+                "Relation of BPP with P/poly and PH",
+                "Circuit lower bounds"
+            ],
+            "cos_met": [
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "10",
+            "lecture_topics": [
+                "Hastad's switching lemma",
+                "ACC circuits",
+                "threshold circuits"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "11",
+            "lecture_topics": [
+                "Advanced topic: Overview of recent lower bounds on ACC circuits"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "12",
+            "lecture_topics": [
+                "Advanced topic: Catalytic computation"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        },
+        {
+            "week": "13",
+            "lecture_topics": [
+                "Advanced topic: Simulating time with square-root space (Ryan William's breakthrough)"
+            ],
+            "cos_met": [
+                "CO1",
+                "CO2",
+                "CO3",
+                "CO4"
+            ],
+            "tutorial_assignment": null
+        }
+    ],
+    "assessments": [
+        {
+            "type_label": "2 Assignments",
+            "weight_pct": 15
+        },
+        {
+            "type_label": "Mid-term exam",
+            "weight_pct": 25
+        },
+        {
+            "type_label": "End-term exam",
+            "weight_pct": 35
+        },
+        {
+            "type_label": "Reading project",
+            "weight_pct": 20
+        },
+        {
+            "type_label": "A summary report on the content of the course",
+            "weight_pct": 5
+        }
+    ],
+    "resources": [
+        {
+            "type_label": "Textbook",
+            "title": "Computational Complexity: A modern approach by Arora and Barak, and relevant research papers and surveys"
+        },
+        {
+            "type_label": "Reference Book",
+            "title": "Mathematics and computation by Wigderson"
+        },
+        {
+            "type_label": "Other Books",
+            "title": "Introduction to the Theory of Computation by Sipser"
+        }
+    ]
 }

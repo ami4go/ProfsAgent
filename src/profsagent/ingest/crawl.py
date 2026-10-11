@@ -10,6 +10,7 @@ from pathlib import Path
 # Paths
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 DATA_RAW_DIR = BASE_DIR / "data" / "raw"
+TECHTREE_CODES_PATH = BASE_DIR / "data" / "techtree_codes.json"
 COURSES_JSON_URL = "https://techtree.iiitd.edu.in/static/Courses.json"
 
 def fetch_courses_json():
@@ -18,6 +19,25 @@ def fetch_courses_json():
     with urllib.request.urlopen(req) as response:
         data = json.loads(response.read().decode())
     return data.get("data", [])
+
+def course_stem(course):
+    """File name used for a course across data/ folders, e.g. 'CSE421/CSE621' -> 'CSE421_CSE621'."""
+    return course.get("Course Code", "").strip().replace(" ", "_").replace("/", "_")
+
+def write_techtree_codes(courses):
+    """Save TechTree's official code and name for every course, keyed by file stem.
+    enrich.py uses it to correct the codes written on the sheets (typos, old numbers, placeholders)."""
+    codes = {}
+    for course in courses:
+        stem = course_stem(course)
+        if stem:
+            codes[stem] = {
+                "code": " ".join(course.get("Course Code", "").split()),
+                "name": course.get("Course Name", "").split(" # ")[0].strip(),
+            }
+    with open(TECHTREE_CODES_PATH, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(dict(sorted(codes.items())), f, indent=4)
+    print(f"Saved {len(codes)} TechTree course codes to {TECHTREE_CODES_PATH.name}")
 
 def extract_sheet_url(embed_link):
     if not embed_link or embed_link == "None":
@@ -61,13 +81,14 @@ def main():
     # Save the index itself just in case
     with open(DATA_RAW_DIR / "courses_index.json", "w", encoding="utf-8") as f:
         json.dump(courses, f, indent=4)
-        
+    write_techtree_codes(courses)
+
     downloaded_count = 0
     skipped_count = 0
     failed_count = 0
 
     for idx, course in enumerate(courses):
-        code = course.get("Course Code", "").strip().replace(" ", "_").replace("/", "_")
+        code = course_stem(course)
         if not code:
             continue
             

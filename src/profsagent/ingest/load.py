@@ -66,10 +66,12 @@ class KGBuilder:
                     """
                     MERGE (c:Course {code: $code})
                     SET c.name = $name,
+                        c.aliases = $aliases,
                         c.credits = $credits,
                         c.description = $description
                     """,
                     code=course_code,
+                    aliases=header.get("aliases") or [],
                     name=header.get("name", ""),
                     credits=str(header.get("credits", "")),
                     description=header.get("description", "")

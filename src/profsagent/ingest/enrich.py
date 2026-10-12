@@ -6,6 +6,8 @@ Enrichers for extracted course data:
                             prerequisite text to the codes of courses in the corpus
   4. CO reference check  — moves week CO references that match no outcome into cos_met_unknown
   5. Assessment Typer    — tags each assessment component with a standard type (endsem, quiz, ...)
+  6. Catalogue details   — adds TechTree's entry (credits, semester, cluster, catalogue link), the course
+                            level, prerequisite links from the sheet and TechTree, and anti-requisites
 """
 
 import json
@@ -16,7 +18,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 DATA_EXTRACTED_DIR = BASE_DIR / "data" / "extracted"
 DATA_ENRICHED_DIR = BASE_DIR / "data" / "enriched"
-TECHTREE_CODES_PATH = BASE_DIR / "data" / "techtree_codes.json"  # written by crawl.py
+TECHTREE_INDEX_PATH = BASE_DIR / "data" / "techtree_index.json"  # written by crawl.py
 
 # ---------------------------------------------------------------------------
 # Bloom's Taxonomy verb mapping (Anderson & Krathwohl, 2001)
@@ -226,8 +228,36 @@ def resolve_prerequisites(raw_prereqs, code_index, own_code):
                 resolved.append(primary)
     return resolved
 
-def enrich_course(extracted_data, primary, aliases, code_index):
-    """Enriches a single extracted course JSON with Bloom tags, quality scores, codes and resolved prereqs."""
+def prerequisite_links(header, catalogue, code_index, own_code):
+    """
+    One entry per prerequisite course, merged from the sheet and TechTree's catalogue columns:
+    {code, kind: "mandatory" | "desirable", sources: ["sheet", "techtree"]}.
+    A course that any source lists as mandatory is mandatory.
+    """
+    links = {}
+    def add(raw_prereqs, kind, source):
+        for code in resolve_prerequisites(raw_prereqs, code_index, own_code):
+            link = links.setdefault(code, {"code": code, "kind": kind, "sources": []})
+            if kind == "mandatory":
+                link["kind"] = "mandatory"
+            if source not in link["sources"]:
+                link["sources"].append(source)
+    add(header.get("prerequisites_mandatory"), "mandatory", "sheet")
+    add([catalogue.get("prerequisites")], "mandatory", "techtree")
+    add(header.get("prerequisites_desirable"), "desirable", "sheet")
+    add([catalogue.get("preferable_prerequisites")], "desirable", "techtree")
+    for link in links.values():
+        link["sources"].sort()
+    return list(links.values())
+
+def course_level(code):
+    """First digit of the course code (CSE101 -> 1, CSE5GP -> 5), the rule scripts/build_stub_kg.py uses."""
+    match = re.search(r"\d", code or "")
+    return int(match.group()) if match else None
+
+def enrich_course(extracted_data, primary, aliases, code_index, catalogue):
+    """Enriches a single extracted course JSON with Bloom tags, quality scores, codes, resolved prereqs
+    and its TechTree catalogue details."""
     enriched = extracted_data.copy()
 
     # Enrich Course Outcomes
@@ -260,11 +290,17 @@ def enrich_course(extracted_data, primary, aliases, code_index):
     header["prerequisites_desirable_resolved"] = resolve_prerequisites(
         header.get("prerequisites_desirable"), code_index, primary)
 
+    # Catalogue details from TechTree, plus links merged from the sheet and the catalogue
+    header["level"] = course_level(primary)
+    header["catalogue"] = {k: v for k, v in catalogue.items() if k not in ("code", "name")}
+    header["prerequisite_links"] = prerequisite_links(header, catalogue, code_index, primary)
+    header["anti_requisites_resolved"] = resolve_prerequisites([catalogue.get("antirequisites")], code_index, primary)
+
     return enriched
 
 def main():
     DATA_ENRICHED_DIR.mkdir(parents=True, exist_ok=True)
-    with open(TECHTREE_CODES_PATH, "r", encoding="utf-8") as f:
+    with open(TECHTREE_INDEX_PATH, "r", encoding="utf-8") as f:
         techtree = json.load(f)
 
     extracted_files = sorted(glob.glob(str(DATA_EXTRACTED_DIR / "*.json")))
@@ -284,7 +320,7 @@ def main():
     for code, data in courses.items():
         try:
             primary, aliases = course_codes[code]
-            enriched = enrich_course(data, primary, aliases, code_index)
+            enriched = enrich_course(data, primary, aliases, code_index, techtree.get(code, {}))
             out_path = DATA_ENRICHED_DIR / f"{code}.json"
             with open(out_path, "w", encoding="utf-8", newline="\n") as f:
                 json.dump(enriched, f, indent=4)

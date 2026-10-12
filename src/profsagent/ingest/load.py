@@ -1,6 +1,10 @@
 import os
+import re
+import sys
 import json
 import glob
+import hashlib
+import argparse
 from pathlib import Path
 from dotenv import load_dotenv
 from neo4j import GraphDatabase
@@ -8,6 +12,25 @@ from neo4j import GraphDatabase
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 DATA_ENRICHED_DIR = BASE_DIR / "data" / "enriched"
 DATA_CANONICAL_DIR = BASE_DIR / "data" / "canonical"
+
+# One uniqueness constraint per node key: keeps MERGE from creating duplicates and makes lookups fast
+CONSTRAINTS = [
+    ("Course", "code"), ("CourseOutcome", "id"), ("WeekPlan", "id"), ("Topic", "id"),
+    ("AssessmentComponent", "id"), ("Resource", "id"),
+]
+
+def resource_id(title):
+    """Shared id for a textbook/reference title, so courses citing the same book share one node."""
+    slug = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")
+    return "R:hash:" + hashlib.sha1(slug.encode("utf-8")).hexdigest()[:16] if slug else None
+
+def course_credits(header):
+    """TechTree's credits when listed, else the number on the sheet."""
+    credits = (header.get("catalogue") or {}).get("credits")
+    if credits is None:
+        match = re.search(r"\d+", str(header.get("credits") or ""))
+        credits = int(match.group()) if match else None
+    return credits
 
 class KGBuilder:
     def __init__(self, uri, user, password):
@@ -20,6 +43,11 @@ class KGBuilder:
         print("Clearing existing database...")
         with self.driver.session() as session:
             session.run("MATCH (n) DETACH DELETE n")
+
+    def create_constraints(self):
+        with self.driver.session() as session:
+            for label, prop in CONSTRAINTS:
+                session.run(f"CREATE CONSTRAINT {label.lower()}_{prop} IF NOT EXISTS FOR (n:{label}) REQUIRE n.{prop} IS UNIQUE")
 
     def build_graph(self):
         # 1. Load Topic Mapping
@@ -61,35 +89,83 @@ class KGBuilder:
                 if not course_code:
                     continue
                     
-                # Create Course Node
+                # Create Course Node (catalogue details come from TechTree via enrich.py)
+                catalogue = header.get("catalogue") or {}
                 session.run(
                     """
                     MERGE (c:Course {code: $code})
                     SET c.name = $name,
                         c.aliases = $aliases,
                         c.credits = $credits,
+                        c.level = $level,
+                        c.semester = $semester,
+                        c.cluster = $cluster,
+                        c.department = $department,
+                        c.offered_to = $offered_to,
+                        c.catalogue_url = $catalogue_url,
                         c.description = $description
                     """,
                     code=course_code,
                     aliases=header.get("aliases") or [],
                     name=header.get("name", ""),
-                    credits=str(header.get("credits", "")),
+                    credits=course_credits(header),
+                    level=header.get("level"),
+                    semester=catalogue.get("semester"),
+                    cluster=catalogue.get("cluster"),
+                    department=header.get("department"),
+                    offered_to=header.get("offered_to") or [],
+                    catalogue_url=catalogue.get("catalogue_url"),
                     description=header.get("description", "")
                 )
-                
-                # Create Prerequisites
-                prereqs = header.get("prerequisites_mandatory_resolved", [])
-                for prereq_code in prereqs:
+
+                # Create Prerequisites (merged from the sheet and TechTree; kind = mandatory | desirable)
+                for link in header.get("prerequisite_links", []):
                     session.run(
                         """
                         MERGE (c1:Course {code: $course_code})
                         MERGE (c2:Course {code: $prereq_code})
-                        MERGE (c1)-[:REQUIRES]->(c2)
+                        MERGE (c1)-[r:REQUIRES]->(c2)
+                        SET r.kind = $kind,
+                            r.sources = $sources
                         """,
                         course_code=course_code,
-                        prereq_code=prereq_code
+                        prereq_code=link["code"],
+                        kind=link["kind"],
+                        sources=link["sources"]
                     )
-                
+
+                # Create Anti-requisites (from TechTree)
+                for anti_code in header.get("anti_requisites_resolved", []):
+                    session.run(
+                        """
+                        MERGE (c1:Course {code: $course_code})
+                        MERGE (c2:Course {code: $anti_code})
+                        MERGE (c1)-[:ANTI_REQUISITE]->(c2)
+                        """,
+                        course_code=course_code,
+                        anti_code=anti_code
+                    )
+
+                # Create Resources (one node per distinct title, shared by every course that cites it)
+                for resource in data.get("resources", []):
+                    title = " ".join(str(resource.get("title") or "").split())
+                    r_id = resource_id(title)
+                    if not r_id:
+                        continue
+                    session.run(
+                        """
+                        MERGE (c:Course {code: $course_code})
+                        MERGE (r:Resource {id: $r_id})
+                        ON CREATE SET r.title = $title
+                        MERGE (c)-[u:USES_RESOURCE]->(r)
+                        SET u.type = $type
+                        """,
+                        course_code=course_code,
+                        r_id=r_id,
+                        title=title,
+                        type=resource.get("type_label")
+                    )
+
                 # Create Course Outcomes (COs)
                 outcomes = data.get("outcomes", [])
                 for co in outcomes:
@@ -180,21 +256,28 @@ class KGBuilder:
                         )
 
 def main():
+    parser = argparse.ArgumentParser(description="Load data/enriched + data/canonical into Neo4j.")
+    parser.add_argument("--wipe", action="store_true", help="delete everything in the database before loading")
+    args = parser.parse_args()
+
     load_dotenv(BASE_DIR / ".env")
     uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
     user = os.getenv("NEO4J_USER", "neo4j")
     password = os.getenv("NEO4J_PASSWORD", "neo4j") # Default test password
-    
+
     print(f"Connecting to Neo4j at {uri}...")
     try:
         builder = KGBuilder(uri, user, password)
-        # builder.clear_db() # Optional: Un-comment to wipe the DB first
+        if args.wipe:
+            builder.clear_db()
+        builder.create_constraints()
         builder.build_graph()
         builder.close()
         print("Success! Graph construction is complete.")
     except Exception as e:
         print(f"\nERROR connecting to Neo4j: {e}")
         print("Make sure Neo4j Desktop or Docker is running locally!")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()

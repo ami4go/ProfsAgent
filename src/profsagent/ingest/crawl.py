@@ -10,8 +10,9 @@ from pathlib import Path
 # Paths
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 DATA_RAW_DIR = BASE_DIR / "data" / "raw"
-TECHTREE_CODES_PATH = BASE_DIR / "data" / "techtree_codes.json"
+TECHTREE_INDEX_PATH = BASE_DIR / "data" / "techtree_index.json"
 COURSES_JSON_URL = "https://techtree.iiitd.edu.in/static/Courses.json"
+TECHTREE_BASE_URL = "https://techtree.iiitd.edu.in"
 
 def fetch_courses_json():
     print("Fetching Courses.json...")
@@ -24,20 +25,35 @@ def course_stem(course):
     """File name used for a course across data/ folders, e.g. 'CSE421/CSE621' -> 'CSE421_CSE621'."""
     return course.get("Course Code", "").strip().replace(" ", "_").replace("/", "_")
 
-def write_techtree_codes(courses):
-    """Save TechTree's official code and name for every course, keyed by file stem.
-    enrich.py uses it to correct the codes written on the sheets (typos, old numbers, placeholders)."""
-    codes = {}
+def clean_index_value(value):
+    """TechTree cell -> stripped text, or None for empty/'None' cells (same rule as scripts/build_stub_kg.py)."""
+    value = " ".join(str(value or "").split())
+    return None if value.lower() in ("", "none", "nil", "na", "n/a") else value
+
+def write_techtree_index(courses):
+    """Save TechTree's catalogue entry for every course, keyed by file stem: official code and name,
+    credits, semester, cluster, the prerequisite / anti-requisite columns and the catalogue link.
+    enrich.py uses it to correct the codes written on the sheets and to add these catalogue details."""
+    index = {}
     for course in courses:
         stem = course_stem(course)
         if stem:
-            codes[stem] = {
+            credits = clean_index_value(course.get("Credits"))
+            link = clean_index_value(course.get("Link"))
+            index[stem] = {
                 "code": " ".join(course.get("Course Code", "").split()),
                 "name": course.get("Course Name", "").split(" # ")[0].strip(),
+                "credits": int(credits) if credits and credits.isdigit() else None,
+                "semester": clean_index_value(course.get("Semester")),
+                "cluster": clean_index_value(course.get("Cluster")),
+                "prerequisites": clean_index_value(course.get("Prerequisites")),
+                "preferable_prerequisites": clean_index_value(course.get("Preferable_Prerequisites")),
+                "antirequisites": clean_index_value(course.get("Antirequisites")),
+                "catalogue_url": TECHTREE_BASE_URL + link if link else None,
             }
-    with open(TECHTREE_CODES_PATH, "w", encoding="utf-8", newline="\n") as f:
-        json.dump(dict(sorted(codes.items())), f, indent=4)
-    print(f"Saved {len(codes)} TechTree course codes to {TECHTREE_CODES_PATH.name}")
+    with open(TECHTREE_INDEX_PATH, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(dict(sorted(index.items())), f, indent=4)
+    print(f"Saved {len(index)} TechTree catalogue entries to {TECHTREE_INDEX_PATH.name}")
 
 def extract_sheet_url(embed_link):
     if not embed_link or embed_link == "None":
@@ -81,7 +97,7 @@ def main():
     # Save the index itself just in case
     with open(DATA_RAW_DIR / "courses_index.json", "w", encoding="utf-8") as f:
         json.dump(courses, f, indent=4)
-    write_techtree_codes(courses)
+    write_techtree_index(courses)
 
     downloaded_count = 0
     skipped_count = 0

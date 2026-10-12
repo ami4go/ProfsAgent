@@ -5,6 +5,7 @@ Enrichers for extracted course data:
   3. Course Code Resolver — sets each course's code from TechTree (sheet codes become aliases) and maps
                             prerequisite text to the codes of courses in the corpus
   4. CO reference check  — moves week CO references that match no outcome into cos_met_unknown
+  5. Assessment Typer    — tags each assessment component with a standard type (endsem, quiz, ...)
 """
 
 import json
@@ -109,6 +110,24 @@ def score_co_quality(co_text):
         reasons.append("no_context")
     
     return score, reasons
+
+# ---------------------------------------------------------------------------
+# Assessment types — the same rules, in the same order, as assess_type() in kg/stub.py,
+# so assessment priors from the graph match what the design pipeline expects
+# ---------------------------------------------------------------------------
+ASSESSMENT_TYPES = [
+    ("endsem", r"end[\s-]*sem|final exam|end[\s-]*term|final"), ("midsem", r"mid[\s-]*sem|mid[\s-]*term"),
+    ("quiz", r"quiz"), ("lab", r"\blab"), ("project", r"project"), ("assignment", r"assignment|homework|problem set"),
+    ("presentation", r"presentation|seminar"), ("report", r"report|paper|state of art"),
+    ("participation", r"participation|attendance|in-?class|peer"),
+]
+
+def classify_assessment(type_label):
+    """Standard type for a sheet's assessment label, e.g. "Midsem (theory+lab)" -> "midsem"."""
+    for assessment_type, pattern in ASSESSMENT_TYPES:
+        if re.search(pattern, type_label or "", re.I):
+            return assessment_type
+    return "other"
 
 # "CSE 101", "MTH-101", "CSE343/543" (a bare number after "/" takes the previous prefix)
 CODE_PATTERN = re.compile(r"\b([A-Za-z]{2,4})\s*-?\s*(\d{3}[A-Za-z]?)\b((?:\s*/\s*\d{3}[A-Za-z]?\b)*)")
@@ -227,6 +246,10 @@ def enrich_course(extracted_data, primary, aliases, code_index):
         if unknown:
             week["cos_met"] = [label for label in week["cos_met"] if label in labels]
             week["cos_met_unknown"] = unknown
+
+    # Assessment components keep the sheet's label and get a standard type
+    for component in enriched.get("assessments", []):
+        component["type"] = classify_assessment(component.get("type_label"))
 
     # Course codes and prerequisites
     header = enriched.get("header", {})

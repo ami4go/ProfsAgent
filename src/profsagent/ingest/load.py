@@ -112,6 +112,26 @@ class KGBuilder:
                         bloom_verb=co.get("bloom_verb", "")
                     )
                     
+                # Create Assessment Components (type is the standard type set by enrich.py)
+                for order, component in enumerate(data.get("assessments", []), start=1):
+                    session.run(
+                        """
+                        MERGE (c:Course {code: $course_code})
+                        MERGE (a:AssessmentComponent {id: $a_id})
+                        SET a.name = $name,
+                            a.type = $type,
+                            a.weight_pct = $weight_pct,
+                            a.order = $order
+                        MERGE (c)-[:HAS_ASSESSMENT]->(a)
+                        """,
+                        course_code=course_code,
+                        a_id=f"{course_code}_A{order}",
+                        name=component.get("type_label", ""),
+                        type=component.get("type", "other"),
+                        weight_pct=component.get("weight_pct"),
+                        order=order
+                    )
+
                 # Create Weekly Plan & Map Topics
                 weekly_plan = data.get("weekly_plan", [])
                 for week in weekly_plan:

@@ -103,7 +103,9 @@ class KGBuilder:
                         c.department = $department,
                         c.offered_to = $offered_to,
                         c.catalogue_url = $catalogue_url,
-                        c.description = $description
+                        c.description = $description,
+                        c.prerequisite_text = $prerequisite_text,
+                        c.anti_requisite_text = $anti_requisite_text
                     """,
                     code=course_code,
                     aliases=header.get("aliases") or [],
@@ -115,7 +117,9 @@ class KGBuilder:
                     department=header.get("department"),
                     offered_to=header.get("offered_to") or [],
                     catalogue_url=catalogue.get("catalogue_url"),
-                    description=header.get("description", "")
+                    description=header.get("description", ""),
+                    prerequisite_text=(header.get("prerequisites_mandatory") or []) + (header.get("prerequisites_desirable") or []),
+                    anti_requisite_text=catalogue.get("antirequisites")
                 )
 
                 # Create Prerequisites (merged from the sheet and TechTree; kind = mandatory | desirable)
@@ -147,7 +151,7 @@ class KGBuilder:
                     )
 
                 # Create Resources (one node per distinct title, shared by every course that cites it)
-                for resource in data.get("resources", []):
+                for order, resource in enumerate(data.get("resources", []), start=1):
                     title = " ".join(str(resource.get("title") or "").split())
                     r_id = resource_id(title)
                     if not r_id:
@@ -158,17 +162,19 @@ class KGBuilder:
                         MERGE (r:Resource {id: $r_id})
                         ON CREATE SET r.title = $title
                         MERGE (c)-[u:USES_RESOURCE]->(r)
-                        SET u.type = $type
+                        SET u.type = $type,
+                            u.order = $order
                         """,
                         course_code=course_code,
                         r_id=r_id,
                         title=title,
-                        type=resource.get("type_label")
+                        type=resource.get("type_label"),
+                        order=order
                     )
 
                 # Create Course Outcomes (COs)
                 outcomes = data.get("outcomes", [])
-                for co in outcomes:
+                for order, co in enumerate(outcomes, start=1):
                     co_id = f"{course_code}_{co['label']}"
                     session.run(
                         """
@@ -177,7 +183,8 @@ class KGBuilder:
                         SET co.label = $label,
                             co.text = $text,
                             co.bloom_level = $bloom_level,
-                            co.bloom_verb = $bloom_verb
+                            co.bloom_verb = $bloom_verb,
+                            co.order = $order
                         MERGE (c)-[:HAS_CO]->(co)
                         """,
                         course_code=course_code,
@@ -185,7 +192,8 @@ class KGBuilder:
                         label=co["label"],
                         text=co["raw_text"],
                         bloom_level=co.get("bloom_level", ""),
-                        bloom_verb=co.get("bloom_verb", "")
+                        bloom_verb=co.get("bloom_verb", ""),
+                        order=order
                     )
                     
                 # Create Assessment Components (type is the standard type set by enrich.py)
@@ -210,24 +218,26 @@ class KGBuilder:
 
                 # Create Weekly Plan & Map Topics
                 weekly_plan = data.get("weekly_plan", [])
-                for week in weekly_plan:
+                for week_order, week in enumerate(weekly_plan, start=1):
                     week_num = week.get("week")
                     week_id = f"{course_code}_W{week_num}"
-                    
+
                     session.run(
                         """
                         MERGE (c:Course {code: $course_code})
                         MERGE (w:WeekPlan {id: $week_id})
-                        SET w.week_number = $week_num
+                        SET w.week_number = $week_num,
+                            w.order = $week_order
                         MERGE (c)-[:HAS_WEEK]->(w)
                         """,
                         course_code=course_code,
                         week_id=week_id,
-                        week_num=week_num
+                        week_num=week_num,
+                        week_order=week_order
                     )
-                    
-                    # Link Week -> Topics
-                    for raw_topic in week.get("lecture_topics", []):
+
+                    # Link Week -> Topics (order = position in the week's topic list)
+                    for topic_order, raw_topic in enumerate(week.get("lecture_topics", []), start=1):
                         clean_topic = str(raw_topic).strip()
                         if clean_topic in topic_mapping:
                             canonical_id = topic_mapping[clean_topic]["canonical_id"]
@@ -235,11 +245,13 @@ class KGBuilder:
                                 """
                                 MERGE (w:WeekPlan {id: $week_id})
                                 MERGE (t:Topic {id: $canonical_id})
-                                MERGE (w)-[:COVERS {raw_text: $raw_topic}]->(t)
+                                MERGE (w)-[cv:COVERS {raw_text: $raw_topic}]->(t)
+                                SET cv.order = $topic_order
                                 """,
                                 week_id=week_id,
                                 canonical_id=canonical_id,
-                                raw_topic=raw_topic
+                                raw_topic=raw_topic,
+                                topic_order=topic_order
                             )
                             
                     # Link Week -> COs

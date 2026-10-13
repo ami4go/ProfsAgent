@@ -2,7 +2,14 @@
 
 Drop-in for StubKG: same methods, same return shapes and the same helpers (co_quality, assess_type, HybridIndex,
 programme config). Course data is read from Neo4j once, when the client is created; the retrieval index and the
-topic embeddings are built from it on first use (embeddings go through LLMClient.embed, which caches them on disk).
+topic embeddings are built from it on first use.
+
+Embeddings (embedder= or $KG_EMBEDDER):
+- local (default): LOCAL_MODEL runs on this machine with sentence-transformers. No API key and no daily quota; the
+  model (~90 MB) is downloaded once, and vectors are cached in data/cache/emb_local/.
+- gemini: LLMClient.embed (gemini-embedding-001; needs GEMINI_API_KEYS, ~1,000 texts per free key per day).
+- off: BM25-only retrieval and no topic matching, like the stub without an LLM.
+Each model scores similarity on its own scale, so each has its own topic-match threshold.
 
 Differences from the stub, beyond covering every course in the graph (471) instead of ~17 parsed sheets:
 - topic candidates are the graph's canonical Topic nodes, each listed with every course that covers it;
@@ -12,15 +19,17 @@ Differences from the stub, beyond covering every course in the graph (471) inste
 As in the stub, topic_overlap is Jaccard over embedding-matched topic phrases (no IDF yet) and topic_precedence is
 empty until the PRECEDES topic DAG is computed.
 
-    python -m profsagent.kg.neo4j_kg            # load from Neo4j and print a summary (no LLM calls)
-    python -m profsagent.kg.neo4j_kg --warm     # also embed every course text and topic once (fills data/cache/emb)
+    python -m profsagent.kg.neo4j_kg            # load from Neo4j and print a summary (no embeddings)
+    python -m profsagent.kg.neo4j_kg --warm     # also embed every course text and topic once (fills the cache)
 """
 from __future__ import annotations
 
+import hashlib
 import os
 import re
 import statistics
 from functools import cached_property
+from pathlib import Path
 
 import numpy as np
 from neo4j import GraphDatabase
@@ -71,14 +80,80 @@ ORDER BY id
 """
 
 
+LOCAL_MODEL = "sentence-transformers/all-MiniLM-L6-v2"   # 384 dims, English, reads up to 256 word pieces per text
+# Cut-off with the best accuracy on 176 hand-labelled pairs of graph topic phrases (13 Oct 2026; 48 same-topic,
+# 128 different): accuracy 0.88, precision 0.89, recall 0.65. The model separates the labels about as well as
+# gemini-embedding-001 (AUC 0.93 vs 0.91 on the same pairs).
+LOCAL_TOPIC_MATCH_SIM = 0.82
+LOCAL_CACHE = Path(__file__).resolve().parents[3] / "data" / "cache" / "emb_local"
+
+
 def _norm(code: str) -> str:
     return re.sub(r"\s|-", "", code or "").upper()
 
 
+class LocalEmbedder:
+    """Same call as LLMClient.embed(texts, task_type), computed on this machine. The model is symmetric, so
+    task_type is ignored. Vectors are unit length and cached in one file per model."""
+
+    def __init__(self, model: str = LOCAL_MODEL):
+        self.model_name = model
+        self.path = LOCAL_CACHE / f"{model.split('/')[-1]}.npz"
+
+    @cached_property
+    def model(self):
+        try:
+            from sentence_transformers import SentenceTransformer
+        except ImportError as e:
+            raise ImportError("local embeddings need `pip install sentence-transformers` (or set KG_EMBEDDER=gemini)") from e
+        try:
+            return SentenceTransformer(self.model_name, device="cpu", local_files_only=True)
+        except OSError:  # first use on this machine: download the model once from huggingface.co
+            return SentenceTransformer(self.model_name, device="cpu")
+
+    @cached_property
+    def cache(self) -> dict[str, np.ndarray]:
+        if not self.path.exists():
+            return {}
+        with np.load(self.path) as z:
+            return dict(zip(z["keys"].tolist(), z["vecs"]))
+
+    def _save(self) -> None:
+        try:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            tmp = self.path.with_suffix(".tmp.npz")
+            np.savez(tmp, keys=np.array(list(self.cache)), vecs=np.vstack(list(self.cache.values())))
+            os.replace(tmp, self.path)
+        except OSError as e:  # e.g. OneDrive holding the file; the vectors are recomputed next time
+            print(f"[kg] embedding cache not saved ({e})", flush=True)
+
+    def embed(self, texts: list[str], task_type: str = "RETRIEVAL_DOCUMENT") -> np.ndarray:
+        keys = [hashlib.sha256(t.encode()).hexdigest()[:24] for t in texts]
+        todo = {k: t for k, t in zip(keys, texts) if k not in self.cache}
+        if todo:
+            vecs = self.model.encode(list(todo.values()), batch_size=64, normalize_embeddings=True, convert_to_numpy=True)
+            self.cache.update(zip(todo, vecs.astype(np.float32)))
+            if len(todo) >= 100:  # corpus-sized batches only; single queries take milliseconds to recompute
+                self._save()
+        if not keys:
+            return np.zeros((0, self.model.get_sentence_embedding_dimension()), dtype=np.float32)
+        return np.vstack([self.cache[k] for k in keys])
+
+
 class Neo4jKG:
-    def __init__(self, llm=None, uri: str | None = None, user: str | None = None, password: str | None = None):
+    def __init__(self, llm=None, uri: str | None = None, user: str | None = None, password: str | None = None,
+                 embedder: str | None = None):
         self.llm = llm
         self.th = pedagogy()["thresholds"]
+        mode = (embedder or os.environ.get("KG_EMBEDDER") or "local").lower()
+        if mode == "local":
+            self.embedder, self.match_sim, self.embed_name = LocalEmbedder(), LOCAL_TOPIC_MATCH_SIM, LOCAL_MODEL.split("/")[-1]
+        elif mode == "gemini":
+            self.embedder, self.match_sim, self.embed_name = llm, self.th["topic_match_sim"], "gemini-embedding-001"
+        elif mode == "off":
+            self.embedder, self.match_sim, self.embed_name = None, None, "none"
+        else:
+            raise ValueError(f"KG_EMBEDDER must be local, gemini or off, not {mode!r}")
         driver = GraphDatabase.driver(uri or os.environ.get("NEO4J_URI", "bolt://localhost:7687"),
                                       auth=(user or os.environ.get("NEO4J_USER", "neo4j"),
                                             password or os.environ.get("NEO4J_PASSWORD", "")))
@@ -146,24 +221,24 @@ class Neo4jKG:
                 if w["topics"]:
                     docs.append(Doc(id=f"{uid}/W{i:02d}", text=f"{r['name']} week {w['week']}: {'; '.join(w['topics'])}",
                                     doc_type="week", **base))
-        embed = self.llm.embed if self.llm else None
+        embed = self.embedder.embed if self.embedder else None
         try:
             return HybridIndex(docs, embed)
         except Exception as e:  # noqa: BLE001 — degrade to lexical-only retrieval rather than fail the run
-            print(f"[rag] dense index unavailable ({type(e).__name__}); using BM25 only", flush=True)
+            print(f"[rag] dense index unavailable ({type(e).__name__}: {str(e)[:120]}); using BM25 only", flush=True)
             return HybridIndex(docs, None)
 
     @cached_property
     def _phrase_vecs(self) -> dict[str, np.ndarray]:
         """Embedding of every topic phrase in the graph (week topics and canonical topic names), in one batch."""
-        if not self.llm:
+        if not self.embedder:
             return {}
         phrases = sorted({t for r in self.by_uid.values() for w in r["weeks"] for t in w["topics"]}
                          | {t["name"] for t in self.topics})
         try:
-            return dict(zip(phrases, self.llm.embed(phrases, "SEMANTIC_SIMILARITY")))
+            return dict(zip(phrases, self.embedder.embed(phrases, "SEMANTIC_SIMILARITY")))
         except Exception as e:  # noqa: BLE001 — topic matching degrades to "no candidates" rather than fail the run
-            print(f"[kg] topic embeddings unavailable ({type(e).__name__}); topic matching disabled", flush=True)
+            print(f"[kg] topic embeddings unavailable ({type(e).__name__}: {str(e)[:120]}); topic matching disabled", flush=True)
             return {}
 
     @cached_property
@@ -185,7 +260,7 @@ class Neo4jKG:
 
     def _embed_phrases(self, phrases: list[str]) -> np.ndarray | None:
         try:
-            return self.llm.embed(phrases, "SEMANTIC_SIMILARITY")
+            return self.embedder.embed(phrases, "SEMANTIC_SIMILARITY")
         except Exception as e:  # noqa: BLE001 — topic matching degrades to "nothing found" rather than fail the run
             print(f"[kg] phrase embedding unavailable ({type(e).__name__}); no topic matches", flush=True)
             return None
@@ -231,7 +306,7 @@ class Neo4jKG:
     def topic_overlap(self, new_topics, uid):
         uid = self.resolve(uid) or uid
         ts = [t for t in self._course_topics(uid) if t in self._phrase_vecs]
-        if not ts or not new_topics or not self.llm:
+        if not ts or not new_topics or not self.embedder:
             return {"weighted_jaccard": 0.0, "shared_topics": [], "method": "neo4j: no topics or no embeddings"}
         vecs = np.vstack([self._phrase_vecs[t] for t in ts])
         nv = self._embed_phrases(new_topics)
@@ -241,16 +316,16 @@ class Neo4jKG:
         used_old, shared = set(), []
         for i in np.argsort(-sims.max(axis=1)):
             j = int(np.argmax(np.where(np.isin(np.arange(len(ts)), list(used_old)), -1, sims[i])))
-            if sims[i, j] >= self.th["topic_match_sim"] and j not in used_old:
+            if sims[i, j] >= self.match_sim and j not in used_old:
                 used_old.add(j)
                 shared.append(f"{new_topics[i]} ≈ {ts[j]}")
         n = len(shared)
         jac = n / (len(new_topics) + len(ts) - n)
         return {"weighted_jaccard": round(jac, 3), "shared_topics": shared,
-                "method": f"neo4j: Jaccard over embedding-matched topic phrases (cos ≥ {self.th['topic_match_sim']}), no IDF"}
+                "method": f"neo4j: Jaccard over embedding-matched topic phrases ({self.embed_name}, cos ≥ {self.match_sim}), no IDF"}
 
     def topic_candidates(self, phrases, k=5, exclude=frozenset()):
-        pool, mat = self._topic_matrix if (self.llm and phrases) else ([], None)
+        pool, mat = self._topic_matrix if (self.embedder and phrases) else ([], None)
         if mat is None:
             return [{"phrase": p, "candidates": []} for p in phrases]
         courses = [[u for u in t["courses"] if not self._excluded(u, exclude)] for t in pool]
@@ -347,10 +422,10 @@ if __name__ == "__main__":
     import argparse
 
     ap = argparse.ArgumentParser(description="Load the institutional graph from Neo4j and print a summary.")
-    ap.add_argument("--warm", action="store_true", help="embed every course text and topic once (needs Gemini keys)")
+    ap.add_argument("--warm", action="store_true", help="embed every course text and topic once")
     args = ap.parse_args()
     llm = None
-    if args.warm:
+    if args.warm and (os.environ.get("KG_EMBEDDER") or "local").lower() == "gemini":
         from profsagent.llm.client import LLMClient
         llm = LLMClient()
     kg = Neo4jKG(llm)
@@ -358,4 +433,5 @@ if __name__ == "__main__":
     print(f"courses {len(kg.by_uid)} | aliases {len(kg.alias)} | COs {sum(len(r['cos']) for r in kg.by_uid.values())} | "
           f"weeks {n_weeks} | topics {len(kg.topics)} | resources {len(kg.used_by)}")
     if args.warm:
-        print(f"retrieval documents: {len(kg.rag.docs)} (dense: {kg.rag.emb is not None}) | topic phrases embedded: {len(kg._phrase_vecs)}")
+        print(f"embedder: {kg.embed_name} | retrieval documents: {len(kg.rag.docs)} (dense: {kg.rag.emb is not None}) | "
+              f"topic phrases embedded: {len(kg._phrase_vecs)}")

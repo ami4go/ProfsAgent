@@ -1,7 +1,7 @@
 """Contract tests: Neo4jKG answers the KGClient questions in the same shapes as StubKG.
 
 Needs Neo4j running with the Layer A graph loaded (python src/profsagent/ingest/load.py --wipe); skipped otherwise.
-No LLM calls: retrieval runs BM25-only and topic matching returns no candidates, as the stub does without an LLM.
+No API calls: embeddings come from the local model (the first run on a machine embeds the graph, ~2 minutes).
 """
 import sys
 from functools import lru_cache
@@ -22,7 +22,7 @@ def _load():
     except ImportError as e:
         return e
     try:
-        return Neo4jKG(), StubKG()
+        return Neo4jKG(embedder="local"), StubKG()
     except (ServiceUnavailable, AuthError) as e:
         return e
 
@@ -95,8 +95,27 @@ def test_search_finds_the_right_course():
     assert "CSE601" in [h["uid"] for h in neo.search_courses("compilers lexical analysis parsing code generation", k=5)]
 
 
-def test_topic_methods_without_llm_behave_like_the_stub():
-    neo, stub = kgs()
+def test_search_uses_local_embeddings():
+    neo, _ = kgs()
+    assert neo.rag.emb is not None and neo.rag.emb.shape == (len(neo.rag.docs), 384)
+
+
+def test_local_embeddings_match_topics():
+    neo, _ = kgs()
+    cands = neo.topic_candidates(["shortest path algorithms like Dijkstra"], k=3)[0]["candidates"]
+    assert cands and all(set(c) == {"topic_uid", "canonical_name", "sim", "courses"} for c in cands)
+    assert cands[0]["sim"] >= neo.match_sim and cands[0]["courses"]
+    own = neo.course("CSE222")["topics"][:6]
+    ov = neo.topic_overlap(own, "CSE222")
+    assert len(ov["shared_topics"]) == len(own) and "all-MiniLM-L6-v2" in ov["method"]
+    assert neo.topic_overlap(["Renaissance painting techniques"], "CSE222")["weighted_jaccard"] == 0.0
+
+
+def test_topic_methods_without_embeddings_behave_like_the_stub():
+    kgs()
+    from profsagent.kg.neo4j_kg import Neo4jKG
+    stub = StubKG()
+    neo = Neo4jKG(embedder="off")
     assert neo.topic_candidates(["graph algorithms"]) == stub.topic_candidates(["graph algorithms"])
     ov = neo.topic_overlap(["graph algorithms"], "CSE222")
     assert ov["weighted_jaccard"] == 0.0 and ov["shared_topics"] == []
@@ -116,7 +135,7 @@ class _QuotaExhaustedLLM:
 def test_degrades_to_words_when_embeddings_fail():
     kgs()                                    # skip when Neo4j is not running
     from profsagent.kg.neo4j_kg import Neo4jKG
-    neo = Neo4jKG(_QuotaExhaustedLLM())
+    neo = Neo4jKG(_QuotaExhaustedLLM(), embedder="gemini")
     assert neo.rag.emb is not None           # the dense index was built from the "cached" documents
     assert "CSE601" in [h["uid"] for h in neo.search_courses("compilers lexical analysis parsing code generation", k=5)]
     assert neo.exemplar_cos("object oriented programming", 2, k=3)

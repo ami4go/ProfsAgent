@@ -101,3 +101,24 @@ def test_topic_methods_without_llm_behave_like_the_stub():
     ov = neo.topic_overlap(["graph algorithms"], "CSE222")
     assert ov["weighted_jaccard"] == 0.0 and ov["shared_topics"] == []
     assert neo.topic_precedence(["T:graphs"]) == []
+
+
+class _QuotaExhaustedLLM:
+    """Embeds stored documents (as if cached on disk) but fails for anything new, like a used-up daily quota."""
+    def embed(self, texts, task_type="RETRIEVAL_DOCUMENT"):
+        import numpy as np
+        if task_type != "RETRIEVAL_DOCUMENT":
+            raise RuntimeError("embedding quota exhausted")
+        v = np.random.default_rng(0).normal(size=(len(texts), 8)).astype("float32")
+        return v / np.linalg.norm(v, axis=1, keepdims=True)
+
+
+def test_degrades_to_words_when_embeddings_fail():
+    kgs()                                    # skip when Neo4j is not running
+    from profsagent.kg.neo4j_kg import Neo4jKG
+    neo = Neo4jKG(_QuotaExhaustedLLM())
+    assert neo.rag.emb is not None           # the dense index was built from the "cached" documents
+    assert "CSE601" in [h["uid"] for h in neo.search_courses("compilers lexical analysis parsing code generation", k=5)]
+    assert neo.exemplar_cos("object oriented programming", 2, k=3)
+    assert neo.topic_candidates(["graph algorithms"]) == [{"phrase": "graph algorithms", "candidates": []}]
+    assert neo.topic_overlap(["graph algorithms"], "CSE222")["weighted_jaccard"] == 0.0

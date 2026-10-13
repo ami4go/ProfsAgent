@@ -171,6 +171,25 @@ class Neo4jKG:
         pool = [t for t in self.topics if t["name"] in self._phrase_vecs]
         return pool, (np.vstack([self._phrase_vecs[t["name"]] for t in pool]) if pool else None)
 
+    @cached_property
+    def _rag_lexical(self) -> HybridIndex:
+        return HybridIndex(self.rag.docs, None)
+
+    def _search(self, text: str, **kw):
+        """Hybrid search; words only when the query itself cannot be embedded (e.g. the embedding quota is used up)."""
+        try:
+            return self.rag.search(text, **kw)
+        except Exception as e:  # noqa: BLE001 — a missing query vector must not stop the design run
+            print(f"[rag] query embedding unavailable ({type(e).__name__}); using BM25 only", flush=True)
+            return self._rag_lexical.search(text, **kw)
+
+    def _embed_phrases(self, phrases: list[str]) -> np.ndarray | None:
+        try:
+            return self.llm.embed(phrases, "SEMANTIC_SIMILARITY")
+        except Exception as e:  # noqa: BLE001 — topic matching degrades to "nothing found" rather than fail the run
+            print(f"[kg] phrase embedding unavailable ({type(e).__name__}); no topic matches", flush=True)
+            return None
+
     # ------------------------------------------------------------------ KGClient
     def index(self, exclude=frozenset()):
         return [{k: r[k] for k in ("uid", "aliases", "name", "level", "credits", "cluster")}
@@ -200,7 +219,7 @@ class Neo4jKG:
         }
 
     def search_courses(self, text, k=15, exclude=frozenset()):
-        hits = self.rag.search(text, k=k * 4, exclude={_norm(e) for e in exclude})
+        hits = self._search(text, k=k * 4, exclude={_norm(e) for e in exclude})
         agg: dict[str, dict] = {}
         for d, s in hits:
             a = agg.setdefault(d.uid, {"uid": d.uid, "score": 0.0, "hits": []})
@@ -215,7 +234,9 @@ class Neo4jKG:
         if not ts or not new_topics or not self.llm:
             return {"weighted_jaccard": 0.0, "shared_topics": [], "method": "neo4j: no topics or no embeddings"}
         vecs = np.vstack([self._phrase_vecs[t] for t in ts])
-        nv = self.llm.embed(new_topics, "SEMANTIC_SIMILARITY")
+        nv = self._embed_phrases(new_topics)
+        if nv is None:
+            return {"weighted_jaccard": 0.0, "shared_topics": [], "method": "neo4j: embeddings unavailable"}
         sims = nv @ vecs.T
         used_old, shared = set(), []
         for i in np.argsort(-sims.max(axis=1)):
@@ -234,7 +255,9 @@ class Neo4jKG:
             return [{"phrase": p, "candidates": []} for p in phrases]
         courses = [[u for u in t["courses"] if not self._excluded(u, exclude)] for t in pool]
         keep = np.array([bool(c) for c in courses])
-        pv = self.llm.embed(phrases, "SEMANTIC_SIMILARITY")
+        pv = self._embed_phrases(phrases)
+        if pv is None:
+            return [{"phrase": p, "candidates": []} for p in phrases]
         out = []
         for i, p in enumerate(phrases):
             sims = np.where(keep, mat @ pv[i], -np.inf)
@@ -258,7 +281,7 @@ class Neo4jKG:
         return [{"uid": x["id"], "text": x["text"], "short_label": x.get("short_label")} for x in p["po"]]
 
     def exemplar_cos(self, text, level, k=8, exclude=frozenset(), min_quality=0.7):
-        hits = self.rag.search(text, k=60, doc_types={"co"}, exclude={_norm(e) for e in exclude})
+        hits = self._search(text, k=60, doc_types={"co"}, exclude={_norm(e) for e in exclude})
         out = []
         for d, _ in hits:
             label = d.id.split("/")[-1]

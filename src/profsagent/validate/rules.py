@@ -12,7 +12,7 @@ from collections import Counter, defaultdict
 from profsagent.config import pedagogy
 from profsagent.design.deterministic import find_cycle
 from profsagent.kg.quality import PREFIX_RE, banned_in, bloom_of_verb, bloom_range_of_verb, lemma, vague_degree, verbs_in
-from profsagent.validate import constraints, regulation, text
+from profsagent.validate import constraints, regulation, semantic, text
 from profsagent.validate.record import ERR, FIX_HINTS, WARN, errors, v  # noqa: F401 (errors, FIX_HINTS re-exported)
 
 
@@ -107,7 +107,7 @@ def check_cos(state: dict) -> list[dict]:
     if bad:
         out.append(v("T10", ERR, sorted(bad), f"COs reference unknown topic groups {sorted(bad)}"))
     out += constraints.check_stage(state, "cos")          # co.count, co.bloom_min / bloom_max
-    return out + _statement_checks(cos, "CO")
+    return out + _statement_checks(cos, "CO") + semantic.check_cos(state)
 
 
 def check_copo(state: dict) -> list[dict]:
@@ -191,7 +191,7 @@ def check_los(state: dict) -> list[dict]:
         lec = sum(float(lo.get("est_lecture_h", 0)) for lo in los)
         if hb["lecture_hours_total"] and abs(lec - hb["lecture_hours_total"]) / hb["lecture_hours_total"] > 0.15:
             out.append(v("V21", WARN, [], f"LO lecture-hour estimates sum to {lec:.1f} h vs budget {hb['lecture_hours_total']} h (±15%)"))
-    return out
+    return out + semantic.check_los(state)
 
 
 def check_structure(state: dict) -> list[dict]:

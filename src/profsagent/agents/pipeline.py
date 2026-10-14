@@ -23,7 +23,7 @@ from profsagent.kg.stub import StubKG
 from profsagent.llm.client import LLMClient
 from profsagent.research.external import Blocklist, ExternalResearch
 from profsagent.research.resources import crossref, openlibrary, verify_pick
-from profsagent.validate import engine, rules
+from profsagent.validate import engine, rules, semantic
 
 
 @dataclass
@@ -62,6 +62,7 @@ def make_kg(llm: LLMClient | None, backend: str) -> KGClient:
 
 
 def make_runtime(run_id: str, form: dict, run_cfg: dict) -> Runtime:
+    semantic.configure_local()   # semantic warnings with the local embedding model (PROFSAGENT_SEMANTIC=off to skip)
     run_dir = RUNS / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
     llm = LLMClient(run_dir / "llm_calls.jsonl")
@@ -77,6 +78,7 @@ def make_runtime(run_id: str, form: dict, run_cfg: dict) -> Runtime:
 
 
 def attach_runtime(run_id: str) -> Runtime:
+    semantic.configure_local()
     run_dir = RUNS / run_id
     st = json.loads((run_dir / "state.json").read_text(encoding="utf-8"))
     llm = LLMClient(run_dir / "llm_calls.jsonl")

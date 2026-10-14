@@ -33,6 +33,7 @@ thresholds:
   weight_band_fallback: {quiz: [5, 15], assignment: [15, 30], lab: [10, 25], project: [15, 40], midsem: [15, 30], endsem: [20, 40], presentation: [5, 20], report: [5, 20], participation: [0, 10]}
   component_count: {min: 3, max: 6}
   max_events_per_week: 2
+  semantic: {lo_copy_sim: 0.92, lo_fit_margin: 0.10, co_dup_sim: 0.85, calibrated: false}   # all-MiniLM-L6-v2 cosine; set from the 28 saved runs (2026-10-15), to be calibrated on professor labels
   kg_norms: {min_courses: 8, rare_credit_share: 0.05}   # VKG-NORM: compare with same-level courses only when >= 8 exist; Tukey fences for counts
 assessment_evidence_types: [exam_question, lab_task, programming_assignment, project_deliverable, design_document, presentation, report, code_review, quiz]
 activity_vocabulary: [design, implement, analyse-data, evaluate-critique, teamwork, written-communication, oral-presentation, ethics-reflection, self-directed-learning, research-investigation, tool-use, project-management, theory]

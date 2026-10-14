@@ -32,6 +32,8 @@ FAMILY: dict[str, str] = {
     "VTG-TAUGHT": "graph", "VCO-COVER": "graph",
     # facts taken from the institutional knowledge graph (catalogue, levels, topic overlap, weight priors)
     "V14": "kg", "V16": "kg", "V17": "kg", "V20": "kg", "VKG-PREC": "kg", "VKG-DUP": "kg", "VKG-NORM": "kg",
+    # meaning compared with a local embedding model (warnings until calibrated)
+    "VS-LOCOPY": "semantic", "VS-LOFIT": "semantic", "VS-CODUP": "semantic",
     # external verification of references
     "V15": "resource",
     # internal rules on a single component

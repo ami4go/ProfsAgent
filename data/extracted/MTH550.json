@@ -1,0 +1,32 @@
+{"header": {"course_code": "MTH550", "aliases": [], "name": "Reproducing Kernel Hilbert Spaces and Applications", "credits": "4", "offered_to": ["UG", "PG"], "department": null,
+ "description": "Reproducing kernel Hilbert spaces (RKHS) theory is extensively used in various areas of Mathematics as well as in many applications such as signal processing and pattern analysis. The notion of a kernel function - a certain positive semidefinite function, for example, a dot product of two vectors - as well as how to construct the associated RKHS and related geometry will be covered in this course. Additionally, the techniques one learns in this course can help in crafting efficient solutions to some interesting problems via kernels. The learning outcomes from this course will further understanding in the aforementioned areas, and to modelling solutions to problems in signal processing, statistics and machine learning.",
+ "prerequisites_mandatory": ["MTH100: Linear algebra", "MTH240: Real analysis (or equivalent)"],
+ "prerequisites_desirable": []},
+ "outcomes": [
+  {"label": "CO1", "raw_text": "Students will be able to define what a kernel function is. With a particular kernel, they will be able to describe the feature space and feature map, and vice versa. They will understand how to utilise the fundamentals of RKHS and Hilbert spaces via examples along the way."},
+  {"label": "CO2", "raw_text": "Students will be able to describe a kernel function by decomposing it into simpler, more manageable ones, improving the efficiency of the calculations. In addition, students will learn variety of mathematical techniques that are used in other context."},
+  {"label": "CO3", "raw_text": "Students will learn the \"Kernel method\" or \"Kernel trick,\" which is used to a variety of machine learning issues. They will be able to use certain key mathematical theorems and concepts in their respective disciplines."},
+  {"label": "CO4", "raw_text": "Students will get familiar with the function theory of Hardy space, Bergman space and Drury-Arveson space."}],
+ "weekly_plan": [
+  {"week": "1", "lecture_topics": ["Motivation and Introduction: Advantages of kernel techniques in pattern analysis, signal processing etc.", "Elements from linear algebra: Dot product, adjoint of matrices, symmetric/self-adjoint, positive definite matrices"], "cos_met": ["CO1"], "tutorial_assignment": null},
+  {"week": "2", "lecture_topics": ["Kernel functions: Definition and Examples", "Elementary Hilbert space theory"], "cos_met": ["CO1"], "tutorial_assignment": null},
+  {"week": "3", "lecture_topics": ["Construction of RKHS (the feature space) from a given kernel function", "Feature map and geometry of RKHS"], "cos_met": ["CO1"], "tutorial_assignment": "Assignment 1"},
+  {"week": "4", "lecture_topics": ["Characterisation of reproducing kernels (Moore’s theorem)", "Reconstruction problem: getting information on feature vectors from given kernel"], "cos_met": ["CO1"], "tutorial_assignment": null},
+  {"week": "5", "lecture_topics": ["Continuation of reconstruction problem via interpolation on RKHS"], "cos_met": ["CO1"], "tutorial_assignment": "Assignment 2"},
+  {"week": "6", "lecture_topics": ["Cholesky factorisation and algorithm", "Schur product and decomposition", "Kernels arising from polynomials and power series"], "cos_met": ["CO2"], "tutorial_assignment": null},
+  {"week": "7", "lecture_topics": ["Engineering new kernels from given ones", "Pull-back and push-out of kernels"], "cos_met": ["CO2"], "tutorial_assignment": null},
+  {"week": "8, 9", "lecture_topics": ["Invariance/Equivalence of kernels", "Mercer’s theorem", "Mercer’s kernel map", "Conditionally positive definite kernels", "Kernel centering"], "cos_met": ["CO2"], "tutorial_assignment": "Assignment 3"},
+  {"week": "10, 11, 12", "lecture_topics": ["Application of RKHS: Regression problems and method of least squares", "Kernel methods in classification problems and geometric separation", "Maximum margin classifier", "Kernel PCA", "Representer theorem"], "cos_met": ["CO3"], "tutorial_assignment": null},
+  {"week": "12, 13", "lecture_topics": ["Application of RKHS in complex analysis: Hardy space, Bergman space and Drury-Arveson space"], "cos_met": ["CO4"], "tutorial_assignment": "Assignment 4"}],
+ "assessments": [
+  {"type_label": "Assignments", "weight_pct": 40},
+  {"type_label": "Midsem", "weight_pct": 20},
+  {"type_label": "Endsem", "weight_pct": 20},
+  {"type_label": "Presentation", "weight_pct": 20}],
+ "resources": [
+  {"type_label": "Textbook(s)", "title": "V. Paulsen, M. Raghupati: Introduction to Reproducing kernel Hilbert space"},
+  {"type_label": "Textbook(s)", "title": "N. Aronszajn: Theory of reproducing kernel Hilbert spaces"},
+  {"type_label": "Reference(s)", "title": "J. Shawe-Taylor: Kernel methods for Pattern analysis"},
+  {"type_label": "Reference(s)", "title": "B. Schölkopf, A. Smola: Learning with kernels"},
+  {"type_label": "Reference(s)", "title": "K. Hoffman and R. Kunze: Linear algebra"},
+  {"type_label": "Reference(s)", "title": "S. Kesavan: Functional analysis"}]}

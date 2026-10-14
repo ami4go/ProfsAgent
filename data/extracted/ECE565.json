@@ -1,0 +1,38 @@
+{"header": {"course_code": "ECE565", "aliases": [], "name": "Tomographic Imaging (Computerized Tomography)", "credits": "4", "offered_to": ["UG", "PG"], "department": null,
+ "description": "The course introduces the topics of (a) Overview - mathematics/physics/algorithms/engineering of tomographic inversion process, ill-posed problem, ill-conditioned problem, sparse data case (b)Application of tomography-nondestructive testing, non-invasive measurements, medical imaging, network diagnostics, nuclear security and safety (c) Fundamentals - Projection data, Fourier Transform, Central Slice Theorem, Convolution backprojection, Shannon sampling, approximate Dirac-delta functionals (d) Engineering aspects: data collection methods, related instrumentation, geometric resolution, contrast resolution (e) Inversion Algorithms - Transform methods, Algebraic mehtods, Optimization techniques, sequential/parallel implementation (f) Error estimates - inherent error, discretization error, total error, direct theorem, inverse theorem, saturation theorm (g)Pitfalls in CT image interpretation - patient motion, dynamic bias, beam-hardening, Poisson effect, centre-of-rotation error, instrument noise",
+ "prerequisites_mandatory": ["MTH100"], "prerequisites_desirable": []},
+ "outcomes": [
+  {"label": "CO1", "raw_text": "Students will become aware that the mathematics and algorithms of medical CT scanners and industrial CT scanners is identical. They will be trained to handle the most widely used CT algorithm in industry and medical area."},
+  {"label": "CO2", "raw_text": "The students will be able to analyze the performance of an existing CT machines using error estimates and they can cross-check the numbers given by the manufacturer"},
+  {"label": "CO3", "raw_text": "The students will be able to design a new CT scanner with targetted algorithms for specific medical and non-medical applications"},
+  {"label": "CO4", "raw_text": "Students will be able to contribute to Make-in-India effort for industrial, medical, airport and border nuclear security CT  scanners."},
+  {"label": "CO5", "raw_text": "Students will be able to extend the application of CT mathematics to applications in network diagnostics"}
+ ],
+ "weekly_plan": [
+  {"week": "1", "lecture_topics": ["Introduction to medical and industrial CT scanners", "Similarities with other modalities of medical tomographic imaging (PET, MRI,fMRI):mathematics and algorithms", "Virtual Visit to DivyaDrishti@IITK"], "cos_met": ["CO1"], "tutorial_assignment": "Hands-on experience with an X-ray micro-CT"},
+  {"week": "2", "lecture_topics": ["Fourier transform", "central slice theorem"], "cos_met": ["CO1"], "tutorial_assignment": "assignment on Fourier inversion"},
+  {"week": "3", "lecture_topics": ["Convolution backprojection", "Shannon sampling"], "cos_met": ["CO1"], "tutorial_assignment": "assignment on Fourier inversion"},
+  {"week": "4", "lecture_topics": ["filters", "convolvers", "Dirichlet", "positive definite", "Direc-delta functionals and their approximate functions"], "cos_met": ["CO1"], "tutorial_assignment": "assignemnt on filters/convolvers"},
+  {"week": "5", "lecture_topics": ["ill-posed to well-posed example", "ill-conditioned to well conditioned example", "experimental results"], "cos_met": ["CO1"], "tutorial_assignment": "assignment matrix inversion"},
+  {"week": "6", "lecture_topics": ["approach of Hounsfield Nobel Prize 1979", "Extension of Hounsfield approach: MART algorithm"], "cos_met": ["CO1"], "tutorial_assignment": "assignment on matrix inversion"},
+  {"week": "7", "lecture_topics": ["Sparse data", "incomplete data", "interior problem", "exterior problem"], "cos_met": ["CO1"], "tutorial_assignment": "assignment on data collection configuration"},
+  {"week": "8", "lecture_topics": ["Optimization methods: Entropy, Energy, GA, ANN, statistical methods"], "cos_met": ["CO1"], "tutorial_assignment": "assignment on entropy driven inversion"},
+  {"week": "9", "lecture_topics": ["Correct solution and right solution", "Sobolev space framework", "inherent error in CT image", "direct theorem"], "cos_met": ["CO2", "CO3"], "tutorial_assignment": "Individual or group coding exercise (project)"},
+  {"week": "10", "lecture_topics": ["Inverse theroem", "saturations theorem", "quantification of cross-sectional images using Sobolev parameters", "prediction of cancer growth", "radiotherapy application", "Practical examples from Oil industry, plasma science, nuclear power engineering, aerospace industry, defence laboratory and nuclear security"], "cos_met": ["CO2", "CO3"], "tutorial_assignment": null},
+  {"week": "11", "lecture_topics": ["PractIcal examples of pitfalls in interpretation of CT images and the associated corrective measures: mechanical (centre-of-rotation), algorithmic (beam hardening), instrument related (photon statistics), dynamic bias (time-dependant functions), patient motion and dead pixels"], "cos_met": ["CO2", "CO3"], "tutorial_assignment": null},
+  {"week": "12", "lecture_topics": ["New application: Network diagnostics", "detection of special nuclear materials at seaport, airport and border crossings", "muon detectors and algorithms"], "cos_met": ["CO4"], "tutorial_assignment": null}
+ ],
+ "assessments": [
+  {"type_label": "Mid-sem", "weight_pct": 20},
+  {"type_label": "End-sem", "weight_pct": 40},
+  {"type_label": "Quiz", "weight_pct": 10},
+  {"type_label": "Assignment", "weight_pct": 10},
+  {"type_label": "Project", "weight_pct": 20}
+ ],
+ "resources": [
+  {"type_label": "Text Material", "title": "Selected Papers from IITK Group"},
+  {"type_label": "Reference material (mathematics)", "title": "https://www.amazon.in/Mathematics-Computerized-Tomography-F-Natterer/dp/351902103X"},
+  {"type_label": "Reference material (applications)", "title": "https://www.amazon.in/Computerized-Tomography-Scientists-Engineers-Prabhat/dp/1420047930/ref=sr_1_1?qid=1658205469&refinements=p_27%3APrabhat+Munshi&s=books&sr=1-1-catcorr"},
+  {"type_label": "Reference material (applications)", "title": "https://www.amazon.in/CT2008-International-Applications-Computerized-Proceedings/dp/0735405786/ref=sr_1_1?qid=1658205469&refinements=p_27%3APrabhat+Munshi&s=books&sr=1-1"},
+  {"type_label": "Reference Material (general)", "title": "https://www.amazon.in/Fundamentals-Computerized-Tomography-Reconstruction-Projections/dp/185233617X/ref=sr_1_6?qid=1658206409&refinements=p_27%3AGabor+T.+Herman&s=books&sr=1-6"}
+ ]}

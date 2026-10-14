@@ -5,6 +5,7 @@ import json
 import glob
 import hashlib
 import argparse
+from collections import defaultdict
 from pathlib import Path
 from dotenv import load_dotenv
 from neo4j import GraphDatabase
@@ -18,6 +19,17 @@ CONSTRAINTS = [
     ("Course", "code"), ("CourseOutcome", "id"), ("WeekPlan", "id"), ("Topic", "id"),
     ("AssessmentComponent", "id"), ("Resource", "id"),
 ]
+LAYER_A_LABELS = [label for label, _ in CONSTRAINTS]
+IS_LAYER_A = " OR ".join(f"n:{label}" for label in LAYER_A_LABELS)
+
+# Design runs (new courses from the design pipeline, loaded by design/neo4j_sync.py) link into this graph. --wipe keeps
+# them: these links are saved before the wipe and re-attached to the reloaded courses and topics afterwards.
+DESIGN_LINKS_Q = """
+MATCH (d:DesignNode)-[r]->(x) WHERE x:Course OR x:Topic
+RETURN d.run_id AS run_id, d.uid AS uid, type(r) AS rel, properties(r) AS props,
+       CASE WHEN x:Course THEN 'Course' ELSE 'Topic' END AS kind,
+       CASE WHEN x:Course THEN x.code ELSE x.id END AS key
+"""
 
 def resource_id(title):
     """Shared id for a textbook/reference title, so courses citing the same book share one node."""
@@ -35,14 +47,39 @@ def course_credits(header):
 class KGBuilder:
     def __init__(self, uri, user, password):
         self.driver = GraphDatabase.driver(uri, auth=(user, password))
+        self.design_links = []
 
     def close(self):
         self.driver.close()
 
     def clear_db(self):
-        print("Clearing existing database...")
+        """Delete the institutional graph (Layer A) only; design runs and programme outcomes stay."""
         with self.driver.session() as session:
-            session.run("MATCH (n) DETACH DELETE n")
+            self.design_links = session.run(DESIGN_LINKS_Q).data()
+            print(f"Clearing the institutional graph (design runs are kept; {len(self.design_links)} of their links will be re-attached)...")
+            session.run(f"MATCH (n) WHERE {IS_LAYER_A} DETACH DELETE n")
+
+    def label_institutional(self):
+        """Every Layer A node also gets the label Institutional, to tell it apart from design-run (Generated) nodes."""
+        with self.driver.session() as session:
+            session.run(f"MATCH (n) WHERE {IS_LAYER_A} SET n:Institutional")
+
+    def restore_design_links(self):
+        if not self.design_links:
+            return
+        groups = defaultdict(list)
+        for link in self.design_links:
+            groups[(link["kind"], link["rel"])].append(link)
+        restored = 0
+        with self.driver.session() as session:
+            for (kind, rel), rows in groups.items():
+                key = "code" if kind == "Course" else "id"
+                restored += session.run(
+                    f"UNWIND $rows AS r "
+                    f"MATCH (d:DesignNode {{run_id: r.run_id, uid: r.uid}}) MATCH (x:{kind} {{{key}: r.key}}) "
+                    f"CREATE (d)-[y:`{rel}`]->(x) SET y = r.props RETURN count(*) AS n", rows=rows).single()["n"]
+        lost = len(self.design_links) - restored
+        print(f"Re-attached {restored} design-run links" + (f"; {lost} pointed at courses/topics that no longer exist" if lost else ""))
 
     def create_constraints(self):
         with self.driver.session() as session:
@@ -269,7 +306,8 @@ class KGBuilder:
 
 def main():
     parser = argparse.ArgumentParser(description="Load data/enriched + data/canonical into Neo4j.")
-    parser.add_argument("--wipe", action="store_true", help="delete everything in the database before loading")
+    parser.add_argument("--wipe", action="store_true",
+                        help="delete the institutional graph before loading (design runs are kept and re-linked)")
     args = parser.parse_args()
 
     load_dotenv(BASE_DIR / ".env")
@@ -284,6 +322,8 @@ def main():
             builder.clear_db()
         builder.create_constraints()
         builder.build_graph()
+        builder.label_institutional()
+        builder.restore_design_links()
         builder.close()
         print("Success! Graph construction is complete.")
     except Exception as e:

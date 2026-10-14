@@ -86,10 +86,13 @@ def _publish(state: S) -> S:
     """After the final approval, load the design graph into Neo4j next to Layer A (skipped, not failed, if Neo4j is down)."""
     rt = _rt(state)
     try:
-        from profsagent.design.neo4j_sync import load_run
+        from profsagent.design.neo4j_sync import check_run, load_run
         stats = load_run(rt.run_dir)
-        rt.state["neo4j_load"] = stats
-        rt.log(f"design graph loaded into Neo4j: {stats}")
+        checks = check_run(rt.run_dir)
+        failed = [c for c in checks if not c["ok"]]
+        rt.state["neo4j_load"] = {**stats, "checks_failed": failed}
+        rt.log(f"design graph loaded into Neo4j: {stats}; checks passed {len(checks) - len(failed)}/{len(checks)}"
+               + "".join(f"\n  FAIL {c['check']}: {c['detail']}" for c in failed))
     except Exception as e:  # noqa: BLE001 — the run's files are complete either way
         rt.state["neo4j_load"] = {"skipped": f"{type(e).__name__}: {str(e)[:160]}"}
         rt.log(f"design graph NOT loaded into Neo4j ({type(e).__name__}); load later with scripts/load_design_to_neo4j.py")

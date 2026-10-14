@@ -329,6 +329,16 @@ def s5_structure(rt: Runtime) -> None:
     topics = [{**t, "module_order": m["order"]} for m in comp["modules"] for t in m["topics"]]
     st["schedule"] = det.schedule(topics, st["weeks"], st["ltp"]["L"], st["midsem_after_week"])
     _record(rt, "structure", comp, vs, trace)
+    # SAME_AS check: keep a topic's link to an IIIT-D topic only if the KG also finds that topic close to the topic's own
+    # title (G7 may attach a candidate to the wrong topic, or one that only shares a word); otherwise the topic is new.
+    linked = [t for m in st["modules"] for t in m["topics"] if t.get("topic_uid")]
+    if linked:
+        near = rt.kg.topic_candidates([t["title"] for t in linked], k=5, exclude=rt.exclude)
+        dropped = [t for t, c in zip(linked, near) if t["topic_uid"] not in {x["topic_uid"] for x in c["candidates"]}]
+        for t in dropped:
+            t["topic_uid_rejected"], t["topic_uid"] = t["topic_uid"], None
+        rt.log(f"  links to IIIT-D topics: kept {len(linked) - len(dropped)} of {len(linked)}"
+               + (f"; dropped as not similar: {[t['id'] for t in dropped]}" if dropped else ""))
     g = rt.graph
     for lab in ("Module", "CourseTopic", "Week", "Lecture"):
         g.remove_label(lab)

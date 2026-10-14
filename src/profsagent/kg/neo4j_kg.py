@@ -12,7 +12,9 @@ Embeddings (embedder= or $KG_EMBEDDER):
 Each model scores similarity on its own scale, so each has its own topic-match threshold.
 
 Differences from the stub, beyond covering every course in the graph (471) instead of ~17 parsed sheets:
-- topic candidates are the graph's canonical Topic nodes, each listed with every course that covers it;
+- topic candidates are the graph's canonical Topic nodes, each listed with every course that covers it, and only those
+  at or above the topic-match threshold: when nothing at IIIT-D is close, the list is empty, so the design pipeline
+  marks the topic new instead of linking it (SAME_AS) to the nearest unrelated one;
 - corpus_resources lists every course that uses a resource, not only the course asked about;
 - priors(level=...) restricts the corpus to that course level (the stub ignores level);
 - prereqs / anti never name an excluded course.
@@ -339,7 +341,7 @@ class Neo4jKG:
             sims = np.where(keep, mat @ pv[i], -np.inf)
             cands, seen = [], set()
             for j in np.argsort(-sims):
-                if not keep[j]:
+                if not keep[j] or sims[j] < self.match_sim:
                     break
                 key = slug(pool[j]["name"])
                 if key in seen:

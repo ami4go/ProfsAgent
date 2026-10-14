@@ -104,7 +104,9 @@ def test_local_embeddings_match_topics():
     neo, _ = kgs()
     cands = neo.topic_candidates(["shortest path algorithms like Dijkstra"], k=3)[0]["candidates"]
     assert cands and all(set(c) == {"topic_uid", "canonical_name", "sim", "courses"} for c in cands)
-    assert cands[0]["sim"] >= neo.match_sim and cands[0]["courses"]
+    assert all(c["sim"] >= neo.match_sim for c in cands) and cands[0]["courses"]
+    # nothing at IIIT-D is close to this: no candidate rather than the nearest unrelated topic
+    assert neo.topic_candidates(["Renaissance fresco painting techniques"], k=3)[0]["candidates"] == []
     own = neo.course("CSE222")["topics"][:6]
     ov = neo.topic_overlap(own, "CSE222")
     assert len(ov["shared_topics"]) == len(own) and "all-MiniLM-L6-v2" in ov["method"]

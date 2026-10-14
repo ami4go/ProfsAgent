@@ -86,11 +86,21 @@ After the final approval gate, every run loads its design graph (`design_graph.j
 graph (Layer A), if Neo4j is reachable (`design/neo4j_sync.py`). Design nodes have the labels `DesignNode` and `D_<type>`
 (`D_CO`, `D_LO`, `D_CourseTopic`, `D_Assessment`, ...) and a `run_id`; a `(:DesignRun)` node holds the run summary.
 Links leave the design to real nodes: `REQUIRES`/`OVERLAPS` → `(:Course)`, `SAME_AS` → `(:Topic)`, `MAPS_TO` →
-`(:ProgrammeOutcome)` (the template's outcomes). Example:
+`(:ProgrammeOutcome)` (the template's outcomes).
+Each run gets a generated course code, the department prefix + a number from 1001 (CSE1001, CSE1002, ...; real IIIT-D codes
+have 3 digits), kept in `runs/<id>/course_code.txt` and stored as `course_code` on every node of the run (`code` on the course node).
+Every node has a readable `name` caption ("CSE1001 · <title>", "Week 3", "W3 Lecture 2", "CO2.LO1", "Quiz1 (W3)"), design nodes
+carry the label `Generated` and the IIIT-D graph's nodes `Institutional`. The course node is the hub, as `(:Course)` is in Layer A:
+`HAS_CO`, `HAS_MODULE`, `HAS_WEEK`, `HAS_ASSESSMENT`, `USES_RESOURCE`, … link it to every part. `--check` compares what is in Neo4j
+with the run's files (every node and link) and checks the course is complete (every CO has LOs, every LO taught and assessed,
+weeks 1..N, …); the automatic load after the final gate runs the same check and logs failures. Example:
 ```cypher
-MATCH (:DesignRun {run_id:'cs601-02'})-[:DESIGNS]->(c)-[r:REQUIRES|OVERLAPS]->(k:Course) RETURN type(r), k.code, k.name
+MATCH (c:D_NewCourse {code:'CSE1001'})-[r:REQUIRES|OVERLAPS|COMPARABLE_TO]->(k:Course)
+WHERE type(r) <> 'OVERLAPS' OR r.weighted_jaccard > 0 RETURN c, r, k
 ```
-Load or remove a run by hand: `python scripts/load_design_to_neo4j.py --run-id <id> [--delete]`.
+S5 keeps a topic's `SAME_AS` link to an IIIT-D topic only if the KG also finds that topic close to the topic's own title.
+`load.py --wipe` clears only the IIIT-D graph; design runs stay and their links are re-attached.
+Load, check or remove a run by hand: `python scripts/load_design_to_neo4j.py --run-id <id> [--check | --delete]`.
 
 ## Other scripts
 - `scripts/export_course_template.py --run-id <id>`: (re)writes `runs/<id>/course_template.xlsx`.

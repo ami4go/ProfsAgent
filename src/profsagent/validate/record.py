@@ -33,6 +33,9 @@ FIX_HINTS = {
     "VT-ORDER": "Add the prerequisite to the dependent topic's `requires`, or move the dependent topic later in its module order, so "
                 "it is taught after what it builds on.",
     "VT-LEN": "Rewrite the statement as one outcome of typical length: verb, object, condition and degree, without lists or padding.",
+    "VKG-PREC": "Check the order: move the later topic before the other, or keep it and note why this course differs from IIIT-D practice.",
+    "VKG-DUP": "Declare the course as an anti-requisite, or change the topics so the new course is distinct from it.",
+    "VKG-NORM": "Confirm the value is intended for this level, or bring it closer to what same-level IIIT-D courses use.",
 }
 
 

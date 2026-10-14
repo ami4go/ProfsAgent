@@ -500,11 +500,64 @@ def check_constraint_set(state: dict) -> list[dict]:
     return constraints.check_constraints(state)
 
 
+def check_kg(state: dict) -> list[dict]:
+    """After S5: the design against facts from the institutional graph (state["kg_facts"], kg/facts.py). Warnings only:
+    the graph describes how IIIT-D courses usually are, not rules a new course must follow."""
+    kf = state.get("kg_facts")
+    if not kf:
+        return []
+    out = []
+    th = pedagogy()["thresholds"]
+    first = {tid: min(ws) for tid, ws in (state.get("schedule") or {}).get("topic_weeks", {}).items() if ws}
+    for e in kf.get("precedence", []):
+        a, b = first.get(e["from"]), first.get(e["to"])
+        if a is not None and b is not None and a > b:
+            out.append(v("VKG-PREC", WARN, [e["from"], e["to"]],
+                         f"'{e['from_title']}' starts in week {a}, after '{e['to_title']}' (week {b}); {e['support']} IIIT-D "
+                         f"courses teach it first ({', '.join(e['courses'][:4])}), {e['against']} the other way round",
+                         support=e["support"], against=e["against"], courses=e["courses"]))
+    pos = state.get("positioning") or {}
+    declared = {a["course_uid"] for a in pos.get("anti_requisites", [])} | {p["course_uid"] for p in pos.get("prerequisites", [])}
+    for o in kf.get("catalogue_overlap", []):
+        if o["weighted_jaccard"] >= th["anti_requisite_overlap"] and o["course_uid"] not in declared:
+            out.append(v("VKG-DUP", WARN, [o["course_uid"]],
+                         f"topics overlap {o['course_uid']} ({o.get('name') or ''}) at {o['weighted_jaccard']} "
+                         f"(≥ {th['anti_requisite_overlap']}), but it is not declared as an anti-requisite: {o['shared_topics'][:4]}",
+                         shared_topics=o["shared_topics"]))
+    out += _norm_checks(state, kf.get("norms") or {}, th["kg_norms"])
+    return out
+
+
+def _norm_checks(state: dict, n: dict, cfg: dict) -> list[dict]:
+    if (n.get("n") or 0) < cfg["min_courses"]:
+        return []
+    out, lvl = [], f"{n['level']}xx"
+    credits = (state.get("defaults") or {}).get("credits")
+    if credits is not None:
+        share = n["credits"].get(str(credits), 0) / n["n"]
+        if share < cfg["rare_credit_share"]:
+            out.append(v("VKG-NORM", WARN, ["credits"], f"{credits} credits: {share:.0%} of the {n['n']} level-{lvl} courses "
+                                                        f"have that ({n['credits']})", share=round(share, 3)))
+    cos = state.get("cos") or []
+    bl = [int(c["bloom_level"]) for c in cos if str(c.get("bloom_level", "")).isdigit()]
+    comps = (state.get("assessment") or {}).get("components") or []
+    for key, what, value in (("co_count", "COs", len(cos) if cos else None), ("bloom_max", "highest CO Bloom level", max(bl) if bl else None),
+                             ("components", "assessment components", len(comps) if comps else None)):
+        s = n.get(key)
+        if value is None or not s or s["n"] < cfg["min_courses"]:
+            continue
+        if not s["lo"] <= value <= s["hi"]:
+            out.append(v("VKG-NORM", WARN, [key], f"{value} {what}: unusual for level {lvl} (IIIT-D median {s['median']:g}, "
+                                                  f"usual range {max(s['lo'], 0):g}–{s['hi']:g}, {s['n']} courses)",
+                         median=s["median"], lo=s["lo"], hi=s["hi"]))
+    return out
+
+
 STAGE_CHECKS = {
     "intake": [check_intake], "constraints": [check_constraint_set],
     "positioning": [check_positioning], "cos": [check_cos], "copo": [check_copo], "los": [check_los],
     "structure": [check_structure], "schedule": [check_schedule], "labs": [check_labs],
-    "assessment": [check_assessment, check_copo_computed], "resources": [check_resources],
+    "assessment": [check_assessment, check_copo_computed], "resources": [check_resources], "kg": [check_kg],
 }
 
 

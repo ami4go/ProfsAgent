@@ -31,7 +31,7 @@ FAMILY: dict[str, str] = {
     "T1": "graph", "T4": "graph", "T5": "graph", "T10": "graph", "VLO-DAG": "graph", "VT-DAG": "graph", "VT-ORDER": "graph",
     "VTG-TAUGHT": "graph", "VCO-COVER": "graph",
     # facts taken from the institutional knowledge graph (catalogue, levels, topic overlap, weight priors)
-    "V14": "kg", "V16": "kg", "V17": "kg", "V20": "kg",
+    "V14": "kg", "V16": "kg", "V17": "kg", "V20": "kg", "VKG-PREC": "kg", "VKG-DUP": "kg", "VKG-NORM": "kg",
     # external verification of references
     "V15": "resource",
     # internal rules on a single component

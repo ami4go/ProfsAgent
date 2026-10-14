@@ -17,6 +17,7 @@ from profsagent.agents.loop import call, generate
 from profsagent.config import RUNS, bloom_lexicon, degree_bank, pedagogy, programme, regulations
 from profsagent.design import deterministic as det
 from profsagent.design.store import DesignGraph
+from profsagent.kg import facts as kg_facts
 from profsagent.kg.client import KGClient
 from profsagent.kg.stub import StubKG
 from profsagent.llm.client import LLMClient
@@ -371,7 +372,26 @@ def s5_structure(rt: Runtime) -> None:
             g.link(it["topic_id"], "DELIVERED_IN", lid, hours=it["hours"])
     s = st["schedule"]
     rt.log(f"  schedule: {'feasible' if s['feasible'] else 'INFEASIBLE'} · need {s['hours_needed']} h / {s['hours_available']} h")
+    _graph_facts(rt)
     rt.save()
+
+
+def _graph_facts(rt: Runtime) -> None:
+    """Snapshot what the graph checks need (kg/facts.py) and run them (warnings). A failure here never stops the run."""
+    st = rt.state
+    try:
+        st["kg_facts"] = kg_facts.snapshot(rt.kg, st, rt.exclude)
+    except Exception as e:  # noqa: BLE001
+        st["kg_facts"] = None
+        rt.log(f"  graph facts unavailable ({type(e).__name__}: {str(e)[:120]}); graph checks skipped")
+        return
+    vs = engine.check(st, ["kg"])
+    _record(rt, "kg", None, vs, None)
+    kf = st["kg_facts"]
+    top = kf["catalogue_overlap"][0] if kf["catalogue_overlap"] else None
+    rt.log(f"  graph facts: {len(kf['precedence'])} topic-order pairs from IIIT-D weekly plans, "
+           f"closest course {top['course_uid'] + ' ' + str(top['weighted_jaccard']) if top else 'none'}, "
+           f"{kf['norms']['n']} level-{kf['level']} courses; warnings {sorted({x['code'] for x in vs}) or 'none'}")
 
 
 def _schedule_view(st: dict) -> list[dict]:

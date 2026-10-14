@@ -1,6 +1,6 @@
 # Software Development using AI — Course Proposal (ProfsAgent draft)
 
-> Run `benchmark-banned_verbs` · generated deterministically from the design graph · validator status: **0 errors, 13 warnings** (see Appendix E). Approvals: gate1_context=approve (auto (dev run)), gate2_outcomes=approve (auto (dev run))
+> Run `benchmark-banned_verbs` · generated deterministically from the design graph · validator status: **3 errors, 17 warnings** (see Appendix E). Approvals: gate1_context=approve (auto (dev run)), gate2_outcomes=approve (auto (dev run))
 
 ## 1. Assumption ledger (values not supplied by the professor)
 
@@ -11,7 +11,7 @@
 | ASM03 | course level | 3 | no code/level given; set to the lowest target year ([3, 4]) (INFERRED) | course instructor / DOAA |
 | ASM04 | mid-semester exam timing | after teaching week 7 | mid-semester recess and exam fall roughly mid-way through 13 teaching weeks; confirm from the academic calendar | academic calendar (DOAA) |
 | ASM05 | weekly student effort | None | not supplied; effort is reported (contact + take-home estimates), not constrained | course instructor / DOAA |
-| — | ambiguous: level_or_code | — | The course level is stated as Advanced undergraduate, but no explicit course code or numeric level has been provided. | professor |
+| — | ambiguous: level_or_code | — | Course level is stated as Advanced undergraduate, but course code is not specified. | professor |
 
 ## 2. Course header
 
@@ -25,17 +25,17 @@
 
 ## 3. Course description
 
-This course examines modern AI-native software development, where developers collaborate with increasingly capable coding agents. It covers how to define intent, provide effective context, structure development workflows, and coordinate AI tools. Students gain practical experience designing and evaluating agent-assisted software development processes. Students will be able to configure AI-assisted coding tools and agent workflows, construct executable specifications and Model Context Protocol integrations, analyse iterative loop engineering workflows and agent-generated code, evaluate automated testing and deployment pipelines, and assess complete AI-native software development processes for multi-module applications. The course is taught through lectures, tutorials, and laboratory sessions involving hands-on projects and emerging developer tools.
+This course examines modern AI-native software development, where developers collaborate with coding agents. It covers how to define intent, provide effective context, structure development workflows, and coordinate AI tools. Designed for third and fourth-year Bachelor of Technology students, the course matters because it equips future software engineers with practical capabilities to build and evaluate agent-assisted systems. Upon completing the course, students will be able to implement developer workflows integrating AI-assisted coding tools and coding agents, configure agent skills and Model Context Protocol servers, construct executable specifications, analyze loop engineering and iterative development processes, and evaluate automated testing and reliability metrics. The course is taught through a combination of lectures, tutorials, and laboratory sessions, emphasizing a workflow-oriented understanding through hands-on development and experimentation.
 
 ## 4. Pre-requisites and anti-requisites
 
 | Kind | Course | Relied-upon topics | Justification |
 |---|---|---|---|
-| mandatory | CSE201 `[CATALOGUE]` | Unit testing using JUnit, Collection framework, Exception handling | Students need foundational software development, object-oriented principles, and unit testing practices to evaluate and build reliable software using AI coding assistants. |
+| mandatory | CSE201 `[CATALOGUE]` | Unit testing using JUnit, Generic programming, Exception handling | Students must understand structured software development, unit testing, and programming principles before building software systems with AI coding agents. |
 
 **Anti-requisites:** none — every checked course is below the anti-requisite overlap threshold (Appendix D).
 
-**Existence check:** distinct — While CSE701 covers AI in software engineering with a weighted Jaccard overlap of 0.118, it focuses on mining software repositories, defect prediction, and data-driven SE research at the graduate level (level 7). The new course focuses on modern AI-native development, coding agents, MCP, and developer workflows at level 3.
+**Existence check:** distinct — While CSE701 covers aspects of AI in Software Engineering such as data mining and assisting code review, the new course focuses specifically on modern AI-native development, coding agents, MCP, loop engineering, and human-AI collaborative workflows.
 
 ## 5. Bloom band
 
@@ -43,209 +43,213 @@ L3–L5 · basis: level 3xx band [3,5] — provisional table (docs/01 §6.4); to
 
 ## 6. Course Outcomes (Post Conditions) and Learning Outcomes
 
-**CO1 (L3, procedural) — Configure AI-assisted coding tools and coding agent workflows for a supplied software project repository, such that at least 80% of the provided test cases pass and all tool configurations satisfy repository interface guidelines.** `[CORPUS, USER]`  
-verb *Configure* · behaviour *AI-assisted coding tools and coding agent workflows* · condition *for a supplied software project repository* · degree *such that at least 80% of the provided test cases pass and all tool configurations satisfy repository interface guidelines* · evidence: programming_assignment, lab_task · marks share (computed): 10.5%
+**CO1 (L3, procedural) — Implement developer workflows integrating AI-assisted coding tools and coding agents, using provided coding agent environments, such that all public integration tests pass and no warnings are generated by the static analyzer.** `[CORPUS, USER]`  
+verb *implement* · behaviour *developer workflows integrating AI-assisted coding tools and coding agents* · condition *using provided coding agent environments* · degree *such that all public integration tests pass and no warnings are generated by the static analyzer* · evidence: programming_assignment, lab_task · marks share (computed): 19.0%
 
-- CO1.LO1 (L1) Identify the core components and developer workflows of AI-assisted coding tools for a supplied software project repository
-- CO1.LO2 (L3 ★capstone) Configure AI-assisted coding tools and coding agent workflows for a supplied software project repository
+- CO1.LO1 (L1) Identify available AI-assisted coding tools and features within a provided developer environment
+- CO1.LO2 (L3) Configure coding agent parameters and integration hooks for a supplied repository
+- CO1.LO3 (L3 ★capstone) Implement integration test workflows using provided coding agent environments, such that all public integration tests pass and no warnings are generated by the static analyzer.
 
-**CO2 (L3, procedural) — Construct executable specifications and Model Context Protocol (MCP) tool integrations from given requirements documents, covering every use case in the supplied requirements document and justifying each tool integration decision against stated constraints.** `[CORPUS, USER]`  
-verb *Construct* · behaviour *executable specifications and Model Context Protocol (MCP) tool integrations* · condition *from given requirements documents* · degree *covering every use case in the supplied requirements document and justifying each tool integration decision against stated constraints* · evidence: design_document, programming_assignment · marks share (computed): 22.5%
+**CO2 (L3, procedural) — Configure agent skills, tool use mechanisms, and Model Context Protocol (MCP) servers, given a software development task description, such as identifying at least three distinct context bottlenecks with supporting log evidence.** `[CORPUS, USER]`  
+verb *configure* · behaviour *agent skills, tool use mechanisms, and Model Context Protocol (MCP) servers* · condition *given a software development task description* · degree *identifying at least three distinct context bottlenecks with supporting log evidence* · evidence: lab_task, programming_assignment · marks share (computed): 14.0%
 
-- CO2.LO1 (L3) Construct executable specifications from given requirements documents for a supplied software task
-- CO2.LO2 (L3 ★capstone) Construct Model Context Protocol (MCP) tool bindings for a supplied module configuration, ensuring message schema compliance and correct parameter mapping
+- CO2.LO1 (L2) Describe the architecture of Model Context Protocol (MCP) servers and tool use mechanisms
+- CO2.LO2 (L3 ★capstone) Configure Model Context Protocol (MCP) servers and agent skill hooks given a software development task description, identifying at least three distinct context bottlenecks with supporting log evidence.
 
-**CO3 (L4, conceptual) — Analyse iterative loop engineering workflows and agent-generated code for a supplied software artifact of at most 5,000 lines, identifying at least three distinct failure causes with supporting log evidence and a proposed fix for each.** `[CORPUS, USER]`  
-verb *Analyse* · behaviour *iterative loop engineering workflows and agent-generated code* · condition *for a supplied software artifact of at most 5,000 lines* · degree *identifying at least three distinct failure causes with supporting log evidence and a proposed fix for each* · evidence: code_review, exam_question · marks share (computed): 27.0%
+**CO3 (L3, conceptual) — Construct executable specifications and specification-driven development artifacts, using requirement documents and schema templates, justifying each requirement mapping against at least one stated system constraint.** `[CORPUS, USER]`  
+verb *construct* · behaviour *executable specifications and specification-driven development artifacts* · condition *using requirement documents and schema templates* · degree *justifying each requirement mapping against at least one stated system constraint* · evidence: design_document, programming_assignment · marks share (computed): 14.0%
 
-- CO3.LO1 (L4) Examine iterative loop engineering workflows and agent-generated code for a supplied software artifact of at most 5,000 lines
-- CO3.LO2 (L4 ★capstone) Analyse execution trace logs for a supplied software artifact of at most 5,000 lines, identifying at least three distinct failure causes with supporting log evidence and a proposed fix for each
+- CO3.LO1 (L3) Construct requirement mapping entries and schema templates from informal requirement documents
+- CO3.LO2 (L3 ★capstone) Construct executable specifications from requirement documents and schema templates, justifying each requirement mapping against at least one stated system constraint.
 
-**CO4 (L5, metacognitive) — Evaluate the reliability, correctness, and performance of automated testing and deployment pipelines generated by AI coding agents, benchmarking them against standard baseline metrics and justifying each evaluation decision against stated requirements.** `[CORPUS, USER]`  
-verb *Evaluate* · behaviour *the reliability, correctness, and performance of automated testing and deployment pipelines generated by AI coding agents* · condition *against standard baseline metrics* · degree *justifying each evaluation decision against stated requirements and covering every use case in the supplied requirements document* · evidence: design_document, report · marks share (computed): 30.0%
+**CO4 (L4, metacognitive) — Analyze loop engineering and iterative development processes, given a recorded software factory execution trace, identifying at least two control loop failures responsible for code generation degradation.** `[CORPUS, USER]`  
+verb *analyze* · behaviour *loop engineering and iterative development processes* · condition *given a recorded software factory execution trace* · degree *identifying at least two control loop failures responsible for code generation degradation* · evidence: exam_question, code_review · marks share (computed): 24.0%
 
-- CO4.LO1 (L5) Assess the reliability and correctness of automated testing and deployment pipelines generated by AI coding agents
-- CO4.LO2 (L5 ★capstone) Evaluate the execution speed of automated testing pipelines generated by AI coding agents, benchmarking them against standard baseline metrics and justifying each evaluation decision against stated requirements
+- CO4.LO1 (L2) Trace loop engineering and iterative development processes from software factory execution logs
+- CO4.LO2 (L4 ★capstone) Analyze control loop degradation from a recorded software factory execution trace, identifying at least two control loop failures responsible for code generation degradation.
 
-**CO5 (L5, procedural) — Evaluate a complete AI-native software development process for a multi-module application, demonstrated live with 3 scenario walkthroughs chosen by the evaluator and satisfying every acceptance criterion agreed at the first milestone.** `[CORPUS, USER]`  
-verb *Evaluate* · behaviour *a complete AI-native software development process for a multi-module application* · condition *using integrated coding agents, MCP tools, and iterative loop engineering frameworks* · degree *demonstrated live, with 3 scenario walkthroughs chosen by the evaluator such that the delivered system satisfies every acceptance criterion agreed at the first milestone* · evidence: project_deliverable, presentation · marks share (computed): 10.0%
+**CO5 (L5, procedural) — Evaluate automated testing, evaluation harnesses, and reliability metrics, using a deployed AI-assisted software system, demonstrating live with three scenario walkthroughs chosen by the evaluator.** `[CORPUS, USER]`  
+verb *evaluate* · behaviour *automated testing, evaluation harnesses, and reliability metrics* · condition *using a deployed AI-assisted software system* · degree *demonstrating live with three scenario walkthroughs chosen by the evaluator* · evidence: project_deliverable, presentation · marks share (computed): 29.0%
 
-- CO5.LO1 (L3) Implement integrated coding agents, MCP tools, and iterative loop engineering frameworks for a multi-module application
-- CO5.LO2 (L5 ★capstone) Evaluate a multi-module application developed via an AI-native software development process, demonstrated live, with 3 scenario walkthroughs chosen by the evaluator such that the delivered system satisfies every acceptance criterion agreed at the first milestone
+- CO5.LO1 (L3) Execute automated testing and evaluation harnesses on a deployed AI-assisted software system
+- CO5.LO2 (L5 ★capstone) Evaluate automated test execution and reliability metrics using a deployed AI-assisted software system, demonstrating live, with three scenario walkthroughs chosen by the evaluator.
 
 ## 7. Weekly lecture plan
 
 | Week | Lecture topics | LOs met | COs met | Tutorial | Assessment events |
 |---|---|---|---|---|---|
-| 1 | AI-assisted coding developer workflows (M1.T1)<br>Coding agents setup and configuration (M1.T2) | CO1.LO1, CO1.LO2 | CO1 | Trace-mapping exercise of core components in AI-assisted coding repositories, in pairs. |  |
-| 2 | Coding agents setup and configuration (M1.T2)<br>Coding agents advanced setup (M1.T3)<br>Requirements to executable specifications (M2.T1) | CO1.LO2, CO2.LO1 | CO1, CO2 | Worked trace-diagnosis of agent setup configuration errors, in pairs. |  |
-| 3 | Requirements to executable specifications (M2.T1)<br>MCP tool use and context engineering (M2.T2) | CO2.LO1, CO2.LO2 | CO2 | Requirement translation exercise: converting unstructured requirement paragraphs into structured executable specifications, individually. | A:PA1 released |
-| 4 | MCP tool use and context engineering (M2.T2)<br>Advanced context engineering (M2.T3) | CO2.LO2 | CO2 | MCP message schema compliance review and parameter mapping correction drill, in pairs. |  |
-| 5 | Advanced context engineering (M2.T3)<br>Iterative development loops (M3.T1) | CO2.LO2, CO3.LO1 | CO2, CO3 | Code review exercise examining agent-generated code artifacts of up to 5,000 lines for iterative loop flaws, in groups. | A:PA1 due; A:PA2 released |
-| 6 | Iterative development loops (M3.T1)<br>Software factories and loop failure analysis (M3.T2)<br>Software factories failure analysis (M3.T3) | CO3.LO1, CO3.LO2 | CO3 | Trace log analysis exercise: identifying distinct failure causes and drafting fixes from provided logs, individually. |  |
-| 7 | Software factories failure analysis (M3.T3)<br>Automated testing and reliability (M4.T1) | CO3.LO2, CO4.LO1 | CO3, CO4 | Mid-sem review and discussion on evaluating automated testing and deployment pipelines, in groups. | A:Midsem (midsem) |
+| 1 | AI-assisted coding and environment tools (M1.T1)<br>Coding agents and configuration hooks (M1.T2) | CO1.LO1, CO1.LO2 | CO1 | Worked trace-diagnosis of 3 AI tool output failures, in pairs, identifying environment configuration issues. |  |
+| 2 | Coding agents and configuration hooks (M1.T2)<br>Developer workflows with coding agents (M1.T3) | CO1.LO2, CO1.LO3 | CO1 | Problem-solving session on debugging coding agent configuration hooks and resolving hook collision errors. | A:Assignment1 released |
+| 3 | Developer workflows with coding agents (M1.T3)<br>Model Context Protocol architecture and tool use (M2.T1) | CO1.LO3, CO2.LO1 | CO1, CO2 | Worked trace-diagnosis of MCP server connection failures and tool invocation parameters. | A:Quiz1 (quiz) |
+| 4 | Agent skills and context engineering (M2.T2) | CO2.LO2 | CO2 | Peer review of agent skill configuration files and discussion of context window optimization strategies. | A:Assignment1 due; A:LabTask1 (lab) |
+| 5 | Spec-driven development and requirement mapping (M3.T1)<br>Requirements to executable specifications (M3.T2) | CO3.LO1, CO3.LO2 | CO3 | Worked exercise mapping informal requirement documents into structured schema templates in groups of three. | A:Assignment2 released; A:ProjectDeliverable released |
+| 6 | Requirements to executable specifications (M3.T2)<br>Loop engineering and iterative development processes (M4.T1) | CO3.LO2, CO4.LO1 | CO3, CO4 | Trace-diagnosis of iterative software loop execution logs to identify divergent code generation states. |  |
+| 7 | Loop engineering and iterative development processes (M4.T1)<br>Software factories and control loop failure analysis (M4.T2) | CO4.LO1, CO4.LO2 | CO4 | Analysis of control loop degradation traces from recorded software factory execution logs. | A:Assignment2 due; A:Midsem (midsem) |
 | — | **Mid-semester recess + mid-sem exam** | | | | |
-| 8 | Automated testing and reliability (M4.T1)<br>Deployment evaluation and reliability benchmarking (M4.T2) | CO4.LO1, CO4.LO2 | CO4 | Report drafting exercise assessing reliability and correctness of agent-generated testing pipelines, individually. | A:PA2 due; A:PR1 released |
-| 9 | Deployment evaluation and reliability benchmarking (M4.T2)<br>Reliability benchmarking (M4.T3)<br>Hands-on projects and emerging developer tools (M5.T1) | CO4.LO2, CO5.LO1 | CO4, CO5 | Reliability benchmarking metric evaluation and decision justification drill, in pairs. |  |
-| 10 | Hands-on projects and emerging developer tools (M5.T1)<br>End-to-end practical development workflow evaluation (M5.T2) | CO5.LO1, CO5.LO2 | CO5 | Multi-module architecture integration planning and milestone acceptance criteria review, in groups. | A:PR1 due; A:PR2 released |
-| 11 | End-to-end practical development workflow evaluation (M5.T2)<br>Emerging developer tools practicals (M5.T3)<br>End-to-end practical workflow evaluation (M5.T4) | CO5.LO1, CO5.LO2 | CO5 | Scenario walkthrough preparation and acceptance criteria verification drill, in pairs. |  |
-| 12 | End-to-end practical workflow evaluation (M5.T4) | CO5.LO2 | CO5 | Mock live evaluation walkthrough and peer critique of end-to-end development workflows, in groups. | A:PR2 due; A:PR3 released |
-| 13 |  |  |  |  | A:Endsem (endsem); A:PR3 due |
+| 8 | Software factories and control loop failure analysis (M4.T2)<br>Automated testing and evaluation harnesses (M5.T1) | CO4.LO2, CO5.LO1 | CO4, CO5 | Worked trace-diagnosis of software factory control loop failure logs and root-cause attribution. | A:LabTask2 (lab) |
+| 9 | Deployment, reliability metrics, and system evaluation (M5.T2) | CO5.LO2 | CO5 | Review of deployment reliability metrics and scenario walkthrough preparation for project evaluations. | A:ProjectDeliverable due |
+| 10 |  |  |  |  |  |
+| 11 |  |  |  |  |  |
+| 12 |  |  |  |  |  |
+| 13 |  |  |  |  | A:Endsem (endsem) |
 
 ## 8. Weekly lab plan
 
 | Week | Exercise | LOs practised | Tools |
 |---|---|---|---|
-| 1 | **Coding agents setup and configuration** — Configure local coding agent development environments and verify basic plugin operation. | CO1.LO2 | Student development machines, software development environments |
-| 2 | **Advanced coding agents setup and executable specifications** — Set up advanced coding agent parameters and construct initial executable specifications from requirements. | CO1.LO2, CO2.LO1 | Student development machines, access to AI coding tools/APIs |
-| 3 | **Executable specifications and MCP tool bindings** — Build executable specifications and construct Model Context Protocol (MCP) tool bindings ensuring schema compliance. | CO2.LO1, CO2.LO2 | Student development machines, access to AI coding tools/APIs |
-| 4 | **Advanced context engineering and MCP bindings** — Implement advanced context engineering strategies and configure complex MCP tool bindings. | CO2.LO2 | Student development machines, access to AI coding tools/APIs |
-| 5 | **Context engineering practice** — Practice advanced context engineering techniques for agent-driven workflows. | CO2.LO2 | Student development machines |
-| 6 | **Software factories and loop failure analysis** — Analyze execution trace logs from software factories, identifying failure causes and proposing fixes. | CO3.LO2 | Student development machines |
-| 7 | **Midterm week open lab / catch-up** — Catch-up session and open lab practice for trace log analysis. | CO3.LO2 | Student development machines |
-| 8 | **Deployment evaluation and reliability benchmarking** — Benchmark automated testing pipeline execution speeds against baseline metrics. | CO4.LO2 | Student development machines |
-| 9 | **Reliability benchmarking and developer tools** — Execute reliability benchmarking suites and experiment with emerging developer tools. | CO4.LO2, CO5.LO1 | Student development machines, access to AI coding tools/APIs |
-| 10 | **End-to-end practical development workflow evaluation** — Implement integrated coding agents and MCP tools for a multi-module application. | CO5.LO1, CO5.LO2 | Student development machines, software development environments |
-| 11 | **Emerging developer tools practicals** — Perform practical integration of emerging developer tools within multi-module project setups. | CO5.LO1 | Student development machines |
-| 12 | **End-to-end workflow evaluation walkthroughs** — Conduct live demonstration and scenario walkthroughs of the final multi-module application. | CO5.LO2 | Student development machines |
+| 1 | **Coding Agent Configuration** — Configure coding agent parameters and integration hooks for a supplied repository on student development machines. | CO1.LO2 | Student development machines, software development environments |
+| 2 | **Developer Workflows with Coding Agents** — Execute integration test workflows using provided coding agent environments, verifying that all public integration tests pass. | CO1.LO3 | Student development machines, access to AI coding tools/APIs |
+| 3 | **Extended Developer Workflows** — Practice advanced developer workflows and coding agent interactions on supplied codebases. | CO1.LO3 | Student development machines, access to AI coding tools/APIs |
+| 4 | **MCP Servers and Agent Skills** — Configure Model Context Protocol servers and agent skill hooks given a software development task description, identifying context bottlenecks. | CO2.LO2 | Student development machines, access to AI coding tools/APIs |
+| 5 | **Executable Specifications** — Construct executable specifications from requirement documents and schema templates, justifying mappings against system constraints. | CO3.LO2 | Student development machines, software development environments |
+| 6 | **Refining Executable Specifications** — Refine and test executable specifications generated from informal requirement documents using automated tools. | CO3.LO2 | Student development machines, software development environments |
+| 7 | **Mid-Semester Catch-up Lab** — Open lab session for catch-up on prior lab assignments and preparation for mid-semester evaluations. | CO1.LO2, CO2.LO2 | Student development machines |
+| 8 | **Automated Testing Harnesses** — Execute automated testing and evaluation harnesses on a deployed AI-assisted software system. | CO5.LO1 | Student development machines, access to AI coding tools/APIs |
+| 9 | **System Evaluation and Reliability Metrics** — Evaluate automated test execution and reliability metrics using a deployed AI-assisted software system, demonstrating live scenarios. | CO5.LO2 | Student development machines, access to AI coding tools/APIs |
 
-Infrastructure: Student development machines (available); access to AI coding tools/APIs (needs_confirmation); software development environments (available); TA support (available)
+Infrastructure: Student development machines (available); Access to AI coding tools/APIs (available); Software development environments (available); TA support (available)
 
 ## 9. Assessment plan
 
 | Component | Weight % | Instances (release→due week) | best-k | Activities | Justification |
 |---|---|---|---|---|---|
-| midsem | 20.0 | A:Midsem (W7→W7) | — | analyse-data | Standard weight for mid-semester evaluation covering the first half of the course. |
-| endsem | 25.0 | A:Endsem (W13→W13) | — | analyse-data | Standard weight for end-semester comprehensive evaluation. |
-| practical_assignment | 25.0 | A:PA1 (W3→W5), A:PA2 (W5→W8) | — | design, implement, tool-use | Weight allocated to hands-on programming and design tasks to reinforce tool configuration and MCP bindings. |
-| project | 30.0 | A:PR1 (W8→W10), A:PR2 (W10→W12), A:PR3 (W12→W13) | — | design, evaluate-critique, oral-presentation | Substantial project weight to evaluate end-to-end integration and live scenario-based walkthroughs. |
+| quiz | 10.0 | A:Quiz1 (W3→W3) | — | tool-use |  |
+| assignment | 20.0 | A:Assignment1 (W2→W4), A:Assignment2 (W5→W7) | — | implement, tool-use |  |
+| lab | 10.0 | A:LabTask1 (W4→W4), A:LabTask2 (W8→W8) | — | tool-use, implement |  |
+| midsem | 20.0 | A:Midsem (W7→W7) | — | analyse-data |  |
+| project | 20.0 | A:ProjectDeliverable (W5→W9) | — | evaluate-critique, oral-presentation, design, implement |  |
+| endsem | 20.0 | A:Endsem (W13→W13) | — | analyse-data, implement, evaluate-critique |  |
 | **Sum** | **100.0** | | | | |
 
-Per-CO marks share (computed from LO-level blueprint): CO1 10.5%, CO2 22.5%, CO3 27.0%, CO4 30.0%, CO5 10.0%
+Per-CO marks share (computed from LO-level blueprint): CO1 19.0%, CO2 14.0%, CO3 14.0%, CO4 24.0%, CO5 29.0%
 
 ## 10. Resource material
 
-Policy: **reading_list** — As modern AI-native software development and coding agents represent a rapidly evolving field without established standard textbooks covering all aspects, a curated reading list of recent peer-reviewed conference and journal articles is used.
+Policy: **mixed** — Because the course covers both established software engineering foundations and rapidly evolving agentic tools (such as Model Context Protocol and coding agents), a combination of standard reference books and recent research papers/surveys is utilized.
 
 | Role | Reference | Identifier | Verified | Supports |
 |---|---|---|---|---|
-| reading | Shyam Agarwal, Hao He, Bogdan Vasilescu (2026). *AI IDEs or Autonomous Agents? Measuring the Impact of Coding Agents on Software Development*. | 10.1145/3793302.3793589 | yes | M1.T1, M1.T2 |
-| reading | Prof Dr Oliver Koch (2026). *From Vibe to Value - How Specification-Driven Development Professionalizes AI Coding*. | 10.2139/ssrn.6453101 | yes | M2.T1 |
-| reading | John E. Robert, Ipek Ozkaya, Douglas C. Schmidt (2026). *Transforming Software Engineering and Software Acquisition with Large Language Models*. | 10.1201/9781003492252-7 | yes | M2.T2, M2.T3 |
-| reading | Praneeth Kodumagulla (2026). *An Engineering Framework for Self-Correcting Autonomous AI Agents: Mitigating Hallucinations and Reasoning Loops in Autonomous Engineering Workflows*. | 10.2139/ssrn.6759126 | yes | M3.T1, M3.T2 |
-| reading | Nithya A, Sivasankaran V (2026). *Vulnerability Detection in AI‐Generated and Human‐Written Code of Multiple Programming Languages With Structured Learning*. | 10.1002/stvr.70021 | yes | M4.T1, M4.T2 |
+| reference | Ian Sommerville (2005). *Software Engineering*. | 9780133943030 | yes | M3.T1, M5.T1 |
+| primary | Antonio Gullí (2025). *Agentic Design Patterns*. | R:hash:gull-antonio-agentic-design-patterns-spr | NO: candidate_id not in retrieved candidates | M1.T2, M2.T2 |
+| reading |  (2025). *OpenAI MCP, Agent2Agent (A2A) Protocol*. | R:hash:openai-mcp-agent2agent-a2a-protocol | NO: candidate_id not in retrieved candidates | M2.T1 |
+| reading | Partha Pratim Ray (2025). *A Survey on Model Context Protocol: Architecture, State-of-the-art, Challenges and Future Directions*. | 10.36227/techrxiv.174495492.22752319/v1 | yes | M2.T1 |
+| reading | Anthony Shaw, Amin Beheshti (2026). *Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks*. | 10.1109/sse72781.2026.00047 | yes | M4.T1, M4.T2 |
 
 ## Appendix A — CO–PO matrix (strength COMPUTED from assessment evidence; provisional in brackets)
 
 | CO | PO3 | PO4 | PO7 | PO9 |
 |---|---|---|---|---|
-| CO1 | 1 [unclaimed] | 3 [3] |  | 3 [2] |
-| CO2 | 1 [unclaimed] | 3 [3] |  | 3 [unclaimed] |
-| CO3 | 3 [2] |  |  |  |
-| CO4 | 2 [unclaimed] | 3 [3] | 3 [unclaimed] | 3 [unclaimed] |
-| CO5 |  | 3 [3] | 3 [unclaimed] | 3 [unclaimed] |
+| CO1 | 1 [unclaimed] | 3 [3] |  | 3 [unclaimed] |
+| CO2 | 1 [unclaimed] | 3 [unclaimed] |  | 3 [3] |
+| CO3 | 1 [unclaimed] | 3 [3] |  | 3 [unclaimed] |
+| CO4 | 3 [2] | 1 [unclaimed] |  | 1 [unclaimed] |
+| CO5 | 1 [unclaimed] | 3 [3] | 3 [unclaimed] | 3 [unclaimed] |
 
 PO legend: PO3 = Adapt techniques to new problems; PO4 = Design/implement/evaluate systems; PO7 = Communication; PO9 = Advanced techniques and tools
 
-- CO1→PO4: Configuring tools and workflows directly implements development environments using modern tools. (activities: implement, tool-use)
-- CO1→PO9: Involves applying advanced AI coding tools and agentic workflows. (activities: tool-use)
-- CO2→PO4: Constructing specifications and tool integrations fulfills system design and implementation requirements. (activities: design, implement)
-- CO3→PO3: Analyzing workflows and identifying failures adapts problem-solving techniques to agent-generated code. (activities: analyse-data)
-- CO4→PO4: Evaluating automated testing and deployment pipelines covers the evaluation aspect of system engineering. (activities: evaluate-critique, design)
-- CO5→PO4: Demonstrating and evaluating a complete multi-module development process satisfies end-to-end system evaluation. (activities: evaluate-critique, design)
+- CO1→PO4: Directly implements developer workflows using modern AI-assisted coding tools. (activities: implement, tool-use)
+- CO2→PO9: Applies advanced techniques and tools involving agent skills and MCP servers. (activities: tool-use)
+- CO3→PO4: Designs and constructs system artifacts using specification-driven development. (activities: design)
+- CO4→PO3: Analyzes process failures to understand iterative development degradation. (activities: analyse-data)
+- CO5→PO4: Evaluates a deployed AI-assisted software system using reliability metrics and harnesses. (activities: evaluate-critique, oral-presentation)
 
 ## Appendix B — Traceability matrix (LO → topics → weeks → assessments)
 
 | LO | Bloom | Topics | Weeks | Assessed by |
 |---|---|---|---|---|
-| CO1.LO1 | L1 | M1.T1 | 1 | A:Midsem@L1 |
-| CO1.LO2 | L3 | M1.T2, M1.T3 | 1, 2 | A:PA1@L3 |
-| CO2.LO1 | L3 | M2.T1 | 2, 3 | A:Midsem@L3, A:PA1@L3 |
-| CO2.LO2 | L3 | M2.T2, M2.T3 | 3, 4, 5 | A:PA2@L3 |
-| CO3.LO1 | L4 | M3.T1 | 5, 6 | A:Endsem@L4 |
-| CO3.LO2 | L4 | M3.T2, M3.T3 | 6, 7 | A:Midsem@L4, A:Endsem@L4 |
-| CO4.LO1 | L5 | M4.T1 | 7, 8 | A:Endsem@L5, A:PR1@L5 |
-| CO4.LO2 | L5 | M4.T2, M4.T3 | 8, 9 | A:PR2@L5 |
-| CO5.LO1 | L3 | M5.T1, M5.T3 | 9, 10, 11 | A:PR3@L3 |
-| CO5.LO2 | L5 | M5.T2, M5.T4 | 10, 11, 12 | A:PR3@L5 |
+| CO1.LO1 | L1 | M1.T1 | 1 | A:Quiz1@L1 |
+| CO1.LO2 | L3 | M1.T2 | 1, 2 | A:Assignment1@L3 |
+| CO1.LO3 | L3 | M1.T3 | 2, 3 | A:Assignment1@L3, A:Endsem@L3 |
+| CO2.LO1 | L2 | M2.T1 | 3 | A:Quiz1@L2 |
+| CO2.LO2 | L3 | M2.T2 | 4 | A:LabTask1@L3, A:Endsem@L3 |
+| CO3.LO1 | L3 | M3.T1 | 5 | A:Assignment2@L3 |
+| CO3.LO2 | L3 | M3.T2 | 5, 6 | A:Assignment2@L3, A:Endsem@L3 |
+| CO4.LO1 | L2 | M4.T1 | 6, 7 | A:Midsem@L2 |
+| CO4.LO2 | L4 | M4.T2 | 7, 8 | A:Endsem@L4 |
+| CO5.LO1 | L3 | M5.T1 | 8 | A:LabTask2@L3, A:Endsem@L3 |
+| CO5.LO2 | L5 | M5.T2 | 9 | A:ProjectDeliverable@L5 |
 
 ## Appendix C — Modules and topics
 
-**M1 AI-Assisted Coding Tools and Developer Workflows** (primary CO1)
-- M1.T1 AI-assisted coding developer workflows — 2.0 h · LOs CO1.LO1
-- M1.T2 Coding agents setup and configuration — 1.75 h · LOs CO1.LO2 · requires M1.T1
-- M1.T3 Coding agents advanced setup — 1.75 h · LOs CO1.LO2 · requires M1.T2
-**M2 Specification-Driven Development and MCP Integration** (primary CO2)
-- M2.T1 Requirements to executable specifications — 3.0 h · LOs CO2.LO1 · requires M1.T2
-- M2.T2 MCP tool use and context engineering — 2.0 h · LOs CO2.LO2 · requires M2.T1
-- M2.T3 Advanced context engineering — 2.0 h · LOs CO2.LO2 · requires M2.T2
-**M3 Iterative Loop Engineering and Failure Analysis** (primary CO3)
-- M3.T1 Iterative development loops — 3.0 h · LOs CO3.LO1 · requires M2.T2
-- M3.T2 Software factories and loop failure analysis — 2.0 h · LOs CO3.LO2 · requires M3.T1
-- M3.T3 Software factories failure analysis — 2.0 h · LOs CO3.LO2 · requires M3.T2
-**M4 Automated Testing, Reliability, and Deployment Evaluation** (primary CO4)
-- M4.T1 Automated testing and reliability — 3.0 h · LOs CO4.LO1 · requires M3.T2
-- M4.T2 Deployment evaluation and reliability benchmarking — 2.0 h · LOs CO4.LO2 · requires M4.T1
-- M4.T3 Reliability benchmarking — 2.0 h · LOs CO4.LO2 · requires M4.T2
-**M5 Project Integration and End-to-End Evaluation** (primary CO5)
-- M5.T1 Hands-on projects and emerging developer tools — 2.0 h · LOs CO5.LO1 · requires M4.T2
-- M5.T2 End-to-end practical development workflow evaluation — 2.25 h · LOs CO5.LO2 · requires M5.T1
-- M5.T3 Emerging developer tools practicals — 2.0 h · LOs CO5.LO1 · requires M5.T1
-- M5.T4 End-to-end practical workflow evaluation — 2.25 h · LOs CO5.LO2 · requires M5.T2
+**M1 AI-Native Development and Developer Workflows** (primary CO1)
+- M1.T1 AI-assisted coding and environment tools — 2.0 h · LOs CO1.LO1
+- M1.T2 Coding agents and configuration hooks — 2.0 h · LOs CO1.LO2 · requires M1.T1
+- M1.T3 Developer workflows with coding agents — 3.0 h · LOs CO1.LO3 · requires M1.T2
+**M2 Agentic Software Engineering and Model Context Protocol** (primary CO2)
+- M2.T1 Model Context Protocol architecture and tool use — 2.0 h · LOs CO2.LO1 · requires M1.T3
+- M2.T2 Agent skills and context engineering — 3.0 h · LOs CO2.LO2 · requires M2.T1
+**M3 Specification-Driven Development** (primary CO3)
+- M3.T1 Spec-driven development and requirement mapping — 2.0 h · LOs CO3.LO1 · requires M2.T2
+- M3.T2 Requirements to executable specifications — 3.0 h · LOs CO3.LO2 · requires M3.T1
+**M4 Loop Engineering and Software Factories** (primary CO4)
+- M4.T1 Loop engineering and iterative development processes — 2.0 h · LOs CO4.LO1 · requires M3.T2
+- M4.T2 Software factories and control loop failure analysis — 3.0 h · LOs CO4.LO2 · requires M4.T1
+**M5 Automated Testing, Deployment, and Reliability** (primary CO5)
+- M5.T1 Automated testing and evaluation harnesses — 2.0 h · LOs CO5.LO1 · requires M4.T2
+- M5.T2 Deployment, reliability metrics, and system evaluation — 3.0 h · LOs CO5.LO2 · requires M5.T1
 
-Schedule: feasible · 35.0 h needed / 39 h available
+Schedule: feasible · 27.0 h needed / 39 h available
 
 ## Appendix D — Curriculum positioning
 
 | Course | Computed overlap | Verdict | Differentiation |
 |---|---|---|---|
-| CSE701 | 0.118 | complementary | CSE701 explores data-driven software engineering and research literature analysis at level 7, whereas the new course provides practical workflow-oriented instruction on agentic software development and coding agents at level 3. |
-| CSE581 | 0.062 | superficial | CSE581 covers traditional systems analysis and requirements engineering theories, while the new course addresses executable specifications and requirements in an AI-native coding context. |
-| CSE582 | 0.118 | complementary | CSE582 focuses on software product lines, legacy systems, and maintenance, whereas the new course examines iterative loop engineering and agentic software factories. |
-| CSE594A | 0.077 | complementary | CSE594A is a 2-credit course focused broadly on agentic reasoning and algorithmic/mathematical problem solving, whereas the new course is a 4-credit course dedicated specifically to software development workflows, coding agents, and engineering practice. |
+| CSE701 | 0.185 | complementary | CSE701 approaches software engineering through data mining, bug prediction, and research perspectives, whereas the new course focuses on operationalizing AI coding agents, workflow patterns, and context engineering in practical development. |
+| CSE594A | 0.08 | complementary | CSE594A emphasizes agentic reasoning for algorithmic and mathematical problem solving, whereas the new course focuses specifically on software development workflows, tool use (MCP), and software engineering practices. |
+| CSE582 | 0.067 | complementary | CSE582 covers product line engineering, maintenance, and legacy systems, whereas the new course examines modern AI-native development and software factories driven by coding agents. |
+| CSE581 | 0.034 | superficial | CSE581 covers traditional and agile requirements engineering and design theory, whereas the new course focuses on spec-driven development and executable specifications using AI tools. |
+| AI501 | 0.034 | superficial | AI501 is a core machine learning theory and methodology course, whereas the new course applies engineering practices and evaluation specifically to AI-assisted software development workflows. |
+| CSE201 | 0.017 | superficial | CSE201 provides foundational object-oriented programming and unit testing, whereas the new course focuses on automated testing and reliability in AI-native development environments. |
 
 Overlap method: stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF
 
 **Comparable courses**
 
-- **CSE594A** Agentic Reasoning — IIIT-D catalogue. Take: Core concepts of agentic protocols, MCP, and tool use for coding agents. Avoid: Focusing solely on algorithmic and mathematical problem-solving rather than software development workflows.
-- **CSE701** Topics in Software Engineering: AI in SE — IIIT-D catalogue. Take: Assessment strategies for AI-assisted code review and refactoring. Avoid: Graduate-level mining of software repositories and empirical software engineering research focus.
-- **CSE583** Software Development using Open Source — IIIT-D catalogue. Take: Project-based evaluation structure and collaborative tooling integration. Avoid: Extensive focus on traditional open source licensing and community governance models.
+- **CSE701** Topics in Software Engineering: AI in SE — IIIT-D catalogue. Take: Research-oriented perspective on evaluating AI impact in software engineering artifacts. Avoid: Over-reliance on historical repository mining rather than modern interactive coding agents.
+- **CSE594A** Agentic Reasoning — IIIT-D catalogue. Take: Foundational concepts of agentic protocols such as MCP and tool use. Avoid: Focusing purely on algorithmic and mathematical problem-solving rather than software development workflows.
+- **CSE583** Software Development using Open Source — IIIT-D catalogue. Take: Project-based evaluation structure and team-based practical tool usage. Avoid: Traditional open-source contribution models that do not account for AI-native code generation.
 
 ## Appendix E — Validation report (deterministic validators; not LLM self-assessment)
 
 | Stage | Code | Severity | Nodes | Message |
 |---|---|---|---|---|
-| assessment | VA-PROJ | warning | project | project released in week 8, late in a 13-week semester |
-| cos | V11 | warning | CO5 | CO CO5 condition is not visible in the statement text |
+| resources | V15 | error | R:hash:gull-antonio-agentic-design-patterns-spr | resource 'Agentic Design Patterns' not verified: ['candidate_id not in retrieved candidates'] |
+| resources | V15 | error | R:hash:openai-mcp-agent2agent-a2a-protocol | resource 'OpenAI MCP, Agent2Agent (A2A) Protocol' not verified: ['candidate_id not in retrieved candidates'] |
+| structure | V21 | error |  | topics fill only 27.0 h of 39 h (< 85%): the schedule would leave teaching weeks empty |
+| los | V11 | warning | CO1.LO1 | LO CO1.LO1 condition is not visible in the statement text |
 | los | V11 | warning | CO1.LO1 | LO CO1.LO1 degree is not visible in the statement text |
+| los | V11 | warning | CO1.LO2 | LO CO1.LO2 condition is not visible in the statement text |
 | los | V11 | warning | CO1.LO2 | LO CO1.LO2 degree is not visible in the statement text |
+| los | V11 | warning | CO2.LO1 | LO CO2.LO1 condition is not visible in the statement text |
 | los | V11 | warning | CO2.LO1 | LO CO2.LO1 degree is not visible in the statement text |
-| los | V11 | warning | CO2.LO2 | LO CO2.LO2 condition is not visible in the statement text |
-| los | V11 | warning | CO2.LO2 | LO CO2.LO2 degree is not visible in the statement text |
+| los | V11 | warning | CO3.LO1 | LO CO3.LO1 condition is not visible in the statement text |
 | los | V11 | warning | CO3.LO1 | LO CO3.LO1 degree is not visible in the statement text |
+| los | V11 | warning | CO3.LO2 | LO CO3.LO2 condition is not visible in the statement text |
 | los | V11 | warning | CO4.LO1 | LO CO4.LO1 condition is not visible in the statement text |
 | los | V11 | warning | CO4.LO1 | LO CO4.LO1 degree is not visible in the statement text |
+| los | V11 | warning | CO4.LO2 | LO CO4.LO2 condition is not visible in the statement text |
+| los | V11 | warning | CO5.LO1 | LO CO5.LO1 condition is not visible in the statement text |
 | los | V11 | warning | CO5.LO1 | LO CO5.LO1 degree is not visible in the statement text |
-| los | V11 | warning | CO5.LO2 | LO CO5.LO2 condition is not visible in the statement text |
-| schedule | V6 | warning | W13 | weeks with no lecture topics: [13] |
+| los | V11 | warning | CO5.LO2 | LO CO5.LO2 degree is not visible in the statement text |
+| los | V21 | warning |  | LO lecture-hour estimates sum to 27.0 h vs budget 39 h (±15%) |
+| schedule | V6 | warning | W10, W11, W12, W13 | weeks with no lecture topics: [10, 11, 12, 13] |
 
 **Repair history**
 
-- cos: errors 1 → 0 · round 1 accepted (1→0)
-- los: errors 5 → 0 · round 1 accepted (5→1); round 2 accepted (1→0)
-- structure: errors 6 → 0 · round 1 accepted (6→0)
+- los: errors 6 → 0 · round 1 accepted (6→0)
+- structure: errors 1 → 1 · round 1 rejected (1→1); round 2 rejected (1→1); round 3 rejected (1→1)
+- assessment: errors 5 → 0 · round 1 rejected (5→1); round 2 accepted (5→0)
 
 **Model-reported concerns (not validated; for the professor's attention)**
 
-- intake: special_constraints: The special constraint mandates using the exact verb 'understand' for all Course Outcomes, which may conflict with Bloom's Taxonomy verb requirements typically enforced by downstream curriculum rules.
-- constraints: Special Constraint SC1: The requirement to use the exact verb 'understand' for all Course Outcomes conflicts with standard Bloom's taxonomy guidelines for higher-level courses (level 3).
-- cos: SC1: Special constraint SC1 mandates the exact verb 'understand' for all Course Outcomes, but the system instruction and Bloom band rules explicitly ban 'understand' and require observable action verbs. We prioritized valid lexicon verbs over SC1 to comply with institutional course design policy.
-- los: Special Constraint SC1: Special constraint SC1 asks to use the exact verb 'understand' for all Course Outcomes, but standard IIIT-D Bloom taxonomy rules and the verb lexicon explicitly ban 'understand' as a measurable assessment verb. The existing COs use valid Bloom verbs (Configure, Construct, Analyse, Evaluate). The LOs follow valid Bloom taxonomy levels accordingly.
-- structure: Course Outcomes Verb Convention: Special constraint SC1 requires all Course Outcomes to use the exact verb 'understand', whereas the provided COs and LOs use higher-level cognitive verbs.
+- intake: special_constraints: Special constraint requires using the exact verb 'understand' for all Course Outcomes, which may conflict with Bloom's taxonomy verb requirements in downstream components.
+- constraints: SC1: Special constraint SC1 states 'You must use the exact verb 'understand' for all Course Outcomes', which is a guideline for CO phrasing rather than a typed operational constraint in the schema vocabulary.
+- cos: special_constraints: Special constraint SC1 mandates the exact verb 'understand' for all Course Outcomes, but the banned verbs list and IIIT-D outcomes standards explicitly forbid 'understand' as it is non-observable and non-assessable. The COs above use observable Bloom action verbs instead to comply with institutional course design policy.
+- los: hours_total: The sum of estimated hours across LOs (29 lecture, 10 tutorial, 20 lab) is lower than the standard budget (39 lecture, 13 tutorial, 26 lab). Additional deep-dive lab sessions or project milestone reviews should be scheduled during the remaining unallocated slot hours.
+- structure: Special Constraint SC1: SC1 requires all Course Outcomes to use the exact verb 'understand', but the provided CO statements use 'Implement', 'Configure', 'Construct', 'Analyze', and 'Evaluate'. This constraint was not applied here as COs are frozen input data.
 
 ## Appendix F — Rationales (G11)
 
-- **sequencing rationale:** The modules follow a structured progression starting with foundational AI-assisted coding tools and developer workflows in M1, advancing to specification-driven development and Model Context Protocol integration in M2, moving through iterative loop engineering and failure analysis in M3, covering automated testing, reliability, and deployment evaluation in M4, and culminating in project integration and end-to-end evaluation in M5. This sequence relies on foundational programming and software engineering principles established in prerequisite coursework such as CSE201.
-- **assessment rationale:** The assessment mix comprises midsem examinations, endsem examinations, practical assignments, and a course project. This balanced combination aligns with the course outcomes by testing both conceptual understanding through examinations and practical competence in configuring tools, building specifications, analyzing failures, and executing end-to-end AI-native development workflows through assignments and project work.
-- **positioning rationale:** Unlike CSE701, which explores data-driven software engineering and research literature at level 7, this course provides practical workflow-oriented instruction on agentic software development and coding agents at level 3. It differs from CSE581, which covers traditional requirements engineering, by focusing on executable specifications in an AI-native context. It complements CSE582 by addressing iterative loop engineering rather than legacy maintenance, and expands upon CSE594A by offering a 4-credit curriculum dedicated to software development workflows and engineering practice.
+- **sequencing rationale:** The modules progress logically from foundational AI-native development workflows and Model Context Protocol mechanisms to specification-driven development, loop engineering, and final reliability evaluation. This ensures students master basic agent interaction before engaging in complex software factories, relying on foundational concepts from prerequisite coursework such as CSE201.
+- **assessment rationale:** The assessment mix—comprising quizzes, assignments, labs, a midsem exam, a project, and an endsem exam—balances theoretical understanding with practical application. This design fits the course outcomes by directly evaluating students' hands-on ability to configure coding agents, build executable specifications, and deploy automated testing harnesses.
+- **positioning rationale:** The course differs from CSE701, which focuses on data mining and bug prediction, and CSE594A, which emphasizes algorithmic problem solving, by specifically targeting operationalized AI coding workflows, tool use, and software engineering practices. It also extends foundational software engineering covered in CSE201 into AI-native environments.

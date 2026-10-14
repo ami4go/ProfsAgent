@@ -225,13 +225,14 @@ def schedule(topics: list[dict], weeks: int, hours_per_week: float, midsem_after
 def copo_strengths(cos: list[str], lo_parent: dict[str, str], components: list[dict], activity_po_map: dict[str, list[str]],
                    mappings: list[dict], thresholds: dict) -> list[dict]:
     """marks(CO) from instances (component weight split evenly across instances, × marks_pct_of_instance);
-    share(CO,PO) = marks from instances whose activity types map to PO / marks(CO)."""
+    share(CO,PO) = marks from instances whose activity types map to PO / marks(CO).
+    best-k-of-n: each instance counts with probability k/n and is then worth weight/k, i.e. weight/n in expectation,
+    so the weight is split over all n instances (dividing by k credited n/k × the component's weight)."""
     co_marks = defaultdict(float)
     co_po_marks = defaultdict(float)
     for comp in components:
         n = max(len(comp["instances"]), 1)
-        eff = comp.get("best_k") or n
-        per_inst = comp["weight_pct"] / (eff if comp.get("best_k") else n)
+        per_inst = comp["weight_pct"] / n
         pos = {po for act in comp.get("activity_types", []) for po in activity_po_map.get(act, [])}
         for inst in comp["instances"]:
             for a in inst["assesses"]:
@@ -257,7 +258,7 @@ def co_marks_share(lo_parent: dict[str, str], components: list[dict]) -> dict[st
     share = defaultdict(float)
     for comp in components:
         n = max(len(comp["instances"]), 1)
-        per = comp["weight_pct"] / (comp.get("best_k") or n)
+        per = comp["weight_pct"] / n   # best-k-of-n: weight/n per instance in expectation (see copo_strengths)
         for inst in comp["instances"]:
             for a in inst["assesses"]:
                 share[lo_parent.get(a["lo_id"], "?")] += per * a["marks_pct_of_instance"] / 100

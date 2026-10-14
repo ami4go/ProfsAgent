@@ -17,11 +17,16 @@ from profsagent.models.io import OUTPUT_MODELS, RepairPatch
 from profsagent.validate import rules
 
 
+def temperature(meta: dict) -> float:
+    """Prompt front-matter temperature; 0.2 only when none is declared (a declared 0 must stay 0)."""
+    t = meta.get("temperature")
+    return 0.2 if t is None or t == "" else float(t)
+
+
 def call(rt, pid: str, ctx: dict, role: str = "generate") -> tuple[BaseModel, dict]:
     p = load_prompt(pid)
     system, user = p.render(**ctx)
-    temp = float(p.meta.get("temperature", 0.2) or 0.2)
-    obj, rec = rt.llm.structured(system=system, user=user, model_cls=OUTPUT_MODELS[pid], role=role, temperature=temp,
+    obj, rec = rt.llm.structured(system=system, user=user, model_cls=OUTPUT_MODELS[pid], role=role, temperature=temperature(p.meta),
                                  prompt_id=pid, prompt_version=p.version, run_id=rt.run_id)
     rt.log(f"  [{pid}] ok via {rec.endpoint} · {rec.prompt_tokens}+{rec.output_tokens} tok · {rec.latency_s}s"
            + (f" · schema-retries {rec.schema_retries}" if rec.schema_retries else ""))

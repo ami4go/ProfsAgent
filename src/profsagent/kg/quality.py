@@ -55,6 +55,15 @@ def bloom_of_verb(verb: str | None) -> int | None:
     return _lex()[0].get(lemma(verb))
 
 
+def bloom_range_of_verb(verb: str | None) -> tuple[int, int] | None:
+    """(lowest, highest) Bloom level the verb can carry: the `ambiguous` range if listed, else its single level."""
+    lv = bloom_of_verb(verb)
+    if lv is None:
+        return None
+    rng = _lex()[3].get(lemma(verb))
+    return (min(rng + [lv]), max(rng + [lv])) if rng else (lv, lv)
+
+
 def vague_degree(degree: str | None) -> list[str]:
     if not degree:
         return []

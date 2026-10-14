@@ -1,0 +1,47 @@
+02:55:45 S1 intake → Course Context Object
+02:56:42   [G1] ok via gemini:gemini-3.5-flash:kaf6cdf0b · 3374+8823 tok · 56.7s
+02:56:42   CCO: 6 topic groups · level 3 · L-T-P {'L': 3, 'T': 1, 'P': 2} · 13 weeks · 5 assumptions · conflicts 1
+02:56:42 S2 curriculum positioning
+02:56:42   internal candidates: ['CSE701 0.185', 'CSE581 0.034', 'CSE582 0.067', 'CSE594A 0.08', 'CSE201 0.017', 'CSE583 0.0', 'AI501 0.034', 'CSE665 0.0']
+02:58:40   [G2] ok via gemini:gemini-3.5-flash:kaf6cdf0b · 10831+6957 tok · 117.9s
+02:58:40   [G2] validators: 0 errors, 0 warnings
+02:58:40 S3 constraints + feasibility
+02:59:00   [G3] ok via gemini:gemini-3.5-flash:kaf6cdf0b · 3034+5672 tok · 19.6s
+02:59:00   17 constraints (8 from professor text) · conflicts 4
+02:59:00 GATE gate1_context: approve by auto (dev run) · froze 37 nodes
+02:59:00 S4 learning design: COs → CO–PO → LOs
+02:59:20   [G4] ok via gemini:gemini-3.5-flash:kaf6cdf0b · 6947+5330 tok · 20.2s
+02:59:20   [G4] validators: 0 errors, 0 warnings
+03:03:05   [G5] ok via gemini:gemini-3.5-flash:kaf6cdf0b · 2944+6202 tok · 225.2s
+03:03:05   [G5] validators: 0 errors, 0 warnings
+03:03:48   [G6] ok via gemini:gemini-3.5-flash:kaf6cdf0b · 6216+10095 tok · 42.6s
+03:03:48   [G6] validators: 2 errors, 1 warnings
+03:03:53   [R1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 9518+495 tok · 5.6s
+03:03:53   [R1 round 1] errors 2 → 0 ACCEPT
+03:03:53 GATE gate2_outcomes: approve by auto (dev run) · froze 16 nodes
+03:03:53 S5 structure (modules/topics) → S6 schedule
+03:04:03   [G7] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 7276+3128 tok · 10.0s
+03:04:03   [G7] validators: 1 errors, 1 warnings
+03:04:25   [R1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 5105+2877 tok · 21.8s
+03:04:25   [R1 round 1] errors 1 → 0 ACCEPT
+03:04:25   schedule: feasible · need 37.0 h / 39 h
+03:04:25 S7 lab/tutorial plan + assessment blueprint
+03:04:39   [G8] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 4478+3922 tok · 14.1s
+03:04:39   [G8] validators: 0 errors, 0 warnings
+03:04:45   [G9] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 7627+2203 tok · 6.0s
+03:04:45   [G9] validators: 4 errors, 0 warnings
+03:04:59   [R1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 8941+502 tok · 13.7s
+03:04:59   [R1 round 1] errors 4 → 3 REJECT (new codes ['VA-ORDER'])
+03:05:02   [R1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 9008+497 tok · 2.7s
+03:05:02   [R1 round 2] errors 4 → 2 REJECT (new codes ['VA-ORDER'])
+03:05:10   [R1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 18064+650 tok · 7.7s · schema-retries 1
+03:05:10   [R1 round 3] errors 4 → 1 REJECT (new codes ['VA-MARKS'])
+03:05:10 S8 resources (API candidates → G10 → verification)
+03:05:14   [X3] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 1655+515 tok · 4.3s
+03:05:19   18 API candidates from 7 X3 queries
+03:05:27   [G10] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 6594+1433 tok · 8.4s
+03:05:27   resources: 3/5 verified
+03:05:27 S9 narrative
+03:05:30   [G11] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 3348+540 tok · 2.6s
+03:05:30 rendered proposal.md + proposal.csv (6 errors, 1 warnings)
+03:05:30 GATE gate3_proposal: approve by auto (dev run) · froze 0 nodes

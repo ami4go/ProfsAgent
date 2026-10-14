@@ -1,0 +1,6488 @@
+{
+ "project_id": "CS-601",
+ "nodes": {
+  "CS-601/COURSE": {
+   "uid": "CS-601/COURSE",
+   "local_id": "COURSE",
+   "label": "NewCourse",
+   "props": {
+    "title": "Software Development using AI",
+    "credits": 4,
+    "ltp": {
+     "L": 3,
+     "T": 1,
+     "P": 2
+    },
+    "weeks": 13,
+    "level": 3
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": "0.1.0",
+   "model": null,
+   "sources": [],
+   "ts": 1791403989.4777715
+  },
+  "CS-601/CCO.course_name": {
+   "uid": "CS-601/CCO.course_name",
+   "local_id": "CCO.course_name",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "Software Development using AI",
+    "value": "Software Development using AI"
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.course_name"
+    }
+   ],
+   "ts": 1791403989.4777822
+  },
+  "CS-601/CCO.short_description": {
+   "uid": "CS-601/CCO.short_description",
+   "local_id": "CCO.short_description",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "This course examines modern AI-native software development, where developers collaborate with increasingly capable coding agents. It covers how to define intent, provide effective context, structure development workflows, and coordinate AI tools. Students gain practical experience designing and evaluating agent-assisted software development processes.",
+    "value": "This course examines modern AI-native software development, where developers collaborate with increasingly capable coding agents. It covers how to define intent, provide effective context, structure development workflows, and coordinate AI tools. Students gain practical experience designing and evaluating agent-assisted software development processes."
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.short_description"
+    }
+   ],
+   "ts": 1791403989.477791
+  },
+  "CS-601/CCO.topics": {
+   "uid": "CS-601/CCO.topics",
+   "local_id": "CCO.topics",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "Treatment of this list: starting hypotheses — may add/drop/reorder with justification\nA. AI-Native Development: AI-assisted coding, coding agents, developer workflows\n\nB. Agentic Software Engineering: MCP, agent skills, tool use, context engineering\n\nC. Specification & Planning: spec-driven development, requirements to executable specifications\n\nD. Software Development Workflows: loop engineering, iterative development, software factories\n\nE. Engineering Practice: automated testing, evaluation, deployment, reliability\n\nF. Practical Development: hands-on coding, projects, emerging developer tools\n",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1791403989.4777958
+  },
+  "CS-601/CCO.intent": {
+   "uid": "CS-601/CCO.intent",
+   "local_id": "CCO.intent",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "Central question the course answers: How can software developers effectively\ndesign and operate development workflows in which humans and AI agents\ncollaboratively build reliable software?\n\nPedagogical emphasis: Practical, workflow-oriented understanding through\nhands-on development and experimentation.\n\nThis course should NOT become:\n- A general introduction to AI or machine learning\n- A traditional programming course\n- A purely theoretical treatment of large language models",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.intent"
+    }
+   ],
+   "ts": 1791403989.4777994
+  },
+  "CS-601/CCO.target_students": {
+   "uid": "CS-601/CCO.target_students",
+   "local_id": "CCO.target_students",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "Programmes: B.Tech. CSE\nYear: 3rd/4th year\nAssumed background: Strong programming and software development fundamentals;\nfamiliarity with advanced programming and basic software engineering concepts.",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.target_students"
+    }
+   ],
+   "ts": 1791403989.4778032
+  },
+  "CS-601/CCO.level_or_code": {
+   "uid": "CS-601/CCO.level_or_code",
+   "local_id": "CCO.level_or_code",
+   "label": "ContextField",
+   "props": {
+    "status": "ambiguous",
+    "raw": "Advanced undergraduate / [NOT SPECIFIED]",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.level_or_code"
+    }
+   ],
+   "ts": 1791403989.477809
+  },
+  "CS-601/CCO.credits": {
+   "uid": "CS-601/CCO.credits",
+   "local_id": "CCO.credits",
+   "label": "ContextField",
+   "props": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED]",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.credits"
+    }
+   ],
+   "ts": 1791403989.4778137
+  },
+  "CS-601/CCO.ltp": {
+   "uid": "CS-601/CCO.ltp",
+   "local_id": "CCO.ltp",
+   "label": "ContextField",
+   "props": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED]",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.ltp"
+    }
+   ],
+   "ts": 1791403989.4778175
+  },
+  "CS-601/CCO.semester_weeks": {
+   "uid": "CS-601/CCO.semester_weeks",
+   "local_id": "CCO.semester_weeks",
+   "label": "ContextField",
+   "props": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED]",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.semester_weeks"
+    }
+   ],
+   "ts": 1791403989.4778223
+  },
+  "CS-601/CCO.weekly_effort_hours": {
+   "uid": "CS-601/CCO.weekly_effort_hours",
+   "local_id": "CCO.weekly_effort_hours",
+   "label": "ContextField",
+   "props": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED]",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.weekly_effort_hours"
+    }
+   ],
+   "ts": 1791403989.4778264
+  },
+  "CS-601/CCO.lab": {
+   "uid": "CS-601/CCO.lab",
+   "local_id": "CCO.lab",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "Lab required: Yes — hands-on coding and development activities\n\nAvailable infrastructure: Student development machines, access to\nAI coding tools/APIs, software development environments, and TA support.",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.lab"
+    }
+   ],
+   "ts": 1791403989.4778316
+  },
+  "CS-601/CCO.assessment_prefs": {
+   "uid": "CS-601/CCO.assessment_prefs",
+   "local_id": "CCO.assessment_prefs",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "Preferred components: Practical assignments, hands-on coding exercises,\nproject-based evaluation, and a final project.\n\nComponents to avoid: none\n\nRationale: Assessment should emphasize the ability to apply modern\nAI-assisted development practices rather than primarily testing theory.",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.assessment_prefs"
+    }
+   ],
+   "ts": 1791403989.4778364
+  },
+  "CS-601/CCO.special_constraints": {
+   "uid": "CS-601/CCO.special_constraints",
+   "local_id": "CCO.special_constraints",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "[NONE]\nCRITICAL: The assessment weights must sum to exactly 130%.",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.special_constraints"
+    }
+   ],
+   "ts": 1791403989.4778404
+  },
+  "CS-601/CCO.curriculum_context": {
+   "uid": "CS-601/CCO.curriculum_context",
+   "local_id": "CCO.curriculum_context",
+   "label": "ContextField",
+   "props": {
+    "status": "given",
+    "raw": "Advanced software-development course positioned around emerging AI-native development practices. It builds on programming and software engineering foundations while introducing agent-assisted development, modern tooling, specification-driven workflows, automated evaluation, and software-factory concepts.",
+    "value": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.curriculum_context"
+    }
+   ],
+   "ts": 1791403989.4778445
+  },
+  "CS-601/ASM01": {
+   "uid": "CS-601/ASM01",
+   "local_id": "ASM01",
+   "label": "Assumption",
+   "props": {
+    "id": "ASM01",
+    "what": "credits",
+    "value": 4,
+    "basis": "UGREG-2025§4(2): courses are 4, 2 or 1 credit; 425 of 475 catalogue courses are 4-credit",
+    "confirm_with": "course instructor / DOAA",
+    "status": "open"
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "UGREG-2025§4(2): courses are 4, 2 or 1 credit; 425 of 475 catalogue courses are 4-credit"
+    }
+   ],
+   "ts": 1791403989.4778507
+  },
+  "CS-601/ASM02": {
+   "uid": "CS-601/ASM02",
+   "local_id": "ASM02",
+   "label": "Assumption",
+   "props": {
+    "id": "ASM02",
+    "what": "L-T-P",
+    "value": "3-1-2",
+    "basis": "UGREG-2025§4(2): 4-credit = 3h lecture + 1h interaction/week; lab hours 2h/week because the professor marked a lab as required (INFERRED amount)",
+    "confirm_with": "course instructor / DOAA",
+    "status": "open"
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "UGREG-2025§4(2): 4-credit = 3h lecture + 1h interaction/week; lab hours 2h/week because the professor marked a lab as required (INFERRED amount)"
+    }
+   ],
+   "ts": 1791403989.4778562
+  },
+  "CS-601/ASM03": {
+   "uid": "CS-601/ASM03",
+   "local_id": "ASM03",
+   "label": "Assumption",
+   "props": {
+    "id": "ASM03",
+    "what": "course level",
+    "value": 3,
+    "basis": "no code/level given; set to the lowest target year ([3, 4]) (INFERRED)",
+    "confirm_with": "course instructor / DOAA",
+    "status": "open"
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "no code/level given; set to the lowest target year ([3, 4]) (INFERRED)"
+    }
+   ],
+   "ts": 1791403989.4778612
+  },
+  "CS-601/ASM04": {
+   "uid": "CS-601/ASM04",
+   "local_id": "ASM04",
+   "label": "Assumption",
+   "props": {
+    "id": "ASM04",
+    "what": "mid-semester exam timing",
+    "value": "after teaching week 7",
+    "basis": "mid-semester recess and exam fall roughly mid-way through 13 teaching weeks; confirm from the academic calendar",
+    "confirm_with": "academic calendar (DOAA)",
+    "status": "open"
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "mid-semester recess and exam fall roughly mid-way through 13 teaching weeks; confirm from the academic calendar"
+    }
+   ],
+   "ts": 1791403989.4778662
+  },
+  "CS-601/ASM05": {
+   "uid": "CS-601/ASM05",
+   "local_id": "ASM05",
+   "label": "Assumption",
+   "props": {
+    "id": "ASM05",
+    "what": "weekly student effort",
+    "value": null,
+    "basis": "not supplied; effort is reported (contact + take-home estimates), not constrained",
+    "confirm_with": "course instructor / DOAA",
+    "status": "open"
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "not supplied; effort is reported (contact + take-home estimates), not constrained"
+    }
+   ],
+   "ts": 1791403989.477871
+  },
+  "CS-601/TG1": {
+   "uid": "CS-601/TG1",
+   "local_id": "TG1",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG1",
+    "title": "AI-Native Development",
+    "topics": [
+     {
+      "id": "TG1.1",
+      "text": "AI-assisted coding"
+     },
+     {
+      "id": "TG1.2",
+      "text": "coding agents"
+     },
+     {
+      "id": "TG1.3",
+      "text": "developer workflows"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1791403989.4778826
+  },
+  "CS-601/TG2": {
+   "uid": "CS-601/TG2",
+   "local_id": "TG2",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG2",
+    "title": "Agentic Software Engineering",
+    "topics": [
+     {
+      "id": "TG2.1",
+      "text": "MCP"
+     },
+     {
+      "id": "TG2.2",
+      "text": "agent skills"
+     },
+     {
+      "id": "TG2.3",
+      "text": "tool use"
+     },
+     {
+      "id": "TG2.4",
+      "text": "context engineering"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1791403989.4778938
+  },
+  "CS-601/TG3": {
+   "uid": "CS-601/TG3",
+   "local_id": "TG3",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG3",
+    "title": "Specification & Planning",
+    "topics": [
+     {
+      "id": "TG3.1",
+      "text": "spec-driven development"
+     },
+     {
+      "id": "TG3.2",
+      "text": "requirements to executable specifications"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1791403989.4779022
+  },
+  "CS-601/TG4": {
+   "uid": "CS-601/TG4",
+   "local_id": "TG4",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG4",
+    "title": "Software Development Workflows",
+    "topics": [
+     {
+      "id": "TG4.1",
+      "text": "loop engineering"
+     },
+     {
+      "id": "TG4.2",
+      "text": "iterative development"
+     },
+     {
+      "id": "TG4.3",
+      "text": "software factories"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1791403989.4779096
+  },
+  "CS-601/TG5": {
+   "uid": "CS-601/TG5",
+   "local_id": "TG5",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG5",
+    "title": "Engineering Practice",
+    "topics": [
+     {
+      "id": "TG5.1",
+      "text": "automated testing"
+     },
+     {
+      "id": "TG5.2",
+      "text": "evaluation"
+     },
+     {
+      "id": "TG5.3",
+      "text": "deployment"
+     },
+     {
+      "id": "TG5.4",
+      "text": "reliability"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1791403989.4779189
+  },
+  "CS-601/TG6": {
+   "uid": "CS-601/TG6",
+   "local_id": "TG6",
+   "label": "TopicGroup",
+   "props": {
+    "id": "TG6",
+    "title": "Practical Development",
+    "topics": [
+     {
+      "id": "TG6.1",
+      "text": "hands-on coding"
+     },
+     {
+      "id": "TG6.2",
+      "text": "projects"
+     },
+     {
+      "id": "TG6.3",
+      "text": "emerging developer tools"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G1",
+   "prompt_id": "G1",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.topics"
+    }
+   ],
+   "ts": 1791403989.4779294
+  },
+  "CS-601/K01": {
+   "uid": "CS-601/K01",
+   "local_id": "K01",
+   "label": "Constraint",
+   "props": {
+    "id": "K01",
+    "target": "schedule.weeks",
+    "op": "==",
+    "value": 13,
+    "hardness": "hard",
+    "source": {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§2"
+    }
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§2"
+    }
+   ],
+   "ts": 1791404001.0214052
+  },
+  "CS-601/K02": {
+   "uid": "CS-601/K02",
+   "local_id": "K02",
+   "label": "Constraint",
+   "props": {
+    "id": "K02",
+    "target": "course.credits",
+    "op": "==",
+    "value": 4,
+    "hardness": "hard",
+    "source": {
+     "tag": "DEFAULT",
+     "ref": "ASM01"
+    }
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "DEFAULT",
+     "ref": "ASM01"
+    }
+   ],
+   "ts": 1791404001.02142
+  },
+  "CS-601/K03": {
+   "uid": "CS-601/K03",
+   "local_id": "K03",
+   "label": "Constraint",
+   "props": {
+    "id": "K03",
+    "target": "schedule.lecture_hours_per_week",
+    "op": "==",
+    "value": 3,
+    "hardness": "hard",
+    "source": {
+     "tag": "DEFAULT",
+     "ref": "UGREG-2025§4(2)a"
+    }
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "DEFAULT",
+     "ref": "UGREG-2025§4(2)a"
+    }
+   ],
+   "ts": 1791404001.0214295
+  },
+  "CS-601/K04": {
+   "uid": "CS-601/K04",
+   "local_id": "K04",
+   "label": "Constraint",
+   "props": {
+    "id": "K04",
+    "target": "schedule.tutorial_hours_per_week",
+    "op": "==",
+    "value": 1,
+    "hardness": "hard",
+    "source": {
+     "tag": "DEFAULT",
+     "ref": "CCO.ltp"
+    }
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "DEFAULT",
+     "ref": "CCO.ltp"
+    }
+   ],
+   "ts": 1791404001.0214474
+  },
+  "CS-601/K05": {
+   "uid": "CS-601/K05",
+   "local_id": "K05",
+   "label": "Constraint",
+   "props": {
+    "id": "K05",
+    "target": "lab.hours_per_week",
+    "op": "==",
+    "value": 2,
+    "hardness": "hard",
+    "source": {
+     "tag": "DEFAULT",
+     "ref": "CCO.ltp"
+    }
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "DEFAULT",
+     "ref": "CCO.ltp"
+    }
+   ],
+   "ts": 1791404001.0214558
+  },
+  "CS-601/K06": {
+   "uid": "CS-601/K06",
+   "local_id": "K06",
+   "label": "Constraint",
+   "props": {
+    "id": "K06",
+    "target": "assessment.component[midsem].present",
+    "op": "present",
+    "value": true,
+    "hardness": "soft",
+    "source": {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§6.2"
+    }
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§6.2"
+    }
+   ],
+   "ts": 1791404001.021464
+  },
+  "CS-601/K07": {
+   "uid": "CS-601/K07",
+   "local_id": "K07",
+   "label": "Constraint",
+   "props": {
+    "id": "K07",
+    "target": "assessment.component[endsem].present",
+    "op": "present",
+    "value": true,
+    "hardness": "soft",
+    "source": {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§6.2"
+    }
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§6.2"
+    }
+   ],
+   "ts": 1791404001.0214715
+  },
+  "CS-601/K08": {
+   "uid": "CS-601/K08",
+   "local_id": "K08",
+   "label": "Constraint",
+   "props": {
+    "id": "K08",
+    "target": "schedule.midsem_after_week",
+    "op": "==",
+    "value": 7,
+    "hardness": "soft",
+    "source": {
+     "tag": "INFERRED",
+     "ref": "ASM"
+    }
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": "ASM"
+    }
+   ],
+   "ts": 1791404001.0214796
+  },
+  "CS-601/K09": {
+   "uid": "CS-601/K09",
+   "local_id": "K09",
+   "label": "Constraint",
+   "props": {
+    "id": "K09",
+    "target": "lab.present",
+    "op": "present",
+    "value": true,
+    "hardness": "hard",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.lab"
+    }
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "S1-defaults",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "CCO.lab"
+    }
+   ],
+   "ts": 1791404001.0214877
+  },
+  "CS-601/K10": {
+   "uid": "CS-601/K10",
+   "local_id": "K10",
+   "label": "Constraint",
+   "props": {
+    "id": "K10",
+    "target": "lab.present",
+    "op": "==",
+    "value": true,
+    "hardness": "hard",
+    "raw": "The course has a required lab component with student development machines and access to AI coding tools/APIs.",
+    "source": {
+     "tag": "USER",
+     "ref": "cco",
+     "basis": null
+    },
+    "note": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G3",
+   "prompt_id": "G3",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco",
+     "basis": null
+    }
+   ],
+   "ts": 1791404001.0214972
+  },
+  "CS-601/K11": {
+   "uid": "CS-601/K11",
+   "local_id": "K11",
+   "label": "Constraint",
+   "props": {
+    "id": "K11",
+    "target": "content.must_exclude",
+    "op": "not_in",
+    "value": "general introductory AI or machine learning topics",
+    "hardness": "hard",
+    "raw": "A general introduction to AI or machine learning",
+    "source": {
+     "tag": "USER",
+     "ref": "cco.negative_constraints",
+     "basis": null
+    },
+    "note": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G3",
+   "prompt_id": "G3",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.negative_constraints",
+     "basis": null
+    }
+   ],
+   "ts": 1791404001.021506
+  },
+  "CS-601/K12": {
+   "uid": "CS-601/K12",
+   "local_id": "K12",
+   "label": "Constraint",
+   "props": {
+    "id": "K12",
+    "target": "content.must_exclude",
+    "op": "not_in",
+    "value": "traditional programming fundamentals",
+    "hardness": "hard",
+    "raw": "A traditional programming course",
+    "source": {
+     "tag": "USER",
+     "ref": "cco.negative_constraints",
+     "basis": null
+    },
+    "note": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G3",
+   "prompt_id": "G3",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.negative_constraints",
+     "basis": null
+    }
+   ],
+   "ts": 1791404001.0215144
+  },
+  "CS-601/K13": {
+   "uid": "CS-601/K13",
+   "local_id": "K13",
+   "label": "Constraint",
+   "props": {
+    "id": "K13",
+    "target": "content.must_include",
+    "op": "in",
+    "value": "practical components rather than relying solely on theoretical treatment of large language models",
+    "hardness": "hard",
+    "raw": "A purely theoretical treatment of large language models",
+    "source": {
+     "tag": "USER",
+     "ref": "cco.negative_constraints",
+     "basis": null
+    },
+    "note": "Exclusion mapped to must_include practical components."
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G3",
+   "prompt_id": "G3",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.negative_constraints",
+     "basis": null
+    }
+   ],
+   "ts": 1791404001.0215223
+  },
+  "CS-601/K14": {
+   "uid": "CS-601/K14",
+   "local_id": "K14",
+   "label": "Constraint",
+   "props": {
+    "id": "K14",
+    "target": "assessment.component[project].present",
+    "op": "==",
+    "value": true,
+    "hardness": "soft",
+    "raw": "Assessment should emphasize the ability to apply modern AI-assisted development practices rather than primarily testing theory, with preferences for practical assignments, hands-on coding exercises, project-based evaluation, final project.",
+    "source": {
+     "tag": "USER",
+     "ref": "cco.assessment_prefs",
+     "basis": null
+    },
+    "note": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G3",
+   "prompt_id": "G3",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.assessment_prefs",
+     "basis": null
+    }
+   ],
+   "ts": 1791404001.0215302
+  },
+  "CS-601/K15": {
+   "uid": "CS-601/K15",
+   "local_id": "K15",
+   "label": "Constraint",
+   "props": {
+    "id": "K15",
+    "target": "assessment.component[assignment].present",
+    "op": "==",
+    "value": true,
+    "hardness": "soft",
+    "raw": "Practical assignments preferred",
+    "source": {
+     "tag": "USER",
+     "ref": "cco.assessment_prefs",
+     "basis": null
+    },
+    "note": null
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G3",
+   "prompt_id": "G3",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.assessment_prefs",
+     "basis": null
+    }
+   ],
+   "ts": 1791404001.0215378
+  },
+  "CS-601/K16": {
+   "uid": "CS-601/K16",
+   "local_id": "K16",
+   "label": "Constraint",
+   "props": {
+    "id": "K16",
+    "target": "other",
+    "op": "==",
+    "value": 130,
+    "hardness": "hard",
+    "raw": "The assessment weights must sum to exactly 130%.",
+    "source": {
+     "tag": "USER",
+     "ref": "cco.special_constraints",
+     "basis": null
+    },
+    "note": "Assessment weights sum constraint conflicts with standard university grading policy of 100%."
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G3",
+   "prompt_id": "G3",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.special_constraints",
+     "basis": null
+    }
+   ],
+   "ts": 1791404001.0215454
+  },
+  "CS-601/APP1": {
+   "uid": "CS-601/APP1",
+   "local_id": "APP1",
+   "label": "Approval",
+   "props": {
+    "gate": "gate1_context",
+    "decision": "approve",
+    "by": "auto (dev run)",
+    "comment": "auto-approved; not a professor decision",
+    "at": 1791404001.0264914,
+    "frozen": 36,
+    "open_errors": 0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "auto (dev run)",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404001.026515
+  },
+  "CS-601/CO1": {
+   "uid": "CS-601/CO1",
+   "local_id": "CO1",
+   "label": "CO",
+   "props": {
+    "id": "CO1",
+    "statement": "Configure an agentic software development workflow using Model Context Protocol (MCP) and tool integrations, given a set of software requirements and a list of available developer tools, such that the configured agent successfully executes at least 80% of the specified tool calls without human intervention.",
+    "verb": "configure",
+    "behaviour": "an agentic software development workflow using Model Context Protocol (MCP) and tool integrations",
+    "condition": "given a set of software requirements and a list of available developer tools",
+    "degree": "such that the configured agent successfully executes at least 80% of the specified tool calls without human intervention",
+    "bloom_level": 3,
+    "knowledge_dimension": "procedural",
+    "covers_topic_groups": [
+     "TG1",
+     "TG2"
+    ],
+    "evidence_types": [
+     "programming_assignment",
+     "lab_task"
+    ],
+    "builds_on_prereq_topics": [],
+    "differentiation_note": "Focuses on active, real-time agentic tool configuration (MCP) rather than post-hoc repository analysis in CSE701 or general algorithmic reasoning in CSE594A.",
+    "nc_risks": [],
+    "rationale": "Establishes the foundational capability of setting up and using agentic developer tools and protocols.",
+    "sources": [
+     {
+      "tag": "USER",
+      "ref": "cco.topic_groups",
+      "basis": null
+     },
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "MCP and tool use are standard agentic software engineering practices"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G4",
+   "prompt_id": "G4",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    },
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "MCP and tool use are standard agentic software engineering practices"
+    }
+   ],
+   "ts": 1791404030.7020016
+  },
+  "CS-601/CO2": {
+   "uid": "CS-601/CO2",
+   "local_id": "CO2",
+   "label": "CO",
+   "props": {
+    "id": "CO2",
+    "statement": "Analyze the performance and failure modes of an iterative human-agent coding loop, for a multi-file software modification task using a provided agent orchestration framework, identifying at least three distinct failure causes with supporting log evidence.",
+    "verb": "analyze",
+    "behaviour": "the performance and failure modes of an iterative human-agent coding loop",
+    "condition": "for a multi-file software modification task using a provided agent orchestration framework",
+    "degree": "identifying at least three distinct failure causes with supporting log evidence",
+    "bloom_level": 4,
+    "knowledge_dimension": "procedural",
+    "covers_topic_groups": [
+     "TG4",
+     "TG5"
+    ],
+    "evidence_types": [
+     "code_review",
+     "report"
+    ],
+    "builds_on_prereq_topics": [],
+    "differentiation_note": "Focuses on active human-agent loop engineering diagnostics rather than static repository mining in CSE701.",
+    "nc_risks": [],
+    "rationale": "Enables students to systematically diagnose and debug agentic workflows, moving beyond naive usage to engineering.",
+    "sources": [
+     {
+      "tag": "USER",
+      "ref": "cco.topic_groups",
+      "basis": null
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G4",
+   "prompt_id": "G4",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    }
+   ],
+   "ts": 1791404030.7020524
+  },
+  "CS-601/CO3": {
+   "uid": "CS-601/CO3",
+   "local_id": "CO3",
+   "label": "CO",
+   "props": {
+    "id": "CO3",
+    "statement": "Evaluate the reliability and correctness of code generated by an AI coding agent, using automated test suites and evaluation frameworks built on top of JUnit, justifying each evaluation verdict against a predefined test coverage and functional correctness specification.",
+    "verb": "evaluate",
+    "behaviour": "the reliability and correctness of code generated by an AI coding agent",
+    "condition": "using automated test suites and evaluation frameworks built on top of JUnit",
+    "degree": "justifying each evaluation verdict against a predefined test coverage and functional correctness specification",
+    "bloom_level": 5,
+    "knowledge_dimension": "procedural",
+    "covers_topic_groups": [
+     "TG5",
+     "TG6"
+    ],
+    "evidence_types": [
+     "project_deliverable",
+     "design_document"
+    ],
+    "builds_on_prereq_topics": [
+     "Unit testing using JUnit"
+    ],
+    "differentiation_note": "Builds directly on the CSE201 JUnit prerequisite to evaluate AI-generated code rather than human-written code.",
+    "nc_risks": [],
+    "rationale": "Ensures students can rigorously verify AI-generated code, addressing the reliability core of the course.",
+    "sources": [
+     {
+      "tag": "USER",
+      "ref": "cco.topic_groups",
+      "basis": null
+     },
+     {
+      "tag": "CATALOGUE",
+      "ref": "CSE201",
+      "basis": null
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G4",
+   "prompt_id": "G4",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    },
+    {
+     "tag": "CATALOGUE",
+     "ref": "CSE201",
+     "basis": null
+    }
+   ],
+   "ts": 1791404030.702084
+  },
+  "CS-601/CO4": {
+   "uid": "CS-601/CO4",
+   "local_id": "CO4",
+   "label": "CO",
+   "props": {
+    "id": "CO4",
+    "statement": "Justify context engineering strategies and specification-driven development plans, for a complex software feature request given a legacy codebase, covering every use case in the supplied requirements document.",
+    "verb": "justify",
+    "behaviour": "context engineering strategies and specification-driven development plans",
+    "condition": "for a complex software feature request given a legacy codebase",
+    "degree": "covering every use case in the supplied requirements document",
+    "bloom_level": 5,
+    "knowledge_dimension": "conceptual",
+    "covers_topic_groups": [
+     "TG3",
+     "TG6"
+    ],
+    "evidence_types": [
+     "design_document",
+     "presentation"
+    ],
+    "builds_on_prereq_topics": [],
+    "differentiation_note": "Applies spec-driven development specifically to AI context engineering rather than traditional systems analysis in CSE581.",
+    "nc_risks": [],
+    "rationale": "Focuses on the planning and specification stage, ensuring students can optimize human-agent context sharing.",
+    "sources": [
+     {
+      "tag": "USER",
+      "ref": "cco.topic_groups",
+      "basis": null
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G4",
+   "prompt_id": "G4",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    }
+   ],
+   "ts": 1791404030.7021067
+  },
+  "CS-601/CO1.LO1": {
+   "uid": "CS-601/CO1.LO1",
+   "local_id": "CO1.LO1",
+   "label": "LO",
+   "props": {
+    "id": "CO1.LO1",
+    "parent_co": "CO1",
+    "statement": "Identify available developer tools and Model Context Protocol specifications, given a system configuration document, listing all integration endpoints.",
+    "verb": "identify",
+    "behaviour": "available developer tools and Model Context Protocol specifications",
+    "condition": "given a system configuration document",
+    "degree": "listing all integration endpoints",
+    "bloom_level": 1,
+    "knowledge_dimension": "factual",
+    "is_capstone": false,
+    "requires": [],
+    "topic_hints": [
+     {
+      "phrase": "MCP",
+      "topic_uid": null
+     },
+     {
+      "phrase": "tool use",
+      "topic_uid": null
+     }
+    ],
+    "hands_on": false,
+    "est_lecture_h": 3.0,
+    "est_tutorial_h": 0.0,
+    "est_lab_h": 1.0,
+    "hours_basis": "Two lecture hours and one lab session for tool exploration",
+    "suggested_task_type": "quiz",
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Foundational identification step required before configuration"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Foundational identification step required before configuration"
+    }
+   ],
+   "ts": 1791404083.070524
+  },
+  "CS-601/CO1.LO2": {
+   "uid": "CS-601/CO1.LO2",
+   "local_id": "CO1.LO2",
+   "label": "LO",
+   "props": {
+    "id": "CO1.LO2",
+    "parent_co": "CO1",
+    "statement": "Implement basic tool integration scripts using Model Context Protocol interfaces, given a set of developer tools, such that test tool calls return expected JSON payloads.",
+    "verb": "implement",
+    "behaviour": "basic tool integration scripts using Model Context Protocol interfaces",
+    "condition": "given a set of developer tools",
+    "degree": "such that test tool calls return expected JSON payloads",
+    "bloom_level": 3,
+    "knowledge_dimension": "procedural",
+    "is_capstone": false,
+    "requires": [
+     "CO1.LO1"
+    ],
+    "topic_hints": [
+     {
+      "phrase": "MCP",
+      "topic_uid": null
+     },
+     {
+      "phrase": "agent skills",
+      "topic_uid": null
+     }
+    ],
+    "hands_on": true,
+    "est_lecture_h": 3.0,
+    "est_tutorial_h": 0.0,
+    "est_lab_h": 3.0,
+    "hours_basis": "Two lectures and three lab hours for hands-on scripting",
+    "suggested_task_type": "lab_task",
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Intermediate implementation step for tool integration"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Intermediate implementation step for tool integration"
+    }
+   ],
+   "ts": 1791404083.070564
+  },
+  "CS-601/CO1.LO3": {
+   "uid": "CS-601/CO1.LO3",
+   "local_id": "CO1.LO3",
+   "label": "LO",
+   "props": {
+    "id": "CO1.LO3",
+    "parent_co": "CO1",
+    "statement": "Configure an agentic software development workflow using Model Context Protocol (MCP) components, given a specific set of software requirements and tool lists, such that setup scripts execute initialization without errors.",
+    "verb": "configure",
+    "behaviour": "an agentic software development workflow using Model Context Protocol (MCP) and tool integrations",
+    "condition": "given a set of software requirements and a list of available developer tools",
+    "degree": "such that the configured agent successfully executes at least 80% of the specified tool calls without human intervention",
+    "bloom_level": 3,
+    "knowledge_dimension": "procedural",
+    "is_capstone": true,
+    "requires": [
+     "CO1.LO2"
+    ],
+    "topic_hints": [
+     {
+      "phrase": "context engineering",
+      "topic_uid": null
+     },
+     {
+      "phrase": "developer workflows",
+      "topic_uid": "T:agents-for-coding-and-software-development"
+     }
+    ],
+    "hands_on": true,
+    "est_lecture_h": 4.0,
+    "est_tutorial_h": 0.0,
+    "est_lab_h": 3.0,
+    "hours_basis": "Four lecture hours and three lab hours for workflow setup and validation",
+    "suggested_task_type": "programming_assignment",
+    "sources": [
+     {
+      "tag": "USER",
+      "ref": "cco.topic_groups",
+      "basis": null
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    }
+   ],
+   "ts": 1791404083.0705936
+  },
+  "CS-601/CO2.LO1": {
+   "uid": "CS-601/CO2.LO1",
+   "local_id": "CO2.LO1",
+   "label": "LO",
+   "props": {
+    "id": "CO2.LO1",
+    "parent_co": "CO2",
+    "statement": "Trace execution logs from an iterative human-agent coding loop, for a multi-file modification task, identifying message sequences and state transitions.",
+    "verb": "trace",
+    "behaviour": "execution logs from an iterative human-agent coding loop",
+    "condition": "for a multi-file modification task",
+    "degree": "identifying message sequences and state transitions",
+    "bloom_level": 2,
+    "knowledge_dimension": "procedural",
+    "is_capstone": false,
+    "requires": [
+     "CO1.LO3"
+    ],
+    "topic_hints": [
+     {
+      "phrase": "loop engineering",
+      "topic_uid": null
+     },
+     {
+      "phrase": "iterative development",
+      "topic_uid": null
+     }
+    ],
+    "hands_on": false,
+    "est_lecture_h": 3.0,
+    "est_tutorial_h": 0.0,
+    "est_lab_h": 2.0,
+    "hours_basis": "Three lecture hours and two lab hours for log tracing",
+    "suggested_task_type": "exam_question",
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Prerequisite analysis step to understand execution flows"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Prerequisite analysis step to understand execution flows"
+    }
+   ],
+   "ts": 1791404083.070621
+  },
+  "CS-601/CO2.LO2": {
+   "uid": "CS-601/CO2.LO2",
+   "local_id": "CO2.LO2",
+   "label": "LO",
+   "props": {
+    "id": "CO2.LO2",
+    "parent_co": "CO2",
+    "statement": "Analyze failure modes of an iterative human-agent coding loop, for a multi-file software modification task using a provided agent orchestration framework, identifying at least three distinct failure causes with supporting log evidence.",
+    "verb": "analyze",
+    "behaviour": "the performance and failure modes of an iterative human-agent coding loop",
+    "condition": "for a multi-file software modification task using a provided agent orchestration framework",
+    "degree": "identifying at least three distinct failure causes with supporting log evidence",
+    "bloom_level": 4,
+    "knowledge_dimension": "procedural",
+    "is_capstone": true,
+    "requires": [
+     "CO2.LO1"
+    ],
+    "topic_hints": [
+     {
+      "phrase": "software factories",
+      "topic_uid": null
+     },
+     {
+      "phrase": "Assisting code review and code analysis",
+      "topic_uid": "T:assisting-code-review-and-code-analysis"
+     }
+    ],
+    "hands_on": true,
+    "est_lecture_h": 3.0,
+    "est_tutorial_h": 0.0,
+    "est_lab_h": 3.0,
+    "hours_basis": "Three lecture hours and three lab hours for failure analysis",
+    "suggested_task_type": "report",
+    "sources": [
+     {
+      "tag": "USER",
+      "ref": "cco.topic_groups",
+      "basis": null
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    }
+   ],
+   "ts": 1791404083.0706468
+  },
+  "CS-601/CO3.LO1": {
+   "uid": "CS-601/CO3.LO1",
+   "local_id": "CO3.LO1",
+   "label": "LO",
+   "props": {
+    "id": "CO3.LO1",
+    "parent_co": "CO3",
+    "statement": "Execute automated test suites using JUnit on code generated by an AI coding agent, given a repository snapshot, producing a test execution report.",
+    "verb": "execute",
+    "behaviour": "automated test suites using JUnit on code generated by an AI coding agent",
+    "condition": "given a repository snapshot",
+    "degree": "producing a test execution report",
+    "bloom_level": 3,
+    "knowledge_dimension": "procedural",
+    "is_capstone": false,
+    "requires": [
+     "CO2.LO2"
+    ],
+    "topic_hints": [
+     {
+      "phrase": "automated testing",
+      "topic_uid": null
+     },
+     {
+      "phrase": "Unit testing using JUnit",
+      "topic_uid": "T:unit-testing-using-junit"
+     }
+    ],
+    "hands_on": true,
+    "est_lecture_h": 3.0,
+    "est_tutorial_h": 0.0,
+    "est_lab_h": 3.0,
+    "hours_basis": "Three lecture hours and three lab hours for running JUnit tests",
+    "suggested_task_type": "lab_task",
+    "sources": [
+     {
+      "tag": "CATALOGUE",
+      "ref": "CSE201",
+      "basis": null
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "CATALOGUE",
+     "ref": "CSE201",
+     "basis": null
+    }
+   ],
+   "ts": 1791404083.0706718
+  },
+  "CS-601/CO3.LO2": {
+   "uid": "CS-601/CO3.LO2",
+   "local_id": "CO3.LO2",
+   "label": "LO",
+   "props": {
+    "id": "CO3.LO2",
+    "parent_co": "CO3",
+    "statement": "Evaluate the correctness of code generated by an AI coding agent, using automated test suites built on top of JUnit, justifying each evaluation verdict against a predefined test coverage specification.",
+    "verb": "evaluate",
+    "behaviour": "the reliability and correctness of code generated by an AI coding agent",
+    "condition": "using automated test suites and evaluation frameworks built on top of JUnit",
+    "degree": "justifying each evaluation verdict against a predefined test coverage and functional correctness specification",
+    "bloom_level": 5,
+    "knowledge_dimension": "procedural",
+    "is_capstone": true,
+    "requires": [
+     "CO3.LO1"
+    ],
+    "topic_hints": [
+     {
+      "phrase": "evaluation",
+      "topic_uid": null
+     },
+     {
+      "phrase": "reliability",
+      "topic_uid": null
+     }
+    ],
+    "hands_on": true,
+    "est_lecture_h": 4.0,
+    "est_tutorial_h": 0.0,
+    "est_lab_h": 3.0,
+    "hours_basis": "Four lecture hours, two tutorial hours, and three lab hours for comprehensive evaluation",
+    "suggested_task_type": "project_deliverable",
+    "sources": [
+     {
+      "tag": "USER",
+      "ref": "cco.topic_groups",
+      "basis": null
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    }
+   ],
+   "ts": 1791404083.0706973
+  },
+  "CS-601/CO4.LO1": {
+   "uid": "CS-601/CO4.LO1",
+   "local_id": "CO4.LO1",
+   "label": "LO",
+   "props": {
+    "id": "CO4.LO1",
+    "parent_co": "CO4",
+    "statement": "Describe context engineering strategies and specification-driven development approaches, given a software feature request, outlining key architectural boundaries.",
+    "verb": "describe",
+    "behaviour": "context engineering strategies and specification-driven development approaches",
+    "condition": "given a software feature request",
+    "degree": "outlining key architectural boundaries",
+    "bloom_level": 2,
+    "knowledge_dimension": "conceptual",
+    "is_capstone": false,
+    "requires": [
+     "CO3.LO2"
+    ],
+    "topic_hints": [
+     {
+      "phrase": "spec-driven development",
+      "topic_uid": null
+     },
+     {
+      "phrase": "Requirements engineering",
+      "topic_uid": "T:requirements-engineering"
+     }
+    ],
+    "hands_on": false,
+    "est_lecture_h": 4.0,
+    "est_tutorial_h": 0.0,
+    "est_lab_h": 2.0,
+    "hours_basis": "Four lecture hours, two tutorial hours, and two lab hours for strategy formulation",
+    "suggested_task_type": "presentation",
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Preparatory step for specification planning"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Preparatory step for specification planning"
+    }
+   ],
+   "ts": 1791404083.070723
+  },
+  "CS-601/CO4.LO2": {
+   "uid": "CS-601/CO4.LO2",
+   "local_id": "CO4.LO2",
+   "label": "LO",
+   "props": {
+    "id": "CO4.LO2",
+    "parent_co": "CO4",
+    "statement": "Justify context engineering strategies, for a complex software feature request given a legacy codebase, covering every use case in the supplied requirements document.",
+    "verb": "justify",
+    "behaviour": "context engineering strategies and specification-driven development plans",
+    "condition": "for a complex software feature request given a legacy codebase",
+    "degree": "covering every use case in the supplied requirements document",
+    "bloom_level": 5,
+    "knowledge_dimension": "conceptual",
+    "is_capstone": true,
+    "requires": [
+     "CO4.LO1"
+    ],
+    "topic_hints": [
+     {
+      "phrase": "requirements to executable specifications",
+      "topic_uid": null
+     },
+     {
+      "phrase": "Code refactoring",
+      "topic_uid": "T:code-refactoring"
+     }
+    ],
+    "hands_on": true,
+    "est_lecture_h": 5.0,
+    "est_tutorial_h": 0.0,
+    "est_lab_h": 3.0,
+    "hours_basis": "Five lecture hours, two tutorial hours, and three lab hours for spec-driven project work",
+    "suggested_task_type": "design_document",
+    "sources": [
+     {
+      "tag": "USER",
+      "ref": "cco.topic_groups",
+      "basis": null
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    }
+   ],
+   "ts": 1791404083.0707474
+  },
+  "CS-601/CO1.LO4": {
+   "uid": "CS-601/CO1.LO4",
+   "local_id": "CO1.LO4",
+   "label": "LO",
+   "props": {
+    "id": "CO1.LO4",
+    "parent_co": "CO1",
+    "statement": "Configure developer tools and Model Context Protocol integrations, given a tool list and a software configuration document, such that test tool calls return expected JSON payloads.",
+    "verb": "configure",
+    "behaviour": "developer tools and Model Context Protocol integrations",
+    "condition": "given a tool list and a software configuration document",
+    "degree": "such that test tool calls return expected JSON payloads",
+    "bloom_level": 3,
+    "knowledge_dimension": "procedural",
+    "is_capstone": false,
+    "requires": [
+     "CO1.LO1"
+    ],
+    "topic_hints": [
+     {
+      "phrase": "MCP",
+      "topic_uid": null
+     }
+    ],
+    "hands_on": true,
+    "est_lecture_h": 2.0,
+    "est_tutorial_h": 0.0,
+    "est_lab_h": 2.0,
+    "hours_basis": "Two lecture and two lab hours for additional tool configuration",
+    "suggested_task_type": "lab_task",
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Additional LO to meet minimum LO count constraint"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "frozen",
+   "created_by": "G6",
+   "prompt_id": "G6",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Additional LO to meet minimum LO count constraint"
+    }
+   ],
+   "ts": 1791404083.0707726
+  },
+  "CS-601/APP2": {
+   "uid": "CS-601/APP2",
+   "local_id": "APP2",
+   "label": "Approval",
+   "props": {
+    "gate": "gate2_outcomes",
+    "decision": "approve",
+    "by": "auto (dev run)",
+    "comment": "auto-approved; not a professor decision",
+    "at": 1791404083.0767345,
+    "frozen": 14,
+    "open_errors": 3
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "auto (dev run)",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404083.0767605
+  },
+  "CS-601/M1": {
+   "uid": "CS-601/M1",
+   "local_id": "M1",
+   "label": "Module",
+   "props": {
+    "title": "Model Context Protocol and Developer Tools",
+    "order": 1,
+    "primary_cos": [
+     "CO1"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7425334
+  },
+  "CS-601/M1.T1": {
+   "uid": "CS-601/M1.T1",
+   "local_id": "M1.T1",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M1.T1",
+    "title": "Developer tools and Model Context Protocol specifications overview",
+    "est_hours": 2.0,
+    "hours_basis": "Two lecture hours for fundamental identification and tool exploration",
+    "serves_los": [
+     "CO1.LO1"
+    ],
+    "covers_topic_groups": [
+     "TG2",
+     "TG6"
+    ],
+    "requires": [],
+    "topic_uid": null,
+    "hands_on": false,
+    "suggested_order": 1,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Foundational identification step required before configuration"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Foundational identification step required before configuration"
+    }
+   ],
+   "ts": 1791404105.7425523
+  },
+  "CS-601/M1.T2": {
+   "uid": "CS-601/M1.T2",
+   "local_id": "M1.T2",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M1.T2",
+    "title": "MCP interfaces and basic tool integration scripting",
+    "est_hours": 3.0,
+    "hours_basis": "Three lecture hours for procedural tool integration script implementation",
+    "serves_los": [
+     "CO1.LO2"
+    ],
+    "covers_topic_groups": [
+     "TG2",
+     "TG6"
+    ],
+    "requires": [
+     "M1.T1"
+    ],
+    "topic_uid": null,
+    "hands_on": true,
+    "suggested_order": 2,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Intermediate implementation step for tool integration"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Intermediate implementation step for tool integration"
+    }
+   ],
+   "ts": 1791404105.742593
+  },
+  "CS-601/M1.T3": {
+   "uid": "CS-601/M1.T3",
+   "local_id": "M1.T3",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M1.T3",
+    "title": "Additional developer tool configuration and integration validation",
+    "est_hours": 3.0,
+    "hours_basis": "Two lecture hours for configuring additional tool integrations",
+    "serves_los": [
+     "CO1.LO4"
+    ],
+    "covers_topic_groups": [
+     "TG2",
+     "TG6"
+    ],
+    "requires": [
+     "M1.T2"
+    ],
+    "topic_uid": null,
+    "hands_on": true,
+    "suggested_order": 3,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Additional LO to meet minimum LO count constraint"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Additional LO to meet minimum LO count constraint"
+    }
+   ],
+   "ts": 1791404105.7426248
+  },
+  "CS-601/M1.T4": {
+   "uid": "CS-601/M1.T4",
+   "local_id": "M1.T4",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M1.T4",
+    "title": "Context engineering and agentic software development workflows",
+    "est_hours": 3.0,
+    "hours_basis": "Three lecture hours for workflow setup and configuration",
+    "serves_los": [
+     "CO1.LO3"
+    ],
+    "covers_topic_groups": [
+     "TG1",
+     "TG2"
+    ],
+    "requires": [
+     "M1.T3"
+    ],
+    "topic_uid": "T:agents-for-coding-and-software-development",
+    "hands_on": true,
+    "suggested_order": 4,
+    "sources": [
+     {
+      "tag": "USER",
+      "ref": "cco.topic_groups",
+      "basis": null
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    }
+   ],
+   "ts": 1791404105.742655
+  },
+  "CS-601/M2": {
+   "uid": "CS-601/M2",
+   "local_id": "M2",
+   "label": "Module",
+   "props": {
+    "title": "Iterative Human-Agent Coding Loops and Failure Analysis",
+    "order": 2,
+    "primary_cos": [
+     "CO2"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7426844
+  },
+  "CS-601/M2.T1": {
+   "uid": "CS-601/M2.T1",
+   "local_id": "M2.T1",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M2.T1",
+    "title": "Iterative development and loop engineering message sequences",
+    "est_hours": 2.0,
+    "hours_basis": "Two lecture hours to trace execution logs",
+    "serves_los": [
+     "CO2.LO1"
+    ],
+    "covers_topic_groups": [
+     "TG4"
+    ],
+    "requires": [
+     "M1.T4"
+    ],
+    "topic_uid": null,
+    "hands_on": false,
+    "suggested_order": 1,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Prerequisite analysis step to understand execution flows"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Prerequisite analysis step to understand execution flows"
+    }
+   ],
+   "ts": 1791404105.7426977
+  },
+  "CS-601/M2.T2": {
+   "uid": "CS-601/M2.T2",
+   "local_id": "M2.T2",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M2.T2",
+    "title": "Software factories, code review, and failure mode analysis",
+    "est_hours": 2.0,
+    "hours_basis": "Two lecture hours for software factories and code review",
+    "serves_los": [
+     "CO2.LO2"
+    ],
+    "covers_topic_groups": [
+     "TG1",
+     "TG4"
+    ],
+    "requires": [
+     "M2.T1"
+    ],
+    "topic_uid": "T:assisting-code-review-and-code-analysis",
+    "hands_on": true,
+    "suggested_order": 2,
+    "sources": [
+     {
+      "tag": "USER",
+      "ref": "cco.topic_groups",
+      "basis": null
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    }
+   ],
+   "ts": 1791404105.7427297
+  },
+  "CS-601/M2.T3": {
+   "uid": "CS-601/M2.T3",
+   "local_id": "M2.T3",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M2.T3",
+    "title": "State transitions in iterative development loops",
+    "est_hours": 2.0,
+    "hours_basis": "Two lecture hours for state transition sequence analysis",
+    "serves_los": [
+     "CO2.LO1"
+    ],
+    "covers_topic_groups": [
+     "TG4"
+    ],
+    "requires": [
+     "M2.T1"
+    ],
+    "topic_uid": null,
+    "hands_on": false,
+    "suggested_order": 2,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Split from M2.T1 to meet size constraints"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Split from M2.T1 to meet size constraints"
+    }
+   ],
+   "ts": 1791404105.7427638
+  },
+  "CS-601/M2.T4": {
+   "uid": "CS-601/M2.T4",
+   "local_id": "M2.T4",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M2.T4",
+    "title": "Failure mode analysis using log evidence",
+    "est_hours": 2.0,
+    "hours_basis": "Two lecture hours for failure mode analysis with log evidence",
+    "serves_los": [
+     "CO2.LO2"
+    ],
+    "covers_topic_groups": [
+     "TG4"
+    ],
+    "requires": [
+     "M2.T2"
+    ],
+    "topic_uid": null,
+    "hands_on": true,
+    "suggested_order": 2,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Split from M2.T2 to meet size constraints"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Split from M2.T2 to meet size constraints"
+    }
+   ],
+   "ts": 1791404105.742794
+  },
+  "CS-601/M3": {
+   "uid": "CS-601/M3",
+   "local_id": "M3",
+   "label": "Module",
+   "props": {
+    "title": "Automated Testing and Code Reliability Evaluation",
+    "order": 3,
+    "primary_cos": [
+     "CO3"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7428198
+  },
+  "CS-601/M3.T1": {
+   "uid": "CS-601/M3.T1",
+   "local_id": "M3.T1",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M3.T1",
+    "title": "Automated testing and unit testing using JUnit",
+    "est_hours": 2.0,
+    "hours_basis": "Two lecture hours for automated testing fundamentals",
+    "serves_los": [
+     "CO3.LO1"
+    ],
+    "covers_topic_groups": [
+     "TG5"
+    ],
+    "requires": [
+     "M2.T2"
+    ],
+    "topic_uid": "T:unit-testing-using-junit",
+    "hands_on": true,
+    "suggested_order": 1,
+    "sources": [
+     {
+      "tag": "CATALOGUE",
+      "ref": "CSE201",
+      "basis": null
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "CATALOGUE",
+     "ref": "CSE201",
+     "basis": null
+    }
+   ],
+   "ts": 1791404105.7428322
+  },
+  "CS-601/M3.T2": {
+   "uid": "CS-601/M3.T2",
+   "local_id": "M3.T2",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M3.T2",
+    "title": "Evaluation frameworks, test coverage, and code correctness",
+    "est_hours": 2.0,
+    "hours_basis": "Four lecture hours for comprehensive evaluation and verification against specifications",
+    "serves_los": [
+     "CO3.LO2"
+    ],
+    "covers_topic_groups": [
+     "TG5"
+    ],
+    "requires": [
+     "M3.T1"
+    ],
+    "topic_uid": null,
+    "hands_on": true,
+    "suggested_order": 2,
+    "sources": [
+     {
+      "tag": "USER",
+      "ref": "cco.topic_groups",
+      "basis": null
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    }
+   ],
+   "ts": 1791404105.7428699
+  },
+  "CS-601/M3.T3": {
+   "uid": "CS-601/M3.T3",
+   "local_id": "M3.T3",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M3.T3",
+    "title": "Verification against functional correctness specifications",
+    "est_hours": 2.0,
+    "hours_basis": "Two lecture hours for specification verification practice",
+    "serves_los": [
+     "CO3.LO2"
+    ],
+    "covers_topic_groups": [
+     "TG5"
+    ],
+    "requires": [
+     "M3.T2"
+    ],
+    "topic_uid": null,
+    "hands_on": true,
+    "suggested_order": 3,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Split from M3.T2 to meet size constraints"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Split from M3.T2 to meet size constraints"
+    }
+   ],
+   "ts": 1791404105.7429008
+  },
+  "CS-601/M3.T4": {
+   "uid": "CS-601/M3.T4",
+   "local_id": "M3.T4",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M3.T4",
+    "title": "Unit testing using JUnit for AI-generated code",
+    "est_hours": 2.0,
+    "hours_basis": "Two lecture hours for hands-on unit testing using JUnit",
+    "serves_los": [
+     "CO3.LO1"
+    ],
+    "covers_topic_groups": [
+     "TG5"
+    ],
+    "requires": [
+     "M3.T1"
+    ],
+    "topic_uid": null,
+    "hands_on": true,
+    "suggested_order": 2,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Split from M3.T1 to meet size constraints"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Split from M3.T1 to meet size constraints"
+    }
+   ],
+   "ts": 1791404105.7429335
+  },
+  "CS-601/M4": {
+   "uid": "CS-601/M4",
+   "local_id": "M4",
+   "label": "Module",
+   "props": {
+    "title": "Specification-Driven Development and Context Engineering",
+    "order": 4,
+    "primary_cos": [
+     "CO4"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7429607
+  },
+  "CS-601/M4.T1": {
+   "uid": "CS-601/M4.T1",
+   "local_id": "M4.T1",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M4.T1",
+    "title": "Spec-driven development and requirements engineering boundaries",
+    "est_hours": 2.0,
+    "hours_basis": "Three and a half lecture hours for outlining architectural boundaries and strategies",
+    "serves_los": [
+     "CO4.LO1"
+    ],
+    "covers_topic_groups": [
+     "TG3"
+    ],
+    "requires": [
+     "M3.T2"
+    ],
+    "topic_uid": "T:requirements-engineering",
+    "hands_on": false,
+    "suggested_order": 1,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Preparatory step for specification planning"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Preparatory step for specification planning"
+    }
+   ],
+   "ts": 1791404105.7429724
+  },
+  "CS-601/M4.T2": {
+   "uid": "CS-601/M4.T2",
+   "local_id": "M4.T2",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M4.T2",
+    "title": "Requirements to executable specifications and code refactoring",
+    "est_hours": 2.0,
+    "hours_basis": "Three and a half lecture hours for complex legacy codebase refactoring and strategy justification",
+    "serves_los": [
+     "CO4.LO2"
+    ],
+    "covers_topic_groups": [
+     "TG3"
+    ],
+    "requires": [
+     "M4.T1"
+    ],
+    "topic_uid": "T:code-refactoring",
+    "hands_on": true,
+    "suggested_order": 2,
+    "sources": [
+     {
+      "tag": "USER",
+      "ref": "cco.topic_groups",
+      "basis": null
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    }
+   ],
+   "ts": 1791404105.743011
+  },
+  "CS-601/M4.T3": {
+   "uid": "CS-601/M4.T3",
+   "local_id": "M4.T3",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M4.T3",
+    "title": "Architectural boundaries in specification-driven development",
+    "est_hours": 2.0,
+    "hours_basis": "Two lecture hours for architectural boundary planning",
+    "serves_los": [
+     "CO4.LO1"
+    ],
+    "covers_topic_groups": [
+     "TG3"
+    ],
+    "requires": [
+     "M4.T1"
+    ],
+    "topic_uid": null,
+    "hands_on": false,
+    "suggested_order": 3,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Split from M4.T1 to meet size constraints"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Split from M4.T1 to meet size constraints"
+    }
+   ],
+   "ts": 1791404105.743051
+  },
+  "CS-601/M4.T4": {
+   "uid": "CS-601/M4.T4",
+   "local_id": "M4.T4",
+   "label": "CourseTopic",
+   "props": {
+    "id": "M4.T4",
+    "title": "Legacy codebase refactoring strategies and justification",
+    "est_hours": 2.0,
+    "hours_basis": "Two lecture hours for complex legacy codebase refactoring strategies",
+    "serves_los": [
+     "CO4.LO2"
+    ],
+    "covers_topic_groups": [
+     "TG3"
+    ],
+    "requires": [
+     "M4.T2"
+    ],
+    "topic_uid": null,
+    "hands_on": true,
+    "suggested_order": 4,
+    "sources": [
+     {
+      "tag": "INFERRED",
+      "ref": null,
+      "basis": "Split from M4.T2 to meet size constraints"
+     }
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G7",
+   "prompt_id": "G7",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Split from M4.T2 to meet size constraints"
+    }
+   ],
+   "ts": 1791404105.743086
+  },
+  "CS-601/W01": {
+   "uid": "CS-601/W01",
+   "local_id": "W01",
+   "label": "Week",
+   "props": {
+    "n": 1,
+    "lecture_hours": 3,
+    "tutorial_hours": 1,
+    "lab_hours": 2,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.74312
+  },
+  "CS-601/W01.L1": {
+   "uid": "CS-601/W01.L1",
+   "local_id": "W01.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 2.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.743128
+  },
+  "CS-601/W01.L2": {
+   "uid": "CS-601/W01.L2",
+   "local_id": "W01.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7431524
+  },
+  "CS-601/W02": {
+   "uid": "CS-601/W02",
+   "local_id": "W02",
+   "label": "Week",
+   "props": {
+    "n": 2,
+    "lecture_hours": 3,
+    "tutorial_hours": 1,
+    "lab_hours": 2,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7431767
+  },
+  "CS-601/W02.L1": {
+   "uid": "CS-601/W02.L1",
+   "local_id": "W02.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 2.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7431867
+  },
+  "CS-601/W02.L2": {
+   "uid": "CS-601/W02.L2",
+   "local_id": "W02.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7432086
+  },
+  "CS-601/W03": {
+   "uid": "CS-601/W03",
+   "local_id": "W03",
+   "label": "Week",
+   "props": {
+    "n": 3,
+    "lecture_hours": 3,
+    "tutorial_hours": 1,
+    "lab_hours": 2,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7432313
+  },
+  "CS-601/W03.L1": {
+   "uid": "CS-601/W03.L1",
+   "local_id": "W03.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 2.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7432363
+  },
+  "CS-601/W03.L2": {
+   "uid": "CS-601/W03.L2",
+   "local_id": "W03.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7432606
+  },
+  "CS-601/W04": {
+   "uid": "CS-601/W04",
+   "local_id": "W04",
+   "label": "Week",
+   "props": {
+    "n": 4,
+    "lecture_hours": 3,
+    "tutorial_hours": 1,
+    "lab_hours": 2,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7432837
+  },
+  "CS-601/W04.L1": {
+   "uid": "CS-601/W04.L1",
+   "local_id": "W04.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 2.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7432888
+  },
+  "CS-601/W04.L2": {
+   "uid": "CS-601/W04.L2",
+   "local_id": "W04.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7433128
+  },
+  "CS-601/W05": {
+   "uid": "CS-601/W05",
+   "local_id": "W05",
+   "label": "Week",
+   "props": {
+    "n": 5,
+    "lecture_hours": 3,
+    "tutorial_hours": 1,
+    "lab_hours": 2,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7433367
+  },
+  "CS-601/W05.L1": {
+   "uid": "CS-601/W05.L1",
+   "local_id": "W05.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7433412
+  },
+  "CS-601/W05.L2": {
+   "uid": "CS-601/W05.L2",
+   "local_id": "W05.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 2.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7433667
+  },
+  "CS-601/W06": {
+   "uid": "CS-601/W06",
+   "local_id": "W06",
+   "label": "Week",
+   "props": {
+    "n": 6,
+    "lecture_hours": 3,
+    "tutorial_hours": 1,
+    "lab_hours": 2,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7433896
+  },
+  "CS-601/W06.L1": {
+   "uid": "CS-601/W06.L1",
+   "local_id": "W06.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 2.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7433946
+  },
+  "CS-601/W06.L2": {
+   "uid": "CS-601/W06.L2",
+   "local_id": "W06.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.743417
+  },
+  "CS-601/W07": {
+   "uid": "CS-601/W07",
+   "local_id": "W07",
+   "label": "Week",
+   "props": {
+    "n": 7,
+    "lecture_hours": 3,
+    "tutorial_hours": 1,
+    "lab_hours": 2,
+    "is_midsem_boundary": true
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7434409
+  },
+  "CS-601/W07.L1": {
+   "uid": "CS-601/W07.L1",
+   "local_id": "W07.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.743446
+  },
+  "CS-601/W07.L2": {
+   "uid": "CS-601/W07.L2",
+   "local_id": "W07.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 2.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7434692
+  },
+  "CS-601/W08": {
+   "uid": "CS-601/W08",
+   "local_id": "W08",
+   "label": "Week",
+   "props": {
+    "n": 8,
+    "lecture_hours": 3,
+    "tutorial_hours": 1,
+    "lab_hours": 2,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.743493
+  },
+  "CS-601/W08.L1": {
+   "uid": "CS-601/W08.L1",
+   "local_id": "W08.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 2.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.743498
+  },
+  "CS-601/W08.L2": {
+   "uid": "CS-601/W08.L2",
+   "local_id": "W08.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7435212
+  },
+  "CS-601/W09": {
+   "uid": "CS-601/W09",
+   "local_id": "W09",
+   "label": "Week",
+   "props": {
+    "n": 9,
+    "lecture_hours": 3,
+    "tutorial_hours": 1,
+    "lab_hours": 2,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7435474
+  },
+  "CS-601/W09.L1": {
+   "uid": "CS-601/W09.L1",
+   "local_id": "W09.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7435524
+  },
+  "CS-601/W09.L2": {
+   "uid": "CS-601/W09.L2",
+   "local_id": "W09.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 2.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7435784
+  },
+  "CS-601/W10": {
+   "uid": "CS-601/W10",
+   "local_id": "W10",
+   "label": "Week",
+   "props": {
+    "n": 10,
+    "lecture_hours": 3,
+    "tutorial_hours": 1,
+    "lab_hours": 2,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7436051
+  },
+  "CS-601/W10.L1": {
+   "uid": "CS-601/W10.L1",
+   "local_id": "W10.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 2.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7436109
+  },
+  "CS-601/W10.L2": {
+   "uid": "CS-601/W10.L2",
+   "local_id": "W10.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.743637
+  },
+  "CS-601/W11": {
+   "uid": "CS-601/W11",
+   "local_id": "W11",
+   "label": "Week",
+   "props": {
+    "n": 11,
+    "lecture_hours": 3,
+    "tutorial_hours": 1,
+    "lab_hours": 2,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7436638
+  },
+  "CS-601/W11.L1": {
+   "uid": "CS-601/W11.L1",
+   "local_id": "W11.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7436686
+  },
+  "CS-601/W11.L2": {
+   "uid": "CS-601/W11.L2",
+   "local_id": "W11.L2",
+   "label": "Lecture",
+   "props": {
+    "slot": 2,
+    "hours": 2.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.743694
+  },
+  "CS-601/W12": {
+   "uid": "CS-601/W12",
+   "local_id": "W12",
+   "label": "Week",
+   "props": {
+    "n": 12,
+    "lecture_hours": 3,
+    "tutorial_hours": 1,
+    "lab_hours": 2,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7437215
+  },
+  "CS-601/W12.L1": {
+   "uid": "CS-601/W12.L1",
+   "local_id": "W12.L1",
+   "label": "Lecture",
+   "props": {
+    "slot": 1,
+    "hours": 2.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7437286
+  },
+  "CS-601/W13": {
+   "uid": "CS-601/W13",
+   "local_id": "W13",
+   "label": "Week",
+   "props": {
+    "n": 13,
+    "lecture_hours": 3,
+    "tutorial_hours": 1,
+    "lab_hours": 2,
+    "is_midsem_boundary": false
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "S6-scheduler",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404105.7437568
+  },
+  "CS-601/W01.LAB": {
+   "uid": "CS-601/W01.LAB",
+   "local_id": "W01.LAB",
+   "label": "LabSession",
+   "props": {
+    "week": 1,
+    "id": "W01.LAB",
+    "title": "Basic Tool Integration Scripting",
+    "exercise": "Implement basic tool integration scripts using Model Context Protocol interfaces such that test tool calls return expected JSON payloads.",
+    "practises_los": [
+     "CO1.LO2"
+    ],
+    "uses_topics": [
+     "M1.T2"
+    ],
+    "tools": [
+     "Student development machines",
+     "software development environments"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Lab 1 Submission",
+    "notes": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8842998
+  },
+  "CS-601/W02.LAB": {
+   "uid": "CS-601/W02.LAB",
+   "local_id": "W02.LAB",
+   "label": "LabSession",
+   "props": {
+    "week": 2,
+    "id": "W02.LAB",
+    "title": "Developer Tool Configuration and Integration Validation",
+    "exercise": "Configure developer tools and Model Context Protocol integrations given a tool list and a software configuration document.",
+    "practises_los": [
+     "CO1.LO4",
+     "CO1.LO2"
+    ],
+    "uses_topics": [
+     "M1.T2",
+     "M1.T3"
+    ],
+    "tools": [
+     "Student development machines",
+     "software development environments"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Lab 2 Submission",
+    "notes": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8844397
+  },
+  "CS-601/W03.LAB": {
+   "uid": "CS-601/W03.LAB",
+   "local_id": "W03.LAB",
+   "label": "LabSession",
+   "props": {
+    "week": 3,
+    "id": "W03.LAB",
+    "title": "Agentic Software Development Workflows Setup",
+    "exercise": "Configure an agentic software development workflow using Model Context Protocol components to execute initialization without errors.",
+    "practises_los": [
+     "CO1.LO3",
+     "CO1.LO4"
+    ],
+    "uses_topics": [
+     "M1.T3",
+     "M1.T4"
+    ],
+    "tools": [
+     "Student development machines",
+     "access to AI coding tools/APIs"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Lab 3 Submission",
+    "notes": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8845067
+  },
+  "CS-601/W04.LAB": {
+   "uid": "CS-601/W04.LAB",
+   "local_id": "W04.LAB",
+   "label": "LabSession",
+   "props": {
+    "week": 4,
+    "id": "W04.LAB",
+    "title": "Context Engineering and Workflow Initialization",
+    "exercise": "Build and validate agentic workflow scripts and context initialization parameters.",
+    "practises_los": [
+     "CO1.LO3"
+    ],
+    "uses_topics": [
+     "M1.T4"
+    ],
+    "tools": [
+     "Student development machines",
+     "access to AI coding tools/APIs"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Lab 4 Submission",
+    "notes": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8845642
+  },
+  "CS-601/W05.LAB": {
+   "uid": "CS-601/W05.LAB",
+   "local_id": "W05.LAB",
+   "label": "LabSession",
+   "props": {
+    "week": 5,
+    "id": "W05.LAB",
+    "title": "Software Factories and Failure Mode Analysis",
+    "exercise": "Analyze failure modes of an iterative human-agent coding loop using a provided agent orchestration framework.",
+    "practises_los": [
+     "CO2.LO2"
+    ],
+    "uses_topics": [
+     "M2.T2"
+    ],
+    "tools": [
+     "Student development machines",
+     "software development environments"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Lab 5 Report",
+    "notes": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8846076
+  },
+  "CS-601/W06.LAB": {
+   "uid": "CS-601/W06.LAB",
+   "local_id": "W06.LAB",
+   "label": "LabSession",
+   "props": {
+    "week": 6,
+    "id": "W06.LAB",
+    "title": "Log Evidence and Failure Mode Analysis",
+    "exercise": "Examine log evidence from coding loops to identify distinct failure causes with supporting data.",
+    "practises_los": [
+     "CO2.LO2"
+    ],
+    "uses_topics": [
+     "M2.T4"
+    ],
+    "tools": [
+     "Student development machines",
+     "software development environments"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Lab 6 Report",
+    "notes": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8846495
+  },
+  "CS-601/W07.LAB": {
+   "uid": "CS-601/W07.LAB",
+   "local_id": "W07.LAB",
+   "label": "LabSession",
+   "props": {
+    "week": 7,
+    "id": "W07.LAB",
+    "title": "Automated Testing Using JUnit",
+    "exercise": "Execute automated test suites using JUnit on code generated by an AI coding agent given a repository snapshot.",
+    "practises_los": [
+     "CO3.LO1"
+    ],
+    "uses_topics": [
+     "M3.T1",
+     "M2.T4"
+    ],
+    "tools": [
+     "Student development machines",
+     "software development environments"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Lab 7 Execution Report",
+    "notes": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8846917
+  },
+  "CS-601/W08.LAB": {
+   "uid": "CS-601/W08.LAB",
+   "local_id": "W08.LAB",
+   "label": "LabSession",
+   "props": {
+    "week": 8,
+    "id": "W08.LAB",
+    "title": "Test Coverage and Evaluation Frameworks",
+    "exercise": "Evaluate the correctness of code generated by an AI coding agent using test suites built on top of JUnit.",
+    "practises_los": [
+     "CO3.LO2",
+     "CO3.LO1"
+    ],
+    "uses_topics": [
+     "M3.T2",
+     "M3.T4"
+    ],
+    "tools": [
+     "Student development machines",
+     "software development environments"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Lab 8 Report",
+    "notes": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8847356
+  },
+  "CS-601/W09.LAB": {
+   "uid": "CS-601/W09.LAB",
+   "local_id": "W09.LAB",
+   "label": "LabSession",
+   "props": {
+    "week": 9,
+    "id": "W09.LAB",
+    "title": "Verification Against Functional Specifications",
+    "exercise": "Perform verification of AI-generated code against functional correctness specifications using automated tests.",
+    "practises_los": [
+     "CO3.LO2",
+     "CO3.LO1"
+    ],
+    "uses_topics": [
+     "M3.T3",
+     "M3.T4"
+    ],
+    "tools": [
+     "Student development machines",
+     "software development environments"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Lab 9 Deliverable",
+    "notes": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8847938
+  },
+  "CS-601/W10.LAB": {
+   "uid": "CS-601/W10.LAB",
+   "local_id": "W10.LAB",
+   "label": "LabSession",
+   "props": {
+    "week": 10,
+    "id": "W10.LAB",
+    "title": "Executable Specifications and Refactoring",
+    "exercise": "Translate software requirements into executable specifications and perform targeted code refactoring.",
+    "practises_los": [
+     "CO4.LO2"
+    ],
+    "uses_topics": [
+     "M4.T2"
+    ],
+    "tools": [
+     "Student development machines",
+     "software development environments"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Lab 10 Deliverable",
+    "notes": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8848543
+  },
+  "CS-601/W11.LAB": {
+   "uid": "CS-601/W11.LAB",
+   "local_id": "W11.LAB",
+   "label": "LabSession",
+   "props": {
+    "week": 11,
+    "id": "W11.LAB",
+    "title": "Refactoring under Architectural Boundaries",
+    "exercise": "Refactor codebase sections while respecting architectural boundaries in specification-driven development.",
+    "practises_los": [
+     "CO4.LO2"
+    ],
+    "uses_topics": [
+     "M4.T2",
+     "M4.T3"
+    ],
+    "tools": [
+     "Student development machines",
+     "software development environments"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Lab 11 Deliverable",
+    "notes": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.884901
+  },
+  "CS-601/W12.LAB": {
+   "uid": "CS-601/W12.LAB",
+   "local_id": "W12.LAB",
+   "label": "LabSession",
+   "props": {
+    "week": 12,
+    "id": "W12.LAB",
+    "title": "Legacy Codebase Refactoring Strategies",
+    "exercise": "Justify and implement legacy codebase refactoring strategies covering every use case in a supplied requirements document.",
+    "practises_los": [
+     "CO4.LO2"
+    ],
+    "uses_topics": [
+     "M4.T4"
+    ],
+    "tools": [
+     "Student development machines",
+     "software development environments"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Design Document",
+    "notes": null
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8849463
+  },
+  "CS-601/W13.LAB": {
+   "uid": "CS-601/W13.LAB",
+   "local_id": "W13.LAB",
+   "label": "LabSession",
+   "props": {
+    "week": 13,
+    "id": "W13.LAB",
+    "title": "Open Lab and Final Project Troubleshooting",
+    "exercise": "Perform final integration, debugging, and review of project deliverables with TA support.",
+    "practises_los": [
+     "CO4.LO2",
+     "CO3.LO2"
+    ],
+    "uses_topics": [],
+    "tools": [
+     "Student development machines",
+     "TA support"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": null,
+    "notes": "Catch-up and open lab session."
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8849912
+  },
+  "CS-601/W01.TUT": {
+   "uid": "CS-601/W01.TUT",
+   "local_id": "W01.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 1,
+    "id": "W01.TUT",
+    "activity": "Identify developer tools and Model Context Protocol endpoints from sample configuration documents, in pairs.",
+    "practises_los": [
+     "CO1.LO1"
+    ],
+    "uses_topics": [
+     "M1.T1"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.885054
+  },
+  "CS-601/W02.TUT": {
+   "uid": "CS-601/W02.TUT",
+   "local_id": "W02.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 2,
+    "id": "W02.TUT",
+    "activity": "Trace tool interface calls and verify JSON payload structures on sample integration scripts.",
+    "practises_los": [
+     "CO1.LO2"
+    ],
+    "uses_topics": [
+     "M1.T2"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8850827
+  },
+  "CS-601/W03.TUT": {
+   "uid": "CS-601/W03.TUT",
+   "local_id": "W03.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 3,
+    "id": "W03.TUT",
+    "activity": "Trace configuration parameters for agentic software workflows and validate initialization properties.",
+    "practises_los": [
+     "CO1.LO3"
+    ],
+    "uses_topics": [
+     "M1.T3"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8851113
+  },
+  "CS-601/W04.TUT": {
+   "uid": "CS-601/W04.TUT",
+   "local_id": "W04.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 4,
+    "id": "W04.TUT",
+    "activity": "Worked trace-diagnosis of message sequences and state transitions in iterative human-agent coding loops.",
+    "practises_los": [
+     "CO2.LO1"
+    ],
+    "uses_topics": [
+     "M1.T4",
+     "M2.T1"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8851388
+  },
+  "CS-601/W05.TUT": {
+   "uid": "CS-601/W05.TUT",
+   "local_id": "W05.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 5,
+    "id": "W05.TUT",
+    "activity": "Analyze message sequences and state transition diagrams from multi-file modification tasks.",
+    "practises_los": [
+     "CO2.LO1"
+    ],
+    "uses_topics": [
+     "M2.T1"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8851671
+  },
+  "CS-601/W06.TUT": {
+   "uid": "CS-601/W06.TUT",
+   "local_id": "W06.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 6,
+    "id": "W06.TUT",
+    "activity": "Review log evidence from coding loops to map state transitions and identify loop divergence causes.",
+    "practises_los": [
+     "CO2.LO1",
+     "CO2.LO2"
+    ],
+    "uses_topics": [
+     "M2.T3"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.885193
+  },
+  "CS-601/W07.TUT": {
+   "uid": "CS-601/W07.TUT",
+   "local_id": "W07.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 7,
+    "id": "W07.TUT",
+    "activity": "Examine failure logs and map them to distinct failure modes using provided orchestration traces.",
+    "practises_los": [
+     "CO2.LO2"
+    ],
+    "uses_topics": [
+     "M2.T4"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8852203
+  },
+  "CS-601/W08.TUT": {
+   "uid": "CS-601/W08.TUT",
+   "local_id": "W08.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 8,
+    "id": "W08.TUT",
+    "activity": "Trace test execution reports from JUnit test suites run against AI-generated code repositories.",
+    "practises_los": [
+     "CO3.LO1"
+    ],
+    "uses_topics": [
+     "M3.T1"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.885246
+  },
+  "CS-601/W09.TUT": {
+   "uid": "CS-601/W09.TUT",
+   "local_id": "W09.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 9,
+    "id": "W09.TUT",
+    "activity": "Evaluate code correctness verdicts against predefined test coverage specifications in groups.",
+    "practises_los": [
+     "CO3.LO2"
+    ],
+    "uses_topics": [
+     "M3.T2"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8852725
+  },
+  "CS-601/W10.TUT": {
+   "uid": "CS-601/W10.TUT",
+   "local_id": "W10.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 10,
+    "id": "W10.TUT",
+    "activity": "Describe context engineering strategies and sketch architectural boundaries for feature requests.",
+    "practises_los": [
+     "CO4.LO1"
+    ],
+    "uses_topics": [
+     "M4.T1"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.885299
+  },
+  "CS-601/W11.TUT": {
+   "uid": "CS-601/W11.TUT",
+   "local_id": "W11.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 11,
+    "id": "W11.TUT",
+    "activity": "Analyze architectural boundaries and specification-driven development constraints on case studies.",
+    "practises_los": [
+     "CO4.LO1"
+    ],
+    "uses_topics": [
+     "M4.T3"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.885327
+  },
+  "CS-601/W12.TUT": {
+   "uid": "CS-601/W12.TUT",
+   "local_id": "W12.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 12,
+    "id": "W12.TUT",
+    "activity": "Peer review of legacy codebase refactoring justifications against requirements documents.",
+    "practises_los": [
+     "CO4.LO2"
+    ],
+    "uses_topics": [
+     "M4.T4"
+    ],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8853562
+  },
+  "CS-601/W13.TUT": {
+   "uid": "CS-601/W13.TUT",
+   "local_id": "W13.TUT",
+   "label": "Tutorial",
+   "props": {
+    "week": 13,
+    "id": "W13.TUT",
+    "activity": "Open Q&A and tutorial review of final project design documents.",
+    "practises_los": [
+     "CO4.LO2"
+    ],
+    "uses_topics": [],
+    "hours": 1.0
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G8",
+   "prompt_id": "G8",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8853836
+  },
+  "CS-601/A:Quiz1": {
+   "uid": "CS-601/A:Quiz1",
+   "local_id": "A:Quiz1",
+   "label": "Assessment",
+   "props": {
+    "id": "A:Quiz1",
+    "release_week": 3,
+    "due_week": 3,
+    "format": "Online Quiz",
+    "covers_topics": [
+     "M1.T1",
+     "M1.T2",
+     "M1.T3"
+    ],
+    "assesses": [
+     {
+      "lo_id": "CO1.LO1",
+      "marks_pct_of_instance": 100.0,
+      "bloom_level": 1
+     }
+    ],
+    "est_student_hours": 2.0,
+    "feeds_from_lab": null,
+    "type": "quiz",
+    "component_weight_pct": 10.0,
+    "activity_types": [
+     "tool-use"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G9",
+   "prompt_id": "G9",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.885423
+  },
+  "CS-601/A:Assign1": {
+   "uid": "CS-601/A:Assign1",
+   "local_id": "A:Assign1",
+   "label": "Assessment",
+   "props": {
+    "id": "A:Assign1",
+    "release_week": 3,
+    "due_week": 4,
+    "format": "Programming Assignment",
+    "covers_topics": [
+     "M1.T2",
+     "M1.T3"
+    ],
+    "assesses": [
+     {
+      "lo_id": "CO1.LO2",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 3
+     },
+     {
+      "lo_id": "CO1.LO3",
+      "marks_pct_of_instance": 30.0,
+      "bloom_level": 3
+     },
+     {
+      "lo_id": "CO1.LO4",
+      "marks_pct_of_instance": 20.0,
+      "bloom_level": 3
+     }
+    ],
+    "est_student_hours": 10.0,
+    "feeds_from_lab": "W03.LAB",
+    "type": "assignment",
+    "component_weight_pct": 20.0,
+    "activity_types": [
+     "implement",
+     "tool-use"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G9",
+   "prompt_id": "G9",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8855455
+  },
+  "CS-601/A:Midsem": {
+   "uid": "CS-601/A:Midsem",
+   "local_id": "A:Midsem",
+   "label": "Assessment",
+   "props": {
+    "id": "A:Midsem",
+    "release_week": 7,
+    "due_week": 7,
+    "format": "Written Examination",
+    "covers_topics": [
+     "M1.T1",
+     "M1.T2",
+     "M1.T3",
+     "M1.T4",
+     "M2.T1",
+     "M2.T2",
+     "M2.T3",
+     "M2.T4"
+    ],
+    "assesses": [
+     {
+      "lo_id": "CO1.LO1",
+      "marks_pct_of_instance": 30.0,
+      "bloom_level": 1
+     },
+     {
+      "lo_id": "CO2.LO1",
+      "marks_pct_of_instance": 40.0,
+      "bloom_level": 2
+     },
+     {
+      "lo_id": "CO2.LO2",
+      "marks_pct_of_instance": 30.0,
+      "bloom_level": 4
+     }
+    ],
+    "est_student_hours": 3.0,
+    "feeds_from_lab": null,
+    "type": "midsem",
+    "component_weight_pct": 20.0,
+    "activity_types": [
+     "analyse-data"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G9",
+   "prompt_id": "G9",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8856852
+  },
+  "CS-601/A:ProjM1": {
+   "uid": "CS-601/A:ProjM1",
+   "local_id": "A:ProjM1",
+   "label": "Assessment",
+   "props": {
+    "id": "A:ProjM1",
+    "release_week": 5,
+    "due_week": 8,
+    "format": "Milestone Report and Code",
+    "covers_topics": [
+     "M2.T2",
+     "M2.T4",
+     "M3.T1"
+    ],
+    "assesses": [
+     {
+      "lo_id": "CO2.LO2",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 4
+     },
+     {
+      "lo_id": "CO3.LO1",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 3
+     }
+    ],
+    "est_student_hours": 15.0,
+    "feeds_from_lab": "W06.LAB",
+    "type": "project",
+    "component_weight_pct": 30.0,
+    "activity_types": [
+     "implement",
+     "evaluate-critique",
+     "design",
+     "written-communication"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G9",
+   "prompt_id": "G9",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8859048
+  },
+  "CS-601/A:ProjM2": {
+   "uid": "CS-601/A:ProjM2",
+   "local_id": "A:ProjM2",
+   "label": "Assessment",
+   "props": {
+    "id": "A:ProjM2",
+    "release_week": 8,
+    "due_week": 12,
+    "format": "Project Deliverable and Design Document",
+    "covers_topics": [
+     "M3.T2",
+     "M3.T3",
+     "M3.T4",
+     "M4.T1",
+     "M4.T2",
+     "M4.T3",
+     "M4.T4"
+    ],
+    "assesses": [
+     {
+      "lo_id": "CO3.LO2",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 5
+     },
+     {
+      "lo_id": "CO4.LO2",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 5
+     }
+    ],
+    "est_student_hours": 20.0,
+    "feeds_from_lab": "W12.LAB",
+    "type": "project",
+    "component_weight_pct": 30.0,
+    "activity_types": [
+     "implement",
+     "evaluate-critique",
+     "design",
+     "written-communication"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G9",
+   "prompt_id": "G9",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8859973
+  },
+  "CS-601/A:Endsem": {
+   "uid": "CS-601/A:Endsem",
+   "local_id": "A:Endsem",
+   "label": "Assessment",
+   "props": {
+    "id": "A:Endsem",
+    "release_week": 13,
+    "due_week": 13,
+    "format": "Comprehensive Written Examination",
+    "covers_topics": [
+     "M1.T1",
+     "M1.T2",
+     "M1.T3",
+     "M1.T4",
+     "M2.T1",
+     "M2.T2",
+     "M2.T3",
+     "M2.T4",
+     "M3.T1",
+     "M3.T2",
+     "M3.T3",
+     "M3.T4",
+     "M4.T1",
+     "M4.T2",
+     "M4.T3",
+     "M4.T4"
+    ],
+    "assesses": [
+     {
+      "lo_id": "CO4.LO1",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 2
+     },
+     {
+      "lo_id": "CO3.LO1",
+      "marks_pct_of_instance": 50.0,
+      "bloom_level": 3
+     }
+    ],
+    "est_student_hours": 3.0,
+    "feeds_from_lab": null,
+    "type": "endsem",
+    "component_weight_pct": 20.0,
+    "activity_types": [
+     "analyse-data",
+     "design"
+    ]
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G9",
+   "prompt_id": "G9",
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404136.8861399
+  },
+  "CS-601/RES:R:hash:gull-antonio-agentic-design-patterns-spr": {
+   "uid": "CS-601/RES:R:hash:gull-antonio-agentic-design-patterns-spr",
+   "local_id": "RES:R:hash:gull-antonio-agentic-design-patterns-spr",
+   "label": "Resource",
+   "props": {
+    "candidate_id": "R:hash:gull-antonio-agentic-design-patterns-spr",
+    "role": "primary",
+    "title": "Agentic Design Patterns",
+    "authors": [
+     "Antonio Gullí"
+    ],
+    "year": 2025,
+    "edition": null,
+    "venue": "Springer",
+    "identifier": {
+     "isbn": null,
+     "doi": null,
+     "arxiv": null,
+     "url": null
+    },
+    "supports_topics": [
+     {
+      "topic_id": "M1.T4",
+      "reason": "Covers agentic software development workflows and design patterns for AI agents."
+     },
+     {
+      "topic_id": "M2.T1",
+      "reason": "Provides insights into loop engineering and iterative message sequences."
+     }
+    ],
+    "sources": [
+     {
+      "tag": "CORPUS",
+      "ref": "CSE594A",
+      "basis": null
+     }
+    ],
+    "verification": {
+     "verified": false,
+     "problems": [
+      "candidate_id not in retrieved candidates"
+     ]
+    }
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G10",
+   "prompt_id": "G10",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": null
+    }
+   ],
+   "ts": 1791404149.5654526
+  },
+  "CS-601/RES:R:hash:openai-mcp-agent2agent-a2a-protocol": {
+   "uid": "CS-601/RES:R:hash:openai-mcp-agent2agent-a2a-protocol",
+   "local_id": "RES:R:hash:openai-mcp-agent2agent-a2a-protocol",
+   "label": "Resource",
+   "props": {
+    "candidate_id": "R:hash:openai-mcp-agent2agent-a2a-protocol",
+    "role": "reading",
+    "title": "OpenAI MCP, Agent2Agent (A2A) Protocol",
+    "authors": [],
+    "year": 2024,
+    "edition": null,
+    "venue": "Framework Documentations",
+    "identifier": {
+     "isbn": null,
+     "doi": null,
+     "arxiv": null,
+     "url": null
+    },
+    "supports_topics": [
+     {
+      "topic_id": "M1.T1",
+      "reason": "Covers Model Context Protocol specifications overview and developer tool interfaces."
+     },
+     {
+      "topic_id": "M1.T2",
+      "reason": "Details MCP interfaces and basic tool integration scripting."
+     }
+    ],
+    "sources": [
+     {
+      "tag": "CORPUS",
+      "ref": "CSE594A",
+      "basis": null
+     }
+    ],
+    "verification": {
+     "verified": false,
+     "problems": [
+      "candidate_id not in retrieved candidates"
+     ]
+    }
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G10",
+   "prompt_id": "G10",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": null
+    }
+   ],
+   "ts": 1791404149.5655987
+  },
+  "CS-601/RES:OL:OL16551230W": {
+   "uid": "CS-601/RES:OL:OL16551230W",
+   "local_id": "RES:OL:OL16551230W",
+   "label": "Resource",
+   "props": {
+    "candidate_id": "OL:OL16551230W",
+    "role": "reference",
+    "title": "Refactoring: Improving the Design of Existing Code",
+    "authors": [
+     "Martin Fowler"
+    ],
+    "year": 1999,
+    "edition": null,
+    "venue": "Addison-Wesley Professional",
+    "identifier": {
+     "isbn": "9780201485677",
+     "doi": null,
+     "arxiv": null,
+     "url": null
+    },
+    "supports_topics": [
+     {
+      "topic_id": "M4.T2",
+      "reason": "Covers code refactoring strategies and code correctness."
+     },
+     {
+      "topic_id": "M4.T4",
+      "reason": "Provides principles for legacy codebase refactoring and restructuring."
+     }
+    ],
+    "sources": [
+     {
+      "tag": "EXTERNAL",
+      "ref": "OL:OL16551230W",
+      "basis": null
+     }
+    ],
+    "verification": {
+     "verified": true,
+     "problems": []
+    }
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G10",
+   "prompt_id": "G10",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "https://openlibrary.org/works/OL16551230W"
+    }
+   ],
+   "ts": 1791404149.5656443
+  },
+  "CS-601/RES:DOI:10.1145/3663529.3674721": {
+   "uid": "CS-601/RES:DOI:10.1145/3663529.3674721",
+   "local_id": "RES:DOI:10.1145/3663529.3674721",
+   "label": "Resource",
+   "props": {
+    "candidate_id": "DOI:10.1145/3663529.3674721",
+    "role": "reading",
+    "title": "The Incredible Machine: Developer Productivity and the Impact of AI on Productivity (Keynote)",
+    "authors": [
+     "Thomas Zimmermann"
+    ],
+    "year": 2024,
+    "edition": null,
+    "venue": "Companion Proceedings of the 32nd ACM International Conference on the Foundations of Software Engineering",
+    "identifier": {
+     "isbn": null,
+     "doi": "10.1145/3663529.3674721",
+     "arxiv": null,
+     "url": null
+    },
+    "supports_topics": [
+     {
+      "topic_id": "M3.T2",
+      "reason": "Discusses evaluation frameworks and developer productivity metrics in AI-assisted workflows."
+     }
+    ],
+    "sources": [
+     {
+      "tag": "EXTERNAL",
+      "ref": "DOI:10.1145/3663529.3674721",
+      "basis": null
+     }
+    ],
+    "verification": {
+     "verified": true,
+     "problems": []
+    }
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "G10",
+   "prompt_id": "G10",
+   "prompt_version": null,
+   "model": null,
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "https://doi.org/10.1145/3663529.3674721"
+    }
+   ],
+   "ts": 1791404149.5657024
+  },
+  "CS-601/APP3": {
+   "uid": "CS-601/APP3",
+   "local_id": "APP3",
+   "label": "Approval",
+   "props": {
+    "gate": "gate3_proposal",
+    "decision": "approve",
+    "by": "auto (dev run)",
+    "comment": "auto-approved; not a professor decision",
+    "at": 1791404153.1001203,
+    "frozen": 0,
+    "open_errors": 5
+   },
+   "version": 1,
+   "status": "draft",
+   "created_by": "auto (dev run)",
+   "prompt_id": null,
+   "prompt_version": null,
+   "model": null,
+   "sources": [],
+   "ts": 1791404153.1001468
+  }
+ },
+ "edges": [
+  {
+   "src": "CS-601/COURSE",
+   "rel": "REQUIRES",
+   "dst": "CSE201",
+   "props": {
+    "kind": "mandatory",
+    "relied_topics": [
+     "Unit testing using JUnit",
+     "Generic programming"
+    ],
+    "justification": "Students need solid software engineering fundamentals, unit testing, and programming capabilities to effectively evaluate and build agent-assisted software."
+   }
+  },
+  {
+   "src": "CS-601/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "CSE701",
+   "props": {
+    "weighted_jaccard": 0.185,
+    "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+   }
+  },
+  {
+   "src": "CS-601/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "CSE581",
+   "props": {
+    "weighted_jaccard": 0.034,
+    "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+   }
+  },
+  {
+   "src": "CS-601/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "CSE582",
+   "props": {
+    "weighted_jaccard": 0.067,
+    "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+   }
+  },
+  {
+   "src": "CS-601/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "CSE594A",
+   "props": {
+    "weighted_jaccard": 0.08,
+    "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+   }
+  },
+  {
+   "src": "CS-601/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "CSE201",
+   "props": {
+    "weighted_jaccard": 0.017,
+    "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+   }
+  },
+  {
+   "src": "CS-601/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "CSE583",
+   "props": {
+    "weighted_jaccard": 0.0,
+    "method": "stub: no topics"
+   }
+  },
+  {
+   "src": "CS-601/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "AI501",
+   "props": {
+    "weighted_jaccard": 0.034,
+    "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+   }
+  },
+  {
+   "src": "CS-601/COURSE",
+   "rel": "OVERLAPS",
+   "dst": "CSE665",
+   "props": {
+    "weighted_jaccard": 0.0,
+    "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+   }
+  },
+  {
+   "src": "CS-601/COURSE",
+   "rel": "COMPARABLE_TO",
+   "dst": "CSE701",
+   "props": {
+    "take": "Literature review structure and advanced software engineering research framing",
+    "avoid": "Heavy focus on repository mining and offline data analytics rather than active workflow integration"
+   }
+  },
+  {
+   "src": "CS-601/COURSE",
+   "rel": "COMPARABLE_TO",
+   "dst": "CSE594A",
+   "props": {
+    "take": "Foundational concepts of agentic protocols such as MCP and tool use",
+    "avoid": "Over-emphasis on algorithmic and mathematical problem solving instead of software engineering applications"
+   }
+  },
+  {
+   "src": "CS-601/COURSE",
+   "rel": "COMPARABLE_TO",
+   "dst": "CSE583",
+   "props": {
+    "take": "Project-based evaluation structure and practical tooling focus",
+    "avoid": "Traditional open-source community process focus without AI agent integration"
+   }
+  },
+  {
+   "src": "CO1",
+   "rel": "COVERS_GROUP",
+   "dst": "TG1",
+   "props": {}
+  },
+  {
+   "src": "CO1",
+   "rel": "COVERS_GROUP",
+   "dst": "TG2",
+   "props": {}
+  },
+  {
+   "src": "CO2",
+   "rel": "COVERS_GROUP",
+   "dst": "TG4",
+   "props": {}
+  },
+  {
+   "src": "CO2",
+   "rel": "COVERS_GROUP",
+   "dst": "TG5",
+   "props": {}
+  },
+  {
+   "src": "CO3",
+   "rel": "COVERS_GROUP",
+   "dst": "TG5",
+   "props": {}
+  },
+  {
+   "src": "CO3",
+   "rel": "COVERS_GROUP",
+   "dst": "TG6",
+   "props": {}
+  },
+  {
+   "src": "CO4",
+   "rel": "COVERS_GROUP",
+   "dst": "TG3",
+   "props": {}
+  },
+  {
+   "src": "CO4",
+   "rel": "COVERS_GROUP",
+   "dst": "TG6",
+   "props": {}
+  },
+  {
+   "src": "CO1",
+   "rel": "MAPS_TO",
+   "dst": "BTECH-CSE/PO4",
+   "props": {
+    "strength_provisional": 3,
+    "justification": "Configuring agentic workflows directly maps to implementing and utilizing modern development tools to build systems.",
+    "evidencing_activities": [
+     "implement",
+     "tool-use"
+    ],
+    "strength_computed": 2,
+    "share": 0.556
+   }
+  },
+  {
+   "src": "CO1",
+   "rel": "MAPS_TO",
+   "dst": "BTECH-CSE/PO9",
+   "props": {
+    "strength_provisional": 2,
+    "justification": "Involves the application of advanced protocols like Model Context Protocol for tool integration.",
+    "evidencing_activities": [
+     "tool-use"
+    ],
+    "strength_computed": 3,
+    "share": 0.833
+   }
+  },
+  {
+   "src": "CO2",
+   "rel": "MAPS_TO",
+   "dst": "BTECH-CSE/PO3",
+   "props": {
+    "strength_provisional": 3,
+    "justification": "Analyzing failure modes in iterative coding loops requires examining and adapting algorithmic and systemic approaches.",
+    "evidencing_activities": [
+     "analyse-data"
+    ],
+    "strength_computed": 3,
+    "share": 0.651
+   }
+  },
+  {
+   "src": "CO3",
+   "rel": "MAPS_TO",
+   "dst": "BTECH-CSE/PO4",
+   "props": {
+    "strength_provisional": 3,
+    "justification": "Evaluating code correctness using automated test suites aligns directly with system evaluation methodologies.",
+    "evidencing_activities": [
+     "evaluate-critique"
+    ],
+    "strength_computed": 3,
+    "share": 1.0
+   }
+  },
+  {
+   "src": "CO4",
+   "rel": "MAPS_TO",
+   "dst": "BTECH-CSE/PO4",
+   "props": {
+    "strength_provisional": 3,
+    "justification": "Specification-driven development plans form a core part of software system design.",
+    "evidencing_activities": [
+     "design",
+     "written-communication"
+    ],
+    "strength_computed": 3,
+    "share": 1.0
+   }
+  },
+  {
+   "src": "CO1",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO1.LO1",
+   "props": {}
+  },
+  {
+   "src": "CO1",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO1.LO2",
+   "props": {}
+  },
+  {
+   "src": "CO1.LO2",
+   "rel": "REQUIRES",
+   "dst": "CO1.LO1",
+   "props": {}
+  },
+  {
+   "src": "CO1",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO1.LO3",
+   "props": {}
+  },
+  {
+   "src": "CO1.LO3",
+   "rel": "REQUIRES",
+   "dst": "CO1.LO2",
+   "props": {}
+  },
+  {
+   "src": "CO2",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO2.LO1",
+   "props": {}
+  },
+  {
+   "src": "CO2.LO1",
+   "rel": "REQUIRES",
+   "dst": "CO1.LO3",
+   "props": {}
+  },
+  {
+   "src": "CO2",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO2.LO2",
+   "props": {}
+  },
+  {
+   "src": "CO2.LO2",
+   "rel": "REQUIRES",
+   "dst": "CO2.LO1",
+   "props": {}
+  },
+  {
+   "src": "CO3",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO3.LO1",
+   "props": {}
+  },
+  {
+   "src": "CO3.LO1",
+   "rel": "REQUIRES",
+   "dst": "CO2.LO2",
+   "props": {}
+  },
+  {
+   "src": "CO3",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO3.LO2",
+   "props": {}
+  },
+  {
+   "src": "CO3.LO2",
+   "rel": "REQUIRES",
+   "dst": "CO3.LO1",
+   "props": {}
+  },
+  {
+   "src": "CO4",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO4.LO1",
+   "props": {}
+  },
+  {
+   "src": "CO4.LO1",
+   "rel": "REQUIRES",
+   "dst": "CO3.LO2",
+   "props": {}
+  },
+  {
+   "src": "CO4",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO4.LO2",
+   "props": {}
+  },
+  {
+   "src": "CO4.LO2",
+   "rel": "REQUIRES",
+   "dst": "CO4.LO1",
+   "props": {}
+  },
+  {
+   "src": "CO1",
+   "rel": "DECOMPOSES_INTO",
+   "dst": "CO1.LO4",
+   "props": {}
+  },
+  {
+   "src": "CO1.LO4",
+   "rel": "REQUIRES",
+   "dst": "CO1.LO1",
+   "props": {}
+  },
+  {
+   "src": "M1",
+   "rel": "CONTAINS",
+   "dst": "M1.T1",
+   "props": {
+    "order": 1
+   }
+  },
+  {
+   "src": "CO1.LO1",
+   "rel": "TAUGHT_VIA",
+   "dst": "M1.T1",
+   "props": {}
+  },
+  {
+   "src": "M1",
+   "rel": "CONTAINS",
+   "dst": "M1.T2",
+   "props": {
+    "order": 2
+   }
+  },
+  {
+   "src": "CO1.LO2",
+   "rel": "TAUGHT_VIA",
+   "dst": "M1.T2",
+   "props": {}
+  },
+  {
+   "src": "M1.T2",
+   "rel": "REQUIRES",
+   "dst": "M1.T1",
+   "props": {}
+  },
+  {
+   "src": "M1",
+   "rel": "CONTAINS",
+   "dst": "M1.T3",
+   "props": {
+    "order": 3
+   }
+  },
+  {
+   "src": "CO1.LO4",
+   "rel": "TAUGHT_VIA",
+   "dst": "M1.T3",
+   "props": {}
+  },
+  {
+   "src": "M1.T3",
+   "rel": "REQUIRES",
+   "dst": "M1.T2",
+   "props": {}
+  },
+  {
+   "src": "M1",
+   "rel": "CONTAINS",
+   "dst": "M1.T4",
+   "props": {
+    "order": 4
+   }
+  },
+  {
+   "src": "CO1.LO3",
+   "rel": "TAUGHT_VIA",
+   "dst": "M1.T4",
+   "props": {}
+  },
+  {
+   "src": "M1.T4",
+   "rel": "REQUIRES",
+   "dst": "M1.T3",
+   "props": {}
+  },
+  {
+   "src": "M1.T4",
+   "rel": "SAME_AS",
+   "dst": "T:agents-for-coding-and-software-development",
+   "props": {}
+  },
+  {
+   "src": "M2",
+   "rel": "CONTAINS",
+   "dst": "M2.T1",
+   "props": {
+    "order": 1
+   }
+  },
+  {
+   "src": "CO2.LO1",
+   "rel": "TAUGHT_VIA",
+   "dst": "M2.T1",
+   "props": {}
+  },
+  {
+   "src": "M2.T1",
+   "rel": "REQUIRES",
+   "dst": "M1.T4",
+   "props": {}
+  },
+  {
+   "src": "M2",
+   "rel": "CONTAINS",
+   "dst": "M2.T2",
+   "props": {
+    "order": 2
+   }
+  },
+  {
+   "src": "CO2.LO2",
+   "rel": "TAUGHT_VIA",
+   "dst": "M2.T2",
+   "props": {}
+  },
+  {
+   "src": "M2.T2",
+   "rel": "REQUIRES",
+   "dst": "M2.T1",
+   "props": {}
+  },
+  {
+   "src": "M2.T2",
+   "rel": "SAME_AS",
+   "dst": "T:assisting-code-review-and-code-analysis",
+   "props": {}
+  },
+  {
+   "src": "M2",
+   "rel": "CONTAINS",
+   "dst": "M2.T3",
+   "props": {
+    "order": 2
+   }
+  },
+  {
+   "src": "CO2.LO1",
+   "rel": "TAUGHT_VIA",
+   "dst": "M2.T3",
+   "props": {}
+  },
+  {
+   "src": "M2.T3",
+   "rel": "REQUIRES",
+   "dst": "M2.T1",
+   "props": {}
+  },
+  {
+   "src": "M2",
+   "rel": "CONTAINS",
+   "dst": "M2.T4",
+   "props": {
+    "order": 2
+   }
+  },
+  {
+   "src": "CO2.LO2",
+   "rel": "TAUGHT_VIA",
+   "dst": "M2.T4",
+   "props": {}
+  },
+  {
+   "src": "M2.T4",
+   "rel": "REQUIRES",
+   "dst": "M2.T2",
+   "props": {}
+  },
+  {
+   "src": "M3",
+   "rel": "CONTAINS",
+   "dst": "M3.T1",
+   "props": {
+    "order": 1
+   }
+  },
+  {
+   "src": "CO3.LO1",
+   "rel": "TAUGHT_VIA",
+   "dst": "M3.T1",
+   "props": {}
+  },
+  {
+   "src": "M3.T1",
+   "rel": "REQUIRES",
+   "dst": "M2.T2",
+   "props": {}
+  },
+  {
+   "src": "M3.T1",
+   "rel": "SAME_AS",
+   "dst": "T:unit-testing-using-junit",
+   "props": {}
+  },
+  {
+   "src": "M3",
+   "rel": "CONTAINS",
+   "dst": "M3.T2",
+   "props": {
+    "order": 2
+   }
+  },
+  {
+   "src": "CO3.LO2",
+   "rel": "TAUGHT_VIA",
+   "dst": "M3.T2",
+   "props": {}
+  },
+  {
+   "src": "M3.T2",
+   "rel": "REQUIRES",
+   "dst": "M3.T1",
+   "props": {}
+  },
+  {
+   "src": "M3",
+   "rel": "CONTAINS",
+   "dst": "M3.T3",
+   "props": {
+    "order": 3
+   }
+  },
+  {
+   "src": "CO3.LO2",
+   "rel": "TAUGHT_VIA",
+   "dst": "M3.T3",
+   "props": {}
+  },
+  {
+   "src": "M3.T3",
+   "rel": "REQUIRES",
+   "dst": "M3.T2",
+   "props": {}
+  },
+  {
+   "src": "M3",
+   "rel": "CONTAINS",
+   "dst": "M3.T4",
+   "props": {
+    "order": 2
+   }
+  },
+  {
+   "src": "CO3.LO1",
+   "rel": "TAUGHT_VIA",
+   "dst": "M3.T4",
+   "props": {}
+  },
+  {
+   "src": "M3.T4",
+   "rel": "REQUIRES",
+   "dst": "M3.T1",
+   "props": {}
+  },
+  {
+   "src": "M4",
+   "rel": "CONTAINS",
+   "dst": "M4.T1",
+   "props": {
+    "order": 1
+   }
+  },
+  {
+   "src": "CO4.LO1",
+   "rel": "TAUGHT_VIA",
+   "dst": "M4.T1",
+   "props": {}
+  },
+  {
+   "src": "M4.T1",
+   "rel": "REQUIRES",
+   "dst": "M3.T2",
+   "props": {}
+  },
+  {
+   "src": "M4.T1",
+   "rel": "SAME_AS",
+   "dst": "T:requirements-engineering",
+   "props": {}
+  },
+  {
+   "src": "M4",
+   "rel": "CONTAINS",
+   "dst": "M4.T2",
+   "props": {
+    "order": 2
+   }
+  },
+  {
+   "src": "CO4.LO2",
+   "rel": "TAUGHT_VIA",
+   "dst": "M4.T2",
+   "props": {}
+  },
+  {
+   "src": "M4.T2",
+   "rel": "REQUIRES",
+   "dst": "M4.T1",
+   "props": {}
+  },
+  {
+   "src": "M4.T2",
+   "rel": "SAME_AS",
+   "dst": "T:code-refactoring",
+   "props": {}
+  },
+  {
+   "src": "M4",
+   "rel": "CONTAINS",
+   "dst": "M4.T3",
+   "props": {
+    "order": 3
+   }
+  },
+  {
+   "src": "CO4.LO1",
+   "rel": "TAUGHT_VIA",
+   "dst": "M4.T3",
+   "props": {}
+  },
+  {
+   "src": "M4.T3",
+   "rel": "REQUIRES",
+   "dst": "M4.T1",
+   "props": {}
+  },
+  {
+   "src": "M4",
+   "rel": "CONTAINS",
+   "dst": "M4.T4",
+   "props": {
+    "order": 4
+   }
+  },
+  {
+   "src": "CO4.LO2",
+   "rel": "TAUGHT_VIA",
+   "dst": "M4.T4",
+   "props": {}
+  },
+  {
+   "src": "M4.T4",
+   "rel": "REQUIRES",
+   "dst": "M4.T2",
+   "props": {}
+  },
+  {
+   "src": "W01.L1",
+   "rel": "IN_WEEK",
+   "dst": "W01",
+   "props": {}
+  },
+  {
+   "src": "M1.T1",
+   "rel": "DELIVERED_IN",
+   "dst": "W01.L1",
+   "props": {
+    "hours": 2.0
+   }
+  },
+  {
+   "src": "W01.L2",
+   "rel": "IN_WEEK",
+   "dst": "W01",
+   "props": {}
+  },
+  {
+   "src": "M1.T2",
+   "rel": "DELIVERED_IN",
+   "dst": "W01.L2",
+   "props": {
+    "hours": 1.0
+   }
+  },
+  {
+   "src": "W02.L1",
+   "rel": "IN_WEEK",
+   "dst": "W02",
+   "props": {}
+  },
+  {
+   "src": "M1.T2",
+   "rel": "DELIVERED_IN",
+   "dst": "W02.L1",
+   "props": {
+    "hours": 2.0
+   }
+  },
+  {
+   "src": "W02.L2",
+   "rel": "IN_WEEK",
+   "dst": "W02",
+   "props": {}
+  },
+  {
+   "src": "M1.T3",
+   "rel": "DELIVERED_IN",
+   "dst": "W02.L2",
+   "props": {
+    "hours": 1.0
+   }
+  },
+  {
+   "src": "W03.L1",
+   "rel": "IN_WEEK",
+   "dst": "W03",
+   "props": {}
+  },
+  {
+   "src": "M1.T3",
+   "rel": "DELIVERED_IN",
+   "dst": "W03.L1",
+   "props": {
+    "hours": 2.0
+   }
+  },
+  {
+   "src": "W03.L2",
+   "rel": "IN_WEEK",
+   "dst": "W03",
+   "props": {}
+  },
+  {
+   "src": "M1.T4",
+   "rel": "DELIVERED_IN",
+   "dst": "W03.L2",
+   "props": {
+    "hours": 1.0
+   }
+  },
+  {
+   "src": "W04.L1",
+   "rel": "IN_WEEK",
+   "dst": "W04",
+   "props": {}
+  },
+  {
+   "src": "M1.T4",
+   "rel": "DELIVERED_IN",
+   "dst": "W04.L1",
+   "props": {
+    "hours": 2.0
+   }
+  },
+  {
+   "src": "W04.L2",
+   "rel": "IN_WEEK",
+   "dst": "W04",
+   "props": {}
+  },
+  {
+   "src": "M2.T1",
+   "rel": "DELIVERED_IN",
+   "dst": "W04.L2",
+   "props": {
+    "hours": 1.0
+   }
+  },
+  {
+   "src": "W05.L1",
+   "rel": "IN_WEEK",
+   "dst": "W05",
+   "props": {}
+  },
+  {
+   "src": "M2.T1",
+   "rel": "DELIVERED_IN",
+   "dst": "W05.L1",
+   "props": {
+    "hours": 1.0
+   }
+  },
+  {
+   "src": "W05.L2",
+   "rel": "IN_WEEK",
+   "dst": "W05",
+   "props": {}
+  },
+  {
+   "src": "M2.T2",
+   "rel": "DELIVERED_IN",
+   "dst": "W05.L2",
+   "props": {
+    "hours": 2.0
+   }
+  },
+  {
+   "src": "W06.L1",
+   "rel": "IN_WEEK",
+   "dst": "W06",
+   "props": {}
+  },
+  {
+   "src": "M2.T3",
+   "rel": "DELIVERED_IN",
+   "dst": "W06.L1",
+   "props": {
+    "hours": 2.0
+   }
+  },
+  {
+   "src": "W06.L2",
+   "rel": "IN_WEEK",
+   "dst": "W06",
+   "props": {}
+  },
+  {
+   "src": "M2.T4",
+   "rel": "DELIVERED_IN",
+   "dst": "W06.L2",
+   "props": {
+    "hours": 1.0
+   }
+  },
+  {
+   "src": "W07.L1",
+   "rel": "IN_WEEK",
+   "dst": "W07",
+   "props": {}
+  },
+  {
+   "src": "M2.T4",
+   "rel": "DELIVERED_IN",
+   "dst": "W07.L1",
+   "props": {
+    "hours": 1.0
+   }
+  },
+  {
+   "src": "W07.L2",
+   "rel": "IN_WEEK",
+   "dst": "W07",
+   "props": {}
+  },
+  {
+   "src": "M3.T1",
+   "rel": "DELIVERED_IN",
+   "dst": "W07.L2",
+   "props": {
+    "hours": 2.0
+   }
+  },
+  {
+   "src": "W08.L1",
+   "rel": "IN_WEEK",
+   "dst": "W08",
+   "props": {}
+  },
+  {
+   "src": "M3.T2",
+   "rel": "DELIVERED_IN",
+   "dst": "W08.L1",
+   "props": {
+    "hours": 2.0
+   }
+  },
+  {
+   "src": "W08.L2",
+   "rel": "IN_WEEK",
+   "dst": "W08",
+   "props": {}
+  },
+  {
+   "src": "M3.T4",
+   "rel": "DELIVERED_IN",
+   "dst": "W08.L2",
+   "props": {
+    "hours": 1.0
+   }
+  },
+  {
+   "src": "W09.L1",
+   "rel": "IN_WEEK",
+   "dst": "W09",
+   "props": {}
+  },
+  {
+   "src": "M3.T4",
+   "rel": "DELIVERED_IN",
+   "dst": "W09.L1",
+   "props": {
+    "hours": 1.0
+   }
+  },
+  {
+   "src": "W09.L2",
+   "rel": "IN_WEEK",
+   "dst": "W09",
+   "props": {}
+  },
+  {
+   "src": "M3.T3",
+   "rel": "DELIVERED_IN",
+   "dst": "W09.L2",
+   "props": {
+    "hours": 2.0
+   }
+  },
+  {
+   "src": "W10.L1",
+   "rel": "IN_WEEK",
+   "dst": "W10",
+   "props": {}
+  },
+  {
+   "src": "M4.T1",
+   "rel": "DELIVERED_IN",
+   "dst": "W10.L1",
+   "props": {
+    "hours": 2.0
+   }
+  },
+  {
+   "src": "W10.L2",
+   "rel": "IN_WEEK",
+   "dst": "W10",
+   "props": {}
+  },
+  {
+   "src": "M4.T2",
+   "rel": "DELIVERED_IN",
+   "dst": "W10.L2",
+   "props": {
+    "hours": 1.0
+   }
+  },
+  {
+   "src": "W11.L1",
+   "rel": "IN_WEEK",
+   "dst": "W11",
+   "props": {}
+  },
+  {
+   "src": "M4.T2",
+   "rel": "DELIVERED_IN",
+   "dst": "W11.L1",
+   "props": {
+    "hours": 1.0
+   }
+  },
+  {
+   "src": "W11.L2",
+   "rel": "IN_WEEK",
+   "dst": "W11",
+   "props": {}
+  },
+  {
+   "src": "M4.T3",
+   "rel": "DELIVERED_IN",
+   "dst": "W11.L2",
+   "props": {
+    "hours": 2.0
+   }
+  },
+  {
+   "src": "W12.L1",
+   "rel": "IN_WEEK",
+   "dst": "W12",
+   "props": {}
+  },
+  {
+   "src": "M4.T4",
+   "rel": "DELIVERED_IN",
+   "dst": "W12.L1",
+   "props": {
+    "hours": 2.0
+   }
+  },
+  {
+   "src": "W01.LAB",
+   "rel": "IN_WEEK",
+   "dst": "W01",
+   "props": {}
+  },
+  {
+   "src": "CO1.LO2",
+   "rel": "PRACTISED_IN",
+   "dst": "W01.LAB",
+   "props": {}
+  },
+  {
+   "src": "W02.LAB",
+   "rel": "IN_WEEK",
+   "dst": "W02",
+   "props": {}
+  },
+  {
+   "src": "CO1.LO4",
+   "rel": "PRACTISED_IN",
+   "dst": "W02.LAB",
+   "props": {}
+  },
+  {
+   "src": "CO1.LO2",
+   "rel": "PRACTISED_IN",
+   "dst": "W02.LAB",
+   "props": {}
+  },
+  {
+   "src": "W03.LAB",
+   "rel": "IN_WEEK",
+   "dst": "W03",
+   "props": {}
+  },
+  {
+   "src": "CO1.LO3",
+   "rel": "PRACTISED_IN",
+   "dst": "W03.LAB",
+   "props": {}
+  },
+  {
+   "src": "CO1.LO4",
+   "rel": "PRACTISED_IN",
+   "dst": "W03.LAB",
+   "props": {}
+  },
+  {
+   "src": "W04.LAB",
+   "rel": "IN_WEEK",
+   "dst": "W04",
+   "props": {}
+  },
+  {
+   "src": "CO1.LO3",
+   "rel": "PRACTISED_IN",
+   "dst": "W04.LAB",
+   "props": {}
+  },
+  {
+   "src": "W05.LAB",
+   "rel": "IN_WEEK",
+   "dst": "W05",
+   "props": {}
+  },
+  {
+   "src": "CO2.LO2",
+   "rel": "PRACTISED_IN",
+   "dst": "W05.LAB",
+   "props": {}
+  },
+  {
+   "src": "W06.LAB",
+   "rel": "IN_WEEK",
+   "dst": "W06",
+   "props": {}
+  },
+  {
+   "src": "CO2.LO2",
+   "rel": "PRACTISED_IN",
+   "dst": "W06.LAB",
+   "props": {}
+  },
+  {
+   "src": "W07.LAB",
+   "rel": "IN_WEEK",
+   "dst": "W07",
+   "props": {}
+  },
+  {
+   "src": "CO3.LO1",
+   "rel": "PRACTISED_IN",
+   "dst": "W07.LAB",
+   "props": {}
+  },
+  {
+   "src": "W08.LAB",
+   "rel": "IN_WEEK",
+   "dst": "W08",
+   "props": {}
+  },
+  {
+   "src": "CO3.LO2",
+   "rel": "PRACTISED_IN",
+   "dst": "W08.LAB",
+   "props": {}
+  },
+  {
+   "src": "CO3.LO1",
+   "rel": "PRACTISED_IN",
+   "dst": "W08.LAB",
+   "props": {}
+  },
+  {
+   "src": "W09.LAB",
+   "rel": "IN_WEEK",
+   "dst": "W09",
+   "props": {}
+  },
+  {
+   "src": "CO3.LO2",
+   "rel": "PRACTISED_IN",
+   "dst": "W09.LAB",
+   "props": {}
+  },
+  {
+   "src": "CO3.LO1",
+   "rel": "PRACTISED_IN",
+   "dst": "W09.LAB",
+   "props": {}
+  },
+  {
+   "src": "W10.LAB",
+   "rel": "IN_WEEK",
+   "dst": "W10",
+   "props": {}
+  },
+  {
+   "src": "CO4.LO2",
+   "rel": "PRACTISED_IN",
+   "dst": "W10.LAB",
+   "props": {}
+  },
+  {
+   "src": "W11.LAB",
+   "rel": "IN_WEEK",
+   "dst": "W11",
+   "props": {}
+  },
+  {
+   "src": "CO4.LO2",
+   "rel": "PRACTISED_IN",
+   "dst": "W11.LAB",
+   "props": {}
+  },
+  {
+   "src": "W12.LAB",
+   "rel": "IN_WEEK",
+   "dst": "W12",
+   "props": {}
+  },
+  {
+   "src": "CO4.LO2",
+   "rel": "PRACTISED_IN",
+   "dst": "W12.LAB",
+   "props": {}
+  },
+  {
+   "src": "W13.LAB",
+   "rel": "IN_WEEK",
+   "dst": "W13",
+   "props": {}
+  },
+  {
+   "src": "CO4.LO2",
+   "rel": "PRACTISED_IN",
+   "dst": "W13.LAB",
+   "props": {}
+  },
+  {
+   "src": "CO3.LO2",
+   "rel": "PRACTISED_IN",
+   "dst": "W13.LAB",
+   "props": {}
+  },
+  {
+   "src": "W01.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W01",
+   "props": {}
+  },
+  {
+   "src": "W02.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W02",
+   "props": {}
+  },
+  {
+   "src": "W03.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W03",
+   "props": {}
+  },
+  {
+   "src": "W04.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W04",
+   "props": {}
+  },
+  {
+   "src": "W05.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W05",
+   "props": {}
+  },
+  {
+   "src": "W06.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W06",
+   "props": {}
+  },
+  {
+   "src": "W07.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W07",
+   "props": {}
+  },
+  {
+   "src": "W08.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W08",
+   "props": {}
+  },
+  {
+   "src": "W09.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W09",
+   "props": {}
+  },
+  {
+   "src": "W10.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W10",
+   "props": {}
+  },
+  {
+   "src": "W11.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W11",
+   "props": {}
+  },
+  {
+   "src": "W12.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W12",
+   "props": {}
+  },
+  {
+   "src": "W13.TUT",
+   "rel": "IN_WEEK",
+   "dst": "W13",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Quiz1",
+   "rel": "RELEASED_IN",
+   "dst": "W03",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Quiz1",
+   "rel": "DUE_IN",
+   "dst": "W03",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Quiz1",
+   "rel": "ASSESSES",
+   "dst": "CO1.LO1",
+   "props": {
+    "marks_pct": 100.0,
+    "bloom_level": 1
+   }
+  },
+  {
+   "src": "CS-601/A:Quiz1",
+   "rel": "COVERS",
+   "dst": "M1.T1",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Quiz1",
+   "rel": "COVERS",
+   "dst": "M1.T2",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Quiz1",
+   "rel": "COVERS",
+   "dst": "M1.T3",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Assign1",
+   "rel": "RELEASED_IN",
+   "dst": "W03",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Assign1",
+   "rel": "DUE_IN",
+   "dst": "W04",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Assign1",
+   "rel": "ASSESSES",
+   "dst": "CO1.LO2",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "CS-601/A:Assign1",
+   "rel": "ASSESSES",
+   "dst": "CO1.LO3",
+   "props": {
+    "marks_pct": 30.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "CS-601/A:Assign1",
+   "rel": "ASSESSES",
+   "dst": "CO1.LO4",
+   "props": {
+    "marks_pct": 20.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "CS-601/A:Assign1",
+   "rel": "COVERS",
+   "dst": "M1.T2",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Assign1",
+   "rel": "COVERS",
+   "dst": "M1.T3",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Midsem",
+   "rel": "RELEASED_IN",
+   "dst": "W07",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Midsem",
+   "rel": "DUE_IN",
+   "dst": "W07",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Midsem",
+   "rel": "ASSESSES",
+   "dst": "CO1.LO1",
+   "props": {
+    "marks_pct": 30.0,
+    "bloom_level": 1
+   }
+  },
+  {
+   "src": "CS-601/A:Midsem",
+   "rel": "ASSESSES",
+   "dst": "CO2.LO1",
+   "props": {
+    "marks_pct": 40.0,
+    "bloom_level": 2
+   }
+  },
+  {
+   "src": "CS-601/A:Midsem",
+   "rel": "ASSESSES",
+   "dst": "CO2.LO2",
+   "props": {
+    "marks_pct": 30.0,
+    "bloom_level": 4
+   }
+  },
+  {
+   "src": "CS-601/A:Midsem",
+   "rel": "COVERS",
+   "dst": "M1.T1",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Midsem",
+   "rel": "COVERS",
+   "dst": "M1.T2",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Midsem",
+   "rel": "COVERS",
+   "dst": "M1.T3",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Midsem",
+   "rel": "COVERS",
+   "dst": "M1.T4",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Midsem",
+   "rel": "COVERS",
+   "dst": "M2.T1",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Midsem",
+   "rel": "COVERS",
+   "dst": "M2.T2",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Midsem",
+   "rel": "COVERS",
+   "dst": "M2.T3",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Midsem",
+   "rel": "COVERS",
+   "dst": "M2.T4",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:ProjM1",
+   "rel": "RELEASED_IN",
+   "dst": "W05",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:ProjM1",
+   "rel": "DUE_IN",
+   "dst": "W08",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:ProjM1",
+   "rel": "ASSESSES",
+   "dst": "CO2.LO2",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 4
+   }
+  },
+  {
+   "src": "CS-601/A:ProjM1",
+   "rel": "ASSESSES",
+   "dst": "CO3.LO1",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "CS-601/A:ProjM1",
+   "rel": "COVERS",
+   "dst": "M2.T2",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:ProjM1",
+   "rel": "COVERS",
+   "dst": "M2.T4",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:ProjM1",
+   "rel": "COVERS",
+   "dst": "M3.T1",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:ProjM2",
+   "rel": "RELEASED_IN",
+   "dst": "W08",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:ProjM2",
+   "rel": "DUE_IN",
+   "dst": "W12",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:ProjM2",
+   "rel": "ASSESSES",
+   "dst": "CO3.LO2",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 5
+   }
+  },
+  {
+   "src": "CS-601/A:ProjM2",
+   "rel": "ASSESSES",
+   "dst": "CO4.LO2",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 5
+   }
+  },
+  {
+   "src": "CS-601/A:ProjM2",
+   "rel": "COVERS",
+   "dst": "M3.T2",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:ProjM2",
+   "rel": "COVERS",
+   "dst": "M3.T3",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:ProjM2",
+   "rel": "COVERS",
+   "dst": "M3.T4",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:ProjM2",
+   "rel": "COVERS",
+   "dst": "M4.T1",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:ProjM2",
+   "rel": "COVERS",
+   "dst": "M4.T2",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:ProjM2",
+   "rel": "COVERS",
+   "dst": "M4.T3",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:ProjM2",
+   "rel": "COVERS",
+   "dst": "M4.T4",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "RELEASED_IN",
+   "dst": "W13",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "DUE_IN",
+   "dst": "W13",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "ASSESSES",
+   "dst": "CO4.LO1",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 2
+   }
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "ASSESSES",
+   "dst": "CO3.LO1",
+   "props": {
+    "marks_pct": 50.0,
+    "bloom_level": 3
+   }
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M1.T1",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M1.T2",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M1.T3",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M1.T4",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M2.T1",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M2.T2",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M2.T3",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M2.T4",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M3.T1",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M3.T2",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M3.T3",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M3.T4",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M4.T1",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M4.T2",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M4.T3",
+   "props": {}
+  },
+  {
+   "src": "CS-601/A:Endsem",
+   "rel": "COVERS",
+   "dst": "M4.T4",
+   "props": {}
+  },
+  {
+   "src": "M1.T4",
+   "rel": "READING",
+   "dst": "CS-601/RES:R:hash:gull-antonio-agentic-design-patterns-spr",
+   "props": {}
+  },
+  {
+   "src": "M2.T1",
+   "rel": "READING",
+   "dst": "CS-601/RES:R:hash:gull-antonio-agentic-design-patterns-spr",
+   "props": {}
+  },
+  {
+   "src": "M1.T1",
+   "rel": "READING",
+   "dst": "CS-601/RES:R:hash:openai-mcp-agent2agent-a2a-protocol",
+   "props": {}
+  },
+  {
+   "src": "M1.T2",
+   "rel": "READING",
+   "dst": "CS-601/RES:R:hash:openai-mcp-agent2agent-a2a-protocol",
+   "props": {}
+  },
+  {
+   "src": "M4.T2",
+   "rel": "READING",
+   "dst": "RES:OL:OL16551230W",
+   "props": {}
+  },
+  {
+   "src": "M4.T4",
+   "rel": "READING",
+   "dst": "RES:OL:OL16551230W",
+   "props": {}
+  },
+  {
+   "src": "M3.T2",
+   "rel": "READING",
+   "dst": "CS-601/RES:DOI:10.1145/3663529.3674721",
+   "props": {}
+  }
+ ],
+ "history_len": 0
+}

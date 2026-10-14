@@ -11,7 +11,7 @@ from collections import Counter, defaultdict
 
 from profsagent.config import pedagogy
 from profsagent.design.deterministic import find_cycle
-from profsagent.kg.quality import banned_in, bloom_of_verb, lemma, vague_degree, verbs_in
+from profsagent.kg.quality import PREFIX_RE, banned_in, bloom_of_verb, bloom_range_of_verb, lemma, vague_degree, verbs_in
 
 ERR, WARN = "error", "warning"
 
@@ -54,8 +54,12 @@ def _statement_checks(items: list[dict], kind: str) -> list[dict]:
     for it in items:
         i, st = it["id"], it.get("statement", "")
         verb = lemma(it.get("verb", ""))
-        # V12 banned verbs anywhere in the verb or the first clause
-        b = banned_in(it.get("verb", "")) or banned_in(st.split(",")[0])
+        # V12 banned verbs: the declared verb, the statement's leading verb, or a verb chained with and/or/then.
+        # Not anywhere in the clause: "Evaluate natural-language understanding models" or "a robot grasp planner"
+        # use the words as nouns.
+        head = PREFIX_RE.sub("", st.split(",")[0]).lower()
+        b = banned_in(it.get("verb", "")) or [w for w in banned_in(head) if re.match(rf"\s*{re.escape(w)}\b", head)
+                                               or re.search(rf"\b(and|or|then)\s+{re.escape(w)}\b", head)]
         if b:
             out.append(v("V12", ERR, [i], f"{kind} {i} uses banned/vague verb(s) {b}", statement=st))
         # V10 exactly one leading verb, and it must be the declared verb, from the lexicon
@@ -78,11 +82,14 @@ def _statement_checks(items: list[dict], kind: str) -> list[dict]:
                 out.append(v("V11", ERR, [i], f"{kind} {i} degree is vague ({vague_degree(val)}): '{val}'"))
             elif _norm(val)[:25] not in _norm(st):
                 out.append(v("V11", WARN, [i], f"{kind} {i} {part} is not visible in the statement text", part_text=val))
-        # Bloom triangulation (lexicon vs claimed)
-        lex = bloom_of_verb(verb)
-        amb = pedagogy()  # noqa: F841 (kept for future ambiguous-verb handling)
-        if lex is not None and it.get("bloom_level") and abs(lex - int(it["bloom_level"])) >= 2:
-            out.append(v("VB", WARN, [i], f"{kind} {i}: claimed Bloom L{it['bloom_level']} but verb '{verb}' is lexicon L{lex}"))
+        # Bloom triangulation (lexicon vs claimed); ambiguous verbs (e.g. develop: L3–L6) accept their whole range
+        rng = bloom_range_of_verb(verb)
+        if rng and it.get("bloom_level"):
+            claimed = int(it["bloom_level"])
+            gap = 0 if rng[0] <= claimed <= rng[1] else min(abs(claimed - rng[0]), abs(claimed - rng[1]))
+            if gap >= 2:
+                lex = f"L{rng[0]}" if rng[0] == rng[1] else f"L{rng[0]}–L{rng[1]}"
+                out.append(v("VB", WARN, [i], f"{kind} {i}: claimed Bloom L{claimed} but verb '{verb}' is lexicon {lex}"))
     return out
 
 
@@ -96,13 +103,18 @@ def _jacc(a: str, b: str) -> float:
 
 
 def _covers(phrase: str, texts: list[str]) -> bool:
-    """Deterministic check that a required phrase is visibly covered by some text (≥60% of its content tokens)."""
-    p = _toks(phrase) - {"and", "the", "using", "with", "programming"}
+    """Deterministic check that a required phrase is visibly covered by some text (≥60% of its content tokens).
+    'programming' is ignored only while ≥2 other tokens remain: dropping it from "functional programming" left the
+    single token 'functional', which matched "non-functional requirements"."""
+    p = _toks(phrase) - {"and", "the", "using", "with"}
+    if len(p - {"programming"}) >= 2:
+        p -= {"programming"}
     return bool(p) and any(len(p & _toks(t)) / len(p) >= 0.6 for t in texts)
 
 
 def _norm(s: str) -> str:
-    return re.sub(r"[^a-z0-9 ]", "", (s or "").lower()).strip()
+    """Lower-case alphanumerics with single spaces (removing '≥', '%' etc. must not leave double spaces)."""
+    return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9 ]", "", (s or "").lower())).strip()
 
 
 def check_cos(state: dict) -> list[dict]:
@@ -131,7 +143,8 @@ def check_cos(state: dict) -> list[dict]:
     pairs = Counter((lemma(c["verb"]), _norm(c["behaviour"])[:40]) for c in cos)
     for (vb, beh), k in pairs.items():
         if k > 1:
-            out.append(v("VCO-DUP", ERR, [c["id"] for c in cos if lemma(c["verb"]) == vb], f"{k} COs share verb '{vb}' and object"))
+            dups = [c["id"] for c in cos if (lemma(c["verb"]), _norm(c["behaviour"])[:40]) == (vb, beh)]
+            out.append(v("VCO-DUP", ERR, dups, f"{k} COs share verb '{vb}' and object"))
     tgs = {g["id"] for g in state.get("topic_groups", [])}
     covered = {t for c in cos for t in c.get("covers_topic_groups", [])}
     dropped = {t for p in state.get("topic_group_proposals", []) if p.get("action") in ("drop", "merge") for t in p.get("targets", [])}
@@ -159,14 +172,17 @@ def check_copo(state: dict) -> list[dict]:
         if not any(m["po_uid"] in apm.get(a, []) for a in m.get("evidencing_activities", [])):
             out.append(v("VCOPO-ACT", WARN, [m["co_id"], m["po_uid"]],
                          f"{m['co_id']}→{m['po_uid']}: none of its evidencing activities maps to that PO, so its strength can never be computed"))
+    for (co, po), k in Counter((m["co_id"], m["po_uid"]) for m in state.get("copo", [])).items():
+        if k > 1:
+            out.append(v("T4", WARN, [co, po], f"{co}→{po} is mapped {k} times"))
     lim = pedagogy().get("copo_per_programme", {"min": 1, "max_warn": 5})
     progs = state.get("programmes") or sorted({p.split("/")[0] for p in pos})
     for c in cos:
         if not per.get(c):
-            out.append(v("T4", ERR, [c], f"{c} maps to no programme outcome"))
+            out.append(v("T4", ERR, [c], f"{c} maps to no PO"))
             continue
         for prog in progs:   # IIIT-D template: map every CO against every CSE programme
-            k = sum(1 for m in per[c] if m["po_uid"].split("/")[0] == prog)
+            k = len({m["po_uid"] for m in per[c] if m["po_uid"].split("/")[0] == prog})   # distinct: duplicates must not inflate
             if k < lim["min"]:
                 out.append(v("T4", ERR, [c, prog], f"{c} maps to no outcome of {prog} (the template asks for a mapping for every CSE programme)"))
             elif k > lim["max_warn"]:
@@ -310,6 +326,10 @@ def check_schedule(state: dict) -> list[dict]:
     return out
 
 
+def _topic_ids(state: dict) -> set[str]:
+    return {t["id"] for m in state.get("modules", []) for t in m["topics"]}
+
+
 def _topic_last_week(state: dict) -> dict[str, int]:
     return {t: max(ws) for t, ws in (state.get("schedule") or {}).get("topic_weeks", {}).items()}
 
@@ -345,8 +365,11 @@ def check_labs(state: dict) -> list[dict]:
         for lo in hands_on:
             if lo["id"] not in practised:
                 out.append(v("V18", WARN, [lo["id"]], f"hands-on LO {lo['id']} is never practised in a lab or tutorial"))
+    tids = _topic_ids(state)
     for s in labs + plan.get("tutorials", []):
         for t in s.get("uses_topics", []):
+            if t not in tids:
+                out.append(v("T10", ERR, [s["id"]], f"{s['id']} uses unknown topic {t}"))
             if t in first_week and first_week[t] > s["week"]:
                 out.append(v("V19", ERR, [s["id"], t], f"{s['id']} (week {s['week']}) uses topic {t} first taught in week {first_week[t]}"))
         for lo in s.get("practises_los", []):
@@ -368,6 +391,7 @@ def check_assessment(state: dict) -> list[dict]:
     if not (cc["min"] <= len(comps) <= cc["max"]):
         out.append(v("V13", WARN, [], f"{len(comps)} assessment components (expected {cc['min']}–{cc['max']})"))
     last_topic = _topic_last_week(state)
+    tids = _topic_ids(state)
     priors = state.get("weight_priors", {})
     fallback = ped["thresholds"]["weight_band_fallback"]
     events = Counter()
@@ -400,10 +424,13 @@ def check_assessment(state: dict) -> list[dict]:
                 out.append(v("VA-MARKS", ERR, [inst["id"]], f"{inst['id']}: LO marks shares sum to {s}, not 100"))
             if inst["due_week"] < inst["release_week"]:
                 out.append(v("VA-TIME", ERR, [inst["id"]], f"{inst['id']} due before release"))
-            if inst["release_week"] > weeks + 2 or inst["release_week"] < 1:
-                out.append(v("VA-TIME", ERR, [inst["id"]], f"{inst['id']} release week {inst['release_week']} outside semester"))
+            for when in ("release_week", "due_week"):   # +2: exam weeks after the last teaching week
+                if inst[when] > weeks + 2 or inst[when] < 1:
+                    out.append(v("VA-TIME", ERR, [inst["id"]], f"{inst['id']} {when.replace('_', ' ')} {inst[when]} outside semester"))
             ref_week = inst["due_week"] if t == "project" else inst["release_week"]   # a project may run alongside teaching
             for tp in inst.get("covers_topics", []):
+                if tp not in tids:
+                    out.append(v("T10", ERR, [inst["id"]], f"{inst['id']} covers unknown topic {tp}"))
                 if tp in last_topic and last_topic[tp] > ref_week:
                     out.append(v("V19", ERR, [inst["id"], tp], f"{inst['id']} ({'due' if t == 'project' else 'released'} week {ref_week}) covers topic {tp} taught until week {last_topic[tp]}"))
             lo_last = _lo_last_week(state)
@@ -416,8 +443,9 @@ def check_assessment(state: dict) -> list[dict]:
                     assessed[a["lo_id"]] += 1
                 if a["lo_id"] in lo_last and lo_last[a["lo_id"]] > inst["due_week"] and t not in ("project",):
                     out.append(v("V19", ERR, [inst["id"], a["lo_id"]], f"{inst['id']} (due week {inst['due_week']}) assesses {a['lo_id']} whose topics run until week {lo_last[a['lo_id']]}"))
-            if t == "midsem" and midsem and inst["release_week"] != midsem:
-                out.append(v("VA-MIDSEM", WARN, [inst["id"]], f"mid-sem placed in week {inst['release_week']}, calendar assumption is after week {midsem}"))
+            # "after week M": the exam sits at the end of teaching week M or in the following week
+            if t == "midsem" and midsem and inst["release_week"] not in (midsem, midsem + 1):
+                out.append(v("VA-MIDSEM", WARN, [inst["id"]], f"mid-sem placed in week {inst['release_week']}, calendar assumption is after week {midsem} (week {midsem} or {midsem + 1})"))
     for c in comps:
         rel = [i["release_week"] for i in c["instances"]]
         due = [i["due_week"] for i in c["instances"]]
@@ -445,15 +473,22 @@ def check_assessment(state: dict) -> list[dict]:
         m = re.match(r"assessment\.component\[(\w+)\]\.(present|weight_pct)", cn.get("target", ""))
         if not m:
             continue
-        ct, what = m.group(1).lower(), m.group(2)
+        ct, what, op = m.group(1).lower(), m.group(2), cn.get("op")
+        sev = ERR if cn.get("hardness") == "hard" else WARN
         comp = next((c for c in comps if c["type"].lower() == ct), None)
-        if what == "present" and cn["op"] == "absent" and comp and cn["hardness"] == "hard":
-            out.append(v("VK", ERR, [cn["id"]], f"{ct} present but hard constraint {cn['id']} forbids it"))
-        if what == "weight_pct" and comp and cn.get("value") is not None:
-            w, val = float(comp["weight_pct"]), float(cn["value"])
-            ok = {"<=": w <= val, ">=": w >= val, "==": abs(w - val) < 0.01}.get(cn["op"], True)
-            if not ok:
-                out.append(v("VK", ERR if cn["hardness"] == "hard" else WARN, [cn["id"]], f"{ct} weight {w} violates {cn['id']} ({cn['op']} {val})"))
+        if what == "present":
+            if op == "absent" and comp:
+                out.append(v("VK", sev, [cn["id"]], f"{ct} present but {cn.get('hardness')} constraint {cn['id']} forbids it"))
+            elif op == "present" and not comp and (sev == ERR or cn["id"] not in ("K06", "K07")):   # soft K06/K07 → VA-REG
+                out.append(v("VK", sev, [cn["id"]], f"no {ct} component although {cn.get('hardness')} constraint {cn['id']} requires one"))
+        elif cn.get("value") is not None:
+            w, val = (float(comp["weight_pct"]) if comp else 0.0), float(cn["value"])   # a missing component weighs 0
+            holds = {"<=": w <= val + 1e-6, "<": w < val, ">=": w >= val - 1e-6, ">": w > val,
+                     "==": abs(w - val) < 0.01, "!=": abs(w - val) >= 0.01}
+            if op not in holds:   # in/not_in/before/after cannot apply to a weight: say so instead of passing silently
+                out.append(v("VK-MALFORMED", WARN, [cn["id"]], f"constraint {cn['id']}: op '{op}' cannot apply to {ct} weight"))
+            elif not holds[op]:
+                out.append(v("VK", sev, [cn["id"]], f"{ct} weight {w} violates {cn['id']} ({op} {val})"))
     pr = ped.get("proctored")
     if pr and comps:
         def is_proc(c):

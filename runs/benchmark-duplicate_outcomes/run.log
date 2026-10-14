@@ -1,0 +1,45 @@
+02:41:31 S1 intake → Course Context Object
+02:41:59   [G1] ok via gemini:gemini-3.5-flash:kaf6cdf0b · 3373+8805 tok · 28.5s
+02:41:59   CCO: 6 topic groups · level 3 · L-T-P {'L': 3, 'T': 1, 'P': 2} · 13 weeks · 5 assumptions · conflicts 0
+02:41:59 S2 curriculum positioning
+02:42:00   internal candidates: ['CSE701 0.185', 'CSE581 0.034', 'CSE582 0.067', 'CSE594A 0.08', 'CSE201 0.017', 'CSE583 0.0', 'AI501 0.034', 'CSE665 0.0']
+02:45:56   [G2] ok via gemini:gemini-3.5-flash:kaf6cdf0b · 21775+10983 tok · 236.8s · schema-retries 1
+02:45:56   [G2] validators: 0 errors, 0 warnings
+02:45:56 S3 constraints + feasibility
+02:46:53   [G3] ok via gemini:gemini-3.5-flash:kaf6cdf0b · 3043+3856 tok · 56.6s
+02:46:53   17 constraints (8 from professor text) · conflicts 0
+02:46:53 GATE gate1_context: approve by auto (dev run) · froze 37 nodes
+02:46:53 S4 learning design: COs → CO–PO → LOs
+02:47:25   [G4] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 6935+2062 tok · 32.0s
+02:47:25   [G4] validators: 3 errors, 0 warnings
+02:47:45   [R1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 7342+343 tok · 20.3s
+02:47:45   [R1 round 1] errors 3 → 0 ACCEPT
+02:48:03   [G5] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 3089+1508 tok · 17.4s
+02:48:03   [G5] validators: 0 errors, 0 warnings
+02:48:49   [G6] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 6529+3565 tok · 46.4s
+02:48:49   [G6] validators: 7 errors, 7 warnings
+02:49:22   [R1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 9524+683 tok · 33.2s
+02:49:22   [R1 round 1] errors 7 → 2 ACCEPT
+02:51:57   [R1] ok via gemini:gemini-3.5-flash:kaf6cdf0b · 8889+2538 tok · 155.1s
+02:51:57   [R1 round 2] errors 2 → 0 ACCEPT
+02:51:57 GATE gate2_outcomes: approve by auto (dev run) · froze 16 nodes
+02:51:57 S5 structure (modules/topics) → S6 schedule
+02:52:46   [G7] ok via gemini:gemini-3.5-flash:kaf6cdf0b · 6495+11542 tok · 49.0s
+02:52:46   [G7] validators: 0 errors, 1 warnings
+02:52:46   schedule: feasible · need 34.0 h / 39 h
+02:52:46 S7 lab/tutorial plan + assessment blueprint
+02:53:24   [G8] ok via gemini:gemini-3.5-flash:kaf6cdf0b · 4088+11314 tok · 37.3s
+02:53:24   [G8] validators: 0 errors, 0 warnings
+02:54:11   [G9] ok via gemini:gemini-3.5-flash:kaf6cdf0b · 6933+15159 tok · 46.8s
+02:54:11   [G9] validators: 1 errors, 1 warnings
+02:54:52   [R1] ok via gemini:gemini-3.5-flash:kaf6cdf0b · 7936+3453 tok · 41.2s
+02:54:52   [R1 round 1] errors 1 → 0 ACCEPT
+02:54:52 S8 resources (API candidates → G10 → verification)
+02:54:57   [X3] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 1690+334 tok · 4.8s
+02:54:59   11 API candidates from 4 X3 queries
+02:55:27   [G10] ok via gemini:gemini-3.5-flash:kaf6cdf0b · 5757+9001 tok · 28.5s
+02:55:27   resources: 3/6 verified
+02:55:27 S9 narrative
+02:55:42   [G11] ok via gemini:gemini-3.5-flash:kaf6cdf0b · 3432+3619 tok · 14.7s
+02:55:42 rendered proposal.md + proposal.csv (3 errors, 12 warnings)
+02:55:42 GATE gate3_proposal: approve by auto (dev run) · froze 0 nodes

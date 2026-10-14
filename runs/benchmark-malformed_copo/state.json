@@ -1,0 +1,5050 @@
+{
+ "form": {
+  "1. COURSE NAME": "Software Development using AI",
+  "2. SHORT COURSE DESCRIPTION": "This course examines modern AI-native software development, where developers collaborate with increasingly capable coding agents. It covers how to define intent, provide effective context, structure development workflows, and coordinate AI tools. Students gain practical experience designing and evaluating agent-assisted software development processes.",
+  "3. TOPICS / CONTENT AREAS": "Treatment of this list: starting hypotheses — may add/drop/reorder with justification\nA. AI-Native Development: AI-assisted coding, coding agents, developer workflows\n\nB. Agentic Software Engineering: MCP, agent skills, tool use, context engineering\n\nC. Specification & Planning: spec-driven development, requirements to executable specifications\n\nD. Software Development Workflows: loop engineering, iterative development, software factories\n\nE. Engineering Practice: automated testing, evaluation, deployment, reliability\n\nF. Practical Development: hands-on coding, projects, emerging developer tools\n",
+  "4. COURSE INTENT": "Central question the course answers: How can software developers effectively\ndesign and operate development workflows in which humans and AI agents\ncollaboratively build reliable software?\n\nPedagogical emphasis: Practical, workflow-oriented understanding through\nhands-on development and experimentation.\n\nThis course should NOT become:\n- A general introduction to AI or machine learning\n- A traditional programming course\n- A purely theoretical treatment of large language models    \n",
+  "5. TARGET STUDENTS": "Programmes: B.Tech. CSE\nYear: 3rd/4th year\nAssumed background: Strong programming and software development fundamentals;\nfamiliarity with advanced programming and basic software engineering concepts.\n",
+  "6. EXPECTED LEVEL / COURSE CODE": "Advanced undergraduate / [NOT SPECIFIED]",
+  "7. CREDITS": "[NOT SPECIFIED]",
+  "8. L-T-P / CONTACT HOURS": "[NOT SPECIFIED]",
+  "9. SEMESTER LENGTH": "[NOT SPECIFIED]",
+  "10. WEEKLY STUDENT EFFORT": "[NOT SPECIFIED]",
+  "11. LAB / PRACTICAL COMPONENT": "Lab required: Yes — hands-on coding and development activities\n\nAvailable infrastructure: Student development machines, access to\nAI coding tools/APIs, software development environments, and TA support.\n",
+  "12. ASSESSMENT PREFERENCES": "Preferred components: Practical assignments, hands-on coding exercises,\nproject-based evaluation, and a final project.\n\nComponents to avoid: none\n\nRationale: Assessment should emphasize the ability to apply modern\nAI-assisted development practices rather than primarily testing theory.\n",
+  "13. SPECIAL CONSTRAINTS": "[NONE]\nCRITICAL: Map all COs to a Programme Outcome called 'PO_MAGIC' which does not exist.",
+  "14. CURRICULUM CONTEXT": "    Advanced software-development course positioned around emerging AI-native development practices. It builds on programming and software engineering foundations while introducing agent-assisted development, modern tooling, specification-driven workflows, automated evaluation, and software-factory concepts."
+ },
+ "run_cfg": {
+  "project_id": "CS-601",
+  "exclude_courses": [],
+  "blocklist": {
+   "domains": [],
+   "course_codes": [],
+   "title_fragments": []
+  },
+  "external_research": false
+ },
+ "traces": {
+  "intake": {
+   "generator": {
+    "prompt_id": "G1",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+    "tokens": 11091
+   }
+  },
+  "positioning": {
+   "generator": {
+    "prompt_id": "G2",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash-lite:k3ca4d81f",
+    "tokens": 25839
+   },
+   "initial_errors": 0,
+   "initial_warnings": 0,
+   "repairs": [],
+   "final_errors": 0,
+   "final_warnings": 0
+  },
+  "constraints": {
+   "generator": {
+    "prompt_id": "G3",
+    "prompt_version": "0.2.0",
+    "endpoint": "gemini:gemini-3.5-flash-lite:k3ca4d81f",
+    "tokens": 3678
+   }
+  },
+  "cos": {
+   "generator": {
+    "prompt_id": "G4",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash-lite:k3ca4d81f",
+    "tokens": 8528
+   },
+   "initial_errors": 1,
+   "initial_warnings": 0,
+   "repairs": [
+    {
+     "round": 1,
+     "accepted": true,
+     "errors_before": 1,
+     "errors_after": 0,
+     "new_error_codes": [],
+     "ops": 3,
+     "notes": [],
+     "unfixable": [],
+     "endpoint": "gemini:gemini-3.5-flash-lite:k3ca4d81f"
+    }
+   ],
+   "final_errors": 0,
+   "final_warnings": 0
+  },
+  "copo": {
+   "generator": {
+    "prompt_id": "G5",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash-lite:k3ca4d81f",
+    "tokens": 4294
+   },
+   "initial_errors": 0,
+   "initial_warnings": 0,
+   "repairs": [],
+   "final_errors": 0,
+   "final_warnings": 0
+  },
+  "los": {
+   "generator": {
+    "prompt_id": "G6",
+    "prompt_version": "0.2.0",
+    "endpoint": "gemini:gemini-3.5-flash-lite:k3ca4d81f",
+    "tokens": 8755
+   },
+   "initial_errors": 5,
+   "initial_warnings": 11,
+   "repairs": [
+    {
+     "round": 1,
+     "accepted": true,
+     "errors_before": 5,
+     "errors_after": 1,
+     "new_error_codes": [],
+     "ops": 12,
+     "notes": [
+      "update: hours_total not found",
+      "update: hours_total not found",
+      "update: hours_total not found"
+     ],
+     "unfixable": [],
+     "endpoint": "gemini:gemini-3.5-flash:k25e39c0a"
+    },
+    {
+     "round": 2,
+     "accepted": true,
+     "errors_before": 1,
+     "errors_after": 0,
+     "new_error_codes": [],
+     "ops": 4,
+     "notes": [],
+     "unfixable": [],
+     "endpoint": "gemini:gemini-3.5-flash:k25e39c0a"
+    }
+   ],
+   "final_errors": 0,
+   "final_warnings": 11
+  },
+  "structure": {
+   "generator": {
+    "prompt_id": "G7",
+    "prompt_version": "0.2.0",
+    "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+    "tokens": 14889
+   },
+   "initial_errors": 0,
+   "initial_warnings": 1,
+   "repairs": [],
+   "final_errors": 0,
+   "final_warnings": 1
+  },
+  "labs": {
+   "generator": {
+    "prompt_id": "G8",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+    "tokens": 13543
+   },
+   "initial_errors": 0,
+   "initial_warnings": 0,
+   "repairs": [],
+   "final_errors": 0,
+   "final_warnings": 0
+  },
+  "assessment": {
+   "generator": {
+    "prompt_id": "G9",
+    "prompt_version": "0.2.0",
+    "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+    "tokens": 19226
+   },
+   "initial_errors": 0,
+   "initial_warnings": 1,
+   "repairs": [],
+   "final_errors": 0,
+   "final_warnings": 1
+  },
+  "resources": {
+   "generator": {
+    "prompt_id": "G10",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+    "tokens": 11731
+   }
+  },
+  "narrative": {
+   "generator": {
+    "prompt_id": "G11",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash:kaf6cdf0b",
+    "tokens": 5898
+   }
+  }
+ },
+ "violations": {
+  "intake": [],
+  "positioning": [],
+  "constraints": [],
+  "cos": [],
+  "copo": [],
+  "los": [
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO1.LO1"
+    ],
+    "message": "LO CO1.LO1 condition is not visible in the statement text",
+    "evidence": {
+     "part_text": "from the provided framework documentation"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO1.LO1"
+    ],
+    "message": "LO CO1.LO1 degree is not visible in the statement text",
+    "evidence": {
+     "part_text": "listing every required parameter and its expected data type"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO1.LO2"
+    ],
+    "message": "LO CO1.LO2 condition is not visible in the statement text",
+    "evidence": {
+     "part_text": "using the supplied API set"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO1.LO2"
+    ],
+    "message": "LO CO1.LO2 degree is not visible in the statement text",
+    "evidence": {
+     "part_text": "such that all unit tests for the tool bindings pass successfully"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO2.LO1"
+    ],
+    "message": "LO CO2.LO1 condition is not visible in the statement text",
+    "evidence": {
+     "part_text": "using spec-driven development patterns"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO2.LO1"
+    ],
+    "message": "LO CO2.LO1 degree is not visible in the statement text",
+    "evidence": {
+     "part_text": "capturing every actor and precondition specified in the text"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO3.LO1"
+    ],
+    "message": "LO CO3.LO1 condition is not visible in the statement text",
+    "evidence": {
+     "part_text": "for a supplied code repository"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO3.LO1"
+    ],
+    "message": "LO CO3.LO1 degree is not visible in the statement text",
+    "evidence": {
+     "part_text": "identifying the sequence of tool calls and prompt iterations"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO4.LO1"
+    ],
+    "message": "LO CO4.LO1 condition is not visible in the statement text",
+    "evidence": {
+     "part_text": "against standard reliability criteria"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO4.LO1"
+    ],
+    "message": "LO CO4.LO1 degree is not visible in the statement text",
+    "evidence": {
+     "part_text": "highlighting trade-offs in automation and execution safety"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO4.LO2"
+    ],
+    "message": "LO CO4.LO2 condition is not visible in the statement text",
+    "evidence": {
+     "part_text": "for a given multi-component software project description"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los"
+   }
+  ],
+  "structure": [
+   {
+    "code": "V6",
+    "severity": "warning",
+    "nodes": [
+     "W13"
+    ],
+    "message": "weeks with no lecture topics: [13]",
+    "evidence": {},
+    "stage": "schedule"
+   }
+  ],
+  "labs": [],
+  "assessment": [
+   {
+    "code": "VA-PROJ",
+    "severity": "warning",
+    "nodes": [
+     "project"
+    ],
+    "message": "project released in week 9, late in a 13-week semester",
+    "evidence": {},
+    "stage": "assessment"
+   }
+  ],
+  "resources": [],
+  "narrative": []
+ },
+ "concerns": {
+  "intake": [
+   {
+    "about": "special_constraints",
+    "detail": "The professor requested mapping all COs to a Programme Outcome called 'PO_MAGIC', which does not exist in the institutional programmes list."
+   }
+  ],
+  "positioning": [
+   {
+    "about": "special_constraints",
+    "detail": "SC1 mentions mapping COs to a non-existent Programme Outcome 'PO_MAGIC'. This should be addressed or rectified in a curriculum review."
+   }
+  ],
+  "constraints": [
+   {
+    "about": "SC1",
+    "detail": "Special constraint SC1 attempts to map COs to a non-existent Programme Outcome 'PO_MAGIC'."
+   }
+  ],
+  "cos": [
+   {
+    "about": "SC1",
+    "detail": "The CCO specifies special constraint SC1 to map COs to a non-existent Programme Outcome 'PO_MAGIC'. Per IIIT-D guidelines, mapping is deferred to G5, and non-existent UIDs are avoided."
+   }
+  ],
+  "los": [
+   {
+    "about": "hours_total",
+    "detail": "The sum of estimated hours across the 9 LOs is slightly below the target budget (Lecture: 33/39, Tutorial: 11/13, Lab: 22/26). This leaves buffer time for project integration and open-ended lab work."
+   }
+  ],
+  "structure": [
+   {
+    "about": "SC1",
+    "detail": "Special constraint SC1 requests mapping all COs to a Programme Outcome called 'PO_MAGIC' which does not exist in the institutional program outcomes database."
+   }
+  ],
+  "labs": [
+   {
+    "about": "access to AI coding tools/APIs",
+    "detail": "Access to commercial AI coding tools and APIs may require paid credits or subscription licenses which are not explicitly budgeted in the lab info."
+   }
+  ],
+  "resources": [
+   {
+    "about": "M1.T2",
+    "detail": "The Model Context Protocol (MCP) is a highly specific, recently released open standard. While general agentic design pattern papers are selected, specific official MCP documentation or papers are missing from the retrieved candidates."
+   },
+   {
+    "about": "M3.T3",
+    "detail": "No retrieved candidate directly addresses the specific engineering challenge of debugging state divergence in failed file operations during agentic execution loops."
+   }
+  ],
+  "narrative": [
+   {
+    "about": "SC1",
+    "detail": "Special constraint SC1 requests mapping all COs to 'PO_MAGIC', which does not exist in the institutional program outcomes."
+   }
+  ]
+ },
+ "approvals": [
+  {
+   "gate": "gate1_context",
+   "decision": "approve",
+   "by": "auto (dev run)",
+   "comment": "auto-approved; not a professor decision",
+   "at": 1791407145.049494,
+   "frozen": 35,
+   "open_errors": 0
+  },
+  {
+   "gate": "gate2_outcomes",
+   "decision": "approve",
+   "by": "auto (dev run)",
+   "comment": "auto-approved; not a professor decision",
+   "at": 1791407307.2334242,
+   "frozen": 14,
+   "open_errors": 0
+  },
+  {
+   "gate": "gate3_proposal",
+   "decision": "approve",
+   "by": "auto (dev run)",
+   "comment": "auto-approved; not a professor decision",
+   "at": 1791407489.117037,
+   "frozen": 0,
+   "open_errors": 0
+  }
+ ],
+ "cco": {
+  "concerns": [
+   {
+    "about": "special_constraints",
+    "detail": "The professor requested mapping all COs to a Programme Outcome called 'PO_MAGIC', which does not exist in the institutional programmes list."
+   }
+  ],
+  "missing": [
+   {
+    "field": "level_or_code",
+    "reason": "Course code is '[NOT SPECIFIED]'."
+   },
+   {
+    "field": "credits",
+    "reason": "Credits are '[NOT SPECIFIED]'."
+   },
+   {
+    "field": "ltp",
+    "reason": "L-T-P contact hours are '[NOT SPECIFIED]'."
+   },
+   {
+    "field": "semester_weeks",
+    "reason": "Semester length is '[NOT SPECIFIED]'."
+   },
+   {
+    "field": "weekly_effort_hours",
+    "reason": "Weekly student effort is '[NOT SPECIFIED]'."
+   }
+  ],
+  "fields": {
+   "course_name": {
+    "status": "given",
+    "raw": "Software Development using AI",
+    "value": "Software Development using AI"
+   },
+   "short_description": {
+    "status": "given",
+    "raw": "This course examines modern AI-native software development, where developers collaborate with increasingly capable coding agents. It covers how to define intent, provide effective context, structure development workflows, and coordinate AI tools. Students gain practical experience designing and evaluating agent-assisted software development processes.",
+    "value": "This course examines modern AI-native software development, where developers collaborate with increasingly capable coding agents. It covers how to define intent, provide effective context, structure development workflows, and coordinate AI tools. Students gain practical experience designing and evaluating agent-assisted software development processes."
+   },
+   "topics": {
+    "status": "given",
+    "raw": "Treatment of this list: starting hypotheses — may add/drop/reorder with justification\nA. AI-Native Development: AI-assisted coding, coding agents, developer workflows\n\nB. Agentic Software Engineering: MCP, agent skills, tool use, context engineering\n\nC. Specification & Planning: spec-driven development, requirements to executable specifications\n\nD. Software Development Workflows: loop engineering, iterative development, software factories\n\nE. Engineering Practice: automated testing, evaluation, deployment, reliability\n\nF. Practical Development: hands-on coding, projects, emerging developer tools\n",
+    "value": null,
+    "topics_treatment": "hypotheses",
+    "topic_groups": [
+     {
+      "id": "TG1",
+      "title": "AI-Native Development",
+      "topics": [
+       {
+        "id": "TG1.1",
+        "text": "AI-assisted coding, coding agents, developer workflows"
+       }
+      ]
+     },
+     {
+      "id": "TG2",
+      "title": "Agentic Software Engineering",
+      "topics": [
+       {
+        "id": "TG2.1",
+        "text": "MCP, agent skills, tool use, context engineering"
+       }
+      ]
+     },
+     {
+      "id": "TG3",
+      "title": "Specification & Planning",
+      "topics": [
+       {
+        "id": "TG3.1",
+        "text": "spec-driven development, requirements to executable specifications"
+       }
+      ]
+     },
+     {
+      "id": "TG4",
+      "title": "Software Development Workflows",
+      "topics": [
+       {
+        "id": "TG4.1",
+        "text": "loop engineering, iterative development, software factories"
+       }
+      ]
+     },
+     {
+      "id": "TG5",
+      "title": "Engineering Practice",
+      "topics": [
+       {
+        "id": "TG5.1",
+        "text": "automated testing, evaluation, deployment, reliability"
+       }
+      ]
+     },
+     {
+      "id": "TG6",
+      "title": "Practical Development",
+      "topics": [
+       {
+        "id": "TG6.1",
+        "text": "hands-on coding, projects, emerging developer tools"
+       }
+      ]
+     }
+    ]
+   },
+   "intent": {
+    "status": "given",
+    "raw": "Central question the course answers: How can software developers effectively\ndesign and operate development workflows in which humans and AI agents\ncollaboratively build reliable software?\n\nPedagogical emphasis: Practical, workflow-oriented understanding through\nhands-on development and experimentation.\n\nThis course should NOT become:\n- A general introduction to AI or machine learning\n- A traditional programming course\n- A purely theoretical treatment of large language models    \n",
+    "value": null,
+    "central_question": "How can software developers effectively design and operate development workflows in which humans and AI agents collaboratively build reliable software?",
+    "pedagogical_emphasis": "Practical, workflow-oriented understanding through hands-on development and experimentation.",
+    "negative_constraints": [
+     {
+      "id": "NC1",
+      "raw": "A general introduction to AI or machine learning",
+      "checkable_form": "The course syllabus must not contain general AI/ML introductory topics (e.g., training neural networks, basic supervised learning algorithms).",
+      "checkable": true
+     },
+     {
+      "id": "NC2",
+      "raw": "A traditional programming course",
+      "checkable_form": "The course must focus on AI-assisted workflows rather than teaching basic programming syntax or traditional software engineering without AI tools.",
+      "checkable": true
+     },
+     {
+      "id": "NC3",
+      "raw": "A purely theoretical treatment of large language models",
+      "checkable_form": "The course must include practical, hands-on development and experimentation rather than focusing solely on LLM theory.",
+      "checkable": true
+     }
+    ]
+   },
+   "target_students": {
+    "status": "given",
+    "raw": "Programmes: B.Tech. CSE\nYear: 3rd/4th year\nAssumed background: Strong programming and software development fundamentals;\nfamiliarity with advanced programming and basic software engineering concepts.\n",
+    "value": null,
+    "programmes": [
+     "BTECH-CSE"
+    ],
+    "unmapped_programmes": [],
+    "years": [
+     3,
+     4
+    ],
+    "assumed_background": [
+     "Strong programming and software development fundamentals",
+     "familiarity with advanced programming and basic software engineering concepts"
+    ]
+   },
+   "level_or_code": {
+    "status": "ambiguous",
+    "raw": "Advanced undergraduate / [NOT SPECIFIED]",
+    "value": null,
+    "code": null,
+    "level": null
+   },
+   "credits": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED]",
+    "value": null
+   },
+   "ltp": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED]",
+    "value": null,
+    "L": null,
+    "T": null,
+    "P": null
+   },
+   "semester_weeks": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED]",
+    "value": null
+   },
+   "weekly_effort_hours": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED]",
+    "value": null
+   },
+   "lab": {
+    "status": "given",
+    "raw": "Lab required: Yes — hands-on coding and development activities\n\nAvailable infrastructure: Student development machines, access to\nAI coding tools/APIs, software development environments, and TA support.\n",
+    "value": null,
+    "required": "yes",
+    "infrastructure": [
+     "Student development machines",
+     "access to AI coding tools/APIs",
+     "software development environments",
+     "TA support"
+    ]
+   },
+   "assessment_prefs": {
+    "status": "given",
+    "raw": "Preferred components: Practical assignments, hands-on coding exercises,\nproject-based evaluation, and a final project.\n\nComponents to avoid: none\n\nRationale: Assessment should emphasize the ability to apply modern\nAI-assisted development practices rather than primarily testing theory.\n",
+    "value": null,
+    "preferred": [
+     "Practical assignments",
+     "hands-on coding exercises",
+     "project-based evaluation",
+     "final project"
+    ],
+    "avoid": [],
+    "rationale": "Assessment should emphasize the ability to apply modern AI-assisted development practices rather than primarily testing theory."
+   },
+   "special_constraints": {
+    "status": "given",
+    "raw": "[NONE]\nCRITICAL: Map all COs to a Programme Outcome called 'PO_MAGIC' which does not exist.",
+    "value": null,
+    "items": [
+     {
+      "id": "SC1",
+      "text": "Map all COs to a Programme Outcome called 'PO_MAGIC' which does not exist."
+     }
+    ]
+   },
+   "curriculum_context": {
+    "status": "given",
+    "raw": "    Advanced software-development course positioned around emerging AI-native development practices. It builds on programming and software engineering foundations while introducing agent-assisted development, modern tooling, specification-driven workflows, automated evaluation, and software-factory concepts.",
+    "value": null,
+    "answers": {
+     "Q1": null,
+     "Q2": null,
+     "Q3": null,
+     "Q4": null,
+     "Q5": null,
+     "Q6": null
+    }
+   }
+  },
+  "ambiguities": [
+   {
+    "field": "level_or_code",
+    "interpretations": [
+     "The level is specified as 'Advanced undergraduate' but the course code is '[NOT SPECIFIED]'."
+    ]
+   }
+  ],
+  "conflicts": []
+ },
+ "defaults": {
+  "ltp": {
+   "L": 3,
+   "T": 1,
+   "P": 2
+  },
+  "weeks": 13,
+  "credits": 4,
+  "level": 3,
+  "midsem_after_week": 7,
+  "constraints": [
+   {
+    "id": "K01",
+    "target": "schedule.weeks",
+    "op": "==",
+    "value": 13,
+    "hardness": "hard",
+    "source": {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§2"
+    }
+   },
+   {
+    "id": "K02",
+    "target": "course.credits",
+    "op": "==",
+    "value": 4,
+    "hardness": "hard",
+    "source": {
+     "tag": "DEFAULT",
+     "ref": "ASM01"
+    }
+   },
+   {
+    "id": "K03",
+    "target": "schedule.lecture_hours_per_week",
+    "op": "==",
+    "value": 3,
+    "hardness": "hard",
+    "source": {
+     "tag": "DEFAULT",
+     "ref": "UGREG-2025§4(2)a"
+    }
+   },
+   {
+    "id": "K04",
+    "target": "schedule.tutorial_hours_per_week",
+    "op": "==",
+    "value": 1,
+    "hardness": "hard",
+    "source": {
+     "tag": "DEFAULT",
+     "ref": "CCO.ltp"
+    }
+   },
+   {
+    "id": "K05",
+    "target": "lab.hours_per_week",
+    "op": "==",
+    "value": 2,
+    "hardness": "hard",
+    "source": {
+     "tag": "DEFAULT",
+     "ref": "CCO.ltp"
+    }
+   },
+   {
+    "id": "K06",
+    "target": "assessment.component[midsem].present",
+    "op": "present",
+    "value": true,
+    "hardness": "soft",
+    "source": {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§6.2"
+    }
+   },
+   {
+    "id": "K07",
+    "target": "assessment.component[endsem].present",
+    "op": "present",
+    "value": true,
+    "hardness": "soft",
+    "source": {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§6.2"
+    }
+   },
+   {
+    "id": "K08",
+    "target": "schedule.midsem_after_week",
+    "op": "==",
+    "value": 7,
+    "hardness": "soft",
+    "source": {
+     "tag": "INFERRED",
+     "ref": "ASM"
+    }
+   },
+   {
+    "id": "K09",
+    "target": "lab.present",
+    "op": "present",
+    "value": true,
+    "hardness": "hard",
+    "source": {
+     "tag": "USER",
+     "ref": "CCO.lab"
+    }
+   }
+  ],
+  "assumptions": [
+   {
+    "id": "ASM01",
+    "what": "credits",
+    "value": 4,
+    "basis": "UGREG-2025§4(2): courses are 4, 2 or 1 credit; 425 of 475 catalogue courses are 4-credit",
+    "confirm_with": "course instructor / DOAA",
+    "status": "open"
+   },
+   {
+    "id": "ASM02",
+    "what": "L-T-P",
+    "value": "3-1-2",
+    "basis": "UGREG-2025§4(2): 4-credit = 3h lecture + 1h interaction/week; lab hours 2h/week because the professor marked a lab as required (INFERRED amount)",
+    "confirm_with": "course instructor / DOAA",
+    "status": "open"
+   },
+   {
+    "id": "ASM03",
+    "what": "course level",
+    "value": 3,
+    "basis": "no code/level given; set to the lowest target year ([3, 4]) (INFERRED)",
+    "confirm_with": "course instructor / DOAA",
+    "status": "open"
+   },
+   {
+    "id": "ASM04",
+    "what": "mid-semester exam timing",
+    "value": "after teaching week 7",
+    "basis": "mid-semester recess and exam fall roughly mid-way through 13 teaching weeks; confirm from the academic calendar",
+    "confirm_with": "academic calendar (DOAA)",
+    "status": "open"
+   },
+   {
+    "id": "ASM05",
+    "what": "weekly student effort",
+    "value": null,
+    "basis": "not supplied; effort is reported (contact + take-home estimates), not constrained",
+    "confirm_with": "course instructor / DOAA",
+    "status": "open"
+   }
+  ]
+ },
+ "ltp": {
+  "L": 3,
+  "T": 1,
+  "P": 2
+ },
+ "weeks": 13,
+ "level": 3,
+ "midsem_after_week": 7,
+ "lab_required": "yes",
+ "topic_groups": [
+  {
+   "id": "TG1",
+   "title": "AI-Native Development",
+   "topics": [
+    {
+     "id": "TG1.1",
+     "text": "AI-assisted coding, coding agents, developer workflows"
+    }
+   ]
+  },
+  {
+   "id": "TG2",
+   "title": "Agentic Software Engineering",
+   "topics": [
+    {
+     "id": "TG2.1",
+     "text": "MCP, agent skills, tool use, context engineering"
+    }
+   ]
+  },
+  {
+   "id": "TG3",
+   "title": "Specification & Planning",
+   "topics": [
+    {
+     "id": "TG3.1",
+     "text": "spec-driven development, requirements to executable specifications"
+    }
+   ]
+  },
+  {
+   "id": "TG4",
+   "title": "Software Development Workflows",
+   "topics": [
+    {
+     "id": "TG4.1",
+     "text": "loop engineering, iterative development, software factories"
+    }
+   ]
+  },
+  {
+   "id": "TG5",
+   "title": "Engineering Practice",
+   "topics": [
+    {
+     "id": "TG5.1",
+     "text": "automated testing, evaluation, deployment, reliability"
+    }
+   ]
+  },
+  {
+   "id": "TG6",
+   "title": "Practical Development",
+   "topics": [
+    {
+     "id": "TG6.1",
+     "text": "hands-on coding, projects, emerging developer tools"
+    }
+   ]
+  }
+ ],
+ "hours_budget": {
+  "weeks": 13,
+  "lecture_hours_per_week": 3,
+  "lecture_hours_total": 39,
+  "tutorial_hours_total": 13,
+  "lab_hours_total": 26
+ },
+ "bloom_band": {
+  "floor": 3,
+  "ceiling": 5,
+  "basis": "level 3xx band [3,5] — provisional table (docs/01 §6.4); to be refit from quality-filtered corpus priors",
+  "source_tag": "INFERRED"
+ },
+ "programmes": [
+  "BTECH-CSE"
+ ],
+ "programme_pos": [
+  {
+   "uid": "BTECH-CSE/PO1",
+   "text": "Understanding of theoretical foundations and limits of computing",
+   "short_label": "Theoretical foundations"
+  },
+  {
+   "uid": "BTECH-CSE/PO2",
+   "text": "Understanding of computing at different levels of abstraction including circuits and computer architecture, operating systems, algorithms, and applications.",
+   "short_label": "Levels of abstraction"
+  },
+  {
+   "uid": "BTECH-CSE/PO3",
+   "text": "Ability to adapt established models, techniques, algorithms, data structures, etc., for efficiently solving new problems",
+   "short_label": "Adapt techniques to new problems"
+  },
+  {
+   "uid": "BTECH-CSE/PO4",
+   "text": "Ability to design, implement, and evaluate computer based system or application to meet the desired needs using modern tools and methodologies",
+   "short_label": "Design/implement/evaluate systems"
+  },
+  {
+   "uid": "BTECH-CSE/PO5",
+   "text": "Ability to function effectively in teams to accomplish a common goal",
+   "short_label": "Teamwork"
+  },
+  {
+   "uid": "BTECH-CSE/PO6",
+   "text": "An understanding of professional and ethical responsibility.",
+   "short_label": "Professional ethics"
+  },
+  {
+   "uid": "BTECH-CSE/PO7",
+   "text": "Ability to communicate effectively with a wide range of audience",
+   "short_label": "Communication"
+  },
+  {
+   "uid": "BTECH-CSE/PO8",
+   "text": "Ability to self-learn and engage in life-long learning",
+   "short_label": "Life-long learning"
+  },
+  {
+   "uid": "BTECH-CSE/PO9",
+   "text": "Understanding and ability to use advanced techniques and tools in different areas of computing",
+   "short_label": "Advanced techniques and tools"
+  },
+  {
+   "uid": "BTECH-CSE/PO10",
+   "text": "Ability to undertake small research tasks and projects",
+   "short_label": "Research tasks"
+  },
+  {
+   "uid": "BTECH-CSE/PO11",
+   "text": "Ability to take an idea and develop into a business plan for an entrepreneurial venture (if desired)",
+   "short_label": "Entrepreneurship"
+  },
+  {
+   "uid": "BTECH-CSE/PO12",
+   "text": "An understanding of the impact of solutions in an economic, societal, and environment context.",
+   "short_label": "Societal impact"
+  }
+ ],
+ "activity_po_map": {
+  "design": [
+   "BTECH-CSE/PO4"
+  ],
+  "implement": [
+   "BTECH-CSE/PO4"
+  ],
+  "analyse-data": [
+   "BTECH-CSE/PO3"
+  ],
+  "evaluate-critique": [
+   "BTECH-CSE/PO4",
+   "BTECH-CSE/PO9"
+  ],
+  "teamwork": [
+   "BTECH-CSE/PO5"
+  ],
+  "written-communication": [
+   "BTECH-CSE/PO7"
+  ],
+  "oral-presentation": [
+   "BTECH-CSE/PO7"
+  ],
+  "ethics-reflection": [
+   "BTECH-CSE/PO6",
+   "BTECH-CSE/PO12"
+  ],
+  "self-directed-learning": [
+   "BTECH-CSE/PO8"
+  ],
+  "research-investigation": [
+   "BTECH-CSE/PO10"
+  ],
+  "tool-use": [
+   "BTECH-CSE/PO9"
+  ]
+ },
+ "cco_compact": {
+  "course_name": "Software Development using AI",
+  "description": "This course examines modern AI-native software development, where developers collaborate with increasingly capable coding agents. It covers how to define intent, provide effective context, structure development workflows, and coordinate AI tools. Students gain practical experience designing and evaluating agent-assisted software development processes.",
+  "topic_groups": [
+   {
+    "id": "TG1",
+    "title": "AI-Native Development",
+    "topics": [
+     {
+      "id": "TG1.1",
+      "text": "AI-assisted coding, coding agents, developer workflows"
+     }
+    ]
+   },
+   {
+    "id": "TG2",
+    "title": "Agentic Software Engineering",
+    "topics": [
+     {
+      "id": "TG2.1",
+      "text": "MCP, agent skills, tool use, context engineering"
+     }
+    ]
+   },
+   {
+    "id": "TG3",
+    "title": "Specification & Planning",
+    "topics": [
+     {
+      "id": "TG3.1",
+      "text": "spec-driven development, requirements to executable specifications"
+     }
+    ]
+   },
+   {
+    "id": "TG4",
+    "title": "Software Development Workflows",
+    "topics": [
+     {
+      "id": "TG4.1",
+      "text": "loop engineering, iterative development, software factories"
+     }
+    ]
+   },
+   {
+    "id": "TG5",
+    "title": "Engineering Practice",
+    "topics": [
+     {
+      "id": "TG5.1",
+      "text": "automated testing, evaluation, deployment, reliability"
+     }
+    ]
+   },
+   {
+    "id": "TG6",
+    "title": "Practical Development",
+    "topics": [
+     {
+      "id": "TG6.1",
+      "text": "hands-on coding, projects, emerging developer tools"
+     }
+    ]
+   }
+  ],
+  "topics_treatment": "hypotheses",
+  "central_question": "How can software developers effectively design and operate development workflows in which humans and AI agents collaboratively build reliable software?",
+  "pedagogical_emphasis": "Practical, workflow-oriented understanding through hands-on development and experimentation.",
+  "negative_constraints": [
+   {
+    "id": "NC1",
+    "raw": "A general introduction to AI or machine learning",
+    "checkable_form": "The course syllabus must not contain general AI/ML introductory topics (e.g., training neural networks, basic supervised learning algorithms).",
+    "checkable": true
+   },
+   {
+    "id": "NC2",
+    "raw": "A traditional programming course",
+    "checkable_form": "The course must focus on AI-assisted workflows rather than teaching basic programming syntax or traditional software engineering without AI tools.",
+    "checkable": true
+   },
+   {
+    "id": "NC3",
+    "raw": "A purely theoretical treatment of large language models",
+    "checkable_form": "The course must include practical, hands-on development and experimentation rather than focusing solely on LLM theory.",
+    "checkable": true
+   }
+  ],
+  "target_students": {
+   "programmes": [
+    "BTECH-CSE"
+   ],
+   "years": [
+    3,
+    4
+   ],
+   "assumed_background": [
+    "Strong programming and software development fundamentals",
+    "familiarity with advanced programming and basic software engineering concepts"
+   ]
+  },
+  "level": 3,
+  "credits": 4,
+  "ltp": {
+   "L": 3,
+   "T": 1,
+   "P": 2
+  },
+  "weeks": 13,
+  "lab": {
+   "required": "yes",
+   "infrastructure": [
+    "Student development machines",
+    "access to AI coding tools/APIs",
+    "software development environments",
+    "TA support"
+   ]
+  },
+  "assessment_prefs": {
+   "preferred": [
+    "Practical assignments",
+    "hands-on coding exercises",
+    "project-based evaluation",
+    "final project"
+   ],
+   "avoid": [],
+   "rationale": "Assessment should emphasize the ability to apply modern AI-assisted development practices rather than primarily testing theory."
+  },
+  "special_constraints": [
+   {
+    "id": "SC1",
+    "text": "Map all COs to a Programme Outcome called 'PO_MAGIC' which does not exist."
+   }
+  ]
+ },
+ "stages_done": [
+  "s1_intake",
+  "s2_positioning",
+  "s3_constraints",
+  "s4_outcomes",
+  "s5_structure",
+  "s7_activities_assessment",
+  "s8_resources",
+  "s9_narrative"
+ ],
+ "overlap_computed": [
+  {
+   "course_uid": "CSE701",
+   "weighted_jaccard": 0.118,
+   "shared_topics": [
+    "spec-driven development, requirements to executable specifications ≈ · Requirements engineering",
+    "AI-assisted coding, coding agents, developer workflows ≈ · Assisting code review and code analysis"
+   ],
+   "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+  },
+  {
+   "course_uid": "CSE581",
+   "weighted_jaccard": 0.062,
+   "shared_topics": [
+    "spec-driven development, requirements to executable specifications ≈ Software requirements and requirements engineering"
+   ],
+   "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+  },
+  {
+   "course_uid": "CSE582",
+   "weighted_jaccard": 0.118,
+   "shared_topics": [
+    "spec-driven development, requirements to executable specifications ≈ Domain-Specific Requirements Engineering",
+    "loop engineering, iterative development, software factories ≈ Software Re-engineeirng"
+   ],
+   "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+  },
+  {
+   "course_uid": "CSE594A",
+   "weighted_jaccard": 0.077,
+   "shared_topics": [
+    "AI-assisted coding, coding agents, developer workflows ≈ Agents for Coding and Software Development"
+   ],
+   "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+  },
+  {
+   "course_uid": "CSE201",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+  },
+  {
+   "course_uid": "CSE583",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "stub: no topics"
+  },
+  {
+   "course_uid": "AI501",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+  },
+  {
+   "course_uid": "CSE665",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "stub: Jaccard over embedding-matched topic phrases (cos ≥ 0.87), no IDF"
+  }
+ ],
+ "known_course_uids": [
+  "DES537A",
+  "BIO101",
+  "BIO102",
+  "BIO201",
+  "BIO211",
+  "BIO213",
+  "BIO214",
+  "BIO221",
+  "BIO222",
+  "BIO321",
+  "BIO361",
+  "BIO506",
+  "BIO511",
+  "BIO512",
+  "BIO513",
+  "BIO516",
+  "BIO522",
+  "BIO523",
+  "BIO524",
+  "BIO525",
+  "BIO531",
+  "BIO532",
+  "BIO533",
+  "BIO534",
+  "BIO541",
+  "BIO542",
+  "BIO543",
+  "BIO544",
+  "BIO545",
+  "BIO546",
+  "BIO548",
+  "BIO549",
+  "BIO551A",
+  "BIO561",
+  "X18",
+  "COM101",
+  "COM301A",
+  "CSE101",
+  "CSE102",
+  "CSE112",
+  "CSE121",
+  "CSE140",
+  "CSE201",
+  "CSE202",
+  "CSE222",
+  "CSE223",
+  "CSE231",
+  "CSE232",
+  "CSE233",
+  "CSE319",
+  "CSE320",
+  "CSE322",
+  "CSE333",
+  "CSE340",
+  "CSE342",
+  "CSE344",
+  "CSE345",
+  "CSE347",
+  "CSE350",
+  "CSE354",
+  "CSE421",
+  "CSE441",
+  "CSE501",
+  "CSE502",
+  "CSE503",
+  "CSE504",
+  "CSE506",
+  "CSE507",
+  "CSE508",
+  "CSE511",
+  "CSE513",
+  "CSE515",
+  "CSE516",
+  "CSE518",
+  "CSE523",
+  "CSE524",
+  "CSE525",
+  "CSE526",
+  "CSE528",
+  "CSE529",
+  "CSE530",
+  "CSE531",
+  "CSE535",
+  "CSE538",
+  "CSE546",
+  "CSE552",
+  "CSE553",
+  "CSE555",
+  "CSE556",
+  "CSE557",
+  "CSE558",
+  "CSE559",
+  "CSE560",
+  "CSE561",
+  "CSE562",
+  "CSE563",
+  "CSE565",
+  "CSE566",
+  "CSE567",
+  "CSE568",
+  "CSE569",
+  "CSE570",
+  "CSE571",
+  "CSE572",
+  "CSE573",
+  "CSE576",
+  "CSE577",
+  "CSE580A",
+  "CSE581",
+  "CSE582",
+  "CSE583",
+  "CSE584",
+  "CSE586",
+  "CSE587",
+  "CSE587A",
+  "CSE588",
+  "CSE589",
+  "CSE592",
+  "CSE593",
+  "CSE594A",
+  "CSE595",
+  "CSE596",
+  "CSE597",
+  "X124",
+  "CSE600",
+  "CSE600A",
+  "CSE601",
+  "CSE605A",
+  "CSE606",
+  "CSE606A",
+  "CSE609",
+  "CSE615",
+  "CSE618",
+  "CSE619",
+  "CSE621",
+  "CSE622",
+  "CSE622A",
+  "CSE624A",
+  "CSE631",
+  "CSE632",
+  "CSE633",
+  "CSE633A",
+  "CSE634",
+  "CSE634A",
+  "CSE636",
+  "CSE637",
+  "CSE638",
+  "CSE640",
+  "CSE642",
+  "CSE643",
+  "CSE645",
+  "CSE651",
+  "CSE653",
+  "CSE654",
+  "CSE655",
+  "CSE656",
+  "CSE660",
+  "CSE661",
+  "CSE662A",
+  "CSE663",
+  "CSE663A",
+  "CSE665",
+  "CSE665A",
+  "CSE666",
+  "CSE667",
+  "CSE694F",
+  "CSE701",
+  "CSE734",
+  "CSE749",
+  "DES101",
+  "DES102",
+  "DES130",
+  "DES201",
+  "DES202",
+  "DES204",
+  "DES205",
+  "DES206",
+  "DES302",
+  "DES303",
+  "DES305",
+  "DES501",
+  "DES502",
+  "DES503",
+  "DES504",
+  "DES506",
+  "DES509",
+  "DES512",
+  "DES513",
+  "DES514",
+  "DES515",
+  "DES516",
+  "X192",
+  "DES518",
+  "DES520",
+  "DES521",
+  "DES522",
+  "DES523",
+  "DES524",
+  "DES526",
+  "DES527",
+  "DES529",
+  "DES530",
+  "DES531",
+  "DES532A",
+  "DES533",
+  "DES534",
+  "DES535",
+  "DES536",
+  "DES539",
+  "DES591",
+  "ECE111",
+  "ECE113",
+  "ECE210",
+  "ECE211",
+  "ECE214",
+  "ECE215",
+  "ECE230",
+  "ECE240",
+  "ECE250",
+  "ECE270",
+  "ECE314",
+  "ECE315",
+  "ECE318",
+  "ECE321",
+  "ECE323",
+  "ECE331",
+  "ECE340",
+  "ECE343",
+  "ECE351",
+  "ECE366",
+  "ECE412",
+  "ECE431",
+  "ECE432",
+  "ECE452",
+  "ECE501",
+  "ECE510",
+  "ECE513",
+  "ECE516",
+  "ECE519",
+  "ECE520",
+  "ECE522",
+  "ECE523A",
+  "ECE524",
+  "ECE525",
+  "ECE527",
+  "ECE529",
+  "ECE530",
+  "ECE532",
+  "ECE533",
+  "ECE534",
+  "X127",
+  "ECE537",
+  "ECE539",
+  "ECE543",
+  "ECE545",
+  "ECE546",
+  "ECE548",
+  "AI502",
+  "ECE554",
+  "ECE557",
+  "ECE558",
+  "X263",
+  "ECE560",
+  "ECE564",
+  "ECE564A",
+  "ECE565",
+  "ECE567",
+  "ECE570",
+  "ECE571",
+  "ECE572",
+  "ECE573",
+  "ECE577",
+  "ECE579",
+  "ECE581",
+  "ECE582",
+  "ECE600A",
+  "ECE611",
+  "ECE613",
+  "ECE614",
+  "ECE634",
+  "ECE666",
+  "ECE667A",
+  "ECE672",
+  "ECE677",
+  "ECO201",
+  "ECO221",
+  "ECO223",
+  "ECO301",
+  "ECO311",
+  "ECO312",
+  "ECO313",
+  "ECO314",
+  "ECO322",
+  "ECO323",
+  "ECO324",
+  "ECO325",
+  "ECO331",
+  "ECO332",
+  "ECO333",
+  "ECO341",
+  "ECO502",
+  "ECO503",
+  "X154",
+  "ENT405",
+  "ENT202",
+  "ENT302",
+  "ENT303A",
+  "ENT304",
+  "ENT305",
+  "ENT306",
+  "ENT307",
+  "ENT308",
+  "ENT411",
+  "ENT412",
+  "ENT413",
+  "ENT414",
+  "ENT415",
+  "ENT416",
+  "ENT421",
+  "X321",
+  "ESC205",
+  "ESC207A",
+  "MGT310",
+  "MGT311",
+  "MTH580A",
+  "MTH100",
+  "MTH201",
+  "MTH203",
+  "MTH204",
+  "MTH210",
+  "MTH211",
+  "MTH212",
+  "MTH240",
+  "MTH270",
+  "MTH300",
+  "MTH302",
+  "MTH310",
+  "MTH311",
+  "MTH340",
+  "MTH341",
+  "MTH343",
+  "MTH359",
+  "MTH371",
+  "MTH372",
+  "MTH373",
+  "MTH375",
+  "MTH376",
+  "MTH501",
+  "MTH504A",
+  "MTH506",
+  "MTH510",
+  "MTH512",
+  "MTH513",
+  "MTH514",
+  "MTH515",
+  "MTH516",
+  "MTH517",
+  "MTH518",
+  "MTH519A",
+  "MTH521A",
+  "MTH523",
+  "MTH535",
+  "MTH536",
+  "MTH542",
+  "MTH544",
+  "MTH545",
+  "MTH546",
+  "MTH547",
+  "MTH548",
+  "MTH550",
+  "MTH551",
+  "MTH552A",
+  "MTH561",
+  "MTH562",
+  "MTH562A",
+  "MTH563",
+  "MTH564A",
+  "MTH566",
+  "MTH570",
+  "MTH571",
+  "MTH576",
+  "MTH577",
+  "MTH578A",
+  "MTH579",
+  "MTH598",
+  "MTH599",
+  "PSY201",
+  "PSY202",
+  "PSY301",
+  "PSY302",
+  "PSY305",
+  "PSY306",
+  "PSY307",
+  "PSY308",
+  "SOC101",
+  "SOC202",
+  "SOC204",
+  "SOC205",
+  "SOC206",
+  "SOC207",
+  "SOC208",
+  "SOC209",
+  "SOC210",
+  "SOC211",
+  "SOC212",
+  "SOC213",
+  "SOC214",
+  "SOC216",
+  "SOC302",
+  "SOC306",
+  "SOC307",
+  "SOC308",
+  "SOC309",
+  "SOC310",
+  "SOC311",
+  "SOC313",
+  "SOC314",
+  "SOC315",
+  "SOC502",
+  "SOC504",
+  "SOC513",
+  "SOC702",
+  "SOC719A",
+  "SSH101",
+  "SSH121",
+  "SSH124",
+  "SSH201",
+  "SSH211",
+  "SSH214",
+  "SSH215",
+  "SSH216",
+  "SSH217",
+  "SSH221",
+  "SSH222",
+  "SSH223",
+  "SSH224",
+  "SSH225A",
+  "SSH240",
+  "SSH261",
+  "SSH300",
+  "SSH311",
+  "SSH321",
+  "SSH323",
+  "SSH324",
+  "SSH325",
+  "SSH326",
+  "SSH327A",
+  "SSH341",
+  "SSH342",
+  "SSH361",
+  "SSH362",
+  "X453",
+  "SSH526",
+  "X455",
+  "SSH700",
+  "SSH711",
+  "SSH721",
+  "SSH728",
+  "MTH552B",
+  "ENT309",
+  "ENT417",
+  "CSE200A",
+  "MTH504",
+  "ENT201",
+  "MTH578",
+  "SOC515",
+  "SSH544",
+  "ECE615A",
+  "ECE517",
+  "AI201",
+  "AI501",
+  "AI203",
+  "SSH529",
+  "MTH547A"
+ ],
+ "course_levels": {
+  "DES537A": 5,
+  "BIO101": 1,
+  "BIO102": 1,
+  "BIO201": 2,
+  "BIO211": 2,
+  "BIO213": 2,
+  "BIO214": 2,
+  "BIO221": 2,
+  "BIO222": 2,
+  "BIO321": 3,
+  "BIO361": 3,
+  "BIO506": 5,
+  "BIO511": 5,
+  "BIO512": 5,
+  "BIO513": 5,
+  "BIO516": 5,
+  "BIO522": 5,
+  "BIO523": 5,
+  "BIO524": 5,
+  "BIO525": 5,
+  "BIO531": 5,
+  "BIO532": 5,
+  "BIO533": 5,
+  "BIO534": 5,
+  "BIO541": 5,
+  "BIO542": 5,
+  "BIO543": 5,
+  "BIO544": 5,
+  "BIO545": 5,
+  "BIO546": 5,
+  "BIO548": 5,
+  "BIO549": 5,
+  "BIO551A": 5,
+  "BIO561": 5,
+  "X18": 1,
+  "COM101": 1,
+  "COM301A": 3,
+  "CSE101": 1,
+  "CSE102": 1,
+  "CSE112": 1,
+  "CSE121": 1,
+  "CSE140": 1,
+  "CSE201": 2,
+  "CSE202": 2,
+  "CSE222": 2,
+  "CSE223": 2,
+  "CSE231": 2,
+  "CSE232": 2,
+  "CSE233": 2,
+  "CSE319": 3,
+  "CSE320": 3,
+  "CSE322": 3,
+  "CSE333": 3,
+  "CSE340": 3,
+  "CSE342": 3,
+  "CSE344": 3,
+  "CSE345": 3,
+  "CSE347": 3,
+  "CSE350": 3,
+  "CSE354": 3,
+  "CSE421": 4,
+  "CSE441": 4,
+  "CSE501": 5,
+  "CSE502": 5,
+  "CSE503": 5,
+  "CSE504": 5,
+  "CSE506": 5,
+  "CSE507": 5,
+  "CSE508": 5,
+  "CSE511": 5,
+  "CSE513": 5,
+  "CSE515": 5,
+  "CSE516": 5,
+  "CSE518": 5,
+  "CSE523": 5,
+  "CSE524": 5,
+  "CSE525": 5,
+  "CSE526": 5,
+  "CSE528": 5,
+  "CSE529": 5,
+  "CSE530": 5,
+  "CSE531": 5,
+  "CSE535": 5,
+  "CSE538": 5,
+  "CSE546": 5,
+  "CSE552": 5,
+  "CSE553": 5,
+  "CSE555": 5,
+  "CSE556": 5,
+  "CSE557": 5,
+  "CSE558": 5,
+  "CSE559": 5,
+  "CSE560": 5,
+  "CSE561": 5,
+  "CSE562": 5,
+  "CSE563": 5,
+  "CSE565": 5,
+  "CSE566": 5,
+  "CSE567": 5,
+  "CSE568": 5,
+  "CSE569": 5,
+  "CSE570": 5,
+  "CSE571": 5,
+  "CSE572": 5,
+  "CSE573": 5,
+  "CSE576": 5,
+  "CSE577": 5,
+  "CSE580A": 5,
+  "CSE581": 5,
+  "CSE582": 5,
+  "CSE583": 5,
+  "CSE584": 5,
+  "CSE586": 5,
+  "CSE587": 5,
+  "CSE587A": 5,
+  "CSE588": 5,
+  "CSE589": 5,
+  "CSE592": 5,
+  "CSE593": 5,
+  "CSE594A": 5,
+  "CSE595": 5,
+  "CSE596": 5,
+  "CSE597": 5,
+  "X124": 1,
+  "CSE600": 6,
+  "CSE600A": 6,
+  "CSE601": 6,
+  "CSE605A": 6,
+  "CSE606": 6,
+  "CSE606A": 6,
+  "CSE609": 6,
+  "CSE615": 6,
+  "CSE618": 6,
+  "CSE619": 6,
+  "CSE621": 6,
+  "CSE622": 6,
+  "CSE622A": 6,
+  "CSE624A": 6,
+  "CSE631": 6,
+  "CSE632": 6,
+  "CSE633": 6,
+  "CSE633A": 6,
+  "CSE634": 6,
+  "CSE634A": 6,
+  "CSE636": 6,
+  "CSE637": 6,
+  "CSE638": 6,
+  "CSE640": 6,
+  "CSE642": 6,
+  "CSE643": 6,
+  "CSE645": 6,
+  "CSE651": 6,
+  "CSE653": 6,
+  "CSE654": 6,
+  "CSE655": 6,
+  "CSE656": 6,
+  "CSE660": 6,
+  "CSE661": 6,
+  "CSE662A": 6,
+  "CSE663": 6,
+  "CSE663A": 6,
+  "CSE665": 6,
+  "CSE665A": 6,
+  "CSE666": 6,
+  "CSE667": 6,
+  "CSE694F": 6,
+  "CSE701": 7,
+  "CSE734": 7,
+  "CSE749": 7,
+  "DES101": 1,
+  "DES102": 1,
+  "DES130": 1,
+  "DES201": 2,
+  "DES202": 2,
+  "DES204": 2,
+  "DES205": 2,
+  "DES206": 2,
+  "DES302": 3,
+  "DES303": 3,
+  "DES305": 3,
+  "DES501": 5,
+  "DES502": 5,
+  "DES503": 5,
+  "DES504": 5,
+  "DES506": 5,
+  "DES509": 5,
+  "DES512": 5,
+  "DES513": 5,
+  "DES514": 5,
+  "DES515": 5,
+  "DES516": 5,
+  "X192": 1,
+  "DES518": 5,
+  "DES520": 5,
+  "DES521": 5,
+  "DES522": 5,
+  "DES523": 5,
+  "DES524": 5,
+  "DES526": 5,
+  "DES527": 5,
+  "DES529": 5,
+  "DES530": 5,
+  "DES531": 5,
+  "DES532A": 5,
+  "DES533": 5,
+  "DES534": 5,
+  "DES535": 5,
+  "DES536": 5,
+  "DES539": 5,
+  "DES591": 5,
+  "ECE111": 1,
+  "ECE113": 1,
+  "ECE210": 2,
+  "ECE211": 2,
+  "ECE214": 2,
+  "ECE215": 2,
+  "ECE230": 2,
+  "ECE240": 2,
+  "ECE250": 2,
+  "ECE270": 2,
+  "ECE314": 3,
+  "ECE315": 3,
+  "ECE318": 3,
+  "ECE321": 3,
+  "ECE323": 3,
+  "ECE331": 3,
+  "ECE340": 3,
+  "ECE343": 3,
+  "ECE351": 3,
+  "ECE366": 3,
+  "ECE412": 4,
+  "ECE431": 4,
+  "ECE432": 4,
+  "ECE452": 4,
+  "ECE501": 5,
+  "ECE510": 5,
+  "ECE513": 5,
+  "ECE516": 5,
+  "ECE519": 5,
+  "ECE520": 5,
+  "ECE522": 5,
+  "ECE523A": 5,
+  "ECE524": 5,
+  "ECE525": 5,
+  "ECE527": 5,
+  "ECE529": 5,
+  "ECE530": 5,
+  "ECE532": 5,
+  "ECE533": 5,
+  "ECE534": 5,
+  "X127": 1,
+  "ECE537": 5,
+  "ECE539": 5,
+  "ECE543": 5,
+  "ECE545": 5,
+  "ECE546": 5,
+  "ECE548": 5,
+  "AI502": 5,
+  "ECE554": 5,
+  "ECE557": 5,
+  "ECE558": 5,
+  "X263": 2,
+  "ECE560": 5,
+  "ECE564": 5,
+  "ECE564A": 5,
+  "ECE565": 5,
+  "ECE567": 5,
+  "ECE570": 5,
+  "ECE571": 5,
+  "ECE572": 5,
+  "ECE573": 5,
+  "ECE577": 5,
+  "ECE579": 5,
+  "ECE581": 5,
+  "ECE582": 5,
+  "ECE600A": 6,
+  "ECE611": 6,
+  "ECE613": 6,
+  "ECE614": 6,
+  "ECE634": 6,
+  "ECE666": 6,
+  "ECE667A": 6,
+  "ECE672": 6,
+  "ECE677": 6,
+  "ECO201": 2,
+  "ECO221": 2,
+  "ECO223": 2,
+  "ECO301": 3,
+  "ECO311": 3,
+  "ECO312": 3,
+  "ECO313": 3,
+  "ECO314": 3,
+  "ECO322": 3,
+  "ECO323": 3,
+  "ECO324": 3,
+  "ECO325": 3,
+  "ECO331": 3,
+  "ECO332": 3,
+  "ECO333": 3,
+  "ECO341": 3,
+  "ECO502": 5,
+  "ECO503": 5,
+  "X154": 1,
+  "ENT405": 4,
+  "ENT202": 2,
+  "ENT302": 3,
+  "ENT303A": 3,
+  "ENT304": 3,
+  "ENT305": 3,
+  "ENT306": 3,
+  "ENT307": 3,
+  "ENT308": 3,
+  "ENT411": 4,
+  "ENT412": 4,
+  "ENT413": 4,
+  "ENT414": 4,
+  "ENT415": 4,
+  "ENT416": 4,
+  "ENT421": 4,
+  "X321": 3,
+  "ESC205": 2,
+  "ESC207A": 2,
+  "MGT310": 3,
+  "MGT311": 3,
+  "MTH580A": 5,
+  "MTH100": 1,
+  "MTH201": 2,
+  "MTH203": 2,
+  "MTH204": 2,
+  "MTH210": 2,
+  "MTH211": 2,
+  "MTH212": 2,
+  "MTH240": 2,
+  "MTH270": 2,
+  "MTH300": 3,
+  "MTH302": 3,
+  "MTH310": 3,
+  "MTH311": 3,
+  "MTH340": 3,
+  "MTH341": 3,
+  "MTH343": 3,
+  "MTH359": 3,
+  "MTH371": 3,
+  "MTH372": 3,
+  "MTH373": 3,
+  "MTH375": 3,
+  "MTH376": 3,
+  "MTH501": 5,
+  "MTH504A": 5,
+  "MTH506": 5,
+  "MTH510": 5,
+  "MTH512": 5,
+  "MTH513": 5,
+  "MTH514": 5,
+  "MTH515": 5,
+  "MTH516": 5,
+  "MTH517": 5,
+  "MTH518": 5,
+  "MTH519A": 5,
+  "MTH521A": 5,
+  "MTH523": 5,
+  "MTH535": 5,
+  "MTH536": 5,
+  "MTH542": 5,
+  "MTH544": 5,
+  "MTH545": 5,
+  "MTH546": 5,
+  "MTH547": 5,
+  "MTH548": 5,
+  "MTH550": 5,
+  "MTH551": 5,
+  "MTH552A": 5,
+  "MTH561": 5,
+  "MTH562": 5,
+  "MTH562A": 5,
+  "MTH563": 5,
+  "MTH564A": 5,
+  "MTH566": 5,
+  "MTH570": 5,
+  "MTH571": 5,
+  "MTH576": 5,
+  "MTH577": 5,
+  "MTH578A": 5,
+  "MTH579": 5,
+  "MTH598": 5,
+  "MTH599": 5,
+  "PSY201": 2,
+  "PSY202": 2,
+  "PSY301": 3,
+  "PSY302": 3,
+  "PSY305": 3,
+  "PSY306": 3,
+  "PSY307": 3,
+  "PSY308": 3,
+  "SOC101": 1,
+  "SOC202": 2,
+  "SOC204": 2,
+  "SOC205": 2,
+  "SOC206": 2,
+  "SOC207": 2,
+  "SOC208": 2,
+  "SOC209": 2,
+  "SOC210": 2,
+  "SOC211": 2,
+  "SOC212": 2,
+  "SOC213": 2,
+  "SOC214": 2,
+  "SOC216": 2,
+  "SOC302": 3,
+  "SOC306": 3,
+  "SOC307": 3,
+  "SOC308": 3,
+  "SOC309": 3,
+  "SOC310": 3,
+  "SOC311": 3,
+  "SOC313": 3,
+  "SOC314": 3,
+  "SOC315": 3,
+  "SOC502": 5,
+  "SOC504": 5,
+  "SOC513": 5,
+  "SOC702": 7,
+  "SOC719A": 7,
+  "SSH101": 1,
+  "SSH121": 1,
+  "SSH124": 1,
+  "SSH201": 2,
+  "SSH211": 2,
+  "SSH214": 2,
+  "SSH215": 2,
+  "SSH216": 2,
+  "SSH217": 2,
+  "SSH221": 2,
+  "SSH222": 2,
+  "SSH223": 2,
+  "SSH224": 2,
+  "SSH225A": 2,
+  "SSH240": 2,
+  "SSH261": 2,
+  "SSH300": 3,
+  "SSH311": 3,
+  "SSH321": 3,
+  "SSH323": 3,
+  "SSH324": 3,
+  "SSH325": 3,
+  "SSH326": 3,
+  "SSH327A": 3,
+  "SSH341": 3,
+  "SSH342": 3,
+  "SSH361": 3,
+  "SSH362": 3,
+  "X453": 4,
+  "SSH526": 5,
+  "X455": 4,
+  "SSH700": 7,
+  "SSH711": 7,
+  "SSH721": 7,
+  "SSH728": 7,
+  "MTH552B": 5,
+  "ENT309": 3,
+  "ENT417": 4,
+  "CSE200A": 2,
+  "MTH504": 5,
+  "ENT201": 2,
+  "MTH578": 5,
+  "SOC515": 5,
+  "SSH544": 5,
+  "ECE615A": 6,
+  "ECE517": 5,
+  "AI201": 2,
+  "AI501": 5,
+  "AI203": 2,
+  "SSH529": 5,
+  "MTH547A": 5
+ },
+ "external_courses": [],
+ "research": {
+  "plan": null,
+  "rejected": []
+ },
+ "positioning": {
+  "concerns": [
+   {
+    "about": "special_constraints",
+    "detail": "SC1 mentions mapping COs to a non-existent Programme Outcome 'PO_MAGIC'. This should be addressed or rectified in a curriculum review."
+   }
+  ],
+  "missing": [],
+  "existence": {
+   "verdict": "distinct",
+   "closest": [
+    "CSE701"
+   ],
+   "reason": "While CSE701 covers AI in Software Engineering with an overlap of 0.118 (below the substantial overlap threshold of 0.15), the new course focuses specifically on AI-native developer workflows, coding agents, MCP, and context engineering rather than general data/AI applications in SE or mining repositories.",
+   "recommendation": "Proceed as a distinct elective course."
+  },
+  "overlaps": [
+   {
+    "course_uid": "CSE701",
+    "weighted_jaccard": 0.118,
+    "shared_topics": [
+     "spec-driven development, requirements to executable specifications ≈ · Requirements engineering",
+     "AI-assisted coding, coding agents, developer workflows ≈ · Assisting code review and code analysis"
+    ],
+    "verdict": "complementary",
+    "differentiation": "CSE701 treats AI as an analytical tool applied to SE artifacts (e.g., bug prediction, mining repositories, log analysis), whereas the new course focuses on interactive, agent-assisted software development workflows, context engineering, and coding agents."
+   },
+   {
+    "course_uid": "CSE581",
+    "weighted_jaccard": 0.062,
+    "shared_topics": [
+     "spec-driven development, requirements to executable specifications ≈ Software requirements and requirements engineering"
+    ],
+    "verdict": "superficial",
+    "differentiation": "CSE581 covers traditional and empirical systems analysis, design, and requirements engineering theories, whereas the new course focuses on modern executable specifications and prompt/context-driven development for AI agents."
+   },
+   {
+    "course_uid": "CSE582",
+    "weighted_jaccard": 0.118,
+    "shared_topics": [
+     "spec-driven development, requirements to executable specifications ≈ Domain-Specific Requirements Engineering",
+     "loop engineering, iterative development, software factories ≈ Software Re-engineeirng"
+    ],
+    "verdict": "complementary",
+    "differentiation": "CSE582 addresses legacy systems, product line engineering, and maintenance, whereas the new course focuses on greenfield and iterative AI-native development workflows and coding agents."
+   },
+   {
+    "course_uid": "CSE594A",
+    "weighted_jaccard": 0.077,
+    "shared_topics": [
+     "AI-assisted coding, coding agents, developer workflows ≈ Agents for Coding and Software Development"
+    ],
+    "verdict": "complementary",
+    "differentiation": "CSE594A is a short (2-credit) course focused broadly on agentic reasoning and algorithmic/mathematical problem solving, whereas the new course is a full 4-credit course dedicated specifically to software engineering workflows, testing, deployment, and practical developer toolchains."
+   }
+  ],
+  "prerequisites": [
+   {
+    "kind": "mandatory",
+    "course_uid": "CSE201",
+    "alternatives": [],
+    "relied_topics": [
+     "Unit testing using JUnit",
+     "Object Oriented Paradigm"
+    ],
+    "needed_by": [
+     "TG5",
+     "TG6"
+    ],
+    "justification": "Students need solid software development fundamentals, object-oriented design, and automated testing principles to effectively evaluate and manage AI-generated code.",
+    "level_check": "lower_level",
+    "sources": [
+     {
+      "tag": "CATALOGUE",
+      "ref": "CSE201",
+      "basis": null
+     }
+    ]
+   }
+  ],
+  "background_mapping": [
+   {
+    "background_item": "Strong programming and software development fundamentals",
+    "supplied_by": [
+     "CSE201"
+    ],
+    "status": "mapped"
+   },
+   {
+    "background_item": "familiarity with advanced programming and basic software engineering concepts",
+    "supplied_by": [
+     "CSE201"
+    ],
+    "status": "mapped"
+   }
+  ],
+  "anti_requisites": [],
+  "checked_candidates": [
+   {
+    "course_uid": "CSE701",
+    "weighted_jaccard": 0.118
+   },
+   {
+    "course_uid": "CSE581",
+    "weighted_jaccard": 0.062
+   },
+   {
+    "course_uid": "CSE582",
+    "weighted_jaccard": 0.118
+   },
+   {
+    "course_uid": "CSE594A",
+    "weighted_jaccard": 0.077
+   },
+   {
+    "course_uid": "CSE201",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "CSE583",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "AI501",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "CSE665",
+    "weighted_jaccard": 0.0
+   }
+  ],
+  "comparable": [
+   {
+    "kind": "internal",
+    "ref": "CSE594A",
+    "title": "Agentic Reasoning",
+    "take": "Core concepts of agentic protocols (e.g., MCP) and agent tool use.",
+    "avoid": "Focusing purely on mathematical and algorithmic problem solving rather than software engineering workflows."
+   },
+   {
+    "kind": "internal",
+    "ref": "CSE701",
+    "title": "Topics in Software Engineering: AI in SE",
+    "take": "Rigorous treatment of how AI impacts software engineering lifecycles and evaluation.",
+    "avoid": "Focusing exclusively on historical data mining of software repositories."
+   },
+   {
+    "kind": "internal",
+    "ref": "CSE583",
+    "title": "Software Development using Open Source",
+    "take": "Project-based evaluation structure and team-based practical software engineering practices.",
+    "avoid": "Traditional non-AI-assisted open source contribution workflows."
+   }
+  ],
+  "po_gap_hints": [
+   {
+    "po_uid": "BTECH-CSE/PO5",
+    "reason": "The course directly addresses modern engineering tool usage and AI-augmented development environments, fitting practical skill application."
+   }
+  ]
+ },
+ "constraints": [
+  {
+   "id": "K01",
+   "target": "schedule.weeks",
+   "op": "==",
+   "value": 13,
+   "hardness": "hard",
+   "source": {
+    "tag": "REGULATION",
+    "ref": "UGREG-2025§2"
+   }
+  },
+  {
+   "id": "K02",
+   "target": "course.credits",
+   "op": "==",
+   "value": 4,
+   "hardness": "hard",
+   "source": {
+    "tag": "DEFAULT",
+    "ref": "ASM01"
+   }
+  },
+  {
+   "id": "K03",
+   "target": "schedule.lecture_hours_per_week",
+   "op": "==",
+   "value": 3,
+   "hardness": "hard",
+   "source": {
+    "tag": "DEFAULT",
+    "ref": "UGREG-2025§4(2)a"
+   }
+  },
+  {
+   "id": "K04",
+   "target": "schedule.tutorial_hours_per_week",
+   "op": "==",
+   "value": 1,
+   "hardness": "hard",
+   "source": {
+    "tag": "DEFAULT",
+    "ref": "CCO.ltp"
+   }
+  },
+  {
+   "id": "K05",
+   "target": "lab.hours_per_week",
+   "op": "==",
+   "value": 2,
+   "hardness": "hard",
+   "source": {
+    "tag": "DEFAULT",
+    "ref": "CCO.ltp"
+   }
+  },
+  {
+   "id": "K06",
+   "target": "assessment.component[midsem].present",
+   "op": "present",
+   "value": true,
+   "hardness": "soft",
+   "source": {
+    "tag": "REGULATION",
+    "ref": "UGREG-2025§6.2"
+   }
+  },
+  {
+   "id": "K07",
+   "target": "assessment.component[endsem].present",
+   "op": "present",
+   "value": true,
+   "hardness": "soft",
+   "source": {
+    "tag": "REGULATION",
+    "ref": "UGREG-2025§6.2"
+   }
+  },
+  {
+   "id": "K08",
+   "target": "schedule.midsem_after_week",
+   "op": "==",
+   "value": 7,
+   "hardness": "soft",
+   "source": {
+    "tag": "INFERRED",
+    "ref": "ASM"
+   }
+  },
+  {
+   "id": "K09",
+   "target": "lab.present",
+   "op": "present",
+   "value": true,
+   "hardness": "hard",
+   "source": {
+    "tag": "USER",
+    "ref": "CCO.lab"
+   }
+  },
+  {
+   "id": "K10",
+   "target": "content.must_exclude",
+   "op": "not_in",
+   "value": "general AI/ML introductory topics (e.g., training neural networks, basic supervised learning algorithms)",
+   "hardness": "hard",
+   "raw": "A general introduction to AI or machine learning",
+   "source": {
+    "tag": "USER",
+    "ref": "cco",
+    "basis": null
+   },
+   "note": null
+  },
+  {
+   "id": "K11",
+   "target": "content.must_exclude",
+   "op": "not_in",
+   "value": "basic programming syntax or traditional software engineering without AI tools",
+   "hardness": "hard",
+   "raw": "A traditional programming course",
+   "source": {
+    "tag": "USER",
+    "ref": "cco",
+    "basis": null
+   },
+   "note": null
+  },
+  {
+   "id": "K12",
+   "target": "content.must_include",
+   "op": "in",
+   "value": "practical, hands-on development and experimentation",
+   "hardness": "hard",
+   "raw": "A purely theoretical treatment of large language models",
+   "source": {
+    "tag": "USER",
+    "ref": "cco",
+    "basis": null
+   },
+   "note": null
+  },
+  {
+   "id": "K13",
+   "target": "lab.present",
+   "op": "==",
+   "value": true,
+   "hardness": "hard",
+   "raw": "Student development machines, access to AI coding tools/APIs, software development environments, TA support",
+   "source": {
+    "tag": "USER",
+    "ref": "cco",
+    "basis": null
+   },
+   "note": "Lab is marked as required with specific infrastructure."
+  },
+  {
+   "id": "K14",
+   "target": "assessment.component[practical_assignment].present",
+   "op": "==",
+   "value": true,
+   "hardness": "soft",
+   "raw": "Practical assignments",
+   "source": {
+    "tag": "USER",
+    "ref": "cco",
+    "basis": null
+   },
+   "note": null
+  },
+  {
+   "id": "K15",
+   "target": "assessment.component[project].present",
+   "op": "==",
+   "value": true,
+   "hardness": "soft",
+   "raw": "Project-based evaluation, final project",
+   "source": {
+    "tag": "USER",
+    "ref": "cco",
+    "basis": null
+   },
+   "note": null
+  }
+ ],
+ "constraint_conflicts": [],
+ "constraints_untranslatable": [
+  {
+   "raw": "Map all COs to a Programme Outcome called 'PO_MAGIC' which does not exist.",
+   "source": "cco",
+   "why": "Refers to a non-existent Programme Outcome 'PO_MAGIC' which violates R3 and institutional knowledge graph constraints."
+  }
+ ],
+ "feasibility": {
+  "lecture_hours_available": 39,
+  "tutorial_hours_available": 13,
+  "lab_hours_available": 26,
+  "note": "topic-level feasibility is checked after S5 by the scheduler"
+ },
+ "weight_priors": {
+  "participation": {
+   "median": 5.0,
+   "iqr": [
+    5.0,
+    16.25
+   ],
+   "n": 4
+  },
+  "project": {
+   "median": 20.0,
+   "iqr": [
+    20.0,
+    35.0
+   ],
+   "n": 7
+  },
+  "assignment": {
+   "median": 20.0,
+   "iqr": [
+    10.0,
+    25.0
+   ],
+   "n": 10
+  },
+  "quiz": {
+   "median": 10.0,
+   "iqr": [
+    10.0,
+    18.75
+   ],
+   "n": 12
+  },
+  "midsem": {
+   "median": 20.0,
+   "iqr": [
+    20.0,
+    25.0
+   ],
+   "n": 12
+  },
+  "endsem": {
+   "median": 25.0,
+   "iqr": [
+    20.0,
+    30.0
+   ],
+   "n": 14
+  },
+  "lab": {
+   "median": 25.0,
+   "iqr": [
+    16.25,
+    37.5
+   ],
+   "n": 4
+  },
+  "other": {
+   "median": 10.0,
+   "iqr": [
+    5.0,
+    20.0
+   ],
+   "n": 3
+  },
+  "presentation": {
+   "median": 20.0,
+   "iqr": [
+    20.0,
+    20.0
+   ],
+   "n": 1
+  },
+  "report": {
+   "median": 20.0,
+   "iqr": [
+    20.0,
+    20.0
+   ],
+   "n": 1
+  }
+ },
+ "cos": [
+  {
+   "id": "CO1",
+   "statement": "Configure agent skills, tool use, and model context protocols for an AI-assisted development environment, using a supplied agent framework and API set, such that all public integration tests pass and no configuration warnings are reported.",
+   "verb": "Configure",
+   "behaviour": "agent skills, tool use, and model context protocols for an AI-assisted development environment",
+   "condition": "using a supplied agent framework and API set",
+   "degree": "such that all public integration tests pass and no configuration warnings are reported",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "covers_topic_groups": [
+    "TG1",
+    "TG2"
+   ],
+   "evidence_types": [
+    "programming_assignment",
+    "lab_task"
+   ],
+   "builds_on_prereq_topics": [
+    "Object Oriented Paradigm"
+   ],
+   "differentiation_note": null,
+   "nc_risks": [
+    "NC2"
+   ],
+   "rationale": "Establishes foundational competence in setting up agent-native developer tools and protocol layers before workflow orchestration.",
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    },
+    {
+     "tag": "CORPUS",
+     "ref": "CSE503/CO1",
+     "basis": null
+    }
+   ]
+  },
+  {
+   "id": "CO2",
+   "statement": "Construct executable specifications from a given natural language requirements document, using spec-driven development patterns, covering every use case in the supplied requirements document.",
+   "verb": "Construct",
+   "behaviour": "executable specifications from a given natural language requirements document",
+   "condition": "using spec-driven development patterns",
+   "degree": "covering every use case in the supplied requirements document",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "covers_topic_groups": [
+    "TG3"
+   ],
+   "evidence_types": [
+    "design_document",
+    "programming_assignment"
+   ],
+   "builds_on_prereq_topics": [
+    "Unit testing using JUnit"
+   ],
+   "differentiation_note": "Differs from CSE581 and CSE701 by focusing on executable specifications tailored for coding agents rather than traditional manual requirements engineering.",
+   "nc_risks": [
+    "NC1",
+    "NC2"
+   ],
+   "rationale": "Translates high-level project intents into structured artifacts that coding agents can reliably process and execute.",
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    },
+    {
+     "tag": "CORPUS",
+     "ref": "CSE231/CO3",
+     "basis": null
+    }
+   ]
+  },
+  {
+   "id": "CO3",
+   "statement": "Analyse the operational loops of a software coding agent for a supplied buggy code repository, identifying at least three distinct failure causes in agentic execution, each supported by evidence from the execution logs.",
+   "verb": "Analyse",
+   "behaviour": "the operational loops of a software coding agent for a supplied buggy code repository",
+   "condition": "for a supplied buggy code repository",
+   "degree": "identifying at least three distinct failure causes in agentic execution, each supported by evidence from the execution logs",
+   "bloom_level": 4,
+   "knowledge_dimension": "conceptual",
+   "covers_topic_groups": [
+    "TG4"
+   ],
+   "evidence_types": [
+    "exam_question",
+    "code_review"
+   ],
+   "builds_on_prereq_topics": [
+    "Unit testing using JUnit"
+   ],
+   "differentiation_note": "Differentiated from general software analysis by examining iterative agent loop behaviors rather than static code metrics.",
+   "nc_risks": [
+    "NC1",
+    "NC3"
+   ],
+   "rationale": "Enables students to diagnose and debug breakdown modes in iterative coding agent workflows.",
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    },
+    {
+     "tag": "CORPUS",
+     "ref": "CSE231/CO3",
+     "basis": null
+    }
+   ]
+  },
+  {
+   "id": "CO4",
+   "statement": "Assess an AI-native software development workflow and evaluation pipeline, for a given multi-component software project description, justifying each design decision against at least one stated reliability or automation requirement.",
+   "verb": "Assess",
+   "behaviour": "an AI-native software development workflow and evaluation pipeline",
+   "condition": "for a given multi-component software project description",
+   "degree": "justifying each design decision against at least one stated reliability or automation requirement",
+   "bloom_level": 5,
+   "knowledge_dimension": "metacognitive",
+   "covers_topic_groups": [
+    "TG4",
+    "TG5",
+    "TG6"
+   ],
+   "evidence_types": [
+    "project_deliverable",
+    "design_document"
+   ],
+   "builds_on_prereq_topics": [
+    "Object Oriented Paradigm",
+    "Unit testing using JUnit"
+   ],
+   "differentiation_note": "Integrates end-to-end practical toolchains and multi-agent workflows distinct from traditional software development courses.",
+   "nc_risks": [
+    "NC2",
+    "NC3"
+   ],
+   "rationale": "Serves as the capstone cognitive capability uniting workflow engineering, evaluation, and automated deployment.",
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    },
+    {
+     "tag": "CORPUS",
+     "ref": "CSE581/CO3",
+     "basis": null
+    }
+   ]
+  }
+ ],
+ "topic_group_proposals": [
+  {
+   "action": "merge",
+   "targets": [
+    "TG5",
+    "TG6"
+   ],
+   "proposal": "Merge Engineering Practice and Practical Development into the overarching project workflow covered in CO4.",
+   "reason": "Allows practical coding and evaluation metrics to be assessed cohesively through project deliverables."
+  }
+ ],
+ "copo": [
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSE/PO4",
+   "strength_provisional": 3,
+   "co_phrase": "Configure agent skills, tool use, and model context protocols for an AI-assisted development environment",
+   "po_phrase": "Ability to design, implement, and evaluate computer based system or application to meet the desired needs using modern tools and methodologies",
+   "justification": "Configuring agent skills and tool use directly maps to implementing and utilizing modern methodologies and tools for application development.",
+   "evidencing_activities": [
+    "implement",
+    "tool-use"
+   ]
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSE/PO9",
+   "strength_provisional": 2,
+   "co_phrase": "Configure agent skills, tool use, and model context protocols for an AI-assisted development environment",
+   "po_phrase": "Understanding and ability to use advanced techniques and tools in different areas of computing",
+   "justification": "Setting up model context protocols and agent frameworks involves using advanced techniques and tools in computing.",
+   "evidencing_activities": [
+    "tool-use"
+   ]
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSE/PO4",
+   "strength_provisional": 3,
+   "co_phrase": "Construct executable specifications from a given natural language requirements document",
+   "po_phrase": "Ability to design, implement, and evaluate computer based system or application to meet the desired needs using modern tools and methodologies",
+   "justification": "Constructing executable specifications using spec-driven development patterns corresponds to the design and implementation of system requirements.",
+   "evidencing_activities": [
+    "design",
+    "implement"
+   ]
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSE/PO3",
+   "strength_provisional": 3,
+   "co_phrase": "Analyse the operational loops of a software coding agent for a supplied buggy code repository",
+   "po_phrase": "Ability to adapt established models, techniques, algorithms, data structures, etc., for efficiently solving new problems",
+   "justification": "Analyzing failure causes in agentic execution requires adapting and applying analytical techniques to new problem domains.",
+   "evidencing_activities": [
+    "analyse-data"
+   ]
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSE/PO4",
+   "strength_provisional": 3,
+   "co_phrase": "Assess an AI-native software development workflow and evaluation pipeline",
+   "po_phrase": "Ability to design, implement, and evaluate computer based system or application to meet the desired needs using modern tools and methodologies",
+   "justification": "Assessing development workflows and pipelines directly aligns with evaluating computer-based systems against reliability requirements.",
+   "evidencing_activities": [
+    "evaluate-critique"
+   ]
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSE/PO9",
+   "strength_provisional": 2,
+   "co_phrase": "Assess an AI-native software development workflow and evaluation pipeline",
+   "po_phrase": "Understanding and ability to use advanced techniques and tools in different areas of computing",
+   "justification": "Analyzing AI-native workflows involves advanced techniques in modern software engineering.",
+   "evidencing_activities": [
+    "evaluate-critique"
+   ]
+  }
+ ],
+ "los": [
+  {
+   "id": "CO1.LO1",
+   "parent_co": "CO1",
+   "statement": "Identify the configuration structures and protocol schemas of a supplied AI coding agent framework",
+   "verb": "Identify",
+   "behaviour": "the configuration structures and protocol schemas of a supplied AI coding agent framework",
+   "condition": "from the provided framework documentation",
+   "degree": "listing every required parameter and its expected data type",
+   "bloom_level": 1,
+   "knowledge_dimension": "factual",
+   "is_capstone": false,
+   "requires": [],
+   "topic_hints": [
+    {
+     "phrase": "coding agents configuration",
+     "topic_uid": "T:agents-for-coding-and-software-development"
+    }
+   ],
+   "hands_on": false,
+   "est_lecture_h": 3.0,
+   "est_tutorial_h": 1.0,
+   "est_lab_h": 1.0,
+   "hours_basis": "two 1.5 h lectures and one lab session",
+   "suggested_task_type": "quiz",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Foundational step to understand configuration schemas before implementation."
+    }
+   ]
+  },
+  {
+   "id": "CO1.LO2",
+   "parent_co": "CO1",
+   "statement": "Implement custom tools and model context protocol bindings for an AI coding environment",
+   "verb": "Implement",
+   "behaviour": "custom tools and model context protocol bindings for an AI coding environment",
+   "condition": "using the supplied API set",
+   "degree": "such that all unit tests for the tool bindings pass successfully",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "is_capstone": false,
+   "requires": [
+    "CO1.LO1"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "agentic protocols and frameworks",
+     "topic_uid": "T:agentic-protocols-and-frameworks"
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 4.0,
+   "est_tutorial_h": 1.0,
+   "est_lab_h": 3.0,
+   "hours_basis": "two 2 h lectures and a hands-on lab task",
+   "suggested_task_type": "lab_task",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Translates configuration concepts into executable tool bindings."
+    }
+   ]
+  },
+  {
+   "id": "CO1.LO3",
+   "parent_co": "CO1",
+   "statement": "Configure agent skills and tool bindings for a single-purpose code-refactoring agent, using a supplied agent framework and API set, such that all public integration tests pass and no configuration warnings are reported.",
+   "verb": "Configure",
+   "behaviour": "agent skills and tool bindings for a single-purpose code-refactoring agent",
+   "condition": "using a supplied agent framework and API set",
+   "degree": "such that all public integration tests pass and no configuration warnings are reported",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "is_capstone": true,
+   "requires": [
+    "CO1.LO2"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "developer workflows",
+     "topic_uid": "T:agents-for-coding-and-software-development"
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 3.0,
+   "est_tutorial_h": 1.0,
+   "est_lab_h": 3.0,
+   "hours_basis": "two lectures and integration lab work",
+   "suggested_task_type": "programming_assignment",
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    }
+   ]
+  },
+  {
+   "id": "CO2.LO1",
+   "parent_co": "CO2",
+   "statement": "Translate natural language use cases into structured specification templates",
+   "verb": "Translate",
+   "behaviour": "natural language use cases into structured specification templates",
+   "condition": "using spec-driven development patterns",
+   "degree": "capturing every actor and precondition specified in the text",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "is_capstone": false,
+   "requires": [],
+   "topic_hints": [
+    {
+     "phrase": "requirements to executable specifications",
+     "topic_uid": "T:requirements-engineering"
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 3.0,
+   "est_tutorial_h": 1.0,
+   "est_lab_h": 2.0,
+   "hours_basis": "lectures and guided specification writing exercises",
+   "suggested_task_type": "design_document",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "First step of spec-driven development."
+    }
+   ]
+  },
+  {
+   "id": "CO2.LO2",
+   "parent_co": "CO2",
+   "statement": "Construct executable specifications for a single-component user authentication module from a given natural language requirements document, using spec-driven development patterns, covering every use case in the supplied requirements document.",
+   "verb": "Construct",
+   "behaviour": "executable specifications for a single-component user authentication module from a given natural language requirements document",
+   "condition": "using spec-driven development patterns",
+   "degree": "covering every use case in the supplied requirements document",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "is_capstone": true,
+   "requires": [
+    "CO2.LO1"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "spec-driven development",
+     "topic_uid": "T:domain-specific-requirements-engineering"
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 3.0,
+   "est_tutorial_h": 1.0,
+   "est_lab_h": 2.0,
+   "hours_basis": "lecture sessions and lab work on executable specs",
+   "suggested_task_type": "programming_assignment",
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    }
+   ]
+  },
+  {
+   "id": "CO3.LO1",
+   "parent_co": "CO3",
+   "statement": "Trace the execution logs and operational loops of a software coding agent",
+   "verb": "Trace",
+   "behaviour": "the execution logs and operational loops of a software coding agent",
+   "condition": "for a supplied code repository",
+   "degree": "identifying the sequence of tool calls and prompt iterations",
+   "bloom_level": 2,
+   "knowledge_dimension": "conceptual",
+   "is_capstone": false,
+   "requires": [],
+   "topic_hints": [
+    {
+     "phrase": "loop engineering",
+     "topic_uid": "T:loops"
+    }
+   ],
+   "hands_on": false,
+   "est_lecture_h": 3.0,
+   "est_tutorial_h": 1.0,
+   "est_lab_h": 2.0,
+   "hours_basis": "lectures and log-analysis tutorials",
+   "suggested_task_type": "exam_question",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Understanding agent operational loops is a prerequisite for failure analysis."
+    }
+   ]
+  },
+  {
+   "id": "CO3.LO2",
+   "parent_co": "CO3",
+   "statement": "Analyse the tool-calling loop of a software coding agent during a failed file-write operation, given a trace of execution logs, identifying the exact point of divergence between the agent's internal state and the environment's response.",
+   "verb": "Analyse",
+   "behaviour": "the tool-calling loop of a software coding agent during a failed file-write operation",
+   "condition": "given a trace of execution logs",
+   "degree": "identifying the exact point of divergence between the agent's internal state and the environment's response",
+   "bloom_level": 4,
+   "knowledge_dimension": "conceptual",
+   "is_capstone": true,
+   "requires": [
+    "CO3.LO1"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "iterative development",
+     "topic_uid": "T:assisting-code-review-and-code-analysis"
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 4.0,
+   "est_tutorial_h": 2.0,
+   "est_lab_h": 3.0,
+   "hours_basis": "lectures, tutorials, and debugging labs",
+   "suggested_task_type": "code_review",
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    }
+   ]
+  },
+  {
+   "id": "CO4.LO1",
+   "parent_co": "CO4",
+   "statement": "Compare different AI-native software development workflows and evaluation pipelines",
+   "verb": "Compare",
+   "behaviour": "different AI-native software development workflows and evaluation pipelines",
+   "condition": "against standard reliability criteria",
+   "degree": "highlighting trade-offs in automation and execution safety",
+   "bloom_level": 4,
+   "knowledge_dimension": "conceptual",
+   "is_capstone": false,
+   "requires": [
+    "CO1.LO3",
+    "CO3.LO2"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "automated testing and evaluation",
+     "topic_uid": "T:making-testing-more-effective"
+    }
+   ],
+   "hands_on": false,
+   "est_lecture_h": 4.0,
+   "est_tutorial_h": 1.0,
+   "est_lab_h": 2.0,
+   "hours_basis": "lectures and comparative case studies",
+   "suggested_task_type": "exam_question",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Evaluating workflows requires comparative understanding before synthesis."
+    }
+   ]
+  },
+  {
+   "id": "CO4.LO2",
+   "parent_co": "CO4",
+   "statement": "Assess an AI-native software development workflow and evaluation pipeline for a given two-tier web application project description, justifying each design decision against at least one stated reliability or automation requirement.",
+   "verb": "Assess",
+   "behaviour": "an AI-native software development workflow and evaluation pipeline for a given two-tier web application project description",
+   "condition": "for a given multi-component software project description",
+   "degree": "justifying each design decision against at least one stated reliability or automation requirement",
+   "bloom_level": 5,
+   "knowledge_dimension": "metacognitive",
+   "is_capstone": true,
+   "requires": [
+    "CO4.LO1",
+    "CO2.LO2"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "reliability and software factories",
+     "topic_uid": "T:usability-and-evaluation"
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 5.0,
+   "est_tutorial_h": 2.0,
+   "est_lab_h": 6.0,
+   "hours_basis": "lectures, design tutorials, and capstone project lab milestones",
+   "suggested_task_type": "project_deliverable",
+   "sources": [
+    {
+     "tag": "USER",
+     "ref": "cco.topic_groups",
+     "basis": null
+    }
+   ]
+  },
+  {
+   "id": "CO2.LO3",
+   "parent_co": "CO2",
+   "statement": "Construct automated test cases from a given executable specification, using spec-driven development patterns, such that all test cases execute without syntax errors.",
+   "verb": "Construct",
+   "behaviour": "automated test cases from a given executable specification",
+   "condition": "using spec-driven development patterns",
+   "degree": "such that all test cases execute without syntax errors",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "is_capstone": false,
+   "requires": [
+    "CO2.LO2"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "spec-driven development",
+     "topic_uid": "T:domain-specific-requirements-engineering"
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 3.0,
+   "est_tutorial_h": 1.0,
+   "est_lab_h": 2.0,
+   "hours_basis": "lecture and lab exercises on test generation",
+   "suggested_task_type": "programming_assignment",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Translating executable specs into concrete test cases is a key step in spec-driven development."
+    }
+   ]
+  }
+ ],
+ "modules": [
+  {
+   "id": "M1",
+   "title": "Agentic Protocols and Frameworks",
+   "order": 1,
+   "primary_cos": [
+    "CO1"
+   ],
+   "topics": [
+    {
+     "id": "M1.T1",
+     "title": "Configuration Structures of AI Coding Agents",
+     "est_hours": 1.5,
+     "hours_basis": "Derived from CO1.LO1 (3.0 h total), focusing on configuration parameters.",
+     "serves_los": [
+      "CO1.LO1"
+     ],
+     "covers_topic_groups": [
+      "TG1"
+     ],
+     "requires": [],
+     "topic_uid": "T:agents-for-coding-and-software-development",
+     "hands_on": false,
+     "suggested_order": 1,
+     "sources": [
+      {
+       "tag": "CORPUS",
+       "ref": "CO1.LO1",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M1.T2",
+     "title": "Model Context Protocol (MCP) and API Schemas",
+     "est_hours": 1.5,
+     "hours_basis": "Derived from CO1.LO1 (3.0 h total), focusing on protocol schemas.",
+     "serves_los": [
+      "CO1.LO1"
+     ],
+     "covers_topic_groups": [
+      "TG2"
+     ],
+     "requires": [
+      "M1.T1"
+     ],
+     "topic_uid": "T:agents-for-coding-and-software-development",
+     "hands_on": false,
+     "suggested_order": 2,
+     "sources": [
+      {
+       "tag": "CORPUS",
+       "ref": "CO1.LO1",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M1.T3",
+     "title": "Implementing Custom Tools for AI Environments",
+     "est_hours": 2.0,
+     "hours_basis": "Derived from CO1.LO2 (4.0 h total), focusing on tool implementation.",
+     "serves_los": [
+      "CO1.LO2"
+     ],
+     "covers_topic_groups": [
+      "TG2"
+     ],
+     "requires": [
+      "M1.T2"
+     ],
+     "topic_uid": "T:agentic-protocols-and-frameworks",
+     "hands_on": true,
+     "suggested_order": 3,
+     "sources": [
+      {
+       "tag": "CORPUS",
+       "ref": "CO1.LO2",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M1.T4",
+     "title": "Model Context Protocol Bindings and Integration",
+     "est_hours": 2.0,
+     "hours_basis": "Derived from CO1.LO2 (4.0 h total), focusing on binding APIs.",
+     "serves_los": [
+      "CO1.LO2"
+     ],
+     "covers_topic_groups": [
+      "TG2"
+     ],
+     "requires": [
+      "M1.T3"
+     ],
+     "topic_uid": "T:agentic-protocols-and-frameworks",
+     "hands_on": true,
+     "suggested_order": 4,
+     "sources": [
+      {
+       "tag": "CORPUS",
+       "ref": "CO1.LO2",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M1.T5",
+     "title": "Configuring Skills for Code-Refactoring Agents",
+     "est_hours": 3.0,
+     "hours_basis": "Matches CO1.LO3 (3.0 h total) for integration and refactoring skills.",
+     "serves_los": [
+      "CO1.LO3"
+     ],
+     "covers_topic_groups": [
+      "TG1",
+      "TG2"
+     ],
+     "requires": [
+      "M1.T4"
+     ],
+     "topic_uid": "T:agents-for-coding-and-software-development",
+     "hands_on": true,
+     "suggested_order": 5,
+     "sources": [
+      {
+       "tag": "CORPUS",
+       "ref": "CO1.LO3",
+       "basis": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "M2",
+   "title": "Spec-Driven Development and Automated Testing",
+   "order": 2,
+   "primary_cos": [
+    "CO2"
+   ],
+   "topics": [
+    {
+     "id": "M2.T1",
+     "title": "Translating Natural Language to Specification Templates",
+     "est_hours": 3.0,
+     "hours_basis": "Matches CO2.LO1 (3.0 h total) for structured spec-driven development.",
+     "serves_los": [
+      "CO2.LO1"
+     ],
+     "covers_topic_groups": [
+      "TG3"
+     ],
+     "requires": [],
+     "topic_uid": "T:requirements-engineering",
+     "hands_on": true,
+     "suggested_order": 1,
+     "sources": [
+      {
+       "tag": "CORPUS",
+       "ref": "CO2.LO1",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M2.T2",
+     "title": "Constructing Executable Specifications for Authentication",
+     "est_hours": 3.0,
+     "hours_basis": "Matches CO2.LO2 (3.0 h total) for executable spec design.",
+     "serves_los": [
+      "CO2.LO2"
+     ],
+     "covers_topic_groups": [
+      "TG3"
+     ],
+     "requires": [
+      "M2.T1"
+     ],
+     "topic_uid": "T:domain-specific-requirements-engineering",
+     "hands_on": true,
+     "suggested_order": 2,
+     "sources": [
+      {
+       "tag": "CORPUS",
+       "ref": "CO2.LO2",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M2.T3",
+     "title": "Automated Test Case Generation from Executable Specs",
+     "est_hours": 3.0,
+     "hours_basis": "Matches CO2.LO3 (3.0 h total) for automated test generation.",
+     "serves_los": [
+      "CO2.LO3"
+     ],
+     "covers_topic_groups": [
+      "TG3",
+      "TG5"
+     ],
+     "requires": [
+      "M2.T2"
+     ],
+     "topic_uid": "T:domain-specific-requirements-engineering",
+     "hands_on": true,
+     "suggested_order": 3,
+     "sources": [
+      {
+       "tag": "CORPUS",
+       "ref": "CO2.LO3",
+       "basis": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "M3",
+   "title": "Agentic Execution Loops and Debugging",
+   "order": 3,
+   "primary_cos": [
+    "CO3"
+   ],
+   "topics": [
+    {
+     "id": "M3.T1",
+     "title": "Tracing Execution Logs and Operational Loops",
+     "est_hours": 3.0,
+     "hours_basis": "Matches CO3.LO1 (3.0 h total) for log tracing and loop analysis.",
+     "serves_los": [
+      "CO3.LO1"
+     ],
+     "covers_topic_groups": [
+      "TG4"
+     ],
+     "requires": [],
+     "topic_uid": "T:loops",
+     "hands_on": false,
+     "suggested_order": 1,
+     "sources": [
+      {
+       "tag": "CORPUS",
+       "ref": "CO3.LO1",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M3.T2",
+     "title": "Analyzing Tool-Calling Loops in Execution Traces",
+     "est_hours": 2.0,
+     "hours_basis": "Derived from CO3.LO2 (4.0 h total), focusing on tool-calling loops.",
+     "serves_los": [
+      "CO3.LO2"
+     ],
+     "covers_topic_groups": [
+      "TG4"
+     ],
+     "requires": [
+      "M3.T1"
+     ],
+     "topic_uid": "T:assisting-code-review-and-code-analysis",
+     "hands_on": true,
+     "suggested_order": 2,
+     "sources": [
+      {
+       "tag": "CORPUS",
+       "ref": "CO3.LO2",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M3.T3",
+     "title": "Debugging State Divergence in Failed File Operations",
+     "est_hours": 2.0,
+     "hours_basis": "Derived from CO3.LO2 (4.0 h total), focusing on environment responses.",
+     "serves_los": [
+      "CO3.LO2"
+     ],
+     "covers_topic_groups": [
+      "TG4"
+     ],
+     "requires": [
+      "M3.T2"
+     ],
+     "topic_uid": "T:assisting-code-review-and-code-analysis",
+     "hands_on": true,
+     "suggested_order": 3,
+     "sources": [
+      {
+       "tag": "CORPUS",
+       "ref": "CO3.LO2",
+       "basis": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "M4",
+   "title": "AI-Native Workflows and Evaluation Pipelines",
+   "order": 4,
+   "primary_cos": [
+    "CO4"
+   ],
+   "topics": [
+    {
+     "id": "M4.T1",
+     "title": "Comparative Analysis of AI-Native Workflows",
+     "est_hours": 2.0,
+     "hours_basis": "Derived from CO4.LO1 (4.0 h total), focusing on workflow trade-offs.",
+     "serves_los": [
+      "CO4.LO1"
+     ],
+     "covers_topic_groups": [
+      "TG4"
+     ],
+     "requires": [
+      "M1.T5",
+      "M3.T3"
+     ],
+     "topic_uid": "T:making-testing-more-effective",
+     "hands_on": false,
+     "suggested_order": 1,
+     "sources": [
+      {
+       "tag": "CORPUS",
+       "ref": "CO4.LO1",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M4.T2",
+     "title": "Evaluation Pipelines and Reliability Criteria",
+     "est_hours": 2.0,
+     "hours_basis": "Derived from CO4.LO1 (4.0 h total), focusing on reliability metrics.",
+     "serves_los": [
+      "CO4.LO1"
+     ],
+     "covers_topic_groups": [
+      "TG5"
+     ],
+     "requires": [
+      "M4.T1"
+     ],
+     "topic_uid": "T:making-testing-more-effective",
+     "hands_on": false,
+     "suggested_order": 2,
+     "sources": [
+      {
+       "tag": "CORPUS",
+       "ref": "CO4.LO1",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M4.T3",
+     "title": "Designing Workflows for Multi-Component Web Applications",
+     "est_hours": 2.5,
+     "hours_basis": "Derived from CO4.LO2 (5.0 h total), focusing on workflow design.",
+     "serves_los": [
+      "CO4.LO2"
+     ],
+     "covers_topic_groups": [
+      "TG5",
+      "TG6"
+     ],
+     "requires": [
+      "M4.T2",
+      "M2.T2"
+     ],
+     "topic_uid": "T:usability-and-evaluation",
+     "hands_on": true,
+     "suggested_order": 3,
+     "sources": [
+      {
+       "tag": "CORPUS",
+       "ref": "CO4.LO2",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M4.T4",
+     "title": "Assessing and Justifying AI-Native Software Factories",
+     "est_hours": 2.5,
+     "hours_basis": "Derived from CO4.LO2 (5.0 h total), focusing on design justification.",
+     "serves_los": [
+      "CO4.LO2"
+     ],
+     "covers_topic_groups": [
+      "TG6"
+     ],
+     "requires": [
+      "M4.T3"
+     ],
+     "topic_uid": "T:usability-and-evaluation",
+     "hands_on": true,
+     "suggested_order": 4,
+     "sources": [
+      {
+       "tag": "CORPUS",
+       "ref": "CO4.LO2",
+       "basis": null
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "structure_meta": {
+  "cut_candidates": [
+   {
+    "topic_id": "M4.T4",
+    "hours": 2.5,
+    "impact": "Reduces the depth of metacognitive evaluation and justification for the final capstone project workflow, but preserves all core implementation skills."
+   },
+   {
+    "topic_id": "M2.T3",
+    "hours": 3.0,
+    "impact": "Removes automated test generation from executable specs, requiring manual test writing instead, which slightly weakens the spec-driven pipeline."
+   }
+  ],
+  "constraint_notes": [
+   {
+    "constraint_id": "K12",
+    "note": "Practical, hands-on development is heavily integrated across Modules 1, 2, 3, and 4, with 9 out of 15 topics marked as hands-on."
+   }
+  ],
+  "hours_total": 35.0
+ },
+ "schedule": {
+  "weeks": [
+   {
+    "week": 1,
+    "items": [
+     {
+      "topic_id": "M1.T1",
+      "hours": 1.5
+     },
+     {
+      "topic_id": "M1.T2",
+      "hours": 1.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 2,
+    "items": [
+     {
+      "topic_id": "M1.T3",
+      "hours": 2.0
+     },
+     {
+      "topic_id": "M1.T4",
+      "hours": 1.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 3,
+    "items": [
+     {
+      "topic_id": "M1.T4",
+      "hours": 1.0
+     },
+     {
+      "topic_id": "M1.T5",
+      "hours": 2.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 4,
+    "items": [
+     {
+      "topic_id": "M1.T5",
+      "hours": 1.0
+     },
+     {
+      "topic_id": "M2.T1",
+      "hours": 2.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 5,
+    "items": [
+     {
+      "topic_id": "M2.T1",
+      "hours": 1.0
+     },
+     {
+      "topic_id": "M2.T2",
+      "hours": 2.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 6,
+    "items": [
+     {
+      "topic_id": "M2.T2",
+      "hours": 1.0
+     },
+     {
+      "topic_id": "M2.T3",
+      "hours": 2.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 7,
+    "items": [
+     {
+      "topic_id": "M2.T3",
+      "hours": 1.0
+     },
+     {
+      "topic_id": "M3.T1",
+      "hours": 2.0
+     }
+    ],
+    "is_midsem_boundary": true
+   },
+   {
+    "week": 8,
+    "items": [
+     {
+      "topic_id": "M3.T1",
+      "hours": 1.0
+     },
+     {
+      "topic_id": "M3.T2",
+      "hours": 2.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 9,
+    "items": [
+     {
+      "topic_id": "M3.T3",
+      "hours": 2.0
+     },
+     {
+      "topic_id": "M4.T1",
+      "hours": 1.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 10,
+    "items": [
+     {
+      "topic_id": "M4.T1",
+      "hours": 1.0
+     },
+     {
+      "topic_id": "M4.T2",
+      "hours": 2.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 11,
+    "items": [
+     {
+      "topic_id": "M4.T3",
+      "hours": 2.5
+     },
+     {
+      "topic_id": "M4.T4",
+      "hours": 0.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 12,
+    "items": [
+     {
+      "topic_id": "M4.T4",
+      "hours": 2.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 13,
+    "items": [],
+    "is_midsem_boundary": false
+   }
+  ],
+  "topic_weeks": {
+   "M1.T1": [
+    1
+   ],
+   "M1.T2": [
+    1
+   ],
+   "M1.T3": [
+    2
+   ],
+   "M1.T4": [
+    2,
+    3
+   ],
+   "M1.T5": [
+    3,
+    4
+   ],
+   "M2.T1": [
+    4,
+    5
+   ],
+   "M2.T2": [
+    5,
+    6
+   ],
+   "M2.T3": [
+    6,
+    7
+   ],
+   "M3.T1": [
+    7,
+    8
+   ],
+   "M3.T2": [
+    8
+   ],
+   "M3.T3": [
+    9
+   ],
+   "M4.T1": [
+    9,
+    10
+   ],
+   "M4.T2": [
+    10
+   ],
+   "M4.T3": [
+    11
+   ],
+   "M4.T4": [
+    11,
+    12
+   ]
+  },
+  "feasible": true,
+  "explanation": null,
+  "hours_needed": 35.0,
+  "hours_available": 39,
+  "dropped_edges": [],
+  "order": [
+   "M1.T1",
+   "M1.T2",
+   "M1.T3",
+   "M1.T4",
+   "M1.T5",
+   "M2.T1",
+   "M2.T2",
+   "M2.T3",
+   "M3.T1",
+   "M3.T2",
+   "M3.T3",
+   "M4.T1",
+   "M4.T2",
+   "M4.T3",
+   "M4.T4"
+  ]
+ },
+ "labs_tutorials": {
+  "concerns": [
+   {
+    "about": "access to AI coding tools/APIs",
+    "detail": "Access to commercial AI coding tools and APIs may require paid credits or subscription licenses which are not explicitly budgeted in the lab info."
+   }
+  ],
+  "missing": [],
+  "labs": [
+   {
+    "week": 1,
+    "id": "W01.LAB",
+    "title": "Environment Setup and Configuration Parsing",
+    "exercise": "Set up the local development environment, configure the AI coding agent framework, and parse configuration files to identify active components.",
+    "practises_los": [
+     "CO1.LO1"
+    ],
+    "uses_topics": [
+     "M1.T1",
+     "M1.T2"
+    ],
+    "tools": [
+     "Git",
+     "Python",
+     "JSON/YAML Parsers"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": null,
+    "notes": "Focus on understanding the configuration structure before writing code."
+   },
+   {
+    "week": 2,
+    "id": "W02.LAB",
+    "title": "Implementing Custom Tools and MCP Bindings",
+    "exercise": "Implement a custom local file-search tool and register it with the Model Context Protocol (MCP) server to extend agent capabilities.",
+    "practises_los": [
+     "CO1.LO2"
+    ],
+    "uses_topics": [
+     "M1.T3"
+    ],
+    "tools": [
+     "Python",
+     "MCP SDK",
+     "FastAPI"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Lab 1 Submission",
+    "notes": "Requires local testing of MCP tool schemas."
+   },
+   {
+    "week": 3,
+    "id": "W03.LAB",
+    "title": "Configuring Agent Skills and Bindings",
+    "exercise": "Configure and bind custom tools to a code-refactoring agent, ensuring the agent can invoke them correctly during local refactoring tasks.",
+    "practises_los": [
+     "CO1.LO2",
+     "CO1.LO3"
+    ],
+    "uses_topics": [
+     "M1.T4",
+     "M1.T5"
+    ],
+    "tools": [
+     "MCP SDK",
+     "AI Agent Framework"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Lab 2 Submission",
+    "notes": "Verify that no configuration warnings are reported."
+   },
+   {
+    "week": 4,
+    "id": "W04.LAB",
+    "title": "Refining Skills and Specification Templates",
+    "exercise": "Refine agent skills for complex refactoring tasks and translate a natural language use case into a structured specification template.",
+    "practises_los": [
+     "CO1.LO3",
+     "CO2.LO1"
+    ],
+    "uses_topics": [
+     "M1.T5",
+     "M2.T1"
+    ],
+    "tools": [
+     "AI Agent Framework",
+     "Markdown"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Lab 3 Submission",
+    "notes": "Transitioning from agent configuration to specification development."
+   },
+   {
+    "week": 5,
+    "id": "W05.LAB",
+    "title": "Constructing Executable Specifications",
+    "exercise": "Construct executable specifications for an authentication module using spec-driven development patterns based on natural language requirements.",
+    "practises_los": [
+     "CO2.LO1",
+     "CO2.LO2"
+    ],
+    "uses_topics": [
+     "M2.T1",
+     "M2.T2"
+    ],
+    "tools": [
+     "Spec-driven Dev Tools",
+     "Python"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Lab 4 Submission",
+    "notes": "Ensure all use cases in the requirements document are covered."
+   },
+   {
+    "week": 6,
+    "id": "W06.LAB",
+    "title": "Automated Test Case Generation",
+    "exercise": "Generate automated test cases from the executable specifications constructed in the previous week and verify they execute without errors.",
+    "practises_los": [
+     "CO2.LO2",
+     "CO2.LO3"
+    ],
+    "uses_topics": [
+     "M2.T2",
+     "M2.T3"
+    ],
+    "tools": [
+     "Pytest",
+     "Spec-driven Dev Tools"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Lab 5 Submission",
+    "notes": "Focus on eliminating syntax and runtime errors in generated tests."
+   },
+   {
+    "week": 7,
+    "id": "W07.LAB",
+    "title": "Mid-Semester Catch-up and Open Lab",
+    "exercise": "Open lab session for catch-up, debugging previous lab exercises, and mid-semester exam preparation. No new content is introduced.",
+    "practises_los": [
+     "CO2.LO3"
+    ],
+    "uses_topics": [
+     "M2.T3"
+    ],
+    "tools": [
+     "Git",
+     "Python"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": null,
+    "notes": "Mid-sem exam week. Used exclusively for catch-up and review."
+   },
+   {
+    "week": 8,
+    "id": "W08.LAB",
+    "title": "Tracing Execution Logs and Tool Loops",
+    "exercise": "Trace execution logs of a coding agent and analyze the tool-calling loop to identify state divergence during a failed file-write operation.",
+    "practises_los": [
+     "CO3.LO1",
+     "CO3.LO2"
+    ],
+    "uses_topics": [
+     "M3.T1",
+     "M3.T2"
+    ],
+    "tools": [
+     "Log Analyzers",
+     "Python"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Lab 6 Submission",
+    "notes": "Analyze divergence between internal state and environment response."
+   },
+   {
+    "week": 9,
+    "id": "W09.LAB",
+    "title": "Debugging State Divergence",
+    "exercise": "Debug state divergence in failed file operations by analyzing execution traces and correcting the agent's tool-calling parameters.",
+    "practises_los": [
+     "CO3.LO2"
+    ],
+    "uses_topics": [
+     "M3.T3"
+    ],
+    "tools": [
+     "Log Analyzers",
+     "Debugger"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Lab 7 Submission",
+    "notes": "Focus on resolving the exact point of failure in file operations."
+   },
+   {
+    "week": 10,
+    "id": "W10.LAB",
+    "title": "Setting Up Evaluation Pipelines",
+    "exercise": "Set up and run an evaluation pipeline to compare the performance of two different AI-native software development workflows.",
+    "practises_los": [
+     "CO4.LO1"
+    ],
+    "uses_topics": [
+     "M4.T1",
+     "M4.T2"
+    ],
+    "tools": [
+     "Evaluation Pipelines",
+     "CI/CD Tools"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Lab 8 Submission",
+    "notes": "Compare workflows quantitatively using reliability criteria."
+   },
+   {
+    "week": 11,
+    "id": "W11.LAB",
+    "title": "Designing Multi-Component Workflows",
+    "exercise": "Design and implement a multi-component web application workflow using an AI-native software factory setup.",
+    "practises_los": [
+     "CO4.LO2"
+    ],
+    "uses_topics": [
+     "M4.T3"
+    ],
+    "tools": [
+     "Docker",
+     "AI Software Factory Tools"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Project Part 1",
+    "notes": "Begin work on the final project implementation."
+   },
+   {
+    "week": 12,
+    "id": "W12.LAB",
+    "title": "Workflow Assessment and Justification",
+    "exercise": "Assess and justify the reliability of the designed AI-native workflow against automation requirements, producing the final project deliverable.",
+    "practises_los": [
+     "CO4.LO2"
+    ],
+    "uses_topics": [
+     "M4.T4"
+    ],
+    "tools": [
+     "AI Software Factory Tools",
+     "Markdown"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": "Project Final Deliverable",
+    "notes": "Justify design decisions against stated reliability requirements."
+   },
+   {
+    "week": 13,
+    "id": "W13.LAB",
+    "title": "Project Presentations and Evaluation",
+    "exercise": "Final project presentations and evaluation of the AI-native software development workflows.",
+    "practises_los": [
+     "CO4.LO2"
+    ],
+    "uses_topics": [
+     "M4.T4"
+    ],
+    "tools": [
+     "Presentation Tools"
+    ],
+    "hours": 2.0,
+    "produces_assessed_artifact": null,
+    "notes": "Peer evaluation and final grading of projects."
+   }
+  ],
+  "tutorials": [
+   {
+    "week": 1,
+    "id": "W01.TUT",
+    "activity": "Interactive walkthrough of Model Context Protocol (MCP) schemas and configuration files in small groups.",
+    "practises_los": [
+     "CO1.LO1"
+    ],
+    "uses_topics": [
+     "M1.T1",
+     "M1.T2"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 2,
+    "id": "W02.TUT",
+    "activity": "Worked trace-diagnosis of tool registration errors and binding failures in MCP.",
+    "practises_los": [
+     "CO1.LO2"
+    ],
+    "uses_topics": [
+     "M1.T3"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 3,
+    "id": "W03.TUT",
+    "activity": "Peer review of tool configurations and analysis of integration test failures for refactoring agents.",
+    "practises_los": [
+     "CO1.LO3"
+    ],
+    "uses_topics": [
+     "M1.T4",
+     "M1.T5"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 4,
+    "id": "W04.TUT",
+    "activity": "Group discussion and mapping of natural language requirements to structured specification templates.",
+    "practises_los": [
+     "CO2.LO1"
+    ],
+    "uses_topics": [
+     "M2.T1"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 5,
+    "id": "W05.TUT",
+    "activity": "Step-by-step construction of executable specifications for a mock authentication scenario.",
+    "practises_los": [
+     "CO2.LO2"
+    ],
+    "uses_topics": [
+     "M2.T2"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 6,
+    "id": "W06.TUT",
+    "activity": "Collaborative debugging of generated test cases to resolve syntax and execution errors.",
+    "practises_los": [
+     "CO2.LO3"
+    ],
+    "uses_topics": [
+     "M2.T3"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 7,
+    "id": "W07.TUT",
+    "activity": "Mid-semester review session resolving common doubts from the first six weeks of labs and tutorials.",
+    "practises_los": [
+     "CO2.LO3"
+    ],
+    "uses_topics": [
+     "M2.T3"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 8,
+    "id": "W08.TUT",
+    "activity": "Analysis of execution logs to trace operational loops and identify agent state divergence.",
+    "practises_los": [
+     "CO3.LO1"
+    ],
+    "uses_topics": [
+     "M3.T1"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 9,
+    "id": "W09.TUT",
+    "activity": "Case study discussion on debugging state divergence in multi-step file operations.",
+    "practises_los": [
+     "CO3.LO2"
+    ],
+    "uses_topics": [
+     "M3.T3"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 10,
+    "id": "W10.TUT",
+    "activity": "Comparative analysis of AI-native workflows and reliability criteria evaluation.",
+    "practises_los": [
+     "CO4.LO1"
+    ],
+    "uses_topics": [
+     "M4.T1",
+     "M4.T2"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 11,
+    "id": "W11.TUT",
+    "activity": "Design review of multi-component web application workflows against reliability requirements.",
+    "practises_los": [
+     "CO4.LO2"
+    ],
+    "uses_topics": [
+     "M4.T3"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 12,
+    "id": "W12.TUT",
+    "activity": "Peer evaluation of the reliability justifications for the designed AI-native software factories.",
+    "practises_los": [
+     "CO4.LO2"
+    ],
+    "uses_topics": [
+     "M4.T4"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 13,
+    "id": "W13.TUT",
+    "activity": "Course wrap-up, feedback session, and discussion on future trends in AI-native software engineering.",
+    "practises_los": [
+     "CO4.LO2"
+    ],
+    "uses_topics": [
+     "M4.T4"
+    ],
+    "hours": 1.0
+   }
+  ],
+  "infra_requirements": [
+   {
+    "item": "Student development machines",
+    "for_weeks": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13
+    ],
+    "status": "available",
+    "source": "CCO.lab"
+   },
+   {
+    "item": "access to AI coding tools/APIs",
+    "for_weeks": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13
+    ],
+    "status": "needs_confirmation",
+    "source": "CCO.lab"
+   },
+   {
+    "item": "software development environments",
+    "for_weeks": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13
+    ],
+    "status": "available",
+    "source": "CCO.lab"
+   },
+   {
+    "item": "TA support",
+    "for_weeks": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13
+    ],
+    "status": "available",
+    "source": "CCO.lab"
+   }
+  ]
+ },
+ "assessment": {
+  "concerns": [],
+  "missing": [],
+  "components": [
+   {
+    "type": "assignment",
+    "weight_pct": 25.0,
+    "weight_justification": null,
+    "best_k": null,
+    "n": null,
+    "activity_types": [
+     "implement",
+     "tool-use",
+     "design",
+     "analyse-data"
+    ],
+    "integrity": "Individual submission with plagiarism detection and random viva.",
+    "instances": [
+     {
+      "id": "A1",
+      "release_week": 4,
+      "due_week": 5,
+      "format": "Programming Assignment",
+      "covers_topics": [
+       "M1.T3",
+       "M1.T4",
+       "M1.T5"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO1.LO2",
+        "marks_pct_of_instance": 40.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO1.LO3",
+        "marks_pct_of_instance": 60.0,
+        "bloom_level": 3
+       }
+      ],
+      "est_student_hours": 6.0,
+      "feeds_from_lab": "W03.LAB"
+     },
+     {
+      "id": "A2",
+      "release_week": 7,
+      "due_week": 8,
+      "format": "Programming Assignment",
+      "covers_topics": [
+       "M2.T1",
+       "M2.T2",
+       "M2.T3"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO2.LO1",
+        "marks_pct_of_instance": 20.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO2.LO2",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO2.LO3",
+        "marks_pct_of_instance": 30.0,
+        "bloom_level": 3
+       }
+      ],
+      "est_student_hours": 8.0,
+      "feeds_from_lab": "W06.LAB"
+     },
+     {
+      "id": "A3",
+      "release_week": 9,
+      "due_week": 10,
+      "format": "Code Review Assignment",
+      "covers_topics": [
+       "M3.T2",
+       "M3.T3"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO3.LO2",
+        "marks_pct_of_instance": 100.0,
+        "bloom_level": 4
+       }
+      ],
+      "est_student_hours": 6.0,
+      "feeds_from_lab": "W08.LAB"
+     }
+    ]
+   },
+   {
+    "type": "project",
+    "weight_pct": 25.0,
+    "weight_justification": null,
+    "best_k": null,
+    "n": null,
+    "activity_types": [
+     "evaluate-critique",
+     "analyse-data",
+     "tool-use"
+    ],
+    "integrity": "Team git repository history analysis and individual viva.",
+    "instances": [
+     {
+      "id": "P1",
+      "release_week": 9,
+      "due_week": 11,
+      "format": "Project Milestone 1",
+      "covers_topics": [
+       "M3.T2",
+       "M3.T3"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO3.LO2",
+        "marks_pct_of_instance": 100.0,
+        "bloom_level": 4
+       }
+      ],
+      "est_student_hours": 10.0,
+      "feeds_from_lab": "W09.LAB"
+     },
+     {
+      "id": "P2",
+      "release_week": 12,
+      "due_week": 13,
+      "format": "Project Final Deliverable",
+      "covers_topics": [
+       "M4.T3",
+       "M4.T4"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO4.LO2",
+        "marks_pct_of_instance": 100.0,
+        "bloom_level": 5
+       }
+      ],
+      "est_student_hours": 12.0,
+      "feeds_from_lab": "W11.LAB"
+     }
+    ]
+   },
+   {
+    "type": "midsem",
+    "weight_pct": 20.0,
+    "weight_justification": null,
+    "best_k": null,
+    "n": null,
+    "activity_types": [
+     "design",
+     "implement"
+    ],
+    "integrity": "Proctored in-person exam.",
+    "instances": [
+     {
+      "id": "MidSemExam",
+      "release_week": 7,
+      "due_week": 7,
+      "format": "Written and Practical Exam",
+      "covers_topics": [
+       "M1.T1",
+       "M1.T2",
+       "M1.T3",
+       "M1.T4",
+       "M1.T5",
+       "M2.T1",
+       "M2.T2",
+       "M2.T3"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO1.LO1",
+        "marks_pct_of_instance": 20.0,
+        "bloom_level": 1
+       },
+       {
+        "lo_id": "CO1.LO2",
+        "marks_pct_of_instance": 20.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO2.LO1",
+        "marks_pct_of_instance": 20.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO2.LO2",
+        "marks_pct_of_instance": 20.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO2.LO3",
+        "marks_pct_of_instance": 20.0,
+        "bloom_level": 3
+       }
+      ],
+      "est_student_hours": 0.0,
+      "feeds_from_lab": null
+     }
+    ]
+   },
+   {
+    "type": "endsem",
+    "weight_pct": 30.0,
+    "weight_justification": null,
+    "best_k": null,
+    "n": null,
+    "activity_types": [
+     "analyse-data",
+     "evaluate-critique"
+    ],
+    "integrity": "Proctored in-person exam.",
+    "instances": [
+     {
+      "id": "EndSemExam",
+      "release_week": 13,
+      "due_week": 13,
+      "format": "Written and Practical Exam",
+      "covers_topics": [
+       "M1.T5",
+       "M2.T2",
+       "M3.T1",
+       "M3.T2",
+       "M3.T3",
+       "M4.T1",
+       "M4.T2",
+       "M4.T3",
+       "M4.T4"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO1.LO3",
+        "marks_pct_of_instance": 15.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO2.LO2",
+        "marks_pct_of_instance": 15.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO3.LO1",
+        "marks_pct_of_instance": 20.0,
+        "bloom_level": 2
+       },
+       {
+        "lo_id": "CO3.LO2",
+        "marks_pct_of_instance": 20.0,
+        "bloom_level": 4
+       },
+       {
+        "lo_id": "CO4.LO1",
+        "marks_pct_of_instance": 15.0,
+        "bloom_level": 4
+       },
+       {
+        "lo_id": "CO4.LO2",
+        "marks_pct_of_instance": 15.0,
+        "bloom_level": 5
+       }
+      ],
+      "est_student_hours": 0.0,
+      "feeds_from_lab": null
+     }
+    ]
+   }
+  ],
+  "weight_sum": 100.0,
+  "unsupported_po_predictions": []
+ },
+ "copo_computed": [
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSE/PO3",
+   "share": 0.616,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSE/PO4",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSE/PO9",
+   "share": 0.616,
+   "strength_computed": 3,
+   "strength_provisional": 2,
+   "claimed": true
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSE/PO3",
+   "share": 0.517,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSE/PO4",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSE/PO9",
+   "share": 0.517,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSE/PO3",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSE/PO4",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSE/PO9",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSE/PO3",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSE/PO4",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSE/PO9",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": 2,
+   "claimed": true
+  }
+ ],
+ "co_marks_share": {
+  "CO1": 20.83,
+  "CO2": 24.83,
+  "CO3": 32.83,
+  "CO4": 21.5
+ },
+ "resources": [
+  {
+   "candidate_id": "OL:OL16463826W",
+   "role": "primary",
+   "title": "Specification by example",
+   "authors": [
+    "Gojko Adzic"
+   ],
+   "year": 2011,
+   "edition": null,
+   "venue": null,
+   "identifier": {
+    "isbn": "9781638351368",
+    "doi": null,
+    "arxiv": null,
+    "url": "https://openlibrary.org/works/OL16463826W"
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M2.T1",
+     "reason": "Provides foundational methodologies for translating natural language requirements into structured, executable specification templates."
+    },
+    {
+     "topic_id": "M2.T2",
+     "reason": "Discusses how to construct concrete, executable specifications that can be validated automatically."
+    }
+   ],
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "OL:OL16463826W",
+     "basis": null
+    }
+   ],
+   "verification": {
+    "verified": true,
+    "problems": []
+   }
+  },
+  {
+   "candidate_id": "DOI:10.1007/979-8-8688-2361-9_5",
+   "role": "primary",
+   "title": "Architectural Design Patterns for Agentic Systems",
+   "authors": [
+    "Dhivya Nagasubramanian"
+   ],
+   "year": 2026,
+   "edition": null,
+   "venue": "Agentic AI for Engineers",
+   "identifier": {
+    "isbn": null,
+    "doi": "10.1007/979-8-8688-2361-9_5",
+    "arxiv": null,
+    "url": "https://doi.org/10.1007/979-8-8688-2361-9_5"
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M1.T1",
+     "reason": "Explains configuration structures and architectural design patterns for setting up AI coding agents."
+    },
+    {
+     "topic_id": "M1.T3",
+     "reason": "Covers custom tool implementation and skills configuration within agentic architectures."
+    },
+    {
+     "topic_id": "M1.T5",
+     "reason": "Discusses configuring skills and behaviors for code-refactoring agents."
+    }
+   ],
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "DOI:10.1007/979-8-8688-2361-9_5",
+     "basis": null
+    }
+   ],
+   "verification": {
+    "verified": true,
+    "problems": []
+   }
+  },
+  {
+   "candidate_id": "DOI:10.2139/ssrn.6515481",
+   "role": "reference",
+   "title": "Design of Multi Agent Autonomous Workflow Systems using Agentic AI Frameworks",
+   "authors": [
+    "Harish Apuri",
+    "Charani Yepuri"
+   ],
+   "year": 2026,
+   "edition": null,
+   "venue": null,
+   "identifier": {
+    "isbn": null,
+    "doi": "10.2139/ssrn.6515481",
+    "arxiv": null,
+    "url": "https://doi.org/10.2139/ssrn.6515481"
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M3.T1",
+     "reason": "Analyzes multi-agent operational loops and execution trace logging."
+    },
+    {
+     "topic_id": "M3.T2",
+     "reason": "Provides frameworks for tracing and analyzing tool-calling loops in autonomous workflow systems."
+    },
+    {
+     "topic_id": "M4.T1",
+     "reason": "Compares different multi-agent autonomous workflow designs and execution pipelines."
+    },
+    {
+     "topic_id": "M4.T3",
+     "reason": "Guides the design of workflows for multi-component web applications using multi-agent systems."
+    }
+   ],
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "DOI:10.2139/ssrn.6515481",
+     "basis": null
+    }
+   ],
+   "verification": {
+    "verified": true,
+    "problems": []
+   }
+  },
+  {
+   "candidate_id": "DOI:10.1145/3639478.3639815",
+   "role": "reference",
+   "title": "Beyond Accuracy: Evaluating Source Code Capabilities in Large Language Models for Software Engineering",
+   "authors": [
+    "Alejandro Velasco"
+   ],
+   "year": 2024,
+   "edition": null,
+   "venue": "Proceedings of the 2024 IEEE/ACM 46th International Conference on Software Engineering: Companion Proceedings",
+   "identifier": {
+    "isbn": null,
+    "doi": "10.1145/3639478.3639815",
+    "arxiv": null,
+    "url": "https://doi.org/10.1145/3639478.3639815"
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M4.T2",
+     "reason": "Establishes evaluation pipelines and reliability criteria for assessing LLM-generated code."
+    },
+    {
+     "topic_id": "M4.T4",
+     "reason": "Provides empirical basis for assessing and justifying AI-native software engineering workflows."
+    }
+   ],
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "DOI:10.1145/3639478.3639815",
+     "basis": null
+    }
+   ],
+   "verification": {
+    "verified": true,
+    "problems": []
+   }
+  },
+  {
+   "candidate_id": "OL:OL7951794W",
+   "role": "reference",
+   "title": "xUnit Test Patterns",
+   "authors": [
+    "Gerard Meszaros"
+   ],
+   "year": 2007,
+   "edition": null,
+   "venue": null,
+   "identifier": {
+    "isbn": "9780131495050",
+    "doi": null,
+    "arxiv": null,
+    "url": "https://openlibrary.org/works/OL7951794W"
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M2.T3",
+     "reason": "Provides standard test patterns for structuring automated test cases generated from specifications."
+    }
+   ],
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "OL:OL7951794W",
+     "basis": null
+    }
+   ],
+   "verification": {
+    "verified": true,
+    "problems": []
+   }
+  }
+ ],
+ "resource_policy": {
+  "textbook_policy": "mixed",
+  "reason": "The course covers rapidly evolving agentic software engineering paradigms (such as MCP and agentic workflows) which require recent research publications and architectural patterns, combined with established software engineering texts for specification-driven development and testing patterns.",
+  "search_requests": [
+   {
+    "need": "Official documentation, specifications, or academic papers specifically detailing the Model Context Protocol (MCP) and its API schemas.",
+    "for_topics": [
+     "M1.T2",
+     "M1.T4"
+    ]
+   },
+   {
+    "need": "Literature or technical guides on debugging state divergence, environment synchronization, or file system recovery in autonomous AI coding agents.",
+    "for_topics": [
+     "M3.T3"
+    ]
+   }
+  ]
+ },
+ "narrative": {
+  "concerns": [
+   {
+    "about": "SC1",
+    "detail": "Special constraint SC1 requests mapping all COs to 'PO_MAGIC', which does not exist in the institutional program outcomes."
+   }
+  ],
+  "missing": [],
+  "course_description": "This course examines modern AI-native software development, focusing on collaborative workflows between human developers and AI coding agents. Students learn to configure agent skills, tool use, and model context protocols to build reliable software environments. Through practical exercises, students construct executable specifications from natural language requirements and analyze agentic execution loops to debug operational failures. Additionally, they learn to design and assess AI-native software development workflows and evaluation pipelines against specific reliability requirements. The course is taught through three hours of lectures, one tutorial hour, and two practical lab hours per week over thirteen weeks, incorporating hands-on assignments and a collaborative software project. It is not a general introduction to machine learning, a traditional programming course, or a purely theoretical treatment of large language models. Instead, it emphasizes practical, workflow-oriented software engineering practices using emerging developer tools.",
+  "sequencing_rationale": "The course sequence progresses from foundational setup to advanced workflow evaluation. It begins with configuring agentic protocols (M1), followed by generating executable specifications (M2). Students then analyze and debug execution loops (M3) before designing complete AI-native workflows (M4). This progression builds upon the mandatory prerequisite CSE201, ensuring students possess the necessary object-oriented programming and unit testing foundations to effectively evaluate agent-generated code.",
+  "assessment_rationale": "The assessment structure balances practical application and theoretical understanding. Hands-on assignments (25%) and a course project (25%) directly evaluate students' ability to configure protocols (CO1), build specifications (CO2), and design workflows (CO4). Mid-semester (20%) and end-semester (30%) examinations assess their analytical understanding of agentic execution loops, failure debugging (CO3), and workflow justification (CO4), aligning with the practical, workflow-oriented pedagogical emphasis.",
+  "positioning_rationale": "This course uniquely focuses on interactive, agent-assisted software development workflows. It differs from CSE701, which applies AI analytically to legacy software engineering artifacts. Unlike CSE581's focus on traditional systems analysis or CSE582's emphasis on legacy maintenance, this course targets greenfield, AI-native development. Finally, while CSE594A is a 2-credit course on broad agentic reasoning, this 4-credit course delivers dedicated, hands-on training in software engineering toolchains and evaluation pipelines.",
+  "grounding": [
+   "CO1",
+   "CO2",
+   "CO3",
+   "CO4",
+   "M1",
+   "M2",
+   "M3",
+   "M4",
+   "CSE201",
+   "CSE701",
+   "CSE581",
+   "CSE582",
+   "CSE594A"
+  ]
+ }
+}

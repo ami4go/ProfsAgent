@@ -1,0 +1,65 @@
+Course Code,
+Course Name,Software Development using AI
+Credits,4
+Course Offered to,UG
+Course Description,"This course examines modern AI-native software development, focusing on collaborative workflows between human developers and AI coding agents. Students learn to configure agent skills, tool use, and model context protocols to build reliable software environments. Through practical exercises, students construct executable specifications from natural language requirements and analyze agentic execution loops to debug operational failures. Additionally, they learn to design and assess AI-native software development workflows and evaluation pipelines against specific reliability requirements. The course is taught through three hours of lectures, one tutorial hour, and two practical lab hours per week over thirteen weeks, incorporating hands-on assignments and a collaborative software project. It is not a general introduction to machine learning, a traditional programming course, or a purely theoretical treatment of large language models. Instead, it emphasizes practical, workflow-oriented software engineering practices using emerging developer tools."
+Pre-requisites
+Pre-requisite (Mandatory),Pre-requisite (Desirable),Pre-requisite(other)
+CSE201,,
+Post Conditions
+CO1,CO2,CO3,CO4
+"Configure agent skills, tool use, and model context protocols for an AI-assisted development environment, using a supplied agent framework and API set, such that all public integration tests pass and no configuration warnings are reported.","Construct executable specifications from a given natural language requirements document, using spec-driven development patterns, covering every use case in the supplied requirements document.","Analyse the operational loops of a software coding agent for a supplied buggy code repository, identifying at least three distinct failure causes in agentic execution, each supported by evidence from the execution logs.","Assess an AI-native software development workflow and evaluation pipeline, for a given multi-component software project description, justifying each design decision against at least one stated reliability or automation requirement."
+Weekly Lecture Plan
+Week Number,Lecture Topic,COs Met,Tutorial,Assignments / Project
+1,"Configuration Structures of AI Coding Agents (M1.T1)
+Model Context Protocol (MCP) and API Schemas (M1.T2)",CO1,Interactive walkthrough of Model Context Protocol (MCP) schemas and configuration files in small groups.,
+2,"Implementing Custom Tools for AI Environments (M1.T3)
+Model Context Protocol Bindings and Integration (M1.T4)",CO1,Worked trace-diagnosis of tool registration errors and binding failures in MCP.,
+3,"Model Context Protocol Bindings and Integration (M1.T4)
+Configuring Skills for Code-Refactoring Agents (M1.T5)",CO1,Peer review of tool configurations and analysis of integration test failures for refactoring agents.,
+4,"Configuring Skills for Code-Refactoring Agents (M1.T5)
+Translating Natural Language to Specification Templates (M2.T1)","CO1, CO2",Group discussion and mapping of natural language requirements to structured specification templates.,A1 released
+5,"Translating Natural Language to Specification Templates (M2.T1)
+Constructing Executable Specifications for Authentication (M2.T2)",CO2,Step-by-step construction of executable specifications for a mock authentication scenario.,A1 due
+6,"Constructing Executable Specifications for Authentication (M2.T2)
+Automated Test Case Generation from Executable Specs (M2.T3)",CO2,Collaborative debugging of generated test cases to resolve syntax and execution errors.,
+7,"Automated Test Case Generation from Executable Specs (M2.T3)
+Tracing Execution Logs and Operational Loops (M3.T1)","CO2, CO3",Mid-semester review session resolving common doubts from the first six weeks of labs and tutorials.,A2 released; MidSemExam (midsem)
+8,"Tracing Execution Logs and Operational Loops (M3.T1)
+Analyzing Tool-Calling Loops in Execution Traces (M3.T2)",CO3,Analysis of execution logs to trace operational loops and identify agent state divergence.,A2 due
+9,"Debugging State Divergence in Failed File Operations (M3.T3)
+Comparative Analysis of AI-Native Workflows (M4.T1)","CO3, CO4",Case study discussion on debugging state divergence in multi-step file operations.,A3 released; P1 released
+10,"Comparative Analysis of AI-Native Workflows (M4.T1)
+Evaluation Pipelines and Reliability Criteria (M4.T2)",CO4,Comparative analysis of AI-native workflows and reliability criteria evaluation.,A3 due
+11,"Designing Workflows for Multi-Component Web Applications (M4.T3)
+Assessing and Justifying AI-Native Software Factories (M4.T4)",CO4,Design review of multi-component web application workflows against reliability requirements.,P1 due
+12,Assessing and Justifying AI-Native Software Factories (M4.T4),CO4,Peer evaluation of the reliability justifications for the designed AI-native software factories.,P2 released
+13,,,"Course wrap-up, feedback session, and discussion on future trends in AI-native software engineering.",P2 due; EndSemExam (endsem)
+Weekly Lab Plan
+Week Number,Laboratory Exercise,COs Met,Platform
+1,"Set up the local development environment, configure the AI coding agent framework, and parse configuration files to identify active components.",CO1,"Git, Python, JSON/YAML Parsers"
+2,Implement a custom local file-search tool and register it with the Model Context Protocol (MCP) server to extend agent capabilities.,CO1,"Python, MCP SDK, FastAPI"
+3,"Configure and bind custom tools to a code-refactoring agent, ensuring the agent can invoke them correctly during local refactoring tasks.",CO1,"MCP SDK, AI Agent Framework"
+4,Refine agent skills for complex refactoring tasks and translate a natural language use case into a structured specification template.,"CO1, CO2","AI Agent Framework, Markdown"
+5,Construct executable specifications for an authentication module using spec-driven development patterns based on natural language requirements.,CO2,"Spec-driven Dev Tools, Python"
+6,Generate automated test cases from the executable specifications constructed in the previous week and verify they execute without errors.,CO2,"Pytest, Spec-driven Dev Tools"
+7,"Open lab session for catch-up, debugging previous lab exercises, and mid-semester exam preparation. No new content is introduced.",CO2,"Git, Python"
+8,Trace execution logs of a coding agent and analyze the tool-calling loop to identify state divergence during a failed file-write operation.,CO3,"Log Analyzers, Python"
+9,Debug state divergence in failed file operations by analyzing execution traces and correcting the agent's tool-calling parameters.,CO3,"Log Analyzers, Debugger"
+10,Set up and run an evaluation pipeline to compare the performance of two different AI-native software development workflows.,CO4,"Evaluation Pipelines, CI/CD Tools"
+11,Design and implement a multi-component web application workflow using an AI-native software factory setup.,CO4,"Docker, AI Software Factory Tools"
+12,"Assess and justify the reliability of the designed AI-native workflow against automation requirements, producing the final project deliverable.",CO4,"AI Software Factory Tools, Markdown"
+13,Final project presentations and evaluation of the AI-native software development workflows.,CO4,Presentation Tools
+Assessment Plan
+Type of Evaluation,% Contribution in Grade
+assignment,25.0
+project,25.0
+midsem,20.0
+endsem,30.0
+Resource Material
+Type,Title
+primary,Gojko Adzic (2011). Specification by example
+primary,Dhivya Nagasubramanian (2026). Architectural Design Patterns for Agentic Systems
+reference,"Harish Apuri, Charani Yepuri (2026). Design of Multi Agent Autonomous Workflow Systems using Agentic AI Frameworks"
+reference,Alejandro Velasco (2024). Beyond Accuracy: Evaluating Source Code Capabilities in Large Language Models for Software Engineering
+reference,Gerard Meszaros (2007). xUnit Test Patterns

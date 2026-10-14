@@ -1,0 +1,70 @@
+Course Code,
+Course Name,Software Development using AI
+Credits,4
+Course Offered to,UG
+Course Description,"This course examines modern AI-native software development, where developers collaborate with coding agents. It covers how to define intent, provide effective context, structure development workflows, and coordinate AI tools. Students gain practical experience designing and evaluating agent-assisted software development processes. This course matters for third and fourth-year Bachelor of Technology students in Computer Science and Engineering by bridging core software foundations and emerging AI-assisted engineering practices. Upon completing the course, students will be able to configure AI coding agents and tool integrations using orchestration frameworks, construct executable specifications and context engineering pipelines from requirements, deconstruct development workflows and failure causes using execution traces, evaluate code reliability using automated testing harnesses, and assess end-to-end software factories. The course is taught through a combination of lectures, tutorials, and laboratory sessions incorporating hands-on coding and project work."
+Pre-requisites
+Pre-requisite (Mandatory),Pre-requisite (Desirable),Pre-requisite(other)
+CSE201,,
+Post Conditions
+CO1,CO2,CO3,CO4,CO5
+"Configure AI coding agents and tool integrations using an agent orchestration framework, meeting the stated interface specification for every public method.","Construct executable specifications and context engineering pipelines from natural language requirements, covering every use case in the supplied requirements document.","Deconstruct AI-assisted software development workflows and loop engineering strategies for a supplied codebase, identifying at least three distinct failure causes with supporting log evidence.","Evaluate the reliability and performance of agent-generated code using automated testing and evaluation harnesses, such that at least 80% of the provided test cases pass.","Assess an end-to-end AI-native software factory incorporating coding agents, automated workflows, and deployment pipelines, justifying each design decision against at least one stated requirement."
+Weekly Lecture Plan
+Week Number,Lecture Topic,COs Met,Tutorial,Assignments / Project
+1,"Agent orchestration framework components (M1.T1)
+Communication protocols and developer workflows (M1.T2)",CO1,"Worked trace-diagnosis of sample orchestrator logs in pairs, identifying component message flows.",
+2,"MCP server bindings and tool call intercepts (M1.T3)
+Agent skills and tool integration specifications (M1.T4)",CO1,"Worked trace-diagnosis of 3 failing MCP tool call intercepts, in pairs.",
+3,"Agent skills and tool integration specifications (M1.T4)
+Requirements engineering and domain entity extraction (M2.T1)
+Spec-driven development use case analysis (M2.T2)","CO1, CO2",Entity extraction and structured use case derivation exercise on a provided natural language specification.,A:Assignment1 released
+4,"Spec-driven development use case analysis (M2.T2)
+Context engineering pipelines and prompt templates (M2.T3)",CO2,"Worked trace-diagnosis of ambiguous prompt templates, refactoring them into structured use case mappings.",A:Quiz1 (quiz); A:Assignment1 due
+5,"Requirements to executable specifications mapping (M2.T4)
+Execution log tracing and developer workflow inspection (M3.T1)","CO2, CO3",Trace inspection and anomaly identification exercise using sample execution logs from agent-assisted coding iterations.,A:Assignment2 released
+6,"Execution log tracing and developer workflow inspection (M3.T1)
+Iterative development anomaly detection (M3.T2)
+Loop engineering and retry strategies (M3.T3)",CO3,"Worked trace-diagnosis of 3 iterative development anomaly logs, identifying root causes in pairs.",A:Assignment2 due; A:ProjectMilestone1 released
+7,"Loop engineering and retry strategies (M3.T3)
+Assisting code review and failure diagnosis (M3.T4)",CO3,Mid-semester review and problem-solving session on retry loop pattern failures.,A:Midsem (midsem)
+8,"Automated test harness construction for coding agents (M4.T1)
+Unit testing and static analysis integration (M4.T2)",CO4,Peer review of unit test cases and static analysis configurations for coding agent outputs.,A:ProjectMilestone2 released
+9,"Agent execution latency and accuracy metrics (M4.T3)
+Evaluation frameworks and reliability benchmarks (M4.T4)",CO4,Worked calculation of agent execution latency percentiles and accuracy metrics on sample benchmark runs.,A:ProjectMilestone1 due
+10,"Evaluation frameworks and reliability benchmarks (M4.T4)
+AI-native software factory architectures (M5.T1)
+Automated workflows and deployment pipelines (M5.T2)","CO4, CO5",Comparative analysis discussion of alternative AI-native software factory architectural blueprints.,A:ProjectFinal released
+11,"Automated workflows and deployment pipelines (M5.T2)
+Agent communication protocols and CI/CD triggers (M5.T3)",CO5,Architectural tradeoff analysis and justification discussion for automated deployment pipelines.,A:ProjectMilestone2 due
+12,"Agent communication protocols and CI/CD triggers (M5.T3)
+Emerging developer tools and capstone project integration (M5.T4)",CO5,Capstone project design review and protocol justification critique in small groups.,
+13,,,,A:ProjectFinal due; A:Endsem (endsem)
+Weekly Lab Plan
+Week Number,Laboratory Exercise,COs Met,Platform
+1,"Verify local developer environments, install required tooling, and inspect sample agent orchestration configurations.",CO1,"Python, Git, Student development machines"
+2,Configure MCP server bindings and implement tool call intercepts meeting interface specifications.,CO1,"Python, MCP SDK, Student development machines"
+3,Develop and test agent skills and tool integration specifications against functional requirements.,CO1,"Python, Agent development framework"
+4,Construct prompt templates and context window management scripts from natural language requirements.,CO2,"Python, Prompt engineering tools"
+5,Map natural language requirements to executable specifications and validate context pipelines.,CO2,"Python, Executable specification runners"
+6,Implement loop engineering and retry strategies for agentic workflows.,CO3,"Python, Execution tracing tools"
+7,Deconstruct execution traces and retry loop patterns to identify failure causes with log evidence.,CO3,"Python, Log analysis tools"
+8,Implement automated test harnesses for validating outputs generated by coding agents.,CO4,"Python, Pytest, Static analysis tools"
+9,Evaluate agent execution latency and accuracy metrics using automated testing and evaluation harnesses.,CO4,"Python, Evaluation benchmark frameworks"
+10,Run evaluation frameworks and reliability benchmarks to achieve target pass rates on test cases.,CO4,"Python, Evaluation benchmark frameworks"
+11,Integrate agent communication protocols and CI/CD triggers within an AI-native software factory.,CO5,"GitHub Actions, CI/CD pipelines, Python"
+12,Incorporate emerging developer tools into capstone project integration and end-to-end pipelines.,CO5,"Software development environments, AI coding tools/APIs"
+Assessment Plan
+Type of Evaluation,% Contribution in Grade
+quiz,10.0
+assignment,20.0
+midsem,20.0
+project,25.0
+endsem,25.0
+Resource Material
+Type,Title
+reading,"John E. Robert, Ipek Ozkaya, Douglas C. Schmidt (2026). Transforming Software Engineering and Software Acquisition with Large Language Models"
+reading,"Jerin George Mathew, Jacopo Rossi (2025). Large Language Model Agents"
+reading,Aymen El Amri (2024). LLM Prompt Engineering for Developers
+reading,"Mohammed A. Shehab, Mohammad Wardat, Safwan Omari, Yaser Jararweh (2024). Evaluating Large Language Models for Code Generation: Assessing Accuracy, Quality, and Performance"
+reading,"Weixi Tong, Tianyi Zhang (2024). CodeJudge: Evaluating Code Generation with Large Language Models"
+reading,"Mukul Paras Potta, Shouvick Mondal, Yogesh Kumar Meena (2025). Evaluating Pre-Trained Large Language Models Using Simulated Human Inputs for Python Code Generation"

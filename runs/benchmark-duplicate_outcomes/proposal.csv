@@ -1,0 +1,72 @@
+Course Code,
+Course Name,Software Development using AI
+Credits,4
+Course Offered to,UG
+Course Description,"This course examines modern AI-native software development, focusing on how developers collaborate with coding agents. Designed for advanced undergraduate students, it covers defining intent, context engineering, structuring development workflows, and coordinating AI tools. Rather than serving as a general introduction to machine learning, a traditional programming course, or a theoretical study of large language models, it emphasizes practical, workflow-oriented software engineering. Students will learn to configure AI coding tools using Model Context Protocol servers, construct executable specifications from natural language requirements, and analyze iterative agentic debugging loops. They will also evaluate automated testing, deployment, and reliability metrics for agent-generated artifacts, culminating in the delivery of an end-to-end software application. The course is taught through three hours of lectures, one hour of tutorial, and two hours of practical labs per week over thirteen weeks, heavily incorporating hands-on development and a collaborative group project."
+Pre-requisites
+Pre-requisite (Mandatory),Pre-requisite (Desirable),Pre-requisite(other)
+CSE201,,
+Post Conditions
+CO1,CO2,CO3,CO4,CO5
+"Configure AI coding tools and agent skills within a given development environment, integrating Model Context Protocol servers to support developer workflows, such that all public integration checks pass and no configuration warnings are reported.","Construct executable specifications from natural language requirements using spec-driven development tools, for a supplied functional specification document, covering every use case in the supplied requirements document.","Analyze agent-assisted software development loops and iterative workflows, for a supplied project codebase of at most 5000 lines of code within 60 minutes, identifying at least three distinct failure causes with supporting log evidence.","Evaluate automated testing, deployment, and reliability metrics for an agent-generated software artifact, identifying at least three distinct reliability vulnerabilities, with a proposed mitigation for each.","Evaluate an end-to-end software application through collaborative agent workflows, such that the delivered system satisfies every acceptance criterion agreed at the first milestone and is demonstrated live with three scenario walkthroughs chosen by the evaluator."
+Weekly Lecture Plan
+Week Number,Lecture Topic,COs Met,Tutorial,Assignments / Project
+1,"Core Components of AI-Native Workflows (M1.T1)
+Local Workspace Configuration for AI Tools (M1.T2)",CO1,Analyze AI-native workflow architectures and compare local vs cloud-based developer environments in small groups.,
+2,"Local Workspace Configuration for AI Tools (M1.T2)
+Model Context Protocol (MCP) Architecture (M1.T3)",CO1,Troubleshoot local workspace configurations and resolve environment path conflicts in pairs.,
+3,"Context Engineering and MCP Server Integration (M1.T4)
+Requirements Engineering and Spec Parsing (M2.T1)","CO1, CO2",Peer review of MCP server configuration files to identify potential security and integration risks.,A:Quiz1 (quiz); A:Assign1 released
+4,"Requirements Engineering and Spec Parsing (M2.T1)
+Executable Specifications and Spec-Driven Tools (M2.T2)",CO2,Parse a messy natural language specification document to extract clean functional requirements.,A:Assign1 due
+5,"Executable Specifications and Spec-Driven Tools (M2.T2)
+Loop Engineering and Iterative Workflows (M3.T1)","CO2, CO3",Design test cases for executable specifications and map them to user stories.,A:Assign2 released
+6,"Multi-Agent Software Factories (M3.T2)
+Execution Log Analysis and Debugging (M3.T3)",CO3,Trace a complex agent-assisted software development loop step-by-step on a sample codebase.,A:Quiz2 (quiz); A:Assign2 due
+7,"Execution Log Analysis and Debugging (M3.T3)
+Automated Testing and Evaluation Metrics (M4.T1)","CO3, CO4",Mid-sem review and problem-solving session on agent loop divergence scenarios.,A:Midsem (midsem)
+8,"Automated Testing and Evaluation Metrics (M4.T1)
+Deployment Metrics and Baseline Performance (M4.T2)",CO4,Analyze automated testing metrics and calculate baseline performance scores for a sample artifact.,
+9,Reliability Evaluation of Agent-Generated API Clients (M4.T3),CO4,Design a suite of 50 edge-case integration tests for a mock API client.,A:ProjM1 released
+10,"Project Planning and Collaborative Workflows (M5.T1)
+Hands-on Coding with Emerging Developer Tools (M5.T2)",CO5,Collaborative project planning exercise: defining milestones and agent roles for a team project.,
+11,"Hands-on Coding with Emerging Developer Tools (M5.T2)
+Live Scenario Walkthroughs and System Evaluation (M5.T3)",CO5,Design scenario walkthroughs and evaluation rubrics for live system testing.,A:ProjM1 due
+12,Live Scenario Walkthroughs and System Evaluation (M5.T3),CO5,Peer feedback session on system evaluation results and live demo dry-runs.,A:ProjFinal released
+13,,,Course wrap-up and discussion of emerging trends in AI-native developer tools.,A:ProjFinal due; A:Endsem (endsem)
+Weekly Lab Plan
+Week Number,Laboratory Exercise,COs Met,Platform
+1,"Configure local development environments with AI coding assistants (e.g., VS Code, Cursor) and verify API connectivity to local and cloud LLMs.",CO1,"VS Code, Cursor, Local LLM APIs"
+2,"Develop and configure a basic Model Context Protocol (MCP) server using Node.js or Python, verifying connection over standard input/output transports.",CO1,"Node.js, Python, MCP SDK"
+3,"Integrate custom MCP servers with an AI client, configuring context engineering rules to pass all public integration checks without warnings.",CO1,"MCP Servers, SSE Transports"
+4,Construct executable specifications using Gherkin syntax and spec-driven tools like Cucumber to cover all use cases in a provided requirements document.,CO2,"Cucumber, Behave, Gherkin"
+5,"Iterate on executable specifications to handle edge cases, running automated test suites to ensure complete coverage of the requirements.",CO2,Spec-driven testing frameworks
+6,"Deploy and run a multi-agent software factory, capturing and saving execution logs of up to 5000 lines for subsequent analysis.",CO3,"Autogen, CrewAI"
+7,Open lab session for students to catch up on pending lab exercises and receive additional TA support. No new content is introduced.,,
+8,Analyze execution logs from the multi-agent run to identify the exact step where the agent loop diverged from the specification.,CO3,"Log parsers, Python"
+9,"Evaluate the reliability of an agent-generated API client against a suite of 50 edge-case integration tests, identifying critical failure modes.",CO4,"Pytest, Integration test suites"
+10,Set up collaborative agent workflows using emerging developer tools to prepare for the end-to-end software application project.,CO5,"Git, GitHub, Collaborative agent tools"
+11,"Conduct live scenario walkthroughs of the collaborative agent system, testing against evaluator-selected scenarios to evaluate system performance.",CO5,Live evaluation scripts
+12,Perform final system evaluations and live demonstrations of the end-to-end software application under three evaluator-selected scenario walkthroughs.,CO5,Live evaluation scripts
+13,Final project showcase and viva session where teams present their completed agent-assisted software applications and receive final evaluations.,CO5,Presentation tools
+Assessment Plan
+Type of Evaluation,% Contribution in Grade
+quiz,10.0
+assignment,20.0
+midsem,20.0
+project,25.0
+endsem,25.0
+Resource Material
+Type,Title
+primary,"Antonio Gullí (2025). Gullí, Antonio. ""Agentic Design Patterns."" Springer, 2025"
+reading," (None). OpenAI MCP, Agent2Agent (A2A) Protocol"
+reading,"Yujia Li, Shunyu Yao, Guanzhi Wang, John Yang, Alexander Novikov, Bogdan Georgiev (None). 1) Li, Yujia, et al. ""Competition-level code generation with alphacode."" Science, 2022.
+2) Yao, Shunyu, et al. ""React: Synergizing reasoning and acting in language models."" ICLR 2022.
+3) Wang, Guanzhi, et al. ""Voyager: An Open-Ended Embodied Agent with Large Language Models."" TMLR 2023.
+4) Yang, John, et al. ""Swe-agent: Agent-computer interfaces enable automated software engineering."" NeurIPS 2024.
+5) Novikov, Alexander, et al. ""AlphaEvolve: A coding agent for scientific and algorithmic discovery."" arXiv:2506.13131, 2025.
+6) Georgiev, Bogdan, et al. ""Mathematical exploration and discovery at scale."" arXiv:2511.02864, 2025.
+7) Other ongoing research reports."
+reference,Yisen Xu (2025). MUARF: Leveraging Multi-Agent Workflows for Automated Code Refactoring
+reference,"Ashraf Elnashar, Max Moundas, Douglas Schmidt, Jesse Spencer-Smith (2024). Evaluating the Performance of LLM-Generated Code for ChatGPT-4 and AutoGen Along with Top-Rated Human Solutions"
+reference, (2005). Specification-Driven Verification and Validation

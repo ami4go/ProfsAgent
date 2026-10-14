@@ -1,0 +1,61 @@
+01:52:01 S1 intake → Course Context Object
+01:52:22   [G1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 3380+2444 tok · 20.2s
+01:52:22   CCO: 6 topic groups · level 3 · L-T-P {'L': 3, 'T': 1, 'P': 2} · 13 weeks · 5 assumptions · conflicts 0
+01:52:22 S2 curriculum positioning
+01:52:22   internal candidates: ['CSE701 0.185', 'CSE581 0.034', 'CSE582 0.067', 'CSE594A 0.08', 'CSE201 0.017', 'CSE583 0.0', 'AI501 0.034', 'CSE665 0.0']
+01:52:28   [G2] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 10843+1839 tok · 5.7s
+01:52:28   [G2] validators: 1 errors, 0 warnings
+01:52:33   [R1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 7914+233 tok · 5.4s · schema-retries 1
+01:52:33   [R1 round 1] errors 1 → 1 REJECT
+01:52:37   [R1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 3955+140 tok · 4.1s
+01:52:37   [R1 round 2] errors 1 → 1 REJECT
+01:52:41   [R1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 3955+131 tok · 4.1s
+01:52:41   [R1 round 3] errors 1 → 1 REJECT
+01:52:41 S3 constraints + feasibility
+01:52:56   [G3] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 3046+554 tok · 15.2s
+01:52:56   13 constraints (4 from professor text) · conflicts 0
+01:52:56 GATE gate1_context: approve by auto (dev run) · froze 33 nodes
+01:52:56 S4 learning design: COs → CO–PO → LOs
+01:53:04   [G4] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 7239+1793 tok · 7.8s
+01:53:04   [G4] validators: 1 errors, 0 warnings
+01:53:06   [R1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 7128+291 tok · 1.7s
+01:53:06   [R1 round 1] errors 1 → 0 ACCEPT
+01:53:12   [G5] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 3018+1246 tok · 6.3s
+01:53:12   [G5] validators: 0 errors, 0 warnings
+01:53:21   [G6] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 6585+3799 tok · 9.1s
+01:53:21   [G6] validators: 7 errors, 12 warnings
+01:53:24   [R1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 9545+618 tok · 2.6s
+01:53:24   [R1 round 1] errors 7 → 5 ACCEPT
+01:53:29   [R1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 9223+895 tok · 4.4s
+01:53:29   [R1 round 2] errors 5 → 0 ACCEPT
+01:53:29 GATE gate2_outcomes: approve by auto (dev run) · froze 16 nodes
+01:53:29 S5 structure (modules/topics) → S6 schedule
+01:53:36   [G7] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 6238+2637 tok · 7.7s
+01:53:36   [G7] validators: 5 errors, 1 warnings
+01:53:40   [R1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 5073+1444 tok · 3.8s
+01:53:40   [R1 round 1] errors 5 → 1 ACCEPT
+01:53:42   [R1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 5288+337 tok · 1.9s
+01:53:42   [R1 round 2] errors 1 → 2 REJECT (new codes ['VT-SIZE'])
+01:53:46   [R1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 5360+530 tok · 4.2s
+01:53:46   [R1 round 3] errors 1 → 0 ACCEPT
+01:53:46   schedule: feasible · need 38.0 h / 39 h
+01:53:46 S7 lab/tutorial plan + assessment blueprint
+01:53:57   [G8] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 3941+3363 tok · 10.6s
+01:53:57   [G8] validators: 0 errors, 0 warnings
+01:54:03   [G9] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 6429+2120 tok · 5.8s
+01:54:03   [G9] validators: 7 errors, 2 warnings
+01:54:05   [R1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 8028+711 tok · 2.6s
+01:54:05   [R1 round 1] errors 7 → 1 REJECT (new codes ['T10'])
+01:54:10   [R1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 8072+752 tok · 4.3s
+01:54:10   [R1 round 2] errors 7 → 1 ACCEPT
+01:54:12   [R1] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 7510+156 tok · 2.3s
+01:54:12   [R1 round 3] errors 1 → 0 ACCEPT
+01:54:12 S8 resources (API candidates → G10 → verification)
+01:54:17   [X3] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 1697+338 tok · 4.7s
+01:54:19   15 API candidates from 6 X3 queries
+01:54:33   [G10] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 6144+1909 tok · 13.5s
+01:54:33   resources: 6/6 verified
+01:54:33 S9 narrative
+01:54:36   [G11] ok via gemini:gemini-3.5-flash-lite:k3ca4d81f · 3721+542 tok · 2.9s
+01:54:36 rendered proposal.md + proposal.csv (1 errors, 17 warnings)
+01:54:36 GATE gate3_proposal: approve by auto (dev run) · froze 0 nodes

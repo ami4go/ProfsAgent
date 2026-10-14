@@ -117,4 +117,53 @@ def open_items(vs: list[dict]) -> list[dict]:
             for x in rules.errors(vs)]
 
 
+# ------------------------------------------------------------------ gates: block on open errors, override with a reason
+def recorded(state: dict) -> list[dict]:
+    """Every violation recorded so far (state["violations"] by stage), annotated with record v2 fields."""
+    return annotate([dict(x) for vs in (state.get("violations") or {}).values() for x in vs])
+
+
+def coverage(state: dict) -> dict:
+    """What validation looked at: stages checked, errors/warnings by family, and constraint coverage."""
+    from collections import Counter
+    from profsagent.validate import constraints
+    vs = recorded(state)
+    errs = rules.errors(vs)
+    return {"stages_checked": sorted((state.get("violations") or {}).keys()), "errors": len(errs), "warnings": len(vs) - len(errs),
+            "errors_by_family": dict(Counter(x["family"] for x in errs)),
+            "constraints": constraints.coverage(state) if state.get("constraints") is not None else None}
+
+
+def gate_view(state: dict, cap: int = 40) -> dict:
+    """What a gate shows: blocked or not, the open errors (grouped by who can close them) and the coverage report."""
+    errs = rules.errors(recorded(state))
+    order = {"professor": 0, "repair": 1, "fixer": 2}
+    items = sorted(({"code": x["code"], "stage": x.get("stage"), "nodes": x["nodes"][:6], "message": x["message"][:200],
+                     "fixable_by": x["fixable_by"]} for x in errs), key=lambda i: (order.get(i["fixable_by"], 3), i["stage"] or "", i["code"]))
+    return {"blocked": bool(errs), "open_codes": sorted({x["code"] for x in errs}), "open": items[:cap],
+            "open_total": len(errs), "coverage": coverage(state)}
+
+
+def resolve_gate(view: dict, decision: dict | None, auto: bool) -> tuple[dict | None, str | None]:
+    """Gate policy. Returns (decision to record, problem). A problem means: ask the professor again.
+    - no open errors: the professor's decision stands;
+    - open errors: approving needs a reason, recorded as an override of the open error codes; rejecting is always allowed;
+    - dev / benchmark runs (auto): approve, and record the override as "would have blocked"."""
+    if auto:
+        d = {"decision": "approve", "by": "auto (dev run)", "comment": "auto-approved; not a professor decision"}
+        if view["blocked"]:
+            d["override"] = {"codes": view["open_codes"], "errors": view["open_total"], "reason": "auto-approved dev run",
+                             "would_block": True}
+        return d, None
+    decision = dict(decision or {})
+    if decision.get("decision") != "approve" or not view["blocked"]:
+        return decision, None
+    reason = str(decision.get("reason") or decision.get("comment") or "").strip()
+    if not reason:
+        return None, (f"{view['open_total']} open errors ({', '.join(view['open_codes'])}): approving needs a reason "
+                      f"(it is recorded as an override), or reject to stop the run")
+    decision["override"] = {"codes": view["open_codes"], "errors": view["open_total"], "reason": reason}
+    return decision, None
+
+
 from profsagent.validate import fixers  # noqa: E402,F401  (registers the deterministic fixers)

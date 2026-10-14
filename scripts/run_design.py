@@ -58,7 +58,12 @@ def main() -> None:
     if intr:
         print("\n=== WAITING FOR PROFESSOR ===")
         print(json.dumps(intr[0].value, indent=1, ensure_ascii=False, default=str)[:4000])
-        print(f"\nresume with: python scripts/run_design.py --run-id {a.run_id} --resume --decision approve --by \"<name>\"")
+        v = intr[0].value
+        if v.get("problem"):
+            print(f"\n!! {v['problem']}")
+        why = ' --comment "<reason for approving with open errors>"' if v.get("blocked") else ""
+        print(f"\nresume with: python scripts/run_design.py --run-id {a.run_id} --resume --decision approve --by \"<name>\"{why}"
+              f"\n        or: python scripts/run_design.py --run-id {a.run_id} --resume --decision reject --by \"<name>\"")
     else:
         print(f"\nfinished: {run_dir / 'proposal.md'}")
 

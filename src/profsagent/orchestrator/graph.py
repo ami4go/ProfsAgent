@@ -4,9 +4,11 @@ State checkpointed to runs/<run_id>/checkpoint.sqlite (thread_id = run_id). Heav
 design graph) live in a Runtime registry keyed by run_id, not in the checkpointed state; each node re-attaches
 from runs/<run_id>/state.json, so a run can be resumed in a new process.
 
-Gates use `interrupt()`: the caller sees {gate, summary, open_errors, open_warnings} and resumes with
-Command(resume={"decision": "approve"|"reject", "by": "...", "comment": "..."}). With auto_approve=True the gate
-records an automatic approval (dev runs only — the approval is labelled "auto").
+Gates use `interrupt()`: the caller sees {gate, summary, open_errors, open_warnings, blocked, open, coverage} and resumes
+with Command(resume={"decision": "approve"|"reject", "by": "...", "comment": "..."}). A gate with open errors is
+blocked: approving it needs a reason (the comment, or "reason"), recorded as an override of the open error codes.
+With auto_approve=True the gate records an automatic approval (dev runs only — labelled "auto"); when it would have
+blocked, that is recorded in state["would_block"].
 """
 from __future__ import annotations
 
@@ -19,7 +21,7 @@ from langgraph.types import interrupt
 
 from profsagent.agents import pipeline as P
 from profsagent.render.proposal import render
-from profsagent.validate import rules
+from profsagent.validate import engine, rules
 
 _RT: dict[str, P.Runtime] = {}
 
@@ -58,12 +60,19 @@ def _gate(name, summary_fn):
         if any(a["gate"] == name for a in rt.state.get("approvals", [])):
             return {}
         vs = P.all_violations(rt.state)
+        view = engine.gate_view(rt.state)
         payload = {"gate": name, "summary": summary_fn(rt.state), "open_errors": len(rules.errors(vs)),
-                   "open_warnings": len(vs) - len(rules.errors(vs))}
+                   "open_warnings": len(vs) - len(rules.errors(vs)), "blocked": view["blocked"], "open": view["open"],
+                   "coverage": view["coverage"]}
         if state.get("auto_approve"):
-            decision = {"decision": "approve", "by": "auto (dev run)", "comment": "auto-approved; not a professor decision"}
-        else:
-            decision = interrupt(payload)
+            decision, _ = engine.resolve_gate(view, None, auto=True)
+        else:   # blocked: approving needs a reason (override); ask again until there is one, or the professor rejects
+            decision, problem = engine.resolve_gate(view, interrupt(payload), auto=False)
+            while problem:
+                decision, problem = engine.resolve_gate(view, interrupt({**payload, "problem": problem}), auto=False)
+        if (decision.get("override") or {}).get("would_block"):
+            rt.state.setdefault("would_block", []).append({"gate": name, "codes": view["open_codes"], "errors": view["open_total"]})
+            rt.log(f"GATE {name}: would have blocked on {view['open_total']} open errors ({', '.join(view['open_codes'])})")
         P.gate(rt, name, decision)
         if decision.get("decision") != "approve":
             return {"rejected_at": name}

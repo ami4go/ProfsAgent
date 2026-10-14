@@ -12,6 +12,7 @@ blocked, that is recorded in state["would_block"].
 """
 from __future__ import annotations
 
+import json
 import sqlite3
 from typing import TypedDict
 
@@ -88,6 +89,17 @@ def _after_gate(state: S) -> str:
 def _render(state: S) -> S:
     rt = _rt(state)
     render(rt)
+    try:   # evaluation tier 1: deterministic metrics of the finished design (scripts/evaluate_design.py re-runs it)
+        from profsagent.evaluate.deterministic import evaluate
+        ev = evaluate(rt.state)
+        (rt.run_dir / "evaluation_deterministic.json").write_text(json.dumps(ev, indent=1, ensure_ascii=False, default=str), encoding="utf-8")
+        rt.state["evaluation_deterministic"] = ev["summary"]
+        s = ev["summary"]
+        rt.log(f"evaluation (tier 1): {s['verdict']} · {s['errors']} errors · alignment min {s['alignment_min_pct']}% · "
+               f"hard constraints satisfied {s['hard_constraints_satisfied_pct']}%")
+        rt.save()
+    except Exception as e:  # noqa: BLE001 — the proposal is complete either way
+        rt.log(f"evaluation (tier 1) skipped: {type(e).__name__}: {str(e)[:160]}")
     return {}
 
 

@@ -48,4 +48,7 @@ limits:
   native_json_schema: false  # send the Pydantic JSON Schema to Gemini (responseJsonSchema, constrained decoding);
                              # off until a live call confirms the models accept it (a rejected schema falls back to plain JSON)
   max_wait_s: 600            # when every slot is cooling down, wait up to this long for the soonest
+  repair_stall_rounds: 2     # stop R1 after this many rejected patches in a row (each round is one call)
+  regenerate_on_stall: 0     # 1: when repair stalls with errors left that R1 could fix, call the generator once more with
+                             # the open errors as evidence; kept only if it has fewer errors. Off: it costs a call per stage
   ollama_timeout_s: 2400

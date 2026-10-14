@@ -18,8 +18,13 @@ Differences from the stub, beyond covering every course in the graph (471) inste
 - corpus_resources lists every course that uses a resource, not only the course asked about;
 - priors(level=...) restricts the corpus to that course level (the stub ignores level);
 - prereqs / anti never name an excluded course.
-As in the stub, topic_overlap is Jaccard over embedding-matched topic phrases (no IDF yet) and topic_precedence is
-empty until the PRECEDES topic DAG is computed.
+As in the stub, topic_overlap is Jaccard over embedding-matched topic phrases (no IDF yet).
+
+Topic precedence ("A is taught before B") is counted from the real weekly plans, on demand (precedence_evidence):
+each topic is matched to weekly-plan phrases by embedding at the topic-match threshold, and a course votes A before B
+when A's first matching week comes before B's. Copies of one sheet under several codes vote once. A stored DAG over
+the canonical Topic nodes was tried first and left out: 90% of canonical topics occur in one course only, so it had
+261 edges, all with support 2 and many from copied sheets.
 
     python -m profsagent.kg.neo4j_kg            # load from Neo4j and print a summary (no embeddings)
     python -m profsagent.kg.neo4j_kg --warm     # also embed every course text and topic once (fills the cache)
@@ -89,6 +94,11 @@ LOCAL_MODEL = "sentence-transformers/all-MiniLM-L6-v2"   # 384 dims, English, re
 # sampled pairs of graph topics, 82% (AUC 0.91, vs 0.85 for gemini-embedding-001 on the same pairs).
 LOCAL_TOPIC_MATCH_SIM = 0.66
 LOCAL_CACHE = Path(__file__).resolve().parents[3] / "data" / "cache" / "emb_local"
+# Weekly-plan entries that are events, not subject matter: they say nothing about which topic comes first
+NOT_A_TOPIC = re.compile(r"\b(mid[- ]?sem\w*|end[- ]?sem\w*|mid[- ]?term|exams?|examination|quiz\w*|recess|holidays?|revis\w*|"
+                         r"recap|buffer|guest lectures?|presentations?|viva|project (demo|submission|review)s?)\b|"
+                         r"^\s*(applications?|case stud(y|ies)|review|summary|conclusions?|overview|introduction|wrap[- ]?up)\s*$", re.I)
+SAME_SHEET_JACCARD = 0.8   # two codes whose weekly topics overlap this much are one sheet (cross-listing): one vote
 
 
 def _norm(code: str) -> str:
@@ -417,8 +427,72 @@ class Neo4jKG:
                             "used_by_courses": self.used_by.get(x["rid"], [uid]), "verified": False})
         return out
 
+    @cached_property
+    def _week_rows(self) -> tuple[list[str], np.ndarray, np.ndarray, np.ndarray, np.ndarray] | None:
+        """Every subject-matter weekly-plan phrase: (course uids, family of each course, course of each row,
+        week position of each row, phrase vectors)."""
+        if not self._phrase_vecs:
+            return None
+        uids = sorted(self.by_uid)
+        topic_sets = [{t.lower() for w in self.by_uid[u]["weeks"] for t in w["topics"]} for u in uids]
+        family = list(range(len(uids)))
+        for i, j in ((i, j) for i in range(len(uids)) for j in range(i)):
+            a, b = topic_sets[i], topic_sets[j]
+            same_code = re.sub(r"[A-Z]$", "", uids[i]) == re.sub(r"[A-Z]$", "", uids[j])      # CSE600 / CSE600A
+            if family[i] == i and (same_code or (a and b and len(a & b) / len(a | b) >= SAME_SHEET_JACCARD)):
+                family[i] = family[j]
+        course, week, vecs = [], [], []
+        for ci, u in enumerate(uids):
+            for wi, w in enumerate(self.by_uid[u]["weeks"]):
+                for t in w["topics"]:
+                    if t in self._phrase_vecs and not NOT_A_TOPIC.search(t):
+                        course.append(ci)
+                        week.append(wi)
+                        vecs.append(self._phrase_vecs[t])
+        return uids, np.array(family), np.array(course), np.array(week), np.vstack(vecs)
+
+    def precedence_evidence(self, titles, exclude=frozenset(), min_support=2, min_confidence=0.8):
+        """[{from, to, support, against, courses}] for pairs of the given topic titles that IIIT-D courses teach in a
+        consistent order: `support` sheets reach `from` in an earlier week than `to`, `against` the other way round."""
+        rows = self._week_rows if self.embedder else None
+        keep = [i for i, x in enumerate(titles) if not NOT_A_TOPIC.search(x)]
+        if rows is None or len(keep) < 2:
+            return []
+        uids, family, course, week, mat = rows
+        tv = self._embed_phrases([titles[i] for i in keep])
+        if tv is None:
+            return []
+        ok = np.array([not self._excluded(u, exclude) for u in uids])
+        reps = sorted({min(c for c in range(len(uids)) if ok[c] and family[c] == f)          # one sheet per family
+                       for f in {family[c] for c in range(len(uids)) if ok[c]}})
+        first = np.full((len(keep), len(reps)), np.inf)
+        hit = (tv @ mat.T) >= self.match_sim
+        col = {c: k for k, c in enumerate(reps)}
+        for i in range(len(keep)):
+            for r in np.flatnonzero(hit[i]):
+                k = col.get(int(course[r]))
+                if k is not None:
+                    first[i, k] = min(first[i, k], week[r])
+        both = np.isfinite(first)[:, None, :] & np.isfinite(first)[None, :, :]
+        before = both & (first[:, None, :] < first[None, :, :])
+        sup = before.sum(axis=2)
+        out = []
+        for a, b in zip(*np.nonzero(sup >= min_support)):
+            s, n = int(sup[a, b]), int(sup[b, a])
+            if s / (s + n) >= min_confidence:
+                out.append({"from": titles[keep[a]], "to": titles[keep[b]], "support": s, "against": n,
+                            "courses": [uids[reps[k]] for k in np.flatnonzero(before[a, b])][:6]})
+        return sorted(out, key=lambda e: (-e["support"], e["from"], e["to"]))
+
     def topic_precedence(self, topic_uids):
-        return []
+        """KGClient contract: precedence among canonical topics (T:<slug> uids), from the same weekly-plan evidence."""
+        name_of = {}
+        for t in self.topics:
+            name_of.setdefault(f"T:{slug(t['name'])}", t["name"])
+        known = [u for u in topic_uids if u in name_of]
+        uid_of = {name_of[u]: u for u in known}
+        return [{**e, "from": uid_of[e["from"]], "to": uid_of[e["to"]]}
+                for e in self.precedence_evidence([name_of[u] for u in known])]
 
 
 if __name__ == "__main__":

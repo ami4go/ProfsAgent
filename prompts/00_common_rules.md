@@ -24,7 +24,7 @@ Every factual claim you output must carry a source tag drawn from this vocabular
 | `REGULATION` | stated in an IIIT-D regulation provided in context | the regulation id + section, e.g. `UGREG-2025§4` |
 | `CATALOGUE` | from the IIIT-D course directory row or sheet provided in context | the course uid, e.g. `CSE201` |
 | `CORPUS` | from an extracted Layer A node provided in context | the node uid, e.g. `CSE201/CO3` |
-| `PROGRAMME` | a programme outcome/objective provided in context | the PO/PEO uid, e.g. `BTECH-CSE/PO4` |
+| `PROGRAMME` | a programme outcome/objective provided in context | the PO/PEO uid, e.g. `BTECH-COMMON/PO3`, `BTECH-CSE/PSO4` |
 | `EXTERNAL` | a retrieved external document provided in context | the document id given in context |
 | `DEFAULT` | a regulation-derived default already applied upstream | the constraint id, e.g. `K02` |
 | `INFERRED` | your own reasoning or general pedagogical knowledge | `null`, and you must fill `basis` |

@@ -82,6 +82,21 @@ def _render(state: S) -> S:
     return {}
 
 
+def _publish(state: S) -> S:
+    """After the final approval, load the design graph into Neo4j next to Layer A (skipped, not failed, if Neo4j is down)."""
+    rt = _rt(state)
+    try:
+        from profsagent.design.neo4j_sync import load_run
+        stats = load_run(rt.run_dir)
+        rt.state["neo4j_load"] = stats
+        rt.log(f"design graph loaded into Neo4j: {stats}")
+    except Exception as e:  # noqa: BLE001 — the run's files are complete either way
+        rt.state["neo4j_load"] = {"skipped": f"{type(e).__name__}: {str(e)[:160]}"}
+        rt.log(f"design graph NOT loaded into Neo4j ({type(e).__name__}); load later with scripts/load_design_to_neo4j.py")
+    rt.save()
+    return {}
+
+
 def build(checkpoint_path: str):
     g = StateGraph(S)
     g.add_node("s1_intake", _stage(P.s1_intake, "s1_intake"))
@@ -100,6 +115,7 @@ def build(checkpoint_path: str):
     g.add_node("s9_narrative", _stage(P.s9_narrative, "s9_narrative"))
     g.add_node("render", _render)
     g.add_node("gate3_proposal", _gate("gate3_proposal", lambda st: {"rendered": "proposal.md"}))
+    g.add_node("publish", _publish)
 
     g.add_edge(START, "s1_intake")
     g.add_edge("s1_intake", "s2_positioning")
@@ -113,7 +129,8 @@ def build(checkpoint_path: str):
     g.add_edge("s8_resources", "s9_narrative")
     g.add_edge("s9_narrative", "render")
     g.add_edge("render", "gate3_proposal")
-    g.add_edge("gate3_proposal", END)
+    g.add_conditional_edges("gate3_proposal", _after_gate, {"go": "publish", "stop": END})
+    g.add_edge("publish", END)
     conn = sqlite3.connect(checkpoint_path, check_same_thread=False)
     return g.compile(checkpointer=SqliteSaver(conn))
 

@@ -64,5 +64,8 @@ def degree_bank() -> dict:
 
 
 def programme(uid: str) -> dict:
-    name = uid.lower().replace("btech-", "btech_")
-    return load_yaml(f"data/programmes/{name}.yaml")
+    """BTECH-COMMON, BTECH-CSE, BTECH-CSAI, MTECH-CSE → data/programmes/<uid lowercased, '-'→'_'>.yaml."""
+    p = load_yaml(f"data/programmes/{uid.lower().replace('-', '_')}.yaml")
+    for x in p.get("po", []):
+        x.setdefault("short_label", x.get("label"))
+    return p

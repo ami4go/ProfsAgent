@@ -2,7 +2,8 @@
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
 
 import pytest
 
@@ -132,3 +133,115 @@ def test_course_level_normalised(level, code, years, expected):
     d = det.apply_defaults(cco)
     assert d["level"] == expected
     assert det.bloom_band(d["level"])["floor"] >= 1
+
+
+# ------------------------------------------------------------------ IIIT-D CSE course template rules
+def test_template_co_count_and_high_bloom_rule():
+    st = {"bloom_band": {"floor": 1, "ceiling": 6}, "co_count": det.co_count_for(4), "topic_groups": [],
+          "cos": [{"id": f"CO{i}", "statement": f"Apply technique {i} to a given dataset, using Python, with 90% accuracy.",
+                   "verb": "apply", "behaviour": f"technique {i}", "condition": "using Python", "degree": "90% accuracy",
+                   "bloom_level": 3, "covers_topic_groups": []} for i in range(1, 7)]}
+    codes = {x["code"] for x in rules.check_cos(st)}
+    assert "V4" in codes and "VCO-BL" in codes          # 6 COs for 4 credits, none at BL4+
+    assert det.co_count_for(2) == {"min": 2, "max": 3, "basis": "IIIT-D CSE course template (2-credit course)"}
+
+
+def test_template_proctored_rule():
+    comps = [{"type": "project", "weight_pct": 50, "instances": []}, {"type": "assignment", "weight_pct": 20, "instances": []},
+             {"type": "midsem", "weight_pct": 30, "instances": []}]
+    st = {"assessment": {"components": comps}, "los": [], "weeks": 13, "modules": [], "schedule": {"topic_weeks": {}}}
+    assert "VA-PROCTOR" in {x["code"] for x in rules.check_assessment(st)}
+    comps[1]["proctored"] = True                         # e.g. an invigilated in-lab test
+    assert "VA-PROCTOR" not in {x["code"] for x in rules.check_assessment(st)}
+
+
+def test_template_programmes_verbatim():
+    from profsagent.config import pedagogy, programme
+    sizes = {p: len(programme(p)["po"]) for p in pedagogy()["copo_programmes"]}
+    assert sizes == {"BTECH-COMMON": 12, "BTECH-CSE": 5, "BTECH-CSAI": 6, "MTECH-CSE": 13}
+    assert programme("BTECH-COMMON")["po"][4]["text"].startswith("Modern tool usage")
+
+
+def test_template_xlsx_keeps_official_structure(tmp_path):
+    import json
+
+    import openpyxl
+    from profsagent.render.course_template import write_xlsx
+    src = ROOT / "runs" / "cs601-01" / "state.json"
+    if not src.exists():
+        pytest.skip("runs/cs601-01 not present (restore with: git restore runs/)")
+    st = json.loads(src.read_text(encoding="utf-8"))
+    ws = openpyxl.load_workbook(write_xlsx(st, tmp_path / "t.xlsx"))["Template"]
+    col_a = [ws.cell(r, 1).value for r in range(1, ws.max_row + 1)]
+    for label in ("Code", "CourseOutcomes", "Approval Date", "EndMandatory", "Suggested Topics", "Suggested Plan of Labs",
+                  "Suggested Assessment Plan", "Suggested Resources", "EndSuggested", "B.Tech. (common)", "B.Tech.(CSAI)"):
+        assert label in col_a
+    end = col_a.index("EndMandatory") + 1
+    assert ws.cell(end, 2).value == "Do not remove or edit this row"
+    assert [ws.cell(r, 1).value for r in range(col_a.index("CourseOutcomes") + 3, end - 2)] == [c["id"] for c in st["cos"]]
+
+
+def test_fit_assessment_fixes_weights_and_timing():
+    comps = [
+        {"type": "assignment", "weight_pct": 35, "proctored": False,
+         "instances": [{"id": "A1", "release_week": 2, "due_week": 4, "covers_topics": ["T3"],
+                        "assesses": [{"lo_id": "CO1.LO1", "marks_pct_of_instance": 100, "bloom_level": 3}]}]},
+        {"type": "project", "weight_pct": 45, "instances": [{"id": "P1", "release_week": 5, "due_week": 12, "covers_topics": [],
+                                                              "assesses": [{"lo_id": "CO2.LO1", "marks_pct_of_instance": 100, "bloom_level": 6}]}]},
+        {"type": "midsem", "weight_pct": 22, "instances": [{"id": "M", "release_week": 6, "due_week": 6, "covers_topics": ["T3", "T9"],
+                                                             "assesses": [{"lo_id": "CO1.LO1", "marks_pct_of_instance": 50, "bloom_level": 3},
+                                                                          {"lo_id": "CO3.LO1", "marks_pct_of_instance": 50, "bloom_level": 3}]}]},
+    ]
+    topic_last = {"T3": 3, "T9": 9}
+    lo_last = {"CO1.LO1": 3, "CO3.LO1": 9}
+    out, notes = det.fit_assessment(comps, topic_last, lo_last, weeks=13, midsem_after=7,
+                                    proctored={"min_pct": 40, "types": ["midsem", "endsem", "quiz"]})
+    assert sum(c["weight_pct"] for c in out) == 100                        # 102 → exactly 100
+    assert out[2]["weight_pct"] >= 40                                       # proctored share raised to the minimum
+    a1 = out[0]["instances"][0]
+    assert (a1["release_week"], a1["due_week"]) == (3, 5)                  # released after T3 is taught, duration kept
+    m = out[2]["instances"][0]
+    assert m["release_week"] == 7 and m["covers_topics"] == ["T3"]         # exam stays on the calendar, drops untaught T9
+    assert [a["lo_id"] for a in m["assesses"]] == ["CO1.LO1"] and m["assesses"][0]["marks_pct_of_instance"] == 100
+    assert notes
+
+
+def test_design_graph_loads_into_neo4j(tmp_path):
+    """Round trip: a tiny design run loads into Neo4j, links to a real Layer A course, then is removed again."""
+    import json
+
+    from profsagent.design.neo4j_sync import delete_run, driver, load_run
+    try:
+        drv = driver()
+        drv.verify_connectivity()
+    except Exception:
+        pytest.skip("Neo4j not reachable")
+    g = DesignGraph("TST-999", tmp_path / "design_graph.json")
+    g.put("NewCourse", "COURSE", {"title": "Loader test"}, created_by="G1")
+    g.put("CO", "CO1", {"statement": "Design X."}, created_by="G4")
+    g.put("LO", "CO1.LO1", {"statement": "Build Y."}, created_by="G6")
+    g.link("CO1", "DECOMPOSES_INTO", "CO1.LO1")
+    g.link("COURSE", "REQUIRES", "CSE201")
+    g.link("CO1", "MAPS_TO", "BTECH-COMMON/PO3")
+    run = tmp_path / "pytest-loader-run"
+    run.mkdir()
+    g.path = run / "design_graph.json"
+    g.save()
+    (run / "state.json").write_text(json.dumps({"cco_compact": {"course_name": "Loader test"}}), encoding="utf-8")
+    try:
+        stats = load_run(run, drv)
+        assert stats["nodes"] == 3 and stats["internal_links"] == 1 and stats["links_to_programme"] == 1
+        with drv.session() as s:
+            assert s.run("MATCH (:D_NewCourse {run_id: $r})-[:REQUIRES]->(c:Course {code: 'CSE201'}) RETURN count(*) AS n",
+                         r=run.name).single()["n"] == 1
+    finally:
+        assert delete_run(run.name, drv) == 3
+        drv.close()
+
+
+def test_g10_prompt_renders_with_and_without_replacement_round():
+    from profsagent.llm.prompts import load_prompt
+    base = dict(modules_topics=[], cco={"course_name": "x"}, corpus_resources=[], retrieved_external=[])
+    assert "REPLACEMENT ROUND" not in load_prompt("G10").render(**base)[1]
+    assert "REPLACEMENT ROUND" in load_prompt("G10").render(**base, rejected_picks=[{"title": "t", "problems": []}],
+                                                            already_selected=[])[1]

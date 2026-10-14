@@ -17,7 +17,7 @@ rather than in `src/profsagent/` because it defines its own `llm/client.py`, `mo
 | `src/profsagent/validate/llm_reviewer.py` | "LLM reviewer" baseline for C2 | **Simulated.** Never calls a model |
 | `src/profsagent/validate/ablation_study.py` | C1/C2/C3 ablations with Cohen's d | **Simulated.** Hand-coded degradations |
 | `scripts/run_defect_benchmark.py`, `scripts/run_full_evaluation.py` | Benchmark and combined evaluation runners | Run only with a stand-in `config.settings` |
-| `data/programmes/btech_cse.json` | Programme spec for Neo4j | **Not IIIT-D data.** See below |
+| `data/programmes/btech_cse.json` | Programme spec for Neo4j | POs match the official template; PEOs/PSOs/label unsourced. See below |
 | `tests/test_pipeline_and_derived.py` | Tests for ingestion + derived edges | Fail on import (missing modules) |
 
 ## Known issues (checked 2026-09-30)
@@ -44,15 +44,16 @@ rather than in `src/profsagent/` because it defines its own `llm/client.py`, `mo
    - `LECTURE_HOURS_BUDGET = {3: 39, 4: 52}`. IIIT-D UG Regulations §4 give a 4-credit course 3 h × 13 weeks = **39**
      lecture hours, and courses are 4, 2 or 1 credit.
    - The comment "3–6 COs per IIIT-D regulation" cites no source; the regulations don't specify a CO count.
-7. **`btech_cse.json` is not IIIT-D's programme data.**
-   - It holds the generic NBA template POs ("Engineering Knowledge", …), four invented PEOs, two PSOs and an
-     "NBA Tier-1" label, with no source.
+7. **`btech_cse.json` is only partly IIIT-D's programme data.** *(Corrected 2026-10-14.)*
+   - Its 12 POs ("Engineering knowledge", …) **are** the B.Tech. (common) POs in the official IIIT-D CSE course
+     description template (`templates/iiitd_cse_course_template.xlsx`); the earlier claim that they were not IIIT-D data was wrong.
+   - Its four PEOs, its two PSOs and the "NBA Tier-1" label have no source; the template's B.Tech. (CSE) PSOs are different.
    - IIIT-D's actual B.Tech CSE objectives are in `data/programmes/btech_cse.yaml`, copied word for word from the
      regulations PDF. Use that file.
 
 ## To make it usable (suggested order)
 1. Add the missing ingestion modules and a real `config.settings`, or rebase onto `src/profsagent/config.py`.
-2. Replace `btech_cse.json` with a conversion of `data/programmes/btech_cse.yaml`.
+2. Replace `btech_cse.json` with a conversion of `data/programmes/btech_common.yaml` + `btech_cse.yaml` (template outcomes).
 3. Port `defect_injector.py` to the design pipeline's `state.json` shape, and score it against `src/profsagent/validate/rules.py`.
    Count a detection only when the **expected** rule fires, and report the false-positive rate on real clean courses.
 4. Implement `LLMReviewer` with a real model call through `src/profsagent/llm/client.py`, using a different model family

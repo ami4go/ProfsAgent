@@ -1,6 +1,6 @@
 ---
 id: G7
-version: 0.2.0
+version: 0.3.0
 stage: S5 Structure
 agent: Course Structuring
 model_class: strong
@@ -57,7 +57,11 @@ than trying to make a nice calendar.
    break, explain why in `constraint_notes`.
 8. **Suggested order.** Give `suggested_order` inside each module, and module `order`. It is a suggestion. The
    solver keeps it where the DAG and hours allow.
-9. **Review and exam weeks** are not topics. Do not create "Revision" or "Mid-sem" topics.
+9. **Average load (IIIT-D template).** For every topic give `outside_load_hours`: the expected hours per week of
+   student work **outside lectures** while this topic is being taught: labs, tutorials, homework and self-study. The
+   hours-weighted average over all topics should fall within {{ outside_load_target.min }}–{{ outside_load_target.max }}
+   h/week ({{ outside_load_target.basis }}). Hands-on and project-heavy topics are higher, conceptual ones lower.
+10. **Review and exam weeks** are not topics. Do not create "Revision" or "Mid-sem" topics.
 
 ## Output schema
 {
@@ -66,7 +70,7 @@ than trying to make a nice calendar.
      "topics": [
        {"id": "M1.T1", "title": "string", "est_hours": 1.5, "hours_basis": "string",
         "serves_los": ["CO1.LO1"], "covers_topic_groups": ["TG1"], "requires": ["M1.T0"], "topic_uid": "T:…|null",
-        "hands_on": false, "suggested_order": 1,
+        "hands_on": false, "suggested_order": 1, "outside_load_hours": 10,
         "sources": [{"tag": "CORPUS", "ref": "T:…"}]}
      ]}
   ],
@@ -86,5 +90,6 @@ than trying to make a nice calendar.
 <context name="topic_groups">{{ topic_groups | tojson }}</context>
 <context name="topic_group_proposals">{{ topic_group_proposals | tojson }}</context>
 <context name="special_constraints">{{ special_constraints | tojson }}</context>
+<context name="outside_load_target">{{ outside_load_target | tojson }}</context>
 
 Build the module and topic structure. Return only the JSON object.

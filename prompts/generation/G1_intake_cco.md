@@ -8,7 +8,7 @@ temperature: 0
 output_model: CourseContextObject
 inputs:
   form: the professor's 14-field form, as submitted (raw text per field; "[NOT SPECIFIED]" allowed)
-  programmes: [{uid, name}] available programme ids (e.g. BTECH-CSE, BTECH-CSAI)
+  programmes: [{uid, name}] available programme ids (BTECH-COMMON, BTECH-CSE, BTECH-CSAI, MTECH-CSE)
   regulation_facts: [{id, text}]   # e.g. UGREG-2025§2 "13 weeks of teaching…", UGREG-2025§4 "4-credit = 3L + 1T…"
 next_step: deterministic default-filler applies regulation defaults to MISSING fields as DEFAULT-tagged
            ContextFields and creates Assumption nodes. G1 itself never fills defaults.

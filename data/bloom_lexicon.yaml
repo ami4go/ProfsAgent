@@ -1,22 +1,211 @@
 # Bloom verb lexicon v0 (revised Bloom, Anderson & Krathwohl 2001). Merge KB_13 into this file when available.
 # A verb appears under its PRIMARY level; `ambiguous` lists alternates the classifier may accept with context.
 levels:
-  1: [define, list, recall, identify, name, state, recognise, recognize, label, match, reproduce, enumerate]
-  2: [explain, describe, summarise, summarize, classify, compare, contrast, illustrate, interpret, paraphrase, exemplify, infer, discuss, trace, distinguish]
-  3: [apply, implement, use, execute, solve, demonstrate, compute, calculate, construct, write, program, configure, deploy, operate, perform, modify, translate, refactor, debug, test, instrument]
-  4: [analyse, analyze, differentiate, examine, decompose, deconstruct, diagnose, organise, organize, attribute, investigate, profile, characterise, characterize, model, map, categorise, deduce]
-  5: [evaluate, assess, critique, judge, justify, validate, verify, appraise, benchmark, defend, prioritise, prioritize, recommend, review, select, argue, measure]
-  6: [design, create, develop, formulate, compose, devise, plan, propose, synthesise, synthesize, architect, invent, generate, build, author, engineer]
+  1: [define, list, recall, identify, name, state, recognise, recognize, label, match, reproduce, enumerate, find, tell, spell, omit]
+  2: [explain, describe, summarise, summarize, classify, compare, contrast, illustrate, interpret, paraphrase, exemplify, infer, discuss, trace, distinguish, extend, outline, rephrase]
+  3: [apply, implement, use, execute, solve, demonstrate, compute, calculate, construct, write, program, configure, deploy, operate, perform, modify, translate, refactor, debug, test, instrument, experiment, interview, utilize, utilise, make]
+  4: [analyse, analyze, differentiate, examine, decompose, deconstruct, diagnose, organise, organize, attribute, investigate, profile, characterise, characterize, model, map, categorise, deduce, discover, dissect, divide, inspect, simplify, survey, assume]
+  5: [evaluate, assess, critique, judge, justify, validate, verify, appraise, benchmark, defend, prioritise, prioritize, recommend, review, select, argue, measure, agree, award, conclude, criticize, criticise, decide, determine, disprove, perceive, prove, rate, support, choose, estimate]
+  6: [design, create, develop, formulate, compose, devise, plan, propose, synthesise, synthesize, architect, invent, generate, build, author, engineer, adapt, change, combine, compile, elaborate, imagine, improve, maximize, maximise, minimize, minimise, originate, predict, suppose]
 ambiguous:
-  select: [3, 5]
+  solve: [3, 6]
+  modify: [3, 6]
+  discuss: [2, 6]
+  estimate: [5, 6]
+  interpret: [2, 5]
+  explain: [2, 5]
+  list: [1, 4]
+  contrast: [2, 4]
+  classify: [2, 4]
+  choose: [1, 3, 5, 6]
+  organise: [3, 4]
+  organize: [3, 4]
+  identify: [1, 3]
+  translate: [2, 3]
+  demonstrate: [2, 3]
+  show: [1, 2]
+  relate: [1, 2]
+  select: [1, 3, 5]
   build: [3, 6]
   develop: [3, 6]
   model: [3, 4]
-  test: [3, 5]
+  test: [3, 5, 6]
   construct: [3, 6]
-  compare: [2, 4]
+  compare: [2, 4, 5]
   distinguish: [2, 4]
-  plan: [5, 6]
+  plan: [3, 5, 6]
   review: [2, 5]
 banned: [understand, know, learn, appreciate, "be familiar with", "be aware of", "gain knowledge of", grasp, "get exposure to", comprehend, realise, realize, "become acquainted with", "have knowledge of", "familiarity", "understanding"]
 vague_degree_words: [correctly, effectively, properly, appropriately, efficiently, successfully, adequately, well, thoroughly, "in a good manner"]
+
+# Official IIIT-D taxonomy (CSE course description template, sheet 'Taxonomy'), VERBATIM. Verbs above were merged from it;
+# question words and nouns in the suggested lists (How, What, Theme, Criteria, ...) are kept here but not used as CO verbs.
+iiitd_taxonomy:
+  BL1:
+    name: Remembering
+    definition: Exhibit memory of previously learned materials by recalling facts, terms, basic concepts, and answers.
+    suggested_verbs:
+    - Choose
+    - Define
+    - Find
+    - How
+    - Label
+    - List
+    - Match
+    - Name
+    - Omit
+    - Recall
+    - Relate
+    - Select
+    - Show
+    - Spell
+    - Tell
+    - What
+    - When
+    - Where
+    - Who
+    - Why
+  BL2:
+    name: Understanding
+    definition: Demonstrate understanding of facts and ideas by organizing, comparing, translating, interpreting, giving descriptions.
+    suggested_verbs:
+    - Classify
+    - Compare
+    - Contrast
+    - Demonstrate
+    - Explain
+    - Extend
+    - Illustrate
+    - Infer
+    - Interpret
+    - Outline
+    - Relate
+    - Rephrase
+    - Show
+    - Summarize
+    - Translate
+  BL3:
+    name: Applying
+    definition: Solve problems to new situations by applying acquired knowledge, facts, techniques, and rules in a different way.
+    suggested_verbs:
+    - Apply
+    - Build
+    - Choose
+    - Construct
+    - Develop
+    - Experiment
+    - with
+    - Identify
+    - Interview
+    - Make
+    - use
+    - of
+    - Model
+    - Organize
+    - Plan
+    - Select
+    - Solve
+    - Utilize
+  BL4:
+    name: Analyzing
+    definition: Examine and break information into parts by identifying motives or causes; make inferences and find evidence to support.
+    suggested_verbs:
+    - Analyze
+    - Assume
+    - Categorize
+    - Classify
+    - Compare
+    - Conclusion
+    - Contrast
+    - Discover
+    - Dissect
+    - Distinguish
+    - Divide
+    - Examine
+    - Function
+    - Inference
+    - Inspect
+    - List
+    - Motive
+    - Relationships
+    - Simplify
+    - Survey
+    - Take part in
+    - Test for
+    - Theme
+  BL5:
+    name: Evaluating
+    definition: Present and defend opinions by making judgments about information, validity of ideas, or quality of material.
+    suggested_verbs:
+    - Agree
+    - Appraise
+    - Assess
+    - Award
+    - Choose
+    - Compare
+    - Conclude
+    - Criteria
+    - Criticize
+    - Decide
+    - Deduct
+    - Defend
+    - Determine
+    - Disprove
+    - Estimate
+    - Evaluate
+    - Explain
+    - Importance
+    - Influence
+    - Interpret
+    - Judge
+    - Justify
+    - Mark
+    - Measure
+    - Opinion
+    - Perceive
+    - Prioritize
+    - Prove
+    - Rate
+    - Recommend
+    - Rule on
+    - Select
+    - Support
+    - Value
+  BL6:
+    name: Creating
+    definition: Compile information together in a different way by combining elements in a new pattern or by proposing alternative solutions.
+    suggested_verbs:
+    - Adapt
+    - Build
+    - Change
+    - Choose
+    - Combine
+    - Compile
+    - Compose
+    - Construct
+    - Create
+    - Delete
+    - Design
+    - Develop
+    - Discuss
+    - Elaborate
+    - Estimate
+    - Formulate
+    - Happen
+    - Imagine
+    - Improve
+    - Invent
+    - Make up
+    - Maximize
+    - Minimize
+    - Modify
+    - Original
+    - Originate
+    - Plan
+    - Predict
+    - Propose
+    - Solution
+    - Solve
+    - Suppose
+    - Test
+    - Theory

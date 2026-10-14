@@ -89,18 +89,27 @@ class DesignGraph:
             self.remove(n["uid"])
 
     # ------------------------------------------------------------------ edges
+    def ref(self, x: str) -> str:
+        """Resolve an id used in a link: an existing node (as given or project-prefixed) wins; otherwise Layer A /
+        external references stay verbatim and design-local ids are project-prefixed."""
+        if x in self.nodes:
+            return x
+        u = self.uid(x)
+        if u in self.nodes:
+            return u
+        return x if _external(x) else u
+
     def link(self, src: str, rel: str, dst: str, **props) -> None:
-        s = self.uid(src) if not _external(src) else src
-        d = self.uid(dst) if not _external(dst) else dst
+        s, d = self.ref(src), self.ref(dst)
         self.edges = [e for e in self.edges if not (e["src"] == s and e["rel"] == rel and e["dst"] == d)]
         self.edges.append({"src": s, "rel": rel, "dst": d, "props": props})
 
     def out(self, uid: str, rel: str) -> list[dict]:
-        u = self.uid(uid) if not _external(uid) else uid
+        u = self.ref(uid)
         return [e for e in self.edges if e["src"] == u and e["rel"] == rel]
 
     def into(self, uid: str, rel: str) -> list[dict]:
-        u = self.uid(uid) if not _external(uid) else uid
+        u = self.ref(uid)
         return [e for e in self.edges if e["dst"] == u and e["rel"] == rel]
 
     def edges_rel(self, rel: str) -> list[dict]:
@@ -144,6 +153,10 @@ class DesignGraph:
         return g
 
 
+COURSE_CODE = re.compile(r"^[A-Z]{2,5}\d[0-9A-Z]{2}[A-Z]?$")   # CSE201, CSE594A, CSE5GP — not CO1, W04, M1.T1, CO1.LO1
+
+
 def _external(uid: str) -> bool:
-    """Layer A / external references are stored verbatim (e.g. 'CSE201', 'BTECH-CSE/PO4', 'EXT:MIT/6.1020')."""
-    return uid.startswith(("EXT:", "BTECH-", "T:")) or (uid.isupper() and "/" not in uid and any(ch.isdigit() for ch in uid))
+    """Layer A / external references are stored verbatim (e.g. 'CSE201', 'BTECH-COMMON/PO3', 'TOPIC_0012', 'EXT:MIT/6.1020').
+    Design-local ids (CO1, CO1.LO1, M1.T1, W04, W04.L1, A:Assign1) are NOT external."""
+    return uid.startswith(("EXT:", "BTECH-", "MTECH-", "T:", "TOPIC_")) or bool(COURSE_CODE.match(uid))

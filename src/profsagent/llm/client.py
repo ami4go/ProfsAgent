@@ -124,6 +124,8 @@ class LLMClient:
                 continue
             ks = {"gemini": self.gemini_keys, "groq": self.groq_keys, "ollama": ["local"]}[ep["provider"]]
             for i, k in enumerate(ks):
+                if not self.slots.available(f"key:{ep['provider']}:{_fp(k)}"):   # key rejected (401/403): skip all its models
+                    continue
                 yield ep, i, k, f"{ep['provider']}:{ep['model']}:{_fp(k)}"
 
     # ------------------------------------------------------------------ raw calls
@@ -201,6 +203,8 @@ class LLMClient:
             return self.lim["cooldown_503_s"], f"{err.status} unavailable"
         if err.status == 404 or (err.status == 400 and re.search(r"not (found|supported)", t, re.I)):
             return self._until_pacific_midnight(), f"{err.status} model unsupported"
+        if err.status in (401, 403) or (err.status == 400 and re.search(r"API[_ ]KEY[_ ]INVALID|API key not valid|expired", t, re.I)):
+            return 24 * 3600, f"{err.status} invalid or revoked key"   # bench the key, try the next one
         return 0, ""
 
     def raw(self, role: str, system: str, user: str, temperature: float = 0.2, json_mode: bool = True,
@@ -255,6 +259,8 @@ class LLMClient:
                 if record is not None:
                     record.attempts.append({"slot": slot, "ok": False, "status": e.status, "why": why or e.text[:120]})
                 if secs:
+                    if e.status in (401, 403):
+                        self.slots.cool(f"key:{ep['provider']}:{_fp(key)}", secs, why)
                     if e.status in (500, 502, 503, 504, 599) and ep["provider"] == "gemini":
                         for kx in self.gemini_keys:   # overload is model-wide: cool every key
                             self.slots.cool(f"gemini:{ep['model']}:{_fp(kx)}", secs, why)

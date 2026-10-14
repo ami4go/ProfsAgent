@@ -21,12 +21,12 @@ roles:
     - {provider: groq,   model: qwen/qwen3.8-27b, max_prompt_tokens: 5500}
     - {provider: ollama, model: "gemma4:latest"}      # LOCAL last resort (CPU, ~10 tok/s): minutes per call, no quota
     - {provider: ollama, model: "qwen3.5:9b"}
-  extract:             # X2 page reading and other small structured extraction: Groq first to save Gemini quota
-    - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 5500}
-    - {provider: groq,   model: qwen/qwen3.8-27b, max_prompt_tokens: 5500}
+  extract:             # X2 page reading, X3 queries: Gemini first (user preference), Groq as fallback
+    - {provider: gemini, model: gemini-3.7-flash}
     - {provider: gemini, model: gemini-3.5-flash-lite}
     - {provider: gemini, model: gemini-3.1-flash-lite}
-    - {provider: gemini, model: gemini-3.7-flash}
+    - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 5500}
+    - {provider: groq,   model: qwen/qwen3.8-27b, max_prompt_tokens: 5500}
     - {provider: groq,   model: openai/gpt-oss-20b, max_prompt_tokens: 5500}
     - {provider: ollama, model: "gemma4:latest"}
     - {provider: ollama, model: "qwen3.5:9b"}

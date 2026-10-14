@@ -1,6 +1,6 @@
 ---
 id: G9
-version: 0.2.0
+version: 0.3.0
 stage: S7 Assessment
 agent: Assessment
 model_class: strong
@@ -61,6 +61,11 @@ real or broken.
 9. **Best-k-of-n**: declare only when n ≥ 3 and 1 ≤ k < n, and schedule **exactly n** instances. "Best 2 of 2" is not
    allowed.
 10. Component count must be within {{ component_count.min }}–{{ component_count.max }}.
+10a. **Proctored evaluation (IIIT-D template): at least {{ proctored_rule.min_pct }}% of the grade must be proctored**,
+    i.e. invigilated in person: the mid-sem and end-sem exams, in-class quizzes, in-lab tests or a proctored viva. Set
+    `proctored: true` or `false` on every component (types {{ proctored_rule.types | join(", ") }} count as proctored if
+    you leave it null). Take-home assignments, projects, reports and presentations are not proctored. Check the sum
+    before answering, together with any professor constraint (e.g. a minimum project weight).
 
 ### PO evidence
 11. Tag each instance with `activity_types` from the vocabulary, describing what students actually do in it. Only list
@@ -78,7 +83,7 @@ real or broken.
 {
   "components": [
     {"type": "quiz", "weight_pct": 10, "weight_justification": "string|null",
-     "best_k": 3, "n": 4, "activity_types": ["analyse-data"], "integrity": "string|null",
+     "best_k": 3, "n": 4, "activity_types": ["analyse-data"], "integrity": "string|null", "proctored": true,
      "instances": [
        {"id": "A:Quiz1", "release_week": 3, "due_week": 3, "format": "string",
         "covers_topics": ["M1.T1", "M1.T2"],
@@ -88,7 +93,7 @@ real or broken.
      ]}
   ],
   "weight_sum": 100,
-  "unsupported_po_predictions": [{"co_id": "CO3", "po_uid": "BTECH-CSE/PO5", "reason": "string"}],
+  "unsupported_po_predictions": [{"co_id": "CO3", "po_uid": "BTECH-COMMON/PO9", "reason": "string"}],
   "concerns": [{"about": "string", "detail": "string"}]
 }
 
@@ -102,5 +107,6 @@ real or broken.
 <context name="component_count">{{ component_count | tojson }}</context>
 <context name="activity_vocabulary">{{ activity_vocabulary | tojson }}</context>
 <context name="activity_po_map">{{ activity_po_map | tojson }}</context>
+<context name="proctored_rule">{{ proctored_rule | tojson }}</context>
 
 Design the assessment blueprint. Return only the JSON object.

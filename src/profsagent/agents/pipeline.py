@@ -14,7 +14,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from profsagent.agents.loop import call, generate
-from profsagent.config import RUNS, bloom_lexicon, degree_bank, pedagogy, regulations
+from profsagent.config import RUNS, bloom_lexicon, degree_bank, pedagogy, programme, regulations
 from profsagent.design import deterministic as det
 from profsagent.design.store import DesignGraph
 from profsagent.kg.client import KGClient
@@ -103,7 +103,9 @@ def _verb_lexicon() -> dict:
 def s1_intake(rt: Runtime) -> None:
     rt.log("S1 intake → Course Context Object")
     regs = regulations()
-    obj, meta = call(rt, "G1", {"form": rt.state["form"], "programmes": [{"uid": "BTECH-CSE", "name": "B.Tech. Computer Science and Engineering"}],
+    ped = pedagogy()
+    progs_all = [{"uid": p, "name": programme(p)["name"]} for p in ped["copo_programmes"]]
+    obj, meta = call(rt, "G1", {"form": rt.state["form"], "programmes": progs_all,
                                 "regulation_facts": [{"id": f["id"], "text": f["text"]} for f in regs["facts"]]})
     cco = obj.model_dump()
     d = det.apply_defaults(cco)
@@ -114,10 +116,18 @@ def s1_intake(rt: Runtime) -> None:
     st.update(ltp=d["ltp"], weeks=d["weeks"], level=d["level"], midsem_after_week=d["midsem_after_week"],
               lab_required=f["lab"].get("required"), topic_groups=f["topics"]["topic_groups"],
               hours_budget=det.hours_budget(d["ltp"], d["weeks"]), bloom_band=det.bloom_band(d["level"]))
-    progs = f["target_students"].get("programmes") or ["BTECH-CSE"]
-    st["programmes"] = [p for p in progs if p == "BTECH-CSE"] or ["BTECH-CSE"]
-    st["programme_pos"] = [po for p in st["programmes"] for po in rt.kg.programme_pos(p)]
-    st["activity_po_map"] = {k: v for p in st["programmes"] for k, v in pedagogy()["activity_po_map"].get(p, {}).items()}
+    # IIIT-D CSE course template: CSExxx courses map their COs to every programme the CSE department offers
+    st["department"] = (rt.state.get("run_cfg") or {}).get("department", "CSE")
+    st["programmes"] = list(ped["copo_programmes"]) if st["department"] == "CSE" else ["BTECH-COMMON"]
+    st["programme_pos"] = [{**po, "programme": p} for p in st["programmes"] for po in rt.kg.programme_pos(p)]
+    apm: dict[str, list[str]] = {}
+    for p in st["programmes"]:
+        for act, pos in ped["activity_po_map"].get(p, {}).items():
+            apm.setdefault(act, []).extend(x for x in pos if x not in apm.get(act, []))
+    st["activity_po_map"] = apm
+    st["co_count"] = det.co_count_for(d["credits"])
+    st["template_rules"] = {"co_high_bloom": ped["co_high_bloom"], "proctored": ped["proctored"],
+                            "outside_load_hours_per_week": det.outside_load_target(d["credits"])}
     st["cco_compact"] = {
         "course_name": f["course_name"].get("value"), "description": f["short_description"].get("value"),
         "topic_groups": f["topics"]["topic_groups"], "topics_treatment": f["topics"]["topics_treatment"],
@@ -246,12 +256,13 @@ def s4_outcomes(rt: Runtime) -> None:
     exemplars = kg.exemplar_cos(ex_query, st["level"], k=8, exclude=rt.exclude)
     pri = kg.priors(exclude=rt.exclude)
     st["weight_priors"] = pri["weights"]
-    co_count = dict(ped["co_count"])
+    co_count = dict(st.get("co_count") or ped["co_count"])
     ctx = {"cco": cc, "positioning": {k: st["positioning"].get(k) for k in ("prerequisites", "overlaps", "comparable", "existence")},
            "constraints": [c for c in st["constraints"] if c["target"].startswith(("co.", "content."))],
            "bloom_band": st["bloom_band"], "co_count": co_count, "verb_lexicon": _verb_lexicon(), "banned_verbs": lx["banned"],
            "degree_bank": degree_bank(), "exemplars": exemplars, "programme_pos": st["programme_pos"],
-           "assessment_evidence_types": ped["assessment_evidence_types"]}
+           "assessment_evidence_types": ped["assessment_evidence_types"],
+           "high_bloom_rule": ped["co_high_bloom"], "iiitd_taxonomy": lx.get("iiitd_taxonomy")}
     comp, vs, trace = generate(rt, "G4", ctx, apply=lambda s, c: {**s, "cos": c["cos"], "topic_group_proposals": c["topic_group_proposals"]},
                                stages=["cos"])
     st["cos"], st["topic_group_proposals"] = comp["cos"], comp["topic_group_proposals"]
@@ -303,7 +314,9 @@ def s5_structure(rt: Runtime) -> None:
            "hours_budget": {**hb, "lecture_hours_per_week": st["ltp"]["L"]}, "corpus_topic_priors": priors,
            "topic_precedence_prior": [], "constraints": [c for c in st["constraints"] if c["target"].startswith(("schedule.", "content."))],
            "topic_groups": st["topic_groups"], "topic_group_proposals": st.get("topic_group_proposals", []),
-           "special_constraints": st["cco_compact"].get("special_constraints")}
+           "special_constraints": st["cco_compact"].get("special_constraints"),
+           "outside_load_target": {**det.outside_load_target(st["defaults"]["credits"]),
+                                   "basis": pedagogy()["outside_load"]["basis"]}}
 
     def apply(s, c):
         s = {**s, "modules": c["modules"]}
@@ -383,14 +396,28 @@ def s7_activities_assessment(rt: Runtime) -> None:
             "labs_tutorials": {"labs": [{k: l[k] for k in ("id", "week", "produces_assessed_artifact")} for l in comp8.get("labs", [])]},
             "constraints": [c for c in st["constraints"] if c["target"].startswith("assessment.")],
             "weight_priors": wp, "component_count": ped["thresholds"]["component_count"],
-            "activity_vocabulary": ped["activity_vocabulary"], "activity_po_map": st["activity_po_map"]}
+            "activity_vocabulary": ped["activity_vocabulary"], "activity_po_map": st["activity_po_map"],
+            "proctored_rule": ped["proctored"]}
+
+    topic_last, lo_last = rules._topic_last_week(st), rules._lo_last_week(st)
+
+    def fit9(c):
+        """Code owns the arithmetic and the calendar: weights to exactly 100 (>= 40% proctored), release/due weeks
+        after the topics and LOs are taught. Applied to the draft and to every repair candidate."""
+        comps, notes = det.fit_assessment(c["components"], topic_last, lo_last, st["weeks"], st["midsem_after_week"], ped.get("proctored"))
+        return {**c, "components": comps, "weight_sum": sum(x["weight_pct"] for x in comps)}, notes
 
     def apply9(s, c):
+        c, _ = fit9(c)
         s = {**s, "assessment": c}
         s["copo_computed"] = det.copo_strengths([x["id"] for x in s["cos"]], lo_parent, c["components"], s["activity_po_map"], s["copo"],
                                                 ped["thresholds"]["co_po_strength"])
         return s
     comp9, vs9, trace9 = generate(rt, "G9", ctx9, apply=apply9, stages=["assessment"])
+    comp9, fit_notes = fit9(comp9)
+    st["assessment_adjustments"] = fit_notes
+    if fit_notes:
+        rt.log(f"  assessment fitted by code: {len(fit_notes)} adjustments ({'; '.join(fit_notes)[:200]})")
     st["assessment"] = comp9
     st["copo_computed"] = det.copo_strengths([x["id"] for x in st["cos"]], lo_parent, comp9["components"], st["activity_po_map"], st["copo"],
                                              ped["thresholds"]["co_po_strength"])
@@ -425,6 +452,63 @@ def s7_activities_assessment(rt: Runtime) -> None:
 
 
 # ================================================================== S8 resources
+def _lookup_record(pick: dict) -> dict | None:
+    """Find a database record (OpenLibrary / Crossref) for a pick that is not an API candidate, e.g. an IIIT-D corpus
+    reference copied from a course sheet. Matches on title words (Jaccard >= 0.6)."""
+    raw = pick.get("title") or ""
+    m = re.search(r'["“](.+?)["”]', raw)
+    title = (m.group(1) if m else re.sub(r"^\s*\d+[\).]\s*", "", raw)).strip()
+    if len(title) < 6:
+        return None
+    words = lambda x: set(re.sub(r"[^a-z0-9 ]", " ", (x or "").lower()).split())  # noqa: E731
+    want, best = words(title), None
+    for c in openlibrary(title, 3) + crossref(title, 3):
+        have = words(c.get("title"))
+        j = len(want & have) / max(len(want | have), 1)
+        if len(want) >= 3 and want <= have and len(have) <= 3 * len(want):   # record title = our title + subtitle
+            j = max(j, 0.6)
+        if j >= 0.6 and (best is None or j > best[0]):
+            best = (j, c)
+    return ({**best[1], "title_match": round(best[0], 2)}) if best else None
+
+
+def _verify_resources(picks: list[dict], cands: dict[str, dict]) -> tuple[list[dict], list[dict]]:
+    """Verify every pick against a database record; corpus references are looked up by title first.
+    Returns (verified, rejected); verified picks carry the record's exact title, authors, year and identifier."""
+    good, bad = [], []
+    for r in picks:
+        if r.get("candidate_id") not in cands:
+            rec = _lookup_record(r)
+            if rec:
+                # the citation's OWN author and year must also agree with the record (a title match alone is not enough)
+                authors = r.get("authors") or []
+                if not authors:
+                    m = re.match(r"^\s*(?:\d+[\).]\s*)?([^\W\d_][\w\-]+),", r.get("title") or "")
+                    authors = [m.group(1)] if m else []
+                year = r.get("year")
+                if not year:
+                    y = re.findall(r"(19\d\d|20\d\d)", r.get("title") or "")
+                    year = int(y[-1]) if y else None
+                probe = {**r, "candidate_id": rec["candidate_id"], "title": rec["title"], "authors": authors, "year": year}
+                check = verify_pick(probe, {rec["candidate_id"]: rec})
+                if authors and rec.get("title_match", 0) >= 0.8 and check["problems"] and all(p.startswith("year mismatch") for p in check["problems"]):
+                    check = {"verified": True, "problems": []}     # same work, wrong year in the old citation: the record wins
+                    r = {**r, "year_corrected": f"{year} → {rec.get('year')} (from {rec.get('source')})"}
+                if check["verified"] and authors:
+                    cands.setdefault(rec["candidate_id"], rec)
+                    ident = {k: v for k, v in (rec.get("identifier") or {}).items() if v}
+                    r = {**r, "candidate_id": rec["candidate_id"], "title": rec["title"], "authors": rec.get("authors") or authors,
+                         "year": rec.get("year"), "identifier": {**(r.get("identifier") or {}), **ident},
+                         "matched_from": "IIIT-D corpus reference, matched to " + str(rec.get("source"))}
+                else:
+                    r = {**r, "lookup_problems": check["problems"] or ["no author in the citation to confirm the match"]}
+        r["verification"] = verify_pick(r, cands)
+        if r.get("lookup_problems"):
+            r["verification"]["problems"] = r["verification"]["problems"] + ["closest record rejected: " + "; ".join(r["lookup_problems"])]
+        (good if r["verification"]["verified"] else bad).append(r)
+    return good, bad
+
+
 def s8_resources(rt: Runtime) -> None:
     rt.log("S8 resources (API candidates → G10 → verification)")
     st, kg = rt.state, rt.kg
@@ -443,11 +527,22 @@ def s8_resources(rt: Runtime) -> None:
            "cco": st["cco_compact"], "corpus_resources": kg.corpus_resources(rel)[:10], "retrieved_external": list(cands.values())}
     obj, meta = call(rt, "G10", ctx)
     comp = obj.model_dump()
-    kept = []
-    for r in comp["resources"]:
-        r["verification"] = verify_pick(r, cands)
-        kept.append(r)
-    st["resources"] = kept
+    kept, rejected = _verify_resources(comp["resources"], cands)
+    if rejected:   # one replacement round: say what failed, offer only database records not yet tried
+        rt.log(f"  {len(rejected)} resource(s) failed verification; asking for replacements")
+        tried = {r["candidate_id"] for r in kept + rejected}
+        ctx2 = {**ctx, "corpus_resources": [], "retrieved_external": [c for cid, c in cands.items() if cid not in tried],
+                "rejected_picks": [{"title": r["title"], "problems": r["verification"]["problems"]} for r in rejected],
+                "already_selected": [{"candidate_id": r["candidate_id"], "title": r["title"]} for r in kept]}
+        try:
+            obj2, _ = call(rt, "G10", ctx2)
+            more, rej2 = _verify_resources([r for r in obj2.model_dump()["resources"] if r["candidate_id"] not in tried], cands)
+            kept += more
+            rejected += rej2
+        except Exception as e:  # noqa: BLE001 — keep the verified list we already have
+            rt.log(f"  replacement round failed: {str(e)[:120]}")
+    st["resources"] = kept                      # only verified resources reach the course documents
+    st["resources_rejected"] = [{"title": r["title"], "problems": r["verification"]["problems"]} for r in rejected]
     st["resource_policy"] = {"textbook_policy": comp["textbook_policy"], "reason": comp["policy_reason"], "search_requests": comp["search_requests"]}
     vs = rules.run(st, ["resources"])
     _record(rt, "resources", comp, vs, {"generator": meta})

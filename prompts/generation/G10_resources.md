@@ -1,6 +1,6 @@
 ---
 id: G10
-version: 0.1.0
+version: 0.2.0
 stage: S8 Resources
 agent: Resource
 model_class: strong
@@ -57,5 +57,11 @@ needed in `search_requests` and the program will search again.
 <context name="cco">{{ cco | tojson }}</context>
 <context name="corpus_resources">{{ corpus_resources | tojson }}</context>
 <context name="retrieved_external">{{ retrieved_external | tojson }}</context>
+{% if rejected_picks is defined and rejected_picks %}<context name="rejected_picks">{{ rejected_picks | tojson }}</context>
+<context name="already_selected">{{ already_selected | tojson }}</context>
 
+REPLACEMENT ROUND: the picks in `rejected_picks` could not be verified against any library record and were removed.
+Return ONLY replacements for them (do not repeat `already_selected`), chosen from `retrieved_external`, with title,
+authors, year and identifier copied exactly from the candidate record. If no candidate fits, return an empty list.
+{% endif %}
 Select and link the course resources. Return only the JSON object.

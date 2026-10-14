@@ -104,6 +104,22 @@ def bloom_band(level: int) -> dict:
     return {"floor": lo, "ceiling": hi, "basis": f"level {level}xx band [{lo},{hi}] — {ped['bloom_band_basis']}", "source_tag": "INFERRED"}
 
 
+def co_count_for(credits) -> dict:
+    """IIIT-D CSE template: 2-3 COs for a 2-credit course, 4-5 for a 4-credit course."""
+    ped = pedagogy()
+    band = ped.get("co_count_by_credits", {}).get(str(int(credits or 4)))
+    if not band:
+        return dict(ped["co_count"])
+    return {"min": band[0], "max": band[1], "basis": f"IIIT-D CSE course template ({credits}-credit course)"}
+
+
+def outside_load_target(credits) -> dict:
+    """IIIT-D CSE template: 10-12 h/week of work outside lectures for a 4-credit course (scaled per credit)."""
+    ol = pedagogy()["outside_load"]
+    c = float(credits or 4)
+    return {"min": round(ol["per_credit_min"] * c, 1), "max": round(ol["per_credit_max"] * c, 1)}
+
+
 # ------------------------------------------------------------------ S5/S6 topic DAG + scheduler
 def find_cycle(nodes: list[str], edges: list[tuple[str, str]]) -> list[str] | None:
     adj = defaultdict(list)
@@ -246,6 +262,85 @@ def co_marks_share(lo_parent: dict[str, str], components: list[dict]) -> dict[st
             for a in inst["assesses"]:
                 share[lo_parent.get(a["lo_id"], "?")] += per * a["marks_pct_of_instance"] / 100
     return {k: round(v, 2) for k, v in share.items()}
+
+
+# ------------------------------------------------------------------ S7 assessment: code-owned arithmetic and timing
+def _largest_remainder(values: list[float], total: int = 100) -> list[int]:
+    """Round non-negative values to integers that sum exactly to `total`."""
+    s = sum(values)
+    if s <= 0:
+        return [0 for _ in values]
+    raw = [v * total / s for v in values]
+    out = [int(x) for x in raw]
+    for i in sorted(range(len(raw)), key=lambda i: -(raw[i] - out[i]))[: total - sum(out)]:
+        out[i] += 1
+    return out
+
+
+def fit_assessment(components: list[dict], topic_last: dict[str, int], lo_last: dict[str, int], weeks: int, midsem_after: int,
+                   proctored: dict | None = None) -> tuple[list[dict], list[str]]:
+    """Fix what is arithmetic or calendar, not judgement (claim C3), and say what changed:
+    1. weights: rescale to exactly 100 (integers); if proctored evaluation is below the template minimum, move the
+       shortfall from non-proctored to proctored components in proportion to their weights;
+    2. timing: an instance is released only after the topics it covers are taught and is due only after the LOs it
+       assesses are taught; exams stay on the calendar and drop topics/LOs not yet taught; instances are re-sorted.
+    The AI keeps every pedagogical choice (which components, what they cover, how marks are split between LOs)."""
+    import copy
+    comps = copy.deepcopy(components)
+    notes: list[str] = []
+    if not comps:
+        return comps, notes
+    # ---- weights
+    before = [float(c["weight_pct"]) for c in comps]
+    w = _largest_remainder(before)
+    if proctored:
+        is_p = [c["proctored"] if c.get("proctored") is not None else str(c["type"]).lower() in proctored["types"] for c in comps]
+        p_sum = sum(x for x, p in zip(w, is_p) if p)
+        need = proctored["min_pct"] - p_sum
+        n_sum = sum(x for x, p in zip(w, is_p) if not p)
+        if need > 0 and p_sum > 0 and n_sum >= need:
+            p_new = _largest_remainder([x for x, p in zip(w, is_p) if p], int(proctored["min_pct"]))
+            n_new = _largest_remainder([x for x, p in zip(w, is_p) if not p], 100 - int(proctored["min_pct"]))
+            it_p, it_n = iter(p_new), iter(n_new)
+            w = [next(it_p) if p else next(it_n) for p in is_p]
+            notes.append(f"proctored share raised from {p_sum}% to {proctored['min_pct']}% (IIIT-D template minimum)")
+    if [float(x) for x in w] != before:
+        notes.append("weights set to " + ", ".join(f"{c['type']} {b:g}→{x}" for c, b, x in zip(comps, before, w) if float(x) != b))
+    for c, x in zip(comps, w):
+        c["weight_pct"] = float(x)
+    # ---- timing
+    for c in comps:
+        t = str(c["type"]).lower()
+        for inst in c["instances"]:
+            covered = [tp for tp in inst.get("covers_topics", []) if tp in topic_last]
+            t_need = max((topic_last[tp] for tp in covered), default=0)
+            lo_need = max((lo_last[a["lo_id"]] for a in inst["assesses"] if a["lo_id"] in lo_last), default=0)
+            r0, d0 = inst["release_week"], inst["due_week"]
+            if t in ("midsem", "endsem"):
+                wk = midsem_after if t == "midsem" else weeks
+                inst["release_week"] = inst["due_week"] = wk
+                late = [tp for tp in covered if topic_last[tp] > wk]
+                if late:
+                    inst["covers_topics"] = [tp for tp in inst["covers_topics"] if tp not in late]
+                    notes.append(f"{inst['id']}: dropped topics not yet taught by week {wk}: {', '.join(late)}")
+                late_lo = [a for a in inst["assesses"] if lo_last.get(a["lo_id"], 0) > wk]
+                if late_lo and len(late_lo) < len(inst["assesses"]):
+                    keep = [a for a in inst["assesses"] if a not in late_lo]
+                    shares = _largest_remainder([float(a["marks_pct_of_instance"]) for a in keep])
+                    for a, sh in zip(keep, shares):
+                        a["marks_pct_of_instance"] = float(sh)
+                    inst["assesses"] = keep
+                    notes.append(f"{inst['id']}: dropped LOs not yet taught by week {wk}: {', '.join(a['lo_id'] for a in late_lo)}")
+            elif t == "project":
+                inst["due_week"] = min(max(inst["due_week"], t_need, inst["release_week"]), weeks)
+            else:   # keep the instance's original duration when it has to move later
+                inst["release_week"] = min(max(inst["release_week"], t_need), weeks)
+                shift = inst["release_week"] - r0
+                inst["due_week"] = min(max(d0 + shift, inst["release_week"], lo_need), weeks)
+            if (r0, d0) != (inst["release_week"], inst["due_week"]):
+                notes.append(f"{inst['id']}: weeks {r0}→{d0} moved to {inst['release_week']}→{inst['due_week']} (after its topics are taught)")
+        c["instances"].sort(key=lambda i: (i["release_week"], i["due_week"]))
+    return comps, notes
 
 
 def ceil_div(a: float, b: float) -> int:

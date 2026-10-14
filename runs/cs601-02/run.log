@@ -1,0 +1,60 @@
+01:24:55 S1 intake → Course Context Object
+01:24:55   [G1] ok via cache(gemini:gemini-2.5-flash:k89fec1db) · 0+0 tok · 0.0s
+01:24:55   CCO: 6 topic groups · level 3 · L-T-P {'L': 3, 'T': 1, 'P': 2} · 13 weeks · 5 assumptions · conflicts 0
+01:24:55 S2 curriculum positioning
+01:25:11   internal candidates: ['CSE701 0.032', 'CSE581 0.0', 'CSE583 0.0', 'CSE594A 0.08', 'CSE600A 0.0', 'DES512 0.0', 'CSE201 0.0', 'DES530 0.0', 'CSE582 0.0', 'DES520 0.0', 'CSE600 0.021', 'CSE140 0.0']
+01:25:11 [research] plan: titles=['AI-Assisted Software Engineering', 'Agentic Software Development', 'Software Engineering with AI Agents', 'Human-AI Collaboration in Software Development', 'Generative AI for Software Engineering'] queries=4
+01:27:16 [research] candidates=57 kept=55 examined=8 accepted=3 rejected-by={'relevance=low': 5}
+01:27:16   [G2] ok via cache(gemini:gemini-3.5-flash-lite:k89fec1db) · 0+0 tok · 0.0s
+01:27:16   [G2] validators: 0 errors, 0 warnings
+01:27:16 S3 constraints + feasibility
+01:27:16   [G3] ok via cache(groq:openai/gpt-oss-120b:k98ae7752) · 0+0 tok · 0.0s
+01:27:16   17 constraints (8 from professor text) · conflicts 0
+01:27:16 GATE gate1_context: approve by auto (dev run) · froze 37 nodes
+01:27:16 S4 learning design: COs → CO–PO → LOs
+01:27:16   [G4] ok via cache(gemini:gemini-3.5-flash-lite:k89fec1db) · 0+0 tok · 0.0s
+01:27:16   [G4] validators: 3 errors, 2 warnings
+01:27:16   [R1] ok via cache(gemini:gemini-3.5-flash-lite:k89fec1db) · 0+0 tok · 0.0s
+01:27:16   [R1 round 1] errors 3 → 0 ACCEPT
+01:27:16   [G5] ok via cache(gemini:gemini-3.5-flash-lite:k89fec1db) · 0+0 tok · 0.0s
+01:27:16   [G5] validators: 0 errors, 35 warnings
+01:27:16   [G6] ok via cache(gemini:gemini-3.5-flash-lite:k89fec1db) · 0+0 tok · 0.0s
+01:27:16   [G6] validators: 6 errors, 8 warnings
+01:27:16   [R1] ok via cache(gemini:gemini-3.5-flash-lite:k89fec1db) · 0+0 tok · 0.0s
+01:27:16   [R1 round 1] errors 6 → 2 ACCEPT
+01:27:16   [R1] ok via cache(gemini:gemini-3.5-flash-lite:k89fec1db) · 0+0 tok · 0.0s
+01:27:16   [R1 round 2] errors 2 → 0 ACCEPT
+01:27:16 GATE gate2_outcomes: approve by auto (dev run) · froze 16 nodes
+01:27:16 S5 structure (modules/topics) → S6 schedule
+01:27:16   [G7] ok via cache(gemini:gemini-3.5-flash-lite:k89fec1db) · 0+0 tok · 0.0s
+01:27:16   [G7] validators: 1 errors, 0 warnings
+01:27:16   [R1] ok via cache(gemini:gemini-3.5-flash-lite:k89fec1db) · 0+0 tok · 0.0s
+01:27:17   [R1 round 1] errors 1 → 0 ACCEPT
+01:27:17   schedule: feasible · need 36.5 h / 39 h
+01:27:17 S7 lab/tutorial plan + assessment blueprint
+01:27:17   [G8] ok via cache(groq:openai/gpt-oss-120b:k98ae7752) · 0+0 tok · 0.0s
+01:27:17   [G8] validators: 0 errors, 0 warnings
+01:27:17   [G9] ok via cache(gemini:gemini-3.5-flash-lite:k89fec1db) · 0+0 tok · 0.0s
+01:27:17   [G9] validators: 16 errors, 9 warnings
+01:28:06   [R1] ok via gemini:gemini-2.5-flash:k89fec1db · 9104+9281 tok · 49.6s
+01:28:06   [R1 round 1] errors 16 → 6 ACCEPT
+01:28:47   [R1] ok via gemini:gemini-2.5-flash:k89fec1db · 8485+9108 tok · 40.9s
+01:28:47   [R1 round 2] errors 6 → 5 ACCEPT
+01:29:14   [R1] ok via gemini:gemini-2.5-flash:k89fec1db · 8463+6101 tok · 26.7s
+01:29:14   [R1 round 3] errors 5 → 4 ACCEPT
+01:29:14   assessment fitted by code: 7 adjustments (A:Assign1: weeks 2→4 moved to 4→6 (after its topics are taught); A:Assign2: weeks 4→6 moved to 6→8 (after its topics are taught); A:Assign3: weeks 6→8 moved to 7→9 (after its topics are taught); A:Mid)
+01:29:14 S8 resources (API candidates → G10 → verification)
+01:29:14   [X3] ok via cache(gemini:gemini-3.5-flash-lite:k89fec1db) · 0+0 tok · 0.0s
+01:29:14   16 API candidates from 7 X3 queries
+01:36:13 S8 resources (API candidates → G10 → verification)
+01:36:13   [X3] ok via cache(gemini:gemini-3.5-flash-lite:k89fec1db) · 0+0 tok · 0.0s
+01:36:13   16 API candidates from 7 X3 queries
+01:36:13   [G10] ok via cache(gemini:gemini-3.5-flash-lite:k89fec1db) · 0+0 tok · 0.0s
+01:36:13   2 resource(s) failed verification; asking for replacements
+01:36:51   [G10] ok via gemini:gemini-3.7-flash:k89fec1db · 5483+5481 tok · 38.5s
+01:36:51   resources: 6/6 verified
+01:36:51 S9 narrative
+01:36:51   [G11] ok via cache(groq:openai/gpt-oss-120b:k98ae7752) · 0+0 tok · 0.0s
+01:36:52 rendered proposal.md + proposal.csv + course_template.xlsx (4 errors, 58 warnings)
+01:36:52 GATE gate3_proposal: approve by auto (dev run) · froze 0 nodes
+01:37:02 design graph loaded into Neo4j: {'nodes': 167, 'internal_links': 242, 'links_to_course': 14, 'links_to_topic': 16, 'links_to_programme': 60, 'unresolved_refs': 0}

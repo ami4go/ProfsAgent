@@ -397,6 +397,9 @@ class CourseTopicDraft(M):
     topic_uid: Optional[str] = None
     hands_on: bool = False
     suggested_order: int = 0
+    # IIIT-D template "Average load": hours/week of student work OUTSIDE lectures while this topic runs
+    # (labs, tutorials, homework, self-study)
+    outside_load_hours: Optional[float] = Field(None, ge=0, le=30)
     sources: list[Source] = Field(default_factory=list)
 
 
@@ -490,6 +493,7 @@ class Component(M):
     n: Optional[int] = None
     activity_types: list[str] = Field(default_factory=list)
     integrity: Optional[str] = None
+    proctored: Optional[bool] = None   # IIIT-D template: >= 40% of the grade must be proctored evaluation
     instances: list[AssessInstance]
 
 

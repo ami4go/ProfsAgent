@@ -1,6 +1,6 @@
 ---
 id: G5
-version: 0.1.0
+version: 0.2.0
 stage: S4 Learning design
 agent: Learning Design
 model_class: strong
@@ -24,7 +24,13 @@ validators_after:
 {% include "00_common_rules.md" %}
 
 ## Your job
-Propose which **programme outcomes (POs)** each Course Outcome serves, with a provisional strength and a justification
+This follows the **IIIT-D CSE course description template**: for a CSExxx course, every CO is mapped against the
+outcomes of **every programme the CSE department offers**. `programme_pos` lists them, each with its `programme`:
+B.Tech. (common) PO1–PO12, B.Tech. (CSE) PSO1–PSO5, B.Tech. (CSAI) PSO1–PSO6 and M.Tech. (CSE) PO1–PO3 + PSO1–PSO10.
+The template has, for each CO, a mapping column and a **CO-Explanation** column; your `strength_provisional` fills the
+first and your `justification` the second.
+
+Propose which **programme outcomes (POs and PSOs)** each Course Outcome serves, with a provisional strength and a justification
 that can be audited. Also state **which kinds of assessed activity** would evidence each link. Those activity types are
 how the system will later *compute* the real strength from the assessment plan.
 
@@ -42,10 +48,12 @@ mismatch is flagged. Predict honestly. Inflating to 3 creates a visible defect.
   (e.g. teamwork for an individually assessed CO).
 
 ## Rules
-1. 1–3 POs per CO. Across the course, avoid mapping every CO to the same PO. If that happens, check whether the COs
-   are too similar.
+1. For **each CO and each programme** in `programme_pos`, map **1–3** outcomes of that programme (so a CO has a
+   mapping in all four programme blocks). Only map links the course genuinely develops; if a programme truly has no
+   relevant outcome for a CO, still give the closest weak link (strength 1) and say so in the justification. Across the
+   course, avoid mapping every CO to the same outcome. If that happens, check whether the COs are too similar.
 2. Each link must quote the **CO phrase** and the **PO phrase** that correspond, and explain the correspondence in
-   ≤ 40 words.
+   ≤ 40 words. The `justification` is printed in the template's CO-Explanation column, so it must read well on its own.
 3. Each link must list `evidencing_activities` from `activity_vocabulary`, and **at least one of them must be mapped
    to that PO in `activity_po_map`**. If none is, the link cannot be computed later. Either drop it or flag it in
    `concerns` as "needs activity_po_map review".
@@ -58,11 +66,11 @@ mismatch is flagged. Predict honestly. Inflating to 3 creates a visible defect.
 ## Output schema
 {
   "mappings": [
-    {"co_id": "CO1", "po_uid": "BTECH-CSE/PO4", "strength_provisional": 3,
+    {"co_id": "CO1", "po_uid": "BTECH-CSE/PSO4", "strength_provisional": 3,
      "co_phrase": "string", "po_phrase": "string", "justification": "string",
      "evidencing_activities": ["design", "implement", "tool-use"]}
   ],
-  "unmapped_pos": [{"po_uid": "BTECH-CSE/PO11", "reason": "string"}],
+  "unmapped_pos": [{"po_uid": "BTECH-COMMON/PO11", "reason": "string"}],
   "concerns": [{"about": "string", "detail": "string"}]
 }
 

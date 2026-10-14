@@ -1,44 +1,53 @@
-"""Export a design run as a PDF in the IIIT-D course-directory sheet format (only the directory's fields).
+"""Export a design run as a PDF laid out like the official IIIT-D CSE course description template.
 
   python scripts/export_course_sheet_pdf.py --run-id cs601-01
 
-Writes runs/<run-id>/course_sheet.pdf. Content comes from runs/<run-id>/state.json (no LLM).
+Writes runs/<run-id>/course_sheet.pdf from runs/<run-id>/state.json (no LLM). Sections follow
+templates/iiitd_cse_course_template.xlsx (header, COs with BL levels, suggested topics with average load, labs,
+assessment plan, resources, CO–PO/PSO mapping for the CSE programmes), plus the week-by-week schedule as an annex.
+The content comes from render/course_template.py, the same data that fills runs/<run-id>/course_template.xlsx.
 """
 from __future__ import annotations
 
 import argparse
 import json
-import re
+import sys
 from collections import defaultdict
 from pathlib import Path
 
-from reportlab.lib import colors
-from reportlab.lib.enums import TA_CENTER
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import ParagraphStyle
-from reportlab.lib.units import mm
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.platypus import KeepTogether, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
-
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
+from reportlab.lib import colors  # noqa: E402
+from reportlab.lib.enums import TA_CENTER  # noqa: E402
+from reportlab.lib.pagesizes import A4, landscape  # noqa: E402
+from reportlab.lib.styles import ParagraphStyle  # noqa: E402
+from reportlab.lib.units import mm  # noqa: E402
+from reportlab.pdfbase import pdfmetrics  # noqa: E402
+from reportlab.pdfbase.ttfonts import TTFont  # noqa: E402
+from reportlab.platypus import KeepTogether, PageBreak, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle  # noqa: E402
+
+from profsagent.config import programme  # noqa: E402
+from profsagent.render.course_template import PROGRAMME_LABEL, pretty_assessment, template_data  # noqa: E402
+
 FONT_DIR = Path("C:/Windows/Fonts")
 pdfmetrics.registerFont(TTFont("Arial", str(FONT_DIR / "arial.ttf")))
 pdfmetrics.registerFont(TTFont("Arial-Bold", str(FONT_DIR / "arialbd.ttf")))
 pdfmetrics.registerFontFamily("Arial", normal="Arial", bold="Arial-Bold")
 
-BODY = ParagraphStyle("body", fontName="Arial", fontSize=8.6, leading=11)
+BODY = ParagraphStyle("body", fontName="Arial", fontSize=8.4, leading=10.8)
+SMALL = ParagraphStyle("small", parent=BODY, fontSize=7.4, leading=9.2)
 BOLD = ParagraphStyle("bold", parent=BODY, fontName="Arial-Bold")
 HEAD = ParagraphStyle("head", parent=BODY, fontName="Arial-Bold", fontSize=10.5, leading=14, spaceBefore=8, spaceAfter=3,
                       textColor=colors.HexColor("#1f3b57"))
 TITLE = ParagraphStyle("title", parent=BODY, fontName="Arial-Bold", fontSize=13, leading=17, alignment=TA_CENTER)
-NOTE = ParagraphStyle("note", parent=BODY, fontSize=7, leading=9, textColor=colors.HexColor("#666666"), alignment=TA_CENTER)
+NOTE = ParagraphStyle("note", parent=BODY, fontSize=7, leading=9, textColor=colors.HexColor("#666666"))
 HEADER_BG = colors.HexColor("#dfe8f1")
 GRID = colors.HexColor("#9aa9b8")
 
 
 def P(text, style=BODY):
-    text = str(text or "").replace("‑", "-").replace(" ", " ")   # non-breaking hyphen/space: not in Arial
+    text = str("" if text is None else text).replace("‑", "-").replace(" ", " ")
     return Paragraph(text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\n", "<br/>"), style)
 
 
@@ -55,117 +64,96 @@ def table(rows, widths, header=True, label_col=False):
     return t
 
 
-def pretty_assessment(iid: str) -> str:
-    s = iid.split(":", 1)[-1]
-    s = re.sub(r"^ProjMilestone", "Project Milestone ", s)
-    s = re.sub(r"^ProjFinal", "Project (final)", s)
-    s = re.sub(r"^Proj(?!ect)", "Project ", s)
-    s = s.replace("Midsem", "Mid-sem exam").replace("Endsem", "End-sem exam")
-    s = re.sub(r"(?<=[a-z])(?=\d)", " ", s)
-    return re.sub(r"\s+", " ", s).strip()
-
-
-TYPE_LABEL = {"quiz": "Quiz", "assignment": "Assignment", "midsem": "Mid-sem", "endsem": "End-sem", "project": "Project",
-              "report": "Report", "lab": "Lab", "presentation": "Presentation", "participation": "Participation"}
-
-
 def build(run_id: str) -> Path:
     run = ROOT / "runs" / run_id
     st = json.loads((run / "state.json").read_text(encoding="utf-8"))
-    cc, f = st["cco_compact"], st["cco"]["fields"]
+    td = template_data(st)
+    W = A4[0] - 30 * mm
+    story = [P("Course Description (IIIT-Delhi CSE course template)", TITLE), Spacer(1, 6)]
+
+    story.append(table([[P(k, BOLD), P(v)] for k, v in td["header"]], [38 * mm, W - 38 * mm], header=False, label_col=True))
+
+    story.append(P("Course Outcomes", HEAD))
+    story.append(table([[P("CO #", BOLD), P("Outcome", BOLD), P("BL #", BOLD)]] +
+                       [[P(c["id"], BOLD), P(c["statement"]), P(c["bl"])] for c in td["cos"]], [14 * mm, W - 30 * mm, 16 * mm]))
+    high = sum(1 for c in td["cos"] if int(c["bl"][2:]) >= 4)
+    story.append(P(f"{high} of {len(td['cos'])} COs target BL4–BL6 (template: at least half).", NOTE))
+    story.append(Spacer(1, 4))
+    story.append(table([[P("Approval Date", BOLD), P(td["approval_date"] or "(new course: left empty)")],
+                        [P("Proposing Dept", BOLD), P(td["proposing_dept"])]], [38 * mm, W - 38 * mm], header=False, label_col=True))
+
+    story.append(P("Suggested Topics", HEAD))
+    rows = [[P("List Of Topics", BOLD), P("Relevant CO", BOLD), P("Assignment/lab/tutorial", BOLD), P("Average load (h/week)", BOLD)]]
+    for t in td["topics"]:
+        rows.append([P(t["title"]), P(t["cos"]), P(t["activities"], SMALL), P("" if t["load"] is None else f"{t['load']:g}")])
+    story.append(table(rows, [W * 0.38, W * 0.12, W * 0.36, W * 0.14]))
+    loads = [(t["load"]) for t in td["topics"] if t["load"] is not None]
+    story.append(P("Average load = expected hours of weekly work outside lectures, including labs, tutorials, homework and "
+                   "self-study (template: 10–12 h for a 4-credit course)." + (f" Mean over topics: {sum(loads) / len(loads):.1f} h." if loads else ""), NOTE))
+
+    story.append(P("Suggested Plan of Labs", HEAD))
+    if td["labs"]:
+        rows = [[P("List of Lab Topics", BOLD), P("Relevant CO", BOLD), P("Hardware/software platform", BOLD)]]
+        rows += [[P(x["title"]), P(x["cos"]), P(x["platform"])] for x in td["labs"]]
+        story.append(table(rows, [W * 0.58, W * 0.12, W * 0.30]))
+    else:
+        story.append(P("Labs are not applicable to this course."))
+
+    rows = [[P("Type of Evaluation", BOLD), P("% Contribution in Grade", BOLD)]]
+    rows += [[P(a["type"]), P(f"{a['weight']:g}")] for a in td["assessment"]]
+    rows.append([P("Total", BOLD), P(f"{sum(a['weight'] for a in td['assessment']):g}", BOLD)])
+    story.append(KeepTogether([P("Suggested Assessment Plan", HEAD), table(rows, [W * 0.6, W * 0.4]),
+                               P(f"Proctored evaluation: {td['proctored_pct']:g}% (template: at least 40%).", NOTE)]))
+
+    rows = [[P("Name/Title", BOLD), P("Type", BOLD)]] + [[P(r["title"]), P(r["type"])] for r in td["resources"]]
+    story.append(KeepTogether([P("Suggested Resources", HEAD), table(rows, [W - 34 * mm, 34 * mm])]))
+
+    # CO -> programme outcome mapping (template block for CSExxx courses)
+    story.append(PageBreak())
+    story.append(P("CO mapping with the programmes offered by the CSE department", HEAD))
+    story.append(P("Cell = mapping strength (1 low, 2 medium, 3 high); explanations follow each programme table.", NOTE))
+    co_ids = [c["id"] for c in td["cos"]]
+    for uid, label in [(u, PROGRAMME_LABEL[u]) for u in ("BTECH-COMMON", "BTECH-CSE", "BTECH-CSAI", "MTECH-CSE")]:
+        pos = programme(uid)["po"]
+        rows = [[P(label, BOLD), P("Program Outcome", BOLD)] + [P(c, BOLD) for c in co_ids]]
+        expl = []
+        for po in pos:
+            cells = []
+            for c in co_ids:
+                hit = td["mapping"].get((c, po["id"]))
+                cells.append(P(str(hit[0]) if hit else ""))
+                if hit:
+                    expl.append(f"{c} → {po['label']}: {hit[1]}")
+            rows.append([P(po["label"], BOLD), P(po["text"], SMALL)] + cells)
+        cw = 11 * mm
+        story.append(KeepTogether([table(rows, [22 * mm, W - 22 * mm - cw * len(co_ids)] + [cw] * len(co_ids)), Spacer(1, 3)]))
+        if expl:
+            story.append(P("Explanations: " + " · ".join(expl), SMALL))
+        story.append(Spacer(1, 6))
+
+    # Annex: week-by-week schedule (not part of the template, kept for the professor's review)
     lo_parent = {lo["id"]: lo["parent_co"] for lo in st["los"]}
     tmap = {t["id"]: t for m in st["modules"] for t in m["topics"]}
-    W = A4[0] - 30 * mm
-    story = [P("Course Proposal", TITLE), Spacer(1, 6)]
-
-    years = cc["target_students"].get("years") or []
-    offered = "UG" + (f" (B.Tech. CSE, year {'/'.join(map(str, years))})" if years else "")
-    code = f["level_or_code"].get("code") or f"To be assigned ({st['level']}xx level)"
-    header = [[P("Course Code", BOLD), P(code)], [P("Department", BOLD), P("CSE")], [P("Course Name", BOLD), P(cc["course_name"])],
-              [P("Credits", BOLD), P(st["defaults"]["credits"])], [P("Course Offered to", BOLD), P(offered)],
-              [P("Course Description", BOLD), P(st.get("narrative", {}).get("course_description", ""))]]
-    story.append(table(header, [38 * mm, W - 38 * mm], header=False, label_col=True))
-
-    # Pre-requisites
-    story.append(P("Pre-requisites", HEAD))
-    pre = defaultdict(list)
-    for p in st["positioning"].get("prerequisites", []):
-        alts = [a for a in p.get("alternatives", []) if a != p["course_uid"]]
-        pre[p["kind"]].append(p["course_uid"] + (f" (or {', '.join(alts)})" if alts else ""))
-    story.append(table([[P("Pre-requisite (Mandatory)", BOLD), P("Pre-requisite (Desirable)", BOLD), P("Pre-requisite (Other)", BOLD)],
-                        [P(", ".join(pre["mandatory"]) or "None"), P(", ".join(pre["desirable"]) or "None"), P("None")]], [W / 3] * 3))
-
-    # Post Conditions (COs)
-    story.append(P("Post Conditions (Course Outcomes)", HEAD))
-    story.append(table([[P("CO", BOLD), P("Students will be able to…", BOLD)]] + [[P(c["id"], BOLD), P(c["statement"])] for c in st["cos"]],
-                       [16 * mm, W - 16 * mm]))
-
-    # Weekly Lecture Plan
-    story.append(P("Weekly Lecture Plan", HEAD))
-    tut = defaultdict(list)
-    for s in st.get("labs_tutorials", {}).get("tutorials", []):
-        tut[s["week"]].append(s["activity"])
     events = defaultdict(list)
     for c in st["assessment"]["components"]:
         for i in c["instances"]:
             name = pretty_assessment(i["id"])
-            if i["release_week"] == i["due_week"]:
-                events[i["release_week"]].append(name)
-            else:
-                events[i["release_week"]].append(f"{name} released")
+            events[i["release_week"]].append(name if i["release_week"] == i["due_week"] else f"{name} released")
+            if i["release_week"] != i["due_week"]:
                 events[i["due_week"]].append(f"{name} due")
-    rows = [[Paragraph("Week<br/>Number", BOLD), P("Lecture Topic", BOLD), P("COs Met", BOLD), P("Tutorial", BOLD), P("Assignments / Project", BOLD)]]
+    story.append(P("Annex: week-by-week schedule", HEAD))
+    rows = [[P("Week", BOLD), P("Lecture topics", BOLD), P("COs", BOLD), P("Assessments", BOLD)]]
     for w in st["schedule"]["weeks"]:
         tids = list(dict.fromkeys(it["topic_id"] for it in w["items"]))
-        topics = [tmap[t]["title"] for t in tids if t in tmap]
         cos = sorted({lo_parent.get(lo, "") for t in tids for lo in tmap.get(t, {}).get("serves_los", [])} - {""})
-        wk = w["week"]
-        ev = events[wk][:]
-        if wk == st["midsem_after_week"] and not any("Mid-sem" in e for e in ev):
-            ev.append("Mid-sem exam (after this week)")
-        rows.append([P(wk), P("\n".join(f"• {t}" for t in topics) or ("Project work and review" if ev else "—")), P(", ".join(cos)),
-                     P("; ".join(tut[wk])), P("\n".join(ev))])
-    story.append(table(rows, [17 * mm, 55 * mm, 18 * mm, (W - 90 * mm) * 0.58, (W - 90 * mm) * 0.42]))
-
-    # Weekly Lab Plan
-    labs = st.get("labs_tutorials", {}).get("labs", [])
-    story.append(P("Weekly Lab Plan", HEAD))
-    if labs:
-        rows = [[Paragraph("Week<br/>Number", BOLD), P("Laboratory Exercise", BOLD), P("COs Met", BOLD), P("Platform (Hardware / Software)", BOLD)]]
-        for s in sorted(labs, key=lambda x: x["week"]):
-            cos = sorted({lo_parent.get(x, "") for x in s["practises_los"]} - {""})
-            ex = (s.get("title") + ": " if s.get("title") else "") + s["exercise"]
-            rows.append([P(s["week"]), P(ex), P(", ".join(cos)), P(", ".join(s.get("tools", [])))])
-        story.append(table(rows, [17 * mm, W - 17 * mm - 18 * mm - 48 * mm, 18 * mm, 48 * mm]))
-    else:
-        story.append(P("Course does not have a lab component."))
-
-    # Assessment Plan
-    story.append(P("Assessment Plan", HEAD))
-    rows = [[P("Type of Evaluation", BOLD), P("% Contribution in Grade", BOLD)]]
-    for c in st["assessment"]["components"]:
-        n = len(c["instances"])
-        label = TYPE_LABEL.get(c["type"].lower(), c["type"].title())
-        if n > 1:
-            label += f" ({n}" + (f", best {c['best_k']}" if c.get("best_k") else "") + ")"
-        rows.append([P(label), P(f"{c['weight_pct']:g}")])
-    rows.append([P("Total", BOLD), P(f"{sum(c['weight_pct'] for c in st['assessment']['components']):g}", BOLD)])
-    story.append(KeepTogether(table(rows, [W * 0.6, W * 0.4])))
-
-    # Resource Material
-    story.append(P("Resource Material", HEAD))
-    role = {"primary": "Textbook", "reference": "Reference", "reading": "Reference (reading)"}
-    rows = [[P("Type", BOLD), P("Title", BOLD)]]
-    for r in st.get("resources", []):
-        ident = r["identifier"].get("doi") and f"DOI: {r['identifier']['doi']}" or r["identifier"].get("isbn") and f"ISBN: {r['identifier']['isbn']}" or ""
-        rows.append([P(role.get(r["role"], r["role"].title())),
-                     P(f"{', '.join(r['authors'])} ({r.get('year')}). {r['title']}." + (f" {ident}" if ident else ""))])
-    story.append(KeepTogether(table(rows, [34 * mm, W - 34 * mm])))
-
-    story += [Spacer(1, 10), P(f"Draft generated by ProfsAgent from design run {run_id}. Not an approved IIIT-Delhi course record.", NOTE)]
+        rows.append([P(w["week"]), P("\n".join(f"• {tmap[t]['title']}" for t in tids if t in tmap) or "Project work and review"),
+                     P(", ".join(cos)), P("\n".join(events[w["week"]]))])
+    story.append(table(rows, [12 * mm, W * 0.55, 18 * mm, W - 12 * mm - W * 0.55 - 18 * mm]))
+    story += [Spacer(1, 10), P(f"Draft generated by ProfsAgent from design run {run_id}. Not an approved IIIT-Delhi course record.",
+                                ParagraphStyle("c", parent=NOTE, alignment=TA_CENTER))]
     out = run / "course_sheet.pdf"
     SimpleDocTemplate(str(out), pagesize=A4, leftMargin=15 * mm, rightMargin=15 * mm, topMargin=14 * mm, bottomMargin=14 * mm,
-                      title=f"{cc['course_name']} — Course Proposal", author="ProfsAgent (draft)").build(story)
+                      title=f"{st['cco_compact']['course_name']} — Course Description", author="ProfsAgent (draft)").build(story)
     return out
 
 

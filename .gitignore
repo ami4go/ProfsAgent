@@ -1,14 +1,28 @@
-# Environment & secrets
+# Environment & secrets — never commit
 .env
+.env.*
 
-# Python
+# Python / tooling
 __pycache__/
 *.pyc
 *.pyo
+.venv/
+.pytest_cache/
 
 # Raw crawled data (too large for git)
 data/raw/
 data/parsed/
+
+# Regenerable caches and logs (AI responses, embeddings, fetched pages, book lookups)
+data/cache/
+data/stub_build.log
+
+# Run artefacts that are machine-local (runs/ itself IS committed)
+runs/*/checkpoint.sqlite*
+runs/_smoke/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
 
 # Temporary storage for references
 Temporary/

@@ -102,7 +102,7 @@ def render(rt) -> None:
         los_by[lo["parent_co"]].append(lo)
     share = st.get("co_marks_share", {})
     for c in st["cos"]:
-        w(f"**{c['id']} (L{c['bloom_level']}, {c['knowledge_dimension']}) — {c['statement']}**{_tag(c.get('sources'))}  ")
+        w(f"**{c['id']} (BL{c['bloom_level']}, {c['knowledge_dimension']}) — {c['statement']}**{_tag(c.get('sources'))}  ")
         w(f"verb *{c['verb']}* · behaviour *{c['behaviour']}* · condition *{c['condition']}* · degree *{c['degree']}* · "
           f"evidence: {', '.join(c['evidence_types'])} · marks share (computed): {share.get(c['id'], 0)}%\n")
         for lo in los_by[c["id"]]:
@@ -263,4 +263,10 @@ def render(rt) -> None:
     for r in st.get("resources", []):
         cw.writerow([r["role"], f"{', '.join(r['authors'])} ({r.get('year')}). {r['title']}"])
     (rt.run_dir / "proposal.csv").write_text(buf.getvalue(), encoding="utf-8")
-    rt.log(f"rendered proposal.md + proposal.csv ({len(errs)} errors, {len(vs) - len(errs)} warnings)")
+    try:   # the official IIIT-D CSE course description template, filled (render/course_template.py)
+        from profsagent.render.course_template import write_xlsx
+        write_xlsx(st, rt.run_dir / "course_template.xlsx")
+        made = " + course_template.xlsx"
+    except Exception as e:  # noqa: BLE001 — never lose the proposal because of the spreadsheet
+        made = f" (course_template.xlsx failed: {type(e).__name__}: {e})"
+    rt.log(f"rendered proposal.md + proposal.csv{made} ({len(errs)} errors, {len(vs) - len(errs)} warnings)")

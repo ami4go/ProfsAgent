@@ -30,6 +30,13 @@ FIX_HINTS = {
     "VA-ORDER": "List instances chronologically: each later instance must have release and due weeks ≥ the previous one.",
     "VT-SIZE": "Split the topic into 2–3 topics of ≤ 2 h each, distributing its LOs.",
     "V21": "Adjust topic hours so the total is 85–100% of the lecture budget.",
+    "VCO-BL": "Raise at least half of the COs to BL4 (Analyzing), BL5 (Evaluating) or BL6 (Creating): change the verb to one from that "
+              "level of the IIIT-D taxonomy and make the task genuinely analytical, evaluative or creative; update verb and bloom_level together.",
+    "T4": "Map the CO to at least one outcome of EVERY listed programme (B.Tech common POs, B.Tech CSE PSOs, B.Tech CSAI PSOs, "
+          "M.Tech CSE POs/PSOs), each with a one-line explanation; keep only links the course actually develops.",
+    "VA-PROCTOR": "Make proctored evaluation (mid-sem, end-sem, in-class quizzes or other invigilated tests) at least 40% of the grade, "
+                  "taking weight from take-home components; keep the total at 100.",
+    "VT-LOAD": "Give every topic an outside_load_hours value so the hours-weighted average is within the recommended weekly range.",
     "VTG-TAUGHT": "Add a topic that teaches this topic group (with covers_topic_groups), or propose dropping the group upstream.",
 }
 
@@ -104,8 +111,15 @@ def check_cos(state: dict) -> list[dict]:
     band = state["bloom_band"]
     out = []
     n = len(cos)
-    if not (ped["co_count"]["min"] <= n <= ped["co_count"]["max"]):
-        out.append(v("V4", ERR, [c["id"] for c in cos], f"{n} COs; expected {ped['co_count']['min']}–{ped['co_count']['max']}"))
+    cc = state.get("co_count") or ped["co_count"]
+    if not (cc["min"] <= n <= cc["max"]):
+        out.append(v("V4", ERR, [c["id"] for c in cos], f"{n} COs; expected {cc['min']}–{cc['max']} ({cc.get('basis', 'config')})"))
+    hb = ped.get("co_high_bloom")
+    if hb and n:
+        high = [c["id"] for c in cos if int(c["bloom_level"]) >= hb["min_level"]]
+        if len(high) < hb["min_fraction"] * n:
+            out.append(v("VCO-BL", ERR, [c["id"] for c in cos if c["id"] not in high],
+                         f"only {len(high)} of {n} COs are at BL{hb['min_level']}–BL6; the IIIT-D template requires at least half"))
     for c in cos:
         lvl = int(c["bloom_level"])
         if lvl > band["ceiling"]:
@@ -145,12 +159,21 @@ def check_copo(state: dict) -> list[dict]:
         if not any(m["po_uid"] in apm.get(a, []) for a in m.get("evidencing_activities", [])):
             out.append(v("VCOPO-ACT", WARN, [m["co_id"], m["po_uid"]],
                          f"{m['co_id']}→{m['po_uid']}: none of its evidencing activities maps to that PO, so its strength can never be computed"))
+    lim = pedagogy().get("copo_per_programme", {"min": 1, "max_warn": 5})
+    progs = state.get("programmes") or sorted({p.split("/")[0] for p in pos})
     for c in cos:
-        k = len(per.get(c, []))
-        if k == 0:
-            out.append(v("T4", ERR, [c], f"{c} maps to no PO"))
-        elif k > 3:
-            out.append(v("T4", WARN, [c], f"{c} maps to {k} POs (max 3)"))
+        if not per.get(c):
+            out.append(v("T4", ERR, [c], f"{c} maps to no programme outcome"))
+            continue
+        for prog in progs:   # IIIT-D template: map every CO against every CSE programme
+            k = sum(1 for m in per[c] if m["po_uid"].split("/")[0] == prog)
+            if k < lim["min"]:
+                out.append(v("T4", ERR, [c, prog], f"{c} maps to no outcome of {prog} (the template asks for a mapping for every CSE programme)"))
+            elif k > lim["max_warn"]:
+                out.append(v("T4", WARN, [c, prog], f"{c} maps to {k} outcomes of {prog}; keep only the strong links"))
+        for m in per[c]:
+            if not (m.get("justification") or "").strip():
+                out.append(v("T4", ERR, [c, m["po_uid"]], f"{c}→{m['po_uid']} has no explanation (the template has a CO-Explanation column)"))
     return out
 
 
@@ -255,6 +278,18 @@ def check_structure(state: dict) -> list[dict]:
         out.append(v("V21", ERR, [], f"topics need {total:.1f} h > {hb['lecture_hours_total']} h available"))
     if hb and topics and total < 0.85 * hb["lecture_hours_total"]:
         out.append(v("V21", ERR, [], f"topics fill only {total:.1f} h of {hb['lecture_hours_total']} h (< 85%): the schedule would leave teaching weeks empty"))
+    target = (state.get("template_rules") or {}).get("outside_load_hours_per_week")
+    if target and topics:
+        missing = [t["id"] for t in topics if t.get("outside_load_hours") is None]
+        if missing:
+            out.append(v("VT-LOAD", WARN, missing, f"{len(missing)} topics have no average outside-lecture load (template column 'Average load')"))
+        known = [t for t in topics if t.get("outside_load_hours") is not None]
+        hrs = sum(float(t["est_hours"]) for t in known)
+        if hrs:
+            avg = sum(float(t["outside_load_hours"]) * float(t["est_hours"]) for t in known) / hrs
+            if not (target["min"] - 1e-6 <= avg <= target["max"] + 1e-6):
+                out.append(v("VT-LOAD", WARN, [t["id"] for t in known],
+                             f"average outside-lecture load is {avg:.1f} h/week; the IIIT-D template recommends {target['min']:g}–{target['max']:g} h"))
     return out
 
 
@@ -419,6 +454,14 @@ def check_assessment(state: dict) -> list[dict]:
             ok = {"<=": w <= val, ">=": w >= val, "==": abs(w - val) < 0.01}.get(cn["op"], True)
             if not ok:
                 out.append(v("VK", ERR if cn["hardness"] == "hard" else WARN, [cn["id"]], f"{ct} weight {w} violates {cn['id']} ({cn['op']} {val})"))
+    pr = ped.get("proctored")
+    if pr and comps:
+        def is_proc(c):
+            return c.get("proctored") if c.get("proctored") is not None else str(c["type"]).lower() in pr["types"]
+        proc = sum(float(c["weight_pct"]) for c in comps if is_proc(c))
+        if proc + 1e-6 < pr["min_pct"]:
+            out.append(v("VA-PROCTOR", ERR, [c["type"] for c in comps],
+                         f"only {proc:g}% of the grade is proctored evaluation; the IIIT-D template requires at least {pr['min_pct']}%"))
     return out
 
 
@@ -473,6 +516,12 @@ def check_resources(state: dict) -> list[dict]:
             out.append(v("V15", ERR, [r.get("candidate_id", "?")], f"resource '{r.get('title')}' not verified: {r.get('verification', {}).get('problems')}"))
         if not r.get("supports_topics"):
             out.append(v("V15", WARN, [r.get("candidate_id", "?")], f"resource '{r.get('title')}' supports no topic"))
+    rej = state.get("resources_rejected") or []
+    if rej:
+        out.append(v("V15", WARN, [], f"{len(rej)} resource(s) removed because no library record matched: "
+                                     + "; ".join(str(x.get("title"))[:60] for x in rej)))
+    if "resources" in state and len(state["resources"]) < 2:
+        out.append(v("V15", WARN, [], f"only {len(state['resources'])} verified resource(s); add sources manually or widen the search"))
     return out
 
 

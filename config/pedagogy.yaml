@@ -1,15 +1,29 @@
-# Provisional pedagogy parameters. EVERY value here needs advisor sign-off (docs/01 §11).
-bloom_bands:            # by course level digit; [floor, ceiling]
-  "1": [1, 3]
+# Pedagogy parameters. Values marked TEMPLATE come from the official IIIT-D CSE course description template
+# (templates/iiitd_cse_course_template.xlsx); everything else is provisional and needs advisor sign-off (docs/01 §11).
+bloom_bands:            # by course level digit; [floor, ceiling]. Ceilings are >= 4 because the TEMPLATE asks for >= 1/2 of COs at BL4-BL6.
+  "1": [1, 4]
   "2": [2, 5]
   "3": [3, 5]
   "4": [3, 6]
   "5": [3, 6]
   "6": [4, 6]
   "7": [4, 6]
-bloom_band_basis: "provisional table (docs/01 §6.4); to be refit from quality-filtered corpus priors"
-co_count: {min: 4, max: 6, basis: "IIIT-D sheets typically list 4-5 COs (stub corpus); provisional"}
+bloom_band_basis: "provisional table (docs/01 §6.4), ceilings raised to BL4+ for the IIIT-D template rule; to be refit from corpus priors"
+co_count: {min: 4, max: 5, basis: "TEMPLATE: 4-5 COs for a 4-credit course"}
+co_count_by_credits:    # TEMPLATE: "2-3 COs for a 2-credit course and 4-5 COs for a 4-credit course"; 1-credit is our assumption
+  "1": [1, 2]
+  "2": [2, 3]
+  "4": [4, 5]
+co_high_bloom: {min_fraction: 0.5, min_level: 4, basis: "TEMPLATE: at least 1/2 of the COs should target BL4 (Analyzing), BL5 (Evaluating) or BL6 (Creating)"}
 lo_count: {per_co_min: 2, per_co_max: 4, total_min: 10, total_max: 20}
+proctored: {min_pct: 40, types: [midsem, endsem, quiz], basis: "TEMPLATE: at least 40% should be proctored evaluation. Types listed are proctored by default; a component may override with proctored: true/false"}
+outside_load: {per_credit_min: 2.5, per_credit_max: 3.0, basis: "TEMPLATE: recommended load for a 4-credit course is 10-12 hours of weekly work outside lectures (labs, tutorials, homework, self-study)"}
+copo_programmes:        # TEMPLATE: for CSExxx courses, map COs to every programme offered by the CSE department
+  - BTECH-COMMON
+  - BTECH-CSE
+  - BTECH-CSAI
+  - MTECH-CSE
+copo_per_programme: {min: 1, max_warn: 5}
 thresholds:
   anti_requisite_overlap: 0.35
   substantial_overlap: 0.15
@@ -19,18 +33,48 @@ thresholds:
   component_count: {min: 3, max: 6}
   max_events_per_week: 2
 assessment_evidence_types: [exam_question, lab_task, programming_assignment, project_deliverable, design_document, presentation, report, code_review, quiz]
-activity_vocabulary: [design, implement, analyse-data, evaluate-critique, teamwork, written-communication, oral-presentation, ethics-reflection, self-directed-learning, research-investigation, tool-use]
-# activity_type -> BTECH-CSE PO uids. PROPOSAL, needs faculty sign-off before computed strengths are reported as final.
+activity_vocabulary: [design, implement, analyse-data, evaluate-critique, teamwork, written-communication, oral-presentation, ethics-reflection, self-directed-learning, research-investigation, tool-use, project-management, theory]
+# activity_type -> programme outcome uids (all four CSE programmes, TEMPLATE outcome lists).
+# PROPOSAL: needs faculty sign-off before computed strengths are reported as final.
 activity_po_map:
+  BTECH-COMMON:
+    design: [BTECH-COMMON/PO3]
+    implement: [BTECH-COMMON/PO3, BTECH-COMMON/PO5]
+    analyse-data: [BTECH-COMMON/PO2, BTECH-COMMON/PO4]
+    evaluate-critique: [BTECH-COMMON/PO2, BTECH-COMMON/PO4]
+    teamwork: [BTECH-COMMON/PO9]
+    written-communication: [BTECH-COMMON/PO10]
+    oral-presentation: [BTECH-COMMON/PO10]
+    ethics-reflection: [BTECH-COMMON/PO6, BTECH-COMMON/PO8]
+    self-directed-learning: [BTECH-COMMON/PO12]
+    research-investigation: [BTECH-COMMON/PO4]
+    tool-use: [BTECH-COMMON/PO5]
+    project-management: [BTECH-COMMON/PO11]
+    theory: [BTECH-COMMON/PO1]
   BTECH-CSE:
-    design: [BTECH-CSE/PO4]
-    implement: [BTECH-CSE/PO4]
-    analyse-data: [BTECH-CSE/PO3]
-    evaluate-critique: [BTECH-CSE/PO4, BTECH-CSE/PO9]
-    teamwork: [BTECH-CSE/PO5]
-    written-communication: [BTECH-CSE/PO7]
-    oral-presentation: [BTECH-CSE/PO7]
-    ethics-reflection: [BTECH-CSE/PO6, BTECH-CSE/PO12]
-    self-directed-learning: [BTECH-CSE/PO8]
-    research-investigation: [BTECH-CSE/PO10]
-    tool-use: [BTECH-CSE/PO9]
+    design: [BTECH-CSE/PSO4]
+    implement: [BTECH-CSE/PSO4]
+    analyse-data: [BTECH-CSE/PSO3]
+    evaluate-critique: [BTECH-CSE/PSO4]
+    tool-use: [BTECH-CSE/PSO5]
+    theory: [BTECH-CSE/PSO1, BTECH-CSE/PSO2]
+  BTECH-CSAI:
+    design: [BTECH-CSAI/PSO3, BTECH-CSAI/PSO5]
+    implement: [BTECH-CSAI/PSO3, BTECH-CSAI/PSO5]
+    analyse-data: [BTECH-CSAI/PSO4]
+    evaluate-critique: [BTECH-CSAI/PSO4]
+    ethics-reflection: [BTECH-CSAI/PSO6]
+    theory: [BTECH-CSAI/PSO1, BTECH-CSAI/PSO2]
+  MTECH-CSE:
+    design: [MTECH-CSE/PSO3]
+    implement: [MTECH-CSE/PSO3]
+    analyse-data: [MTECH-CSE/PSO2]
+    evaluate-critique: [MTECH-CSE/PSO3]
+    teamwork: [MTECH-CSE/PSO6]
+    written-communication: [MTECH-CSE/PO2, MTECH-CSE/PSO8]
+    oral-presentation: [MTECH-CSE/PSO8]
+    ethics-reflection: [MTECH-CSE/PSO7, MTECH-CSE/PSO10]
+    self-directed-learning: [MTECH-CSE/PSO9]
+    research-investigation: [MTECH-CSE/PO1, MTECH-CSE/PSO5]
+    tool-use: [MTECH-CSE/PSO4]
+    theory: [MTECH-CSE/PSO1]

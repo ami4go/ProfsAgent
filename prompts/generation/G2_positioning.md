@@ -90,7 +90,7 @@ point at specific catalogue evidence.
   "comparable": [
     {"kind": "internal|external", "ref": "CSE583 | EXT:…", "title": "string", "take": "string", "avoid": "string"}
   ],
-  "po_gap_hints": [{"po_uid": "BTECH-CSE/PO5", "reason": "string"}],
+  "po_gap_hints": [{"po_uid": "BTECH-COMMON/PO9", "reason": "string"}],
   "concerns": [{"about": "string", "detail": "string"}],
   "missing": [{"field": "string", "reason": "string"}]
 }

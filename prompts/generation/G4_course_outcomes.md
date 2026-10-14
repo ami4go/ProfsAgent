@@ -1,6 +1,6 @@
 ---
 id: G4
-version: 0.1.0
+version: 0.3.0
 stage: S4 Learning design
 agent: Learning Design
 model_class: strong
@@ -62,6 +62,10 @@ weekly plan, labs, assessments, grading and the CO–PO matrix. They will be che
 - The level is set by the **verb together with the demand of the behaviour**. "Design" with a behaviour that only asks
   the student to fill in a template is not L6. When your verb's lexicon level and the real cognitive demand differ,
   change the verb, not the claim.
+- **IIIT-D course template rule: at least half of the COs must target BL4 (Analyzing), BL5 (Evaluating) or BL6
+  (Creating)** ({{ high_bloom_rule.basis }}). Count before you answer: with 4 COs, at least 2 must be BL4+; with 5, at
+  least 3. Prefer verbs from the IIIT-D taxonomy in `iiitd_taxonomy` (its "suggested_verbs" per BL level; ignore the
+  question words and nouns in those lists) that also appear in `verb_lexicon` at the same level.
 - Spread the COs over **at least two** Bloom levels. The highest-level CO must be something the course can actually
   assess at that level (e.g. an L6 CO needs an open-ended project or design task in the assessment plan, which must be
   feasible under the constraints).
@@ -70,7 +74,8 @@ weekly plan, labs, assessments, grading and the CO–PO matrix. They will be che
   the professor**, so claim the level honestly.
 
 ## Coverage, distinctness and intent
-1. **Count**: between {{ co_count.min }} and {{ co_count.max }} COs ({{ co_count.basis }}).
+1. **Count**: between {{ co_count.min }} and {{ co_count.max }} COs ({{ co_count.basis }}). The IIIT-D template suggests
+   2–3 COs for a 2-credit course and 4–5 for a 4-credit course.
 2. **Coverage**: every topic group `TG*` in the CCO must be covered by at least one CO (`covers_topic_groups`). If the
    topics are marked `hypotheses`, you may propose to **drop, merge or add** a topic group. Put each proposal in
    `topic_group_proposals` with a reason. Never do it silently. If the topics are `fixed`, cover them all as given.
@@ -145,6 +150,8 @@ granularity**. **Do not copy their content.** Cite any exemplar that shaped a CO
 <context name="degree_bank">{{ degree_bank | tojson }}</context>
 <context name="exemplars">{{ exemplars | tojson }}</context>
 <context name="programme_pos">{{ programme_pos | tojson }}</context>
+<context name="high_bloom_rule">{{ high_bloom_rule | tojson }}</context>
+<context name="iiitd_taxonomy">{{ iiitd_taxonomy | tojson }}</context>
 <context name="assessment_evidence_types">{{ assessment_evidence_types | tojson }}</context>
 
 Write the Course Outcomes for "{{ cco.course_name }}". Return only the JSON object.

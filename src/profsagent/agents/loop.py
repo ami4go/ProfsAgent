@@ -14,7 +14,7 @@ from pydantic import BaseModel, ValidationError
 
 from profsagent.llm.prompts import load_prompt
 from profsagent.models.io import OUTPUT_MODELS, RepairPatch
-from profsagent.validate import rules
+from profsagent.validate import engine, rules
 
 
 def temperature(meta: dict) -> float:
@@ -109,9 +109,13 @@ def generate(rt, pid: str, ctx: dict, *, apply: Callable[[dict, dict], dict], st
     obj, meta = call(rt, pid, ctx, role)
     comp = obj.model_dump()
     state = apply(copy.deepcopy(rt.state), comp)
-    vs = rules.run(state, stages)
-    trace = {"generator": meta, "initial_errors": len(rules.errors(vs)), "initial_warnings": len(vs) - len(rules.errors(vs)), "repairs": []}
+    vs = engine.check(state, stages)
+    trace = {"generator": meta, "initial_errors": len(rules.errors(vs)), "initial_warnings": len(vs) - len(rules.errors(vs)),
+             "initial_error_codes": engine.error_codes(vs), "repairs": []}
     rt.log(f"  [{pid}] validators: {trace['initial_errors']} errors, {trace['initial_warnings']} warnings")
+    comp, vs, trace["fixes"] = engine.apply_fixers(rt.state, comp, apply, stages, vs)
+    for f in trace["fixes"]:
+        rt.log(f"  [fixer {f['fixer']}] errors {f['errors_before']} → {f['errors_after']} {'ACCEPT' if f['accepted'] else 'REJECT'}")
     frozen = frozen or set()
     feedback = None
     for rnd in range(1, max_rounds + 1):
@@ -120,7 +124,7 @@ def generate(rt, pid: str, ctx: dict, *, apply: Callable[[dict, dict], dict], st
             break
         try:
             patch, pmeta = call(rt, "R1", {
-                "component": comp, "component_prompt_id": pid, "violations": [x for x in vs if x["severity"] == "error"][:40],
+                "component": comp, "component_prompt_id": pid, "violations": engine.strip_v2(rules.errors(vs))[:40],
                 "frozen_ids": sorted(frozen), "round": rnd,
                 "context_min": {**{k: x for k, x in ctx.items() if len(dumps(x)) < 6000},
                                 **({"previous_patch_rejected_because": feedback} if feedback else {})}})
@@ -133,7 +137,7 @@ def generate(rt, pid: str, ctx: dict, *, apply: Callable[[dict, dict], dict], st
         except ValidationError as e:
             trace["repairs"].append({"round": rnd, "accepted": False, "why": f"patched component invalid: {str(e)[:200]}", "notes": notes})
             break
-        vs2 = rules.run(apply(copy.deepcopy(rt.state), cand), stages)
+        vs2 = engine.check(apply(copy.deepcopy(rt.state), cand), stages)
         e1, e2 = rules.errors(vs), rules.errors(vs2)
         new_codes = {x["code"] for x in e2} - {x["code"] for x in e1}
         ok = len(e2) < len(e1) and not new_codes
@@ -149,6 +153,8 @@ def generate(rt, pid: str, ctx: dict, *, apply: Callable[[dict, dict], dict], st
         comp, vs, feedback = cand, vs2, None
     trace["final_errors"] = len(rules.errors(vs))
     trace["final_warnings"] = len(vs) - trace["final_errors"]
+    trace["final_error_codes"] = engine.error_codes(vs)
+    trace["open"] = engine.open_items(vs)
     return comp, vs, trace
 
 

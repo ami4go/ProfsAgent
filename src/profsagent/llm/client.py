@@ -116,11 +116,14 @@ class LLMClient:
         self.cache_enabled = True
         self.ollama_url = os.environ.get("OLLAMA_URL", "http://localhost:11434")
         self.totals = {"calls": 0, "prompt_tokens": 0, "output_tokens": 0}
+        self.no_native_schema: set[str] = set()   # Gemini models that rejected responseJsonSchema in this process
 
     # ------------------------------------------------------------------ slots
-    def _slots_for(self, role: str, prompt_chars: int):
+    def _slots_for(self, role: str, prompt_chars: int, skip_models: frozenset[str] = frozenset()):
         for ep in self.cfg["roles"][role]:
             if ep.get("max_prompt_tokens") and prompt_chars / 3.2 > ep["max_prompt_tokens"]:
+                continue
+            if f"{ep['provider']}:{ep['model']}" in skip_models:   # this call already got invalid output from it
                 continue
             ks = {"gemini": self.gemini_keys, "groq": self.groq_keys, "ollama": ["local"]}[ep["provider"]]
             for i, k in enumerate(ks):
@@ -130,7 +133,7 @@ class LLMClient:
 
     # ------------------------------------------------------------------ raw calls
     def _gemini(self, model: str, key: str, system: str, user: str, temperature: float, json_mode: bool,
-                tools: list | None = None) -> tuple[str, dict, dict]:
+                tools: list | None = None, response_schema: dict | None = None) -> tuple[str, dict, dict]:
         body: dict = {
             "contents": [{"role": "user", "parts": [{"text": user}]}],
             "generationConfig": {"temperature": temperature},
@@ -139,6 +142,8 @@ class LLMClient:
             body["systemInstruction"] = {"parts": [{"text": system}]}
         if json_mode:
             body["generationConfig"]["responseMimeType"] = "application/json"
+            if response_schema is not None:   # constrained decoding: the model can only emit this JSON Schema
+                body["generationConfig"]["responseJsonSchema"] = response_schema
         if tools:
             body["tools"] = tools
         r = self.http.post(f"{GEMINI}/{model}:generateContent", headers={"x-goog-api-key": key}, json=body)
@@ -208,15 +213,18 @@ class LLMClient:
         return 0, ""
 
     def raw(self, role: str, system: str, user: str, temperature: float = 0.2, json_mode: bool = True,
-            tools: list | None = None, record: CallRecord | None = None) -> tuple[str, dict, dict]:
-        """Try every eligible slot; if all are cooling down, wait for the soonest one (bounded by max_wait_s)."""
+            tools: list | None = None, record: CallRecord | None = None, skip_models: frozenset[str] = frozenset(),
+            response_schema: dict | None = None) -> tuple[str, dict, dict]:
+        """Try every eligible slot; if all are cooling down, wait for the soonest one (bounded by max_wait_s).
+        skip_models: "provider:model" entries to leave out; response_schema: JSON Schema for Gemini's constrained output."""
         waited = 0.0
         max_wait = self.lim.get("max_wait_s", 600)
         while True:
             try:
-                return self._raw_once(role, system, user, temperature, json_mode, tools, record)
+                return self._raw_once(role, system, user, temperature, json_mode, tools, record, skip_models, response_schema)
             except AllEndpointsFailed as e:
-                slots = [s for ep, _, _, s in self._slots_for(role, len(system) + len(user)) if not (tools and ep["provider"] != "gemini")]
+                slots = [s for ep, _, _, s in self._slots_for(role, len(system) + len(user), skip_models)
+                         if not (tools and ep["provider"] != "gemini")]
                 soonest = min((self.slots.state.get(s, {}).get("until", 0) for s in slots), default=0) - time.time()
                 if not slots or soonest > max_wait - waited:
                     raise
@@ -228,9 +236,10 @@ class LLMClient:
                 last_err = e  # noqa: F841
 
     def _raw_once(self, role: str, system: str, user: str, temperature: float, json_mode: bool,
-                  tools: list | None, record: CallRecord | None) -> tuple[str, dict, dict]:
+                  tools: list | None, record: CallRecord | None, skip_models: frozenset[str] = frozenset(),
+                  response_schema: dict | None = None) -> tuple[str, dict, dict]:
         last = None
-        for ep, ki, key, slot in self._slots_for(role, len(system) + len(user)):
+        for ep, ki, key, slot in self._slots_for(role, len(system) + len(user), skip_models):
             if not self.slots.available(slot):
                 continue
             if tools and ep["provider"] != "gemini":
@@ -240,7 +249,16 @@ class LLMClient:
             t0 = time.time()
             try:
                 if ep["provider"] == "gemini":
-                    out = self._gemini(ep["model"], key, system, user, temperature, json_mode, tools)
+                    schema = None if ep["model"] in self.no_native_schema else response_schema
+                    try:
+                        out = self._gemini(ep["model"], key, system, user, temperature, json_mode, tools, schema)
+                    except _HTTPError as e:   # model rejects the schema: remember, and ask again without it
+                        if schema is None or e.status != 400 or not re.search(r"schema", e.text, re.I):
+                            raise
+                        self.no_native_schema.add(ep["model"])
+                        if record is not None:
+                            record.attempts.append({"slot": slot, "ok": False, "status": 400, "why": "JSON schema rejected; retrying without it"})
+                        out = self._gemini(ep["model"], key, system, user, temperature, json_mode, tools, None)
                 elif ep["provider"] == "ollama":
                     out = self._ollama(ep["model"], system, user, temperature, json_mode)
                 else:
@@ -295,26 +313,43 @@ class LLMClient:
                     return obj, rec
                 except ValidationError:
                     pass
-        msg_user = user
         raw_text = ""
-        for attempt in range(self.lim["schema_retries"] + 1):
-            text, usage, _ = self.raw(role, system, msg_user, temperature, json_mode=True, record=rec)
-            raw_text = text
-            rec.prompt_tokens += usage["prompt"]
-            rec.output_tokens += usage["output"]
-            try:
-                obj = model_cls.model_validate(_extract_json(text))
-                rec.ok = True
+        schema = model_cls.model_json_schema() if self.lim.get("native_json_schema") else None
+        skip: set[str] = set()      # "provider:model" whose output stayed invalid after its retries
+        failure: Exception | None = None
+        for _ in range(1 + int(self.lim.get("schema_fallback_models", 2))):
+            msg_user = user
+            for attempt in range(self.lim["schema_retries"] + 1):
+                try:
+                    text, usage, _ = self.raw(role, system, msg_user, temperature, json_mode=True, record=rec,
+                                              skip_models=frozenset(skip), response_schema=schema)
+                except AllEndpointsFailed:
+                    if not skip:
+                        raise
+                    break           # no model left to fall back to: report the invalid output below
+                raw_text = text
+                rec.prompt_tokens += usage["prompt"]
+                rec.output_tokens += usage["output"]
+                try:
+                    obj = model_cls.model_validate(_extract_json(text))
+                    rec.ok = True
+                    break
+                except (ValidationError, json.JSONDecodeError, ValueError) as e:
+                    rec.schema_retries += 1
+                    failure = e
+                    msg_user = (user + "\n\n## YOUR PREVIOUS OUTPUT FAILED VALIDATION\nFix exactly these errors and return the "
+                                "complete corrected JSON object (no commentary):\n" + str(e)[:3000])
+            if rec.ok or failure is None:
                 break
-            except (ValidationError, json.JSONDecodeError, ValueError) as e:
-                rec.schema_retries += 1
-                err = str(e)[:3000]
-                if attempt >= self.lim["schema_retries"]:
-                    rec.error = f"schema: {err[:500]}"
-                    self._log(rec, system, user, raw_text, run_id)
-                    raise
-                msg_user = (user + "\n\n## YOUR PREVIOUS OUTPUT FAILED VALIDATION\nFix exactly these errors and return the "
-                            "complete corrected JSON object (no commentary):\n" + err)
+            bad = rec.endpoint.rsplit(":", 1)[0] if rec.endpoint else None   # slot "provider:model:keyfp" -> "provider:model"
+            if not bad or bad in skip:
+                break
+            skip.add(bad)           # structure guard: fall back to the next model in the role instead of crashing the run
+            rec.attempts.append({"slot": rec.endpoint, "ok": False, "why": "output still invalid after retries; next model"})
+        if not rec.ok:
+            rec.error = f"schema: {str(failure)[:500]}"
+            self._log(rec, system, user, raw_text, run_id)
+            raise failure
         rec.latency_s = round(time.time() - t0, 1)
         self._log(rec, system, user, raw_text, run_id)
         if cache_path is not None:

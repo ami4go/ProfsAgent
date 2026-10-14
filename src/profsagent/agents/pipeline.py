@@ -7,6 +7,7 @@ through at the end of every stage for traceability.
 from __future__ import annotations
 
 import json
+import os
 import re
 import time
 from dataclasses import dataclass, field
@@ -16,6 +17,7 @@ from profsagent.agents.loop import call, generate
 from profsagent.config import RUNS, bloom_lexicon, degree_bank, pedagogy, regulations
 from profsagent.design import deterministic as det
 from profsagent.design.store import DesignGraph
+from profsagent.kg.client import KGClient
 from profsagent.kg.stub import StubKG
 from profsagent.llm.client import LLMClient
 from profsagent.research.external import Blocklist, ExternalResearch
@@ -31,7 +33,7 @@ class Runtime:
     exclude: set[str] = field(default_factory=set)
     blocklist: Blocklist = field(default_factory=Blocklist)
     llm: LLMClient | None = None
-    kg: StubKG | None = None
+    kg: KGClient | None = None
     graph: DesignGraph | None = None
     research_enabled: bool = True
 
@@ -47,14 +49,27 @@ class Runtime:
             self.graph.save()
 
 
+def make_kg(llm: LLMClient | None, backend: str) -> KGClient:
+    """The institutional graph a run reads: "stub" (the sample sheets in data/stub_kg) or "neo4j" (Layer A's graph,
+    kg/neo4j_kg.py; Neo4j must be running)."""
+    if backend == "neo4j":
+        from profsagent.kg.neo4j_kg import Neo4jKG
+        return Neo4jKG(llm)
+    if backend == "stub":
+        return StubKG(llm)
+    raise ValueError(f"kg_backend must be 'stub' or 'neo4j', not {backend!r}")
+
+
 def make_runtime(run_id: str, form: dict, run_cfg: dict) -> Runtime:
     run_dir = RUNS / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
     llm = LLMClient(run_dir / "llm_calls.jsonl")
+    # run.kg_backend in the input file, else $KG_BACKEND, else the stub; recorded so --resume / --continue reuse it
+    run_cfg["kg_backend"] = (run_cfg.get("kg_backend") or os.environ.get("KG_BACKEND") or "stub").lower()
     rt = Runtime(run_id=run_id, run_dir=run_dir, state={"form": form, "run_cfg": run_cfg, "traces": {}, "violations": {}, "concerns": {},
                                                         "approvals": []},
                  exclude={c.upper() for c in run_cfg.get("exclude_courses", [])},
-                 blocklist=Blocklist(**run_cfg.get("blocklist", {})), llm=llm, kg=StubKG(llm),
+                 blocklist=Blocklist(**run_cfg.get("blocklist", {})), llm=llm, kg=make_kg(llm, run_cfg["kg_backend"]),
                  graph=DesignGraph(run_cfg.get("project_id", "P0001"), run_dir / "design_graph.json"),
                  research_enabled=run_cfg.get("external_research", True))
     return rt
@@ -67,7 +82,7 @@ def attach_runtime(run_id: str) -> Runtime:
     cfg = st["run_cfg"]
     g = DesignGraph.load(run_dir / "design_graph.json") if (run_dir / "design_graph.json").exists() else DesignGraph(cfg.get("project_id", "P0001"), run_dir / "design_graph.json")
     return Runtime(run_id=run_id, run_dir=run_dir, state=st, exclude={c.upper() for c in cfg.get("exclude_courses", [])},
-                   blocklist=Blocklist(**cfg.get("blocklist", {})), llm=llm, kg=StubKG(llm), graph=g,
+                   blocklist=Blocklist(**cfg.get("blocklist", {})), llm=llm, kg=make_kg(llm, cfg.get("kg_backend", "stub")), graph=g,
                    research_enabled=cfg.get("external_research", True))
 
 

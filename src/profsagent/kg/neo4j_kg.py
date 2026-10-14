@@ -81,10 +81,11 @@ ORDER BY id
 
 
 LOCAL_MODEL = "sentence-transformers/all-MiniLM-L6-v2"   # 384 dims, English, reads up to 256 word pieces per text
-# Cut-off with the best accuracy on 176 hand-labelled pairs of graph topic phrases (13 Oct 2026; 48 same-topic,
-# 128 different): accuracy 0.88, precision 0.89, recall 0.65. The model separates the labels about as well as
-# gemini-embedding-001 (AUC 0.93 vs 0.91 on the same pairs).
-LOCAL_TOPIC_MATCH_SIM = 0.82
+# Topic-match cut-off, hand-calibrated (14 Oct 2026) for what topic_overlap needs: a pair counts as shared when one
+# topic is the same as, or substantially covered by, the other ("Testing" vs "unit testing"). On 42 pairs of new
+# CSE201 topics vs their best match in real candidate courses it is right 79% of the time (0.82: 55%); on 176
+# sampled pairs of graph topics, 82% (AUC 0.91, vs 0.85 for gemini-embedding-001 on the same pairs).
+LOCAL_TOPIC_MATCH_SIM = 0.66
 LOCAL_CACHE = Path(__file__).resolve().parents[3] / "data" / "cache" / "emb_local"
 
 

@@ -22,7 +22,7 @@ from profsagent.kg.stub import StubKG
 from profsagent.llm.client import LLMClient
 from profsagent.research.external import Blocklist, ExternalResearch
 from profsagent.research.resources import crossref, openlibrary, verify_pick
-from profsagent.validate import rules
+from profsagent.validate import engine, rules
 
 
 @dataclass
@@ -148,7 +148,11 @@ def s1_intake(rt: Runtime) -> None:
         g.put("Assumption", a["id"], a, created_by="S1-defaults", sources=[{"tag": "INFERRED", "ref": None, "basis": a["basis"]}])
     for tg in st["topic_groups"]:
         g.put("TopicGroup", tg["id"], tg, created_by="G1", sources=[{"tag": "USER", "ref": "CCO.topics"}])
-    _record(rt, "intake", cco, [], {"generator": meta})
+    vs = engine.check(st, ["intake"])   # regulation: teaching weeks, credits, L-T-P (only the professor can change these)
+    _record(rt, "intake", cco, vs, {"generator": meta})
+    if vs:
+        rt.log(f"  intake checks: {len(rules.errors(vs))} errors, {len(vs) - len(rules.errors(vs))} warnings "
+               f"({', '.join(sorted({x['code'] for x in vs}))})")
     rt.log(f"  CCO: {len(st['topic_groups'])} topic groups · level {d['level']} · L-T-P {d['ltp']} · {d['weeks']} weeks · "
            f"{len(d['assumptions'])} assumptions · conflicts {len(cco['conflicts'])}")
     rt.save()
@@ -240,7 +244,11 @@ def s3_constraints(rt: Runtime) -> None:
                          "lab_hours_available": hb["lab_hours_total"], "note": "topic-level feasibility is checked after S5 by the scheduler"}
     for c in st["constraints"]:
         rt.graph.put("Constraint", c["id"], c, created_by="G3" if c["id"] >= "K10" else "S1-defaults", sources=[c.get("source") or {}])
-    _record(rt, "constraints", tc, [], {"generator": meta})
+    vs = engine.check(st, ["constraints"])   # deterministic conflicts between hard constraints; constraints nothing checks
+    _record(rt, "constraints", tc, vs, {"generator": meta})
+    if vs:
+        rt.log(f"  constraint checks: {len(rules.errors(vs))} errors, {len(vs) - len(rules.errors(vs))} warnings "
+               f"({', '.join(sorted({x['code'] for x in vs}))})")
     rt.log(f"  {len(st['constraints'])} constraints ({len(tc['constraints'])} from professor text) · conflicts {len(tc['conflicts'])}")
     rt.save()
 

@@ -12,40 +12,8 @@ from collections import Counter, defaultdict
 from profsagent.config import pedagogy
 from profsagent.design.deterministic import find_cycle
 from profsagent.kg.quality import PREFIX_RE, banned_in, bloom_of_verb, bloom_range_of_verb, lemma, vague_degree, verbs_in
-
-ERR, WARN = "error", "warning"
-
-
-FIX_HINTS = {
-    "VLO-COPY": "Keep the same verb and Bloom level, but rewrite the LO as ONE concrete task: a narrower object (one component, "
-                "one subsystem, one supplied artefact), a specific given input as the condition, and a degree checkable by a single "
-                "assessment task. Do not change the statement's first word away from the declared verb.",
-    "VLO-DUP": "Make the two LOs name different skills or objects; merge them if they really are one step.",
-    "V10": "The statement must START with the declared verb (same word). If you change the verb, update `verb` and `bloom_level` together.",
-    "V11": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
-    "V12": "Replace the banned verb with an observable verb from the lexicon at the intended level.",
-    "T2": "Add or re-level an LO so that at least one LO of this CO is at exactly the CO's Bloom level.",
-    "V19": "Move the instance to a later release week, or remove the not-yet-taught topics/LOs from what it covers.",
-    "V20": "Bring the weight inside the band, or add a weight_justification tied to the course intent.",
-    "VA-ORDER": "List instances chronologically: each later instance must have release and due weeks ≥ the previous one.",
-    "VT-SIZE": "Split the topic into 2–3 topics of ≤ 2 h each, distributing its LOs.",
-    "V21": "Adjust topic hours so the total is 85–100% of the lecture budget.",
-    "VCO-BL": "Raise at least half of the COs to BL4 (Analyzing), BL5 (Evaluating) or BL6 (Creating): change the verb to one from that "
-              "level of the IIIT-D taxonomy and make the task genuinely analytical, evaluative or creative; update verb and bloom_level together.",
-    "T4": "Map the CO to at least one outcome of EVERY listed programme (B.Tech common POs, B.Tech CSE PSOs, B.Tech CSAI PSOs, "
-          "M.Tech CSE POs/PSOs), each with a one-line explanation; keep only links the course actually develops.",
-    "VA-PROCTOR": "Make proctored evaluation (mid-sem, end-sem, in-class quizzes or other invigilated tests) at least 40% of the grade, "
-                  "taking weight from take-home components; keep the total at 100.",
-    "VT-LOAD": "Give every topic an outside_load_hours value so the hours-weighted average is within the recommended weekly range.",
-    "VTG-TAUGHT": "Add a topic that teaches this topic group (with covers_topic_groups), or propose dropping the group upstream.",
-}
-
-
-def v(code, sev, nodes, msg, **ev):
-    d = {"code": code, "severity": sev, "nodes": list(nodes), "message": msg, "evidence": ev}
-    if code in FIX_HINTS:
-        d["fix_hint"] = FIX_HINTS[code]
-    return d
+from profsagent.validate import constraints, regulation, text
+from profsagent.validate.record import ERR, FIX_HINTS, WARN, errors, v  # noqa: F401 (errors, FIX_HINTS re-exported)
 
 
 # ------------------------------------------------------------------ statements (COs and LOs)
@@ -82,6 +50,11 @@ def _statement_checks(items: list[dict], kind: str) -> list[dict]:
                 out.append(v("V11", ERR, [i], f"{kind} {i} degree is vague ({vague_degree(val)}): '{val}'"))
             elif _norm(val)[:25] not in _norm(st):
                 out.append(v("V11", WARN, [i], f"{kind} {i} {part} is not visible in the statement text", part_text=val))
+        # VT-LEN: length outside the range of real IIIT-D statements (config/pedagogy.yaml thresholds.statement_words)
+        lo_hi = (pedagogy()["thresholds"].get("statement_words") or {}).get(kind)
+        n_words = len(st.split())
+        if lo_hi and st and not (lo_hi[0] <= n_words <= lo_hi[1]):
+            out.append(v("VT-LEN", WARN, [i], f"{kind} {i} is {n_words} words; typical {kind} statements are {lo_hi[0]}–{lo_hi[1]}", statement=st))
         # Bloom triangulation (lexicon vs claimed); ambiguous verbs (e.g. develop: L3–L6) accept their whole range
         rng = bloom_range_of_verb(verb)
         if rng and it.get("bloom_level"):
@@ -93,28 +66,7 @@ def _statement_checks(items: list[dict], kind: str) -> list[dict]:
     return out
 
 
-def _toks(s: str) -> set[str]:
-    return {t for t in re.findall(r"[a-z0-9]+", (s or "").lower()) if len(t) > 2}
-
-
-def _jacc(a: str, b: str) -> float:
-    x, y = _toks(a), _toks(b)
-    return len(x & y) / max(len(x | y), 1)
-
-
-def _covers(phrase: str, texts: list[str]) -> bool:
-    """Deterministic check that a required phrase is visibly covered by some text (≥60% of its content tokens).
-    'programming' is ignored only while ≥2 other tokens remain: dropping it from "functional programming" left the
-    single token 'functional', which matched "non-functional requirements"."""
-    p = _toks(phrase) - {"and", "the", "using", "with"}
-    if len(p - {"programming"}) >= 2:
-        p -= {"programming"}
-    return bool(p) and any(len(p & _toks(t)) / len(p) >= 0.6 for t in texts)
-
-
-def _norm(s: str) -> str:
-    """Lower-case alphanumerics with single spaces (removing '≥', '%' etc. must not leave double spaces)."""
-    return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9 ]", "", (s or "").lower())).strip()
+_toks, _jacc, _covers, _norm = text.toks, text.jacc, text.covers, text.norm
 
 
 def check_cos(state: dict) -> list[dict]:
@@ -154,6 +106,7 @@ def check_cos(state: dict) -> list[dict]:
     bad = covered - tgs
     if bad:
         out.append(v("T10", ERR, sorted(bad), f"COs reference unknown topic groups {sorted(bad)}"))
+    out += constraints.check_stage(state, "cos")          # co.count, co.bloom_min / bloom_max
     return out + _statement_checks(cos, "CO")
 
 
@@ -270,24 +223,7 @@ def check_structure(state: dict) -> list[dict]:
     for g in state.get("topic_groups", []):
         if g["id"] not in dropped and g["id"] not in taught_tgs:
             out.append(v("VTG-TAUGHT", ERR, [g["id"]], f"topic group {g['id']} '{g.get('title')}' is not taught by any topic (and was not proposed for drop/merge)"))
-    # content.must_include / must_exclude constraints, checked against topic titles and LO statements
-    lt = state.get("labs_tutorials") or {}
-    texts = ([t["title"] for t in topics] + [lo.get("statement", "") for lo in state.get("los", [])]
-             + [x.get("exercise", "") + " " + x.get("title", "") for x in lt.get("labs", [])] + [x.get("activity", "") for x in lt.get("tutorials", [])]
-             + [i.get("format", "") for c in (state.get("assessment") or {}).get("components", []) for i in c["instances"]])
-    for cn in state.get("constraints", []):
-        m = re.match(r"content\.(must_include|must_exclude)\[(.+)\]", cn.get("target", ""))
-        if not m:
-            continue
-        phrase = m.group(2).strip("'\" ")
-        if not phrase or phrase.startswith("<") or not _toks(phrase):
-            out.append(v("VK-MALFORMED", WARN, [cn["id"]], f"constraint {cn['id']} has a placeholder/empty target '{cn['target']}' (from G3); raw: {cn.get('raw', '')[:100]}"))
-            continue
-        hit = _covers(phrase, texts)
-        if m.group(1) == "must_include" and not hit:
-            out.append(v("VK-CONTENT", ERR if cn.get("hardness") == "hard" else WARN, [cn["id"]], f"required content '{phrase}' ({cn['id']}) is not covered by any topic or LO"))
-        if m.group(1) == "must_exclude" and hit:
-            out.append(v("VK-CONTENT", ERR if cn.get("hardness") == "hard" else WARN, [cn["id"]], f"excluded content '{phrase}' ({cn['id']}) appears in the course"))
+    out += constraints.check_stage(state, "structure")    # content.must_include / must_exclude / max_hours_on
     hb = state.get("hours_budget")
     total = sum(float(t["est_hours"]) for t in topics)
     if hb and total > hb["lecture_hours_total"] + 1e-6:
@@ -323,6 +259,17 @@ def check_schedule(state: dict) -> list[dict]:
         empty = [w["week"] for w in s["weeks"] if not w["items"]]
         if empty:
             out.append(v("V6", WARN, [f"W{w:02d}" for w in empty], f"weeks with no lecture topics: {empty}"))
+    # VT-ORDER: a topic must not start before a topic it requires (edges the scheduler dropped to break a cycle are
+    # already reported as VT-DAG)
+    first = {t: min(ws) for t, ws in s.get("topic_weeks", {}).items() if ws}
+    dropped = {tuple(e) for e in s.get("dropped_edges", [])}
+    for m in state.get("modules", []):
+        for t in m["topics"]:
+            for r in t.get("requires", []):
+                if t["id"] in first and r in first and (r, t["id"]) not in dropped and first[t["id"]] < first[r]:
+                    out.append(v("VT-ORDER", ERR, [t["id"], r], f"topic {t['id']} starts in week {first[t['id']]}, before the topic "
+                                 f"it requires, {r} (week {first[r]})"))
+    out += constraints.check_stage(state, "schedule")     # weeks, hours per week, blocked weeks, topic-group order
     return out
 
 
@@ -375,6 +322,7 @@ def check_labs(state: dict) -> list[dict]:
         for lo in s.get("practises_los", []):
             if lo not in los:
                 out.append(v("T10", ERR, [s["id"]], f"{s['id']} practises unknown LO {lo}"))
+    out += constraints.check_stage(state, "labs")         # lab.present, lab.hours_per_week, lab.tools_include
     return out
 
 
@@ -466,29 +414,10 @@ def check_assessment(state: dict) -> list[dict]:
         if k > cap:
             out.append(v("VA-LOAD", WARN, [f"W{w:02d}"], f"{k} assessment events due in week {w} (cap {cap})"))
     for kid, ctype in (("K06", "midsem"), ("K07", "endsem")):
-        if ctype not in types and not any(cn.get("target") == f"assessment.component[{ctype}].present" and cn.get("op") == "absent"
-                                          for cn in state.get("constraints", [])):
+        if ctype not in types and not any(p.kind == "assessment.component[].present" and p.op == "absent" and p.args
+                                          and p.args[0].lower() == ctype for p in constraints.compile_all(state.get("constraints"))):
             out.append(v("VA-REG", WARN, [kid], f"no {ctype} component although UGREG-2025§6.2 normally schedules one"))
-    for cn in state.get("constraints", []):
-        m = re.match(r"assessment\.component\[(\w+)\]\.(present|weight_pct)", cn.get("target", ""))
-        if not m:
-            continue
-        ct, what, op = m.group(1).lower(), m.group(2), cn.get("op")
-        sev = ERR if cn.get("hardness") == "hard" else WARN
-        comp = next((c for c in comps if c["type"].lower() == ct), None)
-        if what == "present":
-            if op == "absent" and comp:
-                out.append(v("VK", sev, [cn["id"]], f"{ct} present but {cn.get('hardness')} constraint {cn['id']} forbids it"))
-            elif op == "present" and not comp and (sev == ERR or cn["id"] not in ("K06", "K07")):   # soft K06/K07 → VA-REG
-                out.append(v("VK", sev, [cn["id"]], f"no {ct} component although {cn.get('hardness')} constraint {cn['id']} requires one"))
-        elif cn.get("value") is not None:
-            w, val = (float(comp["weight_pct"]) if comp else 0.0), float(cn["value"])   # a missing component weighs 0
-            holds = {"<=": w <= val + 1e-6, "<": w < val, ">=": w >= val - 1e-6, ">": w > val,
-                     "==": abs(w - val) < 0.01, "!=": abs(w - val) >= 0.01}
-            if op not in holds:   # in/not_in/before/after cannot apply to a weight: say so instead of passing silently
-                out.append(v("VK-MALFORMED", WARN, [cn["id"]], f"constraint {cn['id']}: op '{op}' cannot apply to {ct} weight"))
-            elif not holds[op]:
-                out.append(v("VK", sev, [cn["id"]], f"{ct} weight {w} violates {cn['id']} ({op} {val})"))
+    out += constraints.check_stage(state, "assessment")   # component presence / weight / instances, counts
     pr = ped.get("proctored")
     if pr and comps:
         def is_proc(c):
@@ -557,10 +486,22 @@ def check_resources(state: dict) -> list[dict]:
                                      + "; ".join(str(x.get("title"))[:60] for x in rej)))
     if "resources" in state and len(state["resources"]) < 2:
         out.append(v("V15", WARN, [], f"only {len(state['resources'])} verified resource(s); add sources manually or widen the search"))
+    out += constraints.check_stage(state, "resources")    # resource.type_allowed, resource.max_age_years
     return out
 
 
+def check_intake(state: dict) -> list[dict]:
+    """S1: the course frame against the regulation, and constraints on it (course.credits)."""
+    return regulation.check_regulation(state) + constraints.check_stage(state, "intake")
+
+
+def check_constraint_set(state: dict) -> list[dict]:
+    """S3: hard constraints that conflict, and constraints no checker covers."""
+    return constraints.check_constraints(state)
+
+
 STAGE_CHECKS = {
+    "intake": [check_intake], "constraints": [check_constraint_set],
     "positioning": [check_positioning], "cos": [check_cos], "copo": [check_copo], "los": [check_los],
     "structure": [check_structure], "schedule": [check_schedule], "labs": [check_labs],
     "assessment": [check_assessment, check_copo_computed], "resources": [check_resources],
@@ -578,6 +519,3 @@ def run(state: dict, stages: list[str] | None = None) -> list[dict]:
                 out.append(x)
     return out
 
-
-def errors(vs: list[dict]) -> list[dict]:
-    return [x for x in vs if x["severity"] == ERR]

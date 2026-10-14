@@ -67,8 +67,14 @@ def bloom_range_of_verb(verb: str | None) -> tuple[int, int] | None:
 def vague_degree(degree: str | None) -> list[str]:
     if not degree:
         return []
-    words = set(re.findall(r"[a-z]+", degree.lower()))
-    return sorted(words & _lex()[1]) if len(words) <= 4 else []
+    low = degree.lower()
+    words = set(re.findall(r"[a-z]+", low))
+    if len(words) > 4:   # a longer degree states a criterion; a vague word in it is not the whole degree
+        return []
+    vague = _lex()[1]
+    hits = words & {w for w in vague if " " not in w}
+    hits |= {p for p in vague if " " in p and re.search(rf"\b{re.escape(p)}\b", low)}   # multi-word entries ("in depth")
+    return sorted(hits)
 
 
 def co_quality(text: str) -> tuple[float, list[str], str | None, int | None]:

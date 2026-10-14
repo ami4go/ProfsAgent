@@ -23,8 +23,8 @@ def s():
     return copy.deepcopy(json.loads(BASE.read_text(encoding="utf-8")))
 
 
-def codes(vs, code, sev=None):
-    return [x for x in vs if x["code"] == code and (sev is None or x["severity"] == sev)]
+def codes(vs, code, sev=None, node=None):
+    return [x for x in vs if x["code"] == code and (sev is None or x["severity"] == sev) and (node is None or node in x["nodes"])]
 
 
 # Rules added with the IIIT-D CSE course template (2026-10-14), after runs/cs601-01 was generated: that design
@@ -130,18 +130,18 @@ def test_midsem_after_week_m_accepts_m_and_m_plus_1(s, offset, warns):
 def test_hard_present_constraint_is_enforced(s):
     s["assessment"]["components"] = [c for c in s["assessment"]["components"] if c["type"] != "project"]
     s["constraints"].append({"id": "K20", "target": "assessment.component[project].present", "op": "present", "value": True, "hardness": "hard"})
-    assert codes(rules.check_assessment(s), "VK", "error")
+    assert codes(rules.check_assessment(s), "VK", "error", node="K20")
 
 
 @pytest.mark.parametrize("op, value, violated", [("!=", 10, True), ("<", 10, True), (">", 5, False), ("<=", 10, False), ("==", 10, False)])
 def test_weight_constraint_ops(s, op, value, violated):   # quiz weight is 10 in the baseline
     s["constraints"].append({"id": "K21", "target": "assessment.component[quiz].weight_pct", "op": op, "value": value, "hardness": "hard"})
-    assert bool(codes(rules.check_assessment(s), "VK")) is violated
+    assert bool(codes(rules.check_assessment(s), "VK", node="K21")) is violated
 
 
 def test_weight_constraint_on_missing_component(s):
     s["constraints"].append({"id": "K21", "target": "assessment.component[endsem].weight_pct", "op": ">=", "value": 30, "hardness": "hard"})
-    assert codes(rules.check_assessment(s), "VK", "error")      # no end-sem means 0% < 30%
+    assert codes(rules.check_assessment(s), "VK", "error", node="K21")      # no end-sem means 0% < 30%
 
 
 def test_weight_constraint_with_unusable_op_is_reported(s):

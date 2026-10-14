@@ -23,10 +23,12 @@ FAMILY: dict[str, str] = {
     # institutional regulation and the IIIT-D course template
     "V2": "regulation", "V4": "regulation", "VA-REG": "regulation", "VA-MIDSEM": "regulation",
     "VA-PROCTOR": "regulation", "VCO-BL": "regulation", "VT-LOAD": "regulation",
+    "VREG-WEEKS": "regulation", "VREG-CREDITS": "regulation", "VREG-LTP": "regulation",
     # the professor's typed constraints
-    "VK": "constraint", "VK-CONTENT": "constraint", "VK-MALFORMED": "constraint",
+    "VK": "constraint", "VK-CONTENT": "constraint", "VK-MALFORMED": "constraint", "VK-CONFLICT": "constraint",
+    "VK-UNENFORCED": "constraint",
     # references between parts of the design, and dependency graphs
-    "T1": "graph", "T4": "graph", "T5": "graph", "T10": "graph", "VLO-DAG": "graph", "VT-DAG": "graph",
+    "T1": "graph", "T4": "graph", "T5": "graph", "T10": "graph", "VLO-DAG": "graph", "VT-DAG": "graph", "VT-ORDER": "graph",
     "VTG-TAUGHT": "graph", "VCO-COVER": "graph",
     # facts taken from the institutional knowledge graph (catalogue, levels, topic overlap, weight priors)
     "V14": "kg", "V16": "kg", "V17": "kg", "V20": "kg",
@@ -37,7 +39,7 @@ FAMILY: dict[str, str] = {
     "V10": "rule", "V11": "rule", "V12": "rule", "V13": "rule", "V18": "rule", "V19": "rule", "V21": "rule", "V23": "rule",
     "VA-LOAD": "rule", "VA-MARKS": "rule", "VA-ORDER": "rule", "VA-PROJ": "rule", "VA-TIME": "rule", "VB": "rule",
     "VCO-DUP": "rule", "VCO-SPREAD": "rule", "VCOPO-ACT": "rule", "VLO-COPY": "rule", "VLO-COUNT": "rule",
-    "VLO-DUP": "rule", "VT-SIZE": "rule",
+    "VLO-DUP": "rule", "VT-SIZE": "rule", "VT-LEN": "rule",
 }
 
 # Stages whose component is generated through agents/loop.generate, so R1 can repair it (S8 resources cannot).

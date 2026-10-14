@@ -22,7 +22,7 @@ class Defect:
     expected: tuple[str, ...]    # validator codes that should fire as an error (any one is enough)
     apply: Callable[[dict], dict]
     variant: str | None = None   # None = the base defect; else a realistic variant of it
-    known_gap: str | None = None # set while no check catches it
+    known_gap: str | None = None # set while no check catches it (none open: closed in validation v2 stage 2)
 
     @property
     def name(self) -> str:
@@ -205,25 +205,22 @@ DEFECTS: list[Defect] = [
     D("orphan_los", "an LO whose parent CO does not exist", ("T1",), _on_copy(_orphan_lo)),
     D("invalid_lo_assess", "an assessment marks a non-existent LO", ("T10",), _on_copy(_fake_lo_assess)),
     D("assess_before_teach", "the exams move to week 2", ("V19",), _on_copy(_exam_week2)),
-    D("temporal_inversions", "an early topic requires the last-taught topic", ("VT-ORDER",), _on_copy(_temporal_inversion),
-      known_gap="VT-ORDER (schedule vs topic prerequisites) does not exist yet"),
+    D("temporal_inversions", "an early topic requires the last-taught topic", ("VT-ORDER",), _on_copy(_temporal_inversion)),
     D("invalid_prereqs", "prerequisite NONEXISTENT101", ("V14",), _on_copy(_bad_prereq)),
     D("impossible_hours", "topics need 300 lecture hours", ("V21", "VT-SIZE"), _on_copy(_hours_300)),
-    D("contradictory_constraints", "hard constraints demand exactly 5 and exactly 12 COs", ("VK-CONFLICT",), _on_copy(_contradictory),
-      known_gap="VK-CONFLICT (deterministic constraint conflicts) does not exist yet"),
+    D("contradictory_constraints", "hard constraints demand exactly 5 and exactly 12 COs", ("VK-CONFLICT",), _on_copy(_contradictory)),
     D("invalid_week_counts", "the schedule is stretched to 50 weeks", ("V2",), _on_copy(_weeks_50_schedule_only)),
     D("invalid_week_counts", "a 50-week semester with every hour total scaled to match", ("VREG-WEEKS",), _on_copy(_weeks_50_consistent),
-      variant="consistent", known_gap="VREG-WEEKS (semester length vs regulation) does not exist yet; only V21 fires, misdiagnosed"),
+      variant="consistent"),
     D("malformed_copo", "COs mapped to PO_MAGIC", ("T10",), _on_copy(_po_magic)),
     D("duplicate_outcomes", "two COs with the same verb and behaviour", ("VCO-DUP",), _on_copy(_dup_cos)),
     D("missing_assessment", "no assessment components", ("V1", "V9"), _on_copy(_no_assessment)),
-    D("no_lectures", "L = 0 with zero lecture hours", ("VREG-LTP",), _on_copy(_no_lectures),
-      known_gap="VREG-LTP (L-T-P vs credits) does not exist yet"),
+    D("no_lectures", "L = 0 with zero lecture hours", ("VREG-LTP",), _on_copy(_no_lectures)),
     D("no_lectures", "L-T-P 6-3-6 for a 4-credit course", ("VREG-LTP",), _on_copy(_ltp_6_3_6),
-      variant="ltp_6_3_6", known_gap="VREG-LTP (L-T-P vs credits) does not exist yet"),
+      variant="ltp_6_3_6"),
     D("vague_degree", "every LO degree is 'thoroughly'", ("V11",), _on_copy(_vague("thoroughly"))),
     D("vague_degree", "every LO degree is 'deeply'", ("V11",), _on_copy(_vague("deeply")),
-      variant="deeply", known_gap="'deeply' is not in data/bloom_lexicon.yaml vague_degree_words"),
+      variant="deeply"),
     D("cyclic_lo_deps", "LO1 requires LO2 and LO2 requires LO1", ("VLO-DAG",), _on_copy(_lo_cycle)),
     D("excessive_cos", "15 COs", ("V4",), _on_copy(_cos_15)),
     D("excessive_los", "15 LOs under one CO", ("T2", "VLO-COUNT"), _on_copy(_los_15)),

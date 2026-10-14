@@ -115,3 +115,6 @@ def open_items(vs: list[dict]) -> list[dict]:
     """Errors still open after fixers and repair, and who can close them."""
     return [{"code": x["code"], "family": x.get("family"), "nodes": x["nodes"], "fixable_by": x.get("fixable_by")}
             for x in rules.errors(vs)]
+
+
+from profsagent.validate import fixers  # noqa: E402,F401  (registers the deterministic fixers)

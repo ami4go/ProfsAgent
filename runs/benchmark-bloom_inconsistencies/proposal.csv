@@ -1,0 +1,75 @@
+Course Code,
+Course Name,Software Development using AI
+Credits,4
+Course Offered to,UG
+Course Description,"Software Development using AI examines modern AI-native software development workflows where developers collaborate with coding agents. The course covers configuring developer environments, Model Context Protocol specifications, agent orchestration frameworks, context engineering, and spec-driven development. For advanced undergraduate computer science students, mastering the design, coordination, and evaluation of human-AI collaborative workflows is essential for modern software engineering practice. Students will learn to implement AI-assisted coding workflows, assess executable specifications from natural language requirements, analyze execution traces of iterative agentic loops to diagnose failures, and evaluate the reliability of AI-generated applications using deployment metrics. The course is delivered through lectures, tutorials, practical laboratory sessions, and a comprehensive development project. It is structured specifically as a workflow-oriented engineering course rather than a general introduction to machine learning or a traditional programming course."
+Pre-requisites
+Pre-requisite (Mandatory),Pre-requisite (Desirable),Pre-requisite(other)
+CSE201,,
+Post Conditions
+CO1,CO2,CO3,CO4
+"Implement AI-assisted coding workflows and coding agent tool integrations for a given development task, using an agent orchestration framework, such that at least 80% of the provided test cases pass.","Assess executable specifications from natural language functional requirements for a supplied software project, using context engineering principles, justifying each design choice against stated requirements.","Analyze the output and execution traces of iterative agentic development loops for a supplied buggy implementation, identifying at least three distinct failure causes with supporting log evidence.","Evaluate the reliability and performance of an AI-generated software application against test coverage and deployment metrics, recommending at least two targeted improvements with justification."
+Weekly Lecture Plan
+Week Number,Lecture Topic,COs Met,Tutorial,Assignments / Project
+1,"AI-assisted coding environments setup (M1.T1)
+Configuring developer workflows and connection tests (M1.T2)",CO1,Interactive discussion on configuring API keys and troubleshooting connection failures in developer environments.,
+2,"Configuring developer workflows and connection tests (M1.T2)
+Model Context Protocol specifications (M2.T1)
+Custom agent skills and tool use definitions (M2.T2)",CO1,Group exercise mapping a set of public method interfaces to Model Context Protocol specifications.,L:Lab1 (lab)
+3,"Custom agent skills and tool use definitions (M2.T2)
+Agent orchestration framework configurations (M3.T1)",CO1,Walkthrough of configuring agent orchestration parameters and analyzing test case pass rates.,
+4,"Coding agents and software development integration (M3.T2)
+Natural language functional requirements for software projects (M4.T1)","CO1, CO2",Drafting and peer-reviewing natural language functional requirements for a sample software project.,A:ProgAssign1 released
+5,"Natural language functional requirements for software projects (M4.T1)
+Requirements to executable specifications mapping (M4.T2)
+Context engineering principles for software specification (M5.T1)",CO2,Mapping natural language requirements to executable specifications in small groups.,A:ProgAssign1 due
+6,"Context engineering principles for software specification (M5.T1)
+Spec-driven development and design decision justification (M5.T2)
+Assessing executable specification documents (M6.T1)",CO2,Evaluating design decision justifications in peer-constructed specifications.,A:DesignAssign2 released
+7,"Assessing executable specification documents (M6.T1)
+Design choice evaluation against stated requirements (M6.T2)
+Iterative development and execution trace analysis (M7.T1)","CO2, CO3",Tracing execution outputs of single iteration loops to identify failure causes with log evidence.,P:Milestone1 released; E:MidSem (midsem)
+8,"Iterative development and execution trace analysis (M7.T1)
+Identifying failure causes with log evidence (M7.T2)
+Diagnosing software factory breakdowns (M8.T1)",CO3,Analyzing log evidence to identify failure causes in a buggy implementation.,A:DesignAssign2 due
+9,"Diagnosing software factory breakdowns (M8.T1)
+Execution traces and test log diagnostics (M8.T2)
+Loop engineering in iterative agentic development (M9.T1)",CO3,Worked trace-diagnosis of failing agentic development runs using test logs.,L:Lab2 (lab); P:Milestone1 due
+10,"Loop engineering in iterative agentic development (M9.T1)
+Advanced trace log output analysis for buggy implementations (M9.T2)
+Automated testing for AI-generated applications (M10.T1)","CO3, CO4",Analyzing advanced trace log outputs for buggy implementations in pairs.,P:Milestone2 released
+11,"Measuring test coverage and deployment metrics (M10.T2)
+Appraising reliability and execution metrics (M11.T1)
+ML model evaluation and targeted improvements (M11.T2)",CO4,Appraising reliability and execution metrics against thresholds and proposing improvements.,L:Lab3 (lab); A:Report3 released
+12,"Comprehensive evaluation of deployment metrics (M12.T1)
+Project deliverables and software release appraisal (M12.T2)",CO4,Evaluating deployment metrics and drafting recommendations for software release improvement.,A:Report3 due; P:Milestone2 due; P:Milestone3 released
+13,,,Peer review of final project deliverables and software release appraisals.,P:Milestone3 due; E:EndSem (endsem)
+Weekly Lab Plan
+Week Number,Laboratory Exercise,COs Met,Platform
+1,"Configure local development environments with AI coding assistants, set up API keys, and run connection tests to verify integration.",CO1,"Student development machines, access to AI coding tools/APIs"
+2,"Define custom agent skills and tools using Model Context Protocol (MCP) specifications for a given codebase, ensuring all public method interfaces are met.",CO1,"Student development machines, access to AI coding tools/APIs"
+3,"Configure an agent orchestration framework for a given development task, ensuring at least 80% of the provided test cases pass.",CO1,"Student development machines, access to AI coding tools/APIs"
+4,Integrate a coding agent into a software development workflow to automate code generation and test execution.,CO1,"Student development machines, access to AI coding tools/APIs"
+5,"Construct executable specifications from natural language requirements using context engineering principles, justifying design decisions.",CO2,"Student development machines, access to AI coding tools/APIs"
+6,"Assess executable specification documents for a supplied software project, justifying each design choice against stated requirements.",CO2,"Student development machines, access to AI coding tools/APIs"
+7,"Open lab session for catch-up on previous labs, refining executable specifications, and preparing for the mid-semester evaluation.",CO2,Student development machines
+8,"Diagnose software factory breakdowns within iterative agentic development loops, identifying failure causes using execution traces.",CO3,"Student development machines, access to AI coding tools/APIs"
+9,Analyze trace log outputs of iterative agentic development loops for a buggy implementation to identify three distinct failure causes.,CO3,"Student development machines, access to AI coding tools/APIs"
+10,"Measure test coverage and deployment metrics for a supplied AI-generated software application, matching reference outputs.",CO4,"Student development machines, software development environments"
+11,Run automated tests and measure coverage and deployment metrics for a supplied software application.,CO4,"Student development machines, software development environments"
+12,"Evaluate deployment metrics of an AI-generated software release, recommending targeted improvements with justification.",CO4,"Student development machines, software development environments"
+13,"Finalize and submit the AI-generated software release project, including comprehensive deployment metrics and evaluation reports.",CO4,Student development machines
+Assessment Plan
+Type of Evaluation,% Contribution in Grade
+lab,15.0
+assignment,15.0
+project,25.0
+midsem,20.0
+endsem,25.0
+Resource Material
+Type,Title
+primary,"Antonio Gullí (2025). Gullí, Antonio. ""Agentic Design Patterns."" Springer, 2025"
+primary,Prof Dr Oliver Koch (2026). From Vibe to Value - How Specification-Driven Development Professionalizes AI Coding
+reference,Yisen Xu (2025). MUARF: Leveraging Multi-Agent Workflows for Automated Code Refactoring
+reference,ALEXON GOMES (2025). SDSCAI -Software Design Suitable for Coding by Artificial Intelligence: Redefining Development Standards for AI-Driven Coding Efficiency
+reference,Ian Sommerville (2005). Software Engineering

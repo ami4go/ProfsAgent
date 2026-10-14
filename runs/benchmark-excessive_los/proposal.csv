@@ -1,0 +1,56 @@
+Course Code,
+Course Name,Software Development using AI
+Credits,4
+Course Offered to,UG
+Course Description,"This course examines modern AI-native software development, where developers collaborate with coding agents. It covers how to define intent, provide effective context, structure development workflows, and coordinate AI tools. Students gain practical experience designing and evaluating agent-assisted software development processes. This course is designed for third and fourth-year undergraduate students in the Computer Science and Engineering programme who possess strong programming and software development fundamentals. Upon completing the course, students will be able to configure agent infrastructure and tools, deconstruct feature requests into executable specifications, implement iterative development loops and software factories, assess the reliability and correctness of agent-generated code, and design AI-native software development processes for multi-module application problems. The course is taught through a combination of lectures, tutorials, and practical laboratory sessions, supported by hands-on projects and assignments."
+Pre-requisites
+Pre-requisite (Mandatory),Pre-requisite (Desirable),Pre-requisite(other)
+CSE201,,
+Post Conditions
+CO1,CO2,CO3,CO4,CO5
+"Configure agent skills, Model Context Protocol servers, and tool integrations, for a provided software development environment, meeting the stated interface specification for every public method.","Deconstruct natural language feature requests into executable specifications, using spec-driven development frameworks, covering every use case in the supplied requirements document.","Implement iterative development loops and software factories, for a collaborative human-agent programming task, with all public tests passing and no warnings from the configured static analyser.","Assess the reliability and correctness of agent-generated code, using automated testing suites and evaluation harnesses, identifying at least three distinct failure causes with supporting log evidence.","Design an AI-native software development process, for a given multi-module application problem, justifying each design decision against at least one stated requirement."
+Weekly Lecture Plan
+Week Number,Lecture Topic,COs Met,Tutorial,Assignments / Project
+1,Agent skills setup and function registration (M1.T1),CO1,"Worked trace-diagnosis of 3 function registration setups, in pairs, identifying common configuration errors.",A:PA1 released
+2,Model Context Protocol server configuration (M1.T2),CO1,"Trace-diagnosis of 2 failing Model Context Protocol server handshake sequences, in pairs.",
+3,Tool integrations and context engineering (M1.T3),CO1,Peer review of interface specifications for tool integrations against stated requirements.,A:PA1 due
+4,Requirements engineering and user story classification (M2.T1),CO2,Categorization exercise classifying 10 ambiguous natural language user stories into functional requirements.,A:Quiz1 (quiz)
+5,Spec-driven development and executable Gherkin specifications (M2.T2),CO2,"Worked conversion of natural language authentication scenarios into Gherkin feature files, in pairs.",A:ProjM1 released
+6,Loop engineering for single-agent tasks (M3.T1),CO3,Tracing single-agent execution loops and identifying loop termination bottlenecks.,A:PA2 released
+7,Multi-agent workflows and automated prompt-test repair loops (M3.T2),CO3,Debugging multi-agent prompt-test repair traces for a broken microservice implementation.,A:Midsem (midsem)
+8,Automated testing suites and execution log collection (M4.T1),CO4,Parsing and analyzing execution logs and test metrics from automated test runs.,A:PA2 due; A:Report1 released; A:ProjM2 released
+9,"Fuzz testing, code analysis, and reliability assessment (M4.T2)",CO4,Analyzing fuzz-testing failure logs and tracing root causes for sorting module boundary failures.,A:ProjM1 due
+10,Architectural planning for multi-module AI workflows (M5.T1),CO5,Reviewing and critiquing architectural diagrams for multi-module AI workflow integration.,A:Report1 due; A:ProjFinal released
+11,"End-to-end pull-request review and patch-generation pipelines (M5.T2)
+Patch-generation pipelines and review integration (M5.T3)",CO5,Evaluating pull-request patch diffs and identifying potential regression issues.,A:ProjM2 due
+12,Patch-generation pipelines and review integration (M5.T3),CO5,Dry-run reviews of end-to-end project pipelines against acceptance criteria.,
+13,,,,A:ProjFinal due
+Weekly Lab Plan
+Week Number,Laboratory Exercise,COs Met,Platform
+1,Students configure agent skills within the provided development environment and register at least three custom skill functions.,CO1,"Student development machines, software development environments"
+2,Students configure Model Context Protocol servers and verify successful communication across defined transport channels.,CO1,"Student development machines, software development environments"
+3,Students implement and verify tool integrations meeting interface specifications for public methods.,CO1,"Student development machines, software development environments"
+4,Students review requirements engineering classifications and apply user story categories to case studies.,CO2,Student development machines
+5,Students deconstruct user authentication stories into formal Gherkin executable specifications.,CO2,"Student development machines, software development environments"
+6,Students construct iterative development loops for single-agent tasks and verify execution across test scenarios.,CO3,"Student development machines, software development environments"
+7,Students implement automated prompt-test repair loops for a Python microservice within a multi-agent workflow.,CO3,"Student development machines, software development environments, access to AI coding tools/APIs"
+8,Students execute automated testing suites on agent-generated code to collect logs and test metrics.,CO4,"Student development machines, software development environments"
+9,Students assess functional correctness and boundary-case handling of a sorting module using a synthetic fuzz-testing harness.,CO4,"Student development machines, software development environments"
+10,Students draft architectural integration plans for multi-module AI workflows and testing suites.,CO5,Student development machines
+11,Students design and test end-to-end pull-request review and patch-generation pipelines for open-source repositories.,CO5,"Student development machines, software development environments, access to AI coding tools/APIs"
+12,Students finalize patch-generation pipelines and review integration to satisfy acceptance criteria.,CO5,"Student development machines, software development environments, access to AI coding tools/APIs"
+Assessment Plan
+Type of Evaluation,% Contribution in Grade
+quiz,10.0
+assignment,20.0
+midsem,20.0
+report,15.0
+project,35.0
+Resource Material
+Type,Title
+reference,"Erich Gamma, John Vlissides, Richard Helm, Ralph Johnson (1995). Design Patterns: Elements of Reusable Object-Oriented Software"
+primary,Antonio Gullí (2025). Agentic Design Patterns
+reading,"Noble Saji Mathews, Meiyappan Nagappan (2024). Test-Driven Development and LLM-based Code Generation"
+reading,"Yingling Li, Muxin Cai, Junjie Chen, Yang Xu (2025). Context-aware prompting for LLM-based program repair"
+reading,"Ramtin Ehsani, Esteban Parra, Sonia Haiduc, Preetha Chatterjee (2025). Hierarchical Knowledge Injection for Improving LLM-based Program Repair"
+reading,"OpenAI (2025). OpenAI MCP, Agent2Agent (A2A) Protocol"

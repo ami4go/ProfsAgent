@@ -1,0 +1,67 @@
+Course Code,
+Course Name,Software Development using AI
+Credits,4
+Course Offered to,UG
+Course Description,"This course examines modern AI-native software development, where developers collaborate with increasingly capable coding agents. It covers how to define intent, provide effective context, structure development workflows, and coordinate AI tools. Students gain practical experience designing and evaluating agent-assisted software development processes. The curriculum addresses context engineering, the Model Context Protocol, specification-driven development, testing and evaluation loops for non-deterministic code, and multi-agent collaboration workflows. Students will learn to configure AI-assisted developer workflows, decompose software specifications into modular executable specifications, implement automated test suites for agent-generated codebases, and evaluate multi-agent software factory setups. The course is taught through lectures, tutorials, and practical laboratory sessions emphasizing hands-on development and experimentation."
+Pre-requisites
+Pre-requisite (Mandatory),Pre-requisite (Desirable),Pre-requisite(other)
+CSE201,,
+Post Conditions
+CO1,CO2,CO3,CO4
+"Configure an AI-assisted developer workflow using context engineering and tool integration, given a set of software requirements and an agent orchestration framework, with all public tests passing and no warnings from the configured static analyser.","Decompose a natural language software specification into modular, executable specifications, using a spec-driven development tool, justifying each design decision against at least one stated requirement.","Implement automated test suites and evaluation loops for an agent-generated codebase, using a modern testing framework, such that at least 90% of the provided test cases pass.","Evaluate the reliability and efficiency of different AI-native development workflows, given a multi-agent software factory setup, identifying at least three distinct failure causes with supporting log evidence."
+Weekly Lecture Plan
+Week Number,Lecture Topic,COs Met,Tutorial,Assignments / Project
+1,"Context engineering principles (M1.T1)
+Model Context Protocol (MCP) (M1.T2)",CO1,"Worked trace-diagnosis of 2 sample context engineering configurations, in pairs.",
+2,"Model Context Protocol (MCP) (M1.T2)
+Agent skills and tool use (M1.T3)",CO1,Peer review of tool schema designs and custom agent skill definitions.,
+3,"Agent skills and tool use (M1.T3)
+Developer workflows and agent orchestration (M1.T4)",CO1,Debugging development environment configurations and static analysis warnings in small groups.,A:Quiz1 (quiz); A:PA1 released
+4,"Developer workflows and agent orchestration (M1.T4)
+Requirements engineering and functional decomposition (M2.T1)","CO1, CO2",Analyzing a sample requirements document to extract core functional modules and identify module boundaries.,
+5,"Requirements engineering and functional decomposition (M2.T1)
+Spec-driven development and executable specifications (M2.T2)",CO2,Walkthrough and validation of machine-readable schema translations for interface specifications.,A:PA1 due
+6,"Spec-driven development and executable specifications (M2.T2)
+Modular specifications and design decisions (M2.T3)",CO2,Peer critique of executable test specifications against stated functional requirements.,A:Proj1 released
+7,"Modular specifications and design decisions (M2.T3)
+Unit testing non-deterministic agent outputs (M3.T1)","CO2, CO3",Problem-solving session on unit testing strategies for non-deterministic code outputs.,A:Midsem (midsem)
+8,"Unit testing non-deterministic agent outputs (M3.T1)
+Automated execution and evaluation loops (M3.T2)",CO3,Tracing test failure scenarios and designing automated evaluation feedback loops.,A:PA2 released
+9,"Automated execution and evaluation loops (M3.T2)
+Automated test suites and agent-generated codebases (M3.T3)",CO3,Reviewing automated test suite coverage reports for agent-generated codebases.,A:Proj1 due
+10,"Automated test suites and agent-generated codebases (M3.T3)
+Execution metrics in multi-agent workflows (M4.T1)","CO3, CO4",Analyzing token usage and cost profiles from multi-agent workflow execution logs.,A:PA2 due; A:Proj2 released
+11,"Execution metrics in multi-agent workflows (M4.T1)
+Failure modes and collaboration log diagnostics (M4.T2)",CO4,Collaborative root-cause analysis of failure causes from provided multi-agent execution logs.,
+12,"Failure modes and collaboration log diagnostics (M4.T2)
+Reliability and efficiency in software factories (M4.T3)",CO4,Critiquing AI-native development workflow efficiencies using primary literature sources.,
+13,Reliability and efficiency in software factories (M4.T3),CO4,Open consultation and project presentation preparation for software factory case studies.,A:Proj2 due; A:Endsem (endsem)
+Weekly Lab Plan
+Week Number,Laboratory Exercise,COs Met,Platform
+1,Explore basic context window structures and inspect MCP server configurations using local developer tools.,CO1,"Student development machines, software development environments"
+2,Implement custom tools and context schemas for an agent orchestration framework using the provided SDK.,CO1,"Student development machines, access to AI coding tools/APIs, software development environments"
+3,Configure a local development environment with integrated static analysis and automated agent feedback loops.,CO1,"Student development machines, access to AI coding tools/APIs, software development environments"
+4,Decompose a provided natural language requirements document into core functional modules and dependencies.,CO2,"Student development machines, software development environments"
+5,"Translate functional modules into structured, machine-readable schemas using a spec-driven development tool.",CO2,"Student development machines, software development environments"
+6,"Deconstruct a natural language specification into modular, executable test specifications, justifying design choices.",CO2,"Student development machines, software development environments"
+7,Catch-up session and open lab for mid-semester project preparation; no new lab content introduced.,CO2,"Student development machines, software development environments"
+8,Write unit tests and assertions to validate specific functional properties of non-deterministic agent outputs.,CO3,"Student development machines, software development environments"
+9,Instrument an automated execution and evaluation loop that triggers agent regeneration upon test failures.,CO3,"Student development machines, access to AI coding tools/APIs, software development environments"
+10,Implement an end-to-end automated evaluation loop that executes tests and triggers agent regeneration.,CO3,"Student development machines, access to AI coding tools/APIs, software development environments"
+11,"Profile execution metrics including latency, token usage, and cost of multi-agent workflows.",CO4,"Student development machines, access to AI coding tools/APIs, software development environments"
+12,Diagnose failure modes and bottlenecks in multi-agent collaboration logs for a supplied execution log.,CO4,"Student development machines, software development environments"
+13,Review reliability and efficiency metrics in multi-agent software factory setups and finalize project artifacts.,CO4,"Student development machines, software development environments"
+Assessment Plan
+Type of Evaluation,% Contribution in Grade
+quiz,10.0
+assignment,30.0
+project,35.0
+midsem,10.0
+endsem,15.0
+Resource Material
+Type,Title
+primary,Antonio Gullí (2025). Agentic Design Patterns
+reading," (None). OpenAI MCP, Agent2Agent (A2A) Protocol"
+reading,Sarat Piridi (2026). Connecting to the Model Context Protocol
+reading,Prof Dr Oliver Koch (2026). From Vibe to Value - How Specification-Driven Development Professionalizes AI Coding
+reading,Krishna Ronanki (2025). Facilitating Trustworthy Human-Agent Collaboration in LLM-based Multi-Agent System oriented Software Engineering

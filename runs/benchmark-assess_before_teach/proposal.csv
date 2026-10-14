@@ -1,0 +1,63 @@
+Course Code,
+Course Name,Software Development using AI
+Credits,4
+Course Offered to,UG
+Course Description,"This course examines modern AI-native software development, where developers collaborate with coding agents. It covers how to define intent, provide effective context, structure development workflows, and coordinate AI tools. Students gain practical experience designing and evaluating agent-assisted software development processes. Target students build upon strong programming and software development fundamentals to engage in automated testing and agent-assisted coding workflows. Upon completing the course, students are able to operate coding agents using orchestration frameworks, implement agent skills and tool integrations via the Model Context Protocol, construct executable specifications from requirements documents, analyse iterative development loops with log evidence, and evaluate AI-native software development workflows for multi-component applications. The course is taught through lectures, tutorials, and practical laboratory sessions complemented by hands-on projects."
+Pre-requisites
+Pre-requisite (Mandatory),Pre-requisite (Desirable),Pre-requisite(other)
+CSE201,,
+Post Conditions
+CO1,CO2,CO3,CO4,CO5
+"Operate coding agents using an agent orchestration framework, such that all public tests pass and no warnings are generated from the configured static analyser.","Implement agent skills and tool integrations using the Model Context Protocol (MCP), meeting the stated interface specification for every public method.","Construct executable specifications from natural language requirements documents, covering every use case in the supplied requirements document.","Analyse iterative development loops and automated testing executions, identifying at least three distinct failure causes with supporting log evidence.","Evaluate AI-native software development workflows for a given multi-component application, justifying each design decision against at least one stated requirement."
+Weekly Lecture Plan
+Week Number,Lecture Topic,COs Met,Tutorial,Assignments / Project
+1,Setup and Configuration of Agent Orchestration Frameworks (M1.T1),CO1,Walkthrough and collaborative configuration of environment variables and API keys for LLM access in pairs.,
+2,AI-Assisted Coding and Agent Operation (M1.T2),CO1,Group discussion and live debugging of a coding agent's failing runs on a sample Python repository.,
+3,"Multi-Agent Collaboration and Orchestration (M1.T3)
+Requirements Engineering and User Story Extraction (M2.T1)","CO1, CO3",Interactive tracing of multi-agent communication protocols using sequence diagrams on a whiteboard.,Lab_Assignment_1 released
+4,"Requirements Engineering and User Story Extraction (M2.T1)
+Constructing Executable Specifications (M2.T2)",CO3,In-class exercise extracting user stories and functional requirements from a 3-page sample requirements document.,Lab_Assignment_1 due
+5,"Constructing Executable Specifications (M2.T2)
+Validation and Verification of Executable Specs (M2.T3)",CO3,"Peer review of Gherkin specifications written by other groups, checking for completeness and ambiguity.",
+6,"Validation and Verification of Executable Specs (M2.T3)
+Model Context Protocol and Context Engineering (M3.T1)","CO2, CO3",Collaborative design of MCP custom schemas for a mock weather and calendar service on paper.,Lab_Assignment_2 released
+7,"Model Context Protocol and Context Engineering (M3.T1)
+Agent Skills and Tool Integration (M3.T2)",CO2,Mid-sem review session. Worked walkthrough of sample exam questions on requirements and MCP protocol design.,Midsem_Exam (midsem); Lab_Assignment_2 due
+8,"Agent Skills and Tool Integration (M3.T2)
+Secure Tool Execution and Sandboxing (M3.T3)",CO2,"Interactive threat-modeling of tool execution, identifying potential security exploits in unsandboxed environments.",Project_Milestone_1 released
+9,Loop Engineering and Iterative Development Tracing (M4.T1),CO4,"Worked trace-diagnosis of 3 failing agent runs using execution logs, identifying where the loop diverged.",
+10,Automated Testing and Reliability Analysis (M4.T2),CO4,Group analysis of reliability metrics and plotting failure distributions from a provided dataset of agent executions.,Project_Milestone_1 due
+11,"Debugging and Failure Analysis of Agentic Workflows (M4.T3)
+Software Factories and Workflow Assessment (M5.T1)","CO4, CO5",Mock presentation session where students defend their workflow design choices against peer evaluator questions.,Lab_Assignment_3 released
+12,"Software Factories and Workflow Assessment (M5.T1)
+Multi-Component Application Architectures and Deployment (M5.T2)",CO5,"Interactive architectural mapping of a multi-component AI application, identifying potential bottlenecks.",Lab_Assignment_3 due
+13,Workflow Evaluation and Design Justification (M5.T3),CO5,Peer evaluation and structured feedback on draft design justification documents using a provided rubric.,Endsem_Exam (endsem); Project_Milestone_2 released
+Weekly Lab Plan
+Week Number,Laboratory Exercise,COs Met,Platform
+1,"Configure a local agent orchestration framework (such as LangGraph) on student development machines. Set up environment variables, configure API keys, and verify connectivity by executing a basic single-agent prompt template.",CO1,"Python, LangGraph, OpenAI API"
+2,Run a pre-configured coding agent on a provided Python repository to resolve simple bugs. Students must configure static analysis tools to ensure that the agent's output produces no warnings and passes all public tests.,CO1,"Python, Aider, Ruff"
+3,"Implement a multi-agent system where a coder agent and a tester agent collaborate. The coder agent generates code to solve a programming task, while the tester agent executes tests and provides feedback iteratively.",CO1,"Python, LangGraph"
+4,"Translate natural language user stories and requirements documents into Gherkin feature files for a specified use-case, ensuring complete coverage of all functional requirements.",CO3,"Behave, Gherkin"
+5,Implement step definitions in Python for the Gherkin feature files created in Week 4. Execute the specifications to validate system behavior and verify that all tests pass.,CO3,"Python, Behave"
+6,Implement a basic server-side Model Context Protocol (MCP) connection handler. Define custom data schemas to expose local database schemas to an external agent.,CO2,"Python, MCP SDK"
+7,"Open lab session for catching up on previous labs, debugging MCP handlers, and preparing for mid-semester evaluations. No new content is introduced.",CO2,"Python, MCP SDK"
+8,Integrate custom tools into an MCP server and implement secure execution of these tools using a Docker-based sandbox environment to prevent unauthorized system access.,CO2,"Python, MCP SDK, Docker"
+9,Trace the execution of an iterative coding agent loop using LangSmith. Analyze execution logs to map the agent's decision steps and identify state transitions.,CO4,"LangSmith, Python"
+10,"Analyze execution logs of 100 automated agent runs to identify, categorize, and document at least three distinct failure modes, providing supporting log evidence.",CO4,"Python, Pandas, LangSmith"
+11,"Debug a failing multi-agent workflow by modifying prompt templates and tool schemas based on failure analysis, ensuring the workflow successfully completes the task.",CO4,"Python, LangGraph"
+12,"Deploy a multi-component AI-native application consisting of a frontend, an orchestrator, and multiple MCP tools using Docker Compose.",CO5,"Docker Compose, Python"
+13,"Conduct a structured evaluation of the deployed workflow, writing a design justification report that maps each design decision against stated system requirements.",CO5,Markdown
+Assessment Plan
+Type of Evaluation,% Contribution in Grade
+midsem,20.0
+endsem,25.0
+project,35.0
+lab,20.0
+Resource Material
+Type,Title
+primary,"Antonio Gullí (2025). Gullí, Antonio. ""Agentic Design Patterns."" Springer, 2025"
+reading," (None). OpenAI MCP, Agent2Agent (A2A) Protocol"
+reading,"Yujia Li, Shunyu Yao, Guanzhi Wang, John Yang, Alexander Novikov, Bogdan Georgiev (2025). 1) Li, Yujia, et al. ""Competition-level code generation with alphacode."" Science, 2022. 2) Yao, Shunyu, et al. ""React: Synergizing reasoning and acting in language models."" ICLR 2022. 3) Wang, Guanzhi, et al. ""Voyager: An Open-Ended Embodied Agent with Large Language Models."" TMLR 2023. 4) Yang, John, et al. ""Swe-agent: Agent-computer interfaces enable automated software engineering."" NeurIPS 2024. 5) Novikov, Alexander, et al. ""AlphaEvolve: A coding agent for scientific and algorithmic discovery."" arXiv:2506.13131, 2025. 6) Georgiev, Bogdan, et al. ""Mathematical exploration and discovery at scale."" arXiv:2511.02864, 2025. 7) Other ongoing research reports."
+reference,"Jaehyung Jeong, Jayeon Pyo, Jiho Lee, JaeSeung Song (2025). Preserving oneM2M Security Semantics in LLM-IoT Integration with Model Context Protocol"
+reference,"Judice Antony, A. Ashwini, S. Balasubramaniam (2025). 5 Future Frontiers of Software Testing Beyond Debugging and Accuracy Automation Driven by Generative AI"
+reference,"Banu Priya Prathaban, R. Subash, A. Ashwini (2025). 4 Generative AI for Debugging and Error Detection"

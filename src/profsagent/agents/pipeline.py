@@ -50,8 +50,8 @@ class Runtime:
 
 
 def make_kg(llm: LLMClient | None, backend: str) -> KGClient:
-    """The institutional graph a run reads: "stub" (the sample sheets in data/stub_kg) or "neo4j" (Layer A's graph,
-    kg/neo4j_kg.py; Neo4j must be running)."""
+    """The institutional graph a run reads: "neo4j" (default; Layer A's graph, kg/neo4j_kg.py; Neo4j must be running)
+    or "stub" (the sample sheets in data/stub_kg)."""
     if backend == "neo4j":
         from profsagent.kg.neo4j_kg import Neo4jKG
         return Neo4jKG(llm)
@@ -64,8 +64,8 @@ def make_runtime(run_id: str, form: dict, run_cfg: dict) -> Runtime:
     run_dir = RUNS / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
     llm = LLMClient(run_dir / "llm_calls.jsonl")
-    # run.kg_backend in the input file, else $KG_BACKEND, else the stub; recorded so --resume / --continue reuse it
-    run_cfg["kg_backend"] = (run_cfg.get("kg_backend") or os.environ.get("KG_BACKEND") or "stub").lower()
+    # run.kg_backend in the input file, else $KG_BACKEND, else Neo4j; recorded so --resume / --continue reuse it
+    run_cfg["kg_backend"] = (run_cfg.get("kg_backend") or os.environ.get("KG_BACKEND") or "neo4j").lower()
     rt = Runtime(run_id=run_id, run_dir=run_dir, state={"form": form, "run_cfg": run_cfg, "traces": {}, "violations": {}, "concerns": {},
                                                         "approvals": []},
                  exclude={c.upper() for c in run_cfg.get("exclude_courses", [])},
@@ -82,7 +82,7 @@ def attach_runtime(run_id: str) -> Runtime:
     cfg = st["run_cfg"]
     g = DesignGraph.load(run_dir / "design_graph.json") if (run_dir / "design_graph.json").exists() else DesignGraph(cfg.get("project_id", "P0001"), run_dir / "design_graph.json")
     return Runtime(run_id=run_id, run_dir=run_dir, state=st, exclude={c.upper() for c in cfg.get("exclude_courses", [])},
-                   blocklist=Blocklist(**cfg.get("blocklist", {})), llm=llm, kg=make_kg(llm, cfg.get("kg_backend", "stub")), graph=g,
+                   blocklist=Blocklist(**cfg.get("blocklist", {})), llm=llm, kg=make_kg(llm, cfg.get("kg_backend", "stub")), graph=g,  # runs from before the switch used the stub
                    research_enabled=cfg.get("external_research", True))
 
 

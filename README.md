@@ -12,7 +12,7 @@ Design docs: `docs/01_stage1_architecture.md`. Prompts: `prompts/README.md`.
 
 ## Run
 ```bash
-pip install langgraph langgraph-checkpoint-sqlite beautifulsoup4 httpx pydantic jinja2 pyyaml numpy pytest neo4j python-dotenv
+pip install langgraph langgraph-checkpoint-sqlite beautifulsoup4 httpx pydantic jinja2 pyyaml numpy pytest neo4j python-dotenv sentence-transformers
 # .env (git-ignored): GEMINI_API_KEYS=k1,k2,k3   GROQ_API_KEYS=k1   NEO4J_PASSWORD=password
 
 # --- LAYER A: Build the Knowledge Graph ---
@@ -22,7 +22,8 @@ python src/profsagent/ingest/canonicalise.py # Clusters topics
 python src/profsagent/ingest/load.py        # Pushes everything to local Neo4j
 
 # --- LAYER B: Run the Design Pipeline ---
-python scripts/build_stub_kg.py --no-fetch                  # (re)parse the stub courses
+# Runs read the Neo4j graph above by default (start Neo4j first); KG_BACKEND=stub uses the 17-course stub instead
+python scripts/build_stub_kg.py --no-fetch                  # (re)parse the stub courses (KG_BACKEND=stub only)
 python scripts/run_design.py --input eval/inputs/cse201_P2.yaml --run-id cse201-dev-01 --auto-approve
 python scripts/evaluate_run.py --run-id cse201-dev-01 --reference eval/reference/cse201_sheet.tsv
 python -m pytest -q tests

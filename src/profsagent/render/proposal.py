@@ -271,4 +271,10 @@ def render(rt) -> None:
         made = " + course_template.xlsx"
     except Exception as e:  # noqa: BLE001 — never lose the proposal because of the spreadsheet
         made = f" (course_template.xlsx failed: {type(e).__name__}: {e})"
+    try:   # teaching hours and weekly student workload, as its own file (render/workload.py)
+        from profsagent.render.workload import write as write_workload
+        write_workload(st, rt.run_dir)
+        made += " + workload.md/.csv"
+    except Exception as e:  # noqa: BLE001 — the proposal is complete without it
+        made += f" (workload failed: {type(e).__name__}: {e})"
     rt.log(f"rendered proposal.md + proposal.csv{made} ({len(errs)} errors, {len(vs) - len(errs)} warnings)")

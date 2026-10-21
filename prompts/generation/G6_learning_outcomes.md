@@ -1,6 +1,6 @@
 ---
 id: G6
-version: 0.2.0
+version: 0.3.0
 stage: S4 Learning design
 agent: Learning Design
 model_class: strong
@@ -63,6 +63,12 @@ LO ids. If an LO is vague, everything attached to it becomes vague too.
   object-oriented architecture and test suite for a given multi-component requirements document, justifying each choice"
   → capstone LO: "Design the class structure of one subsystem from a supplied use-case list, applying at least two named
   design patterns and justifying each in the design note".
+- **Self-check before you answer (do this for every LO at its CO's Bloom level):** put the LO next to its CO and
+  change at least TWO of these three, or rewrite it: (1) the **object**: one component, subsystem or artefact instead
+  of the CO's whole object; (2) the **condition**: a specific supplied input ("from a supplied …", "for one given …")
+  instead of the CO's general condition; (3) the **degree**: a criterion one task can check, not the CO's degree.
+  If more than half of the LO's content words also appear in the CO, it is a restatement: rewrite it. Keeping the
+  CO's verb is fine; copying its object, condition and degree is not.
 - **No two LOs may be near-duplicates** (≥ 80% shared words). Each LO names a different skill, object or condition.
 - **Degrees are specific to the LO.** Do not copy the CO's degree into every LO.
 - **Count**: the total must be within {{ lo_count.total_min }}–{{ lo_count.total_max }}. With 4 COs, that usually means 3 LOs

@@ -72,15 +72,21 @@ def fixer(name: str, codes: list[str]):
 def annotate(vs: list[dict]) -> list[dict]:
     fixable = {c for f in FIXERS for c in f.codes}
     for x in vs:
-        x["family"] = FAMILY.get(x["code"], "rule")
+        x["family"] = FAMILY.get(x["code"]) or ("llm" if x["code"].startswith("LLM:") else "rule")
         x["fixable_by"] = ("fixer" if x["code"] in fixable else
                            "repair" if x.get("stage") in REPAIRABLE_STAGES else "professor")
     return vs
 
 
 def check(state: dict, stages: list[str] | None = None) -> list[dict]:
-    """rules.run with record v2 annotations."""
-    return annotate(rules.run(state, stages))
+    """rules.run with record v2 annotations. Under the llm validation profile (validate/llm_check.py configured), only
+    the hard rules come from code and the judgement items come from one LLM check of the same stages."""
+    from profsagent.validate import llm_check
+    vs = rules.run(state, stages)
+    if llm_check.enabled():
+        hard = llm_check.hard_rules()
+        vs = [x for x in vs if x["code"] in hard] + llm_check.check(state, stages)
+    return annotate(vs)
 
 
 def strip_v2(vs: list[dict]) -> list[dict]:

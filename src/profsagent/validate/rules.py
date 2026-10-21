@@ -486,6 +486,10 @@ def check_resources(state: dict) -> list[dict]:
                                      + "; ".join(str(x.get("title"))[:60] for x in rej)))
     if "resources" in state and len(state["resources"]) < 2:
         out.append(v("V15", WARN, [], f"only {len(state['resources'])} verified resource(s); add sources manually or widen the search"))
+    policy = (state.get("resource_policy") or {}).get("textbook_policy")
+    if policy in ("textbook", "mixed") and "resources" in state and not any(
+            str(r.get("candidate_id", "")).startswith("OL:") or (r.get("identifier") or {}).get("isbn") for r in state["resources"]):
+        out.append(v("V15", WARN, [], f"the resource policy is '{policy}' but no verified textbook is listed; add one"))
     out += constraints.check_stage(state, "resources")    # resource.type_allowed, resource.max_age_years
     return out
 

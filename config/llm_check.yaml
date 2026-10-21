@@ -1,0 +1,86 @@
+# The "llm" validation profile (config/validation.yaml): exact rules in code + one LLM check per stage.
+#
+# Code keeps what must be exact or needs facts from outside the design (numbers, regulations, references, order,
+# the IIIT-D catalogue, library records). Everything that is a judgement (wording, clarity, fit, plausibility) is
+# checked by an LLM against the checklist below, by a different model role ("check") than the generator.
+
+hard_rules:   # rule codes still checked in code under the llm profile; every other rule code is left to the LLM
+  - VREG-WEEKS   # regulations and course template
+  - VREG-CREDITS
+  - VREG-LTP
+  - V2
+  - V4
+  - V7
+  - V8
+  - VCO-BL
+  - VA-PROCTOR
+  - VK            # the professor's requirements (numbers, presence, conflicts)
+  - VK-CONFLICT
+  - VK-UNENFORCED
+  - V1            # sums and counts
+  - V3
+  - VA-MARKS
+  - T2
+  - VLO-COUNT
+  - V21
+  - T1            # ids and references
+  - T4
+  - T5
+  - T10
+  - VTG-TAUGHT
+  - VCO-COVER
+  - T3            # order and timing
+  - V9
+  - V19
+  - VA-TIME
+  - VA-ORDER
+  - VLO-DAG
+  - VT-DAG
+  - VT-ORDER
+  - V18           # lab required but missing
+  - V14           # IIIT-D catalogue
+  - V16
+  - V17
+  - V15           # library records
+  - V23           # CO-PO claims computed from the assessment plan
+
+budget_calls_per_run: 30   # LLM check calls per design run; after that, later checks use the hard rules only
+role: check                # config/models.yaml role (a different model order from the generator)
+
+frame_fields: [level, weeks, ltp, midsem_after_week, lab_required]
+
+stages:
+  positioning:
+    - {id: prereq_relevant, severity: error, check: "Each prerequisite is a course students genuinely need first, and its relied-upon topics are things this course builds on."}
+    - {id: overlap_declared, severity: warning, check: "Courses that teach much of the same content are named as overlaps or anti-requisites, with a sensible reason."}
+    - {id: comparables_relevant, severity: warning, check: "Comparable courses are genuinely similar to this course."}
+  cos:
+    - {id: observable_verb, severity: error, check: "Each CO starts with one observable action verb (not 'understand', 'know', 'learn', 'appreciate', 'be aware of') whose Bloom level matches the declared bloom_level."}
+    - {id: condition_degree, severity: error, check: "Each CO states a condition (given / using / for ...) and a checkable degree (a measurable standard, not a vague word like 'thoroughly', 'well', 'effectively' or 'deeply')."}
+    - {id: one_outcome, severity: error, check: "Each CO is one outcome, not several outcomes chained into one sentence."}
+    - {id: distinct, severity: error, check: "No two COs ask for the same capability on the same object."}
+    - {id: covers_intent, severity: warning, check: "Together the COs cover the intent and the topics the professor asked for in the brief."}
+    - {id: level_fit, severity: warning, check: "The COs suit the course level and target students, and use more than one Bloom level."}
+  copo:
+    - {id: plausible, severity: error, check: "Each CO-to-PO link is justified by what the CO actually asks students to do."}
+    - {id: not_inflated, severity: warning, check: "Each CO keeps only its strong links instead of mapping to nearly every programme outcome, and strengths are not inflated."}
+  los:
+    - {id: narrower, severity: error, check: "Each LO is a narrower, single-task step of its parent CO. An LO at the CO's own Bloom level must name a smaller object, a specific supplied input or a task-level degree; an LO that restates its CO is a problem."}
+    - {id: distinct, severity: error, check: "No two LOs say the same thing."}
+    - {id: measurable, severity: error, check: "Each LO starts with an observable verb that matches its declared Bloom level and states a checkable condition and degree."}
+    - {id: builds_up, severity: warning, check: "The LOs of a CO build up to it in a sensible order."}
+  structure:
+    - {id: teaches_los, severity: error, check: "The topics teach what each LO they serve requires."}
+    - {id: order, severity: error, check: "Each topic comes after the topics it builds on."}
+    - {id: required_content, severity: error, check: "Content the professor explicitly required is taught, and content the professor excluded is absent (see the constraints)."}
+    - {id: realistic_hours, severity: warning, check: "Topic hours are realistic (no topic squeezed into too little time or padded), and no week is empty or overloaded."}
+    - {id: outside_load, severity: warning, check: "Outside-lecture load per topic is realistic for the credits (about 10-12 hours a week in total for a 4-credit course)."}
+    - {id: fits_brief, severity: warning, check: "The topics match the topics and intent in the professor's brief."}
+  labs:
+    - {id: concrete, severity: error, check: "Each lab is a concrete exercise with a task and a deliverable, not an LO statement copied."}
+    - {id: practises_los, severity: warning, check: "Each lab really practises the LOs it lists, with suitable tools."}
+  assessment:
+    - {id: measures_los, severity: error, check: "Each assessment task measures the LOs it claims, at their Bloom level, in a suitable format."}
+    - {id: weights, severity: warning, check: "Weights reflect the importance of the outcomes; no component is unusually heavy or light without a reason."}
+    - {id: workload, severity: warning, check: "Deadlines are spread out, no week has too many events, and the project has enough time to be done well."}
+    - {id: exams, severity: warning, check: "The mid-semester and end-semester exams are placed where the academic calendar expects them."}

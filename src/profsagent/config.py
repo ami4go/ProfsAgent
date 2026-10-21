@@ -48,10 +48,11 @@ def pedagogy() -> dict:
 
 
 def validation_profile() -> str:
-    """core (Phase 1 default) or full (adds the research warnings), from config/validation.yaml; $PROFSAGENT_VALIDATION wins."""
+    """core (Phase 1 default), full (adds the research warnings) or llm (hard rules + one LLM check per stage), from
+    config/validation.yaml; $PROFSAGENT_VALIDATION wins."""
     p = (os.environ.get("PROFSAGENT_VALIDATION") or load_yaml("config/validation.yaml").get("profile") or "core").lower()
-    if p not in ("core", "full"):
-        raise ValueError(f"validation profile must be core or full, not {p!r}")
+    if p not in ("core", "full", "llm"):
+        raise ValueError(f"validation profile must be core, full or llm, not {p!r}")
     return p
 
 

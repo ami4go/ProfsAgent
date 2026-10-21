@@ -23,7 +23,7 @@ from profsagent.kg.stub import StubKG
 from profsagent.llm.client import LLMClient
 from profsagent.research.external import Blocklist, ExternalResearch
 from profsagent.research.resources import crossref, openlibrary, verify_pick
-from profsagent.validate import engine, rules, semantic
+from profsagent.validate import engine, llm_check, rules, semantic
 
 
 @dataclass
@@ -61,21 +61,23 @@ def make_kg(llm: LLMClient | None, backend: str) -> KGClient:
     raise ValueError(f"kg_backend must be 'stub' or 'neo4j', not {backend!r}")
 
 
-def _set_validation_profile(run_cfg: dict) -> None:
-    """core: Phase 1 checks only. full: also the research warnings (semantic meaning checks, graph-facts checks).
-    Recorded in run_cfg so --resume / --continue keep the profile the run started with (config/validation.yaml)."""
+def _set_validation_profile(run_cfg: dict, llm=None, run_id: str | None = None) -> None:
+    """core: Phase 1 rule checks. full: also the research warnings (semantic meaning checks, graph-facts checks).
+    llm: hard rules in code + one LLM check per stage (validate/llm_check.py). Recorded in run_cfg so --resume /
+    --continue keep the profile the run started with (config/validation.yaml)."""
     run_cfg["validation_profile"] = run_cfg.get("validation_profile") or validation_profile()
     if run_cfg["validation_profile"] == "full":
         semantic.configure_local()   # local embedding model (PROFSAGENT_SEMANTIC=off still skips it)
     else:
         semantic.configure(None)
+    llm_check.configure(llm if run_cfg["validation_profile"] == "llm" else None, run_id)
 
 
 def make_runtime(run_id: str, form: dict, run_cfg: dict) -> Runtime:
-    _set_validation_profile(run_cfg)
     run_dir = RUNS / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
     llm = LLMClient(run_dir / "llm_calls.jsonl")
+    _set_validation_profile(run_cfg, llm, run_id)
     # run.kg_backend in the input file, else $KG_BACKEND, else Neo4j; recorded so --resume / --continue reuse it
     run_cfg["kg_backend"] = (run_cfg.get("kg_backend") or os.environ.get("KG_BACKEND") or "neo4j").lower()
     rt = Runtime(run_id=run_id, run_dir=run_dir, state={"form": form, "run_cfg": run_cfg, "traces": {}, "violations": {}, "concerns": {},
@@ -92,7 +94,7 @@ def attach_runtime(run_id: str) -> Runtime:
     st = json.loads((run_dir / "state.json").read_text(encoding="utf-8"))
     llm = LLMClient(run_dir / "llm_calls.jsonl")
     cfg = st["run_cfg"]
-    _set_validation_profile(cfg)
+    _set_validation_profile(cfg, llm, run_id)
     g = DesignGraph.load(run_dir / "design_graph.json") if (run_dir / "design_graph.json").exists() else DesignGraph(cfg.get("project_id", "P0001"), run_dir / "design_graph.json")
     return Runtime(run_id=run_id, run_dir=run_dir, state=st, exclude={c.upper() for c in cfg.get("exclude_courses", [])},
                    blocklist=Blocklist(**cfg.get("blocklist", {})), llm=llm, kg=make_kg(llm, cfg.get("kg_backend", "stub")), graph=g,  # runs from before the switch used the stub
@@ -523,6 +525,47 @@ def _lookup_record(pick: dict) -> dict | None:
     return ({**best[1], "title_match": round(best[0], 2)}) if best else None
 
 
+def is_book(r: dict) -> bool:
+    return str(r.get("candidate_id", "")).startswith("OL:") or bool((r.get("identifier") or {}).get("isbn"))
+
+
+BOOK_STOPWORDS = {"and", "the", "for", "with", "using", "from", "into", "its", "their", "your", "volume", "edition", "guide",
+                  "introduction", "handbook", "practical", "practices", "best", "complete", "beginners"}
+
+
+def _find_textbook(st: dict, cands: dict[str, dict], min_shared: int = 2, min_ratio: float = 0.75) -> dict | None:
+    """A verified textbook for a course whose picks have none: OpenLibrary searches on the course name and its first
+    module titles. A book qualifies only if at least `min_shared` of its title's content words, and at least `min_ratio`
+    of them, are words of the course name, modules or topics (so an unrelated best seller is never added); the book
+    sharing the most words wins."""
+    from profsagent.validate.text import toks
+
+    def words(s: str) -> set[str]:
+        return toks(s) - BOOK_STOPWORDS
+    topics = [t for m in st["modules"] for t in m["topics"]]
+    course = words(st["cco_compact"]["course_name"]) | {w for m in st["modules"] for w in words(m["title"])} | \
+        {w for t in topics for w in words(t["title"])}
+    best, best_key = None, None
+    for q in [st["cco_compact"]["course_name"]] + [m["title"] for m in st["modules"][:3]]:
+        for c in openlibrary(q, 5):
+            title = words(c["title"])
+            shared = title & course
+            key = (len(shared), len(shared) / max(len(title), 1), c.get("year") or 0)
+            if len(shared) >= min_shared and key[1] >= min_ratio and (best_key is None or key > best_key):
+                best, best_key = {**c, "shared": sorted(shared)}, key
+    if not best:
+        return None
+    cands.setdefault(best["candidate_id"], best)
+    support = [{"topic_id": t["id"], "reason": "title shares: " + ", ".join(sorted(words(t["title"]) & set(best["shared"])))}
+               for t in topics if words(t["title"]) & set(best["shared"])][:6]
+    pick = {"candidate_id": best["candidate_id"], "role": "primary", "title": best["title"], "authors": best.get("authors", []),
+            "year": best.get("year"), "identifier": best.get("identifier") or {}, "supports_topics": support,
+            "sources": [{"tag": "EXTERNAL", "ref": best.get("url"), "basis": "added because the policy expects a textbook"}],
+            "matched_on": ", ".join(best["shared"])}
+    good, _ = _verify_resources([pick], cands)
+    return good[0] if good else None
+
+
 def _verify_resources(picks: list[dict], cands: dict[str, dict]) -> tuple[list[dict], list[dict]]:
     """Verify every pick against a database record; corpus references are looked up by title first.
     Returns (verified, rejected); verified picks carry the record's exact title, authors, year and identifier."""
@@ -592,6 +635,13 @@ def s8_resources(rt: Runtime) -> None:
             rejected += rej2
         except Exception as e:  # noqa: BLE001 — keep the verified list we already have
             rt.log(f"  replacement round failed: {str(e)[:120]}")
+    if comp["textbook_policy"] in ("textbook", "mixed") and not any(is_book(r) for r in kept):
+        book = _find_textbook(st, cands)          # the policy expects a textbook and none of the picks is one
+        if book:
+            kept.append(book)
+            rt.log(f"  no textbook among the picks; added '{book['title']}' from OpenLibrary (shares: {book['matched_on']})")
+        else:
+            rt.log("  no textbook among the picks, and no relevant one found on OpenLibrary")
     st["resources"] = kept                      # only verified resources reach the course documents
     st["resources_rejected"] = [{"title": r["title"], "problems": r["verification"]["problems"]} for r in rejected]
     st["resource_policy"] = {"textbook_policy": comp["textbook_policy"], "reason": comp["policy_reason"], "search_requests": comp["search_requests"]}

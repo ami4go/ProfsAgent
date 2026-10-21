@@ -96,16 +96,14 @@ def llm_detects(findings: list[dict], clean_items: set, t: dict, severities: tup
     return False
 
 
-def run_llm(repeats: int, sleep_s: float) -> dict:
+def run_llm(repeats: int, sleep_s: float, only: list[str] | None = None) -> dict:
     from profsagent.llm.client import LLMClient
     semantic.configure(None)
     llm_check.configure(None)
     OUT.mkdir(parents=True, exist_ok=True)
     llm = LLMClient(OUT / "llm_calls.jsonl")
     llm.cache_enabled = False                       # every repeat is a fresh call
-    ds = designs()
-    clean_rules = {_key(x) for x in rules.errors(rules.run(ds[0][1]))}
-    hard = llm_check.hard_rules()
+    ds = [d for d in designs() if not only or d[0] == "clean" or d[0] in only]   # the clean design is the baseline
     results = {name: [] for name, _, _ in ds}
     calls, t0 = 0, time.time()
     for rep in range(repeats):
@@ -274,6 +272,7 @@ def main() -> None:
     ap.add_argument("--scheme", choices=["rules", "llm"])
     ap.add_argument("--repeats", type=int, default=2)
     ap.add_argument("--sleep", type=float, default=2.0, help="seconds between LLM calls")
+    ap.add_argument("--only", nargs="*", help="LLM side: check only these defects (plus the clean design)")
     ap.add_argument("--from-log", action="store_true", help="score the LLM side from llm_calls.jsonl (no API calls)")
     ap.add_argument("--report", action="store_true")
     ap.add_argument("--runs", nargs="*")
@@ -282,7 +281,7 @@ def main() -> None:
     if a.scheme == "rules":
         (OUT / "rules.json").write_text(json.dumps(run_rules(), indent=1, ensure_ascii=False), encoding="utf-8")
     elif a.scheme == "llm":
-        (OUT / "llm.json").write_text(json.dumps(run_llm(a.repeats, a.sleep), indent=1, ensure_ascii=False, default=str),
+        (OUT / "llm.json").write_text(json.dumps(run_llm(a.repeats, a.sleep, a.only), indent=1, ensure_ascii=False, default=str),
                                       encoding="utf-8")
     if a.from_log:
         (OUT / "llm_from_log.json").write_text(json.dumps(rebuild_from_log(a.repeats), indent=1, ensure_ascii=False,

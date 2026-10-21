@@ -83,15 +83,22 @@ def _same_part(a: list[str], b: list[str]) -> bool:
     return any(x == y or x.startswith(y + ".") or y.startswith(x + ".") for x in map(str, a) for y in map(str, b))
 
 
+def _finding_key(f: dict) -> tuple:
+    return f["code"], tuple(sorted(map(str, f.get("nodes", []))))
+
+
 def llm_detects(findings: list[dict], clean_items: set, t: dict, severities: tuple = ("error",)) -> bool:
     """severities=("error",): the check would block the design; ("error", "warning"): the LLM at least noticed it."""
     stages = {llm_check.STAGE_OF.get(s, s) for s in t["stages"]}
+    clean_codes = {c for c, _ in clean_items}
     for f in findings:
         if f["severity"] not in severities or f["code"] == "LLM:unavailable" or f["stage"] not in stages:
             continue
+        if _finding_key(f) in clean_items:      # the same finding on the clean design is not about the planted defect
+            continue
         if _same_part(f.get("nodes", []), t["nodes"]):
             return True
-        if (not t["nodes"] or not f.get("nodes")) and f["code"] not in clean_items:
+        if (not t["nodes"] or not f.get("nodes")) and f["code"] not in clean_codes:
             return True
     return False
 
@@ -140,7 +147,7 @@ def score(ds: list, results: dict, repeats: int, calls: int, seconds: int) -> di
                 per.append(None)
                 noticed.append(None)
                 continue
-            clean_items = {f["code"] for f in clean["findings"]}
+            clean_items = {_finding_key(f) for f in clean["findings"]}
             per.append(llm_detects(got["findings"], clean_items, t))
             noticed.append(llm_detects(got["findings"], clean_items, t, ("error", "warning")))
         rows.append({"defect": name, "truth": t, "llm_only": per, "llm_noticed": noticed, "hard_only": bool(new_hard),

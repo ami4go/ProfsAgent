@@ -133,4 +133,7 @@ def test_comparison_counts_only_errors_where_the_defect_is():
     t2 = {"nodes": [], "stages": ["schedule"]}
     assert cmp.llm_detects([{**err, "code": "LLM:structure.order", "stage": "structure", "nodes": []}], set(), t2)
     assert not cmp.llm_detects([{**err, "code": "LLM:structure.order", "stage": "structure", "nodes": []}],
-                               {"LLM:structure.order"}, t2)                         # also reported on the clean design
+                               {("LLM:structure.order", ())}, t2)                   # also reported on the clean design
+    placeholder = {**err, "code": "LLM:los.narrower", "stage": "los", "nodes": ["CO1.LO3"]}
+    assert not cmp.llm_detects([placeholder], {("LLM:los.narrower", ("CO1.LO3",))},
+                               {"nodes": ["CO1.LO1", "CO1.LO3"], "stages": ["los"]})  # same finding as on the clean design

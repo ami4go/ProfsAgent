@@ -78,14 +78,20 @@ def rules_codes() -> set[str]:
     return {c for c in FAMILY if not c.startswith(("VS-", "VKG-"))}
 
 
-def llm_detects(findings: list[dict], clean_items: set, t: dict) -> bool:
+def _same_part(a: list[str], b: list[str]) -> bool:
+    """Two node lists concern the same part of the design: equal ids, or one id inside the other (CO1 / CO1.LO13)."""
+    return any(x == y or x.startswith(y + ".") or y.startswith(x + ".") for x in map(str, a) for y in map(str, b))
+
+
+def llm_detects(findings: list[dict], clean_items: set, t: dict, severities: tuple = ("error",)) -> bool:
+    """severities=("error",): the check would block the design; ("error", "warning"): the LLM at least noticed it."""
+    stages = {llm_check.STAGE_OF.get(s, s) for s in t["stages"]}
     for f in findings:
-        if f["severity"] != "error" or f["code"] == "LLM:unavailable":
+        if f["severity"] not in severities or f["code"] == "LLM:unavailable" or f["stage"] not in stages:
             continue
-        if set(f.get("nodes", [])) & set(t["nodes"]):
+        if _same_part(f.get("nodes", []), t["nodes"]):
             return True
-        if (not t["nodes"] or not f.get("nodes")) and f["stage"] in {llm_check.STAGE_OF.get(s, s) for s in t["stages"]} \
-                and f["code"] not in clean_items:
+        if (not t["nodes"] or not f.get("nodes")) and f["code"] not in clean_items:
             return True
     return False
 
@@ -113,38 +119,96 @@ def run_llm(repeats: int, sleep_s: float) -> dict:
             print(f"  repeat {rep + 1} {name:<36} {sum(x['severity'] == 'error' for x in results[name][-1]['findings'])} errors"
                   + (f"  ({results[name][-1].get('error')})" if results[name][-1].get("error") else ""), flush=True)
             time.sleep(sleep_s)
+    return score(ds, results, repeats, calls, round(time.time() - t0))
+
+
+def _ok(results: dict, name: str, r: int) -> dict | None:
+    """Repeat r of one design, or None when it is missing or the call failed (no result is not a missed defect)."""
+    rs = results.get(name) or []
+    return rs[r] if r < len(rs) and not rs[r].get("error") else None
+
+
+def score(ds: list, results: dict, repeats: int, calls: int, seconds: int) -> dict:
+    clean_rules = {_key(x) for x in rules.errors(rules.run(ds[0][1]))}
+    hard = llm_check.hard_rules()
     rows = []
     for name, st, d in ds[1:]:
         t = truth(st, clean_rules, d)
         new_hard = [x for x in rules.errors(rules.run(st)) if x["code"] in hard and _key(x) not in clean_rules]
-        per = []
+        per, noticed = [], []
         for r in range(repeats):
-            clean_items = {f["code"] for f in results["clean"][r]["findings"] if f["severity"] == "error"}
-            per.append(llm_detects(results[name][r]["findings"], clean_items, t))
-        rows.append({"defect": name, "truth": t, "llm_only": per, "hard_only": bool(new_hard),
-                     "hybrid": [p or bool(new_hard) for p in per],
-                     "llm_errors": [sum(f["severity"] == "error" for f in results[name][r]["findings"]) for r in range(repeats)]})
+            got, clean = _ok(results, name, r), _ok(results, "clean", r)
+            if got is None or clean is None:
+                per.append(None)
+                noticed.append(None)
+                continue
+            clean_items = {f["code"] for f in clean["findings"]}
+            per.append(llm_detects(got["findings"], clean_items, t))
+            noticed.append(llm_detects(got["findings"], clean_items, t, ("error", "warning")))
+        rows.append({"defect": name, "truth": t, "llm_only": per, "llm_noticed": noticed, "hard_only": bool(new_hard),
+                     "hybrid": [None if p is None else (p or bool(new_hard)) for p in per],
+                     "llm_errors": [None if _ok(results, name, r) is None else
+                                    sum(f["severity"] == "error" for f in _ok(results, name, r)["findings"]) for r in range(repeats)]})
 
     def items(name, r):
-        return {(f["code"], tuple(sorted(f.get("nodes", [])))) for f in results[name][r]["findings"] if f["severity"] == "error"}
+        return {(f["code"], tuple(sorted(f.get("nodes", [])))) for f in _ok(results, name, r)["findings"] if f["severity"] == "error"}
     consistency = None
     if repeats >= 2:
-        js = []
-        for name, _, _ in ds:
-            a, b = items(name, 0), items(name, 1)
-            js.append(len(a & b) / len(a | b) if a | b else 1.0)
-        consistency = {"mean_jaccard_of_error_sets": round(sum(js) / len(js), 3),
-                       "same_detection_both_repeats": sum(len(set(r["llm_only"])) == 1 for r in rows)}
-    out = {"scheme": "llm", "repeats": repeats, "calls": calls, "seconds": round(time.time() - t0),
-           "clean_llm_errors": [sum(f["severity"] == "error" for f in results["clean"][r]["findings"]) for r in range(repeats)],
+        both = [name for name, _, _ in ds if _ok(results, name, 0) and _ok(results, name, 1)]
+        js = [len(items(n, 0) & items(n, 1)) / len(items(n, 0) | items(n, 1)) if items(n, 0) | items(n, 1) else 1.0 for n in both]
+        rows_both = [r for r in rows if None not in r["llm_only"][:2]]
+        consistency = {"designs_with_both_repeats": len(both),
+                       "mean_jaccard_of_error_sets": round(sum(js) / len(js), 3) if js else None,
+                       "same_detection_both_repeats": f"{sum(r['llm_only'][0] == r['llm_only'][1] for r in rows_both)}/{len(rows_both)}"}
+
+    def tally(key, k):
+        vals = [r[key][k] for r in rows if r[key][k] is not None]
+        return {"detected": sum(vals), "scored": len(vals), "failed_calls": len(rows) - len(vals)}
+    failed = sum(1 for name, _, _ in ds for r in range(repeats) if _ok(results, name, r) is None)
+    out = {"scheme": "llm", "repeats": repeats, "calls": calls, "failed_or_missing": failed, "seconds": seconds,
+           "clean_llm_errors": [None if _ok(results, "clean", r) is None else
+                                sum(f["severity"] == "error" for f in _ok(results, "clean", r)["findings"]) for r in range(repeats)],
            "rows": rows, "consistency": consistency, "raw": results,
-           "detected": {"llm_only": [sum(r["llm_only"][k] for r in rows) for k in range(repeats)],
-                        "hybrid": [sum(r["hybrid"][k] for r in rows) for k in range(repeats)],
+           "detected": {"llm_only": [tally("llm_only", k) for k in range(repeats)],
+                        "llm_noticed": [tally("llm_noticed", k) for k in range(repeats)],
+                        "hybrid": [tally("hybrid", k) for k in range(repeats)],
                         "hard_only": sum(r["hard_only"] for r in rows)}}
-    print(f"llm: LLM check alone {out['detected']['llm_only']} / {len(rows)} per repeat | hard rules + LLM "
-          f"{out['detected']['hybrid']} | errors on the clean design {out['clean_llm_errors']} | consistency {consistency} | "
-          f"{calls} calls, {out['seconds']} s")
+    print(f"llm: LLM check alone {[f'{x['detected']}/{x['scored']}' for x in out['detected']['llm_only']]} per repeat | "
+          f"hard rules + LLM {[f'{x['detected']}/{x['scored']}' for x in out['detected']['hybrid']]} | errors on the clean "
+          f"design {out['clean_llm_errors']} | consistency {consistency} | {calls} calls, {failed} failed or missing")
     return out
+
+
+def rebuild_from_log(repeats: int) -> dict:
+    """Score from eval/compare_validation/llm_calls.jsonl (every call's prompt and output are logged), so a run that was
+    stopped or ran out of quota is not lost. Each call is matched to its design by the prompt it was sent."""
+    from profsagent.llm.prompts import load_prompt
+    from profsagent.validate.llm_check import LLMCheckResult, _findings, _payload
+    import hashlib
+    ds = designs()
+    p = load_prompt("C1")
+    stages = list(llm_check.cfg()["stages"])
+    by_sha: dict[str, list[str]] = {}
+    for name, st, _ in ds:      # a defect the check is never shown gives the same prompt as the clean design
+        system, user = p.render(**_payload(st, stages))
+        by_sha.setdefault(hashlib.sha256((system + user).encode()).hexdigest()[:16], []).append(name)
+    results = {name: [] for name, _, _ in ds}
+    calls = 0
+    for line in open(OUT / "llm_calls.jsonl", encoding="utf-8"):
+        row = json.loads(line)
+        names = by_sha.get(row.get("prompt_sha"))
+        if row.get("prompt_id") != "C1" or not names:
+            continue
+        name = min(names, key=lambda n: (len(results[n]), names.index(n)))   # calls ran in design order, repeat by repeat
+        calls += 1
+        if not row.get("ok") or not row.get("output"):
+            results[name].append({"findings": [], "error": str(row.get("error"))[:160]})
+            continue
+        obj = LLMCheckResult.model_validate(json.loads(row["output"]))
+        results[name].append({"findings": _findings(obj, stages, row.get("endpoint")), "endpoint": row.get("endpoint")})
+    for name, _, _ in ds:      # calls that never reached the log (e.g. every endpoint failed) count as missing
+        results[name] = results[name][:repeats]
+    return score(ds, results, repeats, calls, 0)
 
 
 def run_summary(run_id: str) -> dict | None:
@@ -210,6 +274,7 @@ def main() -> None:
     ap.add_argument("--scheme", choices=["rules", "llm"])
     ap.add_argument("--repeats", type=int, default=2)
     ap.add_argument("--sleep", type=float, default=2.0, help="seconds between LLM calls")
+    ap.add_argument("--from-log", action="store_true", help="score the LLM side from llm_calls.jsonl (no API calls)")
     ap.add_argument("--report", action="store_true")
     ap.add_argument("--runs", nargs="*")
     a = ap.parse_args()
@@ -219,10 +284,13 @@ def main() -> None:
     elif a.scheme == "llm":
         (OUT / "llm.json").write_text(json.dumps(run_llm(a.repeats, a.sleep), indent=1, ensure_ascii=False, default=str),
                                       encoding="utf-8")
+    if a.from_log:
+        (OUT / "llm_from_log.json").write_text(json.dumps(rebuild_from_log(a.repeats), indent=1, ensure_ascii=False,
+                                                          default=str), encoding="utf-8")
     if a.report:
         report(a.runs)
-    if not (a.scheme or a.report):
-        ap.error("give --scheme rules|llm and/or --report")
+    if not (a.scheme or a.report or a.from_log):
+        ap.error("give --scheme rules|llm, --from-log and/or --report")
 
 
 if __name__ == "__main__":

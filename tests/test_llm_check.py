@@ -127,6 +127,9 @@ def test_comparison_counts_only_errors_where_the_defect_is():
     assert cmp.llm_detects([{**err, "nodes": ["CO2"]}], set(), t)
     assert not cmp.llm_detects([{**err, "nodes": ["CO4"]}], set(), t)               # an error elsewhere is not a detection
     assert not cmp.llm_detects([{**err, "nodes": ["CO1"], "severity": "warning"}], set(), t)
+    lo_dup = {**err, "code": "LLM:los.distinct", "stage": "los", "nodes": ["CO1.LO13"]}
+    assert cmp.llm_detects([lo_dup], set(), {"nodes": ["CO1"], "stages": ["los"]})          # an LO of CO1 is part of CO1
+    assert not cmp.llm_detects([lo_dup], set(), {"nodes": ["CO1"], "stages": ["copo"]})     # ...but not a CO-PO defect
     t2 = {"nodes": [], "stages": ["schedule"]}
     assert cmp.llm_detects([{**err, "code": "LLM:structure.order", "stage": "structure", "nodes": []}], set(), t2)
     assert not cmp.llm_detects([{**err, "code": "LLM:structure.order", "stage": "structure", "nodes": []}],

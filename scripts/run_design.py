@@ -56,9 +56,16 @@ def main() -> None:
         res = app.invoke({"run_id": a.run_id, "auto_approve": a.auto_approve, "done": []}, cfg)
     intr = res.get("__interrupt__") if isinstance(res, dict) else None
     if intr:
-        print("\n=== WAITING FOR PROFESSOR ===")
-        print(json.dumps(intr[0].value, indent=1, ensure_ascii=False, default=str)[:4000])
         v = intr[0].value
+        detail = run_dir / f"gate_{v.get('gate', 'pending')}.json"
+        detail.write_text(json.dumps(v, indent=1, ensure_ascii=False, default=str), encoding="utf-8")
+        print(f"\n=== WAITING FOR PROFESSOR: {v.get('gate')} ===")
+        print(json.dumps(v.get("summary"), indent=1, ensure_ascii=False, default=str)[:2500])
+        print(f"\n{'BLOCKED' if v.get('blocked') else 'Not blocked'}: {v.get('open_errors', 0)} open errors, "
+              f"{v.get('open_warnings', 0)} warnings")
+        for line in v.get("report") or []:
+            print(line)
+        print(f"(full details: {detail})")
         if v.get("problem"):
             print(f"\n!! {v['problem']}")
         why = ' --comment "<reason for approving with open errors>"' if v.get("blocked") else ""

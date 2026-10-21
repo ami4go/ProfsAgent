@@ -14,7 +14,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from profsagent.agents.loop import call, generate
-from profsagent.config import RUNS, bloom_lexicon, degree_bank, pedagogy, programme, regulations
+from profsagent.config import RUNS, bloom_lexicon, degree_bank, pedagogy, programme, regulations, validation_profile
 from profsagent.design import deterministic as det
 from profsagent.design.store import DesignGraph
 from profsagent.kg import facts as kg_facts
@@ -61,8 +61,18 @@ def make_kg(llm: LLMClient | None, backend: str) -> KGClient:
     raise ValueError(f"kg_backend must be 'stub' or 'neo4j', not {backend!r}")
 
 
+def _set_validation_profile(run_cfg: dict) -> None:
+    """core: Phase 1 checks only. full: also the research warnings (semantic meaning checks, graph-facts checks).
+    Recorded in run_cfg so --resume / --continue keep the profile the run started with (config/validation.yaml)."""
+    run_cfg["validation_profile"] = run_cfg.get("validation_profile") or validation_profile()
+    if run_cfg["validation_profile"] == "full":
+        semantic.configure_local()   # local embedding model (PROFSAGENT_SEMANTIC=off still skips it)
+    else:
+        semantic.configure(None)
+
+
 def make_runtime(run_id: str, form: dict, run_cfg: dict) -> Runtime:
-    semantic.configure_local()   # semantic warnings with the local embedding model (PROFSAGENT_SEMANTIC=off to skip)
+    _set_validation_profile(run_cfg)
     run_dir = RUNS / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
     llm = LLMClient(run_dir / "llm_calls.jsonl")
@@ -78,11 +88,11 @@ def make_runtime(run_id: str, form: dict, run_cfg: dict) -> Runtime:
 
 
 def attach_runtime(run_id: str) -> Runtime:
-    semantic.configure_local()
     run_dir = RUNS / run_id
     st = json.loads((run_dir / "state.json").read_text(encoding="utf-8"))
     llm = LLMClient(run_dir / "llm_calls.jsonl")
     cfg = st["run_cfg"]
+    _set_validation_profile(cfg)
     g = DesignGraph.load(run_dir / "design_graph.json") if (run_dir / "design_graph.json").exists() else DesignGraph(cfg.get("project_id", "P0001"), run_dir / "design_graph.json")
     return Runtime(run_id=run_id, run_dir=run_dir, state=st, exclude={c.upper() for c in cfg.get("exclude_courses", [])},
                    blocklist=Blocklist(**cfg.get("blocklist", {})), llm=llm, kg=make_kg(llm, cfg.get("kg_backend", "stub")), graph=g,  # runs from before the switch used the stub
@@ -374,7 +384,8 @@ def s5_structure(rt: Runtime) -> None:
             g.link(it["topic_id"], "DELIVERED_IN", lid, hours=it["hours"])
     s = st["schedule"]
     rt.log(f"  schedule: {'feasible' if s['feasible'] else 'INFEASIBLE'} · need {s['hours_needed']} h / {s['hours_available']} h")
-    _graph_facts(rt)
+    if st["run_cfg"].get("validation_profile") == "full":
+        _graph_facts(rt)
     rt.save()
 
 

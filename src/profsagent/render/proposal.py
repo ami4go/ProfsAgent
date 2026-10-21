@@ -8,9 +8,10 @@ from __future__ import annotations
 
 import csv
 import io
+import json
 from collections import defaultdict
 
-from profsagent.validate import rules
+from profsagent.validate import report, rules
 
 
 def _tag(sources) -> str:
@@ -211,9 +212,10 @@ def render(rt) -> None:
     w("")
 
     w("## Appendix E — Validation report (deterministic validators; not LLM self-assessment)\n")
-    w("| Stage | Code | Severity | Nodes | Message |\n|---|---|---|---|---|")
-    for x in sorted(vs, key=lambda x: (x["severity"] != "error", x["stage"], x["code"])):
-        w(f"| {x['stage']} | {x['code']} | {x['severity']} | {', '.join(map(str, x['nodes']))[:60]} | {x['message'][:220]} |")
+    w(report.markdown(vs))
+    (rt.run_dir / "validation_report.json").write_text(
+        json.dumps({"summary": report.summary(vs), "grouped": report.grouped(vs), "findings": vs}, indent=1, ensure_ascii=False,
+                   default=str), encoding="utf-8")
     w("\n**Repair history**\n")
     for stg, tr in st.get("traces", {}).items():
         if tr.get("repairs"):

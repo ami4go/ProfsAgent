@@ -102,6 +102,19 @@ S5 keeps a topic's `SAME_AS` link to an IIIT-D topic only if the KG also finds t
 `load.py --wipe` clears only the IIIT-D graph; design runs stay and their links are re-attached.
 Load, check or remove a run by hand: `python scripts/load_design_to_neo4j.py --run-id <id> [--check | --delete]`.
 
+## Validation (Phase 1 core)
+Every generated part is checked before the next one is built: format guard → rule checks (university regulations and
+course template, the professor's requirements, IIIT-D catalogue facts, consistency, outcome quality) → deterministic
+fixers → R1 repair (kept only if errors drop; stops when it cannot help) → blocking gate (approving with open errors
+needs a written reason). The finished design gets a deterministic Tier 1 score (`evaluation_deterministic.json`).
+
+- **Report:** gates and Appendix E show findings under plain headings with repeats merged into one line
+  (`validate/report.py`); every individual finding is in `runs/<id>/validation_report.json`.
+- **Profile:** `config/validation.yaml` → `profile: core` (default). `full` (or `PROFSAGENT_VALIDATION=full`) adds the
+  research warnings: meaning checks with the local embedding model and graph-facts checks after S5.
+- **Offline tools** (never inside the pipeline): `scripts/audit_kg.py` (Layer A audit), `scripts/evaluate_reference.py`
+  (Tier 2: compare with a held-out real course), `scripts/judge_design.py` (Tier 3 judge panel; dry run unless `--run`).
+
 ## Other scripts
 - `scripts/export_course_template.py --run-id <id>`: (re)writes `runs/<id>/course_template.xlsx`.
 - `scripts/load_design_to_neo4j.py --run-id <id> [--delete]`: loads (or removes) a run's design graph in Neo4j.

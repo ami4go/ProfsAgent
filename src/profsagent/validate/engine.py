@@ -137,13 +137,16 @@ def coverage(state: dict) -> dict:
 
 
 def gate_view(state: dict, cap: int = 40) -> dict:
-    """What a gate shows: blocked or not, the open errors (grouped by who can close them) and the coverage report."""
-    errs = rules.errors(recorded(state))
+    """What a gate shows: blocked or not, the open errors (grouped by who can close them) and the coverage report.
+    `report` is the readable version: open errors under plain headings, repeats merged, warnings as counts."""
+    from profsagent.validate import report
+    vs = recorded(state)
+    errs = rules.errors(vs)
     order = {"professor": 0, "repair": 1, "fixer": 2}
     items = sorted(({"code": x["code"], "stage": x.get("stage"), "nodes": x["nodes"][:6], "message": x["message"][:200],
                      "fixable_by": x["fixable_by"]} for x in errs), key=lambda i: (order.get(i["fixable_by"], 3), i["stage"] or "", i["code"]))
     return {"blocked": bool(errs), "open_codes": sorted({x["code"] for x in errs}), "open": items[:cap],
-            "open_total": len(errs), "coverage": coverage(state)}
+            "open_total": len(errs), "coverage": coverage(state), "report": report.lines(vs, errors_only=True)}
 
 
 def resolve_gate(view: dict, decision: dict | None, auto: bool) -> tuple[dict | None, str | None]:

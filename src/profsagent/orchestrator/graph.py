@@ -63,8 +63,8 @@ def _gate(name, summary_fn):
         vs = P.all_violations(rt.state)
         view = engine.gate_view(rt.state)
         payload = {"gate": name, "summary": summary_fn(rt.state), "open_errors": len(rules.errors(vs)),
-                   "open_warnings": len(vs) - len(rules.errors(vs)), "blocked": view["blocked"], "open": view["open"],
-                   "coverage": view["coverage"]}
+                   "open_warnings": len(vs) - len(rules.errors(vs)), "blocked": view["blocked"], "report": view["report"],
+                   "open": view["open"], "coverage": view["coverage"]}
         if state.get("auto_approve"):
             decision, _ = engine.resolve_gate(view, None, auto=True)
         else:   # blocked: approving needs a reason (override); ask again until there is one, or the professor rejects

@@ -1,0 +1,11 @@
+# Validation profile for the design pipeline (read by agents/pipeline.py).
+#
+# core (Phase 1 default): format guard, rule checks, university regulations and course template, the professor's
+#   requirements (constraint compiler), IIIT-D catalogue facts, deterministic fixers, R1 repair with its stopping rule,
+#   blocking gates, and the Tier 1 score of the finished design.
+# full: core plus the research extras, which only add WARNINGS:
+#   semantic     meaning checks with the local embedding model (VS-LOCOPY, VS-LOFIT, VS-CODUP)
+#   graph_facts  graph-facts snapshot after S5 and the VKG-PREC / VKG-DUP / VKG-NORM checks
+# Offline tools stay available in either profile and never run inside the pipeline: scripts/audit_kg.py (Layer A audit),
+# scripts/evaluate_reference.py (Tier 2), scripts/judge_design.py (Tier 3 judge panel, dry run by default).
+profile: core

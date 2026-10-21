@@ -41,7 +41,7 @@ FAMILY: dict[str, str] = {
     "V10": "rule", "V11": "rule", "V12": "rule", "V13": "rule", "V18": "rule", "V19": "rule", "V21": "rule", "V23": "rule",
     "VA-LOAD": "rule", "VA-MARKS": "rule", "VA-ORDER": "rule", "VA-PROJ": "rule", "VA-TIME": "rule", "VB": "rule",
     "VCO-DUP": "rule", "VCO-SPREAD": "rule", "VCOPO-ACT": "rule", "VLO-COPY": "rule", "VLO-COUNT": "rule",
-    "VLO-DUP": "rule", "VT-SIZE": "rule", "VT-LEN": "rule",
+    "VLO-DUP": "rule", "VT-SIZE": "rule", "VT-LEN": "rule", "VT-TEMPLATE": "rule",
 }
 
 # Stages whose component is generated through agents/loop.generate, so R1 can repair it (S8 resources cannot).

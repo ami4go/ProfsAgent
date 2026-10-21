@@ -86,4 +86,4 @@ def test_core_profile_switches_the_research_extras_off(monkeypatch):
 
 def test_core_checks_are_unchanged(s):
     semantic.configure(None)
-    assert {x["code"] for x in rules.errors(rules.run(s))} == {"V23"}           # same baseline as the defect suite
+    assert {x["code"] for x in rules.errors(rules.run(s))} == {"V23", "VT-TEMPLATE"}           # same baseline as the defect suite

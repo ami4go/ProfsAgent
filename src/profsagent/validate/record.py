@@ -33,6 +33,7 @@ FIX_HINTS = {
     "VT-ORDER": "Add the prerequisite to the dependent topic's `requires`, or move the dependent topic later in its module order, so "
                 "it is taught after what it builds on.",
     "VT-LEN": "Rewrite the statement as one outcome of typical length: verb, object, condition and degree, without lists or padding.",
+    "VT-TEMPLATE": "Replace each {placeholder} with a concrete value (a number, the artefact's name), e.g. 'for 3 of 5 short items'.",
     "VS-LOCOPY": "Keep the verb and Bloom level, but narrow the LO to one concrete task: one component or artefact, a specific "
                  "given input as the condition, and a degree one assessment task can check.",
     "VS-LOFIT": "Move the LO under the CO it serves, or rewrite it so it is a step towards its own parent CO.",

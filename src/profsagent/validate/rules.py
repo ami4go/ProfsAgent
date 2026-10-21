@@ -22,6 +22,10 @@ def _statement_checks(items: list[dict], kind: str) -> list[dict]:
     for it in items:
         i, st = it["id"], it.get("statement", "")
         verb = lemma(it.get("verb", ""))
+        # VT-TEMPLATE: a degree-bank template copied without filling it in ("for {n} of {m} short items")
+        holes = sorted({h for f in ("statement", "condition", "degree") for h in re.findall(r"\{[A-Za-z_]+\}", it.get(f) or "")})
+        if holes:
+            out.append(v("VT-TEMPLATE", ERR, [i], f"{kind} {i} still contains unfilled template text {holes}", statement=st))
         # V12 banned verbs: the declared verb, the statement's leading verb, or a verb chained with and/or/then.
         # Not anywhere in the clause: "Evaluate natural-language understanding models" or "a robot grasp planner"
         # use the words as nouns.

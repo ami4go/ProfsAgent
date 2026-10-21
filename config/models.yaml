@@ -33,8 +33,8 @@ roles:
   search:              # Google-Search grounding: free tier only works on 2.5-flash (3.x grounding quota = 0)
     - {provider: gemini, model: gemini-2.5-flash}
   check:               # the LLM check of the llm validation profile (config/llm_check.yaml): a different model
-                       # order from `generate`, so the generator's first-choice model is not the first checker
-    - {provider: gemini, model: gemini-2.5-flash}
+                       # order from `generate`, so the generator's first-choice model is not the first checker.
+                       # gemini-2.5-flash removed: "404 model unsupported" on every key (21 Oct 2026)
     - {provider: gemini, model: gemini-3.7-flash}
     - {provider: gemini, model: gemini-3.5-flash}
     - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 6500}
@@ -42,8 +42,8 @@ roles:
     - {provider: gemini, model: gemini-3.1-flash-lite}
   # Stage 5 judge panel (config/judging.yaml): ONE model per judge, so a judge never silently becomes another model;
   # a judge with no key or no quota is reported missing. judge_c needs a Groq key (GROQ_API_KEYS); none is set now.
-  judge_a:
-    - {provider: gemini, model: gemini-2.5-flash}
+  judge_a:             # was gemini-2.5-flash ("404 model unsupported" on every key, 21 Oct 2026)
+    - {provider: gemini, model: gemini-3.5-flash}
   judge_b:
     - {provider: gemini, model: gemini-3.7-flash}
   judge_c:             # a J1 prompt is ~6K tokens (rubrics + design) + ~1.5K output: inside Groq's 8K tokens/minute

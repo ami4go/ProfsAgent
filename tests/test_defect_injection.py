@@ -17,8 +17,10 @@ from profsagent.validate import rules
 FIXTURE = ROOT / "tests/fixtures/cs601_design_state.json"   # copy of runs/cs601-02/state.json (CS-601, template + Neo4j KB)
 
 # Errors the clean design already has. V23: CO2's claimed link to PSO "CSAI-PSO1" is not evidenced by any assessed
-# activity in that run. Pinned so that any NEW error on the clean design (a false alarm) fails the suite.
-CLEAN_BASELINE_ERRORS = {"V23"}
+# activity in that run. VT-TEMPLATE: CO1.LO3 and CO2.LO3 still contain "for {n} of {m} short items" (found by the
+# LLM check on 21 Oct 2026; no rule caught it before). Pinned so that any NEW error on the clean design (a false alarm)
+# fails the suite.
+CLEAN_BASELINE_ERRORS = {"V23", "VT-TEMPLATE"}
 
 
 @pytest.fixture(scope="module")

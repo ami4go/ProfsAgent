@@ -62,7 +62,7 @@ def make_kg(llm: LLMClient | None, backend: str) -> KGClient:
 
 
 def _set_validation_profile(run_cfg: dict, llm=None, run_id: str | None = None) -> None:
-    """core: Phase 1 rule checks. full: also the research warnings (semantic meaning checks, graph-facts checks).
+    """core: Phase 1 rule checks, with the knowledge-graph checks after S5. full: also the semantic meaning checks.
     llm: hard rules in code + one LLM check per stage (validate/llm_check.py). Recorded in run_cfg so --resume /
     --continue keep the profile the run started with (config/validation.yaml)."""
     run_cfg["validation_profile"] = run_cfg.get("validation_profile") or validation_profile()
@@ -386,8 +386,7 @@ def s5_structure(rt: Runtime) -> None:
             g.link(it["topic_id"], "DELIVERED_IN", lid, hours=it["hours"])
     s = st["schedule"]
     rt.log(f"  schedule: {'feasible' if s['feasible'] else 'INFEASIBLE'} · need {s['hours_needed']} h / {s['hours_available']} h")
-    if st["run_cfg"].get("validation_profile") == "full":
-        _graph_facts(rt)
+    _graph_facts(rt)     # every profile: no AI calls, warnings only, skipped if the graph is unavailable
     rt.save()
 
 

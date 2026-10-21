@@ -1,13 +1,13 @@
 # Validation profile for the design pipeline (read by agents/pipeline.py).
 #
 # core (Phase 1 default): format guard, rule checks, university regulations and course template, the professor's
-#   requirements (constraint compiler), IIIT-D catalogue facts, deterministic fixers, R1 repair with its stopping rule,
-#   blocking gates, and the Tier 1 score of the finished design.
-# full: core plus the research extras, which only add WARNINGS:
-#   semantic     meaning checks with the local embedding model (VS-LOCOPY, VS-LOFIT, VS-CODUP)
-#   graph_facts  graph-facts snapshot after S5 and the VKG-PREC / VKG-DUP / VKG-NORM checks
+#   requirements (constraint compiler), IIIT-D catalogue facts, the IIIT-D knowledge-graph checks after S5
+#   (VKG-PREC topic order, VKG-DUP undeclared overlap, VKG-NORM level norms; warnings, no AI calls), deterministic
+#   fixers, R1 repair with its stopping rule, blocking gates, and the Tier 1 score of the finished design.
+# full: core plus the semantic meaning checks with the local embedding model (VS-LOCOPY, VS-LOFIT, VS-CODUP; warnings).
 # llm: a small set of exact rules in code (config/llm_check.yaml hard_rules) + one LLM check per stage against a plain
-#   checklist (prompt C1, model role "check"). Judgement items (wording, clarity, fit, plausibility) move to the LLM.
+#   checklist (prompt C1, model role "check"); the knowledge-graph checks run as in core. Judgement items (wording,
+#   clarity, fit, plausibility) move to the LLM.
 # Offline tools stay available in either profile and never run inside the pipeline: scripts/audit_kg.py (Layer A audit),
 # scripts/evaluate_reference.py (Tier 2), scripts/judge_design.py (Tier 3 judge panel, dry run by default).
 profile: core

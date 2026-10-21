@@ -44,6 +44,9 @@ hard_rules:   # rule codes still checked in code under the llm profile; every ot
   - VT-TEMPLATE   # unfilled {placeholder} text left in a statement
   - V15           # library records
   - V23           # CO-PO claims computed from the assessment plan
+  - VKG-PREC      # IIIT-D knowledge graph facts (warnings): topic order, undeclared overlap, level norms
+  - VKG-DUP
+  - VKG-NORM
 
 budget_calls_per_run: 30   # LLM check calls per design run; after that, later checks use the hard rules only
 role: check                # config/models.yaml role (a different model order from the generator)

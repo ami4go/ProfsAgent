@@ -289,6 +289,10 @@ class LLMClient:
                 raise
             except (httpx.TimeoutException, httpx.TransportError) as e:
                 self.slots.cool(slot, 300 if ep["provider"] == "ollama" else self.lim["cooldown_timeout_s"], type(e).__name__)
+                if isinstance(e, httpx.ReadTimeout) and ep["provider"] == "gemini":
+                    # a hanging model is overloaded for every key: move on to the next model instead of waiting on each key
+                    for kx in self.gemini_keys:
+                        self.slots.cool(f"gemini:{ep['model']}:{_fp(kx)}", self.lim["cooldown_503_s"], "ReadTimeout (model busy)")
                 if record is not None:
                     record.attempts.append({"slot": slot, "ok": False, "why": type(e).__name__})
                 last = e

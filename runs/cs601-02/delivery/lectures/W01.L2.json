@@ -1,0 +1,1525 @@
+{
+ "lecture_id": "W01.L2",
+ "topic": "Model context protocols and architecture",
+ "generated_at": "2026-10-25 22:17:23",
+ "resources": {
+  "lecture_id": "W01.L2",
+  "topic": "Model context protocols and architecture",
+  "want": {
+   "want_videos": true,
+   "want_readings": true,
+   "want_practice": false,
+   "want_recorded_lecture": false,
+   "want_clips": false,
+   "want_guest": true,
+   "confidence": 2,
+   "note": "",
+   "choices": [
+    "own_material",
+    "assistance",
+    "guest_lecture"
+   ]
+  },
+  "queries": {
+   "lecture_id": "W01.L2",
+   "video_queries": [
+    "Model Context Protocol architecture tutorial",
+    "MCP server configuration schema explained",
+    "building applications with Model Context Protocol"
+   ],
+   "reading_queries": [
+    "Model Context Protocol specification documentation",
+    "MCP configuration schema workspace template guide"
+   ],
+   "practice_queries": [],
+   "recorded_lecture_query": null,
+   "research_queries": [
+    "context protocols for language models",
+    "LLM workspace architecture protocols"
+   ],
+   "practitioner_query": "Anthropic Model Context Protocol engineer"
+  },
+  "items": {
+   "video": [
+    {
+     "kind": "video",
+     "id": "tzrwxLNHtRY",
+     "url": "https://www.youtube.com/watch?v=tzrwxLNHtRY",
+     "title": "Model Context Protocol Clearly Explained | MCP Beyond the Hype",
+     "source": "codebasics",
+     "tier": 2,
+     "duration_s": 904,
+     "published": "2025-03-20T07:00:06Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 626693,
+     "likes": 7847,
+     "comments": 224,
+     "subscribers": 1580000,
+     "transcript": true,
+     "scores": {
+      "coverage": 1.0,
+      "quality": 0.9,
+      "authority": 0.8,
+      "level_fit": 1.0,
+      "reception": 0.623,
+      "practicality": 1.0
+     },
+     "total": 0.912,
+     "rank": 1,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓ (0:00–1:30), CO1.LO1 ✓ (0:00–1:30) [from transcript] · codebasics · tier 2 · 15:04 · 626,693 views · captions",
+     "findings": [],
+     "description": "This video contains a very simple explanation of MCP, also known as Model Context Protocol. We will first understand what exactly is MCP and how it easing up the development of AI applications and then we will go into the technical details of how the actual protocol looks like. We will look into the code of MCP client and Server both.\n\nSample MCP client: https://github.com/modelcontextprotocol/python-sdk/blob/main/examples/clients/simple-chatbot/mcp_simple_chatbot/main.py\nGoogle maps MCP server: https://github.com/modelcontextprotocol/servers/blob/main/src/google-maps/index.ts#L297\nMCP Schema: https://github.com/modelcontextprotocol/specification/blob/main/schema/2024-11-05/schema.ts\nSimple ",
+     "review": {
+      "review": "Directly addresses the configuration schema and protocol requirements, showing how tools and prompts are defined within the MCP standard. Excellent for understanding the LO.",
+      "issues": [
+       "Excerpts are short, full video likely provides more detail on the schema."
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 5,
+      "examples": 4,
+      "level_fit": 5
+     },
+     "coverage": {
+      "score": 1.0,
+      "evidence": "transcript",
+      "per_target": {
+       "M1.T2": {
+        "covered": true,
+        "sim": 0.741,
+        "segments": [
+         {
+          "start": 0.2,
+          "end": 90.2,
+          "sim": 0.741
+         }
+        ]
+       },
+       "CO1.LO1": {
+        "covered": true,
+        "sim": 0.583,
+        "segments": [
+         {
+          "start": 0.2,
+          "end": 90.2,
+          "sim": 0.583
+         }
+        ]
+       }
+      }
+     }
+    },
+    {
+     "kind": "video",
+     "id": "cGuyrANVi4A",
+     "url": "https://www.youtube.com/watch?v=cGuyrANVi4A",
+     "title": "How Model Context Protocol (MCP) actually works",
+     "source": "Google Cloud Tech",
+     "tier": 2,
+     "duration_s": 478,
+     "published": "2026-06-24T16:00:39Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 400997,
+     "likes": 9628,
+     "comments": 128,
+     "subscribers": 1460000,
+     "transcript": true,
+     "scores": {
+      "coverage": 0.968,
+      "quality": 0.85,
+      "authority": 0.8,
+      "level_fit": 0.8,
+      "reception": 0.8,
+      "practicality": 1.0
+     },
+     "total": 0.889,
+     "rank": 2,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓ (0:04–1:34), CO1.LO1 ✓ (0:04–1:34) [from transcript] · Google Cloud Tech · tier 2 · 7:58 · 400,997 views · captions",
+     "findings": [],
+     "description": "Google MCPs → https://goo.gle/3PYkjky \nBuild an ADK agent with Google MCPs → https://goo.gle/4o6h8DP \nConnect an MCP server to an AI agent → https://goo.gle/4uk7YW2 \n\nAPIs were built for deterministic programs, but AI models reason probabilistically. So how do you get your AI agents to talk to your tools and data without writing messy, custom integration code every time? Enter the Model Context Protocol (MCP). In this video, Smitha Kolan explains what MCP is, how it standardizes the way AI models discover and interact with external resources, and why it's becoming the new standard over traditional APIs for AI-powered applications\n\nChapters:\n0:00 - Intro: The problem with APIs and AI \n0:48 - ",
+     "review": {
+      "review": "Clearly explains MCP's purpose and core components (tools, resources, prompts). Provides good conceptual understanding but doesn't dive into the explicit schema definition.",
+      "issues": [
+       "Doesn't explicitly detail the *configuration schema* itself, but explains its components."
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 4,
+      "examples": 4,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.968,
+      "evidence": "transcript",
+      "per_target": {
+       "M1.T2": {
+        "covered": true,
+        "sim": 0.74,
+        "segments": [
+         {
+          "start": 4.7,
+          "end": 94.7,
+          "sim": 0.74
+         }
+        ]
+       },
+       "CO1.LO1": {
+        "covered": true,
+        "sim": 0.546,
+        "segments": [
+         {
+          "start": 4.7,
+          "end": 94.7,
+          "sim": 0.546
+         }
+        ]
+       }
+      }
+     }
+    },
+    {
+     "kind": "video",
+     "id": "nQa31xdXbGk",
+     "url": "https://www.youtube.com/watch?v=nQa31xdXbGk",
+     "title": "MCP Architecture | Model Context Protocol Architecture | CampusX",
+     "source": "CampusX",
+     "tier": 4,
+     "duration_s": 4629,
+     "published": "2025-09-12T17:51:19Z",
+     "licence": "Creative Commons (CC BY)",
+     "captions": false,
+     "views": 110824,
+     "likes": 4139,
+     "comments": 226,
+     "subscribers": 755000,
+     "transcript": false,
+     "scores": {
+      "coverage": 0.7,
+      "quality": 0.9,
+      "authority": 0.35,
+      "level_fit": 1.0,
+      "reception": 0.883,
+      "practicality": 0.8
+     },
+     "total": 0.746,
+     "rank": 3,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, CO1.LO1 ✓ [from title/description only] · CampusX · tier 4 · 1:17:09 · 110,824 views",
+     "findings": [
+      {
+       "code": "R-CAPTIONS",
+       "severity": "warning",
+       "message": "no captions"
+      },
+      {
+       "code": "R-EVIDENCE",
+       "severity": "warning",
+       "message": "coverage judged from the metadata only (no transcript or text)"
+      }
+     ],
+     "description": "In this video, we dive deep into the Model Context Protocol (MCP) Architecture and break it down from first principles. \n\nWe’ll cover:\n\nThe core building blocks of MCP → Host, Client, and Server\nHow they communicate and why the Client is essential\nReal-world examples (GitHub, Slack, Google Drive)\nThe power of primitives: Tools, Resources, and Prompts\nStandard operations like tools/list, resources/read, and more\nThe role of the Data Layer (JSON-RPC 2.0) and why it’s better than REST\nThe Transport Layer and how messages actually move between systems\n\nBy the end of this video, you’ll have a crystal-clear understanding of how MCP enables AI chatbots to seamlessly connect with external tools, sca",
+     "review": {
+      "review": "A comprehensive video that dives deep into MCP architecture from first principles, covering core components, primitives, data layer (JSON-RPC 2.0), and transport layer. Excellent for detailed understanding of protocol requirements.",
+      "issues": [
+       "Video year (2025) is in the future."
+      ],
+      "use_as": "after_class",
+      "explains": "explains",
+      "clarity": 5,
+      "correctness": 4,
+      "depth": 5,
+      "examples": 4,
+      "level_fit": 5
+     },
+     "coverage": {
+      "score": 1.0,
+      "evidence": "metadata",
+      "per_target": {
+       "M1.T2": {
+        "covered": true,
+        "sim": 0.784,
+        "segments": []
+       },
+       "CO1.LO1": {
+        "covered": true,
+        "sim": 0.656,
+        "segments": []
+       }
+      }
+     }
+    }
+   ],
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://modelcontextprotocol.io/specification/2026-07-28",
+     "title": "Model Context Protocol Specification",
+     "source": "modelcontextprotocol.io",
+     "tier": 3,
+     "page_type": "docs",
+     "scores": {
+      "coverage": 1.0,
+      "quality": 0.75,
+      "authority": 0.65,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.787,
+     "rank": 1,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, CO1.LO1 ✓ [from page text] · modelcontextprotocol.io · tier 3",
+     "findings": [],
+     "review": {
+      "review": "The official specification, providing ultimate depth on MCP architecture and components. Excellent for identifying schema and protocol requirements, but dense.",
+      "issues": [
+       "Excerpts are an index/overview, not specific schema details.",
+       "Can be dense for students without prior context."
+      ],
+      "use_as": "after_class",
+      "explains": "explains",
+      "clarity": 3,
+      "correctness": 5,
+      "depth": 5,
+      "examples": 2,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 1.0,
+      "evidence": "text",
+      "per_target": {
+       "M1.T2": {
+        "covered": true,
+        "sim": 0.608,
+        "segments": []
+       },
+       "CO1.LO1": {
+        "covered": true,
+        "sim": 0.662,
+        "segments": []
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://github.com/microsoft/mcp-for-beginners",
+     "title": "microsoft/mcp-for-beginners",
+     "source": "github.com",
+     "tier": 3,
+     "page_type": "exercises",
+     "scores": {
+      "coverage": 0.864,
+      "quality": 0.8,
+      "authority": 0.65,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.75,
+     "rank": 2,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, CO1.LO1 ✓ [from page text] · github.com · tier 3",
+     "findings": [],
+     "review": {
+      "review": "A comprehensive open-source curriculum introducing MCP fundamentals with cross-language examples. Covers core concepts and practical techniques for AI workflows. Excellent for initial learning and understanding protocol requirements.",
+      "issues": [
+       "Mentions future date (2026) for protocol changes."
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 4,
+      "depth": 4,
+      "examples": 4,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.864,
+      "evidence": "text",
+      "per_target": {
+       "M1.T2": {
+        "covered": true,
+        "sim": 0.546,
+        "segments": []
+       },
+       "CO1.LO1": {
+        "covered": true,
+        "sim": 0.516,
+        "segments": []
+       }
+      }
+     }
+    }
+   ]
+  },
+  "reserve": {
+   "video": [
+    {
+     "kind": "video",
+     "id": "-UQ6OZywZ2I",
+     "url": "https://www.youtube.com/watch?v=-UQ6OZywZ2I",
+     "title": "All You Need To Know About Model Context Protocol(MCP)",
+     "source": "Krish Naik",
+     "tier": 2,
+     "duration_s": 1483,
+     "published": "2025-04-14T05:20:45Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 399885,
+     "likes": 6946,
+     "comments": 189,
+     "subscribers": 1520000,
+     "transcript": true,
+     "scores": {
+      "coverage": 0.948,
+      "quality": 0.75,
+      "authority": 0.8,
+      "level_fit": 0.8,
+      "reception": 0.669,
+      "practicality": 1.0
+     },
+     "total": 0.849,
+     "rank": 4,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓ (0:44–2:15), CO1.LO1 ✓ (0:00–2:15) [from transcript] · Krish Naik · tier 2 · 24:43 · 399,885 views · captions",
+     "findings": [],
+     "description": "MCP is an open protocol that standardizes how applications provide context to LLMs. Think of MCP like a USB-C port for AI applications. Just as USB-C provides a standardized way to connect your devices to various peripherals and accessories, MCP provides a standardized way to connect AI models to different data sources and tools.\n----------------------------------------------------------------------------------------------------------\nJoin our 2.0 Live Agentic AI With MCP Batch starting from May 10th 2025\nCourse Enrollment Link: https://www.krishnaik.in/liveclass/2.0%20Live%20Agentic%20AI%20And%20Generative%20AI%20Application%20With%20Cloud%20Bootcamp\nReach out to Krish Naik's counselling te",
+     "review": {
+      "review": "Provides a clear, high-level explanation of MCP's purpose and architecture, using a helpful analogy. Lacks specific details on configuration schema from excerpts.",
+      "issues": [
+       "Excerpts don't show the promised coding examples.",
+       "Doesn't detail specific schema requirements."
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.948,
+      "evidence": "transcript",
+      "per_target": {
+       "M1.T2": {
+        "covered": true,
+        "sim": 0.663,
+        "segments": [
+         {
+          "start": 44.8,
+          "end": 135.0,
+          "sim": 0.663
+         }
+        ]
+       },
+       "CO1.LO1": {
+        "covered": true,
+        "sim": 0.531,
+        "segments": [
+         {
+          "start": 0.5,
+          "end": 135.0,
+          "sim": 0.531
+         }
+        ]
+       }
+      }
+     }
+    },
+    {
+     "kind": "video",
+     "id": "HyzlYwjoXOQ",
+     "url": "https://www.youtube.com/watch?v=HyzlYwjoXOQ",
+     "title": "Claude's Model Context Protocol is here... Let's test it",
+     "source": "Fireship",
+     "tier": 2,
+     "duration_s": 488,
+     "published": "2025-03-31T15:00:31Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 1426411,
+     "likes": 46521,
+     "comments": 1785,
+     "subscribers": 4310000,
+     "transcript": true,
+     "scores": {
+      "coverage": 0.98,
+      "quality": 0.42,
+      "authority": 0.8,
+      "level_fit": 0.6,
+      "reception": 0.904,
+      "practicality": 1.0
+     },
+     "total": 0.797,
+     "rank": 5,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓ (2:12–3:42), CO1.LO1 ✓ (0:00–1:30) [from transcript] · Fireship · tier 2 · 8:08 · 1,426,411 views · captions",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "description": "Deploy your app without complexity and $50 in free credits on Sevalla https://sevalla.com/fireship\n\nLearn the fundamentals of Anthropic's Model Context Protocol by building an MCP server can give any AI model superpowers. In this tutorial, we build an TypeScript server that provides Claude with additional context and the ability to modify data on the server. \n\n#programming #ai #thecodereport \n\n💬 Chat with Me on Discord\n\nhttps://discord.gg/fireship\n\n🔗 Resources\n\nModel Context Protocol https://modelcontextprotocol.io\nFuture Trends in Tech https://youtu.be/v4H2fTgHGuc\n\n🔥 Get More Content - Upgrade to PRO\n\nUpgrade at https://fireship.io/pro\nUse code YT25 for 25% off PRO access \n\n🎨 My Editor Sett",
+     "review": {
+      "review": "Good for a quick, high-level overview of MCP's application. Lacks the technical depth on schema and protocol requirements needed for the LO.",
+      "issues": [
+       "Focuses on application-level usage rather than protocol schema details.",
+       "Fast-paced, high-level overview."
+      ],
+      "use_as": "pre_class",
+      "explains": "mentions",
+      "clarity": 3,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 3,
+      "level_fit": 3
+     },
+     "coverage": {
+      "score": 0.98,
+      "evidence": "transcript",
+      "per_target": {
+       "M1.T2": {
+        "covered": true,
+        "sim": 0.634,
+        "segments": [
+         {
+          "start": 132.5,
+          "end": 222.5,
+          "sim": 0.634
+         }
+        ]
+       },
+       "CO1.LO1": {
+        "covered": true,
+        "sim": 0.555,
+        "segments": [
+         {
+          "start": 0.0,
+          "end": 90.0,
+          "sim": 0.441
+         }
+        ]
+       }
+      }
+     }
+    },
+    {
+     "kind": "video",
+     "id": "eur8dUO9mvE",
+     "url": "https://www.youtube.com/watch?v=eur8dUO9mvE",
+     "title": "What is MCP? Integrate AI Agents with Databases & APIs",
+     "source": "IBM Technology",
+     "tier": 2,
+     "duration_s": 226,
+     "published": "2025-02-19T12:00:59Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 772588,
+     "likes": 12010,
+     "comments": 355,
+     "subscribers": 1830000,
+     "transcript": true,
+     "scores": {
+      "coverage": 0.46,
+      "quality": 0.5,
+      "authority": 0.8,
+      "level_fit": 0.6,
+      "reception": 0.666,
+      "practicality": 1.0
+     },
+     "total": 0.608,
+     "rank": 6,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓ (0:00–2:26), CO1.LO1 ✗ [from transcript] · IBM Technology · tier 2 · 3:46 · 772,588 views · captions",
+     "findings": [],
+     "description": "Ready to become a certified Architect on Cloud Pak? Register now and use code IBMTechYT20 for 20% off of your exam → https://ibm.biz/BdGhLq\n\nLearn more about AI Agents here → https://ibm.biz/BdGhLf\n\nUnlock the secrets of MCP! 🚀 Dive into the world of Model Context Protocol and learn how to seamlessly connect AI agents to databases, APIs, and more. Roy Derks breaks down its components, from hosts to servers, and showcases real-world applications. Gain the knowledge to revolutionize your AI projects! 🧠\n\nAI news moves fast. Sign up for a monthly newsletter for AI updates from IBM → https://ibm.biz/BdGhLP\n\n#aiagents #dataintegration #api",
+     "coverage": {
+      "score": 0.46,
+      "evidence": "transcript",
+      "per_target": {
+       "M1.T2": {
+        "covered": true,
+        "sim": 0.462,
+        "segments": [
+         {
+          "start": 0.4,
+          "end": 146.6,
+          "sim": 0.462
+         }
+        ]
+       },
+       "CO1.LO1": {
+        "covered": false,
+        "sim": 0.382,
+        "segments": []
+       }
+      }
+     }
+    },
+    {
+     "kind": "video",
+     "id": "e3MX7HoGXug",
+     "url": "https://www.youtube.com/watch?v=e3MX7HoGXug",
+     "title": "Model Context Protocol (MCP), Clearly Explained (Why it Matters)",
+     "source": "Builders Central by Zoho Creator",
+     "tier": 4,
+     "duration_s": 639,
+     "published": "2025-04-17T14:25:56Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 96489,
+     "likes": 2517,
+     "comments": 65,
+     "subscribers": 177000,
+     "transcript": true,
+     "scores": {
+      "coverage": 0.615,
+      "quality": 0.5,
+      "authority": 0.35,
+      "level_fit": 0.6,
+      "reception": 0.726,
+      "practicality": 1.0
+     },
+     "total": 0.6,
+     "rank": 7,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓ (0:44–2:14), CO1.LO1 ✗ [from transcript] · Builders Central by Zoho Creator · tier 4 · 10:39 · 96,489 views · captions",
+     "findings": [],
+     "description": "In this video, we explain what MCP (Model Context Protocol) actually is, how this even became a thing, and the pain points it addresses. Also, we'll walk you through a live example of how to use MCP.\n\n\nCOMMENT below your thoughts on NO CODE & LOW CODE tools!\nLIKE, SHARE, SUBSCRIBE and don't forget to click on the bell icon to never miss another Update from Builders Central!\n\n\n\nFollow Builders Central on Instagram:   https://www.instagram.com/builders.central/\n\n\n__________________________________\n\n\n\nClick here to watch the Low-code video series: \nhttps://zoho.to/Low-code-seriesTo learn how low-code has helped various organizations: \nhttps://zoho.to/Decode-interviews\n\n\nFollow Zoho Creator on o",
+     "coverage": {
+      "score": 0.615,
+      "evidence": "transcript",
+      "per_target": {
+       "M1.T2": {
+        "covered": true,
+        "sim": 0.508,
+        "segments": [
+         {
+          "start": 44.0,
+          "end": 134.0,
+          "sim": 0.461
+         }
+        ]
+       },
+       "CO1.LO1": {
+        "covered": false,
+        "sim": 0.406,
+        "segments": []
+       }
+      }
+     }
+    }
+   ],
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://www.webfuse.com/mcp-cheat-sheet",
+     "title": "MCP Cheat Sheet (2026) - Model Context Protocol Reference",
+     "source": "webfuse.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.952,
+      "quality": 0.65,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.706,
+     "rank": 3,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, CO1.LO1 ✓ [from page text] · webfuse.com · tier 4",
+     "findings": [],
+     "review": {
+      "review": "A concise cheat sheet that clearly identifies key MCP features, terminology, and where the schema and specification are defined. Excellent for quickly grasping core requirements and structure.",
+      "issues": [
+       "Mentions future dates (2025, 2026) for protocol versions and updates.",
+       "Lacks concrete usage examples."
+      ],
+      "use_as": "after_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 4,
+      "depth": 3,
+      "examples": 2,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.952,
+      "evidence": "text",
+      "per_target": {
+       "M1.T2": {
+        "covered": true,
+        "sim": 0.571,
+        "segments": []
+       },
+       "CO1.LO1": {
+        "covered": true,
+        "sim": 0.534,
+        "segments": []
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://www.ibm.com/think/topics/api",
+     "title": "What Is an API (Application Programming Interface)? | IBM",
+     "source": "ibm.com",
+     "tier": 4,
+     "page_type": "linked by video",
+     "scores": {
+      "coverage": 0.973,
+      "quality": 0.42,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.667,
+     "rank": 4,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, CO1.LO1 ✓ [from page text] · ibm.com · tier 4",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "review": {
+      "review": "Provides excellent context by explaining general API concepts and the architectural problems MCP aims to solve for AI agents. Good for understanding the 'why' of MCP, but not its specific requirements.",
+      "issues": [
+       "Primarily explains general API concepts and the problem MCP solves, not MCP's specific schema or protocol requirements."
+      ],
+      "use_as": "pre_class",
+      "explains": "mentions",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 2,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.973,
+      "evidence": "text",
+      "per_target": {
+       "M1.T2": {
+        "covered": true,
+        "sim": 0.657,
+        "segments": []
+       },
+       "CO1.LO1": {
+        "covered": true,
+        "sim": 0.55,
+        "segments": []
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://modelcontextprotocol.info/specification/",
+     "title": "Specification – Model Context Protocol （MCP）",
+     "source": "modelcontextprotocol.info",
+     "tier": 3,
+     "page_type": "article",
+     "scores": {
+      "coverage": 1.0,
+      "quality": 0.75,
+      "authority": 0.65,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.787,
+     "rank": 5,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, CO1.LO1 ✓ [from page text] · modelcontextprotocol.info · tier 3",
+     "findings": [],
+     "review": {
+      "review": "Another part of the official specification, detailing architecture, client/server builds, and specific protocol enhancements. Excellent for deep reference on requirements.",
+      "issues": [
+       "Excerpts are an index/overview, not specific schema details.",
+       "Can be dense for students without prior context.",
+       "Mentions SEPs which might be too granular for an introductory lecture."
+      ],
+      "use_as": "after_class",
+      "explains": "explains",
+      "clarity": 3,
+      "correctness": 5,
+      "depth": 5,
+      "examples": 2,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 1.0,
+      "evidence": "text",
+      "per_target": {
+       "M1.T2": {
+        "covered": true,
+        "sim": 0.631,
+        "segments": []
+       },
+       "CO1.LO1": {
+        "covered": true,
+        "sim": 0.678,
+        "segments": []
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://trickle.so/blog/master-model-context-protocol-tutorial-guide",
+     "title": "Master Model Context Protocol (MCP): Developer's Hands-on Tutorial Guide",
+     "source": "trickle.so",
+     "tier": 4,
+     "page_type": "tutorial",
+     "scores": {
+      "coverage": 0.998,
+      "quality": 0.39,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.67,
+     "rank": 6,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, CO1.LO1 ✓ [from page text] · trickle.so · tier 4",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "review": {
+      "review": "Focuses on practical challenges and advanced agent integration with MCP, discussing transport layer issues. Good for developers, but lacks explicit detail on core schema and protocol requirements.",
+      "issues": [
+       "Published date (2025) is in the future.",
+       "Excerpts don't fully detail configuration schema or protocol requirements."
+      ],
+      "use_as": "after_class",
+      "explains": "mentions",
+      "clarity": 3,
+      "correctness": 4,
+      "depth": 3,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.998,
+      "evidence": "text",
+      "per_target": {
+       "M1.T2": {
+        "covered": true,
+        "sim": 0.697,
+        "segments": []
+       },
+       "CO1.LO1": {
+        "covered": true,
+        "sim": 0.569,
+        "segments": []
+       }
+      }
+     }
+    }
+   ]
+  },
+  "rejected": [
+   {
+    "title": "Model Context Protocol (MCP) Explained for Beginners: AI Flight Booking Demo!",
+    "url": "https://www.youtube.com/watch?v=E2DEHOEbzks",
+    "why": [
+     "score 0.54 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "MCP Explained Right | Why MCP Is NOT About Adding Tools (Think Like an Architect)",
+    "url": "https://www.youtube.com/watch?v=7gQntKsRqTM",
+    "why": [
+     "audio language is 'ta'"
+    ]
+   },
+   {
+    "title": "MCP for Beginners | Model Context Protocol Explained in Tamil | Karthik's Show",
+    "url": "https://www.youtube.com/watch?v=9iv76EqaWuY",
+    "why": [
+     "audio language is 'ta'",
+     "AI review: off topic (Video is in Tamil, not suitable for an English-speaking lecture.; Excerpts too short and in a foreign language to assess content.)"
+    ]
+   },
+   {
+    "title": "MCP Explained | Model Context Protocol  #agenticai",
+    "url": "https://www.youtube.com/watch?v=I8Xf2jewMhQ",
+    "why": [
+     "score 0.54 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Build a GenAI Agent with MCP | Model Context Protocol Explained",
+    "url": "https://www.youtube.com/watch?v=uiNw9LCvxrg",
+    "why": [
+     "score 0.52 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "MCP Security Fundamentals Course",
+    "url": "https://www.youtube.com/watch?v=gYXLRMycVMk",
+    "why": [
+     "too long for a lecture resource (130 min); offer it as a recorded lecture instead",
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "MCP Architecture Explained | Model Context Protocol",
+    "url": "https://www.youtube.com/watch?v=ZwwdbWstWGE",
+    "why": [
+     "score 0.45 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "MCP Servers Explained & Built",
+    "url": "https://www.youtube.com/watch?v=He8tUwLzLnU",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "What are MCP servers | Explained in Hindi",
+    "url": "https://www.youtube.com/watch?v=dZyQNy3-HjU",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "MCP Servers Explained in 5 Minutes (for beginners)",
+    "url": "https://www.youtube.com/watch?v=tTw1z10yMCI",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "The Ultimate MCP Crash Course - Build From Scratch",
+    "url": "https://www.youtube.com/watch?v=ZoZxQwp1PiM",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "MCP Server Design Best Practices (easily explained)",
+    "url": "https://www.youtube.com/watch?v=bvuaF0B9vfA",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "MCP vs API Explained: Do You Really Need MCP?",
+    "url": "https://www.youtube.com/watch?v=kn6dxL53NkM",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "MCP vs API: Simplifying AI Agent Integration with External Data",
+    "url": "https://www.youtube.com/watch?v=7j1t3UZA1TY",
+    "why": [
+     "score 0.54 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "MCP In 26 Minutes (Model Context Protocol)",
+    "url": "https://www.youtube.com/watch?v=kOhLoixrJXo",
+    "why": [
+     "score 0.58 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "",
+    "url": "https://modelcontextprotocol.io/specification`",
+    "why": [
+     "page not readable (status 404, too short)"
+    ]
+   },
+   {
+    "title": "",
+    "url": "https://modelcontextprotocol.io/introduction`",
+    "why": [
+     "page not readable (status 404, too short)"
+    ]
+   },
+   {
+    "title": "",
+    "url": "https://github.com/microsoft/mcp-for-beginners`",
+    "why": [
+     "page not readable (status 404, too short)"
+    ]
+   },
+   {
+    "title": "",
+    "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEJoNbVYqGdWVb9nu2k9jqHgKSlo55a8kzCwonCG8GU1drioFGhL2Xs79UG-1C09pnBG3IjwVAQXdfIQbaFIKywHv8vE_-d_FXwf1d4TQLKLlpKDDIhT0IhAyJO9M5rlZv45l3F_Bc277yL83wxtKNiqNnhatqgvOpQAhn8qVU`",
+    "why": [
+     "page not readable (status 404, too short)"
+    ]
+   },
+   {
+    "title": "",
+    "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHYZbHLIViCSbdIksPi1p3yo3em9k-G9nLCGjDMlXjSuyDMNg3vVozMdsn1RsUN-jqxICGCuhb7hRWu_cDpwq6W2znp_YzXOSqRr6Ei_MUqQGEyOF8wSWJMoYzbxp4dMejHtRVWfY6qjsdyPVOd8Fg5sDl49Xj8Ofmam7lVZ1f0dPRwhzrzjA==`",
+    "why": [
+     "page not readable (status 404, too short)"
+    ]
+   },
+   {
+    "title": "",
+    "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH9CXzPn7v2fb2yJL4hJ_LNmcHQmDtOVH1p79cJoX1XqYHeSNu8IL_eI9ykj7uhI11VrdrFPjvnZfZz4wtxb0_2xjWH_XELeQ66UlS_AMOzcr6Vn27Gc8Tfd7LGBBaqynyN1GOhnOLZARtaf2s=`",
+    "why": [
+     "page not readable (status 404, too short)"
+    ]
+   },
+   {
+    "title": "",
+    "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGuM8PVWLciB9avVIfSdcUpnfTOaAYcmXP1HAKZQBzaulUMI5oIEglmufyG_GadaVDX_JHQQoPy6nLbGR5OrZL4zeiviaTpu99YijrF1WStS1y0qxw_BSCfohYpz3B7NJn-`",
+    "why": [
+     "page not readable (status 404, too short)"
+    ]
+   },
+   {
+    "title": "",
+    "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHn-oCJJC0rkCTVRRujLygaMWWyaI6DEXXLbD_VqW7PL92-1WtH_NtwNfKdCsR-wdenFFPOedfkklPjEAJQ0r6j7fJsY1mPdAAJfPwYM9w1EH1o1h4vsAQBZc9dgw7L3agFiLEgLEX0CkZtrOWz64MXvRMOn_hVlnejPxJ0e9rJhE6j5QqbEldGjaDM95UshkDP4MAKaW-dTn1Z7ZIX-OM=`",
+    "why": [
+     "page not readable (status 404, too short)"
+    ]
+   },
+   {
+    "title": "Model Context Protocol (MCP): A Standard Interface for Tool-Aware AI Systems",
+    "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHYZbHLIViCSbdIksPi1p3yo3em9k-G9nLCGjDMlXjSuyDMNg3vVozMdsn1RsUN-jqxICGCuhb7hRWu_cDpwq6W2znp_YzXOSqRr6Ei_MUqQGEyOF8wSWJMoYzbxp4dMejHtRVWfY6qjsdyPVOd8Fg5sDl49Xj8Ofmam7lVZ1f0dPRwhzrzjA==",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Model Context Protocol (MCP): Landscape, Security Threats, and Future Research Directions",
+    "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH9CXzPn7v2fb2yJL4hJ_LNmcHQmDtOVH1p79cJoX1XqYHeSNu8IL_eI9ykj7uhI11VrdrFPjvnZfZz4wtxb0_2xjWH_XELeQ66UlS_AMOzcr6Vn27Gc8Tfd7LGBBaqynyN1GOhnOLZARtaf2s=",
+    "why": [
+     "page not readable (status 404, too short)"
+    ]
+   },
+   {
+    "title": "The Model Context Protocol (MCP): A Beginner's Guide to Plug-and-Play Agents",
+    "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHn-oCJJC0rkCTVRRujLygaMWWyaI6DEXXLbD_VqW7PL92-1WtH_NtwNfKdCsR-wdenFFPOedfkklPjEAJQ0r6j7fJsY1mPdAAJfPwYM9w1EH1o1h4vsAQBZc9dgw7L3agFiLEgLEX0CkZtrOWz64MXvRMOn_hVlnejPxJ0e9rJhE6j5QqbEldGjaDM95UshkDP4MAKaW-dTn1Z7ZIX-OM=",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "github.io",
+    "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH9CXzPn7v2fb2yJL4hJ_LNmcHQmDtOVH1p79cJoX1XqYHeSNu8IL_eI9ykj7uhI11VrdrFPjvnZfZz4wtxb0_2xjWH_XELeQ66UlS_AMOzcr6Vn27Gc8Tfd7LGBBaqynyN1GOhnOLzARtaf2s=",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Context-Aware Systems and Applications",
+    "url": "https://openlibrary.org/works/OL19837628W",
+    "why": [
+     "score 0.54 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Statistical Atlases and Computational Models of the Heart. Imaging and Modelling Challenges",
+    "url": "https://openlibrary.org/works/OL19903843W",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "The web application hacker's handbook",
+    "url": "https://openlibrary.org/works/OL13814659W",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 72,
+   "passed_checks": 15,
+   "rejected": 57
+  }
+ },
+ "experts": {
+  "lecture_id": "W01.L2",
+  "topic": "Model context protocols and architecture",
+  "experts": [
+   {
+    "name": "Justin Spahr-Summers",
+    "kind": "industry",
+    "role": "Engineer, Co-creator of Model Context Protocol",
+    "affiliation": "Anthropic",
+    "country": "GB",
+    "links": {
+     "page": "https://www.anthropic.com/news/model-context-protocol"
+    },
+    "metrics": {},
+    "scores": {
+     "topical_fit": 0.9,
+     "teaching": 1.0,
+     "practical": 1.0,
+     "standing": 0.5,
+     "recency": 0.6,
+     "feasibility": 0.389
+    },
+    "total": 0.895,
+    "rank": 1,
+    "verified_identity": "named on https://www.anthropic.com/news/model-context-protocol",
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "talk",
+      "title": "The Creators of Model Context Protocol — Latent Space",
+      "url": "https://latent.space/p/mcp"
+     },
+     {
+      "kind": "talk",
+      "title": "Introducing the Model Context Protocol \\ Anthropic",
+      "url": "https://www.anthropic.com/news/model-context-protocol"
+     }
+    ],
+    "why": "Co-creator of the Model Context Protocol, evidenced by talks such as The Creators of Model Context Protocol — Latent Space and Introducing the Model Context Protocol — Anthropic.",
+    "fit": "strong",
+    "suggested_format": "recorded_talk",
+    "concerns": []
+   },
+   {
+    "name": "David Soria Parra",
+    "kind": "industry",
+    "role": "Member of the Technical Staff, Engineering Lead, Co-creator of Model Context Protocol",
+    "affiliation": "Anthropic",
+    "country": "GB",
+    "links": {
+     "page": "https://softwareengineeringdaily.com/podcasts/anthropic-and-the-model-context-protocol-with-david-soria-parra"
+    },
+    "metrics": {},
+    "scores": {
+     "topical_fit": 0.672,
+     "teaching": 1.0,
+     "practical": 1.0,
+     "standing": 0.3,
+     "recency": 0.6,
+     "feasibility": 0.389
+    },
+    "total": 0.785,
+    "rank": 2,
+    "verified_identity": "named on https://softwareengineeringdaily.com/podcasts/anthropic-and-the-model-context-protocol-with-david-soria-parra",
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "talk",
+      "title": "Anthropic and the Model Context Protocol with David Soria Parra - Software Engineering Daily",
+      "url": "https://softwareengineeringdaily.com/podcasts/anthropic-and-the-model-context-protocol-with-david-soria-parra"
+     }
+    ],
+    "why": "Co-creator and engineering lead of the Model Context Protocol at Anthropic, discussed in the software engineering daily talk.",
+    "fit": "strong",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "SallyAnn DeLucia",
+    "kind": "industry",
+    "role": "Expert presenting on MCP",
+    "affiliation": "Arize AI",
+    "links": {
+     "page": "https://arize.com/blog/model-context-protocol"
+    },
+    "metrics": {},
+    "scores": {
+     "topical_fit": 0.785,
+     "teaching": 1.0,
+     "practical": 1.0,
+     "standing": 0.3,
+     "recency": 0.6,
+     "feasibility": 0.6
+    },
+    "total": 0.698,
+    "rank": 3,
+    "verified_identity": "named on https://arize.com/blog/model-context-protocol",
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "talk",
+      "title": "Model Context Protocol (MCP) from Anthropic - Arize AI",
+      "url": "https://arize.com/blog/model-context-protocol"
+     }
+    ],
+    "why": "Presented a talk titled Model Context Protocol (MCP) from Anthropic — Arize AI, making them familiar with the architecture but not a primary creator.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "David Montgomery",
+    "kind": "industry",
+    "role": "open-source maintainer",
+    "links": {
+     "github": "https://github.com/DMontgomery40",
+     "website": "https://faxbot.com"
+    },
+    "metrics": {
+     "followers": 71
+    },
+    "scores": {
+     "topical_fit": 0.737,
+     "teaching": 0.6,
+     "practical": 1.0,
+     "standing": 0.464,
+     "recency": 1.0,
+     "feasibility": 0.6
+    },
+    "total": 0.661,
+    "rank": 4,
+    "verified_identity": "GitHub account",
+    "latest_year": 2026,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "repo",
+      "title": "DMontgomery40/deepseek-mcp-server (359 stars): Model Context Protocol server for DeepSeek's advanced language models",
+      "year": 2026,
+      "url": "https://github.com/DMontgomery40/deepseek-mcp-server"
+     }
+    ],
+    "why": "Maintains an open-source repository for a Model Context Protocol server, as shown in the DMontgomery40/deepseek-mcp-server repository.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Adam Jones",
+    "kind": "industry",
+    "role": "Technical Staff Member",
+    "affiliation": "Anthropic",
+    "links": {
+     "page": "https://www.youtube.com/watch?v=T4-BdZQUCSE"
+    },
+    "metrics": {},
+    "scores": {
+     "topical_fit": 0.598,
+     "teaching": 1.0,
+     "practical": 1.0,
+     "standing": 0.3,
+     "recency": 0.6,
+     "feasibility": 0.6
+    },
+    "total": 0.638,
+    "rank": 5,
+    "verified_identity": "named on https://www.youtube.com/watch?v=T4-BdZQUCSE",
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "talk",
+      "title": "The Model Context Protocol: Connecting AI to Everything - Adam Jones, Anthropic - YouTube",
+      "url": "https://www.youtube.com/watch?v=T4-BdZQUCSE"
+     }
+    ],
+    "why": "Technical staff at Anthropic with a recorded talk on connecting AI to everything via the Model Context Protocol.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Andreas Hell",
+    "kind": "academic",
+    "affiliation": "TU Wien",
+    "country": "AT",
+    "links": {
+     "openalex": "https://openalex.org/A5140481682",
+     "orcid": "https://orcid.org/0009-0000-7973-6261",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Andreas+Hell+TU+Wien"
+    },
+    "metrics": {
+     "cited_by": 3,
+     "h_index": 1,
+     "works_count": 4,
+     "matching_works": 2
+    },
+    "scores": {
+     "topical_fit": 0.9,
+     "teaching": 0.6,
+     "practical": 0.3,
+     "standing": 0.425,
+     "recency": 1.0,
+     "feasibility": 0.6
+    },
+    "total": 0.614,
+    "rank": 6,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2026,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Realizing a Model Context Protocol (MCP) Server for the Graphical Language Server Platform (GLSP)",
+      "year": 2026,
+      "url": "https://doi.org/10.1145/3822455.3830317",
+      "cited_by": 2,
+      "venue": "ACM/IEEE International Conference on Model Driven Engineering Languages and Systems (MODELS)",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Design and Implementation of a Model Context Protocol (MCP) Server for the Graphical Language Server Platform (GLSP)",
+      "year": 2026,
+      "url": "https://doi.org/10.34726/hss.2026.137296",
+      "cited_by": 1,
+      "venue": "reposiTUm (TU Wien)",
+      "venue_quality": 0.8
+     }
+    ],
+    "why": "Published academic papers on realizing and implementing Model Context Protocol servers for the Graphical Language Server Platform.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Dominik Bork",
+    "kind": "academic",
+    "affiliation": "TU Wien",
+    "country": "AT",
+    "links": {
+     "openalex": "https://openalex.org/A5035025930",
+     "orcid": "https://orcid.org/0000-0001-8259-2297",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Dominik+Bork+TU+Wien"
+    },
+    "metrics": {
+     "cited_by": 1299,
+     "h_index": 18,
+     "works_count": 192,
+     "matching_works": 1
+    },
+    "scores": {
+     "topical_fit": 0.79,
+     "teaching": 0.6,
+     "practical": 0.3,
+     "standing": 0.666,
+     "recency": 1.0,
+     "feasibility": 0.6
+    },
+    "total": 0.601,
+    "rank": 7,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2026,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Realizing a Model Context Protocol (MCP) Server for the Graphical Language Server Platform (GLSP)",
+      "year": 2026,
+      "url": "https://doi.org/10.1145/3822455.3830317",
+      "cited_by": 2,
+      "venue": "ACM/IEEE International Conference on Model Driven Engineering Languages and Systems (MODELS)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored a paper on realizing a Model Context Protocol server for the Graphical Language Server Platform.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   }
+  ],
+  "reserve": [
+   {
+    "name": "Martin Fleck",
+    "kind": "academic",
+    "links": {
+     "openalex": "https://openalex.org/A5040858333",
+     "orcid": "https://orcid.org/0000-0002-0832-1867",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Martin+Fleck"
+    },
+    "metrics": {
+     "cited_by": 190,
+     "h_index": 7,
+     "works_count": 17,
+     "matching_works": 1
+    },
+    "scores": {
+     "topical_fit": 0.79,
+     "teaching": 0.4,
+     "practical": 0.3,
+     "standing": 0.569,
+     "recency": 1.0,
+     "feasibility": 0.6
+    },
+    "total": 0.556,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2026,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Realizing a Model Context Protocol (MCP) Server for the Graphical Language Server Platform (GLSP)",
+      "year": 2026,
+      "url": "https://doi.org/10.1145/3822455.3830317",
+      "cited_by": 2,
+      "venue": "ACM/IEEE International Conference on Model Driven Engineering Languages and Systems (MODELS)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored a paper regarding the implementation of a Model Context Protocol server for the Graphical Language Server Platform.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Sadok Ben Yahia",
+    "kind": "academic",
+    "affiliation": "Tallinn University of Technology",
+    "country": "EE",
+    "links": {
+     "openalex": "https://openalex.org/A5070511935",
+     "orcid": "https://orcid.org/0000-0001-8939-8948",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Sadok+Ben+Yahia+Tallinn+University+of+Technology"
+    },
+    "metrics": {
+     "cited_by": 4301,
+     "h_index": 28,
+     "works_count": 551,
+     "matching_works": 2
+    },
+    "scores": {
+     "topical_fit": 0.611,
+     "teaching": 0.6,
+     "practical": 0.3,
+     "standing": 0.742,
+     "recency": 1.0,
+     "feasibility": 0.6
+    },
+    "total": 0.552,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2025,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Model context protocol-based agentic react large language model for adaptive traffic signals: Luxembourg case study",
+      "year": 2025,
+      "url": "https://doi.org/10.1016/j.future.2025.108339",
+      "cited_by": 1,
+      "venue": "Future Generation Computer Systems",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Model Context Protocol-based Agentic ReAct Eco-Driving Large Language Model Framework: A Tunisian Case Study",
+      "year": 2025,
+      "url": "https://doi.org/10.2139/ssrn.5773954",
+      "cited_by": 0,
+      "venue": "SSRN Electronic Journal",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Authored papers applying the model context protocol to agentic react large language models for adaptive traffic and eco-driving frameworks.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Philip Langer",
+    "kind": "academic",
+    "links": {
+     "openalex": "https://openalex.org/A5110094538",
+     "orcid": "https://orcid.org/0009-0000-5316-3581",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Philip+Langer"
+    },
+    "metrics": {
+     "cited_by": 559,
+     "h_index": 13,
+     "works_count": 90,
+     "matching_works": 1
+    },
+    "scores": {
+     "topical_fit": 0.718,
+     "teaching": 0.4,
+     "practical": 0.3,
+     "standing": 0.622,
+     "recency": 1.0,
+     "feasibility": 0.6
+    },
+    "total": 0.539,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2026,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Realizing a Model Context Protocol (MCP) Server for the Graphical Language Server Platform (GLSP)",
+      "year": 2026,
+      "url": "https://doi.org/10.1145/3822455.3830317",
+      "cited_by": 2,
+      "venue": "ACM/IEEE International Conference on Model Driven Engineering Languages and Systems (MODELS)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored a paper on realizing a Model Context Protocol server for the Graphical Language Server Platform.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   }
+  ],
+  "rejected": [
+   {
+    "name": "Partha Pratim Ray",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "AI fit check: weak"
+    ]
+   },
+   {
+    "name": "Arani Bhattacharya",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.30 is below 0.5"
+    ]
+   },
+   {
+    "name": "Bapi Chatterjee",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.22 is below 0.5"
+    ]
+   },
+   {
+    "name": "Rahul Mohananai",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.29 is below 0.5"
+    ]
+   },
+   {
+    "name": "Yasin Boelhouwer",
+    "why": [
+     "topical fit 0.32 is below 0.5"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 33,
+   "assessed": 15,
+   "passed_checks": 10
+  }
+ }
+}

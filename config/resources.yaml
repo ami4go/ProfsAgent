@@ -1,0 +1,82 @@
+# Phase 2 · Deliverable C — learning-resource recommender (docs/03_phase2_C_learning_resources_and_experts_plan.md §3)
+# Everything here is tunable; weights are applied as given (they sum to 1).
+
+caps:                       # per lecture, shown to the professor (more stay in reserve for "replace")
+  videos: 3
+  readings: 2
+  practice: 1
+  recorded_lecture: 1        # full-length lecture for a flipped class
+  reserve: 4                 # extra ranked candidates kept per kind for replacements
+  min_show_score: 0.60       # quality floor: show fewer items rather than weak ones (they stay out of the list)
+  min_continuation_score: 0.62   # next-best items for a later lecture on the same topic must also cover that topic
+
+weights:                    # §3.4
+  coverage: 0.35
+  quality: 0.20
+  authority: 0.15
+  level_fit: 0.10
+  reception: 0.10
+  practicality: 0.10
+
+free_only: true             # decided 2026-10-24: no paid MOOCs or paywalled books
+
+coverage:
+  window_s: 45              # transcript window length (seconds) for topic matching
+  sim_covered: 0.42         # calibrated 2026-10-24 on an MIT OCW lecture: on-topic best window 0.55–0.62, off-topic <= 0.27
+  segment_gap_s: 60         # merge covering windows closer than this into one segment
+  min_segment_s: 60
+  clip_min_s: 90            # clips are extended to at least this long so they are usable
+  intro_skip_s: 45          # in videos longer than 5 min, a segment starting before this is treated as the intro
+  page_chunk_words: 120     # web pages / readings are split into chunks of this many words
+
+durations:                  # seconds
+  clip_max: 1500            # an in-class clip / explainer: <= 25 min
+  video_max: 5400           # anything longer than 90 min is only offered as a recorded lecture series part
+  recorded_lecture_min: 1800
+
+recency_years_fast_topics: 3   # topics flagged "novel/fast-moving": prefer material from the last N years
+
+youtube:
+  daily_unit_budget: 9000      # of the 10,000 free units/day; searches cost 100, details 1 per 50 videos
+  results_per_search: 12
+  max_searches_per_lecture: 3
+  region: IN
+  language: en
+
+transcripts:
+  max_per_lecture: 8           # transcripts fetched for the best pre-scored videos
+
+review:
+  max_candidates_per_call: 10  # candidates the AI reviews per lecture (one call)
+
+# Source tiers (authority). Tier 1 = universities and national programmes; 2 = established educators;
+# 3 = practitioners and official documentation; 4 = general web (only when 1–3 cannot cover a topic).
+tier_scores: {1: 1.0, 2: 0.8, 3: 0.65, 4: 0.35}
+channels:                    # YouTube channel titles (case-insensitive substring match)
+  tier1: [MIT OpenCourseWare, Stanford Online, Stanford, CMU, Carnegie Mellon, UC Berkeley, Berkeley, Harvard, CS50,
+          NPTEL, IIT, IISc, Oxford, Cambridge, ETH, EPFL, NUS, Princeton, Cornell, University of Washington, Georgia Tech,
+          Caltech, Yale, Columbia, Imperial College, University of Toronto, Waterloo, IIIT]
+  tier2: [freeCodeCamp, 3Blue1Brown, StatQuest, Computerphile, Two Minute Papers, Fireship, Corey Schafer, sentdex,
+          Andrej Karpathy, Yannic Kilcher, Abdul Bari, codebasics, Krish Naik, Google Cloud Tech, William Fiset, Neso Academy, Gate Smashers, Jenny's Lectures,
+          Tech With Tim, ArjanCodes, mCoding, Numberphile, Ben Eater, Kevin Powell, Traversy Media, The Coding Train,
+          Professor Messer, IBM Technology, Google for Developers, Microsoft Developer, AWS, NVIDIA Developer]
+  tier3: [GOTO Conferences, InfoQ, Strange Loop, PyCon, PyData, NDC Conferences, JSConf, Devoxx, CppCon, USENIX,
+          ACM, IEEE, Google Cloud Tech, GitHub, Anthropic, OpenAI, Hugging Face, DeepLearningAI, LangChain]
+domains:                     # web readings
+  tier1: [mit.edu, stanford.edu, cmu.edu, berkeley.edu, harvard.edu, princeton.edu, cornell.edu, washington.edu,
+          ox.ac.uk, cam.ac.uk, ethz.ch, epfl.ch, nus.edu.sg, nptel.ac.in, iitm.ac.in, iitb.ac.in, iitd.ac.in, iiitd.ac.in,
+          openstax.org, d2l.ai, ocw.mit.edu]
+  tier2: [arxiv.org, acm.org, ieee.org, distill.pub, khanacademy.org, geeksforgeeks.org, realpython.com,
+          freecodecamp.org, towardsdatascience.com, martinfowler.com, cs231n.github.io, lilianweng.github.io,
+          colah.github.io, jalammar.github.io]
+  tier3: [docs.python.org, developer.mozilla.org, learn.microsoft.com, cloud.google.com, aws.amazon.com,
+          docs.github.com, kubernetes.io, pytorch.org, tensorflow.org, huggingface.co, engineering.fb.com,
+          netflixtechblog.com, blog.google, research.google, openai.com, anthropic.com, github.com, kaggle.com,
+          colab.research.google.com, modelcontextprotocol.io, docs.langchain.com, python.langchain.com, docs.anthropic.com,
+          platform.openai.com, ai.google.dev, code.visualstudio.com]
+# Also tier 3 without listing: documentation sites (docs.* / developer(s).* / *.readthedocs.io / a /docs/ path) and the
+# topic's own official site (its domain name spells the topic, e.g. modelcontextprotocol.io for "Model context protocol").
+blocklist:                   # never recommend (held-out test courses, paywalls when free_only)
+  domains: [themodernsoftware.dev, coursera.org/learn, udemy.com, oreilly.com, medium.com/m/signin]
+  title_fragments: [CS146S]
+paywall_domains: [udemy.com, coursera.org, oreilly.com, pluralsight.com, educative.io, linkedin.com/learning]

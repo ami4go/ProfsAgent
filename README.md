@@ -12,7 +12,7 @@ Design docs: `docs/01_stage1_architecture.md`. Prompts: `prompts/README.md`.
 
 ## Run
 ```bash
-pip install langgraph langgraph-checkpoint-sqlite beautifulsoup4 httpx pydantic jinja2 pyyaml numpy pytest neo4j python-dotenv sentence-transformers openpyxl reportlab
+pip install langgraph langgraph-checkpoint-sqlite beautifulsoup4 httpx pydantic jinja2 pyyaml numpy pytest neo4j python-dotenv sentence-transformers openpyxl reportlab youtube-transcript-api
 # .env (git-ignored): GEMINI_API_KEYS=k1,k2,k3   GROQ_API_KEYS=k1   NEO4J_PASSWORD=password
 
 # --- LAYER A: Build the Knowledge Graph ---
@@ -101,6 +101,32 @@ WHERE type(r) <> 'OVERLAPS' OR r.weighted_jaccard > 0 RETURN c, r, k
 S5 keeps a topic's `SAME_AS` link to an IIIT-D topic only if the KG also finds that topic close to the topic's own title.
 `load.py --wipe` clears only the IIIT-D graph; design runs stay and their links are re-attached.
 Load, check or remove a run by hand: `python scripts/load_design_to_neo4j.py --run-id <id> [--check | --delete]`.
+
+## Phase 2 · Deliverable C: learning resources and expert speakers
+For an approved Phase 1 course run, per lecture (plan: `docs/03_phase2_C_learning_resources_and_experts_plan.md`):
+1. **Lecture briefs** from the design (no AI): topic, learning outcomes, what students must already know, what depends on it,
+   where it is assessed; ★ marks topics new to IIIT-D (no close match in the knowledge graph).
+2. **Survey** (`runs/<id>/delivery/survey.yaml`): explicit questions per lecture — teach it yourself? lecture videos? readings
+   (blogs, articles, chapters, docs)? practice? a full recorded lecture? clip playlists? a guest speaker? Nothing is searched
+   for a lecture until one answer is yes.
+3. **Learning resources** (free only): YouTube Data API, Gemini-grounded web search, OpenLibrary, OpenAlex surveys, GitHub;
+   transcripts and page text are matched to the lecture's topic and LOs with local embeddings (coverage + timestamps),
+   reviewed by AI (D2), scored on coverage · quality · authority · level · reception · practicality, checked in code,
+   diversified and capped (3 videos, 2 readings, 1 practice), with a reserve for replacements and **clip playlists**.
+4. **Expert speakers** (5–7, worldwide, research or industry): OpenAlex/DBLP/ORCID for academics (plus a Google Scholar search
+   link — Scholar has no API), IIIT-D faculty of related courses, practitioners from grounded web search (confirmed on their
+   own pages) and GitHub; ranked with evidence, AI fit check (D4), **guest-lecture kit** with an invitation draft the professor sends.
+5. **Review** (`review.yaml`: approve / replace / reject + reason), feedback ratings that re-weight sources, link health checks,
+   and Neo4j records linked to the course's lectures.
+```bash
+python scripts/run_delivery.py briefs    --run-id cs601-02
+python scripts/run_delivery.py survey    --run-id cs601-02 --ask          # or --defaults for a test run
+python scripts/run_delivery.py recommend --run-id cs601-02 --limit 3      # writes delivery/report.md + review.yaml
+python scripts/run_delivery.py review    --run-id cs601-02 --apply
+python scripts/run_delivery.py graph     --run-id cs601-02
+```
+Needs `YOUTUBE_API_KEY` and `OPENALEX_API_KEY` in `.env` (free). Tunables: `config/resources.yaml`, `config/experts.yaml`.
+Transcripts are fetched locally (YouTube blocks cloud servers). Budget per lecture: ~300 YouTube units (of 10,000/day) and 3–5 AI calls.
 
 ## Other scripts
 - `scripts/export_course_template.py --run-id <id>`: (re)writes `runs/<id>/course_template.xlsx`.

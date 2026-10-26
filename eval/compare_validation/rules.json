@@ -1,0 +1,625 @@
+{
+ "scheme": "rules",
+ "designs": 24,
+ "clean_errors": 6,
+ "rows": [
+  {
+   "defect": "inv_assess_weights",
+   "expected": [
+    "V1"
+   ],
+   "truth": {
+    "nodes": [
+     "assignment",
+     "endsem",
+     "lab",
+     "midsem",
+     "project",
+     "quiz"
+    ],
+    "stages": [
+     "assessment"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": true,
+   "hard_codes": [
+    "V1"
+   ],
+   "expected_is_hard": true
+  },
+  {
+   "defect": "banned_verbs",
+   "expected": [
+    "V12"
+   ],
+   "truth": {
+    "nodes": [
+     "CO1"
+    ],
+    "stages": [
+     "cos"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": false,
+   "hard_codes": [],
+   "expected_is_hard": false
+  },
+  {
+   "defect": "bloom_inconsistencies",
+   "expected": [
+    "V8"
+   ],
+   "truth": {
+    "nodes": [
+     "CO1",
+     "CO2",
+     "CO3",
+     "CO4"
+    ],
+    "stages": [
+     "cos"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": true,
+   "hard_codes": [
+    "T2",
+    "T3",
+    "V8",
+    "VCO-BL"
+   ],
+   "expected_is_hard": true
+  },
+  {
+   "defect": "orphan_los",
+   "expected": [
+    "T1"
+   ],
+   "truth": {
+    "nodes": [
+     "NONE.LO1"
+    ],
+    "stages": [
+     "los"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": true,
+   "hard_codes": [
+    "T1",
+    "T5",
+    "V9"
+   ],
+   "expected_is_hard": true
+  },
+  {
+   "defect": "invalid_lo_assess",
+   "expected": [
+    "T10"
+   ],
+   "truth": {
+    "nodes": [
+     "A:Quiz1"
+    ],
+    "stages": [
+     "assessment"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": true,
+   "hard_codes": [
+    "T10",
+    "V9"
+   ],
+   "expected_is_hard": true
+  },
+  {
+   "defect": "assess_before_teach",
+   "expected": [
+    "V19"
+   ],
+   "truth": {
+    "nodes": [
+     "A:Endsem",
+     "A:Midsem",
+     "CO1.LO2",
+     "CO2.LO2",
+     "CO3.LO2",
+     "CO4.LO1",
+     "CO4.LO3",
+     "M2.T1",
+     "M2.T2",
+     "M3.T1",
+     "M3.T2",
+     "M4.T1",
+     "M4.T2",
+     "M5.T1",
+     "M5.T2",
+     "M6.T1",
+     "M6.T2",
+     "M7.T1",
+     "M7.T2",
+     "M8.T1",
+     "M8.T2"
+    ],
+    "stages": [
+     "assessment"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": true,
+   "hard_codes": [
+    "V19"
+   ],
+   "expected_is_hard": true
+  },
+  {
+   "defect": "temporal_inversions",
+   "expected": [
+    "VT-ORDER"
+   ],
+   "truth": {
+    "nodes": [
+     "M1.T1",
+     "M8.T2"
+    ],
+    "stages": [
+     "schedule"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": true,
+   "hard_codes": [
+    "VT-ORDER"
+   ],
+   "expected_is_hard": true
+  },
+  {
+   "defect": "invalid_prereqs",
+   "expected": [
+    "V14"
+   ],
+   "truth": {
+    "nodes": [
+     "NONEXISTENT101"
+    ],
+    "stages": [
+     "positioning"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": true,
+   "hard_codes": [
+    "V14"
+   ],
+   "expected_is_hard": true
+  },
+  {
+   "defect": "impossible_hours",
+   "expected": [
+    "V21",
+    "VT-SIZE"
+   ],
+   "truth": {
+    "nodes": [
+     "M1.T1",
+     "M1.T2",
+     "M2.T1",
+     "M2.T2",
+     "M3.T1",
+     "M3.T2",
+     "M4.T1",
+     "M4.T2",
+     "M5.T1",
+     "M5.T2",
+     "M6.T1",
+     "M6.T2",
+     "M7.T1",
+     "M7.T2",
+     "M8.T1",
+     "M8.T2"
+    ],
+    "stages": [
+     "structure"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": true,
+   "hard_codes": [
+    "V21"
+   ],
+   "expected_is_hard": true
+  },
+  {
+   "defect": "contradictory_constraints",
+   "expected": [
+    "VK-CONFLICT"
+   ],
+   "truth": {
+    "nodes": [
+     "CO-COUNT-RULE",
+     "K90",
+     "K91"
+    ],
+    "stages": [
+     "constraints"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": true,
+   "hard_codes": [
+    "VK",
+    "VK-CONFLICT"
+   ],
+   "expected_is_hard": true
+  },
+  {
+   "defect": "invalid_week_counts",
+   "expected": [
+    "V2"
+   ],
+   "truth": {
+    "nodes": [],
+    "stages": [
+     "schedule"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": true,
+   "hard_codes": [
+    "V2",
+    "VK"
+   ],
+   "expected_is_hard": true
+  },
+  {
+   "defect": "invalid_week_counts[consistent]",
+   "expected": [
+    "VREG-WEEKS"
+   ],
+   "truth": {
+    "nodes": [
+     "COURSE"
+    ],
+    "stages": [
+     "intake"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": true,
+   "hard_codes": [
+    "V21",
+    "VK",
+    "VREG-WEEKS"
+   ],
+   "expected_is_hard": true
+  },
+  {
+   "defect": "malformed_copo",
+   "expected": [
+    "T10"
+   ],
+   "truth": {
+    "nodes": [
+     "CO1",
+     "CO2",
+     "CO3",
+     "CO4",
+     "PO_MAGIC"
+    ],
+    "stages": [
+     "copo"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": true,
+   "hard_codes": [
+    "T10",
+    "T4"
+   ],
+   "expected_is_hard": true
+  },
+  {
+   "defect": "duplicate_outcomes",
+   "expected": [
+    "VCO-DUP"
+   ],
+   "truth": {
+    "nodes": [
+     "CO1",
+     "CO2"
+    ],
+    "stages": [
+     "cos"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": false,
+   "hard_codes": [],
+   "expected_is_hard": false
+  },
+  {
+   "defect": "missing_assessment",
+   "expected": [
+    "V1",
+    "V9"
+   ],
+   "truth": {
+    "nodes": [
+     "CO1.LO1",
+     "CO1.LO2",
+     "CO1.LO3",
+     "CO2.LO1",
+     "CO2.LO2",
+     "CO2.LO3",
+     "CO3.LO1",
+     "CO3.LO2",
+     "CO3.LO3",
+     "CO4.LO1",
+     "CO4.LO2",
+     "CO4.LO3"
+    ],
+    "stages": [
+     "assessment"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": true,
+   "hard_codes": [
+    "V1",
+    "V9"
+   ],
+   "expected_is_hard": true
+  },
+  {
+   "defect": "no_lectures",
+   "expected": [
+    "VREG-LTP"
+   ],
+   "truth": {
+    "nodes": [
+     "COURSE"
+    ],
+    "stages": [
+     "intake"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": true,
+   "hard_codes": [
+    "VK",
+    "VREG-LTP"
+   ],
+   "expected_is_hard": true
+  },
+  {
+   "defect": "no_lectures[ltp_6_3_6]",
+   "expected": [
+    "VREG-LTP"
+   ],
+   "truth": {
+    "nodes": [
+     "COURSE"
+    ],
+    "stages": [
+     "intake"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": true,
+   "hard_codes": [
+    "VK",
+    "VREG-LTP"
+   ],
+   "expected_is_hard": true
+  },
+  {
+   "defect": "vague_degree",
+   "expected": [
+    "V11"
+   ],
+   "truth": {
+    "nodes": [
+     "CO1.LO1",
+     "CO1.LO2",
+     "CO1.LO3",
+     "CO2.LO1",
+     "CO2.LO2",
+     "CO2.LO3",
+     "CO3.LO1",
+     "CO3.LO2",
+     "CO3.LO3",
+     "CO4.LO1",
+     "CO4.LO2",
+     "CO4.LO3"
+    ],
+    "stages": [
+     "los"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": false,
+   "hard_codes": [],
+   "expected_is_hard": false
+  },
+  {
+   "defect": "vague_degree[deeply]",
+   "expected": [
+    "V11"
+   ],
+   "truth": {
+    "nodes": [
+     "CO1.LO1",
+     "CO1.LO2",
+     "CO1.LO3",
+     "CO2.LO1",
+     "CO2.LO2",
+     "CO2.LO3",
+     "CO3.LO1",
+     "CO3.LO2",
+     "CO3.LO3",
+     "CO4.LO1",
+     "CO4.LO2",
+     "CO4.LO3"
+    ],
+    "stages": [
+     "los"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": false,
+   "hard_codes": [],
+   "expected_is_hard": false
+  },
+  {
+   "defect": "cyclic_lo_deps",
+   "expected": [
+    "VLO-DAG"
+   ],
+   "truth": {
+    "nodes": [
+     "CO1.LO1",
+     "CO1.LO2"
+    ],
+    "stages": [
+     "los"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": true,
+   "hard_codes": [
+    "VLO-DAG"
+   ],
+   "expected_is_hard": true
+  },
+  {
+   "defect": "excessive_cos",
+   "expected": [
+    "V4"
+   ],
+   "truth": {
+    "nodes": [
+     "CO1",
+     "CO10",
+     "CO11",
+     "CO12",
+     "CO13",
+     "CO14",
+     "CO15",
+     "CO2",
+     "CO3",
+     "CO4",
+     "CO5",
+     "CO6",
+     "CO7",
+     "CO8",
+     "CO9"
+    ],
+    "stages": [
+     "cos"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": true,
+   "hard_codes": [
+    "T2",
+    "T4",
+    "V4",
+    "VCO-BL"
+   ],
+   "expected_is_hard": true
+  },
+  {
+   "defect": "excessive_los",
+   "expected": [
+    "T2",
+    "VLO-COUNT"
+   ],
+   "truth": {
+    "nodes": [
+     "CO1"
+    ],
+    "stages": [
+     "los"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": true,
+   "hard_codes": [
+    "T2",
+    "V9",
+    "VLO-COUNT"
+   ],
+   "expected_is_hard": true
+  },
+  {
+   "defect": "no_topics",
+   "expected": [
+    "T5",
+    "VTG-TAUGHT"
+   ],
+   "truth": {
+    "nodes": [
+     "CO1.LO1",
+     "CO1.LO2",
+     "CO1.LO3",
+     "CO2.LO1",
+     "CO2.LO2",
+     "CO2.LO3",
+     "CO3.LO1",
+     "CO3.LO2",
+     "CO3.LO3",
+     "CO4.LO1",
+     "CO4.LO2",
+     "CO4.LO3",
+     "TG1",
+     "TG2",
+     "TG3",
+     "TG4",
+     "TG5",
+     "TG6"
+    ],
+    "stages": [
+     "structure"
+    ]
+   },
+   "rules_all": true,
+   "rules_all_any_new": true,
+   "hard_only": true,
+   "hard_codes": [
+    "T10",
+    "T5",
+    "VTG-TAUGHT"
+   ],
+   "expected_is_hard": true
+  }
+ ],
+ "detected": {
+  "rules_all": 23,
+  "hard_only": 19
+ }
+}

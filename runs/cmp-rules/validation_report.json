@@ -1,0 +1,123 @@
+{
+ "summary": {
+  "errors": 0,
+  "warnings": 4,
+  "by_group": {
+   "Your requirements": {
+    "errors": 0,
+    "warnings": 1
+   },
+   "CO–PO mapping": {
+    "errors": 0,
+    "warnings": 1
+   },
+   "Topics, schedule and labs": {
+    "errors": 0,
+    "warnings": 1
+   },
+   "Resources": {
+    "errors": 0,
+    "warnings": 1
+   }
+  }
+ },
+ "grouped": [
+  {
+   "group": "Your requirements",
+   "severity": "warning",
+   "code": "VK",
+   "count": 1,
+   "nodes": [
+    "K16"
+   ],
+   "message": "no assessment component recognisably matches 'coding_exercise' (K16); confirm that an existing component covers it, or add one",
+   "fix_hint": null,
+   "more_nodes": 0
+  },
+  {
+   "group": "CO–PO mapping",
+   "severity": "warning",
+   "code": "V23",
+   "count": 1,
+   "nodes": [
+    "CO4",
+    "MTECH-CSE/PO1"
+   ],
+   "message": "CO4→MTECH-CSE/PO1: provisional 3 vs computed 1 (share 0.273)",
+   "fix_hint": null,
+   "more_nodes": 0
+  },
+  {
+   "group": "Topics, schedule and labs",
+   "severity": "warning",
+   "code": "V6",
+   "count": 1,
+   "nodes": [
+    "W13"
+   ],
+   "message": "weeks with no lecture topics: [13]",
+   "fix_hint": null,
+   "more_nodes": 0
+  },
+  {
+   "group": "Resources",
+   "severity": "warning",
+   "code": "V15",
+   "count": 1,
+   "nodes": [],
+   "message": "2 resource(s) removed because no library record matched: Agentic Design Patterns; OpenAI MCP, Agent2Agent (A2A) Protocol",
+   "fix_hint": null,
+   "more_nodes": 0
+  }
+ ],
+ "findings": [
+  {
+   "code": "V6",
+   "severity": "warning",
+   "nodes": [
+    "W13"
+   ],
+   "message": "weeks with no lecture topics: [13]",
+   "evidence": {},
+   "stage": "schedule",
+   "family": "rule",
+   "fixable_by": "repair"
+  },
+  {
+   "code": "VK",
+   "severity": "warning",
+   "nodes": [
+    "K16"
+   ],
+   "message": "no assessment component recognisably matches 'coding_exercise' (K16); confirm that an existing component covers it, or add one",
+   "evidence": {
+    "constraint": "assessment.component[coding_exercise].present",
+    "raw": "hands-on coding exercises"
+   },
+   "stage": "assessment",
+   "family": "constraint",
+   "fixable_by": "repair"
+  },
+  {
+   "code": "V23",
+   "severity": "warning",
+   "nodes": [
+    "CO4",
+    "MTECH-CSE/PO1"
+   ],
+   "message": "CO4→MTECH-CSE/PO1: provisional 3 vs computed 1 (share 0.273)",
+   "evidence": {},
+   "stage": "assessment",
+   "family": "rule",
+   "fixable_by": "repair"
+  },
+  {
+   "code": "V15",
+   "severity": "warning",
+   "nodes": [],
+   "message": "2 resource(s) removed because no library record matched: Agentic Design Patterns; OpenAI MCP, Agent2Agent (A2A) Protocol",
+   "evidence": {},
+   "stage": "resources"
+  }
+ ]
+}

@@ -1,0 +1,67 @@
+Course Code,
+Course Name,Software Development using AI
+Credits,4
+Course Offered to,UG
+Course Description,"This course examines modern AI-native software development, where developers collaborate with increasingly capable coding agents. It covers how to define intent, provide effective context, structure development workflows, and coordinate AI tools. Students gain practical experience designing and evaluating agentic software development processes, focusing on agent environment configuration, requirements decomposition, spec-driven planning, iterative development loops, execution tracing, and automated quality assessment. Designed for senior undergraduate students with strong software development fundamentals, the course enables learners to configure agentic development environments, decompose informal requirements into executable specifications, orchestrate iterative agent-assisted coding workflows, diagnose context-drift and failure causes from execution traces, and evaluate the reliability and maintainability of agent-generated software deliverables. Instruction is delivered through lectures, tutorials, laboratory sessions, and a semester-long project."
+Pre-requisites
+Pre-requisite (Mandatory),Pre-requisite (Desirable),Pre-requisite(other)
+CSE201,,
+Post Conditions
+CO1,CO2,CO3,CO4,CO5
+"Configure an agentic development environment integrating Model Context Protocol (MCP) servers, context engineering assets, and external tool interfaces, for a modular software development task, meeting the stated interface specification for every public tool endpoint.","Decompose informal software requirements into executable specifications, task plans, and structured context documents for autonomous coding agents, for a supplied multi-tier software feature, covering every use case in the supplied requirements document.","Implement iterative agentic development workflows that orchestrate coding agents, tool interactions, and automated feedback loops, for a multi-component software project, such that at least 80% of the provided acceptance test cases pass.","Diagnose anomalies, regressions, and context-drift failures in agent-assisted coding sessions, from supplied execution traces and automated test outputs, identifying at least three distinct failure causes with supporting log evidence.","Evaluate the reliability, maintainability, and test coverage of agent-generated software deliverables, using automated testing frameworks and code review metrics, justifying each acceptance or rejection decision against at least one stated quality standard."
+Weekly Lecture Plan
+Week Number,Lecture Topic,COs Met,Tutorial,Assignments / Project
+1,"Model Context Protocol architecture and message exchange patterns (M1.T1)
+Tool endpoint schemas and IDE runtime integration (M1.T2)",CO1,"Pair analysis of two sample Model Context Protocol trace transcripts, mapping message exchange primitives to client-server sequence diagrams.",
+2,"Structured prompt assets and file-context manifests (M1.T3)
+Autonomous agent tool bridges and version control integration (M1.T4)",CO1,Worked construction and peer review of file-context manifests for a two-tier microservice repository.,
+3,"Autonomous agent tool bridges and version control integration (M1.T4)
+Informal requirement deconstruction and dependency mapping (M2.T1)
+Context precondition extraction and boundary analysis (M2.T2)","CO1, CO2",Deconstruction of an ambiguous two-page feature specification into execution dependencies and missing context preconditions in small groups.,A:Assign1 released; A:Lab1 (lab)
+4,"Context precondition extraction and boundary analysis (M2.T2)
+Declarative acceptance specifications and schema definition (M2.T3)",CO2,Collaborative translation of three informal user stories into declarative JSON schema acceptance specifications with boundary constraints.,A:Assign1 due
+5,"Atomic task planning and input-output test assertion generation (M2.T4)
+Compiler and linter error-driven automated repair loops (M3.T1)","CO2, CO3",Decomposition of authentication user stories into atomic task checklists and derivation of four input-output test assertions per task.,
+6,"Compiler and linter error-driven automated repair loops (M3.T1)
+Multi-turn context management and prompt refactoring (M3.T2)",CO3,Step-by-step diagnostic tracing of compiler and linter error cascades from three failing automated code repair loops.,A:ProjM1 released
+7,"Multi-turn context management and prompt refactoring (M3.T2)
+Test-driven agent orchestration and regression repair (M3.T3)",CO3,Worked review and trace-diagnosis of multi-turn context degradation and prompt refactoring strategies across prior session logs.,A:MidSem (midsem)
+8,"Test-driven agent orchestration and regression repair (M3.T3)
+Prompt-response transcript tracing and tool call log analysis (M4.T1)
+Failure taxonomy: prompt drift, schema mismatch, and hallucination (M4.T2)","CO3, CO4","Collaborative trace-diagnosis of three failing agent execution logs, categorising errors into prompt drift and tool call schema mismatches.",A:ProjM1 due; A:ProjM2 released
+9,"Failure taxonomy: prompt drift, schema mismatch, and hallucination (M4.T2)
+Context poisoning and instruction decay diagnostics (M4.T3)",CO4,Comparative analysis of paired session transcripts to isolate hallucinated parameters versus schema mismatches with supporting log evidence.,A:Assign2 released
+10,"Context poisoning and instruction decay diagnostics (M4.T3)
+Automated static analysis and code complexity measurement (M5.T1)","CO4, CO5",Root-cause diagnosis of instruction decay and context poisoning across a 40-step agent refactoring transcript in pairs.,A:Lab2 (lab); A:ProjM2 due
+11,"Automated static analysis and code complexity measurement (M5.T1)
+Edge-case defect detection in agent-synthesized test suites (M5.T2)",CO5,Worked calculation and critique of code complexity metrics and test suite branch coverage reports for agent-generated PRs.,A:Assign2 due
+12,Architectural soundness appraisal and pull request review criteria (M5.T3),CO5,Structured evaluation of two competing agent-generated pull requests against architectural soundness and mutation test quality standards.,A:Lab3 (lab); A:ProjM3 released
+13,,,"Comprehensive review and walkthrough of end-to-end pull request evaluation criteria, mutation testing trade-offs, and final exam preparation.",A:EndSem (endsem); A:ProjM3 due
+Weekly Lab Plan
+Week Number,Laboratory Exercise,COs Met,Platform
+1,"Configure local IDE runtime environment to communicate with reference Model Context Protocol endpoints, verify JSON-RPC message exchanges, and inspect tool discovery payloads.",CO1,"Student development machines, software development environments"
+2,"Construct structured context engineering assets including system prompts and file-context manifests for a single-service repository, validating against the four-step lab specification.",CO1,"Student development machines, software development environments, access to AI coding tools/APIs"
+3,"Configure an MCP tool bridge connecting an autonomous coding agent to a local version-control repository, executing commit and branch operations across three reference tasks.",CO1,"Student development machines, software development environments, access to AI coding tools/APIs"
+4,"Translate informal requirements into declarative acceptance schemas and formal test fixtures for an authentication module, verifying complete coverage across all specified use cases.",CO2,"Student development machines, software development environments"
+5,"Decompose user requirements into atomic execution checklists and generate input-output assertions for an authentication service, documenting rationales against target requirements.",CO2,"Student development machines, software development environments, access to AI coding tools/APIs"
+6,"Run closed-loop agent workflows driven by compiler and linter diagnostic errors to iteratively repair failing functions, validating outputs across four benchmark inputs.",CO3,"Student development machines, software development environments, access to AI coding tools/APIs"
+7,Engage in an open catch-up session to resolve pending debugging issues on multi-turn prompt refactoring and MCP tool loops without introducing new lab exercises.,CO3,"Student development machines, software development environments, access to AI coding tools/APIs"
+8,Implement a test-driven repair loop orchestrating an autonomous coding agent to resolve failing regression suites on a three-module REST service until all tests pass.,CO3,"Student development machines, software development environments, access to AI coding tools/APIs"
+9,"Analyze prompt-response histories and tool invocation logs from failing agent sessions, identifying root causes across prompt drift, schema mismatch, and model hallucination.",CO4,"Student development machines, software development environments"
+10,"Diagnose context poisoning and instruction decay in multi-turn agent interaction transcripts, isolating poisoned memory entries and proposing prompt restructuring fixes.",CO4,"Student development machines, software development environments"
+11,"Run automated static analysis tools to evaluate cyclomatic complexity, branch coverage, and security smells in agent-generated pull requests, producing an audit report.",CO5,"Student development machines, software development environments"
+12,"Evaluate agent-synthesized unit test suites on reference data-structure implementations, identifying seeded edge-case defects and authoring corrective test assertions.",CO5,"Student development machines, software development environments"
+13,"Execute capstone project integration evaluations, running automated regression checks, mutation coverage analysis, and live pull request review demonstrations.",CO5,"Student development machines, software development environments, access to AI coding tools/APIs"
+Assessment Plan
+Type of Evaluation,% Contribution in Grade
+midsem,20.0
+endsem,25.0
+assignment,15.0
+lab,15.0
+project,25.0
+Resource Material
+Type,Title
+reading,"Partha Pratim Ray (2025). A Survey on Model Context Protocol: Architecture, State-of-the-art, Challenges and Future Directions"
+reading,Srinivasan Sekar (2026). Under the Hood: The Protocol Specification
+reference,Kent Beck (2002). Test-driven development
+reading,Jalendar Reddy Maligireddy (2025). Zero-Trust Proof-Gated Agent Architecture (ZPAA): A Comprehensive Security Model for the Model Context Protocol (MCP)

@@ -1,0 +1,441 @@
+{
+ "scheme": "llm",
+ "repeats": 1,
+ "calls": 5,
+ "failed_or_missing": 0,
+ "seconds": 614,
+ "clean_llm_errors": [
+  2
+ ],
+ "rows": [
+  {
+   "defect": "banned_verbs",
+   "truth": {
+    "nodes": [
+     "CO1"
+    ],
+    "stages": [
+     "cos"
+    ]
+   },
+   "llm_only": [
+    true
+   ],
+   "llm_noticed": [
+    true
+   ],
+   "hard_only": false,
+   "hybrid": [
+    true
+   ],
+   "llm_errors": [
+    3
+   ]
+  },
+  {
+   "defect": "assess_before_teach",
+   "truth": {
+    "nodes": [
+     "A:Endsem",
+     "A:Midsem",
+     "CO1.LO2",
+     "CO2.LO2",
+     "CO3.LO2",
+     "CO4.LO1",
+     "CO4.LO3",
+     "M2.T1",
+     "M2.T2",
+     "M3.T1",
+     "M3.T2",
+     "M4.T1",
+     "M4.T2",
+     "M5.T1",
+     "M5.T2",
+     "M6.T1",
+     "M6.T2",
+     "M7.T1",
+     "M7.T2",
+     "M8.T1",
+     "M8.T2"
+    ],
+    "stages": [
+     "assessment"
+    ]
+   },
+   "llm_only": [
+    false
+   ],
+   "llm_noticed": [
+    true
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true
+   ],
+   "llm_errors": [
+    2
+   ]
+  },
+  {
+   "defect": "impossible_hours",
+   "truth": {
+    "nodes": [
+     "M1.T1",
+     "M1.T2",
+     "M2.T1",
+     "M2.T2",
+     "M3.T1",
+     "M3.T2",
+     "M4.T1",
+     "M4.T2",
+     "M5.T1",
+     "M5.T2",
+     "M6.T1",
+     "M6.T2",
+     "M7.T1",
+     "M7.T2",
+     "M8.T1",
+     "M8.T2"
+    ],
+    "stages": [
+     "structure"
+    ]
+   },
+   "llm_only": [
+    false
+   ],
+   "llm_noticed": [
+    false
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true
+   ],
+   "llm_errors": [
+    2
+   ]
+  },
+  {
+   "defect": "vague_degree",
+   "truth": {
+    "nodes": [
+     "CO1.LO1",
+     "CO1.LO2",
+     "CO1.LO3",
+     "CO2.LO1",
+     "CO2.LO2",
+     "CO2.LO3",
+     "CO3.LO1",
+     "CO3.LO2",
+     "CO3.LO3",
+     "CO4.LO1",
+     "CO4.LO2",
+     "CO4.LO3"
+    ],
+    "stages": [
+     "los"
+    ]
+   },
+   "llm_only": [
+    false
+   ],
+   "llm_noticed": [
+    false
+   ],
+   "hard_only": false,
+   "hybrid": [
+    false
+   ],
+   "llm_errors": [
+    2
+   ]
+  }
+ ],
+ "consistency": null,
+ "raw": {
+  "clean": [
+   {
+    "findings": [
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3"
+      ],
+      "message": "The LO uses a placeholder '{n} of {m}' which is not a checkable degree.",
+      "fix_hint": "Replace the placeholder with a specific, measurable standard such as 'identifying at least 4 out of 5 core components'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO2.LO3"
+      ],
+      "message": "The LO uses a placeholder '{n} of {m}' which is not a checkable degree.",
+      "fix_hint": "Replace the placeholder with a specific, measurable standard such as 'identifying at least 3 use cases and 2 system boundaries'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:assessment.weights",
+      "severity": "warning",
+      "nodes": [
+       "A:ProjMilestone"
+      ],
+      "message": "The project component is weighted at only 10%, which is disproportionately low for a capstone-style project requiring 15 hours of student effort.",
+      "fix_hint": "Increase the weight of the project component to at least 20% to reflect the effort and its role in assessing high-level outcomes.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "assessment.weights"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.1-flash-lite:k3ca4d81f"
+   }
+  ],
+  "banned_verbs": [
+   {
+    "findings": [
+     {
+      "code": "LLM:cos.observable_verb",
+      "severity": "error",
+      "nodes": [
+       "CO1"
+      ],
+      "message": "The verb 'understand' is not an observable action verb.",
+      "fix_hint": "Replace 'Understand' with an observable verb like 'Configure' or 'Implement'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "cos.observable_verb"
+      },
+      "stage": "cos"
+     },
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3"
+      ],
+      "message": "The LO uses a placeholder '{n} of {m}' which is not a concrete, checkable degree.",
+      "fix_hint": "Replace the placeholder with a specific, measurable quantity or standard.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO2.LO3"
+      ],
+      "message": "The LO uses a placeholder '{n} of {m}' which is not a concrete, checkable degree.",
+      "fix_hint": "Replace the placeholder with a specific, measurable quantity or standard.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:assessment.weights",
+      "severity": "warning",
+      "nodes": [
+       "A:ProjMilestone"
+      ],
+      "message": "The project weight of 10% is disproportionately low for a capstone-level assessment requiring 15 hours of student effort.",
+      "fix_hint": "Increase the weight of the project component to reflect its significant workload and importance.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "assessment.weights"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.1-flash-lite:k3ca4d81f"
+   }
+  ],
+  "assess_before_teach": [
+   {
+    "findings": [
+     {
+      "code": "LLM:assessment.exams",
+      "severity": "warning",
+      "nodes": [
+       "A:Midsem",
+       "A:Endsem"
+      ],
+      "message": "The mid-semester and end-semester exams are scheduled for week 2, which is incorrect for a 13-week semester.",
+      "fix_hint": "Reschedule the mid-semester exam to week 7 or 8 and the end-semester exam to the final week of the semester.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "assessment.exams"
+      },
+      "stage": "assessment"
+     },
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3"
+      ],
+      "message": "The LO is vague and uses placeholders like {n} of {m} instead of a concrete, measurable standard.",
+      "fix_hint": "Replace the placeholder with a specific, measurable requirement, such as 'identifying at least 5 core components from a list of 10'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO2.LO3"
+      ],
+      "message": "The LO uses placeholders like {n} of {m} instead of a concrete, measurable standard.",
+      "fix_hint": "Replace the placeholder with a specific, measurable requirement, such as 'outlining at least 3 use cases from a provided product description'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.1-flash-lite:k3ca4d81f"
+   }
+  ],
+  "impossible_hours": [
+   {
+    "findings": [
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3"
+      ],
+      "message": "The LO uses a placeholder '{n} of {m}' which is not a checkable degree.",
+      "fix_hint": "Replace the placeholder with a specific, measurable standard, such as 'identifying at least 4 out of 5 core components'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO2.LO3"
+      ],
+      "message": "The LO uses a placeholder '{n} of {m}' which is not a checkable degree.",
+      "fix_hint": "Replace the placeholder with a specific, measurable standard, such as 'identifying at least 3 use cases and 2 system boundaries'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:assessment.weights",
+      "severity": "warning",
+      "nodes": [
+       "A:ProjMilestone"
+      ],
+      "message": "The project component is weighted at only 10%, which is disproportionately low for a capstone-style project in an advanced undergraduate course.",
+      "fix_hint": "Increase the weight of the project component to at least 20-25% to reflect its significance in the course.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "assessment.weights"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.1-flash-lite:k3ca4d81f"
+   }
+  ],
+  "vague_degree": [
+   {
+    "findings": [
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3"
+      ],
+      "message": "The LO uses a placeholder '{n} of {m}' which is not a concrete, checkable degree.",
+      "fix_hint": "Replace the placeholder with a specific, measurable requirement such as 'identifying at least 5 core components'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO2.LO3"
+      ],
+      "message": "The LO uses a placeholder '{n} of {m}' which is not a concrete, checkable degree.",
+      "fix_hint": "Replace the placeholder with a specific, measurable requirement such as 'outlining at least 3 use cases and 2 system boundaries'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:assessment.weights",
+      "severity": "warning",
+      "nodes": [
+       "A:ProjMilestone"
+      ],
+      "message": "The project component is weighted at only 10%, which is disproportionately low for a capstone-style project requiring 15 hours of student effort.",
+      "fix_hint": "Increase the weight of the project component to at least 20% to reflect the significant effort and depth of the assessment.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "assessment.weights"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.1-flash-lite:k3ca4d81f"
+   }
+  ]
+ },
+ "detected": {
+  "llm_only": [
+   {
+    "detected": 1,
+    "scored": 4,
+    "failed_calls": 0
+   }
+  ],
+  "llm_noticed": [
+   {
+    "detected": 2,
+    "scored": 4,
+    "failed_calls": 0
+   }
+  ],
+  "hybrid": [
+   {
+    "detected": 3,
+    "scored": 4,
+    "failed_calls": 0
+   }
+  ],
+  "hard_only": 2
+ }
+}

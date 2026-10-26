@@ -1,0 +1,3149 @@
+{
+ "scheme": "llm",
+ "repeats": 2,
+ "calls": 39,
+ "failed_or_missing": 9,
+ "seconds": 0,
+ "clean_llm_errors": [
+  2,
+  2
+ ],
+ "rows": [
+  {
+   "defect": "inv_assess_weights",
+   "truth": {
+    "nodes": [
+     "assignment",
+     "endsem",
+     "lab",
+     "midsem",
+     "project",
+     "quiz"
+    ],
+    "stages": [
+     "assessment"
+    ]
+   },
+   "llm_only": [
+    false,
+    false
+   ],
+   "llm_noticed": [
+    false,
+    false
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true,
+    true
+   ],
+   "llm_errors": [
+    2,
+    2
+   ]
+  },
+  {
+   "defect": "banned_verbs",
+   "truth": {
+    "nodes": [
+     "CO1"
+    ],
+    "stages": [
+     "cos"
+    ]
+   },
+   "llm_only": [
+    true,
+    true
+   ],
+   "llm_noticed": [
+    true,
+    true
+   ],
+   "hard_only": false,
+   "hybrid": [
+    true,
+    true
+   ],
+   "llm_errors": [
+    3,
+    3
+   ]
+  },
+  {
+   "defect": "bloom_inconsistencies",
+   "truth": {
+    "nodes": [
+     "CO1",
+     "CO2",
+     "CO3",
+     "CO4"
+    ],
+    "stages": [
+     "cos"
+    ]
+   },
+   "llm_only": [
+    true,
+    true
+   ],
+   "llm_noticed": [
+    true,
+    true
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true,
+    true
+   ],
+   "llm_errors": [
+    3,
+    3
+   ]
+  },
+  {
+   "defect": "orphan_los",
+   "truth": {
+    "nodes": [
+     "NONE.LO1"
+    ],
+    "stages": [
+     "los"
+    ]
+   },
+   "llm_only": [
+    true,
+    true
+   ],
+   "llm_noticed": [
+    true,
+    true
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true,
+    true
+   ],
+   "llm_errors": [
+    3,
+    3
+   ]
+  },
+  {
+   "defect": "invalid_lo_assess",
+   "truth": {
+    "nodes": [
+     "A:Quiz1"
+    ],
+    "stages": [
+     "assessment"
+    ]
+   },
+   "llm_only": [
+    false,
+    true
+   ],
+   "llm_noticed": [
+    false,
+    true
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true,
+    true
+   ],
+   "llm_errors": [
+    2,
+    2
+   ]
+  },
+  {
+   "defect": "assess_before_teach",
+   "truth": {
+    "nodes": [
+     "A:Endsem",
+     "A:Midsem",
+     "CO1.LO2",
+     "CO2.LO2",
+     "CO3.LO2",
+     "CO4.LO1",
+     "CO4.LO3",
+     "M2.T1",
+     "M2.T2",
+     "M3.T1",
+     "M3.T2",
+     "M4.T1",
+     "M4.T2",
+     "M5.T1",
+     "M5.T2",
+     "M6.T1",
+     "M6.T2",
+     "M7.T1",
+     "M7.T2",
+     "M8.T1",
+     "M8.T2"
+    ],
+    "stages": [
+     "assessment"
+    ]
+   },
+   "llm_only": [
+    false,
+    false
+   ],
+   "llm_noticed": [
+    true,
+    true
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true,
+    true
+   ],
+   "llm_errors": [
+    2,
+    2
+   ]
+  },
+  {
+   "defect": "temporal_inversions",
+   "truth": {
+    "nodes": [
+     "M1.T1",
+     "M8.T2"
+    ],
+    "stages": [
+     "schedule"
+    ]
+   },
+   "llm_only": [
+    true,
+    true
+   ],
+   "llm_noticed": [
+    true,
+    true
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true,
+    true
+   ],
+   "llm_errors": [
+    2,
+    3
+   ]
+  },
+  {
+   "defect": "invalid_prereqs",
+   "truth": {
+    "nodes": [
+     "NONEXISTENT101"
+    ],
+    "stages": [
+     "positioning"
+    ]
+   },
+   "llm_only": [
+    false,
+    false
+   ],
+   "llm_noticed": [
+    false,
+    false
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true,
+    true
+   ],
+   "llm_errors": [
+    2,
+    2
+   ]
+  },
+  {
+   "defect": "impossible_hours",
+   "truth": {
+    "nodes": [
+     "M1.T1",
+     "M1.T2",
+     "M2.T1",
+     "M2.T2",
+     "M3.T1",
+     "M3.T2",
+     "M4.T1",
+     "M4.T2",
+     "M5.T1",
+     "M5.T2",
+     "M6.T1",
+     "M6.T2",
+     "M7.T1",
+     "M7.T2",
+     "M8.T1",
+     "M8.T2"
+    ],
+    "stages": [
+     "structure"
+    ]
+   },
+   "llm_only": [
+    false,
+    false
+   ],
+   "llm_noticed": [
+    false,
+    false
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true,
+    true
+   ],
+   "llm_errors": [
+    1,
+    2
+   ]
+  },
+  {
+   "defect": "contradictory_constraints",
+   "truth": {
+    "nodes": [
+     "CO-COUNT-RULE",
+     "K90",
+     "K91"
+    ],
+    "stages": [
+     "constraints"
+    ]
+   },
+   "llm_only": [
+    false,
+    false
+   ],
+   "llm_noticed": [
+    false,
+    false
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true,
+    true
+   ],
+   "llm_errors": [
+    2,
+    2
+   ]
+  },
+  {
+   "defect": "invalid_week_counts",
+   "truth": {
+    "nodes": [],
+    "stages": [
+     "schedule"
+    ]
+   },
+   "llm_only": [
+    false,
+    false
+   ],
+   "llm_noticed": [
+    false,
+    false
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true,
+    true
+   ],
+   "llm_errors": [
+    2,
+    1
+   ]
+  },
+  {
+   "defect": "invalid_week_counts[consistent]",
+   "truth": {
+    "nodes": [
+     "COURSE"
+    ],
+    "stages": [
+     "intake"
+    ]
+   },
+   "llm_only": [
+    false,
+    false
+   ],
+   "llm_noticed": [
+    false,
+    false
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true,
+    true
+   ],
+   "llm_errors": [
+    2,
+    2
+   ]
+  },
+  {
+   "defect": "malformed_copo",
+   "truth": {
+    "nodes": [
+     "CO1",
+     "CO2",
+     "CO3",
+     "CO4",
+     "PO_MAGIC"
+    ],
+    "stages": [
+     "copo"
+    ]
+   },
+   "llm_only": [
+    false,
+    false
+   ],
+   "llm_noticed": [
+    false,
+    false
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true,
+    true
+   ],
+   "llm_errors": [
+    3,
+    1
+   ]
+  },
+  {
+   "defect": "duplicate_outcomes",
+   "truth": {
+    "nodes": [
+     "CO1",
+     "CO2"
+    ],
+    "stages": [
+     "cos"
+    ]
+   },
+   "llm_only": [
+    true,
+    null
+   ],
+   "llm_noticed": [
+    true,
+    null
+   ],
+   "hard_only": false,
+   "hybrid": [
+    true,
+    null
+   ],
+   "llm_errors": [
+    3,
+    null
+   ]
+  },
+  {
+   "defect": "missing_assessment",
+   "truth": {
+    "nodes": [
+     "CO1.LO1",
+     "CO1.LO2",
+     "CO1.LO3",
+     "CO2.LO1",
+     "CO2.LO2",
+     "CO2.LO3",
+     "CO3.LO1",
+     "CO3.LO2",
+     "CO3.LO3",
+     "CO4.LO1",
+     "CO4.LO2",
+     "CO4.LO3"
+    ],
+    "stages": [
+     "assessment"
+    ]
+   },
+   "llm_only": [
+    false,
+    false
+   ],
+   "llm_noticed": [
+    false,
+    false
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true,
+    true
+   ],
+   "llm_errors": [
+    3,
+    1
+   ]
+  },
+  {
+   "defect": "no_lectures",
+   "truth": {
+    "nodes": [
+     "COURSE"
+    ],
+    "stages": [
+     "intake"
+    ]
+   },
+   "llm_only": [
+    false,
+    null
+   ],
+   "llm_noticed": [
+    false,
+    null
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true,
+    null
+   ],
+   "llm_errors": [
+    2,
+    null
+   ]
+  },
+  {
+   "defect": "no_lectures[ltp_6_3_6]",
+   "truth": {
+    "nodes": [
+     "COURSE"
+    ],
+    "stages": [
+     "intake"
+    ]
+   },
+   "llm_only": [
+    false,
+    null
+   ],
+   "llm_noticed": [
+    false,
+    null
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true,
+    null
+   ],
+   "llm_errors": [
+    2,
+    null
+   ]
+  },
+  {
+   "defect": "vague_degree",
+   "truth": {
+    "nodes": [
+     "CO1.LO1",
+     "CO1.LO2",
+     "CO1.LO3",
+     "CO2.LO1",
+     "CO2.LO2",
+     "CO2.LO3",
+     "CO3.LO1",
+     "CO3.LO2",
+     "CO3.LO3",
+     "CO4.LO1",
+     "CO4.LO2",
+     "CO4.LO3"
+    ],
+    "stages": [
+     "los"
+    ]
+   },
+   "llm_only": [
+    true,
+    null
+   ],
+   "llm_noticed": [
+    true,
+    null
+   ],
+   "hard_only": false,
+   "hybrid": [
+    true,
+    null
+   ],
+   "llm_errors": [
+    2,
+    null
+   ]
+  },
+  {
+   "defect": "vague_degree[deeply]",
+   "truth": {
+    "nodes": [
+     "CO1.LO1",
+     "CO1.LO2",
+     "CO1.LO3",
+     "CO2.LO1",
+     "CO2.LO2",
+     "CO2.LO3",
+     "CO3.LO1",
+     "CO3.LO2",
+     "CO3.LO3",
+     "CO4.LO1",
+     "CO4.LO2",
+     "CO4.LO3"
+    ],
+    "stages": [
+     "los"
+    ]
+   },
+   "llm_only": [
+    true,
+    null
+   ],
+   "llm_noticed": [
+    true,
+    null
+   ],
+   "hard_only": false,
+   "hybrid": [
+    true,
+    null
+   ],
+   "llm_errors": [
+    2,
+    null
+   ]
+  },
+  {
+   "defect": "cyclic_lo_deps",
+   "truth": {
+    "nodes": [
+     "CO1.LO1",
+     "CO1.LO2"
+    ],
+    "stages": [
+     "los"
+    ]
+   },
+   "llm_only": [
+    true,
+    null
+   ],
+   "llm_noticed": [
+    true,
+    null
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true,
+    null
+   ],
+   "llm_errors": [
+    4,
+    null
+   ]
+  },
+  {
+   "defect": "excessive_cos",
+   "truth": {
+    "nodes": [
+     "CO1",
+     "CO10",
+     "CO11",
+     "CO12",
+     "CO13",
+     "CO14",
+     "CO15",
+     "CO2",
+     "CO3",
+     "CO4",
+     "CO5",
+     "CO6",
+     "CO7",
+     "CO8",
+     "CO9"
+    ],
+    "stages": [
+     "cos"
+    ]
+   },
+   "llm_only": [
+    true,
+    null
+   ],
+   "llm_noticed": [
+    true,
+    null
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true,
+    null
+   ],
+   "llm_errors": [
+    3,
+    null
+   ]
+  },
+  {
+   "defect": "excessive_los",
+   "truth": {
+    "nodes": [
+     "CO1"
+    ],
+    "stages": [
+     "los"
+    ]
+   },
+   "llm_only": [
+    true,
+    null
+   ],
+   "llm_noticed": [
+    true,
+    null
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true,
+    null
+   ],
+   "llm_errors": [
+    3,
+    null
+   ]
+  },
+  {
+   "defect": "no_topics",
+   "truth": {
+    "nodes": [
+     "CO1.LO1",
+     "CO1.LO2",
+     "CO1.LO3",
+     "CO2.LO1",
+     "CO2.LO2",
+     "CO2.LO3",
+     "CO3.LO1",
+     "CO3.LO2",
+     "CO3.LO3",
+     "CO4.LO1",
+     "CO4.LO2",
+     "CO4.LO3",
+     "TG1",
+     "TG2",
+     "TG3",
+     "TG4",
+     "TG5",
+     "TG6"
+    ],
+    "stages": [
+     "structure"
+    ]
+   },
+   "llm_only": [
+    false,
+    null
+   ],
+   "llm_noticed": [
+    false,
+    null
+   ],
+   "hard_only": true,
+   "hybrid": [
+    true,
+    null
+   ],
+   "llm_errors": [
+    1,
+    null
+   ]
+  }
+ ],
+ "consistency": {
+  "designs_with_both_repeats": 15,
+  "mean_jaccard_of_error_sets": 0.444,
+  "same_detection_both_repeats": "13/14"
+ },
+ "raw": {
+  "clean": [
+   {
+    "findings": [
+     {
+      "code": "LLM:copo.not_inflated",
+      "severity": "warning",
+      "nodes": [
+       "CO1",
+       "CO2",
+       "CO3",
+       "CO4"
+      ],
+      "message": "The course outcomes map indiscriminately to almost every programme outcome and specific outcome across multiple programmes, including numerous tenuous strength-1 links.",
+      "fix_hint": "Prune weak and non-target programme outcome mappings to retain only strong, direct links of strength 2 or 3 that align with the course activities.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "copo.not_inflated"
+      },
+      "stage": "copo"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "Both learning outcomes contain uninstantiated template placeholders ('{n} of {m} short items'), leaving their required degree of performance unmeasurable.",
+      "fix_hint": "Replace the '{n} of {m}' placeholders with explicit numerical performance criteria such as 'at least 4 of 5 short items'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "W05.LAB requires creating a spec-driven module and generating code, but is mapped to tool integration outcome CO1.LO2 and topic M2.T2 instead of spec-driven development.",
+      "fix_hint": "Update W05.LAB to practise CO2.LO2 and link it to topic M4.T1 or M4.T2.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem"
+      ],
+      "message": "The invigilated written end-semester exam cannot measure CO4.LO3, which explicitly mandates a live demonstration with evaluator-chosen walkthrough scenarios.",
+      "fix_hint": "Remove CO4.LO3 from the written end-semester examination and assess it through a lab evaluation or project demonstration.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.8-flash:k3ca4d81f"
+   },
+   {
+    "findings": [
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "The outcome statements contain unpopulated template placeholders '{n} of {m}' rather than checkable degrees.",
+      "fix_hint": "Replace the '{n} of {m}' placeholders with concrete numerical thresholds such as 'at least 4 of 5 short items'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:kaf6cdf0b",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "W05.LAB focuses on creating a spec-driven module and generating code, but lists CO1.LO2 (configuring custom tool integrations using MCP) as the practised learning outcome.",
+      "fix_hint": "Update W05.LAB to practise CO2.LO2 and link it to topic M4.T1 or M4.T2.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:kaf6cdf0b",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem"
+      ],
+      "message": "A:Endsem is an invigilated comprehensive written examination, which cannot directly assess CO4.LO3's requirement of a live demonstration with evaluator-selected scenario walkthroughs.",
+      "fix_hint": "Remove CO4.LO3 from A:Endsem and evaluate it within an interactive lab assessment, project presentation, or viva.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:kaf6cdf0b",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.8-flash:kaf6cdf0b"
+   }
+  ],
+  "inv_assess_weights": [
+   {
+    "findings": [
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "Both learning outcomes contain unpopulated template placeholders '{n} of {m}', making their performance criteria uncheckable.",
+      "fix_hint": "Replace the placeholders with concrete numeric thresholds, such as 'at least 4 out of 5 items'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "The exercise focuses on spec-driven module creation and skeleton code generation, which does not practise the assigned MCP configuration outcome CO1.LO2.",
+      "fix_hint": "Map W05.LAB to CO2.LO2 and update its topic reference from M2.T2 to M4.T1.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.weights",
+      "severity": "warning",
+      "nodes": [
+       "A:Quiz1"
+      ],
+      "message": "A single week-3 quiz covering lower-order Bloom 1 outcomes carries an excessively high weight of 40%, contradicting the course's practical, project-based emphasis.",
+      "fix_hint": "Reduce the quiz component weight to 10-15% and reallocate the remaining weight to hands-on practical assignments and the final project.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "assessment.weights"
+      },
+      "stage": "assessment"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem"
+      ],
+      "message": "An invigilated comprehensive end-semester exam cannot assess CO4.LO3, which explicitly requires a live interactive demonstration of scenario walkthroughs.",
+      "fix_hint": "Move the assessment of CO4.LO3 to a dedicated lab demonstration or project evaluation session.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.8-flash:k3ca4d81f"
+   },
+   {
+    "findings": [
+     {
+      "code": "LLM:copo.not_inflated",
+      "severity": "warning",
+      "nodes": [
+       "CO1",
+       "CO2",
+       "CO3",
+       "CO4"
+      ],
+      "message": "Each course outcome maps indiscriminately to 15 programme outcomes across both B.Tech and M.Tech programmes with many weak strength-1 links.",
+      "fix_hint": "Remove M.Tech outcomes and peripheral strength-1 links (such as PSO1) to retain only the strong, directly supported programme outcomes for B.Tech CSE.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "copo.not_inflated"
+      },
+      "stage": "copo"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "The learning outcome statements contain uninstantiated placeholders '{n} of {m}', leaving the degree unmeasurable.",
+      "fix_hint": "Replace '{n} of {m}' with concrete numerical thresholds such as 'at least 4 of 5 short items'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "W05.LAB requires creating a spec-driven module and generating skeleton code but is mapped to CO1.LO2 (custom tool integrations) and M2.T2 rather than specification-driven development.",
+      "fix_hint": "Map W05.LAB to CO2.LO2 and topic M4.T1 to reflect the spec-driven module development exercise.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.weights",
+      "severity": "warning",
+      "nodes": [
+       "A:Quiz1"
+      ],
+      "message": "A single early-semester quiz covering Bloom level 1 outcomes is assigned a 40% course weight, which is disproportionately heavy for an advanced hands-on course.",
+      "fix_hint": "Reduce the quiz component weight to 10-15% and redistribute the remaining weight to practical assignments or the project.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "assessment.weights"
+      },
+      "stage": "assessment"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem"
+      ],
+      "message": "A:Endsem is an invigilated written examination, which cannot directly assess CO4.LO3's requirement for a live demonstration with evaluator-chosen walkthroughs.",
+      "fix_hint": "Reassign the assessment of CO4.LO3 to a practical lab evaluation or project demonstration rather than an invigilated exam.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.7-flash:kaf6cdf0b"
+   }
+  ],
+  "banned_verbs": [
+   {
+    "findings": [
+     {
+      "code": "LLM:cos.observable_verb",
+      "severity": "error",
+      "nodes": [
+       "CO1"
+      ],
+      "message": "CO1 begins with 'Understand', which is an unobservable verb that is explicitly disallowed and does not match the declared Bloom level 3.",
+      "fix_hint": "Replace 'Understand' with an observable Bloom level 3 action verb such as 'Configure' or 'Implement'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "cos.observable_verb"
+      },
+      "stage": "cos"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "Both learning outcomes contain uninstantiated template placeholders '{n} of {m}', leaving their required degree of performance uncheckable.",
+      "fix_hint": "Replace the '{n} of {m}' placeholders with explicit numeric thresholds or defined criteria.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "W05.LAB tasks students with creating a spec-driven module and generating skeleton code, which does not practise the assigned learning outcome CO1.LO2 on MCP tool integration.",
+      "fix_hint": "Update W05.LAB to practise CO2.LO2 with topic M4.T1, or refocus the exercise on configuring agent tool integrations.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem",
+       "CO4.LO3"
+      ],
+      "message": "A:Endsem is an invigilated written examination, which is an unsuitable format to assess CO4.LO3's requirement for a live demonstration walkthrough.",
+      "fix_hint": "Move the assessment of CO4.LO3 to a practical lab evaluation or project demo, or modify the outcome assessed in A:Endsem to a written analytical task.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.8-flash:k3ca4d81f"
+   },
+   {
+    "findings": [
+     {
+      "code": "LLM:cos.observable_verb",
+      "severity": "error",
+      "nodes": [
+       "CO1"
+      ],
+      "message": "CO1 starts with the unobservable verb 'Understand', which is explicitly prohibited and conflicts with the declared Bloom level of 3.",
+      "fix_hint": "Replace 'Understand' with an observable action verb at Bloom level 3 such as 'Configure' or 'Implement'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "cos.observable_verb"
+      },
+      "stage": "cos"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "Both learning outcomes contain unpopulated '{n} of {m}' placeholders, failing to provide a checkable degree of performance.",
+      "fix_hint": "Replace the '{n} of {m}' template placeholders with concrete numerical thresholds or clear measurable standards.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "W05.LAB asks students to create a spec-driven module and generate skeleton code, but erroneously lists CO1.LO2 (tool integration with model context protocols) as its practised outcome.",
+      "fix_hint": "Update W05.LAB to practise a specification-driven outcome such as CO2.LO2 using topic M4.T1.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem"
+      ],
+      "message": "A:Endsem is an invigilated written examination, which cannot suitably assess CO4.LO3 because the outcome requires a live demonstration with interactive scenario walkthroughs.",
+      "fix_hint": "Move the assessment of CO4.LO3 to a practical lab or project evaluation component, or test a written-appropriate outcome in the end-semester exam.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.7-flash:kaf6cdf0b"
+   }
+  ],
+  "bloom_inconsistencies": [
+   {
+    "findings": [
+     {
+      "code": "LLM:cos.observable_verb",
+      "severity": "error",
+      "nodes": [
+       "CO1",
+       "CO2",
+       "CO3",
+       "CO4"
+      ],
+      "message": "All four course outcomes declare a Bloom level of 1 despite using verbs ('configure', 'translate', 'analyze', 'assess') corresponding to higher cognitive levels.",
+      "fix_hint": "Update the declared Bloom levels to match the verbs (level 3 for CO1, level 2 or 3 for CO2, level 4 for CO3, and level 5 for CO4).",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "cos.observable_verb"
+      },
+      "stage": "cos"
+     },
+     {
+      "code": "LLM:copo.not_inflated",
+      "severity": "warning",
+      "nodes": [
+       "CO1",
+       "CO2",
+       "CO3",
+       "CO4"
+      ],
+      "message": "Each CO is mapped to 15 programme outcomes and PSOs across multiple B.Tech and M.Tech programs with weak justifications, inflating the mapping coverage.",
+      "fix_hint": "Remove weak and extraneous links (especially to M.Tech outcomes) to retain only strong, direct mappings for the target B.Tech CSE program.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "copo.not_inflated"
+      },
+      "stage": "copo"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "Both learning outcomes contain uninstantiated template placeholders '{n} of {m}', failing to provide a checkable degree standard.",
+      "fix_hint": "Replace the '{n} of {m}' placeholders with concrete numerical thresholds (e.g., 'at least 4 of 5 short items').",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "W05.LAB exercises spec-driven module creation and code generation but incorrectly lists CO1.LO2 (custom tool integrations) as its practiced outcome.",
+      "fix_hint": "Update practises_los of W05.LAB to CO2.LO2 and align its topic to M4.T1.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem"
+      ],
+      "message": "The invigilated end-semester examination cannot validly assess CO4.LO3, which explicitly requires a live demonstration with scenario walkthroughs.",
+      "fix_hint": "Reassign CO4.LO3 to a lab or project practical assessment and test written evaluation concepts in A:Endsem.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.8-flash:k3ca4d81f"
+   },
+   {
+    "findings": [
+     {
+      "code": "LLM:cos.observable_verb",
+      "severity": "error",
+      "nodes": [
+       "CO1",
+       "CO2",
+       "CO3",
+       "CO4"
+      ],
+      "message": "The declared bloom_level is set to 1 for all COs despite action verbs such as 'configure', 'translate', 'analyze', and 'assess' operating at Bloom levels 3, 3, 4, and 5.",
+      "fix_hint": "Update the declared bloom_level of each CO to match the cognitive level of its action verb.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "cos.observable_verb"
+      },
+      "stage": "cos"
+     },
+     {
+      "code": "LLM:cos.level_fit",
+      "severity": "warning",
+      "nodes": [
+       "CO1",
+       "CO2",
+       "CO3",
+       "CO4"
+      ],
+      "message": "All course outcomes are declared at Bloom level 1, failing to use multiple Bloom levels and under-pitching an advanced undergraduate course.",
+      "fix_hint": "Distribute the Bloom levels across higher cognitive levels (levels 3 through 5) appropriate for third- and fourth-year students.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "cos.level_fit"
+      },
+      "stage": "cos"
+     },
+     {
+      "code": "LLM:copo.not_inflated",
+      "severity": "warning",
+      "nodes": [
+       "CO1",
+       "CO2",
+       "CO3",
+       "CO4"
+      ],
+      "message": "Each CO maps to nearly every available programme outcome across undergraduate and postgraduate programmes using weak justifications such as merely touching upon concepts.",
+      "fix_hint": "Prune marginal strength-1 links and retain only the direct, defensible mappings relevant to the target programme.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "copo.not_inflated"
+      },
+      "stage": "copo"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "The degrees contain unpopulated placeholder strings '{n} of {m}', failing to specify checkable evaluation standards.",
+      "fix_hint": "Replace '{n} of {m}' with concrete numerical thresholds such as 'at least 4 of 5 short items'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "W05.LAB requires students to create a spec-driven module and generate skeleton code, but incorrectly maps to CO1.LO2 which concerns MCP tool integrations.",
+      "fix_hint": "Update W05.LAB to practise CO2.LO2 and draw upon specification topics M4.T1 or M4.T2.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem"
+      ],
+      "message": "A:Endsem is an invigilated written examination, making it unsuitable for measuring CO4.LO3 which requires a live interactive demonstration with scenario walkthroughs.",
+      "fix_hint": "Assess CO4.LO3 via a practical lab evaluation or project demonstration, or evaluate a written analysis of deployment metrics in A:Endsem.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.7-flash:kaf6cdf0b"
+   }
+  ],
+  "orphan_los": [
+   {
+    "findings": [
+     {
+      "code": "LLM:copo.not_inflated",
+      "severity": "warning",
+      "nodes": [
+       "CO1",
+       "CO2",
+       "CO3",
+       "CO4"
+      ],
+      "message": "Each course outcome is mapped to 15 programme outcomes across unrelated programmes (including CSAI and M.Tech CSE) with numerous inflated strength-1 links.",
+      "fix_hint": "Remove the mappings to non-target programme outcomes and retain only direct, strong links for B.Tech CSE.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "copo.not_inflated"
+      },
+      "stage": "copo"
+     },
+     {
+      "code": "LLM:los.distinct",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO1",
+       "NONE.LO1"
+      ],
+      "message": "NONE.LO1 duplicates the statement of CO1.LO1 verbatim.",
+      "fix_hint": "Remove NONE.LO1 from the course design.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "los.distinct"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "Both learning outcomes contain uninstantiated template placeholders ({n} of {m}), leaving their standards of achievement unmeasurable.",
+      "fix_hint": "Replace {n} of {m} with explicit numerical thresholds.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "W05.LAB exercises spec-driven module creation and skeleton code generation but is mapped to CO1.LO2, which concerns tool integration using model context protocols.",
+      "fix_hint": "Map W05.LAB to CO2.LO2 and update its topic reference to M4.T1.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem",
+       "CO4.LO3"
+      ],
+      "message": "A:Endsem is an invigilated written examination, making it unsuitable for assessing CO4.LO3 which explicitly requires a live interactive demonstration with scenario walkthroughs.",
+      "fix_hint": "Evaluate CO4.LO3 through a practical lab evaluation or project demonstration instead of an invigilated written exam.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.8-flash:k3ca4d81f"
+   },
+   {
+    "findings": [
+     {
+      "code": "LLM:los.distinct",
+      "severity": "error",
+      "nodes": [
+       "NONE.LO1",
+       "CO1.LO1"
+      ],
+      "message": "NONE.LO1 is an unattached learning outcome that duplicates the exact text and task of CO1.LO1.",
+      "fix_hint": "Remove NONE.LO1 from the list of learning outcomes.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "los.distinct"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "Both learning outcomes retain unpopulated template placeholders ('{n} of {m}') in their degree descriptions, leaving their criteria unmeasurable.",
+      "fix_hint": "Replace the '{n} of {m}' placeholders with concrete evaluation thresholds such as 'at least 4 of 5 short items'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "The lab exercises spec-driven module creation and skeleton code generation but inappropriately maps to CO1.LO2 and M2.T2, which concern model context protocol tool integrations.",
+      "fix_hint": "Update W05.LAB to map to spec-driven development topics and outcomes such as M4.T1 and CO2.LO2.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem",
+       "CO4.LO3"
+      ],
+      "message": "A:Endsem is a traditional invigilated written exam, which is an unsuitable format to assess CO4.LO3's explicit requirement of a live demonstration with evaluator-selected walkthroughs.",
+      "fix_hint": "Move the assessment of CO4.LO3 to a practical lab evaluation or project demonstration component.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.7-flash:kaf6cdf0b"
+   }
+  ],
+  "invalid_lo_assess": [
+   {
+    "findings": [
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "The statements contain unpopulated template placeholders '{n} of {m}', failing to specify a checkable degree.",
+      "fix_hint": "Replace '{n} of {m}' with concrete numeric thresholds, such as 'at least 4 of 5 short items'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:copo.not_inflated",
+      "severity": "warning",
+      "nodes": [
+       "CO1",
+       "CO2",
+       "CO3",
+       "CO4"
+      ],
+      "message": "The course outcomes are mapped to nearly every programme outcome across multiple degree programmes, retaining weak strength-1 links with tenuous justifications.",
+      "fix_hint": "Remove the weak strength-1 links and retain only the strong, directly demonstrated mappings for each outcome.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "copo.not_inflated"
+      },
+      "stage": "copo"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "The lab exercise focuses on spec-driven module creation and code generation, but incorrectly lists CO1.LO2 and topic M2.T2 instead of spec-driven development outcomes.",
+      "fix_hint": "Reassign W05.LAB to practise CO2.LO2 and link it to topic M4.T1 or M4.T2.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem",
+       "CO4.LO3"
+      ],
+      "message": "A:Endsem is an invigilated written examination, which cannot measure CO4.LO3 because that outcome explicitly requires a live interactive demonstration walkthrough.",
+      "fix_hint": "Remove CO4.LO3 from A:Endsem and evaluate it through a practical lab demonstration or project evaluation instead.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k3ca4d81f",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.8-flash:k3ca4d81f"
+   },
+   {
+    "findings": [
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "Both learning outcomes contain unrendered template placeholders ('{n} of {m}') in their degree criteria, making the standard of achievement unmeasurable.",
+      "fix_hint": "Replace '{n} of {m}' with concrete, checkable thresholds such as 'at least 4 of 5 short items'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:copo.not_inflated",
+      "severity": "warning",
+      "nodes": [
+       "CO1",
+       "CO2",
+       "CO3",
+       "CO4"
+      ],
+      "message": "Each course outcome is mapped indiscriminately to nearly every programme outcome across multiple programmes, using superficial strength-1 justifications such as touching upon theoretical limits or minor reasoning.",
+      "fix_hint": "Prune tangential strength-1 links and retain only the programme outcomes directly and strongly developed by each CO's assessment and activities.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "copo.not_inflated"
+      },
+      "stage": "copo"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "W05.LAB tasks students with creating a spec-driven module and generating skeleton code, but erroneously claims to practise CO1.LO2 (configuring tool integrations with MCP).",
+      "fix_hint": "Change the practiced LO of W05.LAB to CO2.LO2 and update its topic reference to M4.T1.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Quiz1"
+      ],
+      "message": "A:Quiz1 claims to assess 'LO_FAKE_1', which does not exist in the course's defined learning outcomes.",
+      "fix_hint": "Remove 'LO_FAKE_1' from A:Quiz1 and assess only valid learning outcomes relevant to the quiz, such as CO1.LO3.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.7-flash:kaf6cdf0b"
+   }
+  ],
+  "assess_before_teach": [
+   {
+    "findings": [
+     {
+      "code": "LLM:assessment.exams",
+      "severity": "warning",
+      "nodes": [
+       "A:Midsem",
+       "A:Endsem"
+      ],
+      "message": "The mid-semester and end-semester examinations are both scheduled in week 2 rather than after week 7 and at the end of week 13 as required by the calendar.",
+      "fix_hint": "Reschedule A:Midsem to week 8 (following week 7) and A:Endsem to week 13 at the end of the semester.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "assessment.exams"
+      },
+      "stage": "assessment"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "Both learning outcomes include unpopulated template placeholders '{n} of {m}' that prevent them from having checkable degrees.",
+      "fix_hint": "Replace the '{n} of {m}' placeholder with an explicit numerical threshold, such as 'at least 4 of 5 short items'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO4.LO2"
+      ],
+      "message": "CO4.LO2 shares Bloom level 5 with its parent outcome CO4 and duplicates its scope and degree on a multi-component project without narrowing to a smaller object or task-level standard.",
+      "fix_hint": "Narrow CO4.LO2 to focus on evaluating a specific component or subsystem of the automated testing pipeline rather than the full multi-component project.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "W05.LAB tasks students with building a spec-driven module and generating skeleton code, but is mapped to CO1.LO2 and topic M2.T2 which concern model context protocol tool integrations.",
+      "fix_hint": "Map W05.LAB to practise CO2.LO2 and draw upon topic M4.T1.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.7-flash:k25e39c0a"
+   },
+   {
+    "findings": [
+     {
+      "code": "LLM:assessment.exams",
+      "severity": "warning",
+      "nodes": [
+       "A:Midsem",
+       "A:Endsem"
+      ],
+      "message": "The mid-semester and end-semester exams are scheduled for week 2, which is incorrect for a 13-week semester.",
+      "fix_hint": "Reschedule the mid-semester exam to week 7 or 8 and the end-semester exam to the final week of the semester.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "assessment.exams"
+      },
+      "stage": "assessment"
+     },
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3"
+      ],
+      "message": "The LO is vague and uses placeholders like {n} of {m} instead of a concrete, measurable standard.",
+      "fix_hint": "Replace the placeholder with a specific, measurable requirement, such as 'identifying at least 5 core components from a list of 10'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO2.LO3"
+      ],
+      "message": "The LO uses placeholders like {n} of {m} instead of a concrete, measurable standard.",
+      "fix_hint": "Replace the placeholder with a specific, measurable requirement, such as 'outlining at least 3 use cases from a provided product description'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.1-flash-lite:k3ca4d81f"
+   }
+  ],
+  "temporal_inversions": [
+   {
+    "findings": [
+     {
+      "code": "LLM:structure.order",
+      "severity": "error",
+      "nodes": [
+       "M1.T1",
+       "M8.T2"
+      ],
+      "message": "Topic M1.T1 scheduled in week 1 lists M8.T2 as a prerequisite topic, which is not taught until weeks 12-13.",
+      "fix_hint": "Remove M8.T2 from the requires dependency list of M1.T1.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "structure.order"
+      },
+      "stage": "structure"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "The degree of achievement contains uninstantiated template placeholders '{n} of {m}', rendering the standard uncheckable.",
+      "fix_hint": "Replace the placeholders with concrete numerical performance thresholds, such as 'at least 4 of 5 short items'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:copo.not_inflated",
+      "severity": "warning",
+      "nodes": [
+       "CO1",
+       "CO2",
+       "CO3",
+       "CO4"
+      ],
+      "message": "Every course outcome is mapped indiscriminately to nearly all available outcomes, including post-graduate M.Tech outcomes and weak incidental links.",
+      "fix_hint": "Remove M.Tech programme outcomes and low-strength incidental mappings, retaining only direct and strongly justified links for B.Tech CSE.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "copo.not_inflated"
+      },
+      "stage": "copo"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.7-flash:k25e39c0a"
+   },
+   {
+    "findings": [
+     {
+      "code": "LLM:structure.order",
+      "severity": "error",
+      "nodes": [
+       "M1.T1",
+       "M8.T2"
+      ],
+      "message": "Topic M1.T1 is scheduled in Week 1 but lists M8.T2, which is taught in Weeks 12 and 13, as a prerequisite.",
+      "fix_hint": "Remove M8.T2 from the prerequisite list of M1.T1.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "structure.order"
+      },
+      "stage": "structure"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "The learning outcome contains unpopulated template tokens ('{n} of {m}'), leaving the degree of performance undefined and unmeasurable.",
+      "fix_hint": "Replace the '{n} of {m}' placeholders with specific, checkable numeric performance thresholds.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:copo.not_inflated",
+      "severity": "warning",
+      "nodes": [
+       "CO1",
+       "CO2",
+       "CO3",
+       "CO4"
+      ],
+      "message": "Each course outcome maps to nearly every available programme outcome across multiple degree programmes, including numerous strength-1 links with weak justifications.",
+      "fix_hint": "Remove the strength-1 and non-target M.Tech programme outcome mappings, retaining only direct, strong links (strengths 2 and 3).",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "copo.not_inflated"
+      },
+      "stage": "copo"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem",
+       "CO4.LO3"
+      ],
+      "message": "An invigilated comprehensive end-semester examination is not a suitable format to assess CO4.LO3, which requires a live demonstration with scenario walkthroughs chosen by an evaluator.",
+      "fix_hint": "Assess CO4.LO3 through a lab evaluation or project demonstration rather than an invigilated written examination.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.7-flash:kaf6cdf0b"
+   }
+  ],
+  "invalid_prereqs": [
+   {
+    "findings": [
+     {
+      "code": "LLM:copo.not_inflated",
+      "severity": "warning",
+      "nodes": [
+       "CO1",
+       "CO2",
+       "CO3",
+       "CO4"
+      ],
+      "message": "Each course outcome is mapped indiscriminately to 15 or 16 programme outcomes across multiple degree tracks with weak, inflated justifications such as claiming tool or log configurations address theoretical limits of computing.",
+      "fix_hint": "Prune marginal and weak strength-1 mappings to non-target programme outcomes and theoretical computing limits, retaining only direct, justifiable connections.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "copo.not_inflated"
+      },
+      "stage": "copo"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "The outcome statements contain unresolved template placeholders ('{n} of {m}'), leaving the degree of performance unmeasurable.",
+      "fix_hint": "Replace '{n} of {m}' with concrete numerical thresholds specifying how many items students must correctly address.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "W05.LAB focuses on creating spec-driven modules and skeleton code generation but incorrectly lists CO1.LO2 (tool integration configuration) and topic M2.T2 instead of specification-driven development.",
+      "fix_hint": "Remap W05.LAB to practise CO2.LO2 using topic M4.T1 or M4.T2.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem"
+      ],
+      "message": "A:Endsem is an invigilated written examination, making it unsuitable for assessing CO4.LO3 which explicitly requires a live demonstration with scenario walkthroughs.",
+      "fix_hint": "Remove CO4.LO3 from the invigilated end-semester exam and assess it in a practical lab evaluation or project demonstration.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.7-flash:k25e39c0a"
+   },
+   {
+    "findings": [
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3"
+      ],
+      "message": "The LO uses a placeholder '{n} of {m}' which is not a measurable degree.",
+      "fix_hint": "Replace the placeholder with a specific, measurable standard such as 'identifying at least 4 out of 5 core components'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO2.LO3"
+      ],
+      "message": "The LO uses a placeholder '{n} of {m}' which is not a measurable degree.",
+      "fix_hint": "Replace the placeholder with a specific, measurable standard such as 'identifying at least 3 out of 4 use cases'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:structure.realistic_hours",
+      "severity": "warning",
+      "nodes": [
+       "M2.T2"
+      ],
+      "message": "The outside load of 13 hours for a 2.5-hour topic is disproportionately high compared to other topics.",
+      "fix_hint": "Adjust the outside load hours to be consistent with the 10-12 hour weekly average for a 4-credit course.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "structure.realistic_hours"
+      },
+      "stage": "structure"
+     },
+     {
+      "code": "LLM:structure.realistic_hours",
+      "severity": "warning",
+      "nodes": [
+       "M4.T2"
+      ],
+      "message": "The outside load of 13 hours for a 2.5-hour topic is disproportionately high compared to other topics.",
+      "fix_hint": "Adjust the outside load hours to be consistent with the 10-12 hour weekly average for a 4-credit course.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "structure.realistic_hours"
+      },
+      "stage": "structure"
+     },
+     {
+      "code": "LLM:structure.realistic_hours",
+      "severity": "warning",
+      "nodes": [
+       "M6.T1"
+      ],
+      "message": "The outside load of 13 hours for a 2.5-hour topic is disproportionately high compared to other topics.",
+      "fix_hint": "Adjust the outside load hours to be consistent with the 10-12 hour weekly average for a 4-credit course.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "structure.realistic_hours"
+      },
+      "stage": "structure"
+     },
+     {
+      "code": "LLM:structure.realistic_hours",
+      "severity": "warning",
+      "nodes": [
+       "M8.T1"
+      ],
+      "message": "The outside load of 13 hours for a 2.5-hour topic is disproportionately high compared to other topics.",
+      "fix_hint": "Adjust the outside load hours to be consistent with the 10-12 hour weekly average for a 4-credit course.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "structure.realistic_hours"
+      },
+      "stage": "structure"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.1-flash-lite:k3ca4d81f"
+   }
+  ],
+  "impossible_hours": [
+   {
+    "findings": [
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO4.LO2"
+      ],
+      "message": "LO CO4.LO2 restates its parent outcome CO4 at the same Bloom level without defining a narrower object, specific input, or task-level degree.",
+      "fix_hint": "Revise CO4.LO2 to focus on a narrower task step, such as evaluating specific test-case generation tools or individual pipeline reliability metrics.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.5-flash:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.5-flash:k3ca4d81f"
+   },
+   {
+    "findings": [
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3"
+      ],
+      "message": "The LO uses a placeholder '{n} of {m}' which is not a checkable degree.",
+      "fix_hint": "Replace the placeholder with a specific, measurable standard, such as 'identifying at least 4 out of 5 core components'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO2.LO3"
+      ],
+      "message": "The LO uses a placeholder '{n} of {m}' which is not a checkable degree.",
+      "fix_hint": "Replace the placeholder with a specific, measurable standard, such as 'identifying at least 3 use cases and 2 system boundaries'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:assessment.weights",
+      "severity": "warning",
+      "nodes": [
+       "A:ProjMilestone"
+      ],
+      "message": "The project component is weighted at only 10%, which is disproportionately low for a capstone-style project in an advanced undergraduate course.",
+      "fix_hint": "Increase the weight of the project component to at least 20-25% to reflect its significance in the course.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "assessment.weights"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.1-flash-lite:k3ca4d81f"
+   }
+  ],
+  "contradictory_constraints": [
+   {
+    "findings": [
+     {
+      "code": "LLM:copo.not_inflated",
+      "severity": "warning",
+      "nodes": [
+       "CO1",
+       "CO2",
+       "CO3",
+       "CO4"
+      ],
+      "message": "Each CO is mapped to nearly every programme outcome across multiple programmes through numerous tenuous, low-strength links.",
+      "fix_hint": "Remove incidental strength-1 mappings and retain only the primary programme outcomes directly exercised and evaluated by each CO.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "copo.not_inflated"
+      },
+      "stage": "copo"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "Both LO statements contain unpopulated template placeholders ('{n} of {m} short items'), leaving their required degree of performance undefined.",
+      "fix_hint": "Replace the '{n} of {m}' placeholders with concrete numerical thresholds, such as 'at least 4 of 5 short items'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "W05.LAB exercises spec-driven module creation and skeleton code generation but incorrectly lists CO1.LO2 and topic M2.T2, which concern tool integration via MCP.",
+      "fix_hint": "Update W05.LAB to map to CO2.LO2 and use topic M4.T1 or M4.T2.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem"
+      ],
+      "message": "A:Endsem is an invigilated written exam, which is an unsuitable format to assess CO4.LO3's requirement of a live demonstration with scenario walkthroughs.",
+      "fix_hint": "Remove CO4.LO3 from A:Endsem and assess it through an interactive lab evaluation, project demo, or viva.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.7-flash:k25e39c0a"
+   },
+   {
+    "findings": [
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO4.LO2"
+      ],
+      "message": "LO CO4.LO2 restates its parent outcome CO4 at the same Bloom level without narrowing the scope or task.",
+      "fix_hint": "Narrow CO4.LO2 to assess a specific component or stage of the testing pipeline rather than evaluating the complete pipeline.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.5-flash:k25e39c0a",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "Learning outcomes CO1.LO3 and CO2.LO3 contain unpopulated placeholders '{n}' and '{m}', making their performance criteria unmeasurable.",
+      "fix_hint": "Replace the placeholders '{n}' and '{m}' with concrete numerical values for the degree.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.5-flash:k25e39c0a",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.5-flash:k25e39c0a"
+   }
+  ],
+  "invalid_week_counts": [
+   {
+    "findings": [
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "The learning outcome statements contain uninstantiated template placeholders ('{n} of {m} short items'), leaving the degree of mastery unmeasurable.",
+      "fix_hint": "Replace the '{n} of {m}' placeholders with concrete quantitative standards, such as 'at least 4 of 5 short items'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k25e39c0a",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "The lab task focuses on spec-driven module creation and code generation but incorrectly lists CO1.LO2 (custom tool integrations using model context protocols) as the practised outcome.",
+      "fix_hint": "Update W05.LAB to map to CO2.LO2 and reference topic M4.T1 instead of CO1.LO2 and M2.T2.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k25e39c0a",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem",
+       "CO4.LO3"
+      ],
+      "message": "The invigilated end-semester examination format cannot evaluate CO4.LO3, which explicitly requires a live demonstration with two scenario walkthroughs chosen by an evaluator.",
+      "fix_hint": "Assess CO4.LO3 through a lab evaluation or interactive project demonstration, and replace it in A:Endsem with an outcome suitable for a written invigilated exam.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k25e39c0a",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.8-flash:k25e39c0a"
+   },
+   {
+    "findings": [
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "The learning outcome degrees contain unpopulated template placeholders '{n}' and '{m}'.",
+      "fix_hint": "Replace '{n}' and '{m}' with concrete numerical values such as '4 of 5 short items'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.5-flash:k25e39c0a",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "The lab exercise covers spec-driven module creation but incorrectly lists CO1.LO2, which pertains to custom tool integrations.",
+      "fix_hint": "Update practises_los to reference a specification-driven learning outcome such as CO2.LO1 or CO2.LO2.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.5-flash:k25e39c0a",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.5-flash:k25e39c0a"
+   }
+  ],
+  "invalid_week_counts[consistent]": [
+   {
+    "findings": [
+     {
+      "code": "LLM:copo.not_inflated",
+      "severity": "warning",
+      "nodes": [
+       "CO1",
+       "CO2",
+       "CO3",
+       "CO4"
+      ],
+      "message": "Each course outcome is mapped excessively to 15 programme outcomes, including tenuous strength-1 mappings to non-target M.Tech programme outcomes for an undergraduate course.",
+      "fix_hint": "Prune marginal strength-1 links and M.Tech outcomes, retaining only strong and directly justified mappings to relevant B.Tech programme outcomes.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k25e39c0a",
+       "item": "copo.not_inflated"
+      },
+      "stage": "copo"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "The learning outcome statements contain unpopulated template placeholders ({n} of {m}) rather than checkable degrees.",
+      "fix_hint": "Replace the {n} of {m} placeholders with explicit numeric thresholds, such as at least 4 of 5 short items.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k25e39c0a",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "The lab exercise focuses on spec-driven module design and skeleton code generation but incorrectly lists CO1.LO2 (tool integration using model context protocols) as the practiced learning outcome.",
+      "fix_hint": "Update W05.LAB to practise CO2.LO2 and use module M4 topics corresponding to spec-driven development.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k25e39c0a",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem",
+       "CO4.LO3"
+      ],
+      "message": "An invigilated comprehensive written end-semester exam is an unsuitable format to assess CO4.LO3, which explicitly mandates a live demonstration with interactive scenario walkthroughs.",
+      "fix_hint": "Reallocate CO4.LO3 to an interactive lab evaluation or project demonstration rather than testing it in the written end-semester exam.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k25e39c0a",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.8-flash:k25e39c0a"
+   },
+   {
+    "findings": [
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3"
+      ],
+      "message": "The LO uses a placeholder '{n} of {m}' which is not a measurable degree.",
+      "fix_hint": "Replace the placeholder with a specific, measurable standard such as 'identifying at least 4 out of 5 core components'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO2.LO3"
+      ],
+      "message": "The LO uses a placeholder '{n} of {m}' which is not a measurable degree.",
+      "fix_hint": "Replace the placeholder with a specific, measurable standard such as 'identifying at least 3 use cases and 2 system boundaries'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:assessment.weights",
+      "severity": "warning",
+      "nodes": [
+       "A:ProjMilestone"
+      ],
+      "message": "The project component is weighted at only 10%, which is disproportionately low for a capstone-style assessment requiring 15 hours of student effort.",
+      "fix_hint": "Increase the weight of the project component to at least 20% to reflect the significant effort and depth of the learning outcomes assessed.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "assessment.weights"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.1-flash-lite:k3ca4d81f"
+   }
+  ],
+  "malformed_copo": [
+   {
+    "findings": [
+     {
+      "code": "LLM:copo.not_inflated",
+      "severity": "warning",
+      "nodes": [
+       "CO1",
+       "CO2",
+       "CO3",
+       "CO4"
+      ],
+      "message": "Each course outcome is mapped to all 15 programme outcomes including numerous weak strength-1 links rather than retaining only strong and direct mappings.",
+      "fix_hint": "Prune weak and peripheral mappings to retain only those programme outcomes that each course outcome directly develops.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k25e39c0a",
+       "item": "copo.not_inflated"
+      },
+      "stage": "copo"
+     },
+     {
+      "code": "LLM:los.distinct",
+      "severity": "error",
+      "nodes": [
+       "CO2.LO1",
+       "CO2.LO3"
+      ],
+      "message": "CO2.LO3 duplicates the capability in CO2.LO1 by having students outline use cases and system boundaries from unstructured product descriptions.",
+      "fix_hint": "Differentiate CO2.LO3 to focus on a distinct capability such as drafting acceptance criteria, or remove the duplicate outcome.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k25e39c0a",
+       "item": "los.distinct"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "Both learning outcomes contain unpopulated placeholder text ('{n} of {m}') in their degree statements, leaving the performance criteria unmeasurable.",
+      "fix_hint": "Replace the '{n} of {m}' placeholders with concrete numeric thresholds or specific evaluation criteria.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k25e39c0a",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "W05.LAB defines an exercise in spec-driven module design and skeleton code generation but incorrectly lists CO1.LO2 and topic M2.T2, which cover custom tool integrations via model context protocols.",
+      "fix_hint": "Update W05.LAB to practice CO2.LO2 and draw upon topic M4.T1, or align the exercise instructions with model context protocol integrations.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k25e39c0a",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem"
+      ],
+      "message": "A:Endsem is an invigilated written examination assessing CO4.LO3, which explicitly requires a live interactive demonstration with evaluator-selected walkthroughs.",
+      "fix_hint": "Assess CO4.LO3 through a lab evaluation or live project demonstration rather than an invigilated written exam.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.8-flash:k25e39c0a",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.8-flash:k25e39c0a"
+   },
+   {
+    "findings": [
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO4.LO2"
+      ],
+      "message": "CO4.LO2 restates parent outcome CO4 at the same Bloom level without narrowing its scope, input, or target artifact.",
+      "fix_hint": "Narrow CO4.LO2 to focus on a specific sub-task or stage, such as assessing test-generation or evaluation stages for a single software component.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.5-flash:k25e39c0a",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.5-flash:k25e39c0a"
+   }
+  ],
+  "duplicate_outcomes": [
+   {
+    "findings": [
+     {
+      "code": "LLM:cos.distinct",
+      "severity": "error",
+      "nodes": [
+       "CO1",
+       "CO2"
+      ],
+      "message": "CO1 and CO2 share identical outcome statements regarding configuring coding agents and tool integrations.",
+      "fix_hint": "Rewrite CO2 to focus on translating requirements into executable specifications using spec-driven development frameworks.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "cos.distinct"
+      },
+      "stage": "cos"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "Both learning outcomes contain unpopulated placeholder text '{n} of {m}' in place of concrete, measurable degrees of performance.",
+      "fix_hint": "Replace the '{n} of {m}' placeholders with specific numeric thresholds for acceptable performance.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "W05.LAB asks students to create a spec-driven module and generate skeleton code, but incorrectly maps to CO1.LO2 (tool integration with MCP) and topic M2.T2.",
+      "fix_hint": "Update W05.LAB to practise CO2.LO2 using topic M4.T1.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem",
+       "CO4.LO3"
+      ],
+      "message": "A:Endsem is an invigilated written examination that cannot evaluate CO4.LO3, which requires a live interactive demonstration with evaluator-selected walkthroughs.",
+      "fix_hint": "Move the assessment of CO4.LO3 to a practical lab or project evaluation format, or test an outcome suitable for a written exam.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.7-flash:k25e39c0a"
+   }
+  ],
+  "missing_assessment": [
+   {
+    "findings": [
+     {
+      "code": "LLM:copo.not_inflated",
+      "severity": "warning",
+      "nodes": [
+       "CO1",
+       "CO2",
+       "CO3",
+       "CO4"
+      ],
+      "message": "Each course outcome is mapped to nearly every programme outcome across multiple degree programmes using tenuous strength-1 links based on peripheral touches.",
+      "fix_hint": "Remove the peripheral strength-1 links and retain only the strong, directly evidenced mappings for each course outcome.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "copo.not_inflated"
+      },
+      "stage": "copo"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3"
+      ],
+      "message": "The outcome contains unresolved template placeholders ('{n} of {m}') in its degree statement, making the standard of achievement uncheckable.",
+      "fix_hint": "Replace '{n} of {m}' with concrete numerical targets, such as 'at least 4 of 5 short items'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO2.LO3"
+      ],
+      "message": "The outcome contains unresolved template placeholders ('{n} of {m}') in its degree statement, making the standard of achievement uncheckable.",
+      "fix_hint": "Replace '{n} of {m}' with concrete numerical targets, such as 'at least 4 of 5 short items'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO4.LO2"
+      ],
+      "message": "CO4.LO2 is at the same Bloom level as parent CO4 and virtually restates the parent outcome without narrowing the artifact, scope, or evaluation criteria.",
+      "fix_hint": "Narrow CO4.LO2 to evaluate a specific pipeline component or subsystem against designated reliability criteria.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "W05.LAB requires creating a spec-driven module and generating skeleton code, but incorrectly maps to CO1.LO2 (custom tool integrations using MCP).",
+      "fix_hint": "Change the practised outcome of W05.LAB to CO2.LO2 and update its topic dependency to M4.T1 or M4.T2.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.7-flash:k25e39c0a"
+   },
+   {
+    "findings": [
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO4.LO2"
+      ],
+      "message": "CO4.LO2 restates its parent outcome CO4 at the same Bloom level without narrowing the scope, task, or evaluation degree.",
+      "fix_hint": "Revise CO4.LO2 to target a specific sub-task or component of the evaluation pipeline, such as assessing test-case generation coverage or pipeline failure-recovery metrics.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.5-flash:k25e39c0a",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.5-flash:k25e39c0a"
+   }
+  ],
+  "no_lectures": [
+   {
+    "findings": [
+     {
+      "code": "LLM:copo.not_inflated",
+      "severity": "warning",
+      "nodes": [
+       "CO1",
+       "CO2",
+       "CO3",
+       "CO4"
+      ],
+      "message": "Every CO is mapped indiscriminately to 15 different programme outcomes across both B.Tech and M.Tech programmes with tenuous 1-strength justifications.",
+      "fix_hint": "Remove incidental and lower-level mappings (especially irrelevant postgraduate M.Tech outcomes) and retain only strong, direct outcome links.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "copo.not_inflated"
+      },
+      "stage": "copo"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "The learning outcome statements contain unpopulated template placeholders '{n} of {m}' making the standard of achievement uncheckable.",
+      "fix_hint": "Replace the '{n} of {m}' placeholders with specific numeric performance criteria.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "W05.LAB involves creating a spec-driven module and generating skeleton code, but erroneously lists CO1.LO2 (tool integration) and topic M2.T2.",
+      "fix_hint": "Update W05.LAB to practise CO2.LO2 and link it to topic M4.T1 or M4.T2.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem"
+      ],
+      "message": "The invigilated comprehensive end-semester exam cannot suitably assess CO4.LO3, which requires an interactive live demonstration with evaluator walkthroughs.",
+      "fix_hint": "Reassign CO4.LO3 to a practical lab evaluation or project demonstration component.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.7-flash:k25e39c0a"
+   }
+  ],
+  "no_lectures[ltp_6_3_6]": [
+   {
+    "findings": [
+     {
+      "code": "LLM:copo.not_inflated",
+      "severity": "warning",
+      "nodes": [
+       "CO1",
+       "CO2",
+       "CO3",
+       "CO4"
+      ],
+      "message": "Every CO is mapped to 15 programme outcomes across unrelated programmes (including M.Tech and CSAI) with tenuous strength-1 justifications.",
+      "fix_hint": "Remove the extraneous programme outcomes and retain only direct, defensible mappings to the target B.Tech CSE programme.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "copo.not_inflated"
+      },
+      "stage": "copo"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "The degree statements contain uninstantiated template placeholders ('{n} of {m}'), leaving the standard of performance undefined and unmeasurable.",
+      "fix_hint": "Replace the '{n} of {m}' placeholders with concrete thresholds, such as 'at least 4 of 5 short items'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "W05.LAB describes a spec-driven module development exercise but incorrectly lists CO1.LO2 and topic M2.T2.",
+      "fix_hint": "Map W05.LAB to CO2.LO2 and topic M4.T1 to match its spec-driven development exercise.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem"
+      ],
+      "message": "A:Endsem is an invigilated written exam assessing CO4.LO3, which explicitly requires a live demonstration walkthrough chosen by the evaluator.",
+      "fix_hint": "Assess CO4.LO3 through a practical lab exam, viva, or live demo rather than a written invigilated examination.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:k25e39c0a",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.7-flash:k25e39c0a"
+   }
+  ],
+  "vague_degree": [
+   {
+    "findings": [
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3"
+      ],
+      "message": "The LO uses a placeholder '{n} of {m}' which is not a concrete, checkable degree.",
+      "fix_hint": "Replace the placeholder with a specific, measurable requirement such as 'identifying at least 5 core components'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO2.LO3"
+      ],
+      "message": "The LO uses a placeholder '{n} of {m}' which is not a concrete, checkable degree.",
+      "fix_hint": "Replace the placeholder with a specific, measurable requirement such as 'outlining at least 3 use cases and 2 system boundaries'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:assessment.weights",
+      "severity": "warning",
+      "nodes": [
+       "A:ProjMilestone"
+      ],
+      "message": "The project component is weighted at only 10%, which is disproportionately low for a capstone-style project requiring 15 hours of student effort.",
+      "fix_hint": "Increase the weight of the project component to at least 20% to reflect the significant effort and depth of the assessment.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "assessment.weights"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.1-flash-lite:k3ca4d81f"
+   }
+  ],
+  "vague_degree[deeply]": [
+   {
+    "findings": [
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3"
+      ],
+      "message": "The LO is vague and uses a placeholder format '{n} of {m}' instead of a concrete, measurable degree.",
+      "fix_hint": "Replace the placeholder with a specific, measurable criterion, such as 'identifying at least 5 core components from a list of 10'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO2.LO3"
+      ],
+      "message": "The LO is vague and uses a placeholder format '{n} of {m}' instead of a concrete, measurable degree.",
+      "fix_hint": "Replace the placeholder with a specific, measurable criterion, such as 'outlining at least 3 use cases and 2 system boundaries from a provided product description'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:structure.realistic_hours",
+      "severity": "warning",
+      "nodes": [
+       "M1.T1",
+       "M1.T2",
+       "M2.T1",
+       "M2.T2",
+       "M3.T1",
+       "M3.T2",
+       "M4.T1",
+       "M4.T2",
+       "M5.T1",
+       "M5.T2",
+       "M6.T1",
+       "M6.T2"
+      ],
+      "message": "The total estimated lecture hours (37.75) exceed the available lecture hours for a 13-week, 3-hour-per-week course (39 hours total, but typically 36-37 effective hours).",
+      "fix_hint": "Consolidate topics to ensure the total lecture hours align with the 39-hour semester limit.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "structure.realistic_hours"
+      },
+      "stage": "structure"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.1-flash-lite:k3ca4d81f"
+   }
+  ],
+  "cyclic_lo_deps": [
+   {
+    "findings": [
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO2"
+      ],
+      "message": "The LO restates the CO's requirement for passing tests and configuration warnings, making it redundant rather than a narrower step.",
+      "fix_hint": "Redefine the LO to focus on a specific sub-task of the configuration process, such as defining a single tool integration schema.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO3.LO2"
+      ],
+      "message": "The LO is identical to the parent CO in both task and degree, failing to be a narrower step.",
+      "fix_hint": "Redefine the LO to focus on a specific aspect of trace analysis, such as identifying a single type of control-flow anomaly.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO4.LO2"
+      ],
+      "message": "The LO is identical to the parent CO in both task and degree, failing to be a narrower step.",
+      "fix_hint": "Redefine the LO to focus on a specific component of the pipeline assessment, such as evaluating a single reliability metric.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:ProjMilestone"
+      ],
+      "message": "The project milestone is weighted at only 10%, which is disproportionately low for a 15-hour capstone-style assessment.",
+      "fix_hint": "Increase the weight of the project component to reflect the significant student effort and its role in assessing high-level COs.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.1-flash-lite:k3ca4d81f",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.1-flash-lite:k3ca4d81f"
+   }
+  ],
+  "excessive_cos": [
+   {
+    "findings": [
+     {
+      "code": "LLM:cos.distinct",
+      "severity": "error",
+      "nodes": [
+       "CO5",
+       "CO15"
+      ],
+      "message": "CO5 and CO15 target the identical capability and object of configuring repository-scale refactoring under identical conditions.",
+      "fix_hint": "Remove CO15 or rewrite it to target a distinct outcome in the software development lifecycle.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "cos.distinct"
+      },
+      "stage": "cos"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "Both LOs contain uninstantiated template placeholders '{n} of {m}' instead of concrete, checkable performance degrees.",
+      "fix_hint": "Replace '{n} of {m}' with explicit numerical standards such as 'at least 4 of 5 short items'.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "W05.LAB focuses on creating spec-driven modules and code generation, but is mapped to tool integration outcome CO1.LO2 and topic M2.T2.",
+      "fix_hint": "Remap W05.LAB to practise CO2.LO2 using topic M4.T1 to match its spec-driven development exercise.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem",
+       "CO4.LO3"
+      ],
+      "message": "A:Endsem is an invigilated written exam, making it an unsuitable format to assess CO4.LO3 which requires a live demonstration of scenario walkthroughs.",
+      "fix_hint": "Assess CO4.LO3 through a practical lab exam or project evaluation session rather than a written end-semester exam.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.7-flash:kaf6cdf0b"
+   }
+  ],
+  "excessive_los": [
+   {
+    "findings": [
+     {
+      "code": "LLM:los.distinct",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO13",
+       "CO1.LO14",
+       "CO1.LO15"
+      ],
+      "message": "CO1.LO13, CO1.LO14, and CO1.LO15 are verbatim duplicates of earlier learning outcomes CO1.LO3, CO1.LO4, and CO1.LO5.",
+      "fix_hint": "Remove duplicate learning outcomes CO1.LO13, CO1.LO14, and CO1.LO15.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "los.distinct"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:los.measurable",
+      "severity": "error",
+      "nodes": [
+       "CO1.LO3",
+       "CO2.LO3"
+      ],
+      "message": "CO1.LO3 and CO2.LO3 contain unpopulated placeholder tokens '{n} of {m}' rather than checkable performance degrees.",
+      "fix_hint": "Replace the '{n} of {m}' placeholders with explicit numerical standards of performance.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "los.measurable"
+      },
+      "stage": "los"
+     },
+     {
+      "code": "LLM:labs.practises_los",
+      "severity": "warning",
+      "nodes": [
+       "W05.LAB"
+      ],
+      "message": "W05.LAB focuses on creating a spec-driven module from requirements, but is mapped to CO1.LO2 which concerns configuring tool integrations via MCP.",
+      "fix_hint": "Reassign W05.LAB to practise CO2.LO2 and update its topic reference to spec-driven development.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "labs.practises_los"
+      },
+      "stage": "labs"
+     },
+     {
+      "code": "LLM:assessment.measures_los",
+      "severity": "error",
+      "nodes": [
+       "A:Endsem"
+      ],
+      "message": "A:Endsem is an invigilated written exam that cannot evaluate CO4.LO3, which requires a live software demonstration with evaluator-chosen walkthroughs.",
+      "fix_hint": "Remove CO4.LO3 from A:Endsem and evaluate it using a practical demonstration or project presentation.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.7-flash:kaf6cdf0b",
+       "item": "assessment.measures_los"
+      },
+      "stage": "assessment"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.7-flash:kaf6cdf0b"
+   }
+  ],
+  "no_topics": [
+   {
+    "findings": [
+     {
+      "code": "LLM:los.narrower",
+      "severity": "error",
+      "nodes": [
+       "CO4.LO2"
+      ],
+      "message": "CO4.LO2 restates its parent outcome CO4 at Bloom level 5 without narrowing the scope to a specific sub-task or smaller component of the testing pipeline.",
+      "fix_hint": "Rewrite CO4.LO2 to focus on a specific sub-task or smaller component of the testing pipeline, such as evaluating unit test generation metrics for individual software modules.",
+      "evidence": {
+       "checked_by": "gemini:gemini-3.5-flash:k3ca4d81f",
+       "item": "los.narrower"
+      },
+      "stage": "los"
+     }
+    ],
+    "endpoint": "gemini:gemini-3.5-flash:k3ca4d81f"
+   }
+  ]
+ },
+ "detected": {
+  "llm_only": [
+   {
+    "detected": 10,
+    "scored": 23,
+    "failed_calls": 0
+   },
+   {
+    "detected": 5,
+    "scored": 14,
+    "failed_calls": 9
+   }
+  ],
+  "llm_noticed": [
+   {
+    "detected": 11,
+    "scored": 23,
+    "failed_calls": 0
+   },
+   {
+    "detected": 6,
+    "scored": 14,
+    "failed_calls": 9
+   }
+  ],
+  "hybrid": [
+   {
+    "detected": 23,
+    "scored": 23,
+    "failed_calls": 0
+   },
+   {
+    "detected": 14,
+    "scored": 14,
+    "failed_calls": 9
+   }
+  ],
+  "hard_only": 19
+ }
+}

@@ -1,0 +1,877 @@
+{
+ "cs601-01": {
+  "calls_logged": 24,
+  "calls_ok": 24,
+  "endpoints": {
+   "groq:openai/gpt-oss-120b": 5,
+   "gemini:gemini-3.5-flash-lite": 18,
+   "groq:qwen/qwen3.8-27b": 1
+  },
+  "per_prompt": {
+   "G1": [
+    "groq:openai/gpt-oss-120b"
+   ],
+   "X1": [
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "X2": [
+    "groq:qwen/qwen3.8-27b",
+    "gemini:gemini-3.5-flash-lite",
+    "groq:openai/gpt-oss-120b",
+    "groq:openai/gpt-oss-120b"
+   ],
+   "G2": [
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "G3": [
+    "groq:openai/gpt-oss-120b"
+   ],
+   "G4": [
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "R1": [
+    "gemini:gemini-3.5-flash-lite",
+    "gemini:gemini-3.5-flash-lite",
+    "gemini:gemini-3.5-flash-lite",
+    "gemini:gemini-3.5-flash-lite",
+    "gemini:gemini-3.5-flash-lite",
+    "gemini:gemini-3.5-flash-lite",
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "G5": [
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "G6": [
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "G7": [
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "G8": [
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "G9": [
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "X3": [
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "G10": [
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "G11": [
+    "groq:openai/gpt-oss-120b"
+   ]
+  },
+  "prompt_tokens": 123969,
+  "output_tokens": 30620,
+  "latency_s": 114.7,
+  "wall_s": 182,
+  "rendered_line": "19:11:10 rendered proposal.md + proposal.csv (0 errors, 10 warnings)",
+  "neo4j_line": "",
+  "stored_summary": null,
+  "revalidated_today": {
+   "errors": 1,
+   "warnings": 11,
+   "errors_by_code": {
+    "VA-PROCTOR": 1
+   },
+   "warnings_by_code": {
+    "V11": 7,
+    "V6": 1,
+    "VA-PROJ": 1,
+    "VA-REG": 1,
+    "VK": 1
+   }
+  },
+  "eval_today": {
+   "summary": {
+    "verdict": "FAIL",
+    "errors": 1,
+    "regulation_ok": true,
+    "alignment_min_pct": 100.0,
+    "hard_constraints_satisfied_pct": 100.0,
+    "review_reasons": [
+     "1 warnings ask for confirmation"
+    ]
+   },
+   "completeness": {
+    "cos": 5,
+    "los": 11,
+    "topics": 16,
+    "modules": 6,
+    "weeks_scheduled": 13,
+    "labs": 12,
+    "tutorials": 12,
+    "assessment_components": 5,
+    "assessment_instances": 7,
+    "resources": 5
+   },
+   "alignment": {
+    "cos_with_los_pct": 100.0,
+    "los_taught_pct": 100.0,
+    "los_assessed_at_level_pct": 100.0,
+    "cos_assessed_pct": 100.0,
+    "topic_groups_taught_pct": 100.0,
+    "topics_scheduled_pct": 100.0,
+    "labs_practising_an_lo_pct": 100.0,
+    "po_coverage_pct_by_programme": {
+     "null": 33.3
+    }
+   },
+   "constraints": {
+    "total": 17,
+    "checked": 17,
+    "hard_checked": 14,
+    "hard_satisfied_pct": 100.0,
+    "hard_violated": [],
+    "to_confirm": [
+     "K14"
+    ],
+    "malformed": [],
+    "unenforced": [],
+    "conflicts": 0
+   },
+   "regulation": [],
+   "validation": {
+    "errors": 1,
+    "warnings": 11,
+    "errors_by_family": {
+     "regulation": 1
+    },
+    "errors_by_code": {
+     "VA-PROCTOR": 1
+    },
+    "warnings_by_code": {
+     "V11": 7,
+     "V6": 1,
+     "VA-PROJ": 1,
+     "VA-REG": 1,
+     "VK": 1
+    }
+   },
+   "text": {
+    "co_words": {
+     "min": 19,
+     "median": 22,
+     "max": 26
+    },
+    "lo_words": {
+     "min": 11,
+     "median": 18,
+     "max": 25
+    },
+    "length_flags": 0,
+    "vague_degrees": 0,
+    "banned_verbs": 0
+   },
+   "bloom": {
+    "co_levels": {
+     "3": 2,
+     "4": 1,
+     "5": 2
+    },
+    "band": [
+     3,
+     5
+    ],
+    "outside_band": 0,
+    "high_level_share_pct": 60.0,
+    "high_level_required_pct": 50.0
+   },
+   "workload": {
+    "lecture_hours_planned": 35.0,
+    "lecture_hours_budget": 39,
+    "lecture_budget_used_pct": 89.7,
+    "outside_load_avg_h_per_week": null,
+    "outside_load_target": null,
+    "max_assessment_events_per_week": 2,
+    "proctored_pct": 30.0,
+    "proctored_required_pct": 40
+   },
+   "resources": {
+    "count": 5,
+    "verified_pct": 100.0,
+    "median_age_years": 0,
+    "rejected": 0
+   },
+   "gates": {
+    "approvals": 3,
+    "overrides": 0,
+    "would_block": []
+   }
+  },
+  "counts": {
+   "cos": 5,
+   "los": 11,
+   "modules": 6,
+   "topics": 0,
+   "resources": 5
+  }
+ },
+ "cs601-02": {
+  "calls_logged": 34,
+  "calls_ok": 34,
+  "endpoints": {
+   "cache:gemini:gemini-2.5-flash": 2,
+   "gemini:gemini-2.5-flash": 7,
+   "cache:gemini:gemini-3.5-flash-lite": 21,
+   "cache:groq:openai/gpt-oss-120b": 3,
+   "gemini:gemini-3.7-flash": 1
+  },
+  "per_prompt": {
+   "G1": [
+    "cache:gemini:gemini-2.5-flash"
+   ],
+   "X1": [
+    "cache:gemini:gemini-2.5-flash"
+   ],
+   "SEARCH": [
+    "gemini:gemini-2.5-flash",
+    "gemini:gemini-2.5-flash",
+    "gemini:gemini-2.5-flash",
+    "gemini:gemini-2.5-flash"
+   ],
+   "X2": [
+    "cache:gemini:gemini-3.5-flash-lite",
+    "cache:gemini:gemini-3.5-flash-lite",
+    "cache:gemini:gemini-3.5-flash-lite",
+    "cache:gemini:gemini-3.5-flash-lite",
+    "cache:gemini:gemini-3.5-flash-lite",
+    "cache:gemini:gemini-3.5-flash-lite",
+    "cache:gemini:gemini-3.5-flash-lite",
+    "cache:gemini:gemini-3.5-flash-lite"
+   ],
+   "G2": [
+    "cache:gemini:gemini-3.5-flash-lite"
+   ],
+   "G3": [
+    "cache:groq:openai/gpt-oss-120b"
+   ],
+   "G4": [
+    "cache:gemini:gemini-3.5-flash-lite"
+   ],
+   "R1": [
+    "cache:gemini:gemini-3.5-flash-lite",
+    "cache:gemini:gemini-3.5-flash-lite",
+    "cache:gemini:gemini-3.5-flash-lite",
+    "cache:gemini:gemini-3.5-flash-lite",
+    "gemini:gemini-2.5-flash",
+    "gemini:gemini-2.5-flash",
+    "gemini:gemini-2.5-flash"
+   ],
+   "G5": [
+    "cache:gemini:gemini-3.5-flash-lite"
+   ],
+   "G6": [
+    "cache:gemini:gemini-3.5-flash-lite"
+   ],
+   "G7": [
+    "cache:gemini:gemini-3.5-flash-lite"
+   ],
+   "G8": [
+    "cache:groq:openai/gpt-oss-120b"
+   ],
+   "G9": [
+    "cache:gemini:gemini-3.5-flash-lite"
+   ],
+   "X3": [
+    "cache:gemini:gemini-3.5-flash-lite",
+    "cache:gemini:gemini-3.5-flash-lite"
+   ],
+   "G10": [
+    "cache:gemini:gemini-3.5-flash-lite",
+    "gemini:gemini-3.7-flash"
+   ],
+   "G11": [
+    "cache:groq:openai/gpt-oss-120b"
+   ]
+  },
+  "prompt_tokens": 32013,
+  "output_tokens": 34962,
+  "latency_s": 155.7,
+  "wall_s": 727,
+  "rendered_line": "01:36:52 rendered proposal.md + proposal.csv + course_template.xlsx (4 errors, 58 warnings)",
+  "neo4j_line": "01:37:02 design graph loaded into Neo4j: {'nodes': 167, 'internal_links': 242, 'links_to_course': 14, 'links_to_topic': 16, 'links_to_programme': 60, 'unresolved_refs': 0}",
+  "stored_summary": null,
+  "revalidated_today": {
+   "errors": 6,
+   "warnings": 60,
+   "errors_by_code": {
+    "VT-TEMPLATE": 2,
+    "V23": 4
+   },
+   "warnings_by_code": {
+    "V11": 12,
+    "VCOPO-ACT": 31,
+    "T4": 4,
+    "VA-PROJ": 1,
+    "VK": 1,
+    "V23": 9,
+    "V15": 2
+   }
+  },
+  "eval_today": {
+   "summary": {
+    "verdict": "FAIL",
+    "errors": 6,
+    "regulation_ok": true,
+    "alignment_min_pct": 100.0,
+    "hard_constraints_satisfied_pct": 100.0,
+    "review_reasons": [
+     "1 warnings ask for confirmation"
+    ]
+   },
+   "completeness": {
+    "cos": 4,
+    "los": 12,
+    "topics": 16,
+    "modules": 8,
+    "weeks_scheduled": 13,
+    "labs": 11,
+    "tutorials": 13,
+    "assessment_components": 6,
+    "assessment_instances": 8,
+    "resources": 6
+   },
+   "alignment": {
+    "cos_with_los_pct": 100.0,
+    "los_taught_pct": 100.0,
+    "los_assessed_at_level_pct": 100.0,
+    "cos_assessed_pct": 100.0,
+    "topic_groups_taught_pct": 100.0,
+    "topics_scheduled_pct": 100.0,
+    "labs_practising_an_lo_pct": 100.0,
+    "po_coverage_pct_by_programme": {
+     "BTECH-COMMON": 50.0,
+     "BTECH-CSE": 80.0,
+     "BTECH-CSAI": 66.7,
+     "MTECH-CSE": 69.2
+    }
+   },
+   "constraints": {
+    "total": 17,
+    "checked": 17,
+    "hard_checked": 10,
+    "hard_satisfied_pct": 100.0,
+    "hard_violated": [],
+    "to_confirm": [
+     "K14"
+    ],
+    "malformed": [],
+    "unenforced": [],
+    "conflicts": 0
+   },
+   "regulation": [],
+   "validation": {
+    "errors": 6,
+    "warnings": 60,
+    "errors_by_family": {
+     "rule": 6
+    },
+    "errors_by_code": {
+     "V23": 4,
+     "VT-TEMPLATE": 2
+    },
+    "warnings_by_code": {
+     "VCOPO-ACT": 31,
+     "V11": 12,
+     "V23": 9,
+     "T4": 4,
+     "V15": 2,
+     "VA-PROJ": 1,
+     "VK": 1
+    }
+   },
+   "text": {
+    "co_words": {
+     "min": 20,
+     "median": 22.5,
+     "max": 29
+    },
+    "lo_words": {
+     "min": 11,
+     "median": 20.5,
+     "max": 33
+    },
+    "length_flags": 0,
+    "vague_degrees": 0,
+    "banned_verbs": 0
+   },
+   "bloom": {
+    "co_levels": {
+     "3": 2,
+     "4": 1,
+     "5": 1
+    },
+    "band": [
+     3,
+     5
+    ],
+    "outside_band": 0,
+    "high_level_share_pct": 50.0,
+    "high_level_required_pct": 50.0
+   },
+   "workload": {
+    "lecture_hours_planned": 36.5,
+    "lecture_hours_budget": 39,
+    "lecture_budget_used_pct": 93.6,
+    "outside_load_avg_h_per_week": 10.7,
+    "outside_load_target": {
+     "min": 10.0,
+     "max": 12.0
+    },
+    "max_assessment_events_per_week": 2,
+    "proctored_pct": 60.0,
+    "proctored_required_pct": 40
+   },
+   "resources": {
+    "count": 6,
+    "verified_pct": 100.0,
+    "median_age_years": 0,
+    "rejected": 2
+   },
+   "gates": {
+    "approvals": 3,
+    "overrides": 0,
+    "would_block": []
+   }
+  },
+  "counts": {
+   "cos": 4,
+   "los": 12,
+   "modules": 8,
+   "topics": 0,
+   "resources": 6
+  }
+ },
+ "cs601-kg-01": {
+  "calls_logged": 21,
+  "calls_ok": 21,
+  "endpoints": {
+   "cache:gemini:gemini-3.8-flash": 2,
+   "gemini:gemini-3.5-flash-lite": 19
+  },
+  "per_prompt": {
+   "G1": [
+    "cache:gemini:gemini-3.8-flash"
+   ],
+   "G2": [
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "G3": [
+    "cache:gemini:gemini-3.8-flash"
+   ],
+   "G4": [
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "R1": [
+    "gemini:gemini-3.5-flash-lite",
+    "gemini:gemini-3.5-flash-lite",
+    "gemini:gemini-3.5-flash-lite",
+    "gemini:gemini-3.5-flash-lite",
+    "gemini:gemini-3.5-flash-lite",
+    "gemini:gemini-3.5-flash-lite",
+    "gemini:gemini-3.5-flash-lite",
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "G5": [
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "G6": [
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "G7": [
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "G8": [
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "G9": [
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "X3": [
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "G10": [
+    "gemini:gemini-3.5-flash-lite",
+    "gemini:gemini-3.5-flash-lite"
+   ],
+   "G11": [
+    "gemini:gemini-3.5-flash-lite"
+   ]
+  },
+  "prompt_tokens": 134108,
+  "output_tokens": 38380,
+  "latency_s": 115.8,
+  "wall_s": 153,
+  "rendered_line": "00:23:16 rendered proposal.md + proposal.csv + course_template.xlsx + workload.md/.csv (58 errors, 132 warnings)",
+  "neo4j_line": "00:23:28 design graph loaded into Neo4j: {'nodes': 142, 'internal_links': 210, 'hub_links': 83, 'links_to_course': 16, 'links_to_topic': 1, 'links_to_programme': 143, 'unresolved_refs': 0}; checks passed 13/14",
+  "stored_summary": {
+   "verdict": "FAIL",
+   "errors": 58,
+   "regulation_ok": true,
+   "alignment_min_pct": 100.0,
+   "hard_constraints_satisfied_pct": 100.0,
+   "review_reasons": [
+    "1 warnings ask for confirmation"
+   ]
+  },
+  "revalidated_today": {
+   "errors": 58,
+   "warnings": 132,
+   "errors_by_code": {
+    "V23": 58
+   },
+   "warnings_by_code": {
+    "V11": 16,
+    "VCOPO-ACT": 98,
+    "T4": 12,
+    "V21": 1,
+    "V6": 1,
+    "VK": 1,
+    "V23": 2,
+    "V15": 1
+   }
+  },
+  "eval_today": {
+   "summary": {
+    "verdict": "FAIL",
+    "errors": 58,
+    "regulation_ok": true,
+    "alignment_min_pct": 100.0,
+    "hard_constraints_satisfied_pct": 100.0,
+    "review_reasons": [
+     "1 warnings ask for confirmation"
+    ]
+   },
+   "completeness": {
+    "cos": 4,
+    "los": 10,
+    "topics": 12,
+    "modules": 4,
+    "weeks_scheduled": 13,
+    "labs": 12,
+    "tutorials": 12,
+    "assessment_components": 5,
+    "assessment_instances": 9,
+    "resources": 8
+   },
+   "alignment": {
+    "cos_with_los_pct": 100.0,
+    "los_taught_pct": 100.0,
+    "los_assessed_at_level_pct": 100.0,
+    "cos_assessed_pct": 100.0,
+    "topic_groups_taught_pct": 100.0,
+    "topics_scheduled_pct": 100.0,
+    "labs_practising_an_lo_pct": 100.0,
+    "po_coverage_pct_by_programme": {
+     "BTECH-COMMON": 100.0,
+     "BTECH-CSE": 100.0,
+     "BTECH-CSAI": 100.0,
+     "MTECH-CSE": 100.0
+    }
+   },
+   "constraints": {
+    "total": 17,
+    "checked": 17,
+    "hard_checked": 11,
+    "hard_satisfied_pct": 100.0,
+    "hard_violated": [],
+    "to_confirm": [
+     "K16"
+    ],
+    "malformed": [],
+    "unenforced": [],
+    "conflicts": 0
+   },
+   "regulation": [],
+   "validation": {
+    "errors": 58,
+    "warnings": 132,
+    "errors_by_family": {
+     "rule": 58
+    },
+    "errors_by_code": {
+     "V23": 58
+    },
+    "warnings_by_code": {
+     "VCOPO-ACT": 98,
+     "V11": 16,
+     "T4": 12,
+     "V23": 2,
+     "V21": 1,
+     "V6": 1,
+     "VK": 1,
+     "V15": 1
+    }
+   },
+   "text": {
+    "co_words": {
+     "min": 20,
+     "median": 22.5,
+     "max": 26
+    },
+    "lo_words": {
+     "min": 11,
+     "median": 14.5,
+     "max": 24
+    },
+    "length_flags": 0,
+    "vague_degrees": 0,
+    "banned_verbs": 0
+   },
+   "bloom": {
+    "co_levels": {
+     "3": 1,
+     "4": 1,
+     "5": 2
+    },
+    "band": [
+     3,
+     5
+    ],
+    "outside_band": 0,
+    "high_level_share_pct": 75.0,
+    "high_level_required_pct": 50.0
+   },
+   "workload": {
+    "lecture_hours_planned": 36.0,
+    "lecture_hours_budget": 39,
+    "lecture_budget_used_pct": 92.3,
+    "outside_load_avg_h_per_week": 10.1,
+    "outside_load_target": {
+     "min": 10.0,
+     "max": 12.0
+    },
+    "max_assessment_events_per_week": 2,
+    "proctored_pct": 55.0,
+    "proctored_required_pct": 40
+   },
+   "resources": {
+    "count": 8,
+    "verified_pct": 100.0,
+    "median_age_years": 0,
+    "rejected": 2
+   },
+   "gates": {
+    "approvals": 3,
+    "overrides": 1,
+    "would_block": [
+     "gate3_proposal"
+    ]
+   }
+  },
+  "counts": {
+   "cos": 4,
+   "los": 10,
+   "modules": 4,
+   "topics": 0,
+   "resources": 8
+  }
+ },
+ "cs601-kg-02": {
+  "calls_logged": 13,
+  "calls_ok": 13,
+  "endpoints": {
+   "gemini:gemini-3.7-flash": 3,
+   "gemini:gemini-3.8-flash": 1,
+   "gemini:gemini-3.5-flash": 9
+  },
+  "per_prompt": {
+   "G1": [
+    "gemini:gemini-3.7-flash"
+   ],
+   "G2": [
+    "gemini:gemini-3.8-flash"
+   ],
+   "G3": [
+    "gemini:gemini-3.5-flash"
+   ],
+   "G4": [
+    "gemini:gemini-3.5-flash"
+   ],
+   "G5": [
+    "gemini:gemini-3.5-flash"
+   ],
+   "G6": [
+    "gemini:gemini-3.5-flash"
+   ],
+   "G7": [
+    "gemini:gemini-3.5-flash"
+   ],
+   "G8": [
+    "gemini:gemini-3.5-flash"
+   ],
+   "G9": [
+    "gemini:gemini-3.5-flash"
+   ],
+   "X3": [
+    "gemini:gemini-3.7-flash"
+   ],
+   "G10": [
+    "gemini:gemini-3.7-flash",
+    "gemini:gemini-3.5-flash"
+   ],
+   "G11": [
+    "gemini:gemini-3.5-flash"
+   ]
+  },
+  "prompt_tokens": 76673,
+  "output_tokens": 82490,
+  "latency_s": 6424.8,
+  "wall_s": 6474,
+  "rendered_line": "02:11:49 rendered proposal.md + proposal.csv + course_template.xlsx + workload.md/.csv (0 errors, 18 warnings)",
+  "neo4j_line": "02:11:53 design graph NOT loaded into Neo4j (ServiceUnavailable); load later with scripts/load_design_to_neo4j.py",
+  "stored_summary": {
+   "verdict": "REVIEW",
+   "errors": 0,
+   "regulation_ok": true,
+   "alignment_min_pct": 100.0,
+   "hard_constraints_satisfied_pct": 100.0,
+   "review_reasons": [
+    "1 constraints nothing could check",
+    "1 warnings ask for confirmation"
+   ]
+  },
+  "revalidated_today": {
+   "errors": 0,
+   "warnings": 18,
+   "errors_by_code": {},
+   "warnings_by_code": {
+    "VK-UNENFORCED": 1,
+    "V11": 11,
+    "VB": 4,
+    "VA-PROJ": 1,
+    "V15": 1
+   }
+  },
+  "eval_today": {
+   "summary": {
+    "verdict": "REVIEW",
+    "errors": 0,
+    "regulation_ok": true,
+    "alignment_min_pct": 100.0,
+    "hard_constraints_satisfied_pct": 100.0,
+    "review_reasons": [
+     "1 constraints nothing could check",
+     "1 warnings ask for confirmation"
+    ]
+   },
+   "completeness": {
+    "cos": 5,
+    "los": 15,
+    "topics": 15,
+    "modules": 5,
+    "weeks_scheduled": 13,
+    "labs": 13,
+    "tutorials": 13,
+    "assessment_components": 5,
+    "assessment_instances": 10,
+    "resources": 7
+   },
+   "alignment": {
+    "cos_with_los_pct": 100.0,
+    "los_taught_pct": 100.0,
+    "los_assessed_at_level_pct": 100.0,
+    "cos_assessed_pct": 100.0,
+    "topic_groups_taught_pct": 100.0,
+    "topics_scheduled_pct": 100.0,
+    "labs_practising_an_lo_pct": 100.0,
+    "po_coverage_pct_by_programme": {
+     "BTECH-COMMON": 41.7,
+     "BTECH-CSE": 60.0,
+     "BTECH-CSAI": 50.0,
+     "MTECH-CSE": 30.8
+    }
+   },
+   "constraints": {
+    "total": 17,
+    "checked": 16,
+    "hard_checked": 11,
+    "hard_satisfied_pct": 100.0,
+    "hard_violated": [],
+    "to_confirm": [],
+    "malformed": [],
+    "unenforced": [
+     "K17"
+    ],
+    "conflicts": 0
+   },
+   "regulation": [],
+   "validation": {
+    "errors": 0,
+    "warnings": 18,
+    "errors_by_family": {},
+    "errors_by_code": {},
+    "warnings_by_code": {
+     "V11": 11,
+     "VB": 4,
+     "VK-UNENFORCED": 1,
+     "VA-PROJ": 1,
+     "V15": 1
+    }
+   },
+   "text": {
+    "co_words": {
+     "min": 30,
+     "median": 35,
+     "max": 39
+    },
+    "lo_words": {
+     "min": 16,
+     "median": 22,
+     "max": 27
+    },
+    "length_flags": 0,
+    "vague_degrees": 0,
+    "banned_verbs": 0
+   },
+   "bloom": {
+    "co_levels": {
+     "3": 2,
+     "4": 2,
+     "5": 1
+    },
+    "band": [
+     3,
+     5
+    ],
+    "outside_band": 0,
+    "high_level_share_pct": 60.0,
+    "high_level_required_pct": 50.0
+   },
+   "workload": {
+    "lecture_hours_planned": 39.0,
+    "lecture_hours_budget": 39,
+    "lecture_budget_used_pct": 100.0,
+    "outside_load_avg_h_per_week": 11.1,
+    "outside_load_target": {
+     "min": 10.0,
+     "max": 12.0
+    },
+    "max_assessment_events_per_week": 2,
+    "proctored_pct": 55.0,
+    "proctored_required_pct": 40
+   },
+   "resources": {
+    "count": 7,
+    "verified_pct": 100.0,
+    "median_age_years": 6,
+    "rejected": 1
+   },
+   "gates": {
+    "approvals": 3,
+    "overrides": 0,
+    "would_block": []
+   }
+  },
+  "counts": {
+   "cos": 5,
+   "los": 15,
+   "modules": 5,
+   "topics": 0,
+   "resources": 7
+  }
+ }
+}

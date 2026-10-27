@@ -1,0 +1,44 @@
+00:23:59 S1 intake → Course Context Object
+00:31:02   [G1] ok via gemini:gemini-3.7-flash:k25e39c0a · 3431+6432 tok · 423.4s
+00:31:02   CCO: 6 topic groups · level 3 · L-T-P {'L': 3, 'T': 1, 'P': 2} · 13 weeks · 5 assumptions · conflicts 0
+00:31:02 S2 curriculum positioning
+00:31:37   internal candidates: ['CSE701 0.032', 'CSE581 0.0', 'CSE583 0.0', 'CSE594A 0.08', 'CSE600A 0.0', 'DES512 0.0', 'CSE201 0.0', 'DES530 0.0', 'CSE582 0.0', 'DES520 0.0', 'CSE600 0.021', 'CSE140 0.0']
+00:33:58   [G2] ok via gemini:gemini-3.8-flash:k3ca4d81f · 10798+6005 tok · 141.6s
+00:33:58   [G2] validators: 0 errors, 0 warnings
+00:33:58 S3 constraints + feasibility
+00:41:59   [G3] ok via gemini:gemini-3.5-flash:k3ca4d81f · 3017+3672 tok · 480.9s
+00:41:59   constraint checks: 0 errors, 1 warnings (VK-UNENFORCED)
+00:41:59   17 constraints (8 from professor text) · conflicts 0
+00:41:59 GATE gate1_context: approve by auto (dev run) · froze 37 nodes
+00:41:59 S4 learning design: COs → CO–PO → LOs
+00:42:29   [G4] ok via gemini:gemini-3.5-flash:k3ca4d81f · 9446+3990 tok · 29.2s
+00:42:29   [G4] validators: 0 errors, 0 warnings
+00:43:07   [G5] ok via gemini:gemini-3.5-flash:k3ca4d81f · 5332+6420 tok · 38.5s
+00:43:07   [G5] validators: 0 errors, 0 warnings
+00:46:12   [G6] ok via gemini:gemini-3.5-flash:k3ca4d81f · 6423+10583 tok · 184.4s
+00:46:12   [G6] validators: 0 errors, 15 warnings
+00:46:12 GATE gate2_outcomes: approve by auto (dev run) · froze 20 nodes
+00:46:12 S5 structure (modules/topics) → S6 schedule
+01:01:16   [G7] ok via gemini:gemini-3.5-flash:k3ca4d81f · 7923+7603 tok · 903.8s
+01:01:16   [G7] validators: 0 errors, 0 warnings
+01:01:16   links to IIIT-D topics: kept 0 of 15; dropped as not similar: ['M1.T1', 'M1.T2', 'M1.T3', 'M2.T1', 'M2.T2', 'M2.T3', 'M3.T1', 'M3.T2', 'M3.T3', 'M4.T1', 'M4.T2', 'M4.T3', 'M5.T1', 'M5.T2', 'M5.T3']
+01:01:16   schedule: feasible · need 39.0 h / 39 h
+01:01:17   graph facts: 0 topic-order pairs from IIIT-D weekly plans, closest course CSE701 0.077, 93 level-3 courses; warnings none
+01:01:17 S7 lab/tutorial plan + assessment blueprint
+01:02:03   [G8] ok via gemini:gemini-3.5-flash:k3ca4d81f · 4548+9470 tok · 45.9s
+01:02:03   [G8] validators: 0 errors, 0 warnings
+02:02:00   [G9] ok via gemini:gemini-3.5-flash:k3ca4d81f · 9241+9516 tok · 3597.2s
+02:02:00   [G9] validators: 0 errors, 1 warnings
+02:02:00 S8 resources (API candidates → G10 → verification)
+02:03:33   [X3] ok via gemini:gemini-3.7-flash:kaf6cdf0b · 1736+1176 tok · 93.2s
+02:03:42   17 API candidates from 8 X3 queries
+02:08:57   [G10] ok via gemini:gemini-3.7-flash:kaf6cdf0b · 6468+11900 tok · 315.8s
+02:08:57   1 resource(s) failed verification; asking for replacements
+02:09:24   [G10] ok via gemini:gemini-3.5-flash:k25e39c0a · 5043+3048 tok · 26.8s
+02:09:24   resources: 7/7 verified
+02:09:24 S9 narrative
+02:11:48   [G11] ok via gemini:gemini-3.5-flash:k25e39c0a · 3267+2675 tok · 144.1s
+02:11:49 rendered proposal.md + proposal.csv + course_template.xlsx + workload.md/.csv (0 errors, 18 warnings)
+02:11:49 evaluation (tier 1): REVIEW · 0 errors · alignment min 100.0% · hard constraints satisfied 100.0%
+02:11:49 GATE gate3_proposal: approve by auto (dev run) · froze 0 nodes
+02:11:53 design graph NOT loaded into Neo4j (ServiceUnavailable); load later with scripts/load_design_to_neo4j.py

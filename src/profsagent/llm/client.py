@@ -5,6 +5,10 @@ An (provider, model, key#) slot that fails with 429 / 503 / timeout goes on cool
 data/cache/llm_state.json) and the next slot is tried. JSON outputs are validated with Pydantic; on a
 validation error the call is retried once with the error appended (possibly on a different slot).
 
+PROFSAGENT_STRONG_ONLY=1 leaves out the weak endpoints ("lite" models and local Ollama): when the strong models are
+busy (503) the call waits for their cooldown (bounded by limits.max_wait_s) instead of falling back, and fails after
+that, so a run stops and can be resumed with --continue rather than finishing on a weak model.
+
 Keys are referred to by index only in logs.
 """
 from __future__ import annotations
@@ -52,6 +56,10 @@ class CallRecord:
 def _fp(key: str) -> str:
     """Stable, non-secret slot id for an API key (cooldowns survive reordering keys in .env)."""
     return "k" + hashlib.sha256(key.encode()).hexdigest()[:8]
+
+
+def _weak(ep: dict) -> bool:
+    return ep["provider"] == "ollama" or "lite" in ep["model"]
 
 
 def _approx_tokens(text: str) -> int:
@@ -117,6 +125,7 @@ class LLMClient:
         self.ollama_url = os.environ.get("OLLAMA_URL", "http://localhost:11434")
         self.totals = {"calls": 0, "prompt_tokens": 0, "output_tokens": 0}
         self.no_native_schema: set[str] = set()   # Gemini models that rejected responseJsonSchema in this process
+        self.strong_only = os.environ.get("PROFSAGENT_STRONG_ONLY", "").lower() in ("1", "true", "yes", "on")
 
     # ------------------------------------------------------------------ slots
     def _slots_for(self, role: str, prompt_chars: int, skip_models: frozenset[str] = frozenset()):
@@ -124,6 +133,8 @@ class LLMClient:
             if ep.get("max_prompt_tokens") and prompt_chars / 3.2 > ep["max_prompt_tokens"]:
                 continue
             if f"{ep['provider']}:{ep['model']}" in skip_models:   # this call already got invalid output from it
+                continue
+            if self.strong_only and _weak(ep):
                 continue
             ks = {"gemini": self.gemini_keys, "groq": self.groq_keys, "ollama": ["local"]}[ep["provider"]]
             for i, k in enumerate(ks):

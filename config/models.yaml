@@ -23,6 +23,7 @@ roles:
     - {provider: ollama, model: "qwen3.5:9b"}
   extract:             # X2 page reading, X3 queries: Gemini first (user preference), Groq as fallback
     - {provider: gemini, model: gemini-3.7-flash}
+    - {provider: gemini, model: gemini-3.5-flash}       # second strong model, so PROFSAGENT_STRONG_ONLY runs are not left with one
     - {provider: gemini, model: gemini-3.5-flash-lite}
     - {provider: gemini, model: gemini-3.1-flash-lite}
     - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 5500}

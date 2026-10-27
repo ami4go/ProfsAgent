@@ -1,0 +1,5934 @@
+{
+ "form": {
+  "1. COURSE NAME": "Web Development for All",
+  "2. SHORT COURSE DESCRIPTION": "[NOT SPECIFIED]",
+  "3. TOPICS / CONTENT AREAS": "[NOT SPECIFIED]",
+  "4. COURSE INTENT": "[NOT SPECIFIED]",
+  "5. TARGET STUDENTS": "[NOT SPECIFIED]",
+  "6. EXPECTED LEVEL / COURSE CODE": "[NOT SPECIFIED]",
+  "7. CREDITS": "[NOT SPECIFIED]",
+  "8. L-T-P / CONTACT HOURS": "[NOT SPECIFIED]",
+  "9. SEMESTER LENGTH": "[NOT SPECIFIED]",
+  "10. WEEKLY STUDENT EFFORT": "[NOT SPECIFIED]",
+  "11. LAB / PRACTICAL COMPONENT": "[NOT SPECIFIED]",
+  "12. ASSESSMENT PREFERENCES": "[NOT SPECIFIED]",
+  "13. SPECIAL CONSTRAINTS": "[NONE]",
+  "14. CURRICULUM CONTEXT": "[NOT SUPPLIED — derive curriculum positioning from the institutional knowledge graph.]"
+ },
+ "run_cfg": {
+  "project_id": "DEPT-WEBDEV-TITLE",
+  "exclude_courses": [],
+  "blocklist": {
+   "domains": [],
+   "course_codes": [],
+   "title_fragments": []
+  },
+  "external_research": false,
+  "department": "CSE",
+  "validation_profile": "core",
+  "kg_backend": "neo4j"
+ },
+ "traces": {
+  "intake": {
+   "generator": {
+    "prompt_id": "G1",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+    "tokens": 7619
+   }
+  },
+  "positioning": {
+   "generator": {
+    "prompt_id": "G2",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+    "tokens": 11551
+   },
+   "initial_errors": 0,
+   "initial_warnings": 0,
+   "initial_error_codes": [],
+   "repairs": [],
+   "fixes": [],
+   "regenerations": [],
+   "final_errors": 0,
+   "final_warnings": 0,
+   "final_error_codes": [],
+   "open": []
+  },
+  "constraints": {
+   "generator": {
+    "prompt_id": "G3",
+    "prompt_version": "0.2.0",
+    "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+    "tokens": 4028
+   }
+  },
+  "cos": {
+   "generator": {
+    "prompt_id": "G4",
+    "prompt_version": "0.4.0",
+    "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+    "tokens": 12732
+   },
+   "initial_errors": 2,
+   "initial_warnings": 0,
+   "initial_error_codes": [
+    "T10",
+    "V10"
+   ],
+   "repairs": [
+    {
+     "round": 1,
+     "accepted": true,
+     "errors_before": 1,
+     "errors_after": 0,
+     "new_error_codes": [],
+     "ops": 2,
+     "notes": [],
+     "unfixable": [],
+     "endpoint": "gemini:gemini-3.5-flash:k25e39c0a"
+    }
+   ],
+   "fixes": [
+    {
+     "fixer": "drop-dangling-refs",
+     "accepted": true,
+     "errors_before": 2,
+     "errors_after": 1,
+     "new_error_codes": [],
+     "notes": [
+      "CO1: removed unknown topic groups ['TG1']",
+      "CO2: removed unknown topic groups ['TG2']",
+      "CO3: removed unknown topic groups ['TG3']",
+      "CO4: removed unknown topic groups ['TG4']"
+     ]
+    }
+   ],
+   "regenerations": [],
+   "final_errors": 0,
+   "final_warnings": 0,
+   "final_error_codes": [],
+   "open": []
+  },
+  "copo": {
+   "generator": {
+    "prompt_id": "G5",
+    "prompt_version": "0.2.0",
+    "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+    "tokens": 15605
+   },
+   "initial_errors": 0,
+   "initial_warnings": 0,
+   "initial_error_codes": [],
+   "repairs": [],
+   "fixes": [],
+   "regenerations": [],
+   "final_errors": 0,
+   "final_warnings": 0,
+   "final_error_codes": [],
+   "open": []
+  },
+  "los": {
+   "generator": {
+    "prompt_id": "G6",
+    "prompt_version": "0.3.0",
+    "endpoint": "gemini:gemini-3.5-flash:kaf6cdf0b",
+    "tokens": 16058
+   },
+   "initial_errors": 0,
+   "initial_warnings": 23,
+   "initial_error_codes": [],
+   "repairs": [],
+   "fixes": [],
+   "regenerations": [],
+   "final_errors": 0,
+   "final_warnings": 23,
+   "final_error_codes": [],
+   "open": []
+  },
+  "structure": {
+   "generator": {
+    "prompt_id": "G7",
+    "prompt_version": "0.3.0",
+    "endpoint": "gemini:gemini-3.5-flash:kaf6cdf0b",
+    "tokens": 14191
+   },
+   "initial_errors": 17,
+   "initial_warnings": 1,
+   "initial_error_codes": [
+    "T10"
+   ],
+   "repairs": [],
+   "fixes": [
+    {
+     "fixer": "drop-dangling-refs",
+     "accepted": true,
+     "errors_before": 17,
+     "errors_after": 0,
+     "new_error_codes": [],
+     "notes": [
+      "M1.T1: removed unknown topic groups ['TG1']",
+      "M1.T2: removed unknown topic groups ['TG1']",
+      "M1.T3: removed unknown topic groups ['TG1']",
+      "M1.T4: removed unknown topic groups ['TG1']",
+      "M1.T5: removed unknown topic groups ['TG1']",
+      "M2.T1: removed unknown topic groups ['TG2']",
+      "M2.T2: removed unknown topic groups ['TG2']",
+      "M2.T3: removed unknown topic groups ['TG2']",
+      "M2.T4: removed unknown topic groups ['TG2']",
+      "M3.T1: removed unknown topic groups ['TG3']",
+      "M3.T2: removed unknown topic groups ['TG3']",
+      "M3.T3: removed unknown topic groups ['TG3']",
+      "M4.T1: removed unknown topic groups ['TG4']",
+      "M4.T2: removed unknown topic groups ['TG4']",
+      "M4.T3: removed unknown topic groups ['TG4']",
+      "M4.T4: removed unknown topic groups ['TG4']",
+      "M4.T5: removed unknown topic groups ['TG4']"
+     ]
+    }
+   ],
+   "regenerations": [],
+   "final_errors": 0,
+   "final_warnings": 1,
+   "final_error_codes": [],
+   "open": []
+  },
+  "labs": {
+   "generator": {
+    "prompt_id": "G8",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash:kaf6cdf0b",
+    "tokens": 9110
+   },
+   "initial_errors": 0,
+   "initial_warnings": 0,
+   "initial_error_codes": [],
+   "repairs": [],
+   "fixes": [],
+   "regenerations": [],
+   "final_errors": 0,
+   "final_warnings": 0,
+   "final_error_codes": [],
+   "open": []
+  },
+  "assessment": {
+   "generator": {
+    "prompt_id": "G9",
+    "prompt_version": "0.3.0",
+    "endpoint": "gemini:gemini-3.5-flash:kaf6cdf0b",
+    "tokens": 18809
+   },
+   "initial_errors": 4,
+   "initial_warnings": 1,
+   "initial_error_codes": [
+    "V20",
+    "V23"
+   ],
+   "repairs": [
+    {
+     "round": 1,
+     "accepted": true,
+     "errors_before": 4,
+     "errors_after": 0,
+     "new_error_codes": [],
+     "ops": 2,
+     "notes": [],
+     "unfixable": [],
+     "endpoint": "gemini:gemini-3.5-flash:kaf6cdf0b"
+    }
+   ],
+   "fixes": [],
+   "regenerations": [],
+   "final_errors": 0,
+   "final_warnings": 4,
+   "final_error_codes": [],
+   "open": []
+  },
+  "resources": {
+   "generator": {
+    "prompt_id": "G10",
+    "prompt_version": "0.2.0",
+    "endpoint": "gemini:gemini-3.5-flash:kaf6cdf0b",
+    "tokens": 8802
+   }
+  },
+  "narrative": {
+   "generator": {
+    "prompt_id": "G11",
+    "prompt_version": "0.1.0",
+    "endpoint": "gemini:gemini-3.5-flash:kaf6cdf0b",
+    "tokens": 4230
+   }
+  }
+ },
+ "violations": {
+  "intake": [],
+  "positioning": [],
+  "constraints": [],
+  "cos": [],
+  "copo": [],
+  "los": [
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO1.LO1"
+    ],
+    "message": "LO CO1.LO1 condition is not visible in the statement text",
+    "evidence": {
+     "part_text": "given a page layout wireframe"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO1.LO1"
+    ],
+    "message": "LO CO1.LO1 degree is not visible in the statement text",
+    "evidence": {
+     "part_text": "with zero HTML validation errors and all structural landmarks correctly placed"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO1.LO2"
+    ],
+    "message": "LO CO1.LO2 condition is not visible in the statement text",
+    "evidence": {
+     "part_text": "given a single-viewport design specification"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO1.LO2"
+    ],
+    "message": "LO CO1.LO2 degree is not visible in the statement text",
+    "evidence": {
+     "part_text": "matching pixel margins and alignment constraints across all container elements"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO1.LO3"
+    ],
+    "message": "LO CO1.LO3 degree is not visible in the statement text",
+    "evidence": {
+     "part_text": "such that all layout elements render without horizontal scrollbars across target viewports"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO2.LO1"
+    ],
+    "message": "LO CO2.LO1 condition is not visible in the statement text",
+    "evidence": {
+     "part_text": "given user interaction event specifications"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO2.LO1"
+    ],
+    "message": "LO CO2.LO1 degree is not visible in the statement text",
+    "evidence": {
+     "part_text": "updating DOM nodes correctly for all specified event triggers"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO2.LO2"
+    ],
+    "message": "LO CO2.LO2 condition is not visible in the statement text",
+    "evidence": {
+     "part_text": "given a backend API endpoint URL and parameter payload"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO2.LO2"
+    ],
+    "message": "LO CO2.LO2 degree is not visible in the statement text",
+    "evidence": {
+     "part_text": "handling network success and error responses without unhandled promise rejections"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO2.LO3"
+    ],
+    "message": "LO CO2.LO3 condition is not visible in the statement text",
+    "evidence": {
+     "part_text": "given a backend comments API endpoint and event specifications"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO2.LO3"
+    ],
+    "message": "LO CO2.LO3 degree is not visible in the statement text",
+    "evidence": {
+     "part_text": "such that async content renders seamlessly without full page reload and all interface test cases pass"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO3.LO1"
+    ],
+    "message": "LO CO3.LO1 condition is not visible in the statement text",
+    "evidence": {
+     "part_text": "given a set of browser network trace logs"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO3.LO1"
+    ],
+    "message": "LO CO3.LO1 degree is not visible in the statement text",
+    "evidence": {
+     "part_text": "categorizing resource timing phases for at least three distinct asset types"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO3.LO2"
+    ],
+    "message": "LO CO3.LO2 condition is not visible in the statement text",
+    "evidence": {
+     "part_text": "for a given interactive web application profile"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO3.LO2"
+    ],
+    "message": "LO CO3.LO2 degree is not visible in the statement text",
+    "evidence": {
+     "part_text": "identifying main-thread blocking tasks exceeding 50 milliseconds in duration"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO3.LO3"
+    ],
+    "message": "LO CO3.LO3 condition is not visible in the statement text",
+    "evidence": {
+     "part_text": "given a profile log and developer tool traces for a single-page feature"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO3.LO3"
+    ],
+    "message": "LO CO3.LO3 degree is not visible in the statement text",
+    "evidence": {
+     "part_text": "identifying at least two distinct performance bottlenecks supported by profiler timeline evidence"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO4.LO1"
+    ],
+    "message": "LO CO4.LO1 condition is not visible in the statement text",
+    "evidence": {
+     "part_text": "for a given web service API specification document"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO4.LO1"
+    ],
+    "message": "LO CO4.LO1 degree is not visible in the statement text",
+    "evidence": {
+     "part_text": "identifying non-conforming endpoint definitions and proposing compliant alternatives"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO4.LO2"
+    ],
+    "message": "LO CO4.LO2 condition is not visible in the statement text",
+    "evidence": {
+     "part_text": "given a backend web service architecture diagram"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO4.LO2"
+    ],
+    "message": "LO CO4.LO2 degree is not visible in the statement text",
+    "evidence": {
+     "part_text": "pointing out at least two security vulnerabilities based on OWASP web application criteria"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO4.LO3"
+    ],
+    "message": "LO CO4.LO3 condition is not visible in the statement text",
+    "evidence": {
+     "part_text": "for a supplied full-stack web application architecture document"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V11",
+    "severity": "warning",
+    "nodes": [
+     "CO4.LO3"
+    ],
+    "message": "LO CO4.LO3 degree is not visible in the statement text",
+    "evidence": {
+     "part_text": "justifying at least two architectural design choices against stated security and scalability constraints in a written design evaluation"
+    },
+    "fix_hint": "Add a checkable degree (number, threshold, or explicit criterion) and a condition (given X / using Y) inside the statement text.",
+    "stage": "los",
+    "family": "rule",
+    "fixable_by": "repair"
+   }
+  ],
+  "structure": [
+   {
+    "code": "V6",
+    "severity": "warning",
+    "nodes": [
+     "W13"
+    ],
+    "message": "weeks with no lecture topics: [13]",
+    "evidence": {},
+    "stage": "schedule",
+    "family": "rule",
+    "fixable_by": "repair"
+   }
+  ],
+  "kg": [],
+  "labs": [],
+  "assessment": [
+   {
+    "code": "V23",
+    "severity": "warning",
+    "nodes": [
+     "CO2",
+     "BTECH-CSAI/PSO5"
+    ],
+    "message": "CO2→BTECH-CSAI/PSO5: provisional 1 vs computed 3 (share 0.874)",
+    "evidence": {},
+    "stage": "assessment",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V23",
+    "severity": "warning",
+    "nodes": [
+     "CO3",
+     "BTECH-COMMON/PO5"
+    ],
+    "message": "CO3→BTECH-COMMON/PO5: provisional 3 vs computed 1 (share 0.195)",
+    "evidence": {},
+    "stage": "assessment",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V23",
+    "severity": "warning",
+    "nodes": [
+     "CO3",
+     "BTECH-CSE/PSO5"
+    ],
+    "message": "CO3→BTECH-CSE/PSO5: provisional 3 vs computed 1 (share 0.195)",
+    "evidence": {},
+    "stage": "assessment",
+    "family": "rule",
+    "fixable_by": "repair"
+   },
+   {
+    "code": "V23",
+    "severity": "warning",
+    "nodes": [
+     "CO3",
+     "MTECH-CSE/PSO4"
+    ],
+    "message": "CO3→MTECH-CSE/PSO4: provisional 3 vs computed 1 (share 0.195)",
+    "evidence": {},
+    "stage": "assessment",
+    "family": "rule",
+    "fixable_by": "repair"
+   }
+  ],
+  "resources": [],
+  "narrative": []
+ },
+ "concerns": {
+  "intake": [
+   {
+    "about": "intake_form_completeness",
+    "detail": "Only the course name was supplied in the intake form. All structural and content parameters must be resolved via regulations, defaults, or institutional knowledge graph retrieval."
+   }
+  ],
+  "positioning": [
+   {
+    "about": "CCO.topic_groups",
+    "detail": "The intake form provided no topic groups or syllabus topics, preventing detailed topic-level prerequisite analysis and overlap calculation."
+   }
+  ],
+  "constraints": [
+   {
+    "about": "CCO",
+    "detail": "No free-text requirements, assessment preferences, special constraints, or topic groups were provided in the CCO."
+   },
+   {
+    "about": "CCO.lab",
+    "detail": "Course is titled 'Web Development for All' with LTP (3-1-0), but lab.required is null and P is 0. Clarification may be needed on practical component requirements."
+   }
+  ],
+  "cos": [
+   {
+    "about": "CCO.topics_treatment",
+    "detail": "Topics treatment is marked as missing in CCO input context; proposed topic groups TG1-TG4 to establish a consistent curriculum structure."
+   }
+  ],
+  "labs": [
+   {
+    "about": "V18",
+    "detail": "Course LTP is 3-1-0 with 0 lab hours (P=0), but nine learning outcomes (CO1.LO1, CO1.LO2, CO1.LO3, CO2.LO1, CO2.LO2, CO2.LO3, CO3.LO1, CO3.LO2, CO3.LO3) require hands-on practice. Hands-on practice has been integrated into tutorial sessions."
+   }
+  ],
+  "resources": [
+   {
+    "about": "OL:OL19980166W",
+    "detail": "Publication year is 2014, which predates modern CSS Grid standards; supplemented by online documentation search request."
+   }
+  ],
+  "narrative": [
+   {
+    "about": "positioning_rationale",
+    "detail": "No specific existing course codes were provided in the overlaps context, so positioning rationale evaluates against general subject areas rather than explicit course UIDs."
+   }
+  ]
+ },
+ "approvals": [
+  {
+   "gate": "gate1_context",
+   "decision": "approve",
+   "by": "auto (dev run)",
+   "comment": "auto-approved; not a professor decision",
+   "at": 1793140912.617606,
+   "frozen": 22,
+   "open_errors": 0
+  },
+  {
+   "gate": "gate2_outcomes",
+   "decision": "approve",
+   "by": "auto (dev run)",
+   "comment": "auto-approved; not a professor decision",
+   "at": 1793141179.9844723,
+   "frozen": 16,
+   "open_errors": 0
+  },
+  {
+   "gate": "gate3_proposal",
+   "decision": "approve",
+   "by": "auto (dev run)",
+   "comment": "auto-approved; not a professor decision",
+   "at": 1793142052.7533906,
+   "frozen": 0,
+   "open_errors": 0
+  }
+ ],
+ "cco": {
+  "concerns": [
+   {
+    "about": "intake_form_completeness",
+    "detail": "Only the course name was supplied in the intake form. All structural and content parameters must be resolved via regulations, defaults, or institutional knowledge graph retrieval."
+   }
+  ],
+  "missing": [
+   {
+    "field": "short_description",
+    "reason": "Short course description was not specified in the intake form; must be provided by professor or derived downstream."
+   },
+   {
+    "field": "topics",
+    "reason": "Topics / content areas were not specified in the intake form; professor input or institutional syllabus reference needed."
+   },
+   {
+    "field": "intent",
+    "reason": "Course intent, central pedagogical question, and negative constraints were not specified in the intake form."
+   },
+   {
+    "field": "target_students",
+    "reason": "Target student programmes, target year, and assumed prerequisite background were not specified in the intake form."
+   },
+   {
+    "field": "level_or_code",
+    "reason": "Course code or level was not specified in the intake form."
+   },
+   {
+    "field": "credits",
+    "reason": "Credit structure was not specified in the intake form."
+   },
+   {
+    "field": "ltp",
+    "reason": "L-T-P breakdown was not specified in the intake form."
+   },
+   {
+    "field": "semester_weeks",
+    "reason": "Semester duration in weeks was not specified in the intake form."
+   },
+   {
+    "field": "weekly_effort_hours",
+    "reason": "Weekly student effort expectation was not specified in the intake form."
+   },
+   {
+    "field": "lab",
+    "reason": "Lab requirement and infrastructure details were not specified in the intake form."
+   },
+   {
+    "field": "assessment_prefs",
+    "reason": "Assessment preferences and avoidances were not specified in the intake form."
+   },
+   {
+    "field": "curriculum_context",
+    "reason": "Curriculum context block (Q1-Q6) was omitted from the intake form."
+   }
+  ],
+  "fields": {
+   "course_name": {
+    "status": "given",
+    "raw": "Web Development for All",
+    "value": "Web Development for All"
+   },
+   "short_description": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED]",
+    "value": null
+   },
+   "topics": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED]",
+    "value": null,
+    "topics_treatment": "missing",
+    "topic_groups": []
+   },
+   "intent": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED]",
+    "value": null,
+    "central_question": null,
+    "pedagogical_emphasis": null,
+    "negative_constraints": []
+   },
+   "target_students": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED]",
+    "value": null,
+    "programmes": [],
+    "unmapped_programmes": [],
+    "years": [],
+    "assumed_background": []
+   },
+   "level_or_code": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED]",
+    "value": null,
+    "code": null,
+    "level": null
+   },
+   "credits": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED]",
+    "value": null
+   },
+   "ltp": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED]",
+    "value": null,
+    "L": null,
+    "T": null,
+    "P": null
+   },
+   "semester_weeks": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED]",
+    "value": null
+   },
+   "weekly_effort_hours": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED]",
+    "value": null
+   },
+   "lab": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED]",
+    "value": null,
+    "required": null,
+    "infrastructure": []
+   },
+   "assessment_prefs": {
+    "status": "missing",
+    "raw": "[NOT SPECIFIED]",
+    "value": null,
+    "preferred": [],
+    "avoid": [],
+    "rationale": null
+   },
+   "special_constraints": {
+    "status": "given",
+    "raw": "[NONE]",
+    "value": null,
+    "items": []
+   },
+   "curriculum_context": {
+    "status": "missing",
+    "raw": "[NOT SUPPLIED — derive curriculum positioning from the institutional knowledge graph.]",
+    "value": null,
+    "answers": {
+     "Q1": null,
+     "Q2": null,
+     "Q3": null,
+     "Q4": null,
+     "Q5": null,
+     "Q6": null
+    }
+   }
+  },
+  "ambiguities": [],
+  "conflicts": []
+ },
+ "defaults": {
+  "ltp": {
+   "L": 3,
+   "T": 1,
+   "P": 0
+  },
+  "weeks": 13,
+  "credits": 4,
+  "level": 3,
+  "midsem_after_week": 7,
+  "constraints": [
+   {
+    "id": "K01",
+    "target": "schedule.weeks",
+    "op": "==",
+    "value": 13,
+    "hardness": "hard",
+    "source": {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§2"
+    }
+   },
+   {
+    "id": "K02",
+    "target": "course.credits",
+    "op": "==",
+    "value": 4,
+    "hardness": "hard",
+    "source": {
+     "tag": "DEFAULT",
+     "ref": "ASM01"
+    }
+   },
+   {
+    "id": "K03",
+    "target": "schedule.lecture_hours_per_week",
+    "op": "==",
+    "value": 3,
+    "hardness": "hard",
+    "source": {
+     "tag": "DEFAULT",
+     "ref": "UGREG-2025§4(2)a"
+    }
+   },
+   {
+    "id": "K04",
+    "target": "schedule.tutorial_hours_per_week",
+    "op": "==",
+    "value": 1,
+    "hardness": "hard",
+    "source": {
+     "tag": "DEFAULT",
+     "ref": "CCO.ltp"
+    }
+   },
+   {
+    "id": "K05",
+    "target": "lab.hours_per_week",
+    "op": "==",
+    "value": 0,
+    "hardness": "hard",
+    "source": {
+     "tag": "DEFAULT",
+     "ref": "CCO.ltp"
+    }
+   },
+   {
+    "id": "K06",
+    "target": "assessment.component[midsem].present",
+    "op": "present",
+    "value": true,
+    "hardness": "soft",
+    "source": {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§6.2"
+    }
+   },
+   {
+    "id": "K07",
+    "target": "assessment.component[endsem].present",
+    "op": "present",
+    "value": true,
+    "hardness": "soft",
+    "source": {
+     "tag": "REGULATION",
+     "ref": "UGREG-2025§6.2"
+    }
+   },
+   {
+    "id": "K08",
+    "target": "schedule.midsem_after_week",
+    "op": "==",
+    "value": 7,
+    "hardness": "soft",
+    "source": {
+     "tag": "INFERRED",
+     "ref": "ASM"
+    }
+   }
+  ],
+  "assumptions": [
+   {
+    "id": "ASM01",
+    "what": "credits",
+    "value": 4,
+    "basis": "UGREG-2025§4(2): courses are 4, 2 or 1 credit; 425 of 475 catalogue courses are 4-credit",
+    "confirm_with": "course instructor / DOAA",
+    "status": "open"
+   },
+   {
+    "id": "ASM02",
+    "what": "L-T-P",
+    "value": "3-1-0",
+    "basis": "UGREG-2025§4(2): 4-credit = 3h lecture + 1h interaction/week; lab hours 0 because no lab was requested",
+    "confirm_with": "course instructor / DOAA",
+    "status": "open"
+   },
+   {
+    "id": "ASM03",
+    "what": "course level",
+    "value": 3,
+    "basis": "no code/level given; set to the lowest target year (unspecified → 3) (INFERRED)",
+    "confirm_with": "course instructor / DOAA",
+    "status": "open"
+   },
+   {
+    "id": "ASM04",
+    "what": "mid-semester exam timing",
+    "value": "after teaching week 7",
+    "basis": "mid-semester recess and exam fall roughly mid-way through 13 teaching weeks; confirm from the academic calendar",
+    "confirm_with": "academic calendar (DOAA)",
+    "status": "open"
+   },
+   {
+    "id": "ASM05",
+    "what": "weekly student effort",
+    "value": null,
+    "basis": "not supplied; effort is reported (contact + take-home estimates), not constrained",
+    "confirm_with": "course instructor / DOAA",
+    "status": "open"
+   }
+  ]
+ },
+ "ltp": {
+  "L": 3,
+  "T": 1,
+  "P": 0
+ },
+ "weeks": 13,
+ "level": 3,
+ "midsem_after_week": 7,
+ "lab_required": null,
+ "topic_groups": [],
+ "hours_budget": {
+  "weeks": 13,
+  "lecture_hours_per_week": 3,
+  "lecture_hours_total": 39,
+  "tutorial_hours_total": 13,
+  "lab_hours_total": 0
+ },
+ "bloom_band": {
+  "floor": 3,
+  "ceiling": 5,
+  "basis": "level 3xx band [3,5] — provisional table (docs/01 §6.4), ceilings raised to BL4+ for the IIIT-D template rule; to be refit from corpus priors",
+  "source_tag": "INFERRED"
+ },
+ "department": "CSE",
+ "programmes": [
+  "BTECH-COMMON",
+  "BTECH-CSE",
+  "BTECH-CSAI",
+  "MTECH-CSE"
+ ],
+ "programme_pos": [
+  {
+   "uid": "BTECH-COMMON/PO1",
+   "text": "Engineering knowledge: Apply the knowledge of mathematics, science, engineering fundamentals and an engineering specialization to the solution of complex engineering problems.",
+   "short_label": "PO1",
+   "programme": "BTECH-COMMON"
+  },
+  {
+   "uid": "BTECH-COMMON/PO2",
+   "text": "Problem analysis: Identify, formulate, review research literature, and analyze complex engineering problems reaching substantiated conclusions using first principles of mathematics, natural sciences, and engineering sciences.",
+   "short_label": "PO2",
+   "programme": "BTECH-COMMON"
+  },
+  {
+   "uid": "BTECH-COMMON/PO3",
+   "text": "Design/development of solutions: Design solutions for complex engineering problems and design system components or processes that meet the specified needs with appropriate consideration for the public health and safety, and the cultural, societal, and environmental considerations.",
+   "short_label": "PO3",
+   "programme": "BTECH-COMMON"
+  },
+  {
+   "uid": "BTECH-COMMON/PO4",
+   "text": "Conduct investigations of complex problems: Use research-based knowledge and research methods including design of experiments, analysis and interpretation of data, and synthesis of the information to provide valid conclusions.",
+   "short_label": "PO4",
+   "programme": "BTECH-COMMON"
+  },
+  {
+   "uid": "BTECH-COMMON/PO5",
+   "text": "Modern tool usage: Create, select, and apply appropriate techniques, resources, and modern engineering and IT tools including prediction and modeling to complex engineering activities with an understanding of the limitations.",
+   "short_label": "PO5",
+   "programme": "BTECH-COMMON"
+  },
+  {
+   "uid": "BTECH-COMMON/PO6",
+   "text": "The engineer and society: Apply reasoning informed by the contextual knowledge to assess societal, health, safety, legal and cultural issues and the consequent responsibilities relevant to the professional engineering practice.",
+   "short_label": "PO6",
+   "programme": "BTECH-COMMON"
+  },
+  {
+   "uid": "BTECH-COMMON/PO7",
+   "text": "Environment and sustainability: Understand the impact of the professional engineering solutions in societal and environmental contexts, and demonstrate the knowledge of, and need for sustainable development.",
+   "short_label": "PO7",
+   "programme": "BTECH-COMMON"
+  },
+  {
+   "uid": "BTECH-COMMON/PO8",
+   "text": "Ethics: Apply ethical principles and commit to professional ethics and responsibilities and norms of the engineering practice.",
+   "short_label": "PO8",
+   "programme": "BTECH-COMMON"
+  },
+  {
+   "uid": "BTECH-COMMON/PO9",
+   "text": "Individual and team work: Function effectively as an individual, and as a member or leader in diverse teams, and in multidisciplinary settings.",
+   "short_label": "PO9",
+   "programme": "BTECH-COMMON"
+  },
+  {
+   "uid": "BTECH-COMMON/PO10",
+   "text": "Communication: Communicate effectively on complex engineering activities with the engineering community and with society at large, such as, being able to comprehend and write effective reports and design documentation, make effective presentations, and give and receive clear instructions.",
+   "short_label": "PO10",
+   "programme": "BTECH-COMMON"
+  },
+  {
+   "uid": "BTECH-COMMON/PO11",
+   "text": "Project management and finance: Demonstrate knowledge and understanding of the engineering and management principles and apply these to one’s own work, as a member and leader in a team, to manage projects and in multidisciplinary environments.",
+   "short_label": "PO11",
+   "programme": "BTECH-COMMON"
+  },
+  {
+   "uid": "BTECH-COMMON/PO12",
+   "text": "Life-long learning: Recognize the need for, and have the preparation and ability to engage in independent and life-long learning in the broadest context of technological change.",
+   "short_label": "PO12",
+   "programme": "BTECH-COMMON"
+  },
+  {
+   "uid": "BTECH-CSE/PSO1",
+   "text": "Understanding of theoretical foundations and limits of computing.",
+   "short_label": "PSO1",
+   "programme": "BTECH-CSE"
+  },
+  {
+   "uid": "BTECH-CSE/PSO2",
+   "text": "Understanding of computing at different levels of abstraction including circuits and computer architecture, operating systems, algorithms, and applications.",
+   "short_label": "PSO2",
+   "programme": "BTECH-CSE"
+  },
+  {
+   "uid": "BTECH-CSE/PSO3",
+   "text": "Ability to adapt established models, techniques, algorithms, data structures, etc. for efficiently solving new problems.",
+   "short_label": "PSO3",
+   "programme": "BTECH-CSE"
+  },
+  {
+   "uid": "BTECH-CSE/PSO4",
+   "text": "Ability to design, implement, and evaluate computer based system or application to meet the desired needs using modern tools and methodologies.",
+   "short_label": "PSO4",
+   "programme": "BTECH-CSE"
+  },
+  {
+   "uid": "BTECH-CSE/PSO5",
+   "text": "Understanding and ability to use advanced techniques and tools in different areas of computing.",
+   "short_label": "PSO5",
+   "programme": "BTECH-CSE"
+  },
+  {
+   "uid": "BTECH-CSAI/PSO1",
+   "text": "Understanding of foundational topics in Computer Science, Artificial Intelligence, and Machine Learning.",
+   "short_label": "PSO1",
+   "programme": "BTECH-CSAI"
+  },
+  {
+   "uid": "BTECH-CSAI/PSO2",
+   "text": "Understanding of theoretical foundations and limits of Artificial Intelligence and Machine Learning.",
+   "short_label": "PSO2",
+   "programme": "BTECH-CSAI"
+  },
+  {
+   "uid": "BTECH-CSAI/PSO3",
+   "text": "Ability to design and implement algorithms and data structures for efficiently solving new problems.",
+   "short_label": "PSO3",
+   "programme": "BTECH-CSAI"
+  },
+  {
+   "uid": "BTECH-CSAI/PSO4",
+   "text": "Ability to model and analyze a variety of problems using appropriate mathematical/computational and AI concepts.",
+   "short_label": "PSO4",
+   "programme": "BTECH-CSAI"
+  },
+  {
+   "uid": "BTECH-CSAI/PSO5",
+   "text": "Ability of apply and develop AI algorithms to transform large amount of data into intelligent decisions and/or behavior.",
+   "short_label": "PSO5",
+   "programme": "BTECH-CSAI"
+  },
+  {
+   "uid": "BTECH-CSAI/PSO6",
+   "text": "An understanding of the impact of AI based solutions in an economic, societal, and environment context.",
+   "short_label": "PSO6",
+   "programme": "BTECH-CSAI"
+  },
+  {
+   "uid": "MTECH-CSE/PO1",
+   "text": "An ability to independently carry out research /investigation and development work to solve practical problems",
+   "short_label": "PO1",
+   "programme": "MTECH-CSE"
+  },
+  {
+   "uid": "MTECH-CSE/PO2",
+   "text": "An ability to write and present a substantial technical report/document",
+   "short_label": "PO2",
+   "programme": "MTECH-CSE"
+  },
+  {
+   "uid": "MTECH-CSE/PO3",
+   "text": "Students should be able to demonstrate a degree of mastery over the area as per the specialization of the program. The mastery should be at a level higher than the requirements in the appropriate bachelor program",
+   "short_label": "PO3",
+   "programme": "MTECH-CSE"
+  },
+  {
+   "uid": "MTECH-CSE/PSO1",
+   "text": "An understanding of the theoretical foundations and the limits of computing.",
+   "short_label": "PSO1",
+   "programme": "MTECH-CSE"
+  },
+  {
+   "uid": "MTECH-CSE/PSO2",
+   "text": "An ability to adapt existing models, techniques, algorithms, data structures, etc. for efficiently solving problems.",
+   "short_label": "PSO2",
+   "programme": "MTECH-CSE"
+  },
+  {
+   "uid": "MTECH-CSE/PSO3",
+   "text": "An ability to design, develop and evaluate new computer based systems for novel applications which meet the desired needs of industry and society.",
+   "short_label": "PSO3",
+   "programme": "MTECH-CSE"
+  },
+  {
+   "uid": "MTECH-CSE/PSO4",
+   "text": "Understanding and ability to use advanced computing techniques and tools.",
+   "short_label": "PSO4",
+   "programme": "MTECH-CSE"
+  },
+  {
+   "uid": "MTECH-CSE/PSO5",
+   "text": "An ability to undertake original research at the cutting edge of computer science & its related areas.",
+   "short_label": "PSO5",
+   "programme": "MTECH-CSE"
+  },
+  {
+   "uid": "MTECH-CSE/PSO6",
+   "text": "An ability to function effectively individually or as a part of a team to accomplish a state goal.",
+   "short_label": "PSO6",
+   "programme": "MTECH-CSE"
+  },
+  {
+   "uid": "MTECH-CSE/PSO7",
+   "text": "An understanding of professional and ethical responsibility.",
+   "short_label": "PSO7",
+   "programme": "MTECH-CSE"
+  },
+  {
+   "uid": "MTECH-CSE/PSO8",
+   "text": "An ability to communicate effectively with a wide range of audience.",
+   "short_label": "PSO8",
+   "programme": "MTECH-CSE"
+  },
+  {
+   "uid": "MTECH-CSE/PSO9",
+   "text": "An ability to learn independently and engage in lifelong learning.",
+   "short_label": "PSO9",
+   "programme": "MTECH-CSE"
+  },
+  {
+   "uid": "MTECH-CSE/PSO10",
+   "text": "An understanding of the impact of IT related solutions in an economic, societal, and environment context.",
+   "short_label": "PSO10",
+   "programme": "MTECH-CSE"
+  }
+ ],
+ "activity_po_map": {
+  "design": [
+   "BTECH-COMMON/PO3",
+   "BTECH-CSE/PSO4",
+   "BTECH-CSAI/PSO3",
+   "BTECH-CSAI/PSO5",
+   "MTECH-CSE/PSO3"
+  ],
+  "implement": [
+   "BTECH-COMMON/PO3",
+   "BTECH-COMMON/PO5",
+   "BTECH-CSE/PSO4",
+   "BTECH-CSAI/PSO3",
+   "BTECH-CSAI/PSO5",
+   "MTECH-CSE/PSO3"
+  ],
+  "analyse-data": [
+   "BTECH-COMMON/PO2",
+   "BTECH-COMMON/PO4",
+   "BTECH-CSE/PSO3",
+   "BTECH-CSAI/PSO4",
+   "MTECH-CSE/PSO2"
+  ],
+  "evaluate-critique": [
+   "BTECH-COMMON/PO2",
+   "BTECH-COMMON/PO4",
+   "BTECH-CSE/PSO4",
+   "BTECH-CSAI/PSO4",
+   "MTECH-CSE/PSO3"
+  ],
+  "teamwork": [
+   "BTECH-COMMON/PO9",
+   "MTECH-CSE/PSO6"
+  ],
+  "written-communication": [
+   "BTECH-COMMON/PO10",
+   "MTECH-CSE/PO2",
+   "MTECH-CSE/PSO8"
+  ],
+  "oral-presentation": [
+   "BTECH-COMMON/PO10",
+   "MTECH-CSE/PSO8"
+  ],
+  "ethics-reflection": [
+   "BTECH-COMMON/PO6",
+   "BTECH-COMMON/PO8",
+   "BTECH-CSAI/PSO6",
+   "MTECH-CSE/PSO7",
+   "MTECH-CSE/PSO10"
+  ],
+  "self-directed-learning": [
+   "BTECH-COMMON/PO12",
+   "MTECH-CSE/PSO9"
+  ],
+  "research-investigation": [
+   "BTECH-COMMON/PO4",
+   "MTECH-CSE/PO1",
+   "MTECH-CSE/PSO5"
+  ],
+  "tool-use": [
+   "BTECH-COMMON/PO5",
+   "BTECH-CSE/PSO5",
+   "MTECH-CSE/PSO4"
+  ],
+  "project-management": [
+   "BTECH-COMMON/PO11"
+  ],
+  "theory": [
+   "BTECH-COMMON/PO1",
+   "BTECH-CSE/PSO1",
+   "BTECH-CSE/PSO2",
+   "BTECH-CSAI/PSO1",
+   "BTECH-CSAI/PSO2",
+   "MTECH-CSE/PSO1"
+  ]
+ },
+ "co_count": {
+  "min": 4,
+  "max": 5,
+  "basis": "IIIT-D CSE course template (4-credit course)"
+ },
+ "template_rules": {
+  "co_high_bloom": {
+   "min_fraction": 0.5,
+   "min_level": 4,
+   "basis": "TEMPLATE: at least 1/2 of the COs should target BL4 (Analyzing), BL5 (Evaluating) or BL6 (Creating)"
+  },
+  "proctored": {
+   "min_pct": 40,
+   "types": [
+    "midsem",
+    "endsem",
+    "quiz"
+   ],
+   "basis": "TEMPLATE: at least 40% should be proctored evaluation. Types listed are proctored by default; a component may override with proctored: true/false"
+  },
+  "outside_load_hours_per_week": {
+   "min": 10.0,
+   "max": 12.0
+  }
+ },
+ "cco_compact": {
+  "course_name": "Web Development for All",
+  "description": null,
+  "topic_groups": [],
+  "topics_treatment": "missing",
+  "central_question": null,
+  "pedagogical_emphasis": null,
+  "negative_constraints": [],
+  "target_students": {
+   "programmes": [],
+   "years": [],
+   "assumed_background": []
+  },
+  "level": 3,
+  "credits": 4,
+  "ltp": {
+   "L": 3,
+   "T": 1,
+   "P": 0
+  },
+  "weeks": 13,
+  "lab": {
+   "required": null,
+   "infrastructure": []
+  },
+  "assessment_prefs": {
+   "preferred": [],
+   "avoid": [],
+   "rationale": null
+  },
+  "special_constraints": []
+ },
+ "stages_done": [
+  "s1_intake",
+  "s2_positioning",
+  "s3_constraints",
+  "s4_outcomes",
+  "s5_structure",
+  "s7_activities_assessment",
+  "s8_resources",
+  "s9_narrative"
+ ],
+ "overlap_computed": [
+  {
+   "course_uid": "CSE632",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "neo4j: no topics or no embeddings"
+  },
+  {
+   "course_uid": "CSE583",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "neo4j: no topics or no embeddings"
+  },
+  {
+   "course_uid": "CSE566",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "neo4j: no topics or no embeddings"
+  },
+  {
+   "course_uid": "DES205",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "neo4j: no topics or no embeddings"
+  },
+  {
+   "course_uid": "CSE508",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "neo4j: no topics or no embeddings"
+  },
+  {
+   "course_uid": "ECE560",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "neo4j: no topics or no embeddings"
+  },
+  {
+   "course_uid": "DES522",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "neo4j: no topics or no embeddings"
+  },
+  {
+   "course_uid": "ENT304",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "neo4j: no topics or no embeddings"
+  },
+  {
+   "course_uid": "CSE530",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "neo4j: no topics or no embeddings"
+  },
+  {
+   "course_uid": "DES506",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "neo4j: no topics or no embeddings"
+  },
+  {
+   "course_uid": "BIO551A",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "neo4j: no topics or no embeddings"
+  },
+  {
+   "course_uid": "CSE201",
+   "weighted_jaccard": 0.0,
+   "shared_topics": [],
+   "method": "neo4j: no topics or no embeddings"
+  }
+ ],
+ "known_course_uids": [
+  "AI201",
+  "AI203",
+  "AI501",
+  "AI502",
+  "BIO101",
+  "BIO102",
+  "BIO201",
+  "BIO211",
+  "BIO213",
+  "BIO214",
+  "BIO221",
+  "BIO222",
+  "BIO321",
+  "BIO361",
+  "BIO511",
+  "BIO512",
+  "BIO513",
+  "BIO516",
+  "BIO522",
+  "BIO523",
+  "BIO524",
+  "BIO525",
+  "BIO531",
+  "BIO532",
+  "BIO533",
+  "BIO534",
+  "BIO541",
+  "BIO542",
+  "BIO543",
+  "BIO544",
+  "BIO545",
+  "BIO546",
+  "BIO548",
+  "BIO549",
+  "BIO551A",
+  "BIO561",
+  "BIO5XX",
+  "COM101",
+  "COM301A",
+  "CSE101",
+  "CSE102",
+  "CSE112",
+  "CSE121",
+  "CSE140",
+  "CSE200A",
+  "CSE201",
+  "CSE202",
+  "CSE222",
+  "CSE223",
+  "CSE231",
+  "CSE232",
+  "CSE233",
+  "CSE319",
+  "CSE320",
+  "CSE322",
+  "CSE333",
+  "CSE340",
+  "CSE342",
+  "CSE344",
+  "CSE345",
+  "CSE347",
+  "CSE350",
+  "CSE354",
+  "CSE421",
+  "CSE441",
+  "CSE501",
+  "CSE502",
+  "CSE503",
+  "CSE504",
+  "CSE506",
+  "CSE507",
+  "CSE508",
+  "CSE511",
+  "CSE513",
+  "CSE515",
+  "CSE516",
+  "CSE518",
+  "CSE523",
+  "CSE524",
+  "CSE525",
+  "CSE526",
+  "CSE528",
+  "CSE529",
+  "CSE530",
+  "CSE531",
+  "CSE535",
+  "CSE538",
+  "CSE546",
+  "CSE552",
+  "CSE553",
+  "CSE555",
+  "CSE556",
+  "CSE557",
+  "CSE558",
+  "CSE559",
+  "CSE560",
+  "CSE561",
+  "CSE562",
+  "CSE563",
+  "CSE565",
+  "CSE566",
+  "CSE567",
+  "CSE568",
+  "CSE569",
+  "CSE570",
+  "CSE571",
+  "CSE572",
+  "CSE573",
+  "CSE576",
+  "CSE577",
+  "CSE580A",
+  "CSE581",
+  "CSE582",
+  "CSE583",
+  "CSE584",
+  "CSE586",
+  "CSE587",
+  "CSE587A",
+  "CSE588",
+  "CSE589",
+  "CSE592",
+  "CSE593",
+  "CSE594A",
+  "CSE595",
+  "CSE596",
+  "CSE597",
+  "CSE5GP",
+  "CSE600",
+  "CSE600A",
+  "CSE601",
+  "CSE605A",
+  "CSE606",
+  "CSE606A",
+  "CSE609",
+  "CSE615",
+  "CSE618",
+  "CSE619",
+  "CSE621",
+  "CSE622",
+  "CSE622A",
+  "CSE624A",
+  "CSE631",
+  "CSE632",
+  "CSE633",
+  "CSE633A",
+  "CSE634",
+  "CSE634A",
+  "CSE636",
+  "CSE638",
+  "CSE640",
+  "CSE642",
+  "CSE643",
+  "CSE645",
+  "CSE651",
+  "CSE653",
+  "CSE654",
+  "CSE655",
+  "CSE656",
+  "CSE660",
+  "CSE661",
+  "CSE662A",
+  "CSE663",
+  "CSE663A",
+  "CSE665",
+  "CSE665A",
+  "CSE666",
+  "CSE667",
+  "CSE694F",
+  "CSE701",
+  "CSE734",
+  "CSE749",
+  "DES101",
+  "DES102",
+  "DES130",
+  "DES201",
+  "DES202",
+  "DES204",
+  "DES205",
+  "DES206",
+  "DES302",
+  "DES303",
+  "DES305",
+  "DES501",
+  "DES502",
+  "DES503",
+  "DES504",
+  "DES506",
+  "DES509",
+  "DES512",
+  "DES513",
+  "DES514",
+  "DES515",
+  "DES516",
+  "DES516S",
+  "DES518",
+  "DES520",
+  "DES521",
+  "DES522",
+  "DES523",
+  "DES524",
+  "DES526",
+  "DES527",
+  "DES529",
+  "DES530",
+  "DES531",
+  "DES532A",
+  "DES533",
+  "DES534",
+  "DES535",
+  "DES536",
+  "DES537A",
+  "DES539",
+  "DES591",
+  "ECE111",
+  "ECE113",
+  "ECE210",
+  "ECE211",
+  "ECE214",
+  "ECE215",
+  "ECE230",
+  "ECE240",
+  "ECE250",
+  "ECE270",
+  "ECE314",
+  "ECE315",
+  "ECE318",
+  "ECE321",
+  "ECE323",
+  "ECE331",
+  "ECE340",
+  "ECE343",
+  "ECE351",
+  "ECE366",
+  "ECE412",
+  "ECE431",
+  "ECE432",
+  "ECE452",
+  "ECE501",
+  "ECE510",
+  "ECE513",
+  "ECE516",
+  "ECE517",
+  "ECE519",
+  "ECE520",
+  "ECE522",
+  "ECE523A",
+  "ECE524",
+  "ECE525",
+  "ECE527",
+  "ECE529",
+  "ECE530",
+  "ECE532",
+  "ECE533",
+  "ECE534",
+  "ECE536S",
+  "ECE537",
+  "ECE539",
+  "ECE543",
+  "ECE545",
+  "ECE546",
+  "ECE548",
+  "ECE554",
+  "ECE557",
+  "ECE558",
+  "ECE55G",
+  "ECE560",
+  "ECE564",
+  "ECE564A",
+  "ECE565",
+  "ECE567",
+  "ECE570",
+  "ECE571",
+  "ECE572",
+  "ECE573",
+  "ECE577",
+  "ECE579",
+  "ECE581",
+  "ECE582",
+  "ECE611",
+  "ECE613",
+  "ECE614",
+  "ECE615A",
+  "ECE634",
+  "ECE666",
+  "ECE667A",
+  "ECE672",
+  "ECE677",
+  "ECO201",
+  "ECO221",
+  "ECO223",
+  "ECO301",
+  "ECO311",
+  "ECO312",
+  "ECO313",
+  "ECO314",
+  "ECO322",
+  "ECO323",
+  "ECO324",
+  "ECO325",
+  "ECO331",
+  "ECO332",
+  "ECO333",
+  "ECO341",
+  "ECO502",
+  "ECO503",
+  "ENG599S",
+  "ENT201",
+  "ENT202",
+  "ENT301",
+  "ENT302",
+  "ENT303A",
+  "ENT304",
+  "ENT305",
+  "ENT306",
+  "ENT307",
+  "ENT308",
+  "ENT309",
+  "ENT405",
+  "ENT411",
+  "ENT412",
+  "ENT413",
+  "ENT414",
+  "ENT415",
+  "ENT416",
+  "ENT417",
+  "ENT421",
+  "ESC205",
+  "ESC207A",
+  "MGT310",
+  "MGT311",
+  "MTH100",
+  "MTH201",
+  "MTH203",
+  "MTH204",
+  "MTH210",
+  "MTH211",
+  "MTH212",
+  "MTH240",
+  "MTH270",
+  "MTH300",
+  "MTH302",
+  "MTH310",
+  "MTH311",
+  "MTH340",
+  "MTH341",
+  "MTH343",
+  "MTH359",
+  "MTH371",
+  "MTH372",
+  "MTH373",
+  "MTH375",
+  "MTH376",
+  "MTH501",
+  "MTH504",
+  "MTH504A",
+  "MTH506",
+  "MTH510",
+  "MTH512",
+  "MTH513",
+  "MTH514",
+  "MTH515",
+  "MTH516",
+  "MTH517",
+  "MTH518",
+  "MTH519A",
+  "MTH521A",
+  "MTH523",
+  "MTH535",
+  "MTH536",
+  "MTH542",
+  "MTH544",
+  "MTH545",
+  "MTH546",
+  "MTH547",
+  "MTH547A",
+  "MTH548",
+  "MTH550",
+  "MTH551",
+  "MTH552A",
+  "MTH552B",
+  "MTH561",
+  "MTH562",
+  "MTH562A",
+  "MTH563",
+  "MTH564A",
+  "MTH566",
+  "MTH570",
+  "MTH571",
+  "MTH576",
+  "MTH577",
+  "MTH578",
+  "MTH578A",
+  "MTH579",
+  "MTH580A",
+  "MTH598",
+  "MTH599",
+  "PSY201",
+  "PSY202",
+  "PSY301",
+  "PSY302",
+  "PSY305",
+  "PSY306",
+  "PSY307",
+  "PSY308",
+  "SOC101",
+  "SOC202",
+  "SOC204",
+  "SOC205",
+  "SOC206",
+  "SOC207",
+  "SOC208",
+  "SOC209",
+  "SOC210",
+  "SOC211",
+  "SOC212",
+  "SOC213",
+  "SOC214",
+  "SOC216",
+  "SOC302",
+  "SOC306",
+  "SOC307",
+  "SOC308",
+  "SOC309",
+  "SOC310",
+  "SOC311",
+  "SOC313",
+  "SOC314",
+  "SOC315",
+  "SOC502",
+  "SOC504",
+  "SOC513",
+  "SOC515",
+  "SOC702",
+  "SOC719A",
+  "SSH101",
+  "SSH121",
+  "SSH124",
+  "SSH201",
+  "SSH211",
+  "SSH214",
+  "SSH215",
+  "SSH216",
+  "SSH217",
+  "SSH221",
+  "SSH222",
+  "SSH223",
+  "SSH224",
+  "SSH225A",
+  "SSH240",
+  "SSH261",
+  "SSH300",
+  "SSH311",
+  "SSH321",
+  "SSH322",
+  "SSH323",
+  "SSH324",
+  "SSH325",
+  "SSH326",
+  "SSH327A",
+  "SSH341",
+  "SSH342",
+  "SSH361",
+  "SSH362",
+  "SSH526",
+  "SSH529",
+  "SSH544",
+  "SSH700",
+  "SSH711",
+  "SSH721",
+  "SSH728",
+  "SSH743"
+ ],
+ "course_levels": {
+  "AI201": 2,
+  "AI203": 2,
+  "AI501": 5,
+  "AI502": 5,
+  "BIO101": 1,
+  "BIO102": 1,
+  "BIO201": 2,
+  "BIO211": 2,
+  "BIO213": 2,
+  "BIO214": 2,
+  "BIO221": 2,
+  "BIO222": 2,
+  "BIO321": 3,
+  "BIO361": 3,
+  "BIO511": 5,
+  "BIO512": 5,
+  "BIO513": 5,
+  "BIO516": 5,
+  "BIO522": 5,
+  "BIO523": 5,
+  "BIO524": 5,
+  "BIO525": 5,
+  "BIO531": 5,
+  "BIO532": 5,
+  "BIO533": 5,
+  "BIO534": 5,
+  "BIO541": 5,
+  "BIO542": 5,
+  "BIO543": 5,
+  "BIO544": 5,
+  "BIO545": 5,
+  "BIO546": 5,
+  "BIO548": 5,
+  "BIO549": 5,
+  "BIO551A": 5,
+  "BIO561": 5,
+  "BIO5XX": 5,
+  "COM101": 1,
+  "COM301A": 3,
+  "CSE101": 1,
+  "CSE102": 1,
+  "CSE112": 1,
+  "CSE121": 1,
+  "CSE140": 1,
+  "CSE200A": 2,
+  "CSE201": 2,
+  "CSE202": 2,
+  "CSE222": 2,
+  "CSE223": 2,
+  "CSE231": 2,
+  "CSE232": 2,
+  "CSE233": 2,
+  "CSE319": 3,
+  "CSE320": 3,
+  "CSE322": 3,
+  "CSE333": 3,
+  "CSE340": 3,
+  "CSE342": 3,
+  "CSE344": 3,
+  "CSE345": 3,
+  "CSE347": 3,
+  "CSE350": 3,
+  "CSE354": 3,
+  "CSE421": 4,
+  "CSE441": 4,
+  "CSE501": 5,
+  "CSE502": 5,
+  "CSE503": 5,
+  "CSE504": 5,
+  "CSE506": 5,
+  "CSE507": 5,
+  "CSE508": 5,
+  "CSE511": 5,
+  "CSE513": 5,
+  "CSE515": 5,
+  "CSE516": 5,
+  "CSE518": 5,
+  "CSE523": 5,
+  "CSE524": 5,
+  "CSE525": 5,
+  "CSE526": 5,
+  "CSE528": 5,
+  "CSE529": 5,
+  "CSE530": 5,
+  "CSE531": 5,
+  "CSE535": 5,
+  "CSE538": 5,
+  "CSE546": 5,
+  "CSE552": 5,
+  "CSE553": 5,
+  "CSE555": 5,
+  "CSE556": 5,
+  "CSE557": 5,
+  "CSE558": 5,
+  "CSE559": 5,
+  "CSE560": 5,
+  "CSE561": 5,
+  "CSE562": 5,
+  "CSE563": 5,
+  "CSE565": 5,
+  "CSE566": 5,
+  "CSE567": 5,
+  "CSE568": 5,
+  "CSE569": 5,
+  "CSE570": 5,
+  "CSE571": 5,
+  "CSE572": 5,
+  "CSE573": 5,
+  "CSE576": 5,
+  "CSE577": 5,
+  "CSE580A": 5,
+  "CSE581": 5,
+  "CSE582": 5,
+  "CSE583": 5,
+  "CSE584": 5,
+  "CSE586": 5,
+  "CSE587": 5,
+  "CSE587A": 5,
+  "CSE588": 5,
+  "CSE589": 5,
+  "CSE592": 5,
+  "CSE593": 5,
+  "CSE594A": 5,
+  "CSE595": 5,
+  "CSE596": 5,
+  "CSE597": 5,
+  "CSE5GP": 5,
+  "CSE600": 6,
+  "CSE600A": 6,
+  "CSE601": 6,
+  "CSE605A": 6,
+  "CSE606": 6,
+  "CSE606A": 6,
+  "CSE609": 6,
+  "CSE615": 6,
+  "CSE618": 6,
+  "CSE619": 6,
+  "CSE621": 6,
+  "CSE622": 6,
+  "CSE622A": 6,
+  "CSE624A": 6,
+  "CSE631": 6,
+  "CSE632": 6,
+  "CSE633": 6,
+  "CSE633A": 6,
+  "CSE634": 6,
+  "CSE634A": 6,
+  "CSE636": 6,
+  "CSE638": 6,
+  "CSE640": 6,
+  "CSE642": 6,
+  "CSE643": 6,
+  "CSE645": 6,
+  "CSE651": 6,
+  "CSE653": 6,
+  "CSE654": 6,
+  "CSE655": 6,
+  "CSE656": 6,
+  "CSE660": 6,
+  "CSE661": 6,
+  "CSE662A": 6,
+  "CSE663": 6,
+  "CSE663A": 6,
+  "CSE665": 6,
+  "CSE665A": 6,
+  "CSE666": 6,
+  "CSE667": 6,
+  "CSE694F": 6,
+  "CSE701": 7,
+  "CSE734": 7,
+  "CSE749": 7,
+  "DES101": 1,
+  "DES102": 1,
+  "DES130": 1,
+  "DES201": 2,
+  "DES202": 2,
+  "DES204": 2,
+  "DES205": 2,
+  "DES206": 2,
+  "DES302": 3,
+  "DES303": 3,
+  "DES305": 3,
+  "DES501": 5,
+  "DES502": 5,
+  "DES503": 5,
+  "DES504": 5,
+  "DES506": 5,
+  "DES509": 5,
+  "DES512": 5,
+  "DES513": 5,
+  "DES514": 5,
+  "DES515": 5,
+  "DES516": 5,
+  "DES516S": 5,
+  "DES518": 5,
+  "DES520": 5,
+  "DES521": 5,
+  "DES522": 5,
+  "DES523": 5,
+  "DES524": 5,
+  "DES526": 5,
+  "DES527": 5,
+  "DES529": 5,
+  "DES530": 5,
+  "DES531": 5,
+  "DES532A": 5,
+  "DES533": 5,
+  "DES534": 5,
+  "DES535": 5,
+  "DES536": 5,
+  "DES537A": 5,
+  "DES539": 5,
+  "DES591": 5,
+  "ECE111": 1,
+  "ECE113": 1,
+  "ECE210": 2,
+  "ECE211": 2,
+  "ECE214": 2,
+  "ECE215": 2,
+  "ECE230": 2,
+  "ECE240": 2,
+  "ECE250": 2,
+  "ECE270": 2,
+  "ECE314": 3,
+  "ECE315": 3,
+  "ECE318": 3,
+  "ECE321": 3,
+  "ECE323": 3,
+  "ECE331": 3,
+  "ECE340": 3,
+  "ECE343": 3,
+  "ECE351": 3,
+  "ECE366": 3,
+  "ECE412": 4,
+  "ECE431": 4,
+  "ECE432": 4,
+  "ECE452": 4,
+  "ECE501": 5,
+  "ECE510": 5,
+  "ECE513": 5,
+  "ECE516": 5,
+  "ECE517": 5,
+  "ECE519": 5,
+  "ECE520": 5,
+  "ECE522": 5,
+  "ECE523A": 5,
+  "ECE524": 5,
+  "ECE525": 5,
+  "ECE527": 5,
+  "ECE529": 5,
+  "ECE530": 5,
+  "ECE532": 5,
+  "ECE533": 5,
+  "ECE534": 5,
+  "ECE536S": 5,
+  "ECE537": 5,
+  "ECE539": 5,
+  "ECE543": 5,
+  "ECE545": 5,
+  "ECE546": 5,
+  "ECE548": 5,
+  "ECE554": 5,
+  "ECE557": 5,
+  "ECE558": 5,
+  "ECE55G": 5,
+  "ECE560": 5,
+  "ECE564": 5,
+  "ECE564A": 5,
+  "ECE565": 5,
+  "ECE567": 5,
+  "ECE570": 5,
+  "ECE571": 5,
+  "ECE572": 5,
+  "ECE573": 5,
+  "ECE577": 5,
+  "ECE579": 5,
+  "ECE581": 5,
+  "ECE582": 5,
+  "ECE611": 6,
+  "ECE613": 6,
+  "ECE614": 6,
+  "ECE615A": 6,
+  "ECE634": 6,
+  "ECE666": 6,
+  "ECE667A": 6,
+  "ECE672": 6,
+  "ECE677": 6,
+  "ECO201": 2,
+  "ECO221": 2,
+  "ECO223": 2,
+  "ECO301": 3,
+  "ECO311": 3,
+  "ECO312": 3,
+  "ECO313": 3,
+  "ECO314": 3,
+  "ECO322": 3,
+  "ECO323": 3,
+  "ECO324": 3,
+  "ECO325": 3,
+  "ECO331": 3,
+  "ECO332": 3,
+  "ECO333": 3,
+  "ECO341": 3,
+  "ECO502": 5,
+  "ECO503": 5,
+  "ENG599S": 5,
+  "ENT201": 2,
+  "ENT202": 2,
+  "ENT301": 3,
+  "ENT302": 3,
+  "ENT303A": 3,
+  "ENT304": 3,
+  "ENT305": 3,
+  "ENT306": 3,
+  "ENT307": 3,
+  "ENT308": 3,
+  "ENT309": 3,
+  "ENT405": 4,
+  "ENT411": 4,
+  "ENT412": 4,
+  "ENT413": 4,
+  "ENT414": 4,
+  "ENT415": 4,
+  "ENT416": 4,
+  "ENT417": 4,
+  "ENT421": 4,
+  "ESC205": 2,
+  "ESC207A": 2,
+  "MGT310": 3,
+  "MGT311": 3,
+  "MTH100": 1,
+  "MTH201": 2,
+  "MTH203": 2,
+  "MTH204": 2,
+  "MTH210": 2,
+  "MTH211": 2,
+  "MTH212": 2,
+  "MTH240": 2,
+  "MTH270": 2,
+  "MTH300": 3,
+  "MTH302": 3,
+  "MTH310": 3,
+  "MTH311": 3,
+  "MTH340": 3,
+  "MTH341": 3,
+  "MTH343": 3,
+  "MTH359": 3,
+  "MTH371": 3,
+  "MTH372": 3,
+  "MTH373": 3,
+  "MTH375": 3,
+  "MTH376": 3,
+  "MTH501": 5,
+  "MTH504": 5,
+  "MTH504A": 5,
+  "MTH506": 5,
+  "MTH510": 5,
+  "MTH512": 5,
+  "MTH513": 5,
+  "MTH514": 5,
+  "MTH515": 5,
+  "MTH516": 5,
+  "MTH517": 5,
+  "MTH518": 5,
+  "MTH519A": 5,
+  "MTH521A": 5,
+  "MTH523": 5,
+  "MTH535": 5,
+  "MTH536": 5,
+  "MTH542": 5,
+  "MTH544": 5,
+  "MTH545": 5,
+  "MTH546": 5,
+  "MTH547": 5,
+  "MTH547A": 5,
+  "MTH548": 5,
+  "MTH550": 5,
+  "MTH551": 5,
+  "MTH552A": 5,
+  "MTH552B": 5,
+  "MTH561": 5,
+  "MTH562": 5,
+  "MTH562A": 5,
+  "MTH563": 5,
+  "MTH564A": 5,
+  "MTH566": 5,
+  "MTH570": 5,
+  "MTH571": 5,
+  "MTH576": 5,
+  "MTH577": 5,
+  "MTH578": 5,
+  "MTH578A": 5,
+  "MTH579": 5,
+  "MTH580A": 5,
+  "MTH598": 5,
+  "MTH599": 5,
+  "PSY201": 2,
+  "PSY202": 2,
+  "PSY301": 3,
+  "PSY302": 3,
+  "PSY305": 3,
+  "PSY306": 3,
+  "PSY307": 3,
+  "PSY308": 3,
+  "SOC101": 1,
+  "SOC202": 2,
+  "SOC204": 2,
+  "SOC205": 2,
+  "SOC206": 2,
+  "SOC207": 2,
+  "SOC208": 2,
+  "SOC209": 2,
+  "SOC210": 2,
+  "SOC211": 2,
+  "SOC212": 2,
+  "SOC213": 2,
+  "SOC214": 2,
+  "SOC216": 2,
+  "SOC302": 3,
+  "SOC306": 3,
+  "SOC307": 3,
+  "SOC308": 3,
+  "SOC309": 3,
+  "SOC310": 3,
+  "SOC311": 3,
+  "SOC313": 3,
+  "SOC314": 3,
+  "SOC315": 3,
+  "SOC502": 5,
+  "SOC504": 5,
+  "SOC513": 5,
+  "SOC515": 5,
+  "SOC702": 7,
+  "SOC719A": 7,
+  "SSH101": 1,
+  "SSH121": 1,
+  "SSH124": 1,
+  "SSH201": 2,
+  "SSH211": 2,
+  "SSH214": 2,
+  "SSH215": 2,
+  "SSH216": 2,
+  "SSH217": 2,
+  "SSH221": 2,
+  "SSH222": 2,
+  "SSH223": 2,
+  "SSH224": 2,
+  "SSH225A": 2,
+  "SSH240": 2,
+  "SSH261": 2,
+  "SSH300": 3,
+  "SSH311": 3,
+  "SSH321": 3,
+  "SSH322": 3,
+  "SSH323": 3,
+  "SSH324": 3,
+  "SSH325": 3,
+  "SSH326": 3,
+  "SSH327A": 3,
+  "SSH341": 3,
+  "SSH342": 3,
+  "SSH361": 3,
+  "SSH362": 3,
+  "SSH526": 5,
+  "SSH529": 5,
+  "SSH544": 5,
+  "SSH700": 7,
+  "SSH711": 7,
+  "SSH721": 7,
+  "SSH728": 7,
+  "SSH743": 7
+ },
+ "external_courses": [],
+ "research": {
+  "plan": null,
+  "rejected": []
+ },
+ "positioning": {
+  "concerns": [
+   {
+    "about": "CCO.topic_groups",
+    "detail": "The intake form provided no topic groups or syllabus topics, preventing detailed topic-level prerequisite analysis and overlap calculation."
+   }
+  ],
+  "missing": [
+   {
+    "field": "CCO.topic_groups",
+    "reason": "Topic groups list is empty in the intake context."
+   },
+   {
+    "field": "CCO.description",
+    "reason": "Course description is null in the intake context."
+   }
+  ],
+  "existence": {
+   "verdict": "distinct",
+   "closest": [],
+   "reason": "No candidate course in the catalogue has a weighted Jaccard overlap exceeding the substantial overlap threshold of 0.15.",
+   "recommendation": "Proceed as a distinct course offering."
+  },
+  "overlaps": [],
+  "prerequisites": [],
+  "background_mapping": [],
+  "anti_requisites": [],
+  "checked_candidates": [
+   {
+    "course_uid": "CSE632",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "CSE583",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "CSE566",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "DES205",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "CSE508",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "ECE560",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "DES522",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "ENT304",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "CSE530",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "DES506",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "BIO551A",
+    "weighted_jaccard": 0.0
+   },
+   {
+    "course_uid": "CSE201",
+    "weighted_jaccard": 0.0
+   }
+  ],
+  "comparable": [
+   {
+    "kind": "internal",
+    "ref": "CSE566",
+    "title": "Mobile & Middleware Systems",
+    "take": "RESTful web service design patterns and backend service interaction principles.",
+    "avoid": "Focus on mobile crowdsensing, mobile database caching, and low-level system middleware."
+   },
+   {
+    "kind": "internal",
+    "ref": "DES205",
+    "title": "Design of Interactive Systems",
+    "take": "User experience principles and task design for web-based interactive systems.",
+    "avoid": "Focus on cognitive memory modeling and non-web multimodal interfaces."
+   },
+   {
+    "kind": "internal",
+    "ref": "CSE508",
+    "title": "Information Retrieval",
+    "take": "Basic web markup structures (HTML, XML) and practical web interface design.",
+    "avoid": "Heavy theoretical focus on search engine indexing algorithms, vector space models, and web crawling."
+   }
+  ],
+  "po_gap_hints": []
+ },
+ "constraints": [
+  {
+   "id": "K01",
+   "target": "schedule.weeks",
+   "op": "==",
+   "value": 13,
+   "hardness": "hard",
+   "source": {
+    "tag": "REGULATION",
+    "ref": "UGREG-2025§2"
+   }
+  },
+  {
+   "id": "K02",
+   "target": "course.credits",
+   "op": "==",
+   "value": 4,
+   "hardness": "hard",
+   "source": {
+    "tag": "DEFAULT",
+    "ref": "ASM01"
+   }
+  },
+  {
+   "id": "K03",
+   "target": "schedule.lecture_hours_per_week",
+   "op": "==",
+   "value": 3,
+   "hardness": "hard",
+   "source": {
+    "tag": "DEFAULT",
+    "ref": "UGREG-2025§4(2)a"
+   }
+  },
+  {
+   "id": "K04",
+   "target": "schedule.tutorial_hours_per_week",
+   "op": "==",
+   "value": 1,
+   "hardness": "hard",
+   "source": {
+    "tag": "DEFAULT",
+    "ref": "CCO.ltp"
+   }
+  },
+  {
+   "id": "K05",
+   "target": "lab.hours_per_week",
+   "op": "==",
+   "value": 0,
+   "hardness": "hard",
+   "source": {
+    "tag": "DEFAULT",
+    "ref": "CCO.ltp"
+   }
+  },
+  {
+   "id": "K06",
+   "target": "assessment.component[midsem].present",
+   "op": "present",
+   "value": true,
+   "hardness": "soft",
+   "source": {
+    "tag": "REGULATION",
+    "ref": "UGREG-2025§6.2"
+   }
+  },
+  {
+   "id": "K07",
+   "target": "assessment.component[endsem].present",
+   "op": "present",
+   "value": true,
+   "hardness": "soft",
+   "source": {
+    "tag": "REGULATION",
+    "ref": "UGREG-2025§6.2"
+   }
+  },
+  {
+   "id": "K08",
+   "target": "schedule.midsem_after_week",
+   "op": "==",
+   "value": 7,
+   "hardness": "soft",
+   "source": {
+    "tag": "INFERRED",
+    "ref": "ASM"
+   }
+  }
+ ],
+ "constraint_conflicts": [],
+ "constraints_untranslatable": [],
+ "feasibility": {
+  "lecture_hours_available": 39,
+  "tutorial_hours_available": 13,
+  "lab_hours_available": 0,
+  "note": "topic-level feasibility is checked after S5 by the scheduler"
+ },
+ "weight_priors": {
+  "project": {
+   "median": 25.0,
+   "iqr": [
+    20.0,
+    30.0
+   ],
+   "n": 200
+  },
+  "assignment": {
+   "median": 20,
+   "iqr": [
+    15.0,
+    30.0
+   ],
+   "n": 323
+  },
+  "quiz": {
+   "median": 20,
+   "iqr": [
+    10.0,
+    20.0
+   ],
+   "n": 245
+  },
+  "midsem": {
+   "median": 20.0,
+   "iqr": [
+    20.0,
+    25.0
+   ],
+   "n": 364
+  },
+  "endsem": {
+   "median": 30,
+   "iqr": [
+    25.0,
+    40.0
+   ],
+   "n": 411
+  },
+  "participation": {
+   "median": 10.0,
+   "iqr": [
+    5.0,
+    10.0
+   ],
+   "n": 106
+  },
+  "other": {
+   "median": 20.0,
+   "iqr": [
+    13.75,
+    40.0
+   ],
+   "n": 86
+  },
+  "presentation": {
+   "median": 20,
+   "iqr": [
+    10.0,
+    25.0
+   ],
+   "n": 73
+  },
+  "lab": {
+   "median": 20.0,
+   "iqr": [
+    15.0,
+    30.0
+   ],
+   "n": 24
+  },
+  "report": {
+   "median": 20.0,
+   "iqr": [
+    20.0,
+    30.0
+   ],
+   "n": 40
+  }
+ },
+ "cos": [
+  {
+   "id": "CO1",
+   "statement": "Write responsive web layouts using standard HTML5 markup and CSS styling rules for specified multi-device wireframes.",
+   "verb": "write",
+   "behaviour": "responsive web layouts using standard HTML5 markup and CSS styling rules",
+   "condition": "given multi-device wireframes and accessibility guidelines",
+   "degree": "such that all rendered layout elements match wireframe specifications across target viewports without layout breaking",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "covers_topic_groups": [],
+   "evidence_types": [
+    "programming_assignment",
+    "lab_task"
+   ],
+   "builds_on_prereq_topics": [],
+   "differentiation_note": "Focuses on practical web markup and responsive layout standards as identified in CSE508 positioning.",
+   "nc_risks": [],
+   "rationale": "Establishes baseline capability in structural markup and responsive styling required before adding dynamic client-side interactivity.",
+   "sources": [
+    {
+     "tag": "CATALOGUE",
+     "ref": "CSE508",
+     "basis": null
+    },
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Derived from CSE508 positioning take regarding basic web markup structures and interface design."
+    }
+   ]
+  },
+  {
+   "id": "CO2",
+   "statement": "Implement dynamic client-side interactivity using asynchronous API requests and DOM manipulation for interactive web application features.",
+   "verb": "implement",
+   "behaviour": "dynamic client-side interactivity using asynchronous API requests and DOM manipulation",
+   "condition": "given backend API endpoints and user interaction event specifications",
+   "degree": "such that asynchronous data updates render correctly without full page reloads and all public interface tests pass",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "covers_topic_groups": [],
+   "evidence_types": [
+    "programming_assignment",
+    "lab_task"
+   ],
+   "builds_on_prereq_topics": [],
+   "differentiation_note": null,
+   "nc_risks": [],
+   "rationale": "Enables students to build interactive single-page web features that interact smoothly with backend data services.",
+   "sources": [
+    {
+     "tag": "CATALOGUE",
+     "ref": "CSE566",
+     "basis": null
+    },
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Derived from backend service interaction principles mentioned in CSE566 positioning."
+    }
+   ]
+  },
+  {
+   "id": "CO3",
+   "statement": "Diagnose performance bottlenecks and rendering issues in web interfaces with browser developer tools and performance metrics.",
+   "verb": "diagnose",
+   "behaviour": "performance bottlenecks and rendering issues in web interfaces",
+   "condition": "given a web application profile and browser network and performance logs",
+   "degree": "identifying at least three distinct performance bottlenecks supported by log evidence and performance metrics",
+   "bloom_level": 4,
+   "knowledge_dimension": "procedural",
+   "covers_topic_groups": [],
+   "evidence_types": [
+    "exam_question",
+    "lab_task"
+   ],
+   "builds_on_prereq_topics": [],
+   "differentiation_note": "Focuses on web application performance debugging rather than non-web interactive system modeling in DES205.",
+   "nc_risks": [],
+   "rationale": "Provides essential diagnostic and profiling skills needed to analyze and optimize client-side web application behavior.",
+   "sources": [
+    {
+     "tag": "CATALOGUE",
+     "ref": "DES205",
+     "basis": null
+    },
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Derived from interactive system performance and user experience principles in DES205 positioning."
+    }
+   ]
+  },
+  {
+   "id": "CO4",
+   "statement": "Evaluate RESTful backend service designs against security, scalability, and usability requirements for a full-stack web system.",
+   "verb": "evaluate",
+   "behaviour": "RESTful backend service designs against security, scalability, and usability requirements",
+   "condition": "for a given full-stack web application architecture document",
+   "degree": "justifying each design decision against stated security and scalability requirements",
+   "bloom_level": 5,
+   "knowledge_dimension": "conceptual",
+   "covers_topic_groups": [],
+   "evidence_types": [
+    "design_document",
+    "exam_question"
+   ],
+   "builds_on_prereq_topics": [],
+   "differentiation_note": "Differentiates from CSE566 by evaluating RESTful service architectural patterns without covering mobile crowdsensing or mobile middleware.",
+   "nc_risks": [],
+   "rationale": "Equips students to evaluate and justify backend service architectures within modern web application stacks.",
+   "sources": [
+    {
+     "tag": "CATALOGUE",
+     "ref": "CSE566",
+     "basis": null
+    },
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Derived from RESTful service design patterns take in CSE566 positioning."
+    }
+   ]
+  }
+ ],
+ "topic_group_proposals": [
+  {
+   "action": "add",
+   "targets": [
+    "TG1",
+    "TG2",
+    "TG3",
+    "TG4"
+   ],
+   "proposal": "Define four structured topic groups: TG1 (HTML5/CSS Layouts & Responsive Design), TG2 (Client-Side JS & Asynchronous APIs), TG3 (Web Performance Profiling & Debugging), and TG4 (RESTful Architecture & Backend Services).",
+   "reason": "The CCO intake form has empty topic groups; creating four clear topic groups supports full coverage of a 4-credit course based on positioning."
+  }
+ ],
+ "copo": [
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-COMMON/PO3",
+   "strength_provisional": 3,
+   "co_phrase": "Write responsive web layouts using standard HTML5 markup and CSS styling rules",
+   "po_phrase": "Design solutions for complex engineering problems and design system components or processes",
+   "justification": "Writing responsive web layouts directly contributes to designing user interface components that satisfy multi-device functional specifications.",
+   "evidencing_activities": [
+    "design",
+    "implement"
+   ]
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-COMMON/PO5",
+   "strength_provisional": 2,
+   "co_phrase": "using standard HTML5 markup and CSS styling rules",
+   "po_phrase": "Create, select, and apply appropriate techniques, resources, and modern engineering and IT tools",
+   "justification": "Utilizing modern standard HTML5 markup and CSS layout techniques requires applying current web development tools.",
+   "evidencing_activities": [
+    "implement",
+    "tool-use"
+   ]
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSE/PSO4",
+   "strength_provisional": 3,
+   "co_phrase": "Write responsive web layouts using standard HTML5 markup and CSS styling rules",
+   "po_phrase": "Ability to design, implement, and evaluate computer based system or application",
+   "justification": "Designing and implementing responsive frontend components fulfills application needs using contemporary web standards.",
+   "evidencing_activities": [
+    "design",
+    "implement"
+   ]
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSE/PSO5",
+   "strength_provisional": 2,
+   "co_phrase": "using standard HTML5 markup and CSS styling rules for specified multi-device wireframes",
+   "po_phrase": "Understanding and ability to use advanced techniques and tools in different areas of computing",
+   "justification": "Applies standard CSS layout engines and frontend markup techniques for multi-device web user interface engineering.",
+   "evidencing_activities": [
+    "tool-use"
+   ]
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSAI/PSO3",
+   "strength_provisional": 2,
+   "co_phrase": "Write responsive web layouts using standard HTML5 markup and CSS styling rules",
+   "po_phrase": "Ability to design and implement algorithms and data structures for efficiently solving new problems",
+   "justification": "Translates wireframe layout specifications into structured DOM trees and responsive CSS rendering rules.",
+   "evidencing_activities": [
+    "design",
+    "implement"
+   ]
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSAI/PSO1",
+   "strength_provisional": 1,
+   "co_phrase": "Write responsive web layouts using standard HTML5 markup and CSS styling rules",
+   "po_phrase": "Understanding of foundational topics in Computer Science",
+   "justification": "Requires basic foundational understanding of web technologies, markup structure, and document rendering principles.",
+   "evidencing_activities": [
+    "theory"
+   ]
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "MTECH-CSE/PSO3",
+   "strength_provisional": 3,
+   "co_phrase": "Write responsive web layouts using standard HTML5 markup and CSS styling rules",
+   "po_phrase": "An ability to design, develop and evaluate new computer based systems for novel applications",
+   "justification": "Developing responsive interfaces enables constructing compliant client-side presentation layers for modern applications.",
+   "evidencing_activities": [
+    "design",
+    "implement"
+   ]
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "MTECH-CSE/PSO4",
+   "strength_provisional": 2,
+   "co_phrase": "using standard HTML5 markup and CSS styling rules",
+   "po_phrase": "Understanding and ability to use advanced computing techniques and tools",
+   "justification": "Leverages HTML5 semantic elements and modern CSS layout mechanisms to implement multi-device web user interfaces.",
+   "evidencing_activities": [
+    "tool-use"
+   ]
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-COMMON/PO3",
+   "strength_provisional": 3,
+   "co_phrase": "Implement dynamic client-side interactivity using asynchronous API requests and DOM manipulation",
+   "po_phrase": "Design solutions for complex engineering problems and design system components",
+   "justification": "Implementing dynamic client-side interactivity builds functional interactive application components.",
+   "evidencing_activities": [
+    "implement",
+    "design"
+   ]
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-COMMON/PO5",
+   "strength_provisional": 2,
+   "co_phrase": "using asynchronous API requests and DOM manipulation",
+   "po_phrase": "Create, select, and apply appropriate techniques, resources, and modern engineering and IT tools",
+   "justification": "Employs modern asynchronous fetch APIs and browser DOM manipulation mechanisms.",
+   "evidencing_activities": [
+    "implement",
+    "tool-use"
+   ]
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSE/PSO4",
+   "strength_provisional": 3,
+   "co_phrase": "Implement dynamic client-side interactivity using asynchronous API requests and DOM manipulation",
+   "po_phrase": "Ability to design, implement, and evaluate computer based system or application",
+   "justification": "Directly implements interactive client-side application modules communicating with backend endpoints.",
+   "evidencing_activities": [
+    "implement",
+    "design"
+   ]
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSE/PSO3",
+   "strength_provisional": 2,
+   "co_phrase": "using asynchronous API requests and DOM manipulation for interactive web application features",
+   "po_phrase": "Ability to adapt established models, techniques, algorithms, data structures, etc.",
+   "justification": "Adapts established asynchronous programming patterns and event-handling techniques to implement dynamic client features.",
+   "evidencing_activities": [
+    "analyse-data"
+   ]
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSAI/PSO3",
+   "strength_provisional": 2,
+   "co_phrase": "Implement dynamic client-side interactivity using asynchronous API requests",
+   "po_phrase": "Ability to design and implement algorithms and data structures for efficiently solving new problems",
+   "justification": "Implements asynchronous data handling and DOM state update logic for interactive application workflows.",
+   "evidencing_activities": [
+    "implement"
+   ]
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSAI/PSO5",
+   "strength_provisional": 1,
+   "co_phrase": "Implement dynamic client-side interactivity using asynchronous API requests",
+   "po_phrase": "Ability of apply and develop AI algorithms to transform large amount of data into intelligent decisions",
+   "justification": "Provides client-side interface integration mechanisms suitable for displaying data-driven application responses.",
+   "evidencing_activities": [
+    "implement"
+   ]
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "MTECH-CSE/PSO3",
+   "strength_provisional": 3,
+   "co_phrase": "Implement dynamic client-side interactivity using asynchronous API requests and DOM manipulation",
+   "po_phrase": "An ability to design, develop and evaluate new computer based systems for novel applications",
+   "justification": "Develops interactive client-side execution layers integrated with RESTful application services.",
+   "evidencing_activities": [
+    "implement"
+   ]
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "MTECH-CSE/PSO2",
+   "strength_provisional": 2,
+   "co_phrase": "using asynchronous API requests and DOM manipulation for interactive web application features",
+   "po_phrase": "An ability to adapt existing models, techniques, algorithms, data structures, etc.",
+   "justification": "Adapts event-driven programming paradigms and asynchronous data fetch mechanisms to user interaction tasks.",
+   "evidencing_activities": [
+    "analyse-data"
+   ]
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-COMMON/PO2",
+   "strength_provisional": 3,
+   "co_phrase": "Diagnose performance bottlenecks and rendering issues in web interfaces",
+   "po_phrase": "Problem analysis: Identify, formulate, review research literature, and analyze complex engineering problems",
+   "justification": "Diagnosing performance bottlenecks requires systematic analysis of network logs and browser execution metrics.",
+   "evidencing_activities": [
+    "analyse-data",
+    "evaluate-critique"
+   ]
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-COMMON/PO5",
+   "strength_provisional": 3,
+   "co_phrase": "with browser developer tools and performance metrics",
+   "po_phrase": "Modern tool usage: Create, select, and apply appropriate techniques, resources, and modern engineering and IT tools",
+   "justification": "Uses specialized browser developer tools and profiling instrumentation to diagnose rendering bottlenecks.",
+   "evidencing_activities": [
+    "tool-use"
+   ]
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSE/PSO5",
+   "strength_provisional": 3,
+   "co_phrase": "Diagnose performance bottlenecks and rendering issues in web interfaces with browser developer tools",
+   "po_phrase": "Understanding and ability to use advanced techniques and tools in different areas of computing",
+   "justification": "Applies browser diagnostic toolchains and profiling techniques for web performance engineering.",
+   "evidencing_activities": [
+    "tool-use"
+   ]
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSE/PSO3",
+   "strength_provisional": 2,
+   "co_phrase": "Diagnose performance bottlenecks and rendering issues in web interfaces",
+   "po_phrase": "Ability to adapt established models, techniques, algorithms, data structures, etc.",
+   "justification": "Analyzes bottleneck patterns using profiling data to identify interface rendering inefficiencies.",
+   "evidencing_activities": [
+    "analyse-data"
+   ]
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSAI/PSO4",
+   "strength_provisional": 3,
+   "co_phrase": "Diagnose performance bottlenecks and rendering issues in web interfaces",
+   "po_phrase": "Ability to model and analyze a variety of problems using appropriate mathematical/computational concepts",
+   "justification": "Analyzes quantitative network logs and rendering timeline data to pinpoint runtime bottlenecks.",
+   "evidencing_activities": [
+    "analyse-data",
+    "evaluate-critique"
+   ]
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "MTECH-CSE/PSO4",
+   "strength_provisional": 3,
+   "co_phrase": "with browser developer tools and performance metrics",
+   "po_phrase": "Understanding and ability to use advanced computing techniques and tools",
+   "justification": "Utilizes advanced browser profiling and network diagnostic tools to evaluate interface performance.",
+   "evidencing_activities": [
+    "tool-use"
+   ]
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "MTECH-CSE/PSO2",
+   "strength_provisional": 2,
+   "co_phrase": "Diagnose performance bottlenecks and rendering issues in web interfaces",
+   "po_phrase": "An ability to adapt existing models, techniques, algorithms, data structures, etc.",
+   "justification": "Applies performance diagnostic models to analyze empirical trace data and logs.",
+   "evidencing_activities": [
+    "analyse-data"
+   ]
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-COMMON/PO2",
+   "strength_provisional": 3,
+   "co_phrase": "Evaluate RESTful backend service designs against security, scalability, and usability requirements",
+   "po_phrase": "Problem analysis: Identify, formulate, review research literature, and analyze complex engineering problems",
+   "justification": "Evaluating backend architectures involves analytical assessment of security and scalability constraints.",
+   "evidencing_activities": [
+    "evaluate-critique",
+    "analyse-data"
+   ]
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-COMMON/PO10",
+   "strength_provisional": 2,
+   "co_phrase": "Evaluate RESTful backend service designs against security, scalability, and usability requirements",
+   "po_phrase": "Communication: Write effective reports and design documentation",
+   "justification": "Articulates architectural evaluations and design trade-offs within structured design documentation.",
+   "evidencing_activities": [
+    "written-communication"
+   ]
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSE/PSO4",
+   "strength_provisional": 3,
+   "co_phrase": "Evaluate RESTful backend service designs against security, scalability, and usability requirements",
+   "po_phrase": "Ability to design, implement, and evaluate computer based system or application",
+   "justification": "Evaluates full-stack architectural designs against specified non-functional requirements.",
+   "evidencing_activities": [
+    "evaluate-critique",
+    "design"
+   ]
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSAI/PSO4",
+   "strength_provisional": 3,
+   "co_phrase": "Evaluate RESTful backend service designs against security, scalability, and usability requirements",
+   "po_phrase": "Ability to model and analyze a variety of problems using appropriate mathematical/computational concepts",
+   "justification": "Analyzes web architecture documentation against systemic security and scalability trade-offs.",
+   "evidencing_activities": [
+    "evaluate-critique",
+    "analyse-data"
+   ]
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "MTECH-CSE/PO2",
+   "strength_provisional": 2,
+   "co_phrase": "Evaluate RESTful backend service designs against security, scalability, and usability requirements",
+   "po_phrase": "An ability to write and present a substantial technical report/document",
+   "justification": "Produces written technical evaluations justifying architectural decisions against requirements.",
+   "evidencing_activities": [
+    "written-communication"
+   ]
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "MTECH-CSE/PSO3",
+   "strength_provisional": 3,
+   "co_phrase": "Evaluate RESTful backend service designs against security, scalability, and usability requirements",
+   "po_phrase": "An ability to design, develop and evaluate new computer based systems for novel applications",
+   "justification": "Critically evaluates server-side service designs to ensure robustness, security, and scalability.",
+   "evidencing_activities": [
+    "evaluate-critique"
+   ]
+  }
+ ],
+ "los": [
+  {
+   "id": "CO1.LO1",
+   "parent_co": "CO1",
+   "statement": "Construct semantic HTML5 page structures for a given page layout wireframe, ensuring proper structural tags and ARIA accessibility attributes.",
+   "verb": "construct",
+   "behaviour": "semantic HTML5 page structures using structural tags and ARIA attributes",
+   "condition": "given a page layout wireframe",
+   "degree": "with zero HTML validation errors and all structural landmarks correctly placed",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "is_capstone": false,
+   "requires": [],
+   "topic_hints": [
+    {
+     "phrase": "HTML5 semantic markup",
+     "topic_uid": null
+    },
+    {
+     "phrase": "web accessibility guidelines",
+     "topic_uid": null
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 3.0,
+   "est_tutorial_h": 1.0,
+   "est_lab_h": 0.0,
+   "hours_basis": "2 lectures (3h) + 1 tutorial (1h) on HTML markup structures",
+   "suggested_task_type": "lab_task",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Fundamental building block for HTML markup in CO1."
+    }
+   ]
+  },
+  {
+   "id": "CO1.LO2",
+   "parent_co": "CO1",
+   "statement": "Apply CSS Flexbox and Grid layout rules to align page elements according to a given single-viewport design specification.",
+   "verb": "apply",
+   "behaviour": "CSS Flexbox and Grid layout rules for element positioning",
+   "condition": "given a single-viewport design specification",
+   "degree": "matching pixel margins and alignment constraints across all container elements",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "is_capstone": false,
+   "requires": [
+    "CO1.LO1"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "CSS Flexbox and Grid",
+     "topic_uid": null
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 3.0,
+   "est_tutorial_h": 1.0,
+   "est_lab_h": 0.0,
+   "hours_basis": "2 lectures (3h) + 1 tutorial (1h) on CSS layout paradigms",
+   "suggested_task_type": "programming_assignment",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Intermediate layout mechanics required before responsive multi-device rules."
+    }
+   ]
+  },
+  {
+   "id": "CO1.LO3",
+   "parent_co": "CO1",
+   "statement": "Write responsive CSS media queries for a supplied two-view wireframe sheet, ensuring interface rendering scales across mobile and desktop breakpoints.",
+   "verb": "write",
+   "behaviour": "responsive CSS media queries across viewport breakpoints",
+   "condition": "for a supplied two-view wireframe sheet",
+   "degree": "such that all layout elements render without horizontal scrollbars across target viewports",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "is_capstone": true,
+   "requires": [
+    "CO1.LO2"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "responsive CSS media queries",
+     "topic_uid": null
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 3.0,
+   "est_tutorial_h": 1.0,
+   "est_lab_h": 0.0,
+   "hours_basis": "2 lectures (3h) + 1 tutorial (1h) on media query breakpoints",
+   "suggested_task_type": "programming_assignment",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Capstone LO reaching CO1 level for responsive layout synthesis."
+    }
+   ]
+  },
+  {
+   "id": "CO2.LO1",
+   "parent_co": "CO2",
+   "statement": "Modify Document Object Model trees using JavaScript event listeners to update dynamic page elements in response to user actions.",
+   "verb": "modify",
+   "behaviour": "Document Object Model trees using event listeners",
+   "condition": "given user interaction event specifications",
+   "degree": "updating DOM nodes correctly for all specified event triggers",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "is_capstone": false,
+   "requires": [
+    "CO1.LO1"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "DOM manipulation and event handling",
+     "topic_uid": null
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 3.0,
+   "est_tutorial_h": 1.0,
+   "est_lab_h": 0.0,
+   "hours_basis": "2 lectures (3h) + 1 tutorial (1h) on client-side DOM scripting",
+   "suggested_task_type": "lab_task",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Prerequisite DOM event handling step for client interactivity."
+    }
+   ]
+  },
+  {
+   "id": "CO2.LO2",
+   "parent_co": "CO2",
+   "statement": "Execute asynchronous HTTP requests using Fetch API and Promises to parse structured JSON data from a backend endpoint.",
+   "verb": "execute",
+   "behaviour": "asynchronous HTTP requests using Fetch API and Promises",
+   "condition": "given a backend API endpoint URL and parameter payload",
+   "degree": "handling network success and error responses without unhandled promise rejections",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "is_capstone": false,
+   "requires": [
+    "CO2.LO1"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "asynchronous JavaScript and Fetch API",
+     "topic_uid": null
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 3.0,
+   "est_tutorial_h": 1.0,
+   "est_lab_h": 0.0,
+   "hours_basis": "2 lectures (3h) + 1 tutorial (1h) on async requests",
+   "suggested_task_type": "programming_assignment",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Prerequisite async communication layer before combining API and UI updates."
+    }
+   ]
+  },
+  {
+   "id": "CO2.LO3",
+   "parent_co": "CO2",
+   "statement": "Implement dynamic client-side data updates using async API requests and DOM manipulation for a supplied live comments feed component.",
+   "verb": "implement",
+   "behaviour": "dynamic client-side data updates using async API calls and DOM manipulation",
+   "condition": "given a backend comments API endpoint and event specifications",
+   "degree": "such that async content renders seamlessly without full page reload and all interface test cases pass",
+   "bloom_level": 3,
+   "knowledge_dimension": "procedural",
+   "is_capstone": true,
+   "requires": [
+    "CO2.LO2"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "single-page dynamic component rendering",
+     "topic_uid": null
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 4.0,
+   "est_tutorial_h": 1.0,
+   "est_lab_h": 0.0,
+   "hours_basis": "2.5 lectures (4h) + 1 tutorial (1h) integrating async API data into dynamic DOM",
+   "suggested_task_type": "programming_assignment",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Capstone LO reaching CO2 level for dynamic client-side feature implementation."
+    }
+   ]
+  },
+  {
+   "id": "CO3.LO1",
+   "parent_co": "CO3",
+   "statement": "Analyze browser network waterfall logs to classify page loading latencies and resource transfer sizes.",
+   "verb": "analyze",
+   "behaviour": "browser network waterfall logs to classify latency sources",
+   "condition": "given a set of browser network trace logs",
+   "degree": "categorizing resource timing phases for at least three distinct asset types",
+   "bloom_level": 4,
+   "knowledge_dimension": "procedural",
+   "is_capstone": false,
+   "requires": [
+    "CO2.LO3"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "browser network profiling and waterfall analysis",
+     "topic_uid": null
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 3.0,
+   "est_tutorial_h": 1.0,
+   "est_lab_h": 0.0,
+   "hours_basis": "2 lectures (3h) + 1 tutorial (1h) on network diagnostic logs",
+   "suggested_task_type": "lab_task",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "First stage of web interface diagnosis covering network layer metrics."
+    }
+   ]
+  },
+  {
+   "id": "CO3.LO2",
+   "parent_co": "CO3",
+   "statement": "Inspect client-side JavaScript execution timelines and layout thrashing using browser performance profiling tools.",
+   "verb": "inspect",
+   "behaviour": "JavaScript execution timelines and rendering shifts",
+   "condition": "for a given interactive web application profile",
+   "degree": "identifying main-thread blocking tasks exceeding 50 milliseconds in duration",
+   "bloom_level": 4,
+   "knowledge_dimension": "procedural",
+   "is_capstone": false,
+   "requires": [
+    "CO3.LO1"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "rendering performance and main-thread profiling",
+     "topic_uid": null
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 3.0,
+   "est_tutorial_h": 1.0,
+   "est_lab_h": 0.0,
+   "hours_basis": "2 lectures (3h) + 1 tutorial (1h) on main-thread rendering profiling",
+   "suggested_task_type": "lab_task",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Second stage of web interface diagnosis covering rendering bottlenecks."
+    }
+   ]
+  },
+  {
+   "id": "CO3.LO3",
+   "parent_co": "CO3",
+   "statement": "Diagnose rendering performance bottlenecks in a supplied slow single-page web interface using browser developer tools and core web vitals.",
+   "verb": "diagnose",
+   "behaviour": "rendering performance bottlenecks in web interfaces",
+   "condition": "given a profile log and developer tool traces for a single-page feature",
+   "degree": "identifying at least two distinct performance bottlenecks supported by profiler timeline evidence",
+   "bloom_level": 4,
+   "knowledge_dimension": "procedural",
+   "is_capstone": true,
+   "requires": [
+    "CO3.LO2"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "web vitals and diagnostic profiling",
+     "topic_uid": null
+    }
+   ],
+   "hands_on": true,
+   "est_lecture_h": 3.0,
+   "est_tutorial_h": 1.0,
+   "est_lab_h": 0.0,
+   "hours_basis": "2 lectures (3h) + 1 tutorial (1h) on full diagnostic evaluation",
+   "suggested_task_type": "exam_question",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Capstone LO reaching CO3 level for web interface performance diagnosis."
+    }
+   ]
+  },
+  {
+   "id": "CO4.LO1",
+   "parent_co": "CO4",
+   "statement": "Analyze RESTful URI structures and HTTP request methods against REST architectural constraints for a given web service spec.",
+   "verb": "analyze",
+   "behaviour": "RESTful URI structures and request methods against REST principles",
+   "condition": "for a given web service API specification document",
+   "degree": "identifying non-conforming endpoint definitions and proposing compliant alternatives",
+   "bloom_level": 4,
+   "knowledge_dimension": "conceptual",
+   "is_capstone": false,
+   "requires": [
+    "CO2.LO2"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "RESTful API principles and URI conventions",
+     "topic_uid": null
+    }
+   ],
+   "hands_on": false,
+   "est_lecture_h": 3.0,
+   "est_tutorial_h": 1.0,
+   "est_lab_h": 0.0,
+   "hours_basis": "2 lectures (3h) + 1 tutorial (1h) on backend REST design principles",
+   "suggested_task_type": "quiz",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Foundation for backend REST service design evaluation."
+    }
+   ]
+  },
+  {
+   "id": "CO4.LO2",
+   "parent_co": "CO4",
+   "statement": "Assess authentication strategies and rate-limiting controls in a backend service design against security and scalability guidelines.",
+   "verb": "assess",
+   "behaviour": "authentication strategies and rate-limiting controls against security norms",
+   "condition": "given a backend web service architecture diagram",
+   "degree": "pointing out at least two security vulnerabilities based on OWASP web application criteria",
+   "bloom_level": 5,
+   "knowledge_dimension": "conceptual",
+   "is_capstone": false,
+   "requires": [
+    "CO4.LO1"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "web authentication and API security",
+     "topic_uid": null
+    }
+   ],
+   "hands_on": false,
+   "est_lecture_h": 4.0,
+   "est_tutorial_h": 1.0,
+   "est_lab_h": 0.0,
+   "hours_basis": "2.5 lectures (4h) + 1 tutorial (1h) on security and scalability evaluation",
+   "suggested_task_type": "exam_question",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Intermediate evaluation step assessing security/scalability attributes of backend services."
+    }
+   ]
+  },
+  {
+   "id": "CO4.LO3",
+   "parent_co": "CO4",
+   "statement": "Evaluate a supplied backend service architecture document against security and scalability constraints for a full-stack web application.",
+   "verb": "evaluate",
+   "behaviour": "backend service architecture trade-offs",
+   "condition": "for a supplied full-stack web application architecture document",
+   "degree": "justifying at least two architectural design choices against stated security and scalability constraints in a written design evaluation",
+   "bloom_level": 5,
+   "knowledge_dimension": "conceptual",
+   "is_capstone": true,
+   "requires": [
+    "CO4.LO2"
+   ],
+   "topic_hints": [
+    {
+     "phrase": "backend architecture evaluation and trade-off analysis",
+     "topic_uid": null
+    }
+   ],
+   "hands_on": false,
+   "est_lecture_h": 4.0,
+   "est_tutorial_h": 2.0,
+   "est_lab_h": 0.0,
+   "hours_basis": "2.5 lectures (4h) + 2 tutorials (2h) on full architectural evaluation",
+   "suggested_task_type": "report",
+   "sources": [
+    {
+     "tag": "INFERRED",
+     "ref": null,
+     "basis": "Capstone LO reaching CO4 level for full-stack backend service evaluation."
+    }
+   ]
+  }
+ ],
+ "modules": [
+  {
+   "id": "M1",
+   "title": "HTML5, CSS Layouts, and Responsive Web Design",
+   "order": 1,
+   "primary_cos": [
+    "CO1"
+   ],
+   "topics": [
+    {
+     "id": "M1.T1",
+     "title": "Semantic HTML5 Markup and ARIA Accessibility Landmarks",
+     "est_hours": 1.5,
+     "hours_basis": "1 lecture covering semantic structural tags and accessible landmark attributes",
+     "serves_los": [
+      "CO1.LO1"
+     ],
+     "covers_topic_groups": [],
+     "requires": [],
+     "topic_uid": null,
+     "hands_on": true,
+     "suggested_order": 1,
+     "outside_load_hours": 10.0,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Derived from CO1.LO1 scope for foundational HTML markup"
+      }
+     ]
+    },
+    {
+     "id": "M1.T2",
+     "title": "HTML5 Form Validation and Document Structure Rules",
+     "est_hours": 1.5,
+     "hours_basis": "1 lecture on document tree hierarchy and native form validation attributes",
+     "serves_los": [
+      "CO1.LO1"
+     ],
+     "covers_topic_groups": [],
+     "requires": [
+      "M1.T1"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "suggested_order": 2,
+     "outside_load_hours": 10.0,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Derived from CO1.LO1 requirement for zero HTML validation errors"
+      }
+     ]
+    },
+    {
+     "id": "M1.T3",
+     "title": "CSS Flexbox Model and One-Dimensional Layout Alignment",
+     "est_hours": 1.5,
+     "hours_basis": "1 lecture on flex containers, axes, alignment, and distribution",
+     "serves_los": [
+      "CO1.LO2"
+     ],
+     "covers_topic_groups": [],
+     "requires": [
+      "M1.T1"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "suggested_order": 3,
+     "outside_load_hours": 11.0,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Derived from CO1.LO2 Flexbox layout mechanics"
+      }
+     ]
+    },
+    {
+     "id": "M1.T4",
+     "title": "CSS Grid Systems and Two-Dimensional Container Layouts",
+     "est_hours": 1.5,
+     "hours_basis": "1 lecture on grid tracks, area placement, and template definitions",
+     "serves_los": [
+      "CO1.LO2"
+     ],
+     "covers_topic_groups": [],
+     "requires": [
+      "M1.T3"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "suggested_order": 4,
+     "outside_load_hours": 11.0,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Derived from CO1.LO2 Grid layout rules"
+      }
+     ]
+    },
+    {
+     "id": "M1.T5",
+     "title": "Responsive CSS Media Queries and Viewport Breakpoints",
+     "est_hours": 2.5,
+     "hours_basis": "1.5 lectures covering multi-device media queries and adaptive rendering",
+     "serves_los": [
+      "CO1.LO3"
+     ],
+     "covers_topic_groups": [],
+     "requires": [
+      "M1.T4"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "suggested_order": 5,
+     "outside_load_hours": 12.0,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Derived from CO1.LO3 capstone responsive layout requirements"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "M2",
+   "title": "Client-Side Scripting and Asynchronous Web APIs",
+   "order": 2,
+   "primary_cos": [
+    "CO2"
+   ],
+   "topics": [
+    {
+     "id": "M2.T1",
+     "title": "DOM Manipulation Tree Operations and Event Listener Handling",
+     "est_hours": 2.5,
+     "hours_basis": "1.5 lectures on selecting nodes, dynamic DOM updates, and event propagation",
+     "serves_los": [
+      "CO2.LO1"
+     ],
+     "covers_topic_groups": [],
+     "requires": [
+      "M1.T1"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "suggested_order": 1,
+     "outside_load_hours": 11.0,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Derived from CO2.LO1 event listener and DOM tree modification requirements"
+      }
+     ]
+    },
+    {
+     "id": "M2.T2",
+     "title": "Asynchronous JavaScript, Promises, and Fetch API Integration",
+     "est_hours": 2.5,
+     "hours_basis": "1.5 lectures on async event loops, Promise chaining, and Fetch HTTP requests",
+     "serves_los": [
+      "CO2.LO2"
+     ],
+     "covers_topic_groups": [],
+     "requires": [
+      "M2.T1"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "suggested_order": 2,
+     "outside_load_hours": 12.0,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Derived from CO2.LO2 Fetch API and async HTTP request execution"
+      }
+     ]
+    },
+    {
+     "id": "M2.T3",
+     "title": "Dynamic Client-Side Component Rendering",
+     "est_hours": 2.0,
+     "hours_basis": "1 lecture on binding backend JSON data to UI DOM elements dynamically",
+     "serves_los": [
+      "CO2.LO3"
+     ],
+     "covers_topic_groups": [],
+     "requires": [
+      "M2.T2"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "suggested_order": 3,
+     "outside_load_hours": 12.0,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Derived from CO2.LO3 dynamic rendering mechanics"
+      }
+     ]
+    },
+    {
+     "id": "M2.T4",
+     "title": "Real-Time UI Feed Updates and Async Error Handling",
+     "est_hours": 2.0,
+     "hours_basis": "1 lecture on partial UI re-renders and handling network error states",
+     "serves_los": [
+      "CO2.LO3"
+     ],
+     "covers_topic_groups": [],
+     "requires": [
+      "M2.T3"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "suggested_order": 4,
+     "outside_load_hours": 12.0,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Derived from CO2.LO3 seamless single-page live comments component implementation"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "M3",
+   "title": "Web Performance Diagnostic Profiling and Optimization",
+   "order": 3,
+   "primary_cos": [
+    "CO3"
+   ],
+   "topics": [
+    {
+     "id": "M3.T1",
+     "title": "Browser Network Waterfall Profiling and Resource Timing Analysis",
+     "est_hours": 2.5,
+     "hours_basis": "1.5 lectures on inspecting browser network logs, latencies, and asset load phases",
+     "serves_los": [
+      "CO3.LO1"
+     ],
+     "covers_topic_groups": [],
+     "requires": [
+      "M2.T4"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "suggested_order": 1,
+     "outside_load_hours": 10.0,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Derived from CO3.LO1 network waterfall log analysis"
+      }
+     ]
+    },
+    {
+     "id": "M3.T2",
+     "title": "JavaScript Execution Timelines and Main-Thread Layout Thrashing",
+     "est_hours": 2.5,
+     "hours_basis": "1.5 lectures on identifying long tasks, forced reflows, and script execution bottlenecks",
+     "serves_los": [
+      "CO3.LO2"
+     ],
+     "covers_topic_groups": [],
+     "requires": [
+      "M3.T1"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "suggested_order": 2,
+     "outside_load_hours": 11.0,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Derived from CO3.LO2 main-thread profiling and layout thrashing evaluation"
+      }
+     ]
+    },
+    {
+     "id": "M3.T3",
+     "title": "Core Web Vitals and Diagnostic Bottleneck Evaluation",
+     "est_hours": 2.5,
+     "hours_basis": "1.5 lectures on evaluating LCP, FID/INP, CLS and synthesizing diagnostic evidence",
+     "serves_los": [
+      "CO3.LO3"
+     ],
+     "covers_topic_groups": [],
+     "requires": [
+      "M3.T2"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "suggested_order": 3,
+     "outside_load_hours": 11.0,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Derived from CO3.LO3 capstone web vitals diagnostic profiling"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "M4",
+   "title": "RESTful Web Architecture, Security, and Backend Evaluation",
+   "order": 4,
+   "primary_cos": [
+    "CO4"
+   ],
+   "topics": [
+    {
+     "id": "M4.T1",
+     "title": "REST Architectural Constraints and Resource URI Conventions",
+     "est_hours": 2.5,
+     "hours_basis": "1.5 lectures on HTTP methods, REST constraints, and API resource mapping",
+     "serves_los": [
+      "CO4.LO1"
+     ],
+     "covers_topic_groups": [],
+     "requires": [
+      "M2.T2"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "suggested_order": 1,
+     "outside_load_hours": 10.0,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Derived from CO4.LO1 REST API design principles"
+      }
+     ]
+    },
+    {
+     "id": "M4.T2",
+     "title": "Web Application Authentication Strategies and OAuth/JWT Patterns",
+     "est_hours": 2.0,
+     "hours_basis": "1 lecture on session vs token authentication mechanisms and security trade-offs",
+     "serves_los": [
+      "CO4.LO2"
+     ],
+     "covers_topic_groups": [],
+     "requires": [
+      "M4.T1"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "suggested_order": 2,
+     "outside_load_hours": 10.0,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Derived from CO4.LO2 authentication controls assessment"
+      }
+     ]
+    },
+    {
+     "id": "M4.T3",
+     "title": "API Rate-Limiting Controls and OWASP Vulnerability Assessment",
+     "est_hours": 2.0,
+     "hours_basis": "1 lecture on rate limiting algorithms, throttling, and OWASP Top 10 web vulnerabilities",
+     "serves_los": [
+      "CO4.LO2"
+     ],
+     "covers_topic_groups": [],
+     "requires": [
+      "M4.T2"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "suggested_order": 3,
+     "outside_load_hours": 11.0,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Derived from CO4.LO2 rate-limiting and OWASP vulnerability analysis"
+      }
+     ]
+    },
+    {
+     "id": "M4.T4",
+     "title": "Backend Service Scalability and Load Balancing Architecture",
+     "est_hours": 2.0,
+     "hours_basis": "1 lecture on horizontal scaling, caching strategies, and load balancing patterns",
+     "serves_los": [
+      "CO4.LO3"
+     ],
+     "covers_topic_groups": [],
+     "requires": [
+      "M4.T3"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "suggested_order": 4,
+     "outside_load_hours": 11.0,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Derived from CO4.LO3 backend scalability evaluation"
+      }
+     ]
+    },
+    {
+     "id": "M4.T5",
+     "title": "Full-Stack Web Architecture Trade-off Evaluation",
+     "est_hours": 2.5,
+     "hours_basis": "1.5 lectures on comprehensive architectural assessment and written trade-off justification",
+     "serves_los": [
+      "CO4.LO3"
+     ],
+     "covers_topic_groups": [],
+     "requires": [
+      "M4.T4"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "suggested_order": 5,
+     "outside_load_hours": 12.0,
+     "sources": [
+      {
+       "tag": "INFERRED",
+       "ref": null,
+       "basis": "Derived from CO4.LO3 capstone backend evaluation report"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "structure_meta": {
+  "cut_candidates": [],
+  "constraint_notes": [],
+  "hours_total": 35.5
+ },
+ "schedule": {
+  "weeks": [
+   {
+    "week": 1,
+    "items": [
+     {
+      "topic_id": "M1.T1",
+      "hours": 1.5
+     },
+     {
+      "topic_id": "M1.T2",
+      "hours": 1.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 2,
+    "items": [
+     {
+      "topic_id": "M1.T3",
+      "hours": 1.5
+     },
+     {
+      "topic_id": "M1.T4",
+      "hours": 1.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 3,
+    "items": [
+     {
+      "topic_id": "M1.T5",
+      "hours": 2.5
+     },
+     {
+      "topic_id": "M2.T1",
+      "hours": 0.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 4,
+    "items": [
+     {
+      "topic_id": "M2.T1",
+      "hours": 2.0
+     },
+     {
+      "topic_id": "M2.T2",
+      "hours": 1.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 5,
+    "items": [
+     {
+      "topic_id": "M2.T2",
+      "hours": 1.5
+     },
+     {
+      "topic_id": "M2.T3",
+      "hours": 1.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 6,
+    "items": [
+     {
+      "topic_id": "M2.T3",
+      "hours": 0.5
+     },
+     {
+      "topic_id": "M2.T4",
+      "hours": 2.0
+     },
+     {
+      "topic_id": "M3.T1",
+      "hours": 0.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 7,
+    "items": [
+     {
+      "topic_id": "M3.T1",
+      "hours": 2.0
+     },
+     {
+      "topic_id": "M3.T2",
+      "hours": 1.0
+     }
+    ],
+    "is_midsem_boundary": true
+   },
+   {
+    "week": 8,
+    "items": [
+     {
+      "topic_id": "M3.T2",
+      "hours": 1.5
+     },
+     {
+      "topic_id": "M3.T3",
+      "hours": 1.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 9,
+    "items": [
+     {
+      "topic_id": "M3.T3",
+      "hours": 1.0
+     },
+     {
+      "topic_id": "M4.T1",
+      "hours": 2.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 10,
+    "items": [
+     {
+      "topic_id": "M4.T1",
+      "hours": 0.5
+     },
+     {
+      "topic_id": "M4.T2",
+      "hours": 2.0
+     },
+     {
+      "topic_id": "M4.T3",
+      "hours": 0.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 11,
+    "items": [
+     {
+      "topic_id": "M4.T3",
+      "hours": 1.5
+     },
+     {
+      "topic_id": "M4.T4",
+      "hours": 1.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 12,
+    "items": [
+     {
+      "topic_id": "M4.T4",
+      "hours": 0.5
+     },
+     {
+      "topic_id": "M4.T5",
+      "hours": 2.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 13,
+    "items": [],
+    "is_midsem_boundary": false
+   }
+  ],
+  "topic_weeks": {
+   "M1.T1": [
+    1
+   ],
+   "M1.T2": [
+    1
+   ],
+   "M1.T3": [
+    2
+   ],
+   "M1.T4": [
+    2
+   ],
+   "M1.T5": [
+    3
+   ],
+   "M2.T1": [
+    3,
+    4
+   ],
+   "M2.T2": [
+    4,
+    5
+   ],
+   "M2.T3": [
+    5,
+    6
+   ],
+   "M2.T4": [
+    6
+   ],
+   "M3.T1": [
+    6,
+    7
+   ],
+   "M3.T2": [
+    7,
+    8
+   ],
+   "M3.T3": [
+    8,
+    9
+   ],
+   "M4.T1": [
+    9,
+    10
+   ],
+   "M4.T2": [
+    10
+   ],
+   "M4.T3": [
+    10,
+    11
+   ],
+   "M4.T4": [
+    11,
+    12
+   ],
+   "M4.T5": [
+    12
+   ]
+  },
+  "feasible": true,
+  "explanation": null,
+  "hours_needed": 36.0,
+  "hours_available": 39,
+  "dropped_edges": [],
+  "order": [
+   "M1.T1",
+   "M1.T2",
+   "M1.T3",
+   "M1.T4",
+   "M1.T5",
+   "M2.T1",
+   "M2.T2",
+   "M2.T3",
+   "M2.T4",
+   "M3.T1",
+   "M3.T2",
+   "M3.T3",
+   "M4.T1",
+   "M4.T2",
+   "M4.T3",
+   "M4.T4",
+   "M4.T5"
+  ]
+ },
+ "kg_facts": {
+  "version": "3d874617a887",
+  "level": 3,
+  "norms": {
+   "level": 3,
+   "n": 93,
+   "credits": {
+    "4": 90,
+    "2": 3
+   },
+   "co_count": {
+    "n": 93,
+    "q1": 4.0,
+    "median": 4.0,
+    "q3": 5.0,
+    "lo": 2.5,
+    "hi": 6.5
+   },
+   "bloom_max": {
+    "n": 92,
+    "q1": 4.0,
+    "median": 6.0,
+    "q3": 6.0,
+    "lo": 1.0,
+    "hi": 9.0
+   },
+   "components": {
+    "n": 87,
+    "q1": 4.0,
+    "median": 4.0,
+    "q3": 5.0,
+    "lo": 2.5,
+    "hi": 6.5
+   }
+  },
+  "precedence": [],
+  "catalogue_overlap": [],
+  "method": {
+   "embedder": "all-MiniLM-L6-v2",
+   "match_sim": 0.66,
+   "excluded": []
+  }
+ },
+ "labs_tutorials": {
+  "concerns": [
+   {
+    "about": "V18",
+    "detail": "Course LTP is 3-1-0 with 0 lab hours (P=0), but nine learning outcomes (CO1.LO1, CO1.LO2, CO1.LO3, CO2.LO1, CO2.LO2, CO2.LO3, CO3.LO1, CO3.LO2, CO3.LO3) require hands-on practice. Hands-on practice has been integrated into tutorial sessions."
+   }
+  ],
+  "missing": [],
+  "labs": [],
+  "tutorials": [
+   {
+    "week": 1,
+    "id": "W01.TUT",
+    "activity": "Pair exercise constructing semantic HTML5 page structures and ARIA landmark attributes for a given layout mockup.",
+    "practises_los": [
+     "CO1.LO1"
+    ],
+    "uses_topics": [
+     "M1.T1",
+     "M1.T2"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 2,
+    "id": "W02.TUT",
+    "activity": "Hands-on problem-solving to implement CSS Flexbox and Grid rules for a single-viewport layout specification.",
+    "practises_los": [
+     "CO1.LO2"
+    ],
+    "uses_topics": [
+     "M1.T3",
+     "M1.T4"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 3,
+    "id": "W03.TUT",
+    "activity": "Small-group coding exercise writing responsive media queries and testing breakpoint scaling across mobile and desktop views.",
+    "practises_los": [
+     "CO1.LO3"
+    ],
+    "uses_topics": [
+     "M1.T5"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 4,
+    "id": "W04.TUT",
+    "activity": "Interactive DOM tree manipulation exercise using JavaScript event listeners to update dynamic page elements.",
+    "practises_los": [
+     "CO2.LO1"
+    ],
+    "uses_topics": [
+     "M2.T1"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 5,
+    "id": "W05.TUT",
+    "activity": "Guided pair-programming session executing Fetch API calls with Promises to parse dynamic JSON responses.",
+    "practises_los": [
+     "CO2.LO2"
+    ],
+    "uses_topics": [
+     "M2.T2"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 6,
+    "id": "W06.TUT",
+    "activity": "Code walkthrough and exercise implementing dynamic UI feed updates and async error handling for live components.",
+    "practises_los": [
+     "CO2.LO3"
+    ],
+    "uses_topics": [
+     "M2.T3",
+     "M2.T4"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 7,
+    "id": "W07.TUT",
+    "activity": "Mid-semester review and practice analyzing browser network waterfall logs to classify network latency bottlenecks.",
+    "practises_los": [
+     "CO3.LO1"
+    ],
+    "uses_topics": [
+     "M3.T1"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 8,
+    "id": "W08.TUT",
+    "activity": "Hands-on profiling activity inspecting JavaScript execution timelines and main-thread layout thrashing using browser tools.",
+    "practises_los": [
+     "CO3.LO2"
+    ],
+    "uses_topics": [
+     "M3.T2"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 9,
+    "id": "W09.TUT",
+    "activity": "Diagnostic session evaluating Core Web Vitals and identifying performance bottlenecks on a sample slow single-page interface.",
+    "practises_los": [
+     "CO3.LO3"
+    ],
+    "uses_topics": [
+     "M3.T3"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 10,
+    "id": "W10.TUT",
+    "activity": "Case study analysis evaluating REST architectural constraints and URI conventions against service specifications.",
+    "practises_los": [
+     "CO4.LO1"
+    ],
+    "uses_topics": [
+     "M4.T1"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 11,
+    "id": "W11.TUT",
+    "activity": "Group discussion and vulnerability audit assessing OAuth/JWT authentication strategies and API rate-limiting controls.",
+    "practises_los": [
+     "CO4.LO2"
+    ],
+    "uses_topics": [
+     "M4.T2",
+     "M4.T3"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 12,
+    "id": "W12.TUT",
+    "activity": "Structured evaluation exercise analyzing backend service scalability and load balancing trade-offs in architecture documents.",
+    "practises_los": [
+     "CO4.LO3"
+    ],
+    "uses_topics": [
+     "M4.T4",
+     "M4.T5"
+    ],
+    "hours": 1.0
+   },
+   {
+    "week": 13,
+    "id": "W13.TUT",
+    "activity": "Comprehensive review and problem-solving session covering full-stack web architecture evaluation and performance trade-offs.",
+    "practises_los": [
+     "CO4.LO3"
+    ],
+    "uses_topics": [
+     "M4.T5"
+    ],
+    "hours": 1.0
+   }
+  ],
+  "infra_requirements": [
+   {
+    "item": "Modern Web Browser with Developer Tools (Chrome/Firefox) and Code Editor",
+    "for_weeks": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13
+    ],
+    "status": "needs_confirmation",
+    "source": "INFERRED"
+   }
+  ]
+ },
+ "assessment_adjustments": [],
+ "assessment": {
+  "concerns": [],
+  "missing": [],
+  "components": [
+   {
+    "type": "assignment",
+    "weight_pct": 25.0,
+    "weight_justification": null,
+    "best_k": null,
+    "n": null,
+    "activity_types": [
+     "implement",
+     "design",
+     "tool-use"
+    ],
+    "integrity": "Automated code similarity analysis and individual git commit history verification.",
+    "proctored": false,
+    "instances": [
+     {
+      "id": "A:Assign1",
+      "release_week": 4,
+      "due_week": 5,
+      "format": "Programming Assignment",
+      "covers_topics": [
+       "M1.T1",
+       "M1.T2",
+       "M1.T3",
+       "M1.T4",
+       "M1.T5",
+       "M2.T1"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO1.LO1",
+        "marks_pct_of_instance": 25.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO1.LO2",
+        "marks_pct_of_instance": 35.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO1.LO3",
+        "marks_pct_of_instance": 40.0,
+        "bloom_level": 3
+       }
+      ],
+      "est_student_hours": 8.0,
+      "feeds_from_lab": null
+     },
+     {
+      "id": "A:Assign2",
+      "release_week": 6,
+      "due_week": 8,
+      "format": "Programming Assignment",
+      "covers_topics": [
+       "M2.T2",
+       "M2.T3",
+       "M2.T4"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO2.LO1",
+        "marks_pct_of_instance": 20.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO2.LO2",
+        "marks_pct_of_instance": 30.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO2.LO3",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 3
+       }
+      ],
+      "est_student_hours": 10.0,
+      "feeds_from_lab": null
+     }
+    ]
+   },
+   {
+    "type": "quiz",
+    "weight_pct": 15.0,
+    "weight_justification": null,
+    "best_k": 3,
+    "n": 4,
+    "activity_types": [
+     "analyse-data",
+     "theory",
+     "tool-use"
+    ],
+    "integrity": "In-person proctored closed-book paper/computer quiz.",
+    "proctored": true,
+    "instances": [
+     {
+      "id": "Q:Quiz1",
+      "release_week": 3,
+      "due_week": 3,
+      "format": "In-class Quiz",
+      "covers_topics": [
+       "M1.T1",
+       "M1.T2",
+       "M1.T3",
+       "M1.T4"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO1.LO1",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO1.LO2",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 3
+       }
+      ],
+      "est_student_hours": 0.0,
+      "feeds_from_lab": null
+     },
+     {
+      "id": "Q:Quiz2",
+      "release_week": 5,
+      "due_week": 5,
+      "format": "In-class Quiz",
+      "covers_topics": [
+       "M2.T1",
+       "M2.T2"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO2.LO1",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO2.LO2",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 3
+       }
+      ],
+      "est_student_hours": 0.0,
+      "feeds_from_lab": null
+     },
+     {
+      "id": "Q:Quiz3",
+      "release_week": 9,
+      "due_week": 9,
+      "format": "In-class Quiz",
+      "covers_topics": [
+       "M3.T1",
+       "M3.T2",
+       "M3.T3"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO3.LO1",
+        "marks_pct_of_instance": 35.0,
+        "bloom_level": 4
+       },
+       {
+        "lo_id": "CO3.LO2",
+        "marks_pct_of_instance": 35.0,
+        "bloom_level": 4
+       },
+       {
+        "lo_id": "CO3.LO3",
+        "marks_pct_of_instance": 30.0,
+        "bloom_level": 4
+       }
+      ],
+      "est_student_hours": 0.0,
+      "feeds_from_lab": null
+     },
+     {
+      "id": "Q:Quiz4",
+      "release_week": 11,
+      "due_week": 11,
+      "format": "In-class Quiz",
+      "covers_topics": [
+       "M4.T1",
+       "M4.T2",
+       "M4.T3"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO4.LO1",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 4
+       },
+       {
+        "lo_id": "CO4.LO2",
+        "marks_pct_of_instance": 50.0,
+        "bloom_level": 5
+       }
+      ],
+      "est_student_hours": 0.0,
+      "feeds_from_lab": null
+     }
+    ]
+   },
+   {
+    "type": "midsem",
+    "weight_pct": 20.0,
+    "weight_justification": null,
+    "best_k": null,
+    "n": null,
+    "activity_types": [
+     "analyse-data",
+     "design",
+     "theory"
+    ],
+    "integrity": "In-person invigilated mid-semester examination.",
+    "proctored": true,
+    "instances": [
+     {
+      "id": "E:Midsem",
+      "release_week": 7,
+      "due_week": 7,
+      "format": "Written Exam",
+      "covers_topics": [
+       "M1.T1",
+       "M1.T2",
+       "M1.T3",
+       "M1.T4",
+       "M1.T5",
+       "M2.T1",
+       "M2.T2",
+       "M2.T3",
+       "M2.T4",
+       "M3.T1"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO1.LO1",
+        "marks_pct_of_instance": 15.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO1.LO2",
+        "marks_pct_of_instance": 15.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO1.LO3",
+        "marks_pct_of_instance": 15.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO2.LO1",
+        "marks_pct_of_instance": 15.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO2.LO2",
+        "marks_pct_of_instance": 15.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO2.LO3",
+        "marks_pct_of_instance": 15.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO3.LO1",
+        "marks_pct_of_instance": 10.0,
+        "bloom_level": 4
+       }
+      ],
+      "est_student_hours": 0.0,
+      "feeds_from_lab": null
+     }
+    ]
+   },
+   {
+    "type": "report",
+    "weight_pct": 10.0,
+    "weight_justification": "The written report is a focused 10% synthesis evaluation on backend architecture and security trade-offs, complementary to exams and programming assignments.",
+    "best_k": null,
+    "n": null,
+    "activity_types": [
+     "evaluate-critique",
+     "written-communication"
+    ],
+    "integrity": "Plagiarism checking via Turnitin and individual viva voce verification if required.",
+    "proctored": false,
+    "instances": [
+     {
+      "id": "R:Report1",
+      "release_week": 12,
+      "due_week": 13,
+      "format": "Written Report",
+      "covers_topics": [
+       "M4.T2",
+       "M4.T3",
+       "M4.T4",
+       "M4.T5"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO4.LO2",
+        "marks_pct_of_instance": 40.0,
+        "bloom_level": 5
+       },
+       {
+        "lo_id": "CO4.LO3",
+        "marks_pct_of_instance": 60.0,
+        "bloom_level": 5
+       }
+      ],
+      "est_student_hours": 6.0,
+      "feeds_from_lab": null
+     }
+    ]
+   },
+   {
+    "type": "endsem",
+    "weight_pct": 30.0,
+    "weight_justification": null,
+    "best_k": null,
+    "n": null,
+    "activity_types": [
+     "evaluate-critique",
+     "analyse-data",
+     "design",
+     "theory"
+    ],
+    "integrity": "In-person invigilated end-semester examination.",
+    "proctored": true,
+    "instances": [
+     {
+      "id": "E:Endsem",
+      "release_week": 13,
+      "due_week": 13,
+      "format": "Written Exam",
+      "covers_topics": [
+       "M1.T5",
+       "M2.T4",
+       "M3.T1",
+       "M3.T2",
+       "M3.T3",
+       "M4.T1",
+       "M4.T2",
+       "M4.T3",
+       "M4.T4",
+       "M4.T5"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO1.LO3",
+        "marks_pct_of_instance": 10.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO2.LO3",
+        "marks_pct_of_instance": 15.0,
+        "bloom_level": 3
+       },
+       {
+        "lo_id": "CO3.LO1",
+        "marks_pct_of_instance": 10.0,
+        "bloom_level": 4
+       },
+       {
+        "lo_id": "CO3.LO2",
+        "marks_pct_of_instance": 15.0,
+        "bloom_level": 4
+       },
+       {
+        "lo_id": "CO3.LO3",
+        "marks_pct_of_instance": 20.0,
+        "bloom_level": 4
+       },
+       {
+        "lo_id": "CO4.LO1",
+        "marks_pct_of_instance": 10.0,
+        "bloom_level": 4
+       },
+       {
+        "lo_id": "CO4.LO2",
+        "marks_pct_of_instance": 10.0,
+        "bloom_level": 5
+       },
+       {
+        "lo_id": "CO4.LO3",
+        "marks_pct_of_instance": 10.0,
+        "bloom_level": 5
+       }
+      ],
+      "est_student_hours": 0.0,
+      "feeds_from_lab": null
+     }
+    ]
+   }
+  ],
+  "weight_sum": 100.0,
+  "unsupported_po_predictions": []
+ },
+ "copo_computed": [
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-COMMON/PO1",
+   "share": 0.558,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-COMMON/PO2",
+   "share": 0.558,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-COMMON/PO3",
+   "share": 0.867,
+   "strength_computed": 3,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-COMMON/PO4",
+   "share": 0.558,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-COMMON/PO5",
+   "share": 0.575,
+   "strength_computed": 2,
+   "strength_provisional": 2,
+   "claimed": true
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSAI/PSO1",
+   "share": 0.558,
+   "strength_computed": 2,
+   "strength_provisional": 1,
+   "claimed": true
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSAI/PSO2",
+   "share": 0.558,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSAI/PSO3",
+   "share": 0.867,
+   "strength_computed": 3,
+   "strength_provisional": 2,
+   "claimed": true
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSAI/PSO4",
+   "share": 0.558,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSAI/PSO5",
+   "share": 0.867,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSE/PSO1",
+   "share": 0.558,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSE/PSO2",
+   "share": 0.558,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSE/PSO3",
+   "share": 0.558,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSE/PSO4",
+   "share": 0.867,
+   "strength_computed": 3,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "BTECH-CSE/PSO5",
+   "share": 0.575,
+   "strength_computed": 2,
+   "strength_provisional": 2,
+   "claimed": true
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "MTECH-CSE/PSO1",
+   "share": 0.558,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "MTECH-CSE/PSO2",
+   "share": 0.558,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "MTECH-CSE/PSO3",
+   "share": 0.867,
+   "strength_computed": 3,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO1",
+   "po_uid": "MTECH-CSE/PSO4",
+   "share": 0.575,
+   "strength_computed": 2,
+   "strength_provisional": 2,
+   "claimed": true
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-COMMON/PO1",
+   "share": 0.58,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-COMMON/PO2",
+   "share": 0.58,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-COMMON/PO3",
+   "share": 0.874,
+   "strength_computed": 3,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-COMMON/PO4",
+   "share": 0.58,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-COMMON/PO5",
+   "share": 0.546,
+   "strength_computed": 2,
+   "strength_provisional": 2,
+   "claimed": true
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSAI/PSO1",
+   "share": 0.58,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSAI/PSO2",
+   "share": 0.58,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSAI/PSO3",
+   "share": 0.874,
+   "strength_computed": 3,
+   "strength_provisional": 2,
+   "claimed": true
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSAI/PSO4",
+   "share": 0.58,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSAI/PSO5",
+   "share": 0.874,
+   "strength_computed": 3,
+   "strength_provisional": 1,
+   "claimed": true
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSE/PSO1",
+   "share": 0.58,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSE/PSO2",
+   "share": 0.58,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSE/PSO3",
+   "share": 0.58,
+   "strength_computed": 2,
+   "strength_provisional": 2,
+   "claimed": true
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSE/PSO4",
+   "share": 0.874,
+   "strength_computed": 3,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "BTECH-CSE/PSO5",
+   "share": 0.546,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "MTECH-CSE/PSO1",
+   "share": 0.58,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "MTECH-CSE/PSO2",
+   "share": 0.58,
+   "strength_computed": 2,
+   "strength_provisional": 2,
+   "claimed": true
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "MTECH-CSE/PSO3",
+   "share": 0.874,
+   "strength_computed": 3,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO2",
+   "po_uid": "MTECH-CSE/PSO4",
+   "share": 0.546,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-COMMON/PO1",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-COMMON/PO2",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-COMMON/PO3",
+   "share": 0.805,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-COMMON/PO4",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-COMMON/PO5",
+   "share": 0.195,
+   "strength_computed": 1,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSAI/PSO1",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSAI/PSO2",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSAI/PSO3",
+   "share": 0.805,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSAI/PSO4",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSAI/PSO5",
+   "share": 0.805,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSE/PSO1",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSE/PSO2",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSE/PSO3",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": 2,
+   "claimed": true
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSE/PSO4",
+   "share": 0.805,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "BTECH-CSE/PSO5",
+   "share": 0.195,
+   "strength_computed": 1,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "MTECH-CSE/PSO1",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "MTECH-CSE/PSO2",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": 2,
+   "claimed": true
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "MTECH-CSE/PSO3",
+   "share": 0.805,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO3",
+   "po_uid": "MTECH-CSE/PSO4",
+   "share": 0.195,
+   "strength_computed": 1,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-COMMON/PO1",
+   "share": 0.56,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-COMMON/PO10",
+   "share": 0.44,
+   "strength_computed": 2,
+   "strength_provisional": 2,
+   "claimed": true
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-COMMON/PO2",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-COMMON/PO3",
+   "share": 0.396,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-COMMON/PO4",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-COMMON/PO5",
+   "share": 0.165,
+   "strength_computed": 1,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSAI/PSO1",
+   "share": 0.56,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSAI/PSO2",
+   "share": 0.56,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSAI/PSO3",
+   "share": 0.396,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSAI/PSO4",
+   "share": 1.0,
+   "strength_computed": 3,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSAI/PSO5",
+   "share": 0.396,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSE/PSO1",
+   "share": 0.56,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSE/PSO2",
+   "share": 0.56,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSE/PSO3",
+   "share": 0.56,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSE/PSO4",
+   "share": 0.835,
+   "strength_computed": 3,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "BTECH-CSE/PSO5",
+   "share": 0.165,
+   "strength_computed": 1,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "MTECH-CSE/PO2",
+   "share": 0.44,
+   "strength_computed": 2,
+   "strength_provisional": 2,
+   "claimed": true
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "MTECH-CSE/PSO1",
+   "share": 0.56,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "MTECH-CSE/PSO2",
+   "share": 0.56,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "MTECH-CSE/PSO3",
+   "share": 0.835,
+   "strength_computed": 3,
+   "strength_provisional": 3,
+   "claimed": true
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "MTECH-CSE/PSO4",
+   "share": 0.165,
+   "strength_computed": 1,
+   "strength_provisional": null,
+   "claimed": false
+  },
+  {
+   "co_id": "CO4",
+   "po_uid": "MTECH-CSE/PSO8",
+   "share": 0.44,
+   "strength_computed": 2,
+   "strength_provisional": null,
+   "claimed": false
+  }
+ ],
+ "co_marks_share": {
+  "CO1": 28.25,
+  "CO2": 29.75,
+  "CO3": 19.25,
+  "CO4": 22.75
+ },
+ "resources": [
+  {
+   "candidate_id": "OL:OL19980166W",
+   "role": "primary",
+   "title": "HTML & CSS",
+   "authors": [
+    "Jon Duckett"
+   ],
+   "year": 2014,
+   "edition": null,
+   "venue": "Wiley",
+   "identifier": {
+    "isbn": "9781118871645",
+    "doi": null,
+    "arxiv": null,
+    "url": "https://openlibrary.org/books/OL27160315M"
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M1.T1",
+     "reason": "Covers HTML5 structure and semantic tags."
+    },
+    {
+     "topic_id": "M1.T2",
+     "reason": "Covers HTML form elements and document rules."
+    },
+    {
+     "topic_id": "M1.T3",
+     "reason": "Introduces CSS layouts and positioning fundamentals."
+    },
+    {
+     "topic_id": "M1.T5",
+     "reason": "Covers media queries and layout adaptivity."
+    }
+   ],
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "OL:OL19980166W",
+     "basis": null
+    }
+   ],
+   "verification": {
+    "verified": true,
+    "problems": []
+   }
+  },
+  {
+   "candidate_id": "OL:OL15444205W",
+   "role": "primary",
+   "title": "Eloquent Javascript",
+   "authors": [
+    "Marijn Haverbeke"
+   ],
+   "year": 2024,
+   "edition": null,
+   "venue": "No Starch Press",
+   "identifier": {
+    "isbn": "9781718504110",
+    "doi": null,
+    "arxiv": null,
+    "url": "https://openlibrary.org/books/OL55461958M"
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M2.T1",
+     "reason": "Covers Document Object Model and Event Handling chapters."
+    },
+    {
+     "topic_id": "M2.T2",
+     "reason": "Covers Asynchronous Programming, Promises, and Fetch API."
+    },
+    {
+     "topic_id": "M2.T3",
+     "reason": "Covers dynamic rendering in the browser."
+    },
+    {
+     "topic_id": "M2.T4",
+     "reason": "Covers HTTP and asynchronous error handling."
+    }
+   ],
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "OL:OL15444205W",
+     "basis": null
+    }
+   ],
+   "verification": {
+    "verified": true,
+    "problems": []
+   }
+  },
+  {
+   "candidate_id": "OL:OL17581297W",
+   "role": "reference",
+   "title": "High Performance Browser Networking",
+   "authors": [
+    "Ilya Grigorik"
+   ],
+   "year": 2014,
+   "edition": null,
+   "venue": "Shroff Publishers & Distributors Pvt. Ltd.",
+   "identifier": {
+    "isbn": "9789351104711",
+    "doi": null,
+    "arxiv": null,
+    "url": "https://openlibrary.org/books/OL48679213M"
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M3.T1",
+     "reason": "Covers resource timing, browser networking waterfalls, and HTTP protocols."
+    },
+    {
+     "topic_id": "M3.T3",
+     "reason": "Covers browser performance metrics and network bottleneck diagnosis."
+    },
+    {
+     "topic_id": "M4.T4",
+     "reason": "Covers transport layer optimization and load balancing impact on latency."
+    }
+   ],
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "OL:OL17581297W",
+     "basis": null
+    }
+   ],
+   "verification": {
+    "verified": true,
+    "problems": []
+   }
+  },
+  {
+   "candidate_id": "OL:OL19548004W",
+   "role": "reference",
+   "title": "RESTful Web APIs: Services for a Changing World",
+   "authors": [
+    "Leonard Richardson",
+    "Michael Amundsen",
+    "Sam Ruby"
+   ],
+   "year": 2013,
+   "edition": null,
+   "venue": "O'Reilly Media",
+   "identifier": {
+    "isbn": "9781449358068",
+    "doi": null,
+    "arxiv": null,
+    "url": "https://openlibrary.org/books/OL26838570M"
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M4.T1",
+     "reason": "Covers REST architectural constraints and URI design patterns."
+    },
+    {
+     "topic_id": "M4.T5",
+     "reason": "Covers web service architecture trade-off evaluation."
+    }
+   ],
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "OL:OL19548004W",
+     "basis": null
+    }
+   ],
+   "verification": {
+    "verified": true,
+    "problems": []
+   }
+  },
+  {
+   "candidate_id": "OL:OL13814659W",
+   "role": "reference",
+   "title": "The web application hacker's handbook",
+   "authors": [
+    "Dafydd Stuttard",
+    "Marcus Pinto"
+   ],
+   "year": 2011,
+   "edition": null,
+   "venue": "Wiley",
+   "identifier": {
+    "isbn": "9788126533404",
+    "doi": null,
+    "arxiv": null,
+    "url": "https://openlibrary.org/books/OL50509771M"
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M4.T2",
+     "reason": "Covers authentication mechanisms and session management."
+    },
+    {
+     "topic_id": "M4.T3",
+     "reason": "Covers web application vulnerabilities, OWASP Top 10, and rate-limiting concepts."
+    }
+   ],
+   "sources": [
+    {
+     "tag": "EXTERNAL",
+     "ref": "OL:OL13814659W",
+     "basis": null
+    }
+   ],
+   "verification": {
+    "verified": true,
+    "problems": []
+   }
+  }
+ ],
+ "resources_rejected": [],
+ "resource_policy": {
+  "textbook_policy": "mixed",
+  "reason": "Standard foundational textbooks cover HTML, CSS, JavaScript, and Web Security, supplemented by reference texts for REST APIs and Web Performance.",
+  "search_requests": [
+   {
+    "need": "Official W3C ARIA specification documentation and MDN Web Docs on CSS Grid Layout",
+    "for_topics": [
+     "M1.T1",
+     "M1.T4"
+    ]
+   },
+   {
+    "need": "Modern documentation or standards for OAuth 2.0 / JWT and Core Web Vitals diagnostic tools",
+    "for_topics": [
+     "M3.T3",
+     "M4.T2"
+    ]
+   }
+  ]
+ },
+ "narrative": {
+  "concerns": [
+   {
+    "about": "positioning_rationale",
+    "detail": "No specific existing course codes were provided in the overlaps context, so positioning rationale evaluates against general subject areas rather than explicit course UIDs."
+   }
+  ],
+  "missing": [],
+  "course_description": "This course provides a comprehensive grounding in full-stack web development principles, client-side dynamic interactivity, performance diagnostics, and secure backend service architecture. Students begin by constructing responsive multi-device web layouts using semantic HTML5 markup and CSS Flexbox and Grid models. They then progress to client-side scripting, utilizing asynchronous JavaScript, DOM manipulation, and Fetch APIs to build interactive web application features. The course further covers web performance profiling, where students diagnose network bottlenecks, rendering layout thrashing, and Core Web Vitals using browser developer tools. Finally, students evaluate RESTful backend service architectures with a focus on authentication patterns, OWASP security controls, and system scalability. Taught through 3 hours of lectures and 1 hour of tutorial per week over 13 weeks, the course enables students to build responsive front-end interfaces, integrate asynchronous web APIs, profile interface bottlenecks, and evaluate full-stack architectural trade-offs across usability, security, and scalability requirements.",
+  "sequencing_rationale": "Modules follow a structural progression starting from foundational layout design in M1 to dynamic client-side behavior in M2. M3 builds on client-side rendering by diagnosing performance bottlenecks and rendering issues. Finally, M4 expands the scope to full-stack system architecture, evaluating RESTful backend service design, security, and scalability after students have mastered front-end and profiling principles.",
+  "assessment_rationale": "The assessment strategy combines formative and summative evaluation to match the learning levels of the COs. Continuous assignments (25%) and quizzes (15%) evaluate hands-on layout construction and client-side scripting (CO1, CO2). Examinations (20% midsem, 30% endsem) test conceptual understanding of web architecture and diagnostics (CO3, CO4). A technical report (10%) specifically assesses backend service design evaluation and trade-off analysis (CO4).",
+  "positioning_rationale": "This course integrates client-side layout, dynamic API integration, interface performance diagnostics, and backend architecture evaluation into a single 3-1-0 elective. Unlike specialized backend or advanced software engineering courses, it provides a holistic end-to-end view of web system design, focusing equally on front-end rendering, profiling, and RESTful service evaluation.",
+  "grounding": [
+   "CO1",
+   "CO2",
+   "CO3",
+   "CO4",
+   "M1",
+   "M2",
+   "M3",
+   "M4"
+  ]
+ },
+ "evaluation_deterministic": {
+  "verdict": "PASS",
+  "errors": 0,
+  "regulation_ok": true,
+  "alignment_min_pct": 100.0,
+  "hard_constraints_satisfied_pct": 100.0,
+  "review_reasons": []
+ },
+ "neo4j_load": {
+  "nodes": 134,
+  "internal_links": 248,
+  "hub_links": 65,
+  "links_to_course": 15,
+  "links_to_topic": 0,
+  "links_to_programme": 29,
+  "unresolved_refs": 0,
+  "checks_failed": []
+ }
+}

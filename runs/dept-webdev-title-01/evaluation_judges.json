@@ -1,0 +1,31 @@
+{
+ "planned_only": true,
+ "tier1": "REVIEW",
+ "judged": true,
+ "panel": [
+  {
+   "judge": "judge_b",
+   "model": "gemini:gemini-3.7-flash"
+  },
+  {
+   "judge": "judge_d",
+   "model": "gemini:gemini-3.5-flash-lite"
+  }
+ ],
+ "skipped_judges": [
+  {
+   "judge": "judge_a",
+   "model": "gemini:gemini-3.5-flash",
+   "why": "generated 100% of the design (self-preference)"
+  },
+  {
+   "judge": "judge_c",
+   "model": "groq:openai/gpt-oss-120b",
+   "why": "no API key for this provider"
+  }
+ ],
+ "calls_min": 1,
+ "calls_max": 2,
+ "prompt_chars": 14877,
+ "prompt_tokens_est": 4649
+}

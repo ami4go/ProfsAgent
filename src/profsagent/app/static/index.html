@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ProfsAgent</title>
+<style>
+:root{--navy:#002357;--navy2:#1E3A6E;--navy-bg:#EEF1F8;--canvas:#F8F8F6;--band:#F5F3ED;--card:#FFFFFF;--line:#E8E5DC;--ink:#1F1E1D;--ink2:#5E5D59;--muted:#6B6B6B;
+  --teal:#006970;--teal-bg:#E5F3F3;--amber:#B45309;--amber-bg:#FEF3C7;--green:#15803D;--green-bg:#DCFCE7;--red:#B91C1C;--red-bg:#FEE2E2}
+*{box-sizing:border-box}
+body{margin:0;background:var(--canvas);color:var(--ink);font:14px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+button,input,textarea,select{font:inherit;color:inherit}
+h1{font-size:24px;line-height:1.3;font-weight:600;margin:0 0 4px;letter-spacing:-.01em}
+h2{font-size:16px;font-weight:600;margin:0 0 10px}
+h3{font-size:14px;font-weight:600;margin:0 0 6px}
+p{margin:0}
+a{color:var(--navy2)}
+.muted{color:var(--ink2)}.small{font-size:13px}.tiny{font-size:12px}
+.top{background:var(--card);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px;cursor:pointer;background:none;border:0;padding:0}
+.logo{width:28px;height:28px;border-radius:7px;background:var(--navy);color:#fff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.pill{font-size:11px;font-weight:500;padding:2px 8px;border-radius:999px;border:1px solid var(--line);background:var(--band);color:var(--ink2);white-space:nowrap}
+.sys{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.band{background:var(--band);border-bottom:1px solid var(--line);padding:10px 24px}
+.band-in{max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.wrap{max-width:860px;margin:0 auto;padding:28px 24px 130px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-top:14px}
+.row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.card h2+.row,.row:first-child{border-top:0}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:500;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;min-height:38px;text-decoration:none;color:var(--ink)}
+.btn:hover{background:var(--band)}
+.btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}.btn.primary:hover{background:var(--navy2)}
+.btn.sm{min-height:32px;padding:5px 11px;font-size:13px}
+.btn.bad{border-color:#FCA5A5;color:#7F1D1D}.btn.bad:hover{background:var(--red-bg)}
+.btn.big{padding:13px 20px;font-size:15px;border-radius:10px}
+.btn:disabled{opacity:.5;cursor:default}
+.link{background:none;border:0;padding:0;color:var(--navy2);text-decoration:underline;cursor:pointer;font-weight:500}
+.chip{font-size:12px;font-weight:500;padding:3px 10px;border-radius:999px;white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
+.chip.amber{background:var(--amber-bg);color:var(--amber)}.chip.green{background:var(--green-bg);color:var(--green)}
+.chip.grey{background:var(--band);color:var(--ink2);border:1px solid var(--line)}.chip.teal{background:var(--teal-bg);color:var(--teal)}
+.chip.navy{background:var(--navy-bg);color:var(--navy2)}.chip.red{background:var(--red-bg);color:var(--red)}
+.banner{border-radius:10px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;margin-top:14px}
+.banner.green{background:var(--green-bg);color:#14532D}.banner.amber{background:var(--amber-bg);color:#78350F}.banner.navy{background:var(--navy-bg);color:var(--navy)}.banner.red{background:var(--red-bg);color:#7F1D1D}
+label.f{display:block;font-weight:500;margin:14px 0 4px}
+label.f .opt{font-weight:400;color:var(--ink2)}
+input[type=text],textarea,select{width:100%;border:1px solid var(--line);border-radius:8px;background:#fff;padding:8px 10px}
+input:focus,textarea:focus,select:focus{outline:2px solid #C9D4EA;border-color:var(--navy2)}
+.btn:focus-visible,.link:focus-visible,.tog:focus-visible,.stars button:focus-visible{outline:2px solid var(--navy2);outline-offset:2px}
+.err{color:var(--red);font-size:13px;margin-top:4px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.tog{font-size:13px;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;cursor:pointer}
+.tog.on{background:var(--navy2);border-color:var(--navy2);color:#fff}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.g2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.check{display:flex;gap:8px;align-items:flex-start;margin-top:10px}
+.check input{width:17px;height:17px;margin-top:2px;flex:none;accent-color:var(--navy)}
+.steps{display:flex;gap:8px;align-items:center;margin:0 auto;max-width:860px;padding:14px 24px 0}
+.step{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.step .dot{width:22px;height:22px;border-radius:50%;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600}
+.step.done{color:var(--green)}.step.done .dot{background:var(--green-bg);border-color:var(--green-bg);color:var(--green)}
+.step.cur{color:var(--navy);font-weight:600}.step.cur .dot{background:var(--navy);border-color:var(--navy);color:#fff}
+.sep{flex:1;height:1px;background:var(--line);max-width:80px}
+.foot{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:12px 24px;z-index:5}
+.foot-in{max-width:860px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.bar{height:8px;border-radius:999px;background:var(--band);border:1px solid var(--line);overflow:hidden}
+.bar>div{height:100%;background:var(--navy);transition:width .6s ease}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.tile b{display:block;font-size:20px;font-weight:600}
+.ico{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px}
+.center{text-align:center}
+.slist{list-style:none;padding:0;margin:12px 0 0}
+.slist li{display:flex;gap:8px;align-items:center;padding:3px 0;font-size:13.5px;color:var(--muted)}
+.slist li.done{color:var(--green)}.slist li.cur{color:var(--navy);font-weight:600}
+.slist .mk{width:18px;text-align:center;flex:none}
+.spin{width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--navy);border-radius:50%;animation:sp 1s linear infinite;flex:none;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+pre.log{background:#1F1E1D;color:#E8E5DC;border-radius:8px;padding:10px 12px;overflow:auto;font-size:12px;white-space:pre-wrap;margin:8px 0 0}
+details summary{cursor:pointer;color:var(--ink2);font-size:13px}
+.co{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-top:10px;background:#fff}
+.co ul{margin:8px 0 0;padding-left:18px}.co li{margin:3px 0}
+.pos{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.str{letter-spacing:1px;color:var(--navy2)}
+.iss{margin-top:6px;font-size:13px;border-radius:8px;padding:6px 10px}
+.iss.warning{background:var(--amber-bg);color:#78350F}.iss.error{background:var(--red-bg);color:#7F1D1D}
+table.t{width:100%;border-collapse:collapse;font-size:13.5px}
+table.t th,table.t td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:top}
+table.t th{font-size:12px;color:var(--ink2);font-weight:600;white-space:nowrap;overflow-wrap:normal}
+.ref{font:500 11.5px ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--ink2);background:var(--band);border-radius:5px;padding:1px 6px;overflow-wrap:anywhere}
+.card,.co,.banner{overflow-wrap:anywhere}
+.stars{display:inline-flex;gap:2px}.stars button{border:0;background:none;font-size:20px;cursor:pointer;color:#C9C6BC;padding:0 2px}.stars button.on{color:#D97706}
+.fbrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+.fbrow:first-of-type{border-top:0}
+.proposal{font-size:13.5px;overflow-x:auto}.proposal table{border-collapse:collapse;margin:8px 0}.proposal td,.proposal th{border:1px solid var(--line);padding:4px 6px;vertical-align:top}
+.proposal h1{font-size:20px}.proposal h2{margin-top:18px}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 16px;border-radius:8px;font-size:13px;z-index:30;max-width:90vw}
+.notice{border:1px solid #F5D78E;background:#FFFDF5;border-radius:10px;padding:12px 14px;margin-top:10px}
+.ainote{margin-top:6px;font-size:13px;background:var(--teal-bg);color:#0B3D40;border-radius:8px;padding:7px 10px}
+input.aifield,textarea.aifield,select.aifield{border-color:#7FC4C7;background:#F7FCFC}
+@media (max-width:720px){.g3,.g2{grid-template-columns:minmax(0,1fr)}.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .top{padding:10px 14px}.wrap{padding:22px 16px 140px}.band,.foot{padding-left:16px;padding-right:16px}.steps{padding:14px 16px 0}}
+</style>
+</head>
+<body>
+<div id="app"><p style="padding:24px">Loading…</p></div>
+<script>
+(function () {
+'use strict';
+const ICON = {
+  check: '<svg class="ico" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>',
+  cross: '<svg class="ico" viewBox="0 0 24 24" style="color:var(--red)"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  alert: '<svg class="ico" viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17.5v.5"/></svg>',
+  arrow: '<svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+  down: '<svg class="ico" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
+  link: '<svg class="ico" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg>',
+  big: '<svg viewBox="0 0 24 24" style="width:56px;height:56px;stroke:var(--green);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="10"/><path d="M7 12l3.5 3.5L17 9"/></svg>'
+};
+const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const ext = (url, text) => url ? '<a href="' + esc(url) + '" target="_blank" rel="noopener">' + esc(text) + ' ' + ICON.link + '</a>' : esc(text);
+const hhmm = t => new Date(t * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+const day = t => new Date(t * 1000).toLocaleDateString([], { day: 'numeric', month: 'short' }) + ', ' + hhmm(t);
+const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+const app = document.getElementById('app');
+
+async function api(path, opts) {
+  try { const r = await fetch(path, opts); let data = null; try { data = await r.json(); } catch (e) {} return { ok: r.ok, status: r.status, data }; }
+  catch (e) { return { ok: false, status: 0, data: { problem: 'The app is not responding. Is it still running on this laptop?' } }; }
+}
+const post = (path, body) => api(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}) });
+let toastTimer = null;
+function toast(msg) { const t = document.getElementById('toast') || Object.assign(document.createElement('div'), { id: 'toast', className: 'toast', role: 'status' });
+  t.textContent = msg; document.body.appendChild(t); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.remove(), 4000); }
+
+let OPT = null, HEALTH = null, PAGE = 'home', RUNS = [], RUN = null, RID = null, FORM = null, ERRS = {}, UI = {}, poll = null, tick = null;
+
+// ============================== chrome ==============================
+function header() {
+  let sys = '';
+  if (HEALTH) {
+    const kg = HEALTH.kg_backend === 'neo4j' ? (HEALTH.neo4j ? '<span class="chip green">Course database connected</span>' : '<span class="chip red">Course database not running</span>')
+                                              : '<span class="chip amber">Sample course data (stub)</span>';
+    const keys = HEALTH.keys.gemini + HEALTH.keys.groq;
+    sys = kg + (keys ? '' : ' <span class="chip red">No AI keys in .env</span>') + (HEALTH.working_on ? ' <span class="chip navy"><span class="spin"></span> Working</span>' : '');
+  }
+  return '<div class="top"><button class="brand" data-act="home"><span class="logo">IIIT</span>ProfsAgent <span class="pill">On this laptop</span></button><div class="sys">' + sys + '</div></div>';
+}
+const foot = (left, right) => '<div class="foot"><div class="foot-in"><div style="display:flex;gap:8px;flex-wrap:wrap">' + left + '</div><div style="display:flex;gap:8px;flex-wrap:wrap">' + right + '</div></div></div>';
+const STATUS = {
+  queued: ['grey', 'Waiting to start'], running: ['navy', 'Working'], waiting: ['amber', 'Waiting for you'], paused: ['amber', 'Paused: AI quota'],
+  error: ['red', 'Needs attention'], done: ['green', 'Approved'], stopped: ['grey', 'Stopped by you']
+};
+const GATE_NAME = { gate0_details: 'Details', gate1_context: 'Context', gate2_outcomes: 'Outcomes', gate3_proposal: 'Final sheet' };
+const statusChip = r => { const s = STATUS[r.status] || ['grey', r.status]; return '<span class="chip ' + s[0] + '">' + s[1] + (r.status === 'waiting' && r.gate ? ': ' + GATE_NAME[r.gate] : '') + '</span>'; };
+
+// ============================== home ==============================
+function home() {
+  const list = RUNS.length ? RUNS.map(r => '<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><b style="font-size:16px;font-weight:600">' + esc(r.title) + '</b>' + statusChip(r) + '</div>' +
+      '<p class="muted small" style="margin-top:2px">Started ' + day(r.created_at) + ' by ' + esc(r.by) + (r.status === 'paused' && r.resume_at ? ' · continues by itself at ' + hhmm(r.resume_at) : '') + '</p>' +
+      '<div style="display:flex;justify-content:flex-end;margin-top:8px"><a class="btn' + (r.status === 'waiting' ? ' primary' : '') + '" href="#/run/' + esc(r.run_id) + '">' + (r.status === 'waiting' ? 'Review now' : 'Open') + ' ' + ICON.arrow + '</a></div></div>').join('')
+    : '<div class="card center" style="padding:32px"><p class="muted">No courses yet. Start with the course form; it takes about 5 minutes to fill in.</p></div>';
+  return header() + '<div class="wrap"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap"><div><h1>Your courses</h1>' +
+    '<p class="muted">Describe a course; ProfsAgent drafts a regulation-compliant proposal, and you check it in three steps.</p></div>' +
+    '<a class="btn primary" href="#/new">New course</a></div>' + healthBanner() + list + '</div>';
+}
+function healthBanner() {
+  if (!HEALTH) return '';
+  if (HEALTH.kg_backend === 'neo4j' && !HEALTH.neo4j)
+    return '<div class="banner red">' + ICON.alert + '<div><b style="font-weight:600">The course database (Neo4j) isn\'t running.</b> Open Neo4j Desktop and start the ProfsAgent database before starting a course. Runs that need it will wait with a "Try again" button.</div></div>';
+  if (!HEALTH.keys.gemini && !HEALTH.keys.groq)
+    return '<div class="banner red">' + ICON.alert + '<div><b style="font-weight:600">No AI keys found.</b> Add GEMINI_API_KEYS (and GROQ_API_KEYS) to the .env file, then restart the app.</div></div>';
+  return '';
+}
+
+// ============================== form ==============================
+// Only the name and the description are required. Everything left blank is filled in by ProfsAgent first, and the
+// professor checks the complete form (the "Details" step) before any design work starts.
+const BLANK = () => ({ name: '', description: '', topics: '', topics_flexible: true, intent_question: '', intent_emphasis: '', intent_avoid: '',
+  department: '', credits: '', l: '', t: '', p: '', weeks: '', weekly_effort: '', programmes: [], year: '', background: '',
+  lab: '', lab_infra: '', assess_pref: [], assess_avoid: [], assess_why: '', special: '', external_research: true, by: store.get('profsagent-name') || '', consent: false });
+function saveDraft() { if (PAGE !== 'form') return; const d = Object.assign({}, FORM); delete d.consent; store.set('profsagent-draft', JSON.stringify(d)); }
+const LEAVE = 'Leave blank: ProfsAgent fills it in';
+// mode 'new': the professor's first form. mode 'review': the complete form after ProfsAgent filled the blanks;
+// every suggested field shows why and where it came from, and everything stays editable.
+function formCards(f, e, o, mode, filled) {
+  filled = filled || {};
+  const review = mode === 'review';
+  const err = k => e[k] ? '<p class="err" data-err="' + k + '">' + esc(e[k]) + '</p>' : '';
+  const ai = (...keys) => { const s = keys.map(k => filled[k]).filter(Boolean); if (!s.length) return '';
+    const srcs = [].concat(...s.map(x => x.sources || [])).filter((x, i, a) => a.findIndex(y => y.text === x.text) === i);
+    const fixes = s.map(x => x.corrected).filter(Boolean);
+    return '<div class="ainote"><span class="chip teal">Filled in by ProfsAgent</span> ' + esc(s.map(x => x.reason).filter(Boolean).filter((x, i, a) => a.indexOf(x) === i).join(' ')) +
+      (fixes.length ? '<div class="small" style="margin-top:3px;color:var(--amber)">' + fixes.map(esc).join('<br>') + '</div>' : '') +
+      (srcs.length ? '<div class="tiny" style="margin-top:3px">Based on: ' + srcs.map(x => x.url ? ext(x.url, x.text) : esc(x.text)).join(' · ') + '</div>' : '') + '</div>'; };
+  const cls = (...keys) => keys.some(k => filled[k]) ? ' class="aifield"' : '';
+  const opt = review ? '' : ' <span class="opt">(optional)</span>';
+  const tog = (key, v) => '<button type="button" class="tog' + (f[key].includes(v) ? ' on' : '') + '" data-tog="' + key + '" data-v="' + esc(v) + '" aria-pressed="' + f[key].includes(v) + '">' + esc(v) + '</button>';
+  const sel = (key, vals, labels) => '<select data-f="' + key + '" id="' + key + '"' + cls(key) + '><option value="">' + (review ? 'Not set' : LEAVE) + '</option>' +
+    vals.map((v, i) => '<option value="' + esc(v) + '"' + (f[key] === v ? ' selected' : '') + '>' + esc(labels ? labels[i] : v) + '</option>').join('') + '</select>';
+  const txt = (key, ph, extra) => '<input type="text" id="' + key + '" data-f="' + key + '"' + cls(key) + ' value="' + esc(f[key]) + '" placeholder="' + esc(ph || '') + '"' + (extra || '') + '>';
+  const area = (key, rows, ph) => '<textarea id="' + key + '" data-f="' + key + '"' + cls(key) + ' rows="' + rows + '" placeholder="' + esc(ph || '') + '">' + esc(f[key]) + '</textarea>';
+  const ph = (x) => review ? '' : x;
+  return '<div class="card"><h2>About the course</h2>' +
+    '<label class="f" for="name" style="margin-top:0">Course name *</label>' + txt('name', 'Software Development using AI') + err('name') +
+    '<label class="f" for="description">Short description *</label>' + area('description', 3, 'What the course is about and what students can do at the end (3–6 sentences)') + err('description') +
+    '<label class="f" for="topics">Topics' + opt + '</label>' + area('topics', review ? 7 : 5, ph('A. AI-native development: AI-assisted coding, coding agents\nB. Engineering practice: automated testing, deployment')) + err('topics') + ai('topics') +
+    (review ? '' : '<p class="tiny muted" style="margin-top:4px">One group per line. A rough list is fine. Leave it empty and ProfsAgent proposes the topics from your description.</p>') +
+    '<label class="check small"><input type="checkbox" data-f="topics_flexible"' + (f.topics_flexible ? ' checked' : '') + '> ProfsAgent may add, drop or reorder topics during the design, and must say why</label></div>' +
+    '<div class="card"><h2>Course intent</h2>' +
+    '<label class="f" for="intent_question" style="margin-top:0">The central question the course answers' + opt + '</label>' + txt('intent_question', ph('How do you design, build and test a multi-component program?')) + ai('intent_question') +
+    '<label class="f" for="intent_emphasis">Teaching emphasis' + opt + '</label>' + txt('intent_emphasis', ph('Design thinking before coding; learning by building')) + ai('intent_emphasis') +
+    '<label class="f" for="intent_avoid">This course should NOT become <span class="opt">(one per line)</span></label>' + area('intent_avoid', 2, ph('A Java language features course')) + ai('intent_avoid') + '</div>' +
+    '<div class="card"><h2>Structure</h2>' +
+    '<div class="g3"><div><label class="f" for="department" style="margin-top:0">Proposing department</label>' + sel('department', o.departments) + err('department') + '</div>' +
+    '<div><label class="f" for="credits" style="margin-top:0">Credits</label>' + sel('credits', o.credits) + err('credits') + '</div>' +
+    '<div><label class="f" for="weeks" style="margin-top:0">Teaching weeks</label>' + txt('weeks', ph('e.g. 13')) + err('weeks') + '</div></div>' + ai('department', 'credits', 'weeks') +
+    '<label class="f">Hours per week: lecture – tutorial – lab</label><div style="display:flex;gap:6px;max-width:260px">' +
+    ['l', 't', 'p'].map((k, i) => '<input type="text" aria-label="' + ['Lecture', 'Tutorial', 'Lab'][i] + ' hours" data-f="' + k + '"' + cls(k) + ' value="' + esc(f[k]) + '" placeholder="' + (review ? '' : ['L, e.g. 3', 'T, e.g. 1', 'P, e.g. 0'][i]) + '">').join('') + '</div>' + err('ltp') + ai('l', 't', 'p') +
+    '<label class="f" for="weekly_effort">Student work outside lectures, hours a week' + opt + '</label>' + txt('weekly_effort', ph('e.g. 10-12'), ' style="max-width:260px"') + ai('weekly_effort') +
+    (review ? '' : '<p class="tiny muted" style="margin-top:4px">Leave any of these blank and ProfsAgent fills them in from the UG Regulations 2025 and the course template (for example 13 weeks; 3 lecture hours and 1 tutorial hour for 4 credits).</p>') + '</div>' +
+    '<div class="card"><h2>Students</h2>' +
+    '<label class="f" style="margin-top:0">Programmes' + opt + '</label><div class="chips">' + o.programmes.map(v => tog('programmes', v)).join('') + '</div>' + err('programmes') + ai('programmes') +
+    '<div class="g2"><div><label class="f" for="year">Year</label>' + sel('year', o.years) + err('year') + ai('year') + '</div>' +
+    '<div><label class="f" for="background">Students should already know' + opt + '</label>' + txt('background', ph('CSE201 Advanced Programming; basic software engineering')) + '<div id="bglook"></div>' + ai('background') + '</div></div></div>' +
+    '<div class="card"><h2>Lab and assessment</h2>' +
+    '<div class="g2"><div><label class="f" for="lab" style="margin-top:0">Lab</label>' + sel('lab', ['weekly', 'none'], ['A lab every week', 'No lab']) + err('lab') + ai('lab') + '</div>' +
+    '<div><label class="f" for="lab_infra" style="margin-top:0">Lab infrastructure' + opt + '</label>' + txt('lab_infra', ph('Students\' laptops, GPUs on the cluster, TA support')) + ai('lab_infra') + '</div></div>' +
+    '<label class="f">Assessment you prefer' + opt + '</label><div class="chips">' + o.assessments.map(v => tog('assess_pref', v)).join('') + '</div>' + ai('assess_pref') +
+    '<label class="f">Assessment to avoid' + opt + '</label><div class="chips">' + o.assessments.map(v => tog('assess_avoid', v)).join('') + '</div>' + ai('assess_avoid') +
+    '<label class="f" for="assess_why">Why this assessment' + opt + '</label>' + txt('assess_why', ph('Most of the grade should come from programming work')) + ai('assess_why') +
+    '<label class="f" for="special">Anything else ProfsAgent should know' + opt + '</label>' + area('special', 2, ph('Project in pairs; must produce a working application')) + ai('special') +
+    '<label class="check small"><input type="checkbox" data-f="external_research"' + (f.external_research ? ' checked' : '') + '> Also look at similar courses at other universities (takes a few more minutes)</label></div>';
+}
+function form() {
+  const f = FORM, e = ERRS, o = OPT;
+  const err = k => e[k] ? '<p class="err" data-err="' + k + '">' + esc(e[k]) + '</p>' : '';
+  return header() + '<div class="wrap"><div style="display:flex;justify-content:space-between;gap:12px"><a class="link small" href="#/">← Your courses</a><button class="link small" data-act="example">Fill with an example</button></div>' +
+    '<h1 style="margin-top:10px">Describe your course</h1><p class="muted">Only the course name and a short description are required. Leave anything else blank: ProfsAgent fills it in from your description, similar IIIT-D courses and the regulations, and you check every filled-in value before the design starts.</p>' +
+    formCards(f, e, o, 'new') +
+    '<div class="card"><h2>Before you start</h2>' +
+    '<label class="f" for="by" style="margin-top:0">Your name *</label><input type="text" id="by" data-f="by" value="' + esc(f.by) + '" placeholder="Prof. A. Sharma">' + err('by') +
+    '<p class="tiny muted" style="margin-top:4px">It goes on every decision you record, and on the course sheet.</p>' +
+    '<div class="notice small"><b style="font-weight:600">' + ICON.alert + ' About the AI service.</b> ' + esc(o.consent) + '</div>' +
+    '<label class="check small"><input type="checkbox" data-f="consent" id="consent"' + (f.consent ? ' checked' : '') + '> I have read this</label>' + err('consent') + '</div>' +
+    '<p class="muted small" style="margin-top:14px">First ProfsAgent fills in what you left blank (a few minutes) and asks you to check it. Then the design takes about 20–40 minutes on the free AI service, with three more checks. You can close the page while it works; the course keeps going on this laptop.</p></div>' +
+    foot('<a class="btn" href="#/">Cancel</a>', '<button class="btn primary" data-act="start"' + (UI.sending ? ' disabled' : '') + '>Continue ' + ICON.arrow + '</button>');
+}
+// The "Details" step: the complete form, with ProfsAgent's suggestions marked, editable, then confirmed.
+function detailsView(r) {
+  const v = r.view, n = Object.keys(v.filled).length;
+  const similar = v.similar.length ? '<p class="small muted" style="margin-top:6px">Similar IIIT-D courses it looked at: ' + v.similar.map(c => ext(c.url, c.code + ' ' + (c.name || ''))).join(' · ') + '</p>' : '';
+  return '<h1>Check the course details</h1><p class="muted">Your form is now complete. Values marked <span class="chip teal">Filled in by ProfsAgent</span> are suggestions for what you left blank. Change anything you like; nothing is designed until you confirm.</p>' +
+    (n ? '<div class="banner navy">' + ICON.check + '<div><b style="font-weight:600">ProfsAgent filled in ' + n + ' detail' + (n === 1 ? '' : 's') + '.</b> Each one says why, and what it was based on.' + similar + '</div></div>'
+       : '<div class="banner green">' + ICON.check + '<div><b style="font-weight:600">You filled in everything yourself.</b> Check the details, then start the design.</div></div>') +
+    (v.unfilled.length ? '<div class="banner amber">' + ICON.alert + '<div>ProfsAgent couldn\'t suggest a value for some fields; please fill them in where marked.</div></div>' : '') +
+    (Object.keys(ERRS).length ? '<div class="banner red">' + ICON.alert + '<div><b style="font-weight:600">Some details are still missing.</b> Fill in the fields marked in red.</div></div>' : '') +
+    formCards(FORM, ERRS, OPT, 'review', v.filled) +
+    '<div class="card"><h2>Your decision</h2>' +
+    (UI.stopOpen ? '<label class="f" for="stopwhy" style="margin-top:0">Why are you stopping? *</label><textarea id="stopwhy" data-ui="stopWhy" rows="2">' + esc(UI.stopWhy || '') + '</textarea>'
+                 : '<label class="f" for="comment" style="margin-top:0">Note for the record <span class="opt">(optional)</span></label><textarea id="comment" data-ui="comment" rows="2">' + esc(UI.comment || '') + '</textarea>') +
+    (UI.err ? '<p class="err">' + esc(UI.err) + '</p>' : '') + '</div>' +
+    foot(UI.stopOpen ? '<button class="btn" data-act="stopcancel">Back</button>' : '<button class="btn bad" data-act="stopopen">Stop this run</button>',
+         UI.stopOpen ? '<button class="btn bad" data-act="reject"' + (UI.sending ? ' disabled' : '') + '>Stop the run</button>'
+                     : '<button class="btn primary" data-act="approve"' + (UI.sending ? ' disabled' : '') + '>Confirm and design my course ' + ICON.arrow + '</button>');
+}
+let bgTimer = null;
+function lookupBackground() {
+  clearTimeout(bgTimer);
+  bgTimer = setTimeout(async () => {
+    const el = document.getElementById('bglook'); if (!el) return;
+    const codes = (FORM.background.toUpperCase().match(/[A-Z]{2,4}\s?\d{3}[A-Z]?/g) || []).map(c => c.replace(/\s/g, ''));
+    if (!codes.length) { el.innerHTML = ''; return; }
+    const r = await api('/api/catalogue?codes=' + encodeURIComponent(codes.join(',')));
+    if (!r.ok) return;
+    el.innerHTML = r.data.map(c => c.found ? '<p class="small" style="color:var(--green);margin-top:4px">' + ICON.check + ' ' + ext(c.url, c.code + ' ' + c.name) + '</p>'
+                                           : '<p class="small" style="color:var(--amber);margin-top:4px">' + esc(c.code) + ' is not in the IIIT-D catalogue</p>').join('');
+  }, 400);
+}
+
+// ============================== run ==============================
+function courseBand(r) {
+  const c = r.course || {};
+  const facts = c.credits ? ' <span class="muted small">· ' + c.credits + ' credits · L‑T‑P ' + esc(String(c.ltp || '').replace(/-/g, '‑')) + ' · ' + c.weeks + ' weeks</span>' : '';
+  return '<div class="band"><div class="band-in"><div><b style="font-weight:600">' + esc(c.name || r.title) + '</b>' + facts + '</div>' + statusChip(r) + '</div></div>';
+}
+function stepBar(r) {
+  const done = new Set(r.approvals.filter(a => a.decision === 'approve').map(a => a.gate));
+  const cur = r.status === 'waiting' ? r.gate : null;
+  return '<div class="steps">' + ['gate0_details', 'gate1_context', 'gate2_outcomes', 'gate3_proposal'].map((g, i) => (i ? '<span class="sep"></span>' : '') +
+    '<span class="step ' + (done.has(g) ? 'done' : g === cur ? 'cur' : '') + '"><span class="dot">' + (done.has(g) ? '✓' : i + 1) + '</span>' + GATE_NAME[g] + '</span>').join('') + '</div>';
+}
+function progressCard(r) {
+  const p = r.progress, pct = Math.round(100 * p.done / p.total);
+  const title = { queued: r.queue_position > 1 ? 'Waiting for another course to finish' : 'Starting', running: 'Working on your course', paused: 'Paused', error: 'Stopped' }[r.status] || 'Progress';
+  return '<div class="card" style="padding:22px"><h1 style="font-size:20px">' + title + '</h1>' +
+    '<p class="muted" style="margin:4px 0 14px">' + (r.status === 'running' ? '<span class="spin"></span> ' : '') + esc(p.current_label || 'Finishing') + (r.status === 'running' ? '…' : '') + '</p>' +
+    '<div class="bar"><div style="width:' + pct + '%"></div></div>' +
+    '<ul class="slist">' + p.steps.map(s => '<li class="' + (s.done ? 'done' : s.id === p.current ? 'cur' : '') + '"><span class="mk">' + (s.done ? '✓' : s.id === p.current ? '›' : '·') + '</span>' + esc(s.label) + '</li>').join('') + '</ul>' +
+    '<p class="small muted" style="margin-top:12px">' + p.ai_calls + ' AI calls so far. A course usually needs 25–35. You can close this page; the course keeps going on this laptop.</p>' +
+    (p.log.length ? '<details style="margin-top:10px"' + (UI.logOpen ? ' open' : '') + ' data-log><summary>What the system is doing (technical log)</summary><pre class="log">' + esc(p.log.join('\n')) + '</pre></details>' : '') + '</div>';
+}
+function problemsCard(pr) {
+  if (!pr || (!pr.items.length && !pr.problem)) return '<div class="banner green">' + ICON.check + '<div><b style="font-weight:600">No open problems.</b> Check the details below, then continue.</div></div>';
+  return '<div class="banner ' + (pr.blocked ? 'red' : 'amber') + '">' + ICON.alert + '<div><b style="font-weight:600">' + (pr.blocked ? pr.errors + ' open problem' + (pr.errors === 1 ? '' : 's') + ' the checks could not fix.' : 'Things to look at.') + '</b> ' +
+    (pr.blocked ? 'You can stop here, or continue anyway with a reason; the reason is recorded on the course sheet.' : '') +
+    '<ul style="margin:8px 0 0;padding-left:18px">' + (pr.groups || []).map(problemGroup).join('') + '</ul>' +
+    (pr.problem ? '<p style="margin-top:8px">' + esc(pr.problem) + '</p>' : '') + '</div></div>';
+}
+// One line per kind of problem; when a kind repeats (12 × V23), its individual messages fold away under that line.
+function problemGroup(g) {
+  const line = x => esc(x.message) + ' <span class="ref">' + esc(x.code) + '</span>';
+  if (g.items.length === 1 && !g.plain) return '<li>' + line(g.items[0]) + '</li>';
+  return '<li>' + esc(g.plain || g.items[0].message) + (g.items.length > 1 ? ' <b style="font-weight:600">(' + g.items.length + ')</b>' : '') + ' <span class="ref">' + esc(g.code) + '</span>' +
+    '<details style="margin-top:4px"><summary style="color:inherit">Show ' + (g.items.length === 1 ? 'the detail' : 'all ' + g.items.length) + '</summary><ul style="margin:4px 0 0;padding-left:18px">' +
+    g.items.map(x => '<li class="small">' + line(x) + '</li>').join('') + '</ul></details></li>';
+}
+function decisionArea(r) {
+  const pr = r.problems || {};
+  const needReason = pr.blocked;
+  return '<div class="card"><h2>Your decision</h2>' +
+    (UI.stopOpen ? '<label class="f" for="stopwhy" style="margin-top:0">Why are you stopping? *</label><textarea id="stopwhy" data-ui="stopWhy" rows="2" placeholder="The outcomes don\'t match what I teach; I\'ll change the topics and start again">' + esc(UI.stopWhy || '') + '</textarea>' +
+                   '<p class="tiny muted" style="margin-top:4px">The run ends here. You can start again with the same form and change it.</p>'
+                 : '<label class="f" for="comment" style="margin-top:0">' + (needReason ? 'Reason for continuing despite the open problems *' : 'Note for the record <span class="opt">(optional)</span>') + '</label>' +
+                   '<textarea id="comment" data-ui="comment" rows="2" placeholder="' + (needReason ? 'The research project covers PO3; the assessment will be added later' : 'Anything you want recorded with this step') + '">' + esc(UI.comment || '') + '</textarea>') +
+    (UI.err ? '<p class="err">' + esc(UI.err) + '</p>' : '') + '</div>' +
+    foot(UI.stopOpen ? '<button class="btn" data-act="stopcancel">Back</button>' : '<button class="btn bad" data-act="stopopen">Stop this run</button>',
+         UI.stopOpen ? '<button class="btn bad" data-act="reject"' + (UI.sending ? ' disabled' : '') + '>Stop the run</button>'
+                     : '<button class="btn primary" data-act="approve"' + (UI.sending ? ' disabled' : '') + '>' + (r.gate === 'gate3_proposal' ? 'Approve the course' : needReason ? 'Continue anyway' : 'Looks good, continue') + ' ' + ICON.arrow + '</button>');
+}
+// Errors always show. Warnings about the statement show too; the many technical notes on programme-outcome
+// strengths (VCOPO-*, V23 provisional vs computed) are grouped into one collapsed line.
+const isMapping = i => /^VCOPO/.test(i.code) || (i.code === 'V23' && i.severity !== 'error');
+function issuesHtml(list) {
+  const one = i => '<div class="iss ' + (i.severity === 'error' ? 'error' : 'warning') + '">' + esc(i.message) + ' <span class="ref">' + esc(i.code) + '</span></div>';
+  const main = list.filter(i => !isMapping(i)), map = list.filter(isMapping);
+  return main.map(one).join('') + (map.length ? '<details style="margin-top:6px"><summary>' + map.length + ' technical note' + (map.length === 1 ? '' : 's') + ' on programme-outcome strengths</summary>' + map.map(one).join('') + '</details>' : '');
+}
+const strength = n => '●'.repeat(n || 0) + '○'.repeat(Math.max(0, 3 - (n || 0)));
+const ACTION = { add: 'Add', drop: 'Drop', merge: 'Merge', reorder: 'Reorder' };
+function gate1View(v) {
+  const c = v.course;
+  return '<h1>Check the course context</h1><p class="muted">What ProfsAgent assumed, the rules it will follow, and how the course fits with what IIIT-D already teaches. The outcomes are written after this step.</p>' +
+    '<div class="card"><h2>Your topics</h2>' + (v.topics.length ? v.topics.map(g => '<div class="row"><div><p><b style="font-weight:600">' + esc(g.title) + '</b></p><p class="small muted">' + esc(g.topics.join(' · ')) + '</p></div></div>').join('') +
+      '<p class="tiny muted" style="margin-top:6px">' + (v.topics_treatment === 'fixed' ? 'Kept exactly as you listed them.' : 'A starting list: ProfsAgent may propose changes, with reasons, at the next step.') + '</p>'
+      : '<p class="muted">You didn\'t list topics. ProfsAgent proposes them from your description and intent while writing the outcomes and the weekly plan; you check them at the next two steps.</p>') + '</div>' +
+    '<div class="card"><h2>Filled in for you</h2>' + (v.assumptions.length ? v.assumptions.map(a => '<div class="row"><div><p class="tiny muted">' + esc(a.what) + '</p><p><b style="font-weight:600">' + esc(a.value) + '</b></p>' +
+      '<p class="small muted" style="margin-top:2px">' + esc(a.basis) + '</p></div><span class="chip amber">Assumption: please confirm</span></div>').join('') : '<p class="muted">Nothing: you gave every value.</p>') + '</div>' +
+    '<div class="card"><h2>Your wishes, as rules</h2>' + (v.wishes.length ? v.wishes.map(w => '<div class="row"><p>' + (w.kind === 'exclude' ? ICON.cross : ICON.check) + ' ' + esc(w.text) + '</p><span class="chip ' + (w.hard ? 'navy' : 'grey') + '">' + (w.hard ? 'Must' : 'Preferred') + '</span></div>').join('') : '<p class="muted">No specific wishes.</p>') +
+    v.untranslatable.map(x => '<div class="iss warning">Could not turn this into a checkable rule: ' + esc(x) + '</div>').join('') +
+    v.constraint_conflicts.map(x => '<div class="iss error">Conflict: ' + esc(typeof x === 'string' ? x : (x.message || x.detail || JSON.stringify(x))) + '</div>').join('') + '</div>' +
+    '<div class="card"><h2>Rules from the regulations and the course template</h2>' + v.rules.map(x => '<div class="row"><p>' + esc(x.text) + (x.hard ? '' : ' <span class="muted small">(preferred)</span>') + '</p>' +
+      (x.source ? '<span class="small" style="text-align:right">' + (x.source.url ? ext(x.source.url, x.source.text) : '<span class="muted">' + esc(x.source.text) + '</span>') + '</span>' : '') + '</div>').join('') + '</div>' +
+    (v.form_conflicts.length ? '<div class="card"><h2>Things in the form that contradict each other</h2>' + v.form_conflicts.map(x => '<div class="iss warning">' + esc(typeof x === 'string' ? x : (x.description || x.message || JSON.stringify(x))) + '</div>').join('') + '</div>' : '') +
+    '<div class="card"><h2>How it fits with IIIT-D courses</h2>' +
+    (v.existence ? '<div class="row"><div><p><b style="font-weight:600">' + (v.existence.verdict === 'distinct' ? 'A new course' : 'Close to an existing course') + '</b>' + (v.existence.closest && v.existence.closest.length ? ' <span class="muted small">· closest: ' + esc(v.existence.closest.join(', ')) + '</span>' : '') + '</p><p class="small muted" style="margin-top:2px">' + esc(v.existence.reason) + '</p></div></div>' : '') +
+    v.prerequisites.map(p => '<div class="row"><div><p><b style="font-weight:600">Needs</b> ' + ext(p.url, p.code + ' ' + (p.name || '')) + (p.alternatives.length ? ' <span class="muted small">or ' + p.alternatives.map(a => esc(a.code)).join(', ') + '</span>' : '') + '</p>' +
+      (p.relied_topics.length ? '<p class="small muted">Relied on for: ' + esc(p.relied_topics.join('; ')) + '</p>' : '') + (p.why ? '<p class="small muted">' + esc(p.why) + '</p>' : '') + '</div><span class="chip teal">' + (p.kind === 'mandatory' ? 'Prerequisite' : 'Recommended') + '</span></div>').join('') +
+    v.overlaps.map(o => '<div class="row"><div><p>' + ext(o.url, o.code + ' ' + (o.name || '')) + ' <span class="muted small">· ' + o.pct + '% topic overlap</span></p>' +
+      (o.shared.length ? '<p class="small muted">Shared: ' + esc(o.shared.slice(0, 6).join('; ')) + '</p>' : '') + (o.difference ? '<p class="small muted">' + esc(o.difference) + '</p>' : '') + '</div>' + (o.verdict ? '<span class="chip grey">' + esc(o.verdict) + '</span>' : '') + '</div>').join('') +
+    (v.anti_requisites.length ? '<div class="row"><p>Can\'t be taken together with ' + v.anti_requisites.map(a => ext(a.url, a.code)).join(', ') + '</p></div>' : '') +
+    (!v.prerequisites.length && !v.overlaps.length ? '<p class="muted">No related IIIT-D course found.</p>' : '') +
+    '<p class="tiny muted" style="margin-top:8px">Course codes link to their TechTree catalogue page.</p></div>' +
+    (v.comparable.length ? '<div class="card"><h2>Courses to learn from</h2>' + v.comparable.map(x => '<div class="row"><div><p>' + ext(x.url, x.title) + ' <span class="muted small">· ' + esc(x.where || '') + '</span></p>' +
+      (x.take ? '<p class="small" style="margin-top:2px"><span style="color:var(--green)">Take:</span> ' + esc(x.take) + '</p>' : '') + (x.avoid ? '<p class="small"><span style="color:var(--amber)">Avoid:</span> ' + esc(x.avoid) + '</p>' : '') + '</div></div>').join('') + '</div>' : '') +
+    (v.concerns.length ? '<div class="card"><h2>Notes from the system</h2>' + v.concerns.map(x => '<div class="iss warning">' + esc(x) + '</div>').join('') + '</div>' : '');
+}
+function gate2View(v) {
+  const nlo = v.cos.reduce((n, c) => n + c.los.length, 0);
+  return '<h1>Check the course outcomes</h1><p class="muted">' + v.cos.length + ' course outcomes and ' + nlo + ' learning outcomes. The weekly plan, labs and assessment are built from these after this step.</p>' +
+    (v.proposals.length || v.no_topics_given ? '<div class="card"><h2>Changes to the topics ProfsAgent proposes</h2>' +
+      (v.proposals.length ? v.proposals.map(p => '<div class="row"><div><p><span class="chip navy">' + esc(ACTION[p.action] || p.action) + '</span> ' + esc(p.proposal || p.targets.join(', ')) + '</p>' +
+        (p.reason ? '<p class="small muted" style="margin-top:2px">' + esc(p.reason) + '</p>' : '') + '</div></div>').join('')
+        : '<p class="muted">None. You didn\'t list topics, so the topics are planned from these outcomes in the next step; you see them in the weekly plan.</p>') + '</div>' : '') +
+    v.cos.map(c => '<div class="co"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><p><b style="font-weight:600">' + esc(c.id) + '</b> <span class="chip navy">' + esc(c.level) + '</span></p></div>' +
+      '<p style="margin-top:6px">' + esc(c.statement) + '</p>' +
+      issuesHtml(c.issues) +
+      (c.los.length ? '<p class="small muted" style="margin-top:10px">Learning outcomes</p><ul>' + c.los.map(l => '<li class="small"><b style="font-weight:600">' + esc(l.id) + '</b> <span class="muted">(' + esc(l.level) + ')</span> ' + esc(l.statement) + '</li>').join('') + '</ul>' : '') +
+      (c.pos.length ? '<p class="small muted" style="margin-top:10px">Programme outcomes it supports (strength 1–3)</p><div class="pos">' + c.pos.map(p => '<span class="chip grey" title="' + esc(p.text) + '">' + esc(p.programme) + ' ' + esc(p.short) + ' <span class="str">' + strength(p.strength) + '</span></span>').join('') + '</div>' : '') +
+      '</div>').join('') +
+    '<p class="tiny muted" style="margin-top:10px">Programme outcomes are quoted from the IIIT-D course template. Hover a chip to see its wording.</p>';
+}
+function gate3View(v, final) {
+  const verified = v.books.filter(b => b.verified).length, ev = v.evaluation;
+  const evText = ev ? { PASS: ['green', 'All checks pass'], REVIEW: ['amber', 'Mostly fine; some items need a person to confirm'], FAIL: ['red', 'Open problems remain'] }[ev.verdict] || ['grey', ev.verdict] : null;
+  return (final ? '' : '<h1>Check the final course sheet</h1><p class="muted">The weekly plan, assessment and books. Approving finishes the course and saves it.</p>') +
+    '<div class="tiles"><div class="tile"><span class="tiny muted">Weeks</span><b>' + v.weeks.length + '</b></div>' +
+    '<div class="tile"><span class="tiny muted">Lecture hours planned</span><b>' + (v.hours.planned != null ? v.hours.planned : '–') + (v.hours.available ? ' / ' + v.hours.available : '') + '</b></div>' +
+    '<div class="tile"><span class="tiny muted">Assessment total</span><b>' + v.assessment_total + '%</b></div>' +
+    '<div class="tile"><span class="tiny muted">Books checked online</span><b>' + verified + ' / ' + v.books.length + '</b></div></div>' +
+    (evText ? '<div class="banner ' + evText[0] + '">' + (ev.verdict === 'PASS' ? ICON.check : ICON.alert) + '<div><b style="font-weight:600">Quality check: ' + esc(evText[1]) + '.</b> ' +
+      esc([].concat(ev.errors ? [ev.errors + ' open error' + (ev.errors === 1 ? '' : 's')] : [], ev.regulation_ok === false ? ['a regulation check fails'] : [],
+               (ev.review_reasons || []).map(x => x.replace(/^(\d+) warnings ask/, (m, n) => n + (n === '1' ? ' warning asks' : ' warnings ask')))).join('; ')) + '.</div></div>' : '') +
+    (v.description ? '<div class="card"><h2>Course description</h2><p>' + esc(v.description) + '</p></div>' : '') +
+    '<div class="card"><h2>Weekly plan</h2><table class="t"><tr><th style="width:56px">Week</th><th>Topics (hours)</th><th style="width:34%">Lab</th></tr>' +
+    v.weeks.map(w => '<tr><td>' + w.week + '</td><td>' + w.topics.map(t => esc(t.title) + ' <span class="muted tiny">(' + t.hours + ' h)</span>').join('<br>') + (w.midsem_after ? '<br><span class="chip amber" style="margin-top:4px">Mid-sem exam after this week</span>' : '') + '</td><td class="small">' + esc(w.labs.join('; ')) + '</td></tr>').join('') + '</table></div>' +
+    '<div class="card"><h2>Assessment</h2><table class="t"><tr><th>Component</th><th>Weight</th><th>How many</th><th>Invigilated</th></tr>' +
+    v.assessment.map(a => '<tr><td>' + esc(a.name) + '</td><td>' + a.weight + '%</td><td>' + a.count + (a.due.length ? ' <span class="muted tiny">(week ' + a.due.join(', ') + ')</span>' : '') + '</td><td>' + (a.invigilated ? 'Yes' : 'No') + '</td></tr>').join('') + '</table>' +
+    '<p class="small" style="margin-top:8px;color:' + (v.invigilated_pct >= 40 ? 'var(--green)' : 'var(--amber)') + '">' + (v.invigilated_pct >= 40 ? ICON.check : ICON.alert) + ' ' + v.invigilated_pct + '% invigilated (the course template asks for at least 40%)</p>' +
+    (Object.keys(v.co_marks).length ? '<p class="small muted" style="margin-top:4px">Marks per course outcome: ' + Object.entries(v.co_marks).map(([k, x]) => esc(k) + ' ' + Math.round(x) + '%').join(' · ') + '</p>' : '') + '</div>' +
+    '<div class="card"><h2>Books and papers</h2>' + v.books.map(b => '<div class="row"><div><p>' + ext(b.link, b.title) + '</p><p class="small muted">' + esc([b.authors, b.year].filter(Boolean).join(' · ')) + (b.id ? ' · <span class="ref">' + esc(b.id) + '</span>' : '') + '</p></div>' +
+      (b.verified ? '<span class="chip green">' + ICON.check + 'Checked</span>' : '<span class="chip amber">Not checked</span>') + '</div>').join('') +
+    (v.books_rejected ? '<p class="tiny muted" style="margin-top:8px">' + v.books_rejected + ' suggested book' + (v.books_rejected === 1 ? ' was' : 's were') + ' removed because no matching record was found online.</p>' : '') + '</div>' +
+    '<div class="card"><h2>The full proposal</h2><div style="display:flex;gap:8px;flex-wrap:wrap">' +
+    '<button class="btn sm" data-act="proposal">' + (UI.proposal ? 'Hide' : 'Read') + ' the full proposal</button>' +
+    '<a class="btn sm" href="/api/runs/' + esc(RID) + '/download/pdf" target="_blank">' + ICON.down + ' Course sheet (PDF)</a>' +
+    (v.files['course_template.xlsx'] ? '<a class="btn sm" href="/api/runs/' + esc(RID) + '/download/xlsx">' + ICON.down + ' IIIT-D Excel template</a>' : '') + '</div>' +
+    (UI.proposal ? '<div class="proposal" style="margin-top:12px">' + UI.proposal + '</div>' : '') + '</div>';
+}
+const FB = [['outcomes', 'Course outcomes'], ['weeks', 'Weekly plan'], ['assessment', 'Assessment'], ['books', 'Books and papers'], ['overall', 'Would you use this as your starting draft?']];
+function feedbackCard() {
+  const fb = UI.fb;
+  if (fb.sent) return '<div class="card"><h2>Thank you</h2><p class="muted">Your feedback is saved with this course. The team reviews it to improve the system.</p><button class="link small" data-act="fbagain" style="margin-top:8px">Add more feedback</button></div>';
+  return '<div class="card"><h2>How good is this draft?</h2><p class="muted small">Your ratings go to the ProfsAgent team and are saved with this course.</p>' +
+    FB.map(([k, label]) => '<div class="fbrow"><span>' + label + '</span><span class="stars" role="group" aria-label="' + esc(label) + '">' + [1, 2, 3, 4, 5].map(n => '<button data-act="rate" data-k="' + k + '" data-n="' + n + '" class="' + ((fb.ratings[k] || 0) >= n ? 'on' : '') + '" aria-label="' + n + ' of 5">★</button>').join('') + '</span></div>').join('') +
+    '<label class="f" for="fbchange">What would you change?</label><textarea id="fbchange" data-fb="change" rows="3" placeholder="CO3 is too vague; the project should be worth more; week 6 is overloaded">' + esc(fb.change) + '</textarea>' +
+    '<label class="f" for="fbtime">Roughly how much of your time did this save?</label><select id="fbtime" data-fb="time_saved">' + ['', 'None', 'Under an hour', '1–3 hours', '3–8 hours', 'More than a day'].map(v => '<option' + (fb.time_saved === v ? ' selected' : '') + '>' + v + '</option>').join('') + '</select>' +
+    (fb.err ? '<p class="err">' + esc(fb.err) + '</p>' : '') + '<div style="margin-top:12px"><button class="btn primary" data-act="fbsend">Send feedback</button></div></div>';
+}
+function decisionsCard(r) {
+  if (!r.approvals.length) return '';
+  return '<div class="card"><h2>Review record</h2>' + r.approvals.map(a => '<div class="row"><div><p>' + esc(GATE_NAME[a.gate] || a.gate) + ': <b style="font-weight:600">' + (a.decision === 'approve' ? (a.gate === 'gate0_details' ? 'confirmed' : 'approved') : 'stopped') + '</b> by ' + esc(a.by) + (a.at ? ' <span class="muted small">· ' + day(a.at) + '</span>' : '') + '</p>' +
+    (a.gate === 'gate0_details' && a.decision === 'approve' ? '<p class="small muted">' + a.suggested + ' detail' + (a.suggested === 1 ? '' : 's') + ' suggested by ProfsAgent; ' + a.changed + ' changed by you</p>' : '') +
+    (a.comment ? '<p class="small muted">“' + esc(a.comment) + '”</p>' : '') + (a.override ? '<p class="small" style="color:var(--amber)">Continued despite ' + a.override.errors + ' open problem' + (a.override.errors === 1 ? '' : 's') + ' (' + esc((a.override.codes || []).join(', ')) + ')</p>' : '') + '</div></div>').join('') + '</div>';
+}
+function runPage() {
+  const r = RUN;
+  if (!r) return header() + '<div class="wrap"><p class="muted">Loading…</p></div>';
+  let body = '';
+  if (r.status === 'waiting' && r.view && r.gate === 'gate0_details') {
+    return header() + courseBand(r) + stepBar(r) + '<div class="wrap" style="padding-top:12px">' + detailsView(r) + '</div>';
+  }
+  if (r.status === 'waiting' && r.view) {
+    body = problemsCard(r.problems) + (r.gate === 'gate1_context' ? gate1View(r.view) : r.gate === 'gate2_outcomes' ? gate2View(r.view) : gate3View(r.view, false)) + decisionArea(r);
+    return header() + courseBand(r) + stepBar(r) + '<div class="wrap" style="padding-top:12px">' + body + '</div>';
+  }
+  if (r.status === 'done') {
+    body = '<div class="center" style="padding-top:28px">' + ICON.big + '<h1 style="margin-top:12px">Your course is ready</h1><p class="muted">' + esc(r.course && r.course.name || r.title) + ' · approved by ' + esc(r.by) + '</p>' +
+      '<div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><a class="btn primary big" href="/api/runs/' + esc(RID) + '/download/pdf" target="_blank">' + ICON.down + 'Course sheet (PDF)</a>' +
+      '<a class="btn big" href="/api/runs/' + esc(RID) + '/download/xlsx">' + ICON.down + 'IIIT-D Excel template</a></div>' +
+      '<div style="margin-top:12px;display:flex;justify-content:center;gap:18px;flex-wrap:wrap"><a class="link small" href="/api/runs/' + esc(RID) + '/download/md">Proposal as text (Markdown)</a><button class="link small" data-act="again">Start again with changes</button><a class="link small" href="#/new">Start another course</a></div></div>' +
+      feedbackCard() + decisionsCard(r) + (r.view ? '<h2 style="margin-top:26px">The approved design</h2>' + gate3View(r.view, true) : '');
+    return header() + courseBand(r) + stepBar(r) + '<div class="wrap" style="padding-top:12px">' + body + '</div>';
+  }
+  if (r.status === 'stopped') {
+    const last = r.approvals[r.approvals.length - 1] || {};
+    body = '<div class="card"><h1 style="font-size:20px">You stopped this run</h1><p class="muted">' + (r.gate ? 'At the ' + esc(GATE_NAME[r.gate] || r.gate) + ' step' : 'Stopped while it was working') + (last.comment ? ', because: “' + esc(last.comment) + '”' : '') + '.</p>' +
+      '<div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap"><button class="btn primary" data-act="again">Start again with changes</button><a class="btn" href="#/">Your courses</a></div></div>' + decisionsCard(r);
+    return header() + courseBand(r) + stepBar(r) + '<div class="wrap" style="padding-top:12px">' + body + '</div>';
+  }
+  if (r.status === 'paused') {
+    body = '<div class="banner amber">' + ICON.alert + '<div><b style="font-weight:600">The free AI quota is used up for now.</b> Your progress is saved. The course continues by itself at <b style="font-weight:600">' + (r.resume_at ? hhmm(r.resume_at) : 'a later time') + '</b>' +
+      (r.resume_at ? ' (<span id="countdown"></span>)' : '') + '. Gemini\'s free daily quota resets at about 1:30 pm IST.<div style="margin-top:8px"><button class="btn sm" data-act="retry">Try now</button></div></div></div>';
+  } else if (r.status === 'error') {
+    body = '<div class="banner red">' + ICON.alert + '<div><b style="font-weight:600">' + esc(r.error && r.error.message) + '</b><div style="margin-top:8px"><button class="btn sm" data-act="retry">Try again</button></div>' +
+      (r.error && r.error.detail ? '<details style="margin-top:8px"><summary>Technical detail</summary><p class="tiny" style="margin-top:4px">' + esc(r.error.detail) + '</p></details>' : '') + '</div></div>';
+  }
+  return header() + courseBand(r) + stepBar(r) + '<div class="wrap" style="padding-top:12px">' + body + progressCard(r) + decisionsCard(r) + '</div>';
+}
+
+// ============================== routing and loading ==============================
+function render() {
+  const y = window.scrollY;
+  app.innerHTML = PAGE === 'form' ? form() : PAGE === 'run' ? runPage() : home();
+  window.scrollTo(0, y);
+  if (PAGE === 'form' || (PAGE === 'run' && FORM)) lookupBackground();
+  if (PAGE === 'run') startCountdown();
+}
+function startCountdown() {
+  clearInterval(tick);
+  if (!RUN || RUN.status !== 'paused' || !RUN.resume_at) return;
+  const upd = () => { const el = document.getElementById('countdown'); if (!el) return; const s = Math.max(0, Math.round(RUN.resume_at - Date.now() / 1000));
+    el.textContent = s > 0 ? 'in ' + (s >= 3600 ? Math.floor(s / 3600) + ' h ' : '') + Math.floor(s % 3600 / 60) + ' min' : 'any moment now'; };
+  upd(); tick = setInterval(upd, 15000);
+}
+async function loadHealth() { const r = await api('/api/health'); if (r.ok) HEALTH = r.data; }
+async function loadRun(first) {
+  clearTimeout(poll);
+  const asked = RID;
+  const r = await api('/api/runs/' + encodeURIComponent(RID));
+  if (PAGE !== 'run' || asked !== RID) return;
+  if (!r.ok) { app.innerHTML = header() + '<div class="wrap"><h1>Course not found</h1><p class="muted">' + esc((r.data && (r.data.detail || r.data.problem)) || '') + '</p><a class="btn" href="#/" style="margin-top:12px">Your courses</a></div>'; return; }
+  await loadHealth();
+  if (PAGE !== 'run' || asked !== RID) return;
+  const prevKey = RUN ? RUN.status + RUN.gate : '';
+  RUN = r.data;
+  if (first || prevKey !== RUN.status + RUN.gate) {
+    UI = { fb: { ratings: {}, change: '', time_saved: '' } }; ERRS = {};
+    FORM = RUN.status === 'waiting' && RUN.gate === 'gate0_details' && RUN.view ? Object.assign(BLANK(), JSON.parse(JSON.stringify(RUN.view.form))) : null;
+    if (!first) window.scrollTo(0, 0);
+  }
+  if (RUN.status === 'done' && first) { const f = await api('/api/runs/' + encodeURIComponent(RID) + '/feedback'); if (f.ok && f.data.entries.length) UI.fb.previous = f.data.entries.length; }
+  render();
+  if (['queued', 'running'].includes(RUN.status)) poll = setTimeout(() => loadRun(false), 3000);
+  else if (RUN.status === 'paused') poll = setTimeout(() => loadRun(false), 30000);
+}
+let routeId = 0;
+async function route() {
+  clearTimeout(poll); clearInterval(tick);
+  const me = ++routeId;
+  const h = location.hash.replace(/^#/, '') || '/';
+  if (!OPT) { const o = await api('/api/options'); OPT = o.data; }
+  await loadHealth();
+  if (me !== routeId) return;   // the professor already went somewhere else
+  if (h === '/new') {
+    PAGE = 'form'; ERRS = {}; UI = {};
+    let d = null; try { d = JSON.parse(store.get('profsagent-draft') || 'null'); } catch (e) {}
+    FORM = Object.assign(BLANK(), d || {}, { consent: false });
+    render(); window.scrollTo(0, 0);
+  } else if (h.startsWith('/run/')) {
+    PAGE = 'run'; RID = decodeURIComponent(h.slice(5)); RUN = null; render(); await loadRun(true);
+  } else {
+    PAGE = 'home'; const r = await api('/api/runs'); if (me !== routeId) return; RUNS = r.ok ? r.data : []; render(); window.scrollTo(0, 0);
+    if (RUNS.some(x => ['queued', 'running'].includes(x.status))) poll = setTimeout(route, 10000);
+  }
+}
+window.addEventListener('hashchange', route);
+
+// ============================== events ==============================
+app.addEventListener('input', ev => {
+  const t = ev.target;
+  if (t.dataset.f && FORM) { FORM[t.dataset.f] = t.type === 'checkbox' ? t.checked : t.value; if (ERRS[t.dataset.f]) { delete ERRS[t.dataset.f]; const e = app.querySelector('[data-err="' + t.dataset.f + '"]'); if (e) e.remove(); }
+    saveDraft(); if (t.dataset.f === 'background') lookupBackground(); if (t.dataset.f === 'by') store.set('profsagent-name', t.value); }
+  if (t.dataset.ui) UI[t.dataset.ui] = t.value;
+  if (t.dataset.fb) UI.fb[t.dataset.fb] = t.value;
+});
+app.addEventListener('change', ev => {
+  const t = ev.target;
+  if (t.dataset.f && FORM) { FORM[t.dataset.f] = t.type === 'checkbox' ? t.checked : t.value; delete ERRS[t.dataset.f]; saveDraft(); }
+  if (t.dataset.fb) UI.fb[t.dataset.fb] = t.value;
+});
+app.addEventListener('toggle', ev => { if (ev.target.hasAttribute && ev.target.hasAttribute('data-log')) UI.logOpen = ev.target.open; }, true);
+app.addEventListener('click', async ev => {
+  const b = ev.target.closest('[data-act],[data-tog]'); if (!b) return;
+  if (b.dataset.tog) { const k = b.dataset.tog, v = b.dataset.v, arr = FORM[k]; const i = arr.indexOf(v); i >= 0 ? arr.splice(i, 1) : arr.push(v);
+    if (k === 'assess_pref' && i < 0) FORM.assess_avoid = FORM.assess_avoid.filter(x => x !== v); if (k === 'assess_avoid' && i < 0) FORM.assess_pref = FORM.assess_pref.filter(x => x !== v);
+    delete ERRS[k]; saveDraft(); render(); return; }
+  const a = b.dataset.act;
+  if (a === 'home') { location.hash = '#/'; return; }
+  if (a === 'example') { FORM = Object.assign(BLANK(), JSON.parse(JSON.stringify(OPT.example)), { by: FORM.by, consent: FORM.consent }); ERRS = {}; saveDraft(); render(); toast('Example filled in. Change anything you like.'); return; }
+  if (a === 'start') {
+    UI.sending = true; render();
+    const r = await post('/api/runs', FORM);
+    UI.sending = false;
+    if (r.status === 422) { ERRS = r.data.errors || {}; render(); const first = app.querySelector('.err'); if (first) first.scrollIntoView({ block: 'center' }); toast('Please fix the marked fields'); return; }
+    if (!r.ok) { render(); toast((r.data && r.data.problem) || 'Could not start'); return; }
+    store.set('profsagent-draft', ''); location.hash = '#/run/' + r.data.run_id; return;
+  }
+  if (a === 'stopopen') { UI.stopOpen = true; UI.err = ''; render(); const t = document.getElementById('stopwhy'); if (t) t.focus(); return; }
+  if (a === 'stopcancel') { UI.stopOpen = false; UI.err = ''; render(); return; }
+  if (a === 'approve' || a === 'reject') {
+    const comment = a === 'reject' ? (UI.stopWhy || '') : (UI.comment || '');
+    if (a === 'reject' && !comment.trim()) { UI.err = 'Say briefly why you are stopping'; render(); return; }
+    if (a === 'approve' && RUN.problems && RUN.problems.blocked && !comment.trim()) { UI.err = 'Give a reason for continuing despite the open problems'; render(); return; }
+    UI.sending = true; UI.err = ''; render();
+    const body = { gate: RUN.gate, decision: a, comment, by: store.get('profsagent-name') || RUN.by };
+    if (RUN.gate === 'gate0_details' && a === 'approve') body.values = FORM;
+    const r = await post('/api/runs/' + encodeURIComponent(RID) + '/decision', body);
+    UI.sending = false;
+    if (r.status === 422) { ERRS = r.data.errors || {}; render(); const first = app.querySelector('.err'); if (first) first.scrollIntoView({ block: 'center' }); toast('Some details are still missing'); return; }
+    if (!r.ok) { UI.err = (r.data && r.data.problem) || 'Could not send'; render(); return; }
+    toast(a === 'approve' ? (RUN.gate === 'gate0_details' ? 'Details confirmed. ProfsAgent starts designing the course.' : 'Thanks. ProfsAgent continues with the next part.') : 'Stopped.'); window.scrollTo(0, 0); await loadRun(true); return;
+  }
+  if (a === 'retry') { const r = await post('/api/runs/' + encodeURIComponent(RID) + '/retry'); if (!r.ok) toast((r.data && r.data.problem) || 'Could not restart'); await loadRun(true); return; }
+  if (a === 'proposal') { if (UI.proposal) { UI.proposal = null; render(); return; } const r = await api('/api/runs/' + encodeURIComponent(RID) + '/proposal'); UI.proposal = r.ok ? r.data.html : '<p class="err">Not available yet</p>'; render(); return; }
+  if (a === 'again') { const r = await api('/api/runs/' + encodeURIComponent(RID) + '/form'); if (r.ok) { store.set('profsagent-draft', JSON.stringify(r.data)); location.hash = '#/new'; toast('The form is filled in from this run. Change what you need.'); } return; }
+  if (a === 'rate') { UI.fb.ratings[b.dataset.k] = +b.dataset.n; render(); return; }
+  if (a === 'fbagain') { UI.fb = { ratings: {}, change: '', time_saved: '' }; render(); return; }
+  if (a === 'fbsend') {
+    const r = await post('/api/runs/' + encodeURIComponent(RID) + '/feedback', { ratings: UI.fb.ratings, change: UI.fb.change, time_saved: UI.fb.time_saved, by: store.get('profsagent-name') || RUN.by });
+    if (!r.ok) { UI.fb.err = (r.data && r.data.problem) || 'Could not save'; render(); return; }
+    UI.fb = { ratings: {}, change: '', time_saved: '', sent: true }; render(); toast('Feedback saved. Thank you.'); return;
+  }
+});
+route();
+})();
+</script>
+</body>
+</html>

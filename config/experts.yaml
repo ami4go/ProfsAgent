@@ -1,0 +1,71 @@
+# Phase 2 · Deliverable C — expert-speaker recommender (plan §4). Global scope: research or industry.
+
+top_n: {min: 5, max: 7}      # decided 2026-10-24: 5–7 experts per lecture
+eligibility:                # same bar for everyone (IIIT-D faculty included): only good matches are recommended
+  min_topical_fit: 0.5      # evidence must be clearly about this lecture's topic
+  min_total: 0.45
+  allowed_fit: [strong, moderate]   # AI fit check (D4)
+weights:                    # §4.3 (practical relevance shifts up for hands-on lectures, see hands_on_shift)
+  topical_fit: 0.35
+  teaching: 0.20
+  practical: 0.15
+  standing: 0.10
+  recency: 0.10
+  feasibility: 0.10
+hands_on_shift: 0.05        # moved from standing to practical when the lecture is hands-on
+
+openalex:
+  works_per_query: 50       # topic works scanned to find who works on the lecture's topics
+  india_query: true         # a second search restricted to authors at Indian institutions (IITs, IISc, IIITs, ...)
+  min_year: 2012
+  authors_to_profile: 18    # top authors fetched in full (singleton lookups are free)
+dblp: {enabled: true}
+semantic_scholar: {enabled: false}   # optional; set S2_API_KEY in .env and enable for extra evidence
+github:
+  enabled: true
+  repos_per_query: 8
+web_search:
+  enabled: true             # grounded search for practitioners (public professional pages only)
+  max_queries: 2
+
+# Standing: authors at these institutions get a prestige credit (top global universities from config/institutions.yaml
+# are added automatically). Substring match on the OpenAlex institution name.
+top_institutions_extra: [Indian Institute of Technology, Indian Institute of Science, International Institute of Information Technology,
+  Indraprastha Institute of Information Technology, Tata Institute of Fundamental Research, Chennai Mathematical Institute,
+  Indian Statistical Institute, Massachusetts Institute of Technology, Stanford, Carnegie Mellon, University of California,
+  Max Planck, INRIA, University of Tokyo, Tsinghua, Peking University, National University of Singapore, KAIST, EPFL, ETH]
+
+diversity:
+  min_industry: 1           # at least one practitioner when any is found
+  min_academic: 1
+  max_same_country: 3
+
+feasibility:                # time-zone overlap with IST working hours (UTC+5:30)
+  country_utc_offset:       # rough offsets; unknown countries are treated as neutral
+    IN: 5.5
+    US: -6
+    CA: -5
+    GB: 0
+    IE: 0
+    DE: 1
+    FR: 1
+    CH: 1
+    NL: 1
+    SE: 1
+    IT: 1
+    ES: 1
+    SG: 8
+    CN: 8
+    HK: 8
+    JP: 9
+    KR: 9
+    AU: 10
+    NZ: 12
+    IL: 2
+    AE: 4
+    BR: -3
+  india_bonus: 0.2          # Indian / IIIT-D experts get this bonus on feasibility (travel, language, schedule)
+
+privacy:
+  store_fields: [name, affiliation, country, role, profile_url, openalex_id, orcid, dblp_url, github_url, scholar_search_url]
+  never_store: [email, phone, home address, personal social media]

@@ -48,7 +48,8 @@ def _statement_checks(items: list[dict], kind: str) -> list[dict]:
                 out.append(v("V11", ERR, [i], f"{kind} {i} has no {part}"))
             elif part == "degree" and vague_degree(val):
                 out.append(v("V11", ERR, [i], f"{kind} {i} degree is vague ({vague_degree(val)}): '{val}'"))
-            elif _norm(val)[:25] not in _norm(st):
+            elif kind != "CO" and _norm(val)[:25] not in _norm(st):
+                # LOs only: a CO is a short sentence (≤ 35 words, like IIIT-D's) whose full condition/degree live in its fields
                 out.append(v("V11", WARN, [i], f"{kind} {i} {part} is not visible in the statement text", part_text=val))
         # VT-LEN: length outside the range of real IIIT-D statements (config/pedagogy.yaml thresholds.statement_words)
         lo_hi = (pedagogy()["thresholds"].get("statement_words") or {}).get(kind)

@@ -18,6 +18,8 @@ from profsagent.config import ROOT
 TEMPLATE = ROOT / "templates" / "iiitd_cse_course_template.xlsx"
 TYPE_LABEL = {"quiz": "Quiz", "assignment": "Assignment", "midsem": "Mid-sem exam", "endsem": "End-sem exam", "project": "Project",
               "report": "Report", "lab": "Lab", "presentation": "Presentation", "participation": "Participation"}
+# the template's "Assignment/lab/tutorial" column: take-home and practical work only; quizzes and exams are in the assessment plan
+ACTIVITY_TYPES = {"assignment", "lab", "project", "report", "presentation"}
 ROLE_TYPE = {"primary": "Textbook", "reference": "Reference", "reading": "Reference (paper)"}
 PROGRAMME_LABEL = {"MTECH-CSE": "MTech(CSE)", "BTECH-COMMON": "B.Tech. (common)", "BTECH-CSE": "B.Tech.(CSE)", "BTECH-CSAI": "B.Tech.(CSAI)"}
 
@@ -62,6 +64,8 @@ def template_data(st: dict) -> dict:
     # activities per topic: assessments, labs and tutorials that use it
     acts = defaultdict(list)
     for comp in (st.get("assessment") or {}).get("components", []):
+        if str(comp.get("type")).lower() not in ACTIVITY_TYPES:
+            continue
         for i in comp["instances"]:
             for t in i.get("covers_topics", []):
                 acts[t].append(pretty_assessment(i["id"]))

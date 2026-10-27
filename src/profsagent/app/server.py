@@ -101,7 +101,7 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True) -> 
     @app.get("/api/options")
     def options():
         return {"departments": formmap.DEPARTMENTS, "programmes": formmap.PROGRAMMES, "years": list(formmap.YEARS), "credits": formmap.CREDITS,
-                "assessments": formmap.ASSESSMENTS, "consent": formmap.CONSENT_TEXT, "example": EXAMPLE}
+                "assessments": formmap.ASSESSMENTS, "example": EXAMPLE}
 
     @app.get("/api/catalogue")
     def catalogue(codes: str = ""):
@@ -155,6 +155,12 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True) -> 
         if problem:
             return JSONResponse({"problem": problem}, status_code=409)
         return {"ok": True}
+
+    @app.delete("/api/runs/{rid}")
+    def delete(rid: str):
+        """Move the course to runs/_deleted/ (nothing is erased), take a published design out of Neo4j, end a running step."""
+        run_dir(rid)
+        return mgr.delete(rid)
 
     @app.post("/api/runs/{rid}/retry")
     def retry(rid: str):

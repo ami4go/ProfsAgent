@@ -27,9 +27,6 @@ NEEDED = {"topics": "List the topics, one group per line", "department": "Pick t
           "credits": "Pick the credits", "weeks": "Give the number of teaching weeks", "programmes": "Pick at least one programme",
           "year": "Pick the year", "lab": "Say whether the course has a lab"}
 
-CONSENT_TEXT = ("What you type is sent to Google's Gemini AI on its free tier (some steps may use Groq). On the free tier, "
-                "Google may use it to improve its products, and people at Google may read it. Don't include anything confidential.")
-
 
 def _s(v) -> str:
     return str(v if v is not None else "").strip()
@@ -77,16 +74,12 @@ def validate(f: dict) -> dict[str, str]:
     if len(_s(f.get("description"))) < 30:
         e["description"] = "Write a short description (two or three sentences)"
     _check_values(f, e)
-    if not _s(f.get("by")):
-        e["by"] = "Your name goes on every decision you record"
-    if f.get("consent") is not True:
-        e["consent"] = "Please confirm you have read this"
     return e
 
 
 def validate_complete(f: dict) -> dict[str, str]:
     """Before the design starts: the form must be complete (after ProfsAgent's suggestions and the professor's edits)."""
-    e = {k: v for k, v in validate({**f, "by": f.get("by") or "-", "consent": True}).items()}
+    e = dict(validate(f))
     for k, msg in NEEDED.items():
         if blank(f, k):
             e.setdefault(k, msg)

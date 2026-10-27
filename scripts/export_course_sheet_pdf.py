@@ -51,6 +51,15 @@ def P(text, style=BODY):
     return Paragraph(text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\n", "<br/>"), style)
 
 
+TINY = ParagraphStyle("tiny", parent=BODY, fontSize=6.4, leading=7.8)
+
+
+def mapping_cell(strength, explanation):
+    """A CO–PO cell: the strength in bold with its explanation under it (the template's COk / COk-Explanation pair)."""
+    esc = lambda s: str(s or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")  # noqa: E731
+    return Paragraph(f"<b>{esc(strength)}</b><br/><font size=6.4>{esc(explanation)}</font>" if explanation else f"<b>{esc(strength)}</b>", TINY)
+
+
 def table(rows, widths, header=True, label_col=False):
     t = Table(rows, colWidths=widths, repeatRows=1 if header else 0)
     st = [("GRID", (0, 0), (-1, -1), 0.5, GRID), ("VALIGN", (0, 0), (-1, -1), "TOP"),
@@ -111,25 +120,20 @@ def build(run_id: str) -> Path:
     # CO -> programme outcome mapping (template block for CSExxx courses)
     story.append(PageBreak())
     story.append(P("CO mapping with the programmes offered by the CSE department", HEAD))
-    story.append(P("Cell = mapping strength (1 low, 2 medium, 3 high); explanations follow each programme table.", NOTE))
+    story.append(P("Cell = mapping strength (1 low, 2 medium, 3 high) with its explanation, as in the template's CO / CO-Explanation columns.", NOTE))
     co_ids = [c["id"] for c in td["cos"]]
     for uid, label in [(u, PROGRAMME_LABEL[u]) for u in ("BTECH-COMMON", "BTECH-CSE", "BTECH-CSAI", "MTECH-CSE")]:
         pos = programme(uid)["po"]
         rows = [[P(label, BOLD), P("Program Outcome", BOLD)] + [P(c, BOLD) for c in co_ids]]
-        expl = []
         for po in pos:
             cells = []
             for c in co_ids:
                 hit = td["mapping"].get((c, po["id"]))
-                cells.append(P(str(hit[0]) if hit else ""))
-                if hit:
-                    expl.append(f"{c} → {po['label']}: {hit[1]}")
+                cells.append(mapping_cell(hit[0], hit[1]) if hit else P(""))
             rows.append([P(po["label"], BOLD), P(po["text"], SMALL)] + cells)
-        cw = 11 * mm
-        story.append(KeepTogether([table(rows, [22 * mm, W - 22 * mm - cw * len(co_ids)] + [cw] * len(co_ids)), Spacer(1, 3)]))
-        if expl:
-            story.append(P("Explanations: " + " · ".join(expl), SMALL))
-        story.append(Spacer(1, 6))
+        cw = min(26 * mm, (W - 22 * mm - 48 * mm) / max(len(co_ids), 1))
+        story.append(table(rows, [22 * mm, W - 22 * mm - cw * len(co_ids)] + [cw] * len(co_ids)))
+        story.append(Spacer(1, 8))
 
     # Annex: week-by-week schedule (not part of the template, kept for the professor's review)
     lo_parent = {lo["id"]: lo["parent_co"] for lo in st["los"]}

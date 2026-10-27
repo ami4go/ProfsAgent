@@ -9,6 +9,8 @@ Phases: "details" (ProfsAgent fills in the fields left blank → the professor c
 gate0_details), then "design" (the pipeline with gate1_context, gate2_outcomes, gate3_proposal).
 Statuses: queued → running → waiting (at a gate) → … → done | stopped (professor stopped it at a gate)
           paused (free AI quota used up; continues by itself at resume_at) | error (needs "Try again").
+Delete moves the run folder to runs/_deleted/<run>-<time>/ (a bin, nothing is erased), removes a published design from
+Neo4j, and ends a step that is running: each step runs in its own process (app/stepper.py) so it can be stopped at once.
 """
 from __future__ import annotations
 
@@ -16,6 +18,9 @@ import json
 import os
 import queue
 import re
+import shutil
+import subprocess
+import sys
 import threading
 import time
 import traceback
@@ -24,10 +29,16 @@ from pathlib import Path
 import yaml
 
 from profsagent.app import formmap
-from profsagent.config import CACHE, RUNS, keys, models_cfg
+from profsagent.config import CACHE, ROOT, RUNS, keys, models_cfg
 
 GATES = ["gate0_details", "gate1_context", "gate2_outcomes", "gate3_proposal"]
 PREFIX = "app-"
+BIN = "_deleted"
+
+
+def user_name() -> str:
+    """Who decisions are recorded for: APP_USER_NAME in .env, else "Professor" (the app never asks)."""
+    return os.environ.get("APP_USER_NAME", "").strip() or "Professor"
 
 
 # ------------------------------------------------------------------ files (OneDrive can briefly lock a file just written)
@@ -138,11 +149,22 @@ class PipelineDriver:
         return {"status": "done"}
 
 
+class StepError(RuntimeError):
+    """An exception raised inside a step's child process, as reported back in step_result.json."""
+    def __init__(self, err: dict):
+        super().__init__(err.get("message") or "")
+        self.type, self.quota, self.trace = err.get("type") or "Error", bool(err.get("quota")), err.get("traceback") or ""
+
+
+class Cancelled(RuntimeError):
+    pass
+
+
 def classify(e: BaseException) -> tuple[str, str]:
     """(status, plain message) for an exception that stopped a run."""
     from profsagent.llm.client import AllEndpointsFailed
-    name, text = type(e).__name__, str(e)
-    if isinstance(e, AllEndpointsFailed):
+    name, text = (e.type if isinstance(e, StepError) else type(e).__name__), str(e)
+    if isinstance(e, AllEndpointsFailed) or getattr(e, "quota", False):
         return "paused", "The free AI quota is used up for now."
     if name in ("ServiceUnavailable", "SessionExpired") or "Couldn't connect" in text or "7687" in text:
         return "error", "The course database (Neo4j) isn't running. Start it in Neo4j Desktop, then press Try again."
@@ -153,9 +175,15 @@ def classify(e: BaseException) -> tuple[str, str]:
 
 # ------------------------------------------------------------------ the manager
 class RunManager:
-    def __init__(self, runs: Path = RUNS, driver: PipelineDriver | None = None, tick_s: float = 20.0, filler=None):
+    def __init__(self, runs: Path = RUNS, driver: PipelineDriver | None = None, tick_s: float = 20.0, filler=None,
+                 isolate: bool | None = None, step_cmd=None):
         from profsagent.app.filler import DetailsFiller
         self.runs = runs
+        # the real app runs each step in a child process (so Delete can end it); tests inject fakes and run in-process
+        self.isolate = (driver is None and filler is None) if isolate is None else isolate
+        self.step_cmd = step_cmd or (lambda d, kind, pf: [sys.executable, "-m", "profsagent.app.stepper", str(d), kind] + ([str(pf)] if pf else []))
+        self.proc: subprocess.Popen | None = None
+        self._deleting: set[str] = set()
         self.driver = driver or PipelineDriver()
         self.filler = filler or DetailsFiller()
         self.q: queue.Queue = queue.Queue()
@@ -202,8 +230,7 @@ class RunManager:
             d.mkdir(parents=True)
         _write(d / "input.yaml", yaml.safe_dump({"app_form": {k: v for k, v in ui_form.items() if k != "consent"}},
                                                 allow_unicode=True, sort_keys=False, width=120))
-        meta = {"run_id": rid, "title": formmap._s(ui_form["name"]), "by": formmap._s(ui_form["by"]), "created_at": time.time(),
-                "consent": {"given": True, "at": time.time(), "text": formmap.CONSENT_TEXT},
+        meta = {"run_id": rid, "title": formmap._s(ui_form["name"]), "by": user_name(), "created_at": time.time(),
                 "status": "queued", "phase": "details", "pending": {"kind": "fill"}, "history": []}
         self._log(d, meta, f"created by {meta['by']}")
         write_meta(d, meta)
@@ -300,6 +327,8 @@ class RunManager:
                 return
             rid, kind, payload = job
             d = self.runs / rid
+            if not (d / "app.json").exists():
+                continue
             with self.lock:
                 m = read_meta(d)
                 if m.get("status") != "queued":
@@ -309,8 +338,10 @@ class RunManager:
                 write_meta(d, m)
                 self.current = rid
             try:
-                out = self.filler.fill(d) if kind == "fill" else self.driver.step(rid, kind, payload)
+                out = self._run_step(d, rid, kind, payload)
                 with self.lock:
+                    if rid in self._deleting:
+                        raise Cancelled(rid)
                     m = read_meta(d)
                     m.update(out, pending=None, error=None, resume_at=None, pause_count=0)
                     m.setdefault("payload", None)
@@ -321,9 +352,13 @@ class RunManager:
                         m["filled"] = out.get("payload", {}).get("filled")
                     write_meta(d, m)
             except Exception as e:  # noqa: BLE001 — the run's files and checkpoint stay; the professor or the scheduler continues it
+                if rid in self._deleting:   # deleted while this step ran: finish moving it to the bin, nothing else
+                    self.current = None
+                    self._finalize_delete(rid)
+                    continue
                 status, msg = classify(e)
                 with (d / "app_error.log").open("a", encoding="utf-8") as f:
-                    f.write(time.strftime("%Y-%m-%d %H:%M:%S ") + traceback.format_exc() + "\n")
+                    f.write(time.strftime("%Y-%m-%d %H:%M:%S ") + (getattr(e, "trace", "") or traceback.format_exc()) + "\n")
                 with self.lock:
                     m = read_meta(d)
                     m.update(status=status, error={"message": msg, "detail": f"{type(e).__name__}: {str(e)[:300]}"}, pending=None)
@@ -340,6 +375,92 @@ class RunManager:
                     write_meta(d, m)
             finally:
                 self.current = None
+
+    def _run_step(self, d: Path, rid: str, kind: str, payload) -> dict:
+        if not self.isolate:
+            return self.filler.fill(d) if kind == "fill" else self.driver.step(rid, kind, payload)
+        rf, pf = d / "step_result.json", None
+        rf.unlink(missing_ok=True)
+        if payload is not None:
+            pf = d / "step_payload.json"
+            _write(pf, json.dumps(payload, ensure_ascii=False))
+        env = {**os.environ, "PYTHONPATH": str(ROOT / "src") + os.pathsep + os.environ.get("PYTHONPATH", ""), "PYTHONIOENCODING": "utf-8"}
+        with self.lock:
+            if rid in self._deleting:
+                raise Cancelled(rid)
+            self.proc = subprocess.Popen(self.step_cmd(d, kind, pf), cwd=str(ROOT), env=env)
+        try:
+            self.proc.wait()
+        finally:
+            self.proc = None
+        if rid in self._deleting:
+            raise Cancelled(rid)
+        if not rf.exists():
+            raise StepError({"type": "StepCrashed", "message": "the step's process ended without a result"})
+        res = json.loads(rf.read_text(encoding="utf-8"))
+        if "ok" in res:
+            return res["ok"]
+        raise StepError(res.get("error") or {})
+
+    # ---- Delete: to the bin, from Neo4j, and ending a running step
+    def delete(self, rid: str) -> dict:
+        d = self.runs / rid
+        with self.lock:
+            m = read_meta(d)
+            self._deleting.add(rid)
+            m["status"] = "deleted"
+            self._log(d, m, "deleted by the professor")
+            write_meta(d, m)
+            working = self.current == rid
+            proc = self.proc if working else None
+        if proc is not None:
+            proc.kill()
+        if working:
+            t0 = time.time()       # the worker sees the flag and finishes the move itself; wait a little for it
+            while time.time() - t0 < 15 and (self.runs / rid).exists():
+                time.sleep(0.2)
+            if (self.runs / rid).exists():
+                return {"ok": True, "pending": True}   # an in-process step (tests) ends later; the worker moves it then
+            return {"ok": True, **(self._deleted_note(rid) or {})}
+        return {"ok": True, **self._finalize_delete(rid)}
+
+    def _finalize_delete(self, rid: str) -> dict:
+        d = self.runs / rid
+        note = {"deleted_at": time.time(), "neo4j": None}
+        st = None
+        try:
+            st = json.loads((d / "state.json").read_text(encoding="utf-8")) if (d / "state.json").exists() else None
+        except (OSError, ValueError):
+            pass
+        load = (st or {}).get("neo4j_load") or {}
+        if load and not load.get("skipped"):   # the approved design was published next to Layer A: take it out again
+            try:
+                from profsagent.design.neo4j_sync import delete_run
+                note["neo4j"] = f"removed {delete_run(rid)} design nodes"
+            except Exception as e:  # noqa: BLE001
+                note["neo4j"] = (f"NOT removed ({type(e).__name__}); run: python scripts/load_design_to_neo4j.py --run-id {rid} --delete")
+        dest = self.runs / BIN / f"{rid}-{time.strftime('%Y%m%d-%H%M%S')}"
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        for i in range(20):        # SQLite or OneDrive may hold a file for a moment after a step ends
+            try:
+                shutil.move(str(d), str(dest))
+                break
+            except OSError:
+                if i == 19:
+                    raise
+                time.sleep(0.5)
+        note["moved_to"] = str(dest.relative_to(self.runs.parent)) if self.runs.parent in dest.parents else str(dest)
+        _write(dest / "deleted.json", json.dumps(note, indent=1))
+        self._deleting.discard(rid)
+        return note
+
+    def _deleted_note(self, rid: str) -> dict | None:
+        for p in sorted((self.runs / BIN).glob(f"{rid}-*"), reverse=True):
+            try:
+                return json.loads((p / "deleted.json").read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                return None
+        return None
 
     def _scheduler(self) -> None:
         while not self._stop.wait(self.tick_s):
@@ -370,6 +491,8 @@ class RunManager:
                 try:
                     m = read_meta(d)
                 except Exception:  # noqa: BLE001
+                    continue
+                if m.get("status") == "deleted":
                     continue
                 out.append({k: m.get(k) for k in ("run_id", "title", "by", "created_at", "status", "gate", "resume_at")})
         return sorted(out, key=lambda r: r.get("created_at") or 0, reverse=True)

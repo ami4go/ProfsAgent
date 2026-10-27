@@ -30,13 +30,13 @@ FULL = {"topics": "A. Agents: coding agents, tool use\nB. Testing: unit tests, e
 
 def good_form(**kw):
     """What a professor submits: the example (name, description and a few fields; the rest blank)."""
-    return {**EXAMPLE, "by": "Prof. Test", "consent": True, **kw}
+    return {**EXAMPLE, **kw}
 
 
 # ------------------------------------------------------------------ form
 def test_only_name_and_description_are_required():
     e = formmap.validate({})
-    assert {"name", "description", "by", "consent"} == set(e)
+    assert {"name", "description"} == set(e)                                      # no name or consent asked any more
     assert formmap.validate(good_form()) == {}
     assert "credits" in formmap.validate(good_form(credits="3"))                  # UGREG-2025§4(2): 1, 2 or 4
     assert formmap.validate(good_form(credits="2", l="1.5", t="0.5", p="0")) == {}  # 2 credits: 1.5 lecture hours
@@ -126,7 +126,8 @@ def test_fill_writes_suggestions_for_the_blanks_only(tmp_path):
 
 # ------------------------------------------------------------------ views on a real run
 @pytest.mark.skipif(not (REAL / "state.json").exists(), reason="needs runs/cs601-02")
-def test_views_build_from_a_real_run():
+def test_views_build_from_a_real_run(monkeypatch):
+    monkeypatch.setattr(views, "reference_check", lambda run_dir, books: {})    # no network in this test
     st = views.state_of(REAL)
     g1 = views.gate1(st)
     assert any(p["code"] == "CSE201" and p["name"] == "Advanced Programming" and p["url"] for p in g1["prerequisites"])
@@ -210,7 +211,7 @@ def test_details_are_filled_and_checked_before_any_design(mgr):
     rid, errs = mgr.create(good_form())
     assert not errs and rid.startswith("app-software-development-using-ai-")
     m = wait_for(mgr, rid, "waiting")
-    assert m["gate"] == "gate0_details" and m["phase"] == "details" and m["consent"]["given"]
+    assert m["gate"] == "gate0_details" and m["phase"] == "details" and m["by"] == "Professor"
     assert mgr.driver.calls == []                                                    # nothing designed yet
     d = mgr.runs / rid
     gaps = mgr.decide(rid, "gate0_details", "approve", "P", "", {**views.details(d)["form"], "topics": "", "credits": ""})
@@ -331,7 +332,7 @@ def test_api(server):
     assert c.get("/api/options").json()["example"]["name"]
     assert c.get("/api/catalogue?codes=cse201,XYZ999").json()[0]["name"] == "Advanced Programming"
     r = c.post("/api/runs", json={"name": ""})
-    assert r.status_code == 422 and {"name", "description", "consent"} <= set(r.json()["errors"])
+    assert r.status_code == 422 and {"name", "description"} == set(r.json()["errors"])
     rid = c.post("/api/runs", json=good_form()).json()["run_id"]
     wait_for(mgr, rid, "waiting")
     run = c.get(f"/api/runs/{rid}").json()
@@ -350,3 +351,66 @@ def test_api(server):
     assert c.post(f"/api/runs/{rid}/feedback", json={"ratings": {"overall": 4}, "change": "More labs", "by": "P"}).json()["entries"] == 1
     assert c.get(f"/api/runs/{rid}/feedback").json()["entries"][0]["ratings"] == {"overall": 4}
     assert c.get(f"/api/runs/{rid}/download/pdf").status_code == 404                  # no design yet
+
+
+# ------------------------------------------------------------------ Delete: to the bin, from Neo4j, ending a running step
+def test_delete_moves_a_waiting_course_to_the_bin(mgr):
+    rid, _ = mgr.create(good_form())
+    wait_for(mgr, rid, "waiting")
+    out = mgr.delete(rid)
+    assert out["ok"] and not (mgr.runs / rid).exists()
+    binned = list((mgr.runs / "_deleted").glob(f"{rid}-*"))
+    assert len(binned) == 1 and (binned[0] / "app.json").exists() and (binned[0] / "deleted.json").exists()
+    assert all(r["run_id"] != rid for r in mgr.list())
+
+
+def test_delete_takes_a_published_design_out_of_neo4j(mgr, monkeypatch):
+    import profsagent.design.neo4j_sync as N
+    removed = []
+    monkeypatch.setattr(N, "delete_run", lambda run_id, drv=None: removed.append(run_id) or 139)
+    rid, _ = mgr.create(good_form())
+    wait_for(mgr, rid, "waiting")
+    (mgr.runs / rid / "state.json").write_text(json.dumps({"neo4j_load": {"nodes": 139}}), encoding="utf-8")
+    out = mgr.delete(rid)
+    assert removed == [rid] and out["neo4j"] == "removed 139 design nodes"
+
+
+def test_delete_ends_a_step_that_is_running(tmp_path):
+    slow = lambda d, kind, pf: [sys.executable, "-c", "import time; time.sleep(60)"]   # noqa: E731  a step that would take a minute
+    m = RunManager(runs=tmp_path, driver=FakeDriver(), filler=FakeFiller(), isolate=True, step_cmd=slow, tick_s=0.1)
+    m.start()
+    try:
+        rid, _ = m.create(good_form())
+        t0 = time.time()
+        while read_meta(tmp_path / rid).get("status") != "running" or m.proc is None:
+            time.sleep(0.05)
+            assert time.time() - t0 < 10
+        proc = m.proc
+        out = m.delete(rid)
+        assert out["ok"] and proc.poll() is not None and time.time() - t0 < 20       # the child process was ended
+        assert not (tmp_path / rid).exists() and list((tmp_path / "_deleted").glob(f"{rid}-*"))
+    finally:
+        m.stop()
+
+
+def test_delete_endpoint(server):
+    c, mgr = server
+    rid = c.post("/api/runs", json=good_form()).json()["run_id"]
+    wait_for(mgr, rid, "waiting")
+    assert c.delete(f"/api/runs/{rid}").json()["ok"]
+    assert c.get(f"/api/runs/{rid}").status_code == 404 and c.get("/api/runs").json() == []
+
+
+def test_books_are_checked_a_second_time(tmp_path, monkeypatch):
+    from profsagent.research import resources
+    recs = {"https://openlibrary.org/isbn/9781548955489.json": {"title": "JavaScript", "publish_date": "2017", "publishers": ["CreateSpace"]},
+            "https://openlibrary.org/isbn/9781491952023.json": {"title": "JavaScript", "subtitle": "The Definitive Guide", "publish_date": "2020"}}
+    monkeypatch.setattr(resources, "_cached_get", lambda url, p: recs.get(url))
+    books = [{"title": "JavaScript: The Definitive Guide", "year": 1996, "id": "ISBN 9781548955489"},
+             {"title": "JavaScript: The Definitive Guide", "year": 2020, "id": "ISBN 9781491952023"}]
+    tmp_path = tmp_path / "app-x-01"
+    tmp_path.mkdir()
+    r = views.reference_check(tmp_path, books[:1])
+    assert r["JavaScript: The Definitive Guide"]["status"] == "mismatch" and "2017" in r["JavaScript: The Definitive Guide"]["record"]
+    r = views.reference_check(tmp_path, books[1:])
+    assert r["JavaScript: The Definitive Guide"]["status"] == "match"

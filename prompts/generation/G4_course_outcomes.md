@@ -1,6 +1,6 @@
 ---
 id: G4
-version: 0.3.0
+version: 0.4.0
 stage: S4 Learning design
 agent: Learning Design
 model_class: strong
@@ -53,8 +53,12 @@ weekly plan, labs, assessments, grading and the CO–PO matrix. They will be che
   - Bad: "correctly" or "effectively" (not checkable)
   - Bad: "all hidden tests pass" (cannot be guaranteed by any assessment design)
   - Bad: "achieving a stated threshold" (states no threshold)
-- Write each CO as **one sentence**, in the form: `<Verb> <behaviour>, <condition>, <degree>.` The order may vary for
-  readability, but all four parts must be present and separately extractable.
+- Write each CO as **one short sentence**, the way IIIT-D professors write them: **aim for 15–25 words, never more than
+  35** (the 1,899 IIIT-D COs have a median of 16 words; 96% have 35 or fewer). The sentence carries the verb, the
+  behaviour and a brief condition or standard. Put the **full** condition and degree in the separate `condition` and
+  `degree` fields: the assessment stage reads them there, so they do not all have to be repeated in the sentence.
+- Do not pack lists of tools, several qualifiers or acceptance criteria into the sentence; if a CO needs more than 35
+  words, it is probably two COs or its detail belongs in `condition` / `degree`.
 
 ## Bloom level and the band
 - The course's Bloom band is **[{{ bloom_band.floor }}, {{ bloom_band.ceiling }}]** ({{ bloom_band.basis }}). Every CO's
@@ -105,12 +109,13 @@ granularity**. **Do not copy their content.** Cite any exemplar that shaped a CO
 - Weak: "Understand normalisation and apply it to database design." Two verbs, one of them banned, no condition, no
   degree.
 - Weak: "Design a database schema effectively." No condition, and the degree is vague.
-- Strong (L6): "Design a relational schema for a given multi-entity requirements document, in at least third normal
-  form, justifying each decomposition with the functional dependencies it removes."
+- Strong (L6, 19 words): "Design a relational schema in third normal form for a given requirements document, justifying
+  each decomposition."
   → verb *design* · behaviour *a relational schema* · condition *for a given multi-entity requirements document* ·
-  degree *≥ 3NF, each decomposition justified by the FDs removed* · evidence: design_document, exam_question.
-- Strong (L4): "Analyse the query plan produced by a relational optimiser for a supplied slow query, identifying the
-  operator responsible for at least 50% of the estimated cost and a rewrite that removes it."
+  degree *≥ 3NF, each decomposition justified by the functional dependencies it removes* · evidence: design_document,
+  exam_question. The sentence names the standard briefly; the fields hold the full condition and degree.
+- Strong (L4, 17 words): "Analyse the query plan of a slow query to find the costliest operator and a rewrite that
+  removes it."
 
 ## Output schema
 {

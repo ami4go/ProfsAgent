@@ -303,10 +303,62 @@ def gate3(st: dict, run_dir: Path) -> dict:
         "assessment": assess, "assessment_total": round(sum(c.get("weight_pct") or 0 for c in comps), 1),
         "invigilated_pct": round(sum(c.get("weight_pct") or 0 for c in comps if c.get("proctored")), 1),
         "co_marks": st.get("co_marks_share") or {},
-        "books": books, "books_rejected": len(st.get("resources_rejected") or []),
+        "books": books, "books_rejected": len(st.get("resources_rejected") or []), "recheck": reference_check(run_dir, books),
         "evaluation": ev,
         "files": {name: (run_dir / name).exists() for name in ("proposal.md", "course_template.xlsx", "course_sheet.pdf")},
     }
+
+
+# ------------------------------------------------------------------ independent second check of every ISBN / DOI
+def _recheck_one(b: dict) -> dict:
+    """Look the identifier up on its own (OpenLibrary edition record / Crossref work) and compare title and year with the
+    citation. A second, separate check from the pipeline's own verification."""
+    from profsagent.research.resources import _cached_get, _n, _year_of
+    ident = b.get("id") or ""
+    if ident.startswith("ISBN "):
+        rec = _cached_get(f"https://openlibrary.org/isbn/{ident[5:]}.json", {})
+        if not rec:
+            return {"status": "unreachable"}
+        title = f"{rec.get('title', '')}: {rec.get('subtitle')}" if rec.get("subtitle") else rec.get("title", "")
+        year, pub = _year_of(rec.get("publish_date")), ", ".join(rec.get("publishers") or [])
+    elif ident.startswith("DOI "):
+        rec = ((_cached_get(f"https://api.crossref.org/works/{ident[4:]}", {}) or {}).get("message")) or None
+        if not rec:
+            return {"status": "unreachable"}
+        title = (rec.get("title") or [""])[0]
+        year, pub = ((rec.get("issued") or {}).get("date-parts") or [[None]])[0][0], (rec.get("container-title") or [""])[0]
+    else:
+        return {"status": "no identifier"}
+    same_title = _n(title)[:20] == _n(b.get("title"))[:20] or _n(b.get("title"))[:20] in _n(title)
+    same_year = not (year and b.get("year")) or int(year) == int(b["year"])
+    if same_title and same_year:
+        return {"status": "match"}
+    return {"status": "mismatch", "record": f"{ident} belongs to “{title}”" + (f" ({year}" + (f", {pub}" if pub else "") + ")" if year else "")}
+
+
+def reference_check(run_dir: Path, books: list[dict]) -> dict:
+    """{book title: result}, computed once per set of books and kept in <run>/reference_check.json."""
+    key = json.dumps([(b.get("title"), b.get("id"), b.get("year")) for b in books], ensure_ascii=False)
+    p = run_dir / "reference_check.json"
+    if p.exists():
+        try:
+            old = json.loads(p.read_text(encoding="utf-8"))
+            if old.get("key") == key:
+                return old["results"]
+        except (OSError, ValueError):
+            pass
+    results = {}
+    for b in books:
+        try:
+            results[b.get("title")] = _recheck_one(b)
+        except Exception:  # noqa: BLE001 — a lookup problem never blocks the page
+            results[b.get("title")] = {"status": "unreachable"}
+    if run_dir.name.startswith("app-"):   # cache only in the app's own run folders, never in committed CLI runs
+        try:
+            p.write_text(json.dumps({"key": key, "results": results}, ensure_ascii=False, indent=1), encoding="utf-8")
+        except OSError:
+            pass
+    return results
 
 
 def approvals(st: dict | None, run_dir: Path | None = None) -> list[dict]:

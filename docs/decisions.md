@@ -8,6 +8,37 @@ Mark anything still waiting for someone as **Open**.
 
 ---
 
+## 2026-10-28 (later): Phase 2 lecture delivery in the app
+
+### 16. Vihan's deliverable C is wired into the app, following `docs/04_phase2_UI_integration_guide.md`
+- **Decision:** the app gets a **Lecture delivery** section (screens S0–S8 of the guide) for every approved course, reached from the header, the course cards and the finished-course page.
+  - **Choices:** the summary always comes first; the choices are multi-select; reasons are required to replace or reject.
+  - **Kit and students:** the guest kit is copy-only (no Send); students see approved items only.
+  - **Warnings:** always shown, never hidden behind a click.
+- **API framework (guide question a):** FastAPI, the same server as course design. The endpoints follow guide §5: `/api/delivery/{run}/…` for survey, start, review, undo, own links, ratings, link check, guest kit and report.
+- **How the backend is used:**
+  - **Searches:** `pipeline.recommend` runs as a background job in its own process (`app/delivery_step.py`), so the page stays usable and Delete can stop it. `graph.write` follows each search (skipped if Neo4j is down).
+  - **Decisions:** each one is written to `review.yaml` and applied at once with `review.apply`.
+  - **Choices:** written with `survey.save`. A search starts only when resources or a guest are chosen, and repeats (`refresh`) only when those choices change.
+  - **Link check:** `review.health` runs as a job; dead links show on the lecture with a one-click Replace.
+- **Two additions the guide left to the UI:**
+  - **Own links** (S5, "store it in the UI"): kept in `delivery/app_own_links.json` and shown as approved.
+  - **Ratings:** `review.record_feedback` adds up every row of `feedback.yaml` each time it runs, so the app writes one rating per call and keeps the history in `delivery/app_feedback_log.yaml`. That way no rating is counted twice.
+- **Attachments (guide question c):** stored in `runs/<id>/delivery/attachments/<lecture>/`. The survey records them as `delivery/attachments/<lecture>/<file>`.
+- **Vihan's run stays untouched:** the app never edits `runs/cs601-02`. "Open a copy of the CS-601 example" copies it into `runs/app-cs601-example-NN`, with its real results for W01.L1, W01.L2 and W02.L1.
+- **Changed:**
+  - `src/profsagent/app/delivery.py`, `app/delivery_step.py`, `app/server.py` (16 endpoints) and `app/static/index.html`;
+  - tests: `tests/test_app_delivery.py` (8 tests on a temporary copy of cs601-02).
+- **Verified:**
+  - a headless click-through at laptop and phone width (choices, review, own link, guest shortlist, kit, continuation lecture, validation, student view and rating);
+  - one real search through the app (W03.L1, readings + practice, 6.4 min).
+- **Agreed by:** Amit (integration); the backend is Vihan's, unchanged.
+- **Open:**
+  - **B (Parth):** "attach my material" and "generate material" are saved in the survey, with files stored, but nothing runs yet: guide §4 says "Parth to define the call" (question b).
+  - **Search keys on Amit's laptop:** `.env` has no `YOUTUBE_API_KEY` (free; needed for videos, recorded lectures and clips) and no `TAVILY_API_KEY` (free tier; better reading search). The real test found 12 candidates, and all 12 failed C's checks. Six covered neither the topic nor its outcomes. Four were Open Library book records with titles only, which the AI reviewer couldn't judge. Four were pages that refused access or were PDFs C cannot read. Several had more than one problem. The app shows a banner until the YouTube key is added.
+  - **PDFs (Vihan):** C's page reader rejects PDFs ("unsupported content-type application/pdf"), which drops arXiv and publisher papers. Reading PDFs, or preferring arXiv's HTML version, would help.
+  - **Ratings file (Vihan):** the first rating creates `data/delivery_feedback.json` (per-source averages). Decide whether to commit it or add it to `.gitignore`.
+
 ## 2026-10-28
 
 **Verified the same day.** The Web Development course was re-run from the same professor form (`app-web-development-02` vs `-01`, local runs):

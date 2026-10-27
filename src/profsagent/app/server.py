@@ -1,4 +1,5 @@
-"""FastAPI server: the professor UI (static/index.html) and its JSON API over RunManager.
+"""FastAPI server: the professor UI (static/index.html) and its JSON API over RunManager (course design, Phase 1)
+and DeliveryManager (lecture delivery, Phase 2: Vihan's deliverable C, docs/04_phase2_UI_integration_guide.md).
 
 Settings (environment or .env): APP_HOST (default 127.0.0.1, this laptop only), APP_PORT (8000),
 KG_BACKEND (neo4j | stub, read by the pipeline), NEO4J_URI.
@@ -15,9 +16,10 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import yaml
-from fastapi import Body, FastAPI, HTTPException
+from fastapi import Body, FastAPI, File, HTTPException, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
 
+from profsagent.app import delivery as dv
 from profsagent.app import formmap, views
 from profsagent.app.runner import PREFIX, RunManager, read_meta
 from profsagent.config import ROOT, RUNS, keys
@@ -68,18 +70,25 @@ def _export_pdf(run_dir: Path) -> Path:
     return mod.build(run_dir.name)
 
 
-def create_app(manager: RunManager | None = None, start_worker: bool = True) -> FastAPI:
+LID = re.compile(r"^W\d\d\.L\d+$")
+
+
+def create_app(manager: RunManager | None = None, start_worker: bool = True, delivery: dv.DeliveryManager | None = None) -> FastAPI:
     mgr = manager or RunManager()
+    dmgr = delivery or dv.DeliveryManager(runs=mgr.runs)
 
     @asynccontextmanager
     async def lifespan(_app):
         if start_worker:
             mgr.start()
+            dmgr.start()
         yield
         mgr.stop()
+        dmgr.stop()
 
     app = FastAPI(title="ProfsAgent", lifespan=lifespan)
     app.state.manager = mgr
+    app.state.delivery = dmgr
 
     def run_dir(rid: str) -> Path:
         d = mgr.runs / rid
@@ -160,6 +169,7 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True) -> 
     def delete(rid: str):
         """Move the course to runs/_deleted/ (nothing is erased), take a published design out of Neo4j, end a running step."""
         run_dir(rid)
+        dmgr.cancel(rid)
         return mgr.delete(rid)
 
     @app.post("/api/runs/{rid}/retry")
@@ -224,6 +234,136 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True) -> 
                                 "change": str(body.get("change") or "").strip(), "time_saved": str(body.get("time_saved") or "")})
         p.write_text(yaml.safe_dump(data, allow_unicode=True, sort_keys=False), encoding="utf-8")
         return {"ok": True, "entries": len(data["entries"])}
+
+    # ================================================================ Phase 2: lecture delivery (guide §5)
+    def course_dir(rid: str) -> Path:
+        d = run_dir(rid)
+        if not dv.approved(d):
+            raise HTTPException(409, "Lecture delivery opens once the course design is approved")
+        return d
+
+    def lecture_id(lid: str) -> str:
+        if not LID.match(lid):
+            raise HTTPException(404, "No such lecture")
+        return lid
+
+    def nocache(obj):
+        return JSONResponse(obj, headers=NO_CACHE)
+
+    @app.get("/api/delivery")
+    def delivery_courses():
+        return nocache({"courses": dv.courses(mgr.runs), "example_available": (mgr.runs / dv.EXAMPLE_SOURCE / "state.json").exists()})
+
+    @app.post("/api/delivery/example")
+    def delivery_example():
+        """A private copy of the CS-601 example run (Vihan's real results for three lectures); his files stay untouched."""
+        return {"run_id": dv.copy_example(mgr.runs)}
+
+    @app.get("/api/delivery/{rid}")
+    def delivery_view(rid: str):
+        course_dir(rid)
+        return nocache(dv.view(rid, mgr.runs))
+
+    @app.put("/api/delivery/{rid}/survey/{lid}")
+    def delivery_save(rid: str, lid: str, answers: dict = Body(...)):
+        course_dir(rid)
+        out = dv.save_choices(rid, lecture_id(lid), answers)
+        if out.get("errors"):
+            return JSONResponse(out, status_code=422)
+        if out.get("start_c"):
+            dmgr.queue_recommend(rid, [lid], refresh=out["refresh"])
+        return out
+
+    @app.post("/api/delivery/{rid}/start")
+    def delivery_start(rid: str, body: dict = Body(...)):
+        """(Re)start C's search for lectures whose saved choices ask for resources or a guest (Try again, bulk-filled lectures)."""
+        course_dir(rid)
+        v = dv.view(rid, mgr.runs)
+        want = [lid for lid in body.get("lectures") or [] if LID.match(lid) and (v["survey"].get(lid) or {}) and
+                ((v["survey"][lid].get("assistance") == "yes") or (v["survey"][lid].get("guest_lecture") == "yes"))]
+        if want:
+            dmgr.queue_recommend(rid, want, refresh=bool(body.get("refresh")))
+        return {"started": want}
+
+    @app.post("/api/delivery/{rid}/bulk")
+    def delivery_bulk(rid: str, body: dict = Body(...)):
+        course_dir(rid)
+        out = dv.bulk(rid, lecture_id(body.get("lid", "")), "module" if body.get("scope") == "module" else "week")
+        return JSONResponse(out, status_code=409) if out.get("problem") else out
+
+    @app.get("/api/delivery/{rid}/previous/{lid}")
+    def delivery_previous(rid: str, lid: str):
+        course_dir(rid)
+        out = dv.same_as_previous(rid, lecture_id(lid))
+        return JSONResponse(out, status_code=409) if out.get("problem") else out
+
+    @app.post("/api/delivery/{rid}/attachments/{lid}")
+    async def delivery_attach(rid: str, lid: str, files: list[UploadFile] = File(...)):
+        """Files for the material team (B): stored under runs/<id>/delivery/attachments/<lecture>/ (guide question c)."""
+        course_dir(rid)
+        lecture_id(lid)
+        saved = []
+        for f in files[:10]:
+            data = await f.read()
+            if len(data) > 50 * 1024 * 1024:
+                raise HTTPException(413, f"{f.filename} is larger than 50 MB")
+            saved.append(dv.save_attachment(rid, lid, f.filename or "file", data))
+        return {"saved": saved}
+
+    @app.post("/api/delivery/{rid}/review")
+    def delivery_review(rid: str, body: dict = Body(...)):
+        course_dir(rid)
+        out = dv.review(rid, lecture_id(body.get("lid", "")), str(body.get("kind", "")), str(body.get("key", "")),
+                        str(body.get("decision", "")), str(body.get("reason") or ""), str(body.get("title") or ""))
+        return JSONResponse(out, status_code=409) if out.get("problem") else out
+
+    @app.post("/api/delivery/{rid}/undo")
+    def delivery_undo(rid: str, body: dict = Body(...)):
+        course_dir(rid)
+        return dv.undo_approve(rid, lecture_id(body.get("lid", "")), str(body.get("kind", "")), str(body.get("key", "")))
+
+    @app.post("/api/delivery/{rid}/own")
+    def delivery_own(rid: str, body: dict = Body(...)):
+        course_dir(rid)
+        out = dv.own_link(rid, lecture_id(body.get("lid", "")), str(body.get("title") or ""), str(body.get("url") or ""),
+                          str(body.get("kind") or "reading"), body.get("remove"))
+        return JSONResponse(out, status_code=422) if out.get("problem") else out
+
+    @app.post("/api/delivery/{rid}/rate")
+    def delivery_rate(rid: str, body: dict = Body(...)):
+        course_dir(rid)
+        out = dv.rate(rid, lecture_id(body.get("lid", "")), str(body.get("key", "")), str(body.get("title") or ""),
+                      body.get("rating"), str(body.get("comment") or ""))
+        return JSONResponse(out, status_code=422) if out.get("problem") else out
+
+    @app.post("/api/delivery/{rid}/health")
+    def delivery_health(rid: str):
+        course_dir(rid)
+        dmgr.queue_health(rid)
+        return {"queued": True}
+
+    @app.post("/api/delivery/{rid}/health/dismiss")
+    def delivery_dismiss(rid: str, body: dict = Body(...)):
+        course_dir(rid)
+        dv.dismiss_dead(rid, str(body.get("url") or ""))
+        return {"ok": True}
+
+    @app.get("/api/delivery/{rid}/kit/{lid}")
+    def delivery_kit(rid: str, lid: str):
+        d = course_dir(rid)
+        p = d / "delivery" / "guest_kits" / f"{lecture_id(lid)}.md"
+        if not p.exists():
+            raise HTTPException(404, "No guest-lecture kit for this lecture yet")
+        return {"md": p.read_text(encoding="utf-8")}
+
+    @app.get("/api/delivery/{rid}/report")
+    def delivery_report(rid: str):
+        import markdown
+        d = course_dir(rid)
+        p = d / "delivery" / "report.md"
+        if not p.exists():
+            raise HTTPException(404, "No report yet")
+        return {"html": markdown.markdown(p.read_text(encoding="utf-8"), extensions=["sane_lists"])}
 
     return app
 

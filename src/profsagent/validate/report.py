@@ -22,7 +22,8 @@ GROUPS = [
     "Resources",
     "Course frame",
 ]
-BY_FAMILY = {"regulation": GROUPS[0], "constraint": GROUPS[1], "kg": GROUPS[2], "semantic": GROUPS[3], "resource": GROUPS[7]}
+BY_FAMILY = {"regulation": GROUPS[0], "constraint": GROUPS[1], "kg": GROUPS[2], "semantic": GROUPS[3], "resource": GROUPS[7],
+             "fit": GROUPS[8]}
 COPO_CODES = {"T4", "V23", "VCOPO-ACT"}
 BY_STAGE = {"positioning": GROUPS[2], "cos": GROUPS[3], "los": GROUPS[3], "copo": GROUPS[4], "structure": GROUPS[5], "schedule": GROUPS[5],
             "labs": GROUPS[5], "assessment": GROUPS[6], "resources": GROUPS[7]}

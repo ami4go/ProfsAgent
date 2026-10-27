@@ -8,6 +8,39 @@ Mark anything still waiting for someone as **Open**.
 
 ---
 
+## 2026-10-28 (night): validation and evaluation as one layer each; course-fit warnings
+
+### 17. Validation has one entry point, evaluation runs all three tiers, and two course-fit warnings are added
+- **Decision:**
+  - **Validation:** `validate/engine.py` is the only way into validation: it selects the profile (`configure`, moved
+    from `agents/pipeline.py`), runs the checks and counts errors. S8 resources now go through it too.
+  - **Default profile:** stays `core` (rules + IIIT-D graph checks: 23/23 planted defects, no AI calls). The LLM check
+    stays optional (4/23 alone).
+  - **Evaluation:** `evaluate/engine.py` runs tiers 1–3 after every design. Tier 2 runs only with a reference sheet.
+    Tier 3 is only planned (0 calls) unless judging is switched on.
+  - **Two warnings in a new family, `fit`, settled by the professor and never sent to R1:**
+    - `VC-AUDIENCE`: the title names a broad audience ("for All", "101") at level 3+.
+    - `VC-NOLAB`: at least half the LOs are hands-on, P = 0, and no lab decision was given.
+    - Either sends the design to REVIEW.
+- **Why:**
+  - The title-only run `dept-webdev-title-01` ("Web Development for All") passed every check as a level-3 course with
+    no lab. Nothing turned "for All" into a requirement, so no rule was broken.
+  - The level was inferred, so only the professor can settle it at gate 1.
+  - "Introduction to" is deliberately not an audience word: 22 of the 39 IIIT-D "Introduction to …" courses are level 5–6.
+- **Checked:**
+  - **Findings:** every saved run's findings before and after (32 runs): the only difference is the two new warnings on
+    `dept-webdev-title-01`.
+  - **Benchmark:** the 23-defect rules benchmark is unchanged (23/23; `eval/compare_validation/rules.json` identical).
+  - **Tests:** 297 tests pass.
+- **Changed:**
+  - **Validation:** `validate/engine.py`, `validate/rules.py`, `validate/report.py`, `config/pedagogy.yaml`
+    (`hands_on_without_lab_share`).
+  - **Evaluation:** `evaluate/engine.py` (new), `evaluate/reference.py` (`reference_code`), `evaluate/deterministic.py`.
+  - **Callers:** `orchestrator/graph.py`, `agents/pipeline.py`, `agents/loop.py`, `render/proposal.py`.
+  - **Scripts:** `scripts/evaluate_design.py` (`--all-tiers`, `--judge`), `scripts/evaluate_reference.py`.
+  - **Tests:** `tests/test_fit_rules.py`, `tests/test_evaluation_engine.py`.
+- **Agreed by:** Parth.
+
 ## 2026-10-28 (later): Phase 2 lecture delivery in the app
 
 ### 16. Vihan's deliverable C is wired into the app, following `docs/04_phase2_UI_integration_guide.md`

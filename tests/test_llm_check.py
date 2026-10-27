@@ -10,7 +10,6 @@ sys.path.insert(0, str(ROOT / "src"))
 
 import pytest
 
-from profsagent.agents import pipeline
 from profsagent.llm.prompts import load_prompt
 from profsagent.validate import engine, llm_check, report, rules
 
@@ -112,9 +111,9 @@ def test_prompt_renders_without_validator_findings(s):
 def test_profile_switches_the_checker(monkeypatch):
     monkeypatch.setenv("PROFSAGENT_SEMANTIC", "off")
     cfg = {"validation_profile": "llm"}
-    pipeline._set_validation_profile(cfg, FakeLLM(), "run")
+    engine.configure(cfg, FakeLLM(), "run")
     assert llm_check.enabled()
-    pipeline._set_validation_profile({"validation_profile": "core"}, FakeLLM(), "run")
+    engine.configure({"validation_profile": "core"}, FakeLLM(), "run")
     assert not llm_check.enabled()
 
 

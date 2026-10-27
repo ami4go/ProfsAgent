@@ -18,7 +18,7 @@ for _s in (sys.stdout, sys.stderr):
 sys.path.insert(0, str(ROOT / "src"))
 
 from profsagent.config import RUNS  # noqa: E402
-from profsagent.evaluate.reference import ENRICHED, evaluate_reference, load_reference, local_embed  # noqa: E402
+from profsagent.evaluate.reference import evaluate_reference, load_reference, local_embed, reference_code  # noqa: E402
 
 COLS = [("topic_f1", "topic F1"), ("topic_soft_f1", "soft F1"), ("topic_coverage_recall", "covered"), ("topic_lexical_recall", "words"),
         ("order_tau_b", "order τb"), ("co_soft_f1", "CO soft F1"), ("co_rouge_l", "CO ROUGE-L"), ("assessment_tv", "assess TV"),
@@ -33,11 +33,6 @@ def finished(run_dir: Path) -> dict | None:
     return s if s.get("cos") and s.get("modules") else None
 
 
-def held_out(s: dict) -> str | None:
-    ex = [c.upper() for c in s.get("run_cfg", {}).get("exclude_courses", [])]
-    return next((c for c in ex if (ENRICHED / f"{c}.json").exists()), None)
-
-
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id")
@@ -49,7 +44,7 @@ def main() -> None:
         s = finished(RUNS / a.run_id)
         if s is None:
             sys.exit(f"no finished design in runs/{a.run_id}")
-        code = (a.course or held_out(s) or "").upper()
+        code = (a.course or reference_code(s) or "").upper()
         if not code:
             sys.exit("the run held no course out; name a reference with --course")
         ev = evaluate_reference(s, load_reference(code), embed)
@@ -64,7 +59,7 @@ def main() -> None:
         print(f"{'run':<16} {'ref':<7} " + " ".join(f"{h:>10}" for _, h in COLS))
         for d in sorted(p for p in RUNS.iterdir() if p.is_dir()):
             s = finished(d)
-            code = held_out(s) if s else None
+            code = reference_code(s) if s else None
             if not code:
                 continue
             sm = evaluate_reference(s, load_reference(code), embed)["summary"]

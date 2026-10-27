@@ -196,7 +196,21 @@ def check_los(state: dict) -> list[dict]:
         lec = sum(float(lo.get("est_lecture_h", 0)) for lo in los)
         if hb["lecture_hours_total"] and abs(lec - hb["lecture_hours_total"]) / hb["lecture_hours_total"] > 0.15:
             out.append(v("V21", WARN, [], f"LO lecture-hour estimates sum to {lec:.1f} h vs budget {hb['lecture_hours_total']} h (±15%)"))
-    return out + semantic.check_los(state)
+    return out + _lab_fit_checks(state, los) + semantic.check_los(state)
+
+
+def _lab_fit_checks(state: dict, los: list[dict]) -> list[dict]:
+    """VC-NOLAB: most LOs are hands-on but L-T-P has no lab, and the professor never decided against one (a "no" in the
+    form's lab field is respected: the CSE201 runs teach hands-on LOs in tutorials by choice)."""
+    if not los or (state.get("ltp") or {}).get("P") or state.get("lab_required") == "no":
+        return []
+    hands_on = [lo["id"] for lo in los if lo.get("hands_on")]
+    share = len(hands_on) / len(los)
+    if share < pedagogy()["thresholds"]["hands_on_without_lab_share"]:
+        return []
+    return [v("VC-NOLAB", WARN, ["ltp"],
+              f"{len(hands_on)} of {len(los)} LOs are hands-on but L-T-P has no lab hours (P = 0) and no lab decision was "
+              f"given; add lab hours or confirm that tutorials are enough", hands_on=hands_on, share=round(share, 2))]
 
 
 def check_structure(state: dict) -> list[dict]:
@@ -500,8 +514,28 @@ def check_resources(state: dict) -> list[dict]:
 
 
 def check_intake(state: dict) -> list[dict]:
-    """S1: the course frame against the regulation, and constraints on it (course.credits)."""
-    return regulation.check_regulation(state) + constraints.check_stage(state, "intake")
+    """S1: the course frame against the regulation, constraints on it (course.credits), and the audience its title names."""
+    return regulation.check_regulation(state) + constraints.check_stage(state, "intake") + _audience_checks(state)
+
+
+# Words that name a broad or beginner audience. "Introduction to" / "Foundations of" are NOT among them: 22 of the 39
+# IIIT-D catalogue courses titled "Introduction to ..." are level 5 or 6 (data/stub_kg/index.json, 2026-10-28).
+AUDIENCE_RE = re.compile(r"\bfor\s+(all|everyone|everybody|beginners|non[- ]?majors|non[- ]?engineers)\b|\b101\b|\bprimer\b", re.I)
+
+
+def _audience_checks(state: dict) -> list[dict]:
+    """VC-AUDIENCE: the title names a broad audience but the course frame is level 3 or above, which the professor
+    should confirm at gate 1 (level and target students are often inferred, not given)."""
+    title = (state.get("form") or {}).get("1. COURSE NAME") or ""
+    m, level = AUDIENCE_RE.search(title), state.get("level")
+    if not m or level is None or int(level) < 3:
+        return []
+    given = (((state.get("cco") or {}).get("fields") or {}).get("level_or_code") or {}).get("status") == "given"
+    return [v("VC-AUDIENCE", WARN, ["level"],
+              f"the title says '{m.group(0)}' but the course is level {level} ({'as given' if given else 'inferred, not given'}) "
+              f"for {', '.join(state.get('programmes') or []) or 'no programme yet'}; a course for a broad audience is "
+              f"usually level 1–2 and open to every programme: confirm the level and the target students",
+              level=int(level), audience=m.group(0), level_given=given)]
 
 
 def check_constraint_set(state: dict) -> list[dict]:

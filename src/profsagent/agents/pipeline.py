@@ -14,7 +14,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from profsagent.agents.loop import call, generate
-from profsagent.config import RUNS, bloom_lexicon, degree_bank, pedagogy, programme, regulations, validation_profile
+from profsagent.config import RUNS, bloom_lexicon, degree_bank, pedagogy, programme, regulations
 from profsagent.design import deterministic as det
 from profsagent.design.store import DesignGraph
 from profsagent.kg import facts as kg_facts
@@ -23,7 +23,7 @@ from profsagent.kg.stub import StubKG
 from profsagent.llm.client import LLMClient
 from profsagent.research.external import Blocklist, ExternalResearch
 from profsagent.research.resources import crossref, openlibrary, verify_pick
-from profsagent.validate import engine, llm_check, rules, semantic
+from profsagent.validate import engine, rules
 
 
 @dataclass
@@ -61,23 +61,11 @@ def make_kg(llm: LLMClient | None, backend: str) -> KGClient:
     raise ValueError(f"kg_backend must be 'stub' or 'neo4j', not {backend!r}")
 
 
-def _set_validation_profile(run_cfg: dict, llm=None, run_id: str | None = None) -> None:
-    """core: Phase 1 rule checks, with the knowledge-graph checks after S5. full: also the semantic meaning checks.
-    llm: hard rules in code + one LLM check per stage (validate/llm_check.py). Recorded in run_cfg so --resume /
-    --continue keep the profile the run started with (config/validation.yaml)."""
-    run_cfg["validation_profile"] = run_cfg.get("validation_profile") or validation_profile()
-    if run_cfg["validation_profile"] == "full":
-        semantic.configure_local()   # local embedding model (PROFSAGENT_SEMANTIC=off still skips it)
-    else:
-        semantic.configure(None)
-    llm_check.configure(llm if run_cfg["validation_profile"] == "llm" else None, run_id)
-
-
 def make_runtime(run_id: str, form: dict, run_cfg: dict) -> Runtime:
     run_dir = RUNS / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
     llm = LLMClient(run_dir / "llm_calls.jsonl")
-    _set_validation_profile(run_cfg, llm, run_id)
+    engine.configure(run_cfg, llm, run_id)
     # run.kg_backend in the input file, else $KG_BACKEND, else Neo4j; recorded so --resume / --continue reuse it
     run_cfg["kg_backend"] = (run_cfg.get("kg_backend") or os.environ.get("KG_BACKEND") or "neo4j").lower()
     rt = Runtime(run_id=run_id, run_dir=run_dir, state={"form": form, "run_cfg": run_cfg, "traces": {}, "violations": {}, "concerns": {},
@@ -94,7 +82,7 @@ def attach_runtime(run_id: str) -> Runtime:
     st = json.loads((run_dir / "state.json").read_text(encoding="utf-8"))
     llm = LLMClient(run_dir / "llm_calls.jsonl")
     cfg = st["run_cfg"]
-    _set_validation_profile(cfg, llm, run_id)
+    engine.configure(cfg, llm, run_id)
     g = DesignGraph.load(run_dir / "design_graph.json") if (run_dir / "design_graph.json").exists() else DesignGraph(cfg.get("project_id", "P0001"), run_dir / "design_graph.json")
     return Runtime(run_id=run_id, run_dir=run_dir, state=st, exclude={c.upper() for c in cfg.get("exclude_courses", [])},
                    blocklist=Blocklist(**cfg.get("blocklist", {})), llm=llm, kg=make_kg(llm, cfg.get("kg_backend", "stub")), graph=g,  # runs from before the switch used the stub
@@ -166,7 +154,7 @@ def s1_intake(rt: Runtime) -> None:
     vs = engine.check(st, ["intake"])   # regulation: teaching weeks, credits, L-T-P (only the professor can change these)
     _record(rt, "intake", cco, vs, {"generator": meta})
     if vs:
-        rt.log(f"  intake checks: {len(rules.errors(vs))} errors, {len(vs) - len(rules.errors(vs))} warnings "
+        rt.log(f"  intake checks: {len(engine.errors(vs))} errors, {len(vs) - len(engine.errors(vs))} warnings "
                f"({', '.join(sorted({x['code'] for x in vs}))})")
     rt.log(f"  CCO: {len(st['topic_groups'])} topic groups · level {d['level']} · L-T-P {d['ltp']} · {d['weeks']} weeks · "
            f"{len(d['assumptions'])} assumptions · conflicts {len(cco['conflicts'])}")
@@ -262,7 +250,7 @@ def s3_constraints(rt: Runtime) -> None:
     vs = engine.check(st, ["constraints"])   # deterministic conflicts between hard constraints; constraints nothing checks
     _record(rt, "constraints", tc, vs, {"generator": meta})
     if vs:
-        rt.log(f"  constraint checks: {len(rules.errors(vs))} errors, {len(vs) - len(rules.errors(vs))} warnings "
+        rt.log(f"  constraint checks: {len(engine.errors(vs))} errors, {len(vs) - len(engine.errors(vs))} warnings "
                f"({', '.join(sorted({x['code'] for x in vs}))})")
     rt.log(f"  {len(st['constraints'])} constraints ({len(tc['constraints'])} from professor text) · conflicts {len(tc['conflicts'])}")
     rt.save()
@@ -644,7 +632,7 @@ def s8_resources(rt: Runtime) -> None:
     st["resources"] = kept                      # only verified resources reach the course documents
     st["resources_rejected"] = [{"title": r["title"], "problems": r["verification"]["problems"]} for r in rejected]
     st["resource_policy"] = {"textbook_policy": comp["textbook_policy"], "reason": comp["policy_reason"], "search_requests": comp["search_requests"]}
-    vs = rules.run(st, ["resources"])
+    vs = engine.check(st, ["resources"])
     _record(rt, "resources", comp, vs, {"generator": meta})
     for r in kept:
         rid = r["candidate_id"]
@@ -682,7 +670,7 @@ def gate(rt: Runtime, name: str, decision: dict) -> None:
     st = rt.state
     frozen = rt.graph.freeze_labels(GATE_FREEZE.get(name, [])) if decision.get("decision") == "approve" else []
     st["approvals"].append({"gate": name, **decision, "at": time.time(), "frozen": len(frozen),
-                            "open_errors": len(rules.errors(all_violations(st)))})
+                            "open_errors": len(engine.errors(all_violations(st)))})
     rt.graph.put("Approval", f"APP{len(st['approvals'])}", st["approvals"][-1], created_by=decision.get("by", "professor"))
     rt.log(f"GATE {name}: {decision.get('decision')} by {decision.get('by')} · froze {len(frozen)} nodes")
     rt.save()

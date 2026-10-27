@@ -11,7 +11,7 @@ import io
 import json
 from collections import defaultdict
 
-from profsagent.validate import report, rules
+from profsagent.validate import engine, report
 
 
 def _tag(sources) -> str:
@@ -54,7 +54,7 @@ def render(rt) -> None:
     d = st["defaults"]
     pos = st["positioning"]
     vs = [x for v in st.get("violations", {}).values() for x in v]
-    errs = rules.errors(vs)
+    errs = engine.errors(vs)
     L = []
     w = L.append
     w(f"# {cc['course_name']} — Course Proposal (ProfsAgent draft)\n")

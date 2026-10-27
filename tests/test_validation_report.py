@@ -8,7 +8,6 @@ sys.path.insert(0, str(ROOT / "src"))
 
 import pytest
 
-from profsagent.agents import pipeline
 from profsagent.config import validation_profile
 from profsagent.validate import engine, report, rules, semantic
 
@@ -75,11 +74,11 @@ def test_core_profile_switches_the_research_extras_off(monkeypatch):
     monkeypatch.delenv("PROFSAGENT_VALIDATION", raising=False)
     semantic.configure(lambda texts: None, "fake")
     cfg = {}
-    pipeline._set_validation_profile(cfg)
+    engine.configure(cfg)
     assert cfg["validation_profile"] == "core" and not semantic.enabled()
     resumed = {"validation_profile": "full"}               # a resumed run keeps the profile it started with
     monkeypatch.setenv("PROFSAGENT_SEMANTIC", "off")       # (no model load in the test)
-    pipeline._set_validation_profile(resumed)
+    engine.configure(resumed)
     assert resumed["validation_profile"] == "full"
     semantic.configure(None)
 

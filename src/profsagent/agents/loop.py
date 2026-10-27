@@ -16,7 +16,7 @@ from pydantic import BaseModel, ValidationError
 from profsagent.config import models_cfg
 from profsagent.llm.prompts import load_prompt
 from profsagent.models.io import OUTPUT_MODELS, RepairPatch
-from profsagent.validate import engine, rules
+from profsagent.validate import engine
 
 
 def temperature(meta: dict) -> float:
@@ -145,7 +145,7 @@ def generate(rt, pid: str, ctx: dict, *, apply: Callable[[dict, dict], dict], st
     comp = obj.model_dump()
     state = apply(copy.deepcopy(rt.state), comp)
     vs = engine.check(state, stages)
-    trace = {"generator": meta, "initial_errors": len(rules.errors(vs)), "initial_warnings": len(vs) - len(rules.errors(vs)),
+    trace = {"generator": meta, "initial_errors": len(engine.errors(vs)), "initial_warnings": len(vs) - len(engine.errors(vs)),
              "initial_error_codes": engine.error_codes(vs), "repairs": []}
     rt.log(f"  [{pid}] validators: {trace['initial_errors']} errors, {trace['initial_warnings']} warnings")
     comp, vs, trace["fixes"] = engine.apply_fixers(rt.state, comp, apply, stages, vs)
@@ -155,7 +155,7 @@ def generate(rt, pid: str, ctx: dict, *, apply: Callable[[dict, dict], dict], st
     feedback, rejected_in_row, rejected = None, 0, set()
     stall_limit = int(lim.get("repair_stall_rounds", 2))
     for rnd in range(1, max_rounds + 1):
-        errs = rules.errors(vs)
+        errs = engine.errors(vs)
         if not errs:
             break
         reach = [e for e in errs if _in_reach(e, frozen)]
@@ -188,7 +188,7 @@ def generate(rt, pid: str, ctx: dict, *, apply: Callable[[dict, dict], dict], st
             trace["stop_reason"] = "R1 repeated a rejected patch"
             break
         vs2 = engine.check(apply(copy.deepcopy(rt.state), cand), stages)
-        e1, e2 = rules.errors(vs), rules.errors(vs2)
+        e1, e2 = engine.errors(vs), engine.errors(vs2)
         new_codes = {x["code"] for x in e2} - {x["code"] for x in e1}
         ok = len(e2) < len(e1) and not new_codes
         trace["repairs"].append({"round": rnd, "accepted": ok, "errors_before": len(e1), "errors_after": len(e2),
@@ -211,7 +211,7 @@ def generate(rt, pid: str, ctx: dict, *, apply: Callable[[dict, dict], dict], st
 
     trace["regenerations"] = []
     for _ in range(int(lim.get("regenerate_on_stall", 0))):
-        errs = rules.errors(vs)
+        errs = engine.errors(vs)
         if frozen or not any(_in_reach(e, frozen) for e in errs):
             break
         try:
@@ -222,13 +222,13 @@ def generate(rt, pid: str, ctx: dict, *, apply: Callable[[dict, dict], dict], st
         cand = obj2.model_dump()
         vs2 = engine.check(apply(copy.deepcopy(rt.state), cand), stages)
         cand, vs2, fixes2 = engine.apply_fixers(rt.state, cand, apply, stages, vs2)
-        ok = len(rules.errors(vs2)) < len(errs)
-        trace["regenerations"].append({"accepted": ok, "errors_before": len(errs), "errors_after": len(rules.errors(vs2)),
+        ok = len(engine.errors(vs2)) < len(errs)
+        trace["regenerations"].append({"accepted": ok, "errors_before": len(errs), "errors_after": len(engine.errors(vs2)),
                                        "error_codes_after": engine.error_codes(vs2), "fixes": fixes2, "endpoint": meta2["endpoint"]})
-        rt.log(f"  [{pid} regenerate] errors {len(errs)} → {len(rules.errors(vs2))} {'ACCEPT' if ok else 'REJECT'}")
+        rt.log(f"  [{pid} regenerate] errors {len(errs)} → {len(engine.errors(vs2))} {'ACCEPT' if ok else 'REJECT'}")
         if ok:
             comp, vs = cand, vs2
-    trace["final_errors"] = len(rules.errors(vs))
+    trace["final_errors"] = len(engine.errors(vs))
     trace["final_warnings"] = len(vs) - trace["final_errors"]
     trace["final_error_codes"] = engine.error_codes(vs)
     trace["open"] = engine.open_items(vs)

@@ -106,14 +106,32 @@ Load, check or remove a run by hand: `python scripts/load_design_to_neo4j.py --r
 Every generated part is checked before the next one is built: format guard → rule checks (university regulations and
 course template, the professor's requirements, IIIT-D catalogue facts, consistency, outcome quality) → deterministic
 fixers → R1 repair (kept only if errors drop; stops when it cannot help) → blocking gate (approving with open errors
-needs a written reason). The finished design gets a deterministic Tier 1 score (`evaluation_deterministic.json`).
+needs a written reason).
 
+- **One entry point:** `validate/engine.py` selects the profile (`configure`), runs a stage's checks (`check`), applies
+  fixers and reports what stays open; the checks themselves live in `validate/rules.py` and its helpers.
+- **Profile:** `config/validation.yaml` → `profile: core` (default: rules + IIIT-D graph checks; 23/23 planted defects,
+  no AI calls). `full` (or `PROFSAGENT_VALIDATION=full`) adds meaning checks with the local embedding model; `llm` uses
+  one LLM check per stage (4/23 when it was the only checker, `eval/compare_validation/`).
+- **Course fit** (family `fit`, warnings the professor settles, never sent to R1): `VC-AUDIENCE` when the title names a
+  broad audience ("for All", "101", …) but the level is 3+ ("Introduction to" is not such a word: most IIIT-D
+  "Introduction to …" courses are level 5–6); `VC-NOLAB` when at least half the LOs are hands-on, P = 0 and the
+  professor never said "no lab". Either sends the design to REVIEW.
 - **Report:** gates and Appendix E show findings under plain headings with repeats merged into one line
   (`validate/report.py`); every individual finding is in `runs/<id>/validation_report.json`.
-- **Profile:** `config/validation.yaml` → `profile: core` (default). `full` (or `PROFSAGENT_VALIDATION=full`) adds the
-  research warnings: meaning checks with the local embedding model and graph-facts checks after S5.
-- **Offline tools** (never inside the pipeline): `scripts/audit_kg.py` (Layer A audit), `scripts/evaluate_reference.py`
-  (Tier 2: compare with a held-out real course), `scripts/judge_design.py` (Tier 3 judge panel; dry run unless `--run`).
+
+## Evaluation (tiers 1–3)
+`evaluate/engine.py` evaluates every finished design (and `scripts/evaluate_design.py --run-id <id> --all-tiers` any
+saved one). Each tier runs on its own, so one failing does not stop the others:
+
+| Tier | What | Cost | File |
+|---|---|---|---|
+| 1 | completeness, alignment, constraints, regulation, workload, course fit → PASS / REVIEW / FAIL | none | `evaluation_deterministic.json` |
+| 2 | the design against a real IIIT-D sheet (topics, COs, assessment, prerequisites, resources) when the run names `run.reference_course` or holds one out | local embeddings | `evaluation_reference.json` |
+| 3 | LLM judge panel on G-Eval rubrics (`config/judging.yaml`); only **planned** (panel, call count) unless `run.judge: true` or `PROFSAGENT_JUDGE=1` | 0 calls by default | `evaluation_judges.json` |
+
+`evaluation.json` holds every tier's summary and the overall verdict. Other tools: `scripts/evaluate_reference.py`
+(tier 2 for any course), `scripts/judge_design.py` (tier 3 on its own), `scripts/audit_kg.py` (Layer A audit).
 
 ## Phase 2 · Deliverable C: learning resources and expert speakers
 For an approved Phase 1 course run, per lecture (plan: `docs/03_phase2_C_learning_resources_and_experts_plan.md`):

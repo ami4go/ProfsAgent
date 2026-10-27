@@ -27,6 +27,8 @@ copo_per_programme: {min: 1, max_warn: 5}
 thresholds:
   statement_words: {CO: [8, 35], LO: [6, 45]}   # VT-LEN warning outside. Real IIIT-D COs (1,899): median 16 words, p95 33, 96% <= 35;
                                                 # CO max lowered 50 -> 35 on 2026-10-28 to match them (docs/decisions.md). LOs unchanged.
+  hands_on_without_lab_share: 0.5   # VC-NOLAB: share of hands-on LOs above which P = 0 needs the professor's confirmation
+                                    # (courses with labs run 0.55-0.80 in the saved runs; dept-webdev-title-01: 0.75, P = 0)
   anti_requisite_overlap: 0.35
   substantial_overlap: 0.15
   topic_match_sim: 0.87      # gemini-embedding-001 SEMANTIC_SIMILARITY: wrong pairs <= 0.85, true >= 0.89 (10-pair calibration, 2026-09-30)

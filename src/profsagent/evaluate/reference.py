@@ -37,6 +37,14 @@ ROOT = Path(__file__).resolve().parents[3]
 ENRICHED = ROOT / "data" / "enriched"
 
 
+def reference_code(state: dict, enriched_dir: Path = ENRICHED) -> str | None:
+    """The course to compare with: run.reference_course, else the first held-out course (run.exclude_courses) whose
+    sheet is in data/enriched; None when there is none."""
+    cfg = state.get("run_cfg") or {}
+    named = [cfg["reference_course"]] if cfg.get("reference_course") else []
+    return next((c.upper() for c in named + list(cfg.get("exclude_courses", [])) if (Path(enriched_dir) / f"{c.upper()}.json").exists()), None)
+
+
 def load_reference(code: str, enriched_dir: Path = ENRICHED) -> dict:
     d = json.loads((Path(enriched_dir) / f"{code}.json").read_text(encoding="utf-8"))
     h = d["header"]

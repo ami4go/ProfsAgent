@@ -194,3 +194,37 @@ def test_official_documentation_is_recognised():
 def test_country_names_normalised():
     from profsagent.delivery.experts import country_code
     assert country_code("United States") == "US" and country_code("India") == "IN" and country_code("de") == "DE" and country_code(None) is None
+
+
+def test_practice_generic_and_social_filters():
+    b = {"topic_id": "T"}
+    cov = {"score": 0.8, "evidence": "text", "per_target": {"T": {"covered": True, "sim": 0.6, "segments": []}}}
+    def errs(c):
+        return {x["code"] for x in checks.resource({"coverage": cov, **c}, b) if x["severity"] == "error"}
+    assert "R-PRACTICE" in errs({"kind": "practice", "url": "https://arxiv.org/abs/2601.00001"})
+    assert "R-PRACTICE" in errs({"kind": "practice", "url": "https://lab.example.org", "review": {"explains": "explains", "hands_on": False}})
+    assert not errs({"kind": "practice", "url": "https://github.com/x/y", "page_type": "repository"})
+    assert not errs({"kind": "practice", "url": "https://site.org/t", "review": {"explains": "explains", "hands_on": True}})
+    assert "R-GENERIC" in errs({"kind": "reading", "url": "https://ibm.com/think/topics/api", "review": {"explains": "mentions", "generic": True}})
+    assert "R-SOURCE" in errs({"kind": "reading", "url": "https://www.linkedin.com/pulse/some-post"})
+
+
+def test_transcript_block_stops_requests_and_marks_partial(monkeypatch):
+    from profsagent.delivery import sources
+
+    class Blocked(Exception):
+        pass
+    Blocked.__name__ = "IpBlocked"
+    calls = []
+
+    class Api:
+        def fetch(self, vid, languages=None):
+            calls.append(vid)
+            raise Blocked()
+    import youtube_transcript_api
+    monkeypatch.setattr(youtube_transcript_api, "YouTubeTranscriptApi", Api)
+    monkeypatch.setattr(sources, "_tx", {"blocked": None, "last": 0.0})
+    monkeypatch.setattr(sources, "_cached", lambda ns, key, age, fn: fn())
+    monkeypatch.setattr(sources.time, "sleep", lambda s: None)
+    assert sources.transcript("a") is None and sources.transcript("b") is None
+    assert calls == ["a"] and sources.transcripts_blocked()      # after the first block no request is sent

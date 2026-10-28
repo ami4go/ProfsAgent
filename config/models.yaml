@@ -7,27 +7,52 @@
 #           3.x flash models return frequent 503 "high demand"; overload is model-wide, so a 503 cools the model on all keys.
 #           Google-Search grounding works on 2.5-flash only (3.x grounding quota = 0).
 #   Groq:   1000 requests / day / model, 8000 tokens / minute / model → a single request must stay < ~8K tokens.
+#   Other free OpenAI-compatible providers (checked 2026-10-28; keys optional, a provider without keys is skipped):
+#   Mistral (La Plateforme, Free plan): ~1 request/s, monthly credit; phone verification, no card. MISTRAL_API_KEYS
+#   NVIDIA NIM (build.nvidia.com): free, ~40 requests/min per account, no daily cap published; phone verification.
+#           NVIDIA_API_KEYS (3 keys). Checked 2026-10-28: nemotron-3-ultra-550b, minimax-m3.1-flash,
+#           nemotron-3.5-lightning answer in 1-5 s (step-5-preview gives empty JSON); deepseek-v4.1-flash, glm-5.3, gemma-4-31b, gpt-oss-20b hung > 90 s;
+#           kimi-k2.6 and several older models are "not found for account"; gpt-oss-120b retired 2026-09-03.
+#   OpenRouter ":free" models: 20 requests/min, 50 requests/DAY in total (1000/day after a one-time $10 top-up).
+#           The free roster changes often: run scripts/check_llm.py to see which configured models answer.  OPENROUTER_API_KEYS
+#   Not used: Cerebras (now a $5 trial that needs a card), GitHub Models (reported retired 2026-07-30).
 #   Ollama: local gemma4 (8B Q4) ~10 tok/s, qwen3.5:9b ~7 tok/s on this CPU (no GPU) — last resort only.
+providers:             # OpenAI-compatible chat endpoints besides Groq; several comma-separated keys per variable are fine
+  mistral:    {base_url: "https://api.mistral.ai/v1", keys_env: MISTRAL_API_KEYS, min_interval_s: 1.2}
+  nvidia:     {base_url: "https://integrate.api.nvidia.com/v1", keys_env: NVIDIA_API_KEYS, min_interval_s: 1.6, max_tokens: 8192,
+               timeout_s: 75}   # 40 RPM; some NIM models hang instead of failing, so give up sooner than Gemini's 180 s
+  openrouter: {base_url: "https://openrouter.ai/api/v1", keys_env: OPENROUTER_API_KEYS, min_interval_s: 3.5,
+               headers: {X-Title: ProfsAgent}}
 roles:
-  generate:            # G1–G11, R1, X1: large contexts; quality matters
+  generate:            # G1–G11, R1, X1, D2, D4: Gemini -> NVIDIA -> Groq gpt-oss -> the rest (user's order, 2026-10-28)
     - {provider: gemini, model: gemini-3.8-flash}
     - {provider: gemini, model: gemini-3.7-flash}
     - {provider: gemini, model: gemini-3.5-flash}
     - {provider: gemini, model: gemini-2.5-flash}
+    - {provider: nvidia, model: nvidia/nemotron-3-ultra-550b-a55b}
+    - {provider: nvidia, model: minimaxai/minimax-m3.1-flash}
     - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 5500}
     - {provider: gemini, model: gemini-3.5-flash-lite}
     - {provider: gemini, model: gemini-3.1-flash-lite}
     - {provider: gemini, model: gemini-flash-lite-latest}
     - {provider: groq,   model: qwen/qwen3.8-27b, max_prompt_tokens: 5500}
+    - {provider: mistral, model: mistral-large-latest}
+    - {provider: openrouter, model: "nvidia/nemotron-3.5-super-vl:free"}
+    - {provider: openrouter, model: "google/gemma-4-31b-it:free"}
     - {provider: ollama, model: "gemma4:latest"}      # LOCAL last resort (CPU, ~10 tok/s): minutes per call, no quota
     - {provider: ollama, model: "qwen3.5:9b"}
-  extract:             # X2 page reading, X3 queries: Gemini first (user preference), Groq as fallback
+  extract:             # X2 page reading, X3/D1 queries: Gemini -> NVIDIA -> Groq gpt-oss -> the rest
     - {provider: gemini, model: gemini-3.7-flash}
     - {provider: gemini, model: gemini-3.5-flash-lite}
     - {provider: gemini, model: gemini-3.1-flash-lite}
+    - {provider: nvidia, model: minimaxai/minimax-m3.1-flash}
+    - {provider: nvidia, model: nvidia/nemotron-3.5-lightning-30b-a3b}
+    - {provider: nvidia, model: nvidia/nemotron-3-ultra-550b-a55b}
     - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 5500}
-    - {provider: groq,   model: qwen/qwen3.8-27b, max_prompt_tokens: 5500}
     - {provider: groq,   model: openai/gpt-oss-20b, max_prompt_tokens: 5500}
+    - {provider: groq,   model: qwen/qwen3.8-27b, max_prompt_tokens: 5500}
+    - {provider: mistral, model: mistral-small-latest}
+    - {provider: openrouter, model: "nvidia/nemotron-3.5-super-vl:free"}
     - {provider: ollama, model: "gemma4:latest"}
     - {provider: ollama, model: "qwen3.5:9b"}
   search:              # Google-Search grounding: free tier only works on 2.5-flash (3.x grounding quota = 0)

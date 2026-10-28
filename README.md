@@ -12,7 +12,7 @@ Design docs: `docs/01_stage1_architecture.md`. Prompts: `prompts/README.md`.
 
 ## Run
 ```bash
-pip install langgraph langgraph-checkpoint-sqlite beautifulsoup4 httpx pydantic jinja2 pyyaml numpy pytest neo4j python-dotenv sentence-transformers openpyxl reportlab youtube-transcript-api
+pip install ddgs langgraph langgraph-checkpoint-sqlite beautifulsoup4 httpx pydantic jinja2 pyyaml numpy pytest neo4j python-dotenv sentence-transformers openpyxl reportlab youtube-transcript-api
 # .env (git-ignored): GEMINI_API_KEYS=k1,k2,k3   GROQ_API_KEYS=k1   NEO4J_PASSWORD=password
 
 # --- LAYER A: Build the Knowledge Graph ---

@@ -15,7 +15,8 @@ from profsagent.delivery.common import embed, hms, norm, rcfg, years_since
 from profsagent.delivery.coverage import chunks_from_text, coverage, windows_from_transcript
 from profsagent.delivery.models import QueryPlan, ResourceReviews
 from profsagent.delivery.review import source_multiplier
-from profsagent.delivery.sources import OpenAlex, YouTube, grounded_pages, github_repos, links_in, page, transcript
+from profsagent.delivery.sources import (OpenAlex, YouTube, grounded_pages, github_repos, links_in, page, transcript,
+                                        transcripts_blocked)
 from profsagent.llm.prompts import load_prompt
 from profsagent.research.fetch import domain
 from profsagent.research.resources import openlibrary
@@ -190,6 +191,8 @@ def enrich(cands: list[dict], b: dict, log) -> list[dict]:
                 continue
             seen.add(key)
             tr = transcript(c["id"]) if c.get("_fetch_transcript") else None
+            if c.get("_fetch_transcript") and not tr and transcripts_blocked():
+                c["_tx_missing"] = True
             if tr:
                 c["coverage"] = coverage(windows_from_transcript(tr), targets)
             else:   # metadata only (title, description, chapter markers): weaker evidence, never gives timestamps
@@ -356,7 +359,8 @@ def _review_batch(llm, b: dict, want: dict, top: list[dict], st: dict, run_id: s
         c["_rid"] = f"r{i + 1}"
     ctx = {"lecture": {"lecture_id": b["lecture_id"], "topic": b["topic"], "learning_outcomes": [x["statement"] for x in b["learning_outcomes"]],
                        "course_level": st.get("level"), "professor_note": want.get("note") or ""},
-           "candidates": [{"id": c["_rid"], "kind": c["kind"], "title": c["title"], "source": c.get("source"),
+           "candidates": [{"id": c["_rid"], "kind": c["kind"], "page_type": c.get("page_type"), "url": c.get("url"),
+                           "title": c["title"], "source": c.get("source"),
                            "duration": hms(c.get("duration_s")) if c.get("duration_s") else None, "year": c.get("year") or (c.get("published") or "")[:4],
                            "coverage": {t["text"][:80]: v["covered"] for t, v in zip(b["targets"], c.get("coverage", {}).get("per_target", {}).values())},
                            "excerpts": [e[:450] for e in c.get("coverage", {}).get("best_excerpts", [])]} for c in top]}
@@ -435,6 +439,8 @@ def recommend_lecture(llm, st: dict, b: dict, want: dict, q: dict, run_id: str, 
         for c in sorted((c for c in ok if c["kind"] == kind), key=lambda c: -c["total"])[: caps[capkey] + caps["reserve"]]:
             if not c.get("transcript"):
                 tr = transcript(c["id"])
+                if not tr and transcripts_blocked():
+                    c["_tx_missing"] = True
                 if tr:
                     c["coverage"], c["transcript"], c["captions"] = coverage(windows_from_transcript(tr), b["targets"]), True, True
                     score(c, b)
@@ -466,6 +472,10 @@ def recommend_lecture(llm, st: dict, b: dict, want: dict, q: dict, run_id: str, 
     if want.get("want_clips"):
         out["clips"] = clip_playlist(vids, b)
     out["counts"] = {"candidates": len(cands), "passed_checks": len(ok), "rejected": len(rejected)}
+    missing = [c["id"] for c in cands if c.get("_tx_missing") and not c.get("transcript")]
+    if missing:   # videos judged from title and description only: the next plain run redoes this lecture
+        out["partial"] = {"reason": f"YouTube blocked transcript requests (from {transcripts_blocked()})",
+                          "videos_without_transcript": missing}
     return out
 
 

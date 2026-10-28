@@ -22,7 +22,7 @@ from profsagent.delivery import checks
 from profsagent.delivery.common import embed, xcfg
 from profsagent.delivery.models import ExpertNotes, Practitioners
 from profsagent.delivery.resources import llm_call
-from profsagent.delivery.sources import OpenAlex, dblp_author, github_repos, github_user, grounded_text, page, scholar_search_url, tavily
+from profsagent.delivery.sources import OpenAlex, dblp_author, github_repos, github_user, grounded_text, page, scholar_search_url, web_search
 
 YEAR = dt.date.today().year
 
@@ -251,7 +251,7 @@ def practitioners(llm, b: dict, q: dict, run_id: str, log, videos: list[dict] | 
                             verified = f"named in the search result {hit['uri']}"
                             pages.append({"url": hit["uri"], "title": (hit.get("title") or "")[:120], "named": True})
                         else:            # one targeted search for the person: a page that names them with the topic
-                            for r in tavily(f'"{pp.name}" {pp.organisation or ""} {b["topic"]}', 5) or []:
+                            for r in web_search(f'"{pp.name}" {pp.organisation or ""} {b["topic"]}', 5) or []:
                                 if nm in (r["title"] + " " + r["content"]).lower() and not any(x in r["url"] for x in SOCIAL):
                                     verified = f"named on {r['url']}"
                                     pages.append({"url": r["url"], "title": r["title"][:120], "named": True})

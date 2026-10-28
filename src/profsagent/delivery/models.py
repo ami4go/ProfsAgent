@@ -37,6 +37,8 @@ class ResourceReview(M):
     issues: list[str] = Field(default_factory=list)
     review: str = ""
     use_as: Literal["professor_prep", "pre_class", "in_class_clip", "after_class", "flipped_class", "lab", "practice"] = "after_class"
+    generic: bool = False            # a general introduction to a broader or prerequisite concept, not this lecture's topic
+    hands_on: bool | None = None     # practice candidates only: students do something (exercises, notebook, code, lab)
 
 
 class ResourceReviews(M):

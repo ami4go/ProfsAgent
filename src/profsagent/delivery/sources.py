@@ -2,7 +2,8 @@
 
   YouTube Data API v3   search (100 units), videos/channels details (1 unit per 50)         YOUTUBE_API_KEY
   Transcripts           youtube-transcript-api, run locally (cloud IPs are blocked by YouTube)
-  Web                   Gemini Google-Search grounding (Phase 1 LLM client) + polite cached fetch
+  Web                   readings / practice: Tavily (TAVILY_API_KEY, 1,000/month), then DuckDuckGo (ddgs, no key), then
+                        Gemini Google-Search grounding; expert search: Gemini first, then Tavily, DuckDuckGo; polite cached fetch
   Books                 OpenLibrary / Crossref (Phase 1 research.resources)
   Papers, authors       OpenAlex (OPENALEX_API_KEY), DBLP (no key)
   Code / practice       GitHub search (GITHUB_TOKEN optional)
@@ -13,6 +14,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import random
 import re
 import time
 from urllib.parse import quote_plus
@@ -153,14 +155,34 @@ class YouTube:
         return out
 
 
+# YouTube blocks an IP that asks for many transcripts quickly (IpBlocked after ~60 in 10 minutes, 2026-10-25), so
+# requests are spaced out, and after the first block none are sent for the rest of the process.
+_tx = {"blocked": None, "last": 0.0}
+BLOCKED = ("IpBlocked", "RequestBlocked", "TooManyRequests")
+
+
+def transcripts_blocked() -> str | None:
+    """Time (HH:MM) YouTube started blocking transcript requests in this process, or None."""
+    return _tx["blocked"]
+
+
 def transcript(video_id: str) -> list[dict] | None:
     """[{start, dur, text}] or None. Cached 90 days. Works from a home/campus network; cloud IPs are blocked."""
     def run():
+        if _tx["blocked"]:
+            return {"error": "skipped: transcripts blocked"}
+        cfg = rcfg()["transcripts"]
+        wait = _tx["last"] + cfg.get("min_interval_s", 1.5) + random.uniform(0, cfg.get("jitter_s", 1.0)) - time.time()
+        if wait > 0:
+            time.sleep(wait)
+        _tx["last"] = time.time()
         try:
             from youtube_transcript_api import YouTubeTranscriptApi
             t = YouTubeTranscriptApi().fetch(video_id, languages=["en", "en-US", "en-GB", "en-IN"])
             return [{"start": s.start, "dur": s.duration, "text": s.text} for s in t]
         except Exception as e:  # noqa: BLE001 — no captions, disabled, blocked: the caller falls back to metadata
+            if type(e).__name__ in BLOCKED:
+                _tx["blocked"] = time.strftime("%H:%M")
             return {"error": f"{type(e).__name__}"}
     v = _cached("transcript", video_id, 90, run)
     return None if isinstance(v, dict) else v
@@ -168,7 +190,8 @@ def transcript(video_id: str) -> list[dict] | None:
 
 # ------------------------------------------------------------------ web pages (readings, practice, practitioners)
 def grounded_pages(llm, query: str, domains: list[str] | None, kind: str) -> list[dict]:
-    """Find pages with Google-Search grounding (Gemini). Returns [{url, title, type}] (cached 21 days)."""
+    """Find pages for readings / practice: Tavily, then DuckDuckGo, then Gemini Google-Search grounding.
+    Returns [{url, title, type}] (each source cached 21 days)."""
     dom = f" Prefer pages on these sites: {', '.join(domains)}." if domains else ""
     instruction = (f"You are finding free, publicly readable {kind} for a university lecture. Search the web and list "
                    "specific pages (an article, tutorial, book chapter, lecture notes page, documentation page, notebook or "
@@ -183,7 +206,7 @@ def grounded_pages(llm, query: str, domains: list[str] | None, kind: str) -> lis
             return {"error": str(e)[:200]}
         out = []
         for line in res["text"].splitlines():
-            m = re.search(r"https?://[^\s|)\]>\"']+", line)
+            m = re.search(r"https?://[^\s|)\]>\"'`]+", line)       # a link in `backticks` must not keep the backtick
             if not m:
                 continue
             parts = [p.strip(" *-") for p in line.split("|")]
@@ -193,11 +216,15 @@ def grounded_pages(llm, query: str, domains: list[str] | None, kind: str) -> lis
             if s.get("uri"):
                 out.append({"url": s["uri"], "title": s.get("title") or "", "type": "article", "redirect": True})
         return out
+    # Order Tavily -> DuckDuckGo -> Gemini (measured 2026-10-28 on 7 reading queries: pages that open and cover the
+    # topic 75% / 65% / 40%; Gemini writes many invented deep links), and Gemini's small daily quota is kept for experts.
+    t = web_search(query)
+    if t:
+        return [{"url": x["url"], "title": x["title"], "type": "article"} for x in t]
     v = _cached("grounded", f"{kind}|{query}|{domains}", 21, run)
-    if not isinstance(v, dict):
-        return v
-    t = tavily(query)                     # fallback when the Gemini search quota is used up
-    return [{"url": x["url"], "title": x["title"], "type": "article"} for x in (t or [])]
+    if isinstance(v, dict):
+        return []
+    return [{**x, "url": x["url"].rstrip("`.,;")} for x in v]   # results cached before the backtick fix
 
 
 def tavily(query: str, n: int = 8) -> list[dict] | None:
@@ -219,6 +246,29 @@ def tavily(query: str, n: int = 8) -> list[dict] | None:
     return None if isinstance(v, dict) else v
 
 
+def duckduckgo(query: str, n: int = 8) -> list[dict] | None:
+    """DuckDuckGo web search through the ddgs package: no key and no quota, but rate-limited if hammered."""
+    def run():
+        try:
+            from ddgs import DDGS
+            time.sleep(1.0)
+            return [{"url": x["href"], "title": x.get("title") or "", "content": (x.get("body") or "")[:1200]}
+                    for x in DDGS().text(query, max_results=n) if x.get("href")]
+        except Exception as e:  # noqa: BLE001 — not installed, rate-limited, network
+            return {"error": type(e).__name__}
+    v = _cached("ddg", f"{query}|{n}", 21, run)
+    return None if isinstance(v, dict) else v
+
+
+def web_search(query: str, n: int = 8) -> list[dict] | None:
+    """[{url, title, content, via}] from Tavily, or DuckDuckGo when Tavily has no key, is out of credit or found nothing."""
+    for name, fn in (("tavily", tavily), ("duckduckgo", duckduckgo)):
+        t = fn(query, n)
+        if t:
+            return [{**x, "via": name} for x in t]
+    return None
+
+
 def grounded_text(llm, query: str, instruction: str) -> dict | None:
     """{text, sources} from a Google-Search-grounded answer, cached 21 days; None when search is unavailable
     (the free grounding model has a small daily quota shared across keys of one Google project)."""
@@ -231,10 +281,10 @@ def grounded_text(llm, query: str, instruction: str) -> dict | None:
     v = _cached("grounded_text", f"{instruction[:80]}|{query}", 21, run)
     if "error" not in v:
         return v
-    t = tavily(query)                     # fallback when the Gemini search quota is used up
+    t = web_search(query)                 # fallback when the Gemini search quota is used up
     if t:
         return {"text": "\n\n".join(f"{x['title']} — {x['url']}\n{x['content']}" for x in t),
-                "sources": [{"uri": x["url"], "title": x["title"], "snippet": x["content"]} for x in t], "via": "tavily"}
+                "sources": [{"uri": x["url"], "title": x["title"], "snippet": x["content"]} for x in t], "via": t[0]["via"]}
     return None
 
 
@@ -243,7 +293,7 @@ def links_in(text: str) -> list[str]:
     skip = ("youtube.com", "youtu.be", "twitter.com", "x.com", "instagram.com", "facebook.com", "tiktok.com", "discord",
             "patreon.com", "linkedin.com", "bit.ly", "amzn.to", "t.me", "linktr.ee", "buymeacoffee", "ko-fi", "spotify.com", "apple.com/podcast")
     out = []
-    for u in re.findall(r"https?://[^\s)\]>\"']+", text or ""):
+    for u in re.findall(r"https?://[^\s)\]>\"'`]+", text or ""):
         u = u.rstrip(".,;")
         if not any(x in u for x in skip):
             out.append(u)

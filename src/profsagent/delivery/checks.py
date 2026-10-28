@@ -11,6 +11,9 @@ from profsagent.delivery.common import rcfg
 
 ERR, WARN = "error", "warning"
 EMAIL = re.compile(r"[\w.+-]+@[\w-]+\.[\w.]+")
+HANDS_ON = ("repository", "notebook", "exercises", "exercise", "lab", "dataset")
+HANDS_ON_SITES = ("github.com", "colab.research.google.com", "kaggle.com", ".ipynb", "exercism.org", "leetcode.com")
+PAPER_SITES = ("arxiv.org", "doi.org", "dl.acm.org", "ieeexplore.ieee.org", "semanticscholar.org", "openreview.net")
 
 
 def f(code: str, sev: str, msg: str) -> dict:
@@ -62,6 +65,21 @@ def resource(c: dict, b: dict) -> list[dict]:
         out.append(f("R-REVIEW", WARN, "AI review: mentions the topic but does not really teach it"))
     if r and r.get("correctness", 5) <= 2:
         out.append(f("R-REVIEW", WARN, "AI review: possible inaccuracies (" + "; ".join(r.get("issues", [])[:2]) + ")"))
+    if c["kind"] in ("reading", "practice"):
+        url = (c.get("url") or "").lower()
+        social = next((d for d in rcfg().get("social_domains", []) if d in url), None)
+        if social:
+            out.append(f("R-SOURCE", ERR, f"a social-media post ({social}), not a reading"))
+        if r and r.get("generic"):
+            out.append(f("R-GENERIC", ERR, "AI review: a general introduction to a broader concept, not this lecture's topic"))
+    if c["kind"] == "practice":
+        url = (c.get("url") or "").lower()
+        if c.get("page_type") == "paper" or any(s in url for s in PAPER_SITES):
+            out.append(f("R-PRACTICE", ERR, "a paper is not practice material"))
+        elif r and r.get("hands_on") is False:
+            out.append(f("R-PRACTICE", ERR, "AI review: nothing for students to do (no exercises, notebook, code or lab)"))
+        elif not r and not ((c.get("page_type") or "").lower() in HANDS_ON or any(s in url for s in HANDS_ON_SITES)):
+            out.append(f("R-PRACTICE", WARN, "not checked to be hands-on (no exercises, notebook or code seen)"))
     if c.get("page_type") == "book" and not (c.get("identifier") or {}).get("isbn") and not c.get("record"):
         out.append(f("R-BOOK", ERR, "book has no library record"))
     return out

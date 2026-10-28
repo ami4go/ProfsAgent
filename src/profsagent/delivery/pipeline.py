@@ -13,7 +13,7 @@ import time
 from profsagent.delivery import survey as sv
 from profsagent.delivery.brief import briefs_markdown, build_briefs
 from profsagent.delivery.common import hms, load_state, now, out_dir, read_json, write_json
-from profsagent.delivery.sources import YouTube
+from profsagent.delivery.sources import YouTube, transcripts_blocked
 
 
 class Log:
@@ -54,7 +54,10 @@ def recommend(run_id: str, lectures: list[str] | None = None, refresh: bool = Fa
         reqs = {k: v for k, v in reqs.items() if k in lectures}
     if limit:
         reqs = dict(list(reqs.items())[:limit])
-    todo = {k: v for k, v in reqs.items() if refresh or not (d / "lectures" / f"{k}.json").exists()}
+    def done(k):   # a lecture saved as partial (transcripts were blocked) is redone by a plain re-run
+        f = d / "lectures" / f"{k}.json"
+        return f.exists() and not (read_json(f) or {}).get("partial")
+    todo = {k: v for k, v in reqs.items() if refresh or not done(k)}
     log(f"delivery for {run_id}: {len(reqs)} lectures asked for help, {len(todo)} to do · YouTube units used today: {YouTube().quota.used()}")
     if not todo:
         return render(run_id)
@@ -73,12 +76,15 @@ def recommend(run_id: str, lectures: list[str] | None = None, refresh: bool = Fa
             prev = read_json(f)
             if not prev.get("continuation_of"):
                 by_topic.setdefault(briefs[lid]["topic_id"], (lid, prev, reqs[lid]))
+    warned = False
     for lid, want in sorted(todo.items()):
         b = briefs[lid]
         log(f"{lid} · {b['topic']} · wants: {', '.join(k[5:] for k, v in want.items() if k.startswith('want_') and v)}")
         first = by_topic.get(b["topic_id"])
         if first and first[0] < lid and all(first[2].get(k) for k, v in want.items() if k.startswith("want_") and v):
             res = continuation(first[1], first[0], b, want)
+            if first[1].get("partial"):
+                res["partial"] = {"reason": f"continues {first[0]}, which is partial"}
             write_json(d / "lectures" / f"{lid}.json", res)
             log(f"  {lid} continues {first[0]} (same topic): next-best items, no repeats")
             continue
@@ -95,9 +101,19 @@ def recommend(run_id: str, lectures: list[str] | None = None, refresh: bool = Fa
             kit = guest_kit(st, b, res["experts"]["experts"])
             (d / "guest_kits").mkdir(exist_ok=True)
             (d / "guest_kits" / f"{lid}.md").write_text(kit, encoding="utf-8")
+        if (res.get("resources") or {}).get("partial"):
+            res["partial"] = res["resources"]["partial"]
         write_json(d / "lectures" / f"{lid}.json", res)
         by_topic.setdefault(b["topic_id"], (lid, res, want))
+        if transcripts_blocked() and not warned:
+            warned = True
+            log(f"  ! YouTube is blocking transcript requests from this IP (since {transcripts_blocked()}). No more are sent "
+                "this run; videos are judged from title and description, and those lectures are saved as partial. "
+                "Run the same recommend command later (no --refresh needed) to redo only the partial lectures.")
         log(f"  saved {lid} · YouTube units used today: {YouTube().quota.used()}")
+    part = [k for k in sorted(todo) if (read_json(d / "lectures" / f"{k}.json") or {}).get("partial")]
+    if part:
+        log(f"partial lectures ({len(part)}), redone by the next run: {', '.join(part)}")
     log(f"AI calls this session: {llm.totals['calls']}")
     return render(run_id)
 
@@ -164,6 +180,9 @@ def render(run_id: str) -> dict:
         b = briefs.get(lid, {})
         L.append(f"## {lid} · Week {b.get('week')} · {r['topic']}{' ★ new at IIIT-D' if b.get('novel') else ''}")
         L.append(f"*{b.get('summary', '')}*\n")
+        if r.get("partial"):
+            L.append(f"> ⚠ **Partial:** {r['partial']['reason']}. Videos were judged from their title and description "
+                     "only and no clips could be made; the next `recommend` run redoes this lecture.\n")
         res = r.get("resources") or {}
         if res.get("note"):
             L.append(f"> {res['note']}\n")

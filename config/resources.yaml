@@ -45,6 +45,8 @@ youtube:
 
 transcripts:
   max_per_lecture: 8           # transcripts fetched for the best pre-scored videos
+  min_interval_s: 1.5          # pause between transcript requests (plus up to jitter_s at random): YouTube blocks
+  jitter_s: 1.0                # an IP that asks for ~60 in 10 minutes; after a block none are sent that run
 
 review:
   max_candidates_per_call: 10  # candidates the AI reviews per lecture (one call)
@@ -80,3 +82,5 @@ blocklist:                   # never recommend (held-out test courses, paywalls 
   domains: [themodernsoftware.dev, coursera.org/learn, udemy.com, oreilly.com, medium.com/m/signin]
   title_fragments: [CS146S]
 paywall_domains: [udemy.com, coursera.org, oreilly.com, pluralsight.com, educative.io, linkedin.com/learning]
+social_domains: [linkedin.com, facebook.com, x.com/, twitter.com, instagram.com, threads.net, quora.com, reddit.com,
+                 pinterest.com, tiktok.com]   # never offered as a reading or practice item

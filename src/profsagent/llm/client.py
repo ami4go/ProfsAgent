@@ -1,6 +1,7 @@
-"""LLM client with multi-key, multi-model fallback for free-tier Gemini + Groq.
+"""LLM client with multi-key, multi-model fallback for free-tier Gemini, Groq and other OpenAI-compatible providers.
 
-Walk order for a role: endpoints in config order; for each Gemini model every key in GEMINI_API_KEYS.
+Walk order for a role: endpoints in config order; for each model every key of its provider (GEMINI_API_KEYS,
+GROQ_API_KEYS, and the keys_env of each provider under `providers:` in models.yaml). A provider without keys is skipped.
 An (provider, model, key#) slot that fails with 429 / 503 / timeout goes on cooldown (persisted to
 data/cache/llm_state.json) and the next slot is tried. JSON outputs are validated with Pydantic; on a
 validation error the call is retried once with the error appended (possibly on a different slot).
@@ -32,6 +33,7 @@ from profsagent.config import CACHE, keys, models_cfg
 T = TypeVar("T", bound=BaseModel)
 GEMINI = "https://generativelanguage.googleapis.com/v1beta/models"
 GROQ = "https://api.groq.com/openai/v1/chat/completions"
+NATIVE = ("gemini", "groq", "ollama")
 
 
 class AllEndpointsFailed(RuntimeError):
@@ -118,6 +120,8 @@ class LLMClient:
         self.lim = self.cfg["limits"]
         self.gemini_keys = keys("GEMINI_API_KEYS")
         self.groq_keys = keys("GROQ_API_KEYS")
+        # other OpenAI-compatible providers (Mistral, NVIDIA NIM, OpenRouter, ...): {name: {base_url, keys, min_interval_s}}
+        self.extra = {n: {**p, "keys": keys(p["keys_env"])} for n, p in (self.cfg.get("providers") or {}).items()}
         self.slots = SlotState(CACHE / "llm_state.json")
         self.http = httpx.Client(timeout=self.lim["timeout_s"])
         self.run_log_path = run_log_path
@@ -125,6 +129,7 @@ class LLMClient:
         self.ollama_url = os.environ.get("OLLAMA_URL", "http://localhost:11434")
         self.totals = {"calls": 0, "prompt_tokens": 0, "output_tokens": 0}
         self.no_native_schema: set[str] = set()   # Gemini models that rejected responseJsonSchema in this process
+        self.no_json_mode: set[str] = set()       # OpenAI-compatible models that rejected response_format
         self.strong_only = os.environ.get("PROFSAGENT_STRONG_ONLY", "").lower() in ("1", "true", "yes", "on")
 
     # ------------------------------------------------------------------ slots
@@ -136,7 +141,9 @@ class LLMClient:
                 continue
             if self.strong_only and _weak(ep):
                 continue
-            ks = {"gemini": self.gemini_keys, "groq": self.groq_keys, "ollama": ["local"]}[ep["provider"]]
+            ks = {"gemini": self.gemini_keys, "groq": self.groq_keys, "ollama": ["local"]}.get(ep["provider"])
+            if ks is None:
+                ks = self.extra.get(ep["provider"], {}).get("keys", [])
             for i, k in enumerate(ks):
                 if not self.slots.available(f"key:{ep['provider']}:{_fp(k)}"):   # key rejected (401/403): skip all its models
                     continue
@@ -185,6 +192,34 @@ class LLMClient:
         u = j.get("usage", {})
         return j["choices"][0]["message"]["content"] or "", {"prompt": u.get("prompt_tokens", 0), "output": u.get("completion_tokens", 0)}, {}
 
+    def _openai(self, provider: str, model: str, key: str, system: str, user: str, temperature: float,
+                json_mode: bool) -> tuple[str, dict, dict]:
+        """Any OpenAI-compatible chat endpoint. JSON mode is requested; a model that rejects it is asked again without
+        it (the prompts already demand JSON and the reply is parsed leniently)."""
+        p = self.extra[provider]
+        body: dict = {"model": model, "temperature": temperature,
+                      "messages": ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": user}]}
+        if p.get("max_tokens"):
+            body["max_tokens"] = p["max_tokens"]
+        if json_mode and model not in self.no_json_mode:
+            body["response_format"] = {"type": "json_object"}
+        hdr = {"Authorization": f"Bearer {key}", **(p.get("headers") or {})}
+        tmo = p.get("timeout_s", self.lim["timeout_s"])
+        r = self.http.post(p["base_url"].rstrip("/") + "/chat/completions", headers=hdr, json=body, timeout=tmo)
+        if r.status_code in (400, 422) and "response_format" in body and re.search(r"response_format|json", r.text, re.I):
+            self.no_json_mode.add(model)
+            body.pop("response_format")
+            r = self.http.post(p["base_url"].rstrip("/") + "/chat/completions", headers=hdr, json=body, timeout=tmo)
+        if r.status_code != 200:
+            raise _HTTPError(r.status_code, r.text)
+        j = r.json()
+        if j.get("error"):                    # OpenRouter can report an upstream failure inside a 200
+            code = str((j["error"] or {}).get("code", ""))
+            raise _HTTPError(int(code) if code.isdigit() else 599, json.dumps(j["error"])[:400])
+        msg = (j.get("choices") or [{}])[0].get("message") or {}
+        u = j.get("usage") or {}
+        return msg.get("content") or "", {"prompt": u.get("prompt_tokens", 0), "output": u.get("completion_tokens", 0)}, {}
+
     @staticmethod
     def _until_pacific_midnight() -> float:
         from datetime import datetime, timedelta
@@ -211,7 +246,7 @@ class LLMClient:
     def _cooldown_for(self, err: "_HTTPError") -> tuple[float, str]:
         t = err.text
         if err.status == 429:
-            if re.search(r"PerDay", t):
+            if re.search(r"PerDay|per[- ]day|daily|requests per day", t, re.I):
                 return self._until_pacific_midnight(), "429 daily quota"
             m = re.search(r'"retryDelay":\s*"(\d+(?:\.\d+)?)s"', t)
             return (float(m.group(1)) + 2 if m else self.lim["cooldown_429_default_s"]), "429 rate"
@@ -255,7 +290,7 @@ class LLMClient:
                 continue
             if tools and ep["provider"] != "gemini":
                 continue
-            self.slots.wait_interval(slot, self.lim["min_interval_s"])
+            self.slots.wait_interval(slot, self.extra.get(ep["provider"], {}).get("min_interval_s", self.lim["min_interval_s"]))
             self.slots.touch(slot)
             t0 = time.time()
             try:
@@ -272,8 +307,10 @@ class LLMClient:
                         out = self._gemini(ep["model"], key, system, user, temperature, json_mode, tools, None)
                 elif ep["provider"] == "ollama":
                     out = self._ollama(ep["model"], system, user, temperature, json_mode)
-                else:
+                elif ep["provider"] == "groq":
                     out = self._groq(ep["model"], key, system, user, temperature, json_mode)
+                else:
+                    out = self._openai(ep["provider"], ep["model"], key, system, user, temperature, json_mode)
                 if record is not None:
                     record.endpoint = slot
                     record.attempts.append({"slot": slot, "ok": True, "s": round(time.time() - t0, 1)})
@@ -297,13 +334,18 @@ class LLMClient:
                         self.slots.cool(slot, secs, why)
                     last = e
                     continue
+                if ep["provider"] not in NATIVE:   # an unfamiliar provider's error must not end the run: bench it for an hour
+                    self.slots.cool(slot, 3600, f"{e.status} rejected")
+                    last = e
+                    continue
                 raise
             except (httpx.TimeoutException, httpx.TransportError) as e:
                 self.slots.cool(slot, 300 if ep["provider"] == "ollama" else self.lim["cooldown_timeout_s"], type(e).__name__)
-                if isinstance(e, httpx.ReadTimeout) and ep["provider"] == "gemini":
+                if isinstance(e, httpx.ReadTimeout) and ep["provider"] not in ("groq", "ollama"):
                     # a hanging model is overloaded for every key: move on to the next model instead of waiting on each key
-                    for kx in self.gemini_keys:
-                        self.slots.cool(f"gemini:{ep['model']}:{_fp(kx)}", self.lim["cooldown_503_s"], "ReadTimeout (model busy)")
+                    ks = self.gemini_keys if ep["provider"] == "gemini" else self.extra[ep["provider"]]["keys"]
+                    for kx in ks:
+                        self.slots.cool(f"{ep['provider']}:{ep['model']}:{_fp(kx)}", self.lim["cooldown_503_s"], "ReadTimeout (model busy)")
                 if record is not None:
                     record.attempts.append({"slot": slot, "ok": False, "why": type(e).__name__})
                 last = e

@@ -1,0 +1,580 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W01.L1",
+ "title": "Developer Workflows and AI-Assisted Coding",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "Traditional vs. AI-Augmented Developer Workflows",
+   "bullets": [
+    "Traditional workflows rely on manual coding, local search, and manual test execution.",
+    "AI-augmented workflows integrate generative models directly into the edit, test, and debug loop.",
+    "Generative AI acts as a pair programmer, automating routine boilerplate and draft implementations.",
+    "Developers shift from manual code writing toward specification, prompt construction, and verification."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Shift from manual implementation to AI-assisted iteration",
+    "steps": [
+     "Specification",
+     "Prompt / Context Setup",
+     "AI Generation",
+     "Verification & Testing",
+     "Refinement"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "In traditional software engineering, developers spend a significant portion of their time searching documentation, writing repetitive boilerplate code, and manually crafting initial implementations. With generative AI integrated into the workflow, the developer's role evolves. Developers now act as architects and reviewers who specify requirements, provide context, evaluate AI-generated drafts, and verify outputs against test suites. This shift speeds up prototype development, but requires developers to maintain strict verification practices.",
+   "los": [
+    "CO1.LO3"
+   ],
+   "sources": [
+    "C4"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Core Stages of Developer Workflows",
+   "bullets": [
+    "Software development follows predictable stages from requirement specification to deployment.",
+    "Core stages include design, implementation, code review, testing, and debugging.",
+    "AI tools can support each stage, provided suitable context is supplied.",
+    "Understanding stage transitions prevents context loss and maintainability issues."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Core stages of the software development lifecycle",
+    "steps": [
+     "Requirements",
+     "Design & Spec",
+     "Implementation",
+     "Testing & Debug",
+     "Review & CI/CD"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Developer workflows consist of structured feedback loops. Requirements are converted into design specs, which lead to code implementation. Next comes automated testing, debugging, and code review before merging into main branches. AI tools enhance each step: generating boilerplate during implementation, suggesting test cases during testing, and identifying potential bugs during debugging. Knowing where AI adds the most value in each stage is fundamental to designing productive workflows.",
+   "los": [
+    "CO1.LO3"
+   ],
+   "sources": [
+    "C4"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Spectrum of AI-Assisted Coding Tools",
+   "bullets": [
+    "AI coding tools range from simple inline auto-completion to fully me-autonomous agents.",
+    "Inline completion suggests the next few tokens or lines as you type.",
+    "Chat interfaces accept developer queries and produce multi-file suggestions.",
+    "Autonomous agents execute terminal commands, run tests, and fix errors independently."
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Comparison of AI assistance modalities",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Modality",
+      "Trigger",
+      "Scope",
+      "Developer Control"
+     ],
+     [
+      "Inline Completion",
+      "Keystroke / Pause",
+      "Single line / Block",
+      "High"
+     ],
+     [
+      "Chat Assistant",
+      "Prompt",
+      "Method / File",
+      "Medium"
+     ],
+     [
+      "Autonomous Agent",
+      "Task Objective",
+      "Multi-file / Repo",
+      "Low / Oversight"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "AI coding tools exist on a continuum based on autonomy and scope. Inline completion offers real-time suggestions within an editor, maintaining high developer control. Conversational chat interfaces allow developers to discuss code, explain errors, or request refactoring across entire methods or files. Autonomous coding agents take high-level goals, edit files across repository boundaries, run terminal commands, and interpret test results with minimal human intervention.",
+   "los": [
+    "CO1.LO3"
+   ],
+   "sources": [
+    "C4",
+    "C6"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Role of Contextualisation in AI Coding",
+   "bullets": [
+    "Language models lack inherent knowledge of your local workspace state.",
+    "Contextualisation feeds relevant code, types, dependencies, and rules to the model.",
+    "Without context, model outputs default to generic, generic-named, or inaccurate code.",
+    "Effective contextualisation yields project-consistent, syntactically sound completions."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Contextualisation pipeline for AI prompts",
+    "steps": [
+     "User Intent",
+     "Local Code Context",
+     "Environment & Types",
+     "Prompt Construction",
+     "LLM Output"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Large language models are pre-trained on generic codebases, but they know nothing about your specific project structure, variable names, or architectural decisions unless you provide that context. Contextualisation is the process of supplying the exact code snippets, class signatures, unit test frameworks, and constraints necessary for the model to produce accurate completions. Proper context dramatically increases the quality and compilability of generated code.",
+   "los": [
+    "CO1.LO3"
+   ],
+   "sources": [
+    "C5"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "concept",
+   "title": "Context Windows and Token Constraints",
+   "bullets": [
+    "Models have finite context window limits measured in tokens.",
+    "Tokens represent word fragments, code characters, or symbols.",
+    "Including unnecessary files wastes context budget and increases latency.",
+    "Selecting concise, targeted context is critical for short item generation."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Although modern LLMs have expanding context windows, blindly feeding entire codebases into prompts is inefficient and counterproductive. Excess irrelevant code consumes token budgets, slows down inference response times, and can confuse the model with irrelevant noise. When working with short items—such as a single utility function or a JUnit test case—developers must select only the essential signatures, imported types, and constraints.",
+   "los": [
+    "CO1.LO3"
+   ],
+   "sources": [
+    "C3",
+    "C5"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "concept",
+   "title": "Contextualisation Guidelines for Short Coding Tasks",
+   "bullets": [
+    "State the specific goal clearly in the initial line or comment.",
+    "Include required class definitions, interface signatures, and import statements.",
+    "Provide expected input/output examples or failing test cases.",
+    "Specify constraints such as framework version, performance, or exception handling."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "To achieve optimal results when requesting short code snippets, follow four contextualisation guidelines. First, state the goal clearly. Second, provide type definitions and imports so the model uses the correct API signatures. Third, include sample inputs and expected outputs, or a failing test case. Fourth, state constraints explicitly—for example, specifying JUnit 5 instead of JUnit 4, or avoiding external dependencies.",
+   "los": [
+    "CO1.LO3"
+   ],
+   "sources": [
+    "C2",
+    "C5"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "example",
+   "title": "Contextualising a Short Utility Method Request",
+   "bullets": [
+    "A weak prompt lacks environment and class structure details.",
+    "A contextualised prompt provides signature, imports, and validation constraints.",
+    "Explicit context ensures generated code uses proper exceptions and types."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Contextualised prompt structure for a Java method",
+    "steps": [],
+    "code": "// Context: Java 17, Spring Boot project\n// Goal: Validate email string using Regex\n// Constraint: Throw IllegalArgumentException if null or invalid\n\nimport java.util.regex.Pattern;\n\npublic class UserValidator {\n    private static final Pattern EMAIL_PATTERN = \n        Pattern.compile(\"^[A-Za-z0-9+_.-]+@(.+)$|\");\n    \n    // TODO: Write validateEmail(String email) throwing exception\n}",
+    "language": "java",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Compare a weak prompt like 'Write an email validator in Java' with the structured example shown here. The contextualised example specifies the language version, existing constants, import statements, and expected exception handling behaviour. By giving the model the exact class context and constraints, the resulting code integrates seamlessly into the existing repository without needing manual refactoring or extra import additions.",
+   "los": [
+    "CO1.LO3"
+   ],
+   "sources": [
+    "C2"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Step-by-Step Contextualisation for a JUnit Test",
+   "bullets": [
+    "Goal: Generate a unit test for a custom Stack class using JUnit 5.",
+    "Step 1: Provide class interface and methods to be tested.",
+    "Step 2: Specify testing framework annotations and assertions.",
+    "Step 3: Review generated test code for completeness and correctness."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Generated JUnit 5 test snippet",
+    "steps": [],
+    "code": "import org.junit.jupiter.api.Test;\nimport static org.junit.jupiter.api.Assertions.*;\n\nclass BoundedStackTest {\n    @Test\n    void pushShouldThrowExceptionWhenStackIsFull() {\n        BoundedStack<Integer> stack = new BoundedStack<>(1);\n        stack.push(10);\n        assertThrows(IllegalStateException.class, () -> {\n            stack.push(20);\n        });\n    }\n}",
+    "language": "java",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "In this worked problem, we build a contextualised request for unit test generation. First, we provide the model with the class under test (BoundedStack) and its constructor parameter. Second, we specify JUnit 5 assertions like assertThrows. The generated test directly reflects our project's framework choices. Step three requires us to manually check whether edge cases, such as pushing to a full stack, are tested correctly.",
+   "los": [
+    "CO1.LO3"
+   ],
+   "sources": [
+    "C2",
+    "C6"
+   ],
+   "minutes": 8.0
+  },
+  {
+   "kind": "check",
+   "title": "Concept Check: Effective Contextualisation",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "Which of the following prompt configurations follows best guidelines for contextualising a short Java helper method generation?",
+    "options": [
+     "Providing only a single line prompt: 'Write a helper function to format dates in Java.'",
+     "Providing the method signature, relevant imported classes, framework version, and expected exception behavior.",
+     "Pasting the entire 10,000 line codebase into the prompt without any specific task focus.",
+     "Asking the model to guess the project requirements based on generic naming conventions."
+    ],
+    "answer": 1,
+    "explanation": "Option 1 (index 1) correctly follows contextualisation guidelines by supplying method signatures, explicit dependencies, framework versions, and edge-case requirements. Option 0 lacks necessary project context, leading to generic outputs. Option 2 overflows the context window with irrelevant code and creates noise."
+   },
+   "notes": "Let's check your understanding of contextualisation guidelines. Think about how context quality directly influences model accuracy. Option 1 provides precise context without cluttering the prompt, ensuring clean and reusable code.",
+   "los": [
+    "CO1.LO3"
+   ],
+   "sources": [
+    "C5"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Contextualising Bug Fixes and Debugging Logs",
+   "bullets": [
+    "Debugging requires providing failing inputs, call stacks, and relevant source lines.",
+    "Isolate the problematic function alongside the thrown exception log.",
+    "State observed runtime behaviour versus expected runtime behaviour.",
+    "Avoid pasting unformatted stack traces without surrounding code context."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Debugging context assembly pipeline",
+    "steps": [
+     "Capture Failure Log",
+     "Isolate Target Function",
+     "Attach Expected vs Actual",
+     "Send Prompt to Agent",
+     "Verify Fix with Test"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "When using AI for debugging, simply pasting a stack trace is rarely enough. Effective bug-fixing context requires three key elements: the exact source code where the crash occurred, the raw stack trace or log output, and a concise statement explaining what was expected versus what actually happened. Supplying failing unit tests alongside this information allows the model to verify its proposed fix against known failures.",
+   "los": [
+    "CO1.LO3"
+   ],
+   "sources": [
+    "C6"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "concept",
+   "title": "Specification-Driven Development with AI",
+   "bullets": [
+    "Specification-driven development uses formal specs as primary input for AI tools.",
+    "Specifications define inputs, outputs, preconditions, postconditions, and invariants.",
+    "Structured specs eliminate ambiguity in generative model outputs.",
+    "Tests serve as executable specifications validating generated implementations."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Specification-Driven Development (SDD) is an effective paradigm for AI-assisted workflows. Instead of writing code directly or providing informal prompt descriptions, developers craft precise specifications—defining pre-conditions, post-conditions, domain models, and constraints. Generative AI tools convert these specifications into functional code, while automated unit tests verify that the implementation adheres strictly to the contract.",
+   "los": [
+    "CO1.LO3"
+   ],
+   "sources": [
+    "C2"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "concept",
+   "title": "Complexity Backpressure in AI-Assisted Workflows",
+   "bullets": [
+    "As project complexity grows, AI agents encounter accumulated context drift.",
+    "Complexity backpressure occurs when subtle bugs compound across generated commits.",
+    "High architectural complexity reduces agent task completion success rates.",
+    "Modular architecture and strict boundaries mitigate complexity backpressure."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Recent empirical studies highlight the phenomenon of 'complexity backpressure'. While AI coding assistants excel at small, isolated tasks, their reliability drops when working on complex, tightly coupled systems. Errors can compound across successive generated edits if not carefully checked. Developers must combat complexity backpressure by maintaining clean modular boundaries, writing comprehensive unit tests, and keeping individual AI tasks tightly scoped.",
+   "los": [
+    "CO1.LO3"
+   ],
+   "sources": [
+    "C3"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "concept",
+   "title": "Human-in-the-Loop Verification Strategies",
+   "bullets": [
+    "Never accept generated code into production without human review.",
+    "Verify AI output through automated test suites, static analysis, and code review.",
+    "Check for hallucinated APIs, security vulnerabilities, and subtle edge-case errors.",
+    "Developers remain fully accountable for code reliability and security."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Human-in-the-loop validation loop",
+    "steps": [
+     "AI Code Generation",
+     "Automated Linting",
+     "Unit Test Suite",
+     "Human Code Review",
+     "Merge Approval"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "The human-in-the-loop paradigm is indispensable in AI-assisted software development. Generative AI models are probabilistic and can produce syntactically plausible but logically flawed or insecure code (such as hallucinating non-existent library methods or missing security sanitisation). Developers must enforce mandatory verification steps: static analysis linting, running unit tests, and performing careful human code review prior to merging.",
+   "los": [
+    "CO1.LO3"
+   ],
+   "sources": [
+    "C1",
+    "C4"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "concept",
+   "title": "Integrating AI Tools into Git and CI/CD Pipelines",
+   "bullets": [
+    "AI assistants plug into editor IDEs, git pre-commit hooks, and CI/CD actions.",
+    "Pre-commit hooks can invoke AI linters to enforce prompt-based style guide compliance.",
+    "CI/CD pipelines run regression tests against AI-generated pull requests.",
+    "Version control history acts as audit trail for prompt and code evolution."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Git & CI/CD workflow with AI assistance",
+    "steps": [
+     "Local IDE + AI Edit",
+     "Git Commit Hook",
+     "PR Generation",
+     "CI Test Suite Run",
+     "PR Review & Merge"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Integrating AI into the developer workflow extends beyond the text editor. Modern workflows embed AI into the continuous integration pipeline and version control practices. Developer commits generated code to git branches where automated CI pipelines run tests, perform security scans, and check formatting. Clean version control commit messages document both human intent and AI-assisted changes, keeping the audit trail clear.",
+   "los": [
+    "CO1.LO3"
+   ],
+   "sources": [
+    "C4",
+    "C6"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "example",
+   "title": "Workflow Example: Adding a Feature with AI Support",
+   "bullets": [
+    "End-to-end task: Add user search endpoint to an existing REST controller.",
+    "Step 1: Define repository interface and model constraints.",
+    "Step 2: Prompt AI with controller method signature and service interfaces.",
+    "Step 3: Run existing unit tests and fix generated edge cases."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Controller method generated from context",
+    "steps": [],
+    "code": "@RestController\n@RequestMapping(\"/api/users\")\npublic class UserController {\n    private final UserService userService;\n\n    public UserController(UserService userService) {\n        this.userService = userService;\n    }\n\n    @GetMapping(\"/search\")\n    public ResponseEntity<List<UserDto>> searchUsers(@RequestParam String query) {\n        if (query.blank()) {\n            return ResponseEntity.badRequest().build();\n        }\n        return ResponseEntity.ok(userService.searchByName(query));\n    }\n}",
+    "language": "java",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "This example shows a full feature addition workflow. We supply the controller structure, constructor injection pattern, and request mapping conventions to the AI assistant. The generated endpoint includes basic query validation and delegates execution to UserService. The developer verifies that @RequestParam and HTTP status codes match project REST standards, then runs the test suite to confirm functionality.",
+   "los": [
+    "CO1.LO3"
+   ],
+   "sources": [
+    "C2",
+    "C4"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "check",
+   "title": "Concept Check: Developer Workflow Components",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "What primary mechanism prevents 'complexity backpressure' and context drift in multi-file AI-assisted development tasks?",
+    "options": [
+     "Allowing the autonomous agent to modify all files across the repository without test verification.",
+     "Decomposing tasks into tightly scoped modules, enforcing strict interfaces, and verifying edits with automated tests.",
+     "Increasing the prompt length by pasting whole stack traces repeatedly.",
+     "Disabling static analysis tools and unit tests to speed up AI code execution."
+    ],
+    "answer": 1,
+    "explanation": "Option 1 (index 1) is correct: modular design, clear contracts, and automated testing bound the complexity of each task, preventing compounding errors. Option 0 increases complexity backpressure. Option 3 creates token noise and degrades model focus."
+   },
+   "notes": "Let's review how developers control complexity backpressure when working with AI agents on larger systems. Keeping tasks modular and supported by automated unit tests is the most effective defense against context drift and unexpected side effects.",
+   "los": [
+    "CO1.LO3"
+   ],
+   "sources": [
+    "C3",
+    "C6"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Introduction to Model Context Protocols",
+   "bullets": [
+    "Model Context Protocol (MCP) standardises context delivery to AI tools.",
+    "Decouples AI clients (IDEs) from context providers (databases, tools, repos).",
+    "Provides structured primitives: Resources, Prompts, and Tools.",
+    "Prepares workflows for dynamic, multi-source context integration."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Architecture of Model Context Protocol",
+    "steps": [
+     "IDE / Client",
+     "MCP Protocol Boundary",
+     "MCP Server",
+     "Data Sources / Tools",
+     "LLM Context"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "As AI workflows mature, manually copying context into prompts becomes inefficient. The Model Context Protocol (MCP) introduces an open standard for connecting AI clients to external context sources and tools safely. MCP allows IDEs to query context servers dynamically—retrieving schema definitions, issue tracker logs, or file trees seamlessly. This foundational architecture leads directly into advanced agent configurations in subsequent lectures.",
+   "los": [
+    "CO1.LO3"
+   ],
+   "sources": [
+    "C5"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "summary",
+   "title": "Summary: AI-Assisted Developer Workflows",
+   "bullets": [
+    "AI-assisted workflows transform developers into architects, prompt designers, and verifiers.",
+    "Core workflow components include specification, context assembly, generation, and test-driven verification.",
+    "Contextualisation guidelines require explicit goals, type imports, failing tests, and clear constraints.",
+    "Managing complexity backpressure requires modular design, human review, and CI/CD integration."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "To summarize today's lecture: generative AI drastically alters how software is authored, but core software engineering principles—modular design, clear specification, rigorous testing, and version control—are more important than ever. By applying effective contextualisation guidelines for short items and utilizing automated tests to handle complexity backpressure, developers can maximize productivity while ensuring software quality and system reliability.",
+   "los": [
+    "CO1.LO3"
+   ],
+   "sources": [
+    "C2",
+    "C3",
+    "C4",
+    "C6"
+   ],
+   "minutes": 5.0
+  }
+ ]
+}

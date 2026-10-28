@@ -1,6 +1,8 @@
 """Phase 2 · Deliverable B — lecture slides and notes for an approved Phase 1 course run.
 
-  python scripts/run_content.py plan     --run-id cs601-02 --lectures W01.L1          # inputs and cost, no AI calls
+  python scripts/run_content.py plan     --run-id cs601-02 --lectures W03.S1,W03.S2   # inputs and cost, no AI calls
+Lecture ids: W03.S1 is week 3's first class (config/content.yaml `classes`: 2 x 90 min a week); W03.L1 is C's
+per-topic lecture brief (its length is the topic's hours that week). Decks are normally made per class.
   python scripts/run_content.py generate --run-id cs601-02 --lectures W01.L1 [--include-pending] [--note "..."]
   python scripts/run_content.py generate --run-id cs601-02 --from-survey              # every lecture with generate_material: yes
   python scripts/run_content.py generate --run-id cs601-02 --redo                     # decks the professor sent back (review.yaml)
@@ -31,7 +33,6 @@ from profsagent.content.checks import check_deck, content_range  # noqa: E402
 from profsagent.content.models import LectureDeck  # noqa: E402
 from profsagent.content.verify import verify  # noqa: E402
 from profsagent.delivery import survey as sv  # noqa: E402
-from profsagent.delivery.brief import build_briefs  # noqa: E402
 from profsagent.delivery.common import load_state, read_json, write_json  # noqa: E402
 from profsagent.validate.record import errors  # noqa: E402
 
@@ -44,7 +45,7 @@ def lectures(a, briefs: dict) -> list[str]:
     ids = [x.strip() for x in (a.lectures or "").split(",") if x.strip()]
     unknown = [x for x in ids if x not in briefs]
     if unknown:
-        sys.exit(f"unknown lectures {unknown}; this run has {list(briefs)[:5]} …")
+        sys.exit(f"unknown lectures {unknown}; this run has classes {list(briefs)[:3]} … and topic lectures {[k for k in briefs if '.L' in k][:3]} …")
     return ids
 
 
@@ -81,7 +82,7 @@ def main() -> None:
         return
 
     st = load_state(a.run_id)
-    briefs = {b["lecture_id"]: b for b in build_briefs(st)}
+    briefs = G.units(st)                            # class sessions (W03.S1) and C's per-topic briefs (W03.L1)
     ids = lectures(a, briefs)
     if not ids:
         sys.exit("no lectures chosen: give --lectures, answer generate_material in the survey, or mark redo in review.yaml")
@@ -93,7 +94,7 @@ def main() -> None:
             b = briefs[lid]
             src = G.gather_sources(st, a.run_id, b, pending, c["sources"]["max_external"])
             lo, hi = content_range(b["hours"], c)
-            print(f"{lid}  {b['topic']}  ({b['hours']:g} h, {len(b['learning_outcomes'])} LOs)  content slides {lo}–{hi}  "
+            print(f"{lid}  {b['topic']}  ({round(b['hours'] * 60)} min, {len(b['learning_outcomes'])} LOs)  content slides {lo}–{hi}  "
                   f"sources {list(src)}")
         per = 1 + c["deck"]["repair_rounds"] + (2 if a.auto_review else 0)
         print(f"AI calls: {len(ids) * (2 if a.auto_review else 1)} (up to {len(ids) * per} with repairs)")
@@ -123,7 +124,9 @@ def main() -> None:
                 sys.exit(f"no generated material for {lid}; run generate first")
             deck, b = LectureDeck.model_validate(read_json(d / "deck.json")), briefs[lid]
             more, man["code_checks"] = verify(deck, man["sources"], c)
-            found = check_deck(deck, G.lecture_input(b), set(man["sources"]), c) + more
+            # the code checks are redone; the AI review's findings are kept (re-reviewing would need a call)
+            found = (check_deck(deck, G.lecture_input(b), set(man["sources"]), c) + more
+                     + [x for x in man["findings"] if x.get("stage") == "ai-review"])
             man["slides"], found = G.write_outputs(d, deck, G.frame(st, b), man["sources"], c, found)
             man.update(findings=found, errors=len(errors(found)), warnings=len(found) - len(errors(found)))
             write_json(d / "material.json", man)

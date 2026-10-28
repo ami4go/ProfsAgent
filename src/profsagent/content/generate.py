@@ -26,6 +26,7 @@ from profsagent.content.ai_review import after_repair, model_of, review_deck
 from profsagent.content.checks import check_deck, content_range
 from profsagent.content.models import FIRST_CONTENT_SLIDE, LectureDeck
 from profsagent.content.render import render_markdown, render_pptx
+from profsagent.content.sessions import build_sessions
 from profsagent.content.verify import verify
 from profsagent.delivery.brief import build_briefs, clean
 from profsagent.delivery.common import load_state, now, out_dir, read_json, write_json
@@ -45,6 +46,15 @@ def material_dir(run_id: str, lecture_id: str) -> Path:
     return out_dir(run_id) / "material" / lecture_id
 
 
+def units(st: dict, c: dict | None = None) -> dict[str, dict]:
+    """Every lecture a deck can be made for: the class sessions (W03.S1: config `classes`, content/sessions.py) and
+    C's per-topic briefs (W03.L1), by id."""
+    c = c or cfg()
+    briefs = build_briefs(st)
+    sessions = build_sessions(st, c["classes"]["per_week"], c["classes"]["minutes"], briefs)
+    return {u["lecture_id"]: u for u in sessions + briefs}
+
+
 # ------------------------------------------------------------------ inputs
 def lecture_input(brief: dict, note: str = "") -> dict:
     """The brief as B1 sees it: statements cleaned of template holes, the time in minutes."""
@@ -56,22 +66,28 @@ def lecture_input(brief: dict, note: str = "") -> dict:
             "builds_on": brief.get("builds_on") or [],
             "prerequisites": [{"course": p["course"], "relied_topics": p.get("relied_topics", [])} for p in brief.get("prerequisite_courses") or []],
             "leads_to": brief.get("leads_to") or [], "assessed_in": brief.get("assessed_in") or [],
-            "hands_on": brief.get("hands_on", False), "labs": brief.get("labs") or [], "professor_note": note}
+            "hands_on": brief.get("hands_on", False), "labs": brief.get("labs") or [], "professor_note": note,
+            "parts": [{"topic": x["topic"], "minutes": x["minutes"]} for x in brief.get("parts") or []]}
 
 
 def gather_sources(st: dict, run_id: str, brief: dict, include_pending: bool, max_external: int) -> dict[str, dict]:
-    """Short id -> source. C1.. the course's verified resources that support this lecture's topic (all of them when none
-    does); L1.. C's resources for the lecture, approved (or, for testing, pending) items in rank order."""
+    """Short id -> source. C1.. the course's verified resources that support this lecture's topics (all of them when none
+    does); L1.. C's resources for the lecture (for a class session, for each topic part), approved (or, for testing,
+    pending) items in rank order."""
     out: dict[str, dict] = {}
     course = st.get("resources") or []
-    mine = [r for r in course if any(s.get("topic_id") == brief["topic_id"] for s in r.get("supports_topics") or [])] or course
+    parts = brief.get("parts") or [brief]
+    topics = {x["topic_id"] for x in parts}
+    mine = [r for r in course if any(s.get("topic_id") in topics for s in r.get("supports_topics") or [])] or course
     for i, r in enumerate(mine, 1):
         out[f"C{i}"] = {"title": r.get("title"), "year": r.get("year"), "url": _link(r.get("identifier")),
                         "kind": r.get("role") or "course resource", "approved": True}
-    lec = read_json(out_dir(run_id) / "lectures" / f"{brief['lecture_id']}.json", {}) or {}
-    items = (lec.get("resources") or {}).get("items") or {}
-    picked = [it for kind in KINDS for it in items.get(kind) or []
-              if it.get("status_decision") == "approve" or (include_pending and it.get("status_decision") in (None, "pending"))]
+    picked = []
+    for x in parts:
+        lec = read_json(out_dir(run_id) / "lectures" / f"{x['lecture_id']}.json", {}) or {}
+        items = (lec.get("resources") or {}).get("items") or {}
+        picked += [it for kind in KINDS for it in items.get(kind) or [] if it not in picked and
+                   (it.get("status_decision") == "approve" or (include_pending and it.get("status_decision") in (None, "pending")))]
     for i, it in enumerate(picked[:max_external], 1):
         out[f"L{i}"] = {"title": it.get("title"), "year": it.get("year") or (it.get("published") or "")[:4] or None,
                         "url": it.get("url"), "kind": it.get("kind"), "approved": it.get("status_decision") == "approve"}
@@ -90,7 +106,8 @@ def frame(st: dict, brief: dict) -> dict:
     course = st["cco_compact"]["course_name"]
     los = [f"{clean(lo['statement'])} ({lo['id']})" for lo in brief["learning_outcomes"]]
     return {"course": course, "footer": f"{course}  ·  {brief['lecture_id']}",
-            "subtitle": f"Week {brief['week']} · {brief['module']} · {brief['hours']:g} h",
+            "subtitle": f"Week {brief['week']} · {brief['module']} · " + (f"{round(brief['hours'] * 60)} min" if brief.get("parts")
+                                                                          else f"{brief['hours']:g} h"),
             "draft_note": "Draft generated by ProfsAgent from the course design: review and edit before teaching.",
             "objectives": los,
             "objectives_notes": "These are the lecture's learning outcomes from the approved course design. "
@@ -155,7 +172,7 @@ def generate_material(run_id: str, lecture_id: str, options: dict | None = None,
     if old.get("status") == "approved" and not o.get("force"):
         raise ValueError(f"{lecture_id}: the professor approved these slides; pass force to replace them")
     st = load_state(run_id)
-    brief = next((b for b in build_briefs(st) if b["lecture_id"] == lecture_id), None)
+    brief = units(st, c).get(lecture_id)
     if brief is None:
         raise KeyError(f"no lecture {lecture_id} in runs/{run_id}")
     d = material_dir(run_id, lecture_id)

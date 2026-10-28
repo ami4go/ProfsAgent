@@ -39,6 +39,16 @@ experts) Vihan.
   - Its errors get one repair. The status becomes `ai-reviewed`; only the professor can approve.
   - UI: show `ai-reviewed` as "checked by AI, not by you", with `material.json → ai_review.verdict` and the findings.
   - AI calls for slides are now logged in `delivery/material/llm_calls.jsonl`, not `delivery/llm_calls.jsonl`.
+- **Slides are made per class, not per topic chunk (`content/sessions.py`, `config/content.yaml → classes`):**
+  - C's briefs (`W03.L1`, …) are one per topic chunk of the schedule, so their lengths vary (0.25–2.5 h). IIIT-D
+    teaches L = 3 as 2 classes a week, so B packs each week's chunks, in order, into **2 classes of 90 min**
+    (`W03.S1`, `W03.S2`). A class can finish one topic and start the next; B1 gets the minutes per topic.
+  - C's brief ids are unchanged (survey, resources and the UI still use them). `generate_material` accepts both kinds
+    of id. **To discuss:** should the survey and C's resources move to class ids too?
+  - CS-601 (`runs/cs601-02/delivery/material/`): weeks 1–2 were made per topic chunk (W01.L1, W01.L2, W02.L1, W02.L2);
+    weeks 3–13 per class (W03.S1 … W13.S2, being generated). W03.L1 is superseded by W03.S1.
+- **Smaller fixes:** JSON snippets are checked (a labelled request + response pair is fine); `check` keeps the AI
+  review's findings; NVIDIA timeout 75 s → 240 s (a deck takes 2–3 min to write).
 - **Java checks:** a JDK (Temurin 21) is now installed on Parth's laptop. Elsewhere, Java snippets stay "not verified"
   until a JDK is installed.
 - **Not built yet:** `attach_material` (the professor's own pptx/pdf → summary / quiz / gap check).

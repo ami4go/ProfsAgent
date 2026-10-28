@@ -1,6 +1,6 @@
 """Checks of a deck that need tools beyond the deck itself (no AI calls): code syntax and citation match.
 
-    D-CODE        error    a code figure that does not parse (Python: ast; C/C++: gcc/g++ -fsyntax-only; Java: javac;
+    D-CODE        error    a code figure that does not parse (Python: ast; JSON: json; C/C++: gcc/g++ -fsyntax-only; Java: javac;
                            JavaScript: node --check), or Java calling a method a JDK type does not have
     D-UNVERIFIED  warning  a code figure no checker on this machine can parse (e.g. Java without a JDK): not verified
     D-GROUND      warning  a cited source matches the slide worse than the average offered source and below the floor
@@ -14,6 +14,7 @@ an identifier the fragment never declares is not an error (except a missing meth
 from __future__ import annotations
 
 import ast
+import json
 import re
 import shutil
 import subprocess
@@ -26,7 +27,7 @@ from profsagent.content.models import FIRST_CONTENT_SLIDE, LectureDeck
 from profsagent.validate.record import ERR, WARN, v
 
 LANG = {"python": "python", "py": "python", "python3": "python", "java": "java", "c": "c", "cpp": "cpp", "c++": "cpp",
-        "javascript": "js", "js": "js", "node": "js"}
+        "javascript": "js", "js": "js", "node": "js", "json": "json"}
 C_SYNTAX = re.compile(r"expected|stray|unterminated|missing terminating|unbalanced", re.I)
 JAVA_SYNTAX = re.compile(r"expected|illegal start|not a statement|unclosed|reached end of file|orphaned", re.I)
 # JDK types whose methods javac knows even in a fragment: "cannot find symbol ... method x ... of type String" is real
@@ -41,6 +42,21 @@ def _run(cmd: list[str], src: str, suffix: str) -> tuple[bool, str]:
         f.write_text(src, encoding="utf-8")
         r = subprocess.run(cmd + [str(f)], capture_output=True, text=True, timeout=60, cwd=d)
         return r.returncode == 0, (r.stderr or r.stdout).replace(str(f), "snippet")
+
+
+def _json(code: str) -> str | None:
+    """Slides often show a request and its response one after the other, labelled with // lines: each value must parse."""
+    text = "\n".join("" if ln.strip().startswith("//") else ln for ln in code.splitlines())
+    dec, i = json.JSONDecoder(), 0
+    try:
+        while True:
+            while i < len(text) and text[i].isspace():
+                i += 1
+            if i == len(text):
+                return None
+            _, i = dec.raw_decode(text, i)
+    except json.JSONDecodeError as e:
+        return f"line {e.lineno}: {e.msg}"
 
 
 def _python(code: str) -> str | None:
@@ -105,7 +121,7 @@ def _js(code: str) -> str | None:
     return None if ok else next((ln.strip() for ln in out.splitlines() if "Error" in ln), out.strip()[:160])
 
 
-CHECKERS = {"python": (lambda: True, _python), "c": (lambda: shutil.which("gcc"), lambda c: _c_family(c, "c")),
+CHECKERS = {"python": (lambda: True, _python), "json": (lambda: True, _json), "c": (lambda: shutil.which("gcc"), lambda c: _c_family(c, "c")),
             "cpp": (lambda: shutil.which("g++"), lambda c: _c_family(c, "cpp")),
             "java": (lambda: shutil.which("javac"), _java), "js": (lambda: shutil.which("node"), _js)}
 

@@ -190,6 +190,8 @@ python scripts/run_content.py generate --run-id cs601-02 --lectures W01.L2 --aut
 5. **Professor review** (`content/review.py`): `material/review.yaml` lists every deck; `approve` freezes it (a new
    generation needs `--force`), `redo` regenerates it with the professor's reason as instructions, `reject` drops it.
    `material.json → status` is draft | ai-reviewed | approved | redo | rejected.
+Decks are made per class: each week's lecture hours are packed into `classes.per_week` classes of `classes.minutes`
+(2 × 90 min; ids `W03.S1`, `W03.S2`, `content/sessions.py`). C's per-topic brief ids (`W03.L1`) also work.
 Output: `runs/<id>/delivery/material/<lecture>/`. Example: `eval/content_examples/cs601-02_W01.L1/`.
 
 ## Other scripts

@@ -1,6 +1,6 @@
 ---
 id: B1
-version: 0.2.0
+version: 0.3.0
 stage: Phase 2 · B · lecture slides
 model_class: generate
 temperature: 0.3
@@ -8,7 +8,7 @@ output_model: LectureDeck (src/profsagent/content/models.py)
 inputs:
   course: {course_name, level}
   lecture: {lecture_id, topic, module, hours, learning_outcomes, course_outcomes, builds_on, prerequisites, leads_to,
-            assessed_in, hands_on, labs, professor_note}
+            assessed_in, hands_on, labs, professor_note, parts: [{topic, minutes}]}
   sources: [{id, kind, title, year, url}]
   slides: {min, max}
   problems: findings of the checks on a previous attempt (repair only)
@@ -21,6 +21,9 @@ What to write:
   title, objectives and references slides: do not write those.
 - Teach the lecture's learning outcomes, in an order a student can follow: start from what students already know
   (builds_on, prerequisites), introduce one idea per slide, then use it.
+- `lecture.parts`, when given: this is one class that covers these topics in this order, with about these minutes each
+  (a topic may have started in the previous class or continue in the next one). Give each topic slides in proportion
+  to its minutes; when a topic continues from the previous class, open it with one short recap slide.
 - Every learning outcome must be served by at least one slide (list its id in `los`). An outcome at Bloom level 3 or
   above needs an `example` or `worked_problem` slide that shows the skill being used, step by step.
 - Include at least one `check` slide per lecture hour: a multiple-choice question students answer in class, given in

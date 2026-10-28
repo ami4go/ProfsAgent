@@ -1,0 +1,138 @@
+{
+ "lecture_id": "W02.L1",
+ "topic": "Model context protocols and architecture",
+ "generated_at": "2026-10-28 20:42:04",
+ "prompt": "B1 0.2.0",
+ "files": {
+  "slides": "material\\W02.L1\\slides.pptx",
+  "notes": "material\\W02.L1\\notes.md",
+  "deck": "material\\W02.L1\\deck.json",
+  "quiz": "material\\W02.L1\\quiz.json"
+ },
+ "slides": 21,
+ "content_slides": 18,
+ "minutes": 121.0,
+ "errors": 1,
+ "warnings": 0,
+ "findings": [
+  {
+   "code": "D-AI",
+   "severity": "error",
+   "nodes": [
+    "slide 7"
+   ],
+   "message": "slide 7 ('Communication Transports: Stdio vs WebSockets and HTTP'): [fact] The slide title and speaker notes mention WebSockets as a transport mechanism, but the MCP specification (as of protocol version 2024-11-05) defines only two transports: stdio and HTTP with Server-Sent Events (SSE). WebSockets are not part of the standard. Fix: Change the title to 'Communication Transports: Stdio and HTTP+SSE' and update the notes to state that MCP supports stdio for local servers and HTTP with Server-Sent Events for remote servers; remove any reference to WebSockets.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Communication Transports: Stdio vs WebSockets and HTTP"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 8,
+   "language": "json",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 9,
+   "language": "json",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 10,
+   "language": "json",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 11,
+   "language": "json",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 13,
+   "language": "json",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 14,
+   "language": "json",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 15,
+   "language": "json",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 18,
+   "language": "json",
+   "status": "ok",
+   "detail": ""
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Query Tuning Framework Using the Model Context Protocol for Workflows",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.6172059",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1"
+ ],
+ "calls": [
+  {
+   "endpoint": "gemini:gemini-3.5-flash:k3ca4d81f",
+   "prompt_tokens": 1200,
+   "output_tokens": 11637
+  },
+  {
+   "endpoint": "gemini:gemini-3.5-flash:k3ca4d81f",
+   "prompt_tokens": 1266,
+   "output_tokens": 9624
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 4497,
+   "output_tokens": 2845
+  },
+  {
+   "endpoint": "gemini:gemini-3.5-flash:k3ca4d81f",
+   "prompt_tokens": 1382,
+   "output_tokens": 10955
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+  "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+  "prompt_tokens": 4497,
+  "output_tokens": 2845,
+  "verdict": "The deck is largely accurate and safe to teach, but the professor must correct the erroneous mention of WebSockets as an MCP transport on slide 7 before presenting.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 7,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The slide title and speaker notes mention WebSockets as a transport mechanism, but the MCP specification (as of protocol version 2024-11-05) defines only two transports: stdio and HTTP with Server-Sent Events (SSE). WebSockets are not part of the standard.",
+    "fix": "Change the title to 'Communication Transports: Stdio and HTTP+SSE' and update the notes to state that MCP supports stdio for local servers and HTTP with Server-Sent Events for remote servers; remove any reference to WebSockets."
+   }
+  ],
+  "repaired": false
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

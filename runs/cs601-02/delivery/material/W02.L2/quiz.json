@@ -1,0 +1,17 @@
+[
+ {
+  "slide": 9,
+  "los": [
+   "CO1.LO2"
+  ],
+  "question": "How does an agent host discover tools provided by a local Model Context Protocol (MCP) server?",
+  "options": [
+   "By making an HTTP POST request to a centralized web API registry.",
+   "By sending a JSON-RPC 2.0 tools/list request over stdio or SSE transport.",
+   "By parsing static Markdown annotations embedded in source code files.",
+   "By scanning remote Docker container registries for published tool images."
+  ],
+  "answer": 1,
+  "explanation": "MCP servers expose tools directly to host environments via JSON-RPC 2.0 messages transmitted over stdio (for local servers) or SSE (for remote servers). Host environments discover tools by requesting 'tools/list' during connection initialization. Option 0 is incorrect because MCP does not rely on a central REST API endpoint or registry service."
+ }
+]

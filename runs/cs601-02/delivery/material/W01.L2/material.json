@@ -1,0 +1,126 @@
+{
+ "lecture_id": "W01.L2",
+ "topic": "Model context protocols and architecture",
+ "generated_at": "2026-10-28 20:10:30",
+ "prompt": "B1 0.2.0",
+ "files": {
+  "slides": "material\\W01.L2\\slides.pptx",
+  "notes": "material\\W01.L2\\notes.md",
+  "deck": "material\\W01.L2\\deck.json",
+  "quiz": "material\\W01.L2\\quiz.json"
+ },
+ "slides": 13,
+ "content_slides": 10,
+ "minutes": 60.0,
+ "errors": 0,
+ "warnings": 3,
+ "findings": [
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('Transport Layers and Execution Isolation'): [clarity] The slide states that workspace configuration must explicitly state transport endpoints and authorization headers for SSE, but the configuration schema shown in slide 5 only includes command, args, and env for stdio transport. The SSE configuration schema is not described, which may confuse students when auditing templates. Fix: Either add a slide showing the SSE configuration schema (e.g., with transport type, URL, headers) or clarify that the schema for SSE differs and is not covered in this lecture.",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Transport Layers and Execution Isolation"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10 ('Query Tuning and Context Workflows in MCP'): [level] The slide references 'MCP frameworks tune queries by dynamically selecting relevant context primitives,' which introduces research-level concepts not required by the learning outcome (Bloom level 1: identify configuration schema). This may distract from the core objective. Fix: Remove or reframe as an optional advanced topic, or align with the learning outcome by focusing on how the configuration schema enables context filtering (e.g., via resource/tool selection).",
+   "evidence": {
+    "kind": "level",
+    "title": "Query Tuning and Context Workflows in MCP"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 5"
+   ],
+   "message": "slide 5 ('MCP Workspace Configuration Schema'): [clarity] The sample JSON schema only demonstrates stdio transport (command, args, env) and does not indicate how to specify an alternative transport such as SSE, even though slide 8 mentions SSE requires explicit endpoints. Fix: Add a note that the schema for SSE transport includes additional fields (e.g., 'transport': 'sse', 'url': '...') or reference the MCP specification for the complete schema.",
+   "evidence": {
+    "kind": "clarity",
+    "title": "MCP Workspace Configuration Schema"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 5,
+   "language": "json",
+   "status": "ok",
+   "detail": ""
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Query Tuning Framework Using the Model Context Protocol for Workflows",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.6172059",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1"
+ ],
+ "calls": [
+  {
+   "endpoint": "cache(gemini:gemini-3.5-flash:k3ca4d81f)",
+   "prompt_tokens": 0,
+   "output_tokens": 0
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 2866,
+   "output_tokens": 3075
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+  "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+  "prompt_tokens": 2866,
+  "output_tokens": 3075,
+  "verdict": "The deck is largely accurate and safe to teach from, but the professor should address the missing SSE configuration schema details and consider trimming the advanced query-tuning content to stay focused on the learning outcome.",
+  "questions": 1,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 8,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The slide states that workspace configuration must explicitly state transport endpoints and authorization headers for SSE, but the configuration schema shown in slide 5 only includes command, args, and env for stdio transport. The SSE configuration schema is not described, which may confuse students when auditing templates.",
+    "fix": "Either add a slide showing the SSE configuration schema (e.g., with transport type, URL, headers) or clarify that the schema for SSE differs and is not covered in this lecture."
+   },
+   {
+    "slide": 10,
+    "severity": "warning",
+    "kind": "level",
+    "problem": "The slide references 'MCP frameworks tune queries by dynamically selecting relevant context primitives,' which introduces research-level concepts not required by the learning outcome (Bloom level 1: identify configuration schema). This may distract from the core objective.",
+    "fix": "Remove or reframe as an optional advanced topic, or align with the learning outcome by focusing on how the configuration schema enables context filtering (e.g., via resource/tool selection)."
+   },
+   {
+    "slide": 5,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The sample JSON schema only demonstrates stdio transport (command, args, env) and does not indicate how to specify an alternative transport such as SSE, even though slide 8 mentions SSE requires explicit endpoints.",
+    "fix": "Add a note that the schema for SSE transport includes additional fields (e.g., 'transport': 'sse', 'url': '...') or reference the MCP specification for the complete schema."
+   }
+  ],
+  "repaired": false
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

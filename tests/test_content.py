@@ -184,6 +184,14 @@ def test_python_snippets_are_parsed():
     assert found[0]["code"] == "D-CODE" and found[0]["nodes"] == ["slide 3"] and report[0]["status"] == "error"
 
 
+def test_json_snippets_are_parsed():
+    assert V.check_code(code_deck("json", '{"mcpServers": {"fs": {"command": "npx"}}}'))[0] == []
+    assert V.check_code(code_deck("json", '{"mcpServers": {"fs": {"command": "npx",}}}'))[0][0]["code"] == "D-CODE"
+    pair = '// Request\n{"id": 1, "method": "tools/call"}\n// Response\n{"id": 1, "result": {}}'
+    assert V.check_code(code_deck("json", pair))[0] == []                              # a labelled request + response
+    assert V.check_code(code_deck("json", pair.replace('"result": {}', '"result": {')))[0][0]["code"] == "D-CODE"
+
+
 @pytest.mark.skipif(not __import__("shutil").which("gcc"), reason="needs gcc")
 def test_c_fragments_are_wrapped_and_only_syntax_counts():
     assert V.check_code(code_deck("c", "int n = 3;\nprintf(\"%d\", n);"))[0] == []          # statements go inside main()
@@ -283,3 +291,31 @@ def test_a_failed_ai_review_keeps_the_draft(run, lecture):
     llm = FakeLLM([good_deck(lecture)], [RuntimeError("no quota")])
     m = G.generate_material("cs601", lecture["lecture_id"], AI, llm=llm, log=lambda _: None)
     assert m["status"] == "draft" and "no quota" in m["ai_review"]["error"] and (run / "material" / lecture["lecture_id"] / "slides.pptx").exists()
+
+
+# ------------------------------------------------------------------ class sessions (2 x 90 min a week)
+from profsagent.content.sessions import build_sessions  # noqa: E402
+
+
+def test_each_week_becomes_two_90_minute_classes_in_schedule_order(st):
+    briefs = build_briefs(st)
+    sessions = build_sessions(st, 2, 90, briefs)
+    weeks = sorted({b["week"] for b in briefs})
+    assert len(sessions) == 2 * len(weeks) and {s["hours"] for s in sessions} == {1.5}
+    for s in sessions:
+        assert sum(p["minutes"] for p in s["parts"]) in (89, 90, 91)               # rounding of split topics
+    for w in weeks:                                                                # topics keep the schedule's order
+        order = [p["lecture_id"] for s in sessions if s["week"] == w for p in s["parts"]]
+        assert list(dict.fromkeys(order)) == [b["lecture_id"] for b in briefs if b["week"] == w]
+    s = next(s for s in sessions if len(s["parts"]) > 1)                           # a class spanning two topics
+    los = {lo["id"] for p in s["parts"] for b in briefs if b["lecture_id"] == p["lecture_id"] for lo in b["learning_outcomes"]}
+    assert {lo["id"] for lo in s["learning_outcomes"]} == los and " · " in s["topic"]
+
+
+def test_a_class_deck_is_generated_with_its_topic_minutes(run, st):
+    s = build_sessions(st, 2, 90)[1]
+    lecture = G.lecture_input(s)
+    assert lecture["minutes"] == 90 and lecture["parts"]
+    llm = FakeLLM([good_deck(lecture)])
+    m = G.generate_material("cs601", s["lecture_id"], llm=llm, log=lambda _: None)
+    assert m["errors"] == 0 and m["lecture_id"].endswith(".S2") and '"parts"' in llm.calls[0]

@@ -1,0 +1,115 @@
+{
+ "lecture_id": "W03.L1",
+ "topic": "Coding agents and context engineering",
+ "generated_at": "2026-10-28 21:02:52",
+ "prompt": "B1 0.2.0",
+ "files": {
+  "slides": "material\\W03.L1\\slides.pptx",
+  "notes": "material\\W03.L1\\notes.md",
+  "deck": "material\\W03.L1\\deck.json",
+  "quiz": "material\\W03.L1\\quiz.json"
+ },
+ "slides": 13,
+ "content_slides": 10,
+ "minutes": 55.0,
+ "errors": 0,
+ "warnings": 2,
+ "findings": [
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 3"
+   ],
+   "message": "slide 3 ('Recap: Model Context Protocol (MCP) Core Ideas'): [fact] The core primitives of the Model Context Protocol (MCP) are Resources, Prompts, and Tools, not 'manifest, schema, runtime'. Fix: Replace 'Three pillars: manifest, schema, runtime' with the standard MCP core primitives: Resources, Prompts, and Tools. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Recap: Model Context Protocol (MCP) Core Ideas"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 7"
+   ],
+   "message": "slide 7 ('Example: Adding a Custom Linter Tool'): [code] The JSON tool definition includes 'outputSchema' and 'analysisHook', which do not exist in the Model Context Protocol (MCP) tool specification. Fix: Remove 'outputSchema' and 'analysisHook' from the JSON object so it conforms to standard MCP tool definitions (using name, description, and inputSchema). (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Example: Adding a Custom Linter Tool"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 8,
+   "language": "json",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 9,
+   "language": "json",
+   "status": "ok",
+   "detail": ""
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Autonomous Coding Agents for Software Development Testing and Debugging",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.7515638",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1"
+ ],
+ "calls": [
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1346,
+   "output_tokens": 4532
+  },
+  {
+   "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+   "prompt_tokens": 2637,
+   "output_tokens": 2724
+  },
+  {
+   "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+   "prompt_tokens": 1541,
+   "output_tokens": 8417
+  }
+ ],
+ "ai_review": {
+  "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+  "model": "gemini:gemini-3.5-flash",
+  "prompt_tokens": 2637,
+  "output_tokens": 2724,
+  "verdict": "The deck is unsafe to teach from in its current form because it presents non-existent specification fields and inaccurate core pillars for the Model Context Protocol (MCP).",
+  "questions": 1,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 3,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The core primitives of the Model Context Protocol (MCP) are Resources, Prompts, and Tools, not 'manifest, schema, runtime'.",
+    "fix": "Replace 'Three pillars: manifest, schema, runtime' with the standard MCP core primitives: Resources, Prompts, and Tools."
+   },
+   {
+    "slide": 7,
+    "severity": "error",
+    "kind": "code",
+    "problem": "The JSON tool definition includes 'outputSchema' and 'analysisHook', which do not exist in the Model Context Protocol (MCP) tool specification.",
+    "fix": "Remove 'outputSchema' and 'analysisHook' from the JSON object so it conforms to standard MCP tool definitions (using name, description, and inputSchema)."
+   }
+  ],
+  "repaired": true
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

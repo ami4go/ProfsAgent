@@ -1,0 +1,295 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W01.L2",
+ "title": "Model context protocols and architecture",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "Overview of the Model Context Protocol (MCP)",
+   "bullets": [
+    "MCP standardizes how AI models connect to external developer tools and data sources.",
+    "Decouples AI hosts from tool implementations using a client-server architectural pattern.",
+    "Eliminates custom integration glue code for every distinct tool and LLM provider.",
+    "Ensures uniform context retrieval across different IDEs and development environments."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Model Context Protocol, or MCP, addresses a key bottleneck in AI-assisted development. Traditionally, connecting an LLM agent to local project files, database schemas, or terminal commands required building custom integrations for each specific tool and model. MCP provides an open standard for context exchange. In this architecture, host applications like IDEs act as clients that connect to specialized MCP servers running locally or remotely, providing structured access to context and capabilities.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "MCP Architectural Roles: Host, Client, and Server",
+   "bullets": [
+    "Host application (e.g., IDE or coding agent) initiates AI interactions and user sessions.",
+    "MCP Client maintains connections and negotiates protocol capabilities with servers.",
+    "MCP Server exposes specific resources, tools, and prompts via standardized endpoints.",
+    "Communication follows a strict client-server model over defined transport channels."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "MCP Communication Flow",
+    "steps": [
+     "AI Host Agent",
+     "MCP Client",
+     "Transport Layer (stdio/SSE)",
+     "MCP Server",
+     "Local Workspace Tools"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Understanding the distinction between host, client, and server is essential when reading workspace configurations. The host is the overall application, such as your IDE. The MCP client lives inside or alongside the host to manage connections. MCP servers are independent processes that encapsulate specific developer tools—such as a file system reader, a git helper, or a compiler wrapper. The client and server exchange messages over standard channels like stdio or Server-Sent Events.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "MCP Workspace Configuration Schema",
+   "bullets": [
+    "Workspace configuration defines installed MCP servers under a top-level mcpServers object.",
+    "Each server entry specifies execution command, arguments, and optional environment variables.",
+    "Transport protocol selection defaults to standard input/output (stdio) for local servers.",
+    "Schema strictness requires precise key naming to prevent client initialization failures."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Sample MCP Configuration JSON Schema",
+    "steps": [],
+    "code": "{\n  \"mcpServers\": {\n    \"workspace-tools\": {\n      \"command\": \"node\",\n      \"args\": [\"./mcp-server/index.js\"],\n      \"env\": {\n        \"LOG_LEVEL\": \"info\"\n      }\n    }\n  }\n}",
+    "language": "json",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Developer workspace templates configure MCP through a JSON configuration file. The root object contains an mcpServers key, mapping unique server identifiers to their launch definitions. The command field specifies the executable, while args contains array arguments for running the server process. env allows setting environment variables required by the server. If keys are misspelled or arguments are malformed, the client cannot spawn the server process.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Protocol Handshake and Initialization Requirements",
+   "bullets": [
+    "MCP messaging uses standard JSON-RPC 2.0 specification format.",
+    "Initialization phase begins with an initialize request from client to server.",
+    "Server responds with protocol version, server info, and supported capability flags.",
+    "Client sends initialized notification before executing operational tools or resource queries."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Underneath the hood, MCP uses JSON-RPC 2.0 for all communications. When an MCP client starts an MCP server process, it must perform a protocol handshake before executing any commands. The client sends an initialize request containing its client version and desired capabilities. The server returns its metadata and capabilities, such as whether it supports resources or tools. Once initialized, the client sends an initialized notification signal, transitioning the connection to active state.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Categorizing MCP Capabilities: Resources, Tools, Prompts",
+   "bullets": [
+    "Resources supply read-only context data, such as source code files or logs.",
+    "Tools expose executable functions that perform side-effect actions in the workspace.",
+    "Prompts provide pre-configured template structures for recurring developer workflows.",
+    "Configurations must enable capability flags corresponding to required server features."
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "MCP Primitive Comparison",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Primitive",
+      "Primary Purpose",
+      "Execution Type",
+      "Example Use Case"
+     ],
+     [
+      "Resources",
+      "Provide passive context",
+      "Read-only data retrieval",
+      "Reading file content or schema"
+     ],
+     [
+      "Tools",
+      "Perform actions",
+      "Executable side-effects",
+      "Running tests, committing code"
+     ],
+     [
+      "Prompts",
+      "Guide user interaction",
+      "Template expansion",
+      "Structuring code review requests"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "MCP categorizes interaction capabilities into three core primitives: Resources, Tools, and Prompts. Resources act like read-only GET endpoints in web APIs, allowing the AI to read workspace state safely without side effects. Tools represent callable functions that can modify the workspace—such as compiling code or running unit tests. Prompts are reusable context templates. Identifying which primitive a configuration exports is vital when auditing workspace setups for workflow integration.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Transport Layers and Execution Isolation",
+   "bullets": [
+    "Stdio transport launches servers as child processes communicating over standard streams.",
+    "Server-Sent Events (SSE) transport enables remote server communication over HTTP.",
+    "Local stdio isolates execution within user permissions and environment boundaries.",
+    "Workspace configuration must explicitly state transport endpoints and authorization headers when using SSE."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "MCP supports two main transport layers: stdio and SSE. In a standard local development setup, stdio is used: the IDE spawns the server binary directly as a subprocess and communicates via standard input and output streams. For remote microservices or team-shared tools, SSE over HTTP is used instead. When auditing a workspace configuration template, you must check whether local binary paths or remote HTTP URLs are specified, ensuring required environment tokens are configured securely.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "check",
+   "title": "Concept Check: MCP Configuration Schema",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "In a developer workspace template, which JSON structure correctly defines a local stdio MCP server named 'git-helper'?",
+    "options": [
+     "{\"mcpServers\": {\"git-helper\": {\"command\": \"npx\", \"args\": [\"-y\", \"@mcp/git\"]}}}",
+     "{\"tools\": [{\"name\": \"git-helper\", \"exec\": \"npx -y @mcp/git\"}]}",
+     "{\"mcp-client\": {\"servers\": [\"git-helper\": \"npx -y @mcp/git\"]}}",
+     "{\"servers\": {\"git-helper\": {\"path\": \"npx\", \"params\": [\"-y\", \"@mcp/git\"]}}}"
+    ],
+    "answer": 0,
+    "explanation": "Option 0 correctly uses the top-level mcpServers object with a named server dictionary containing command and args array. Option 1 incorrectly uses a tools array; Option 2 uses an invalid mcp-client format; Option 3 uses non-standard schema keys (path and params instead of command and args)."
+   },
+   "notes": "Let's test our understanding of the MCP workspace configuration schema. Look closely at the field names. MCP requires the top-level dictionary mcpServers, where each key is the server name, and its payload specifies command as a string and args as an array of strings. Recognizing this standard schema helps you debug workspace template configuration warnings or load failures.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Query Tuning and Context Workflows in MCP",
+   "bullets": [
+    "Model context quality depends directly on precise query tuning and resource filtering.",
+    "MCP frameworks tune queries by dynamically selecting relevant context primitives.",
+    "Reduces context window bloating by requesting targeted snippets instead of full repositories.",
+    "Improves AI response accuracy and execution efficiency in complex coding tasks."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "As described in recent research on MCP query tuning frameworks, sending unfiltered repository contents to an LLM degrades reasoning quality and increases costs. MCP enables fine-grained context retrieval where the AI agent queries specific resources or invokes specific tools only when needed. Workspace configuration schemas can specify context filtering bounds or default tool arguments, ensuring the AI model receives optimal, high-signal context during software development workflows.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Identifying and Debugging Configuration Schema Issues",
+   "bullets": [
+    "Syntax errors: Missing quotes, trailing commas, or invalid JSON format.",
+    "Schema mismatch: Incorrect top-level key (e.g., servers instead of mcpServers).",
+    "Path issues: Relative executable paths failing when run from different working directories.",
+    "Environment missing: Omitted authorization tokens or missing required environment variables."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "When setting up developer workspace templates, debugging MCP connection failures usually traces back to configuration issues. Common errors include JSON syntax flaws, using non-standard key names like 'servers' or 'plugins' instead of 'mcpServers', or supplying relative binary paths that cannot be resolved by the host process. Always validate the workspace JSON file against the MCP schema specification before running your development agent.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [],
+   "minutes": 7.0
+  },
+  {
+   "kind": "summary",
+   "title": "Summary: Model Context Protocols and Workspace Setup",
+   "bullets": [
+    "MCP standardizes client-server context exchange between AI agents and developer tools.",
+    "Workspace configuration requires an mcpServers object with command, args, and env fields.",
+    "Capabilities are partitioned into Resources (data), Tools (actions), and Prompts (templates).",
+    "Handshake and initialization follow JSON-RPC 2.0 protocol specifications over stdio or SSE."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "In summary, Model Context Protocols provide a unified architecture for augmenting AI coding agents with real-world developer tools and environment context. By mastering the configuration schema structure—including mcpServers, commands, arguments, and capability types—you can correctly set up developer workspace templates, diagnose configuration warnings, and ensure seamless AI tool integration in your development environment.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [],
+   "minutes": 7.0
+  }
+ ]
+}

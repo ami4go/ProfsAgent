@@ -1,7 +1,9 @@
-"""Evaluation tier 1 (deterministic) for saved design runs. No LLM calls.
+"""Evaluation of saved design runs: tier 1 (deterministic, no LLM calls) by default, all three tiers with --all-tiers.
 
   python scripts/evaluate_design.py --run-id cs601-02        # writes runs/cs601-02/evaluation_deterministic.json
   python scripts/evaluate_design.py --all                    # one line per run in runs/ (nothing written)
+  python scripts/evaluate_design.py --run-id cs601-02 --all-tiers           # tiers 1-3 (evaluate/engine.py); tier 3 is
+  python scripts/evaluate_design.py --run-id cs601-02 --all-tiers --judge   # only planned unless --judge (LLM calls)
 """
 from __future__ import annotations
 
@@ -17,6 +19,8 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from profsagent.config import RUNS  # noqa: E402
 from profsagent.evaluate.deterministic import evaluate  # noqa: E402
+from profsagent.evaluate.engine import evaluate_run  # noqa: E402
+from profsagent.llm.client import LLMClient  # noqa: E402
 
 
 def load(run_dir: Path) -> dict | None:
@@ -31,8 +35,16 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id")
     ap.add_argument("--all", action="store_true")
+    ap.add_argument("--all-tiers", action="store_true", help="tiers 1-3 through the evaluation engine (writes evaluation.json)")
+    ap.add_argument("--judge", action="store_true", help="with --all-tiers: run the tier 3 judge panel (costs LLM calls)")
     a = ap.parse_args()
-    if a.run_id:
+    if a.run_id and a.all_tiers:
+        s = load(RUNS / a.run_id)
+        if s is None:
+            sys.exit(f"no finished design in runs/{a.run_id}")
+        llm = LLMClient(RUNS / a.run_id / "llm_calls.jsonl")   # makes no call unless --judge; the plan needs its keys
+        print(json.dumps(evaluate_run(s, RUNS / a.run_id, llm, judge=a.judge)["verdict"], indent=1, ensure_ascii=False))
+    elif a.run_id:
         s = load(RUNS / a.run_id)
         if s is None:
             sys.exit(f"no finished design in runs/{a.run_id}")

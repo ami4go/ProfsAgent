@@ -1,0 +1,180 @@
+{
+ "lecture_id": "W01.L1",
+ "topic": "Developer workflows and AI-assisted coding",
+ "generated_at": "2026-10-28 14:21:17",
+ "prompt": "B1 0.2.0",
+ "files": {
+  "slides": "material\\W01.L1\\slides.pptx",
+  "notes": "material\\W01.L1\\notes.md",
+  "deck": "material\\W01.L1\\deck.json",
+  "quiz": "material\\W01.L1\\quiz.json"
+ },
+ "slides": 21,
+ "content_slides": 18,
+ "minutes": 117.0,
+ "errors": 0,
+ "warnings": 7,
+ "findings": [
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9: the java snippet was not checked (no checker for 'java' on this machine; install a JDK to check Java); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10: the java snippet was not checked (no checker for 'java' on this machine; install a JDK to check Java); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 17"
+   ],
+   "message": "slide 17: the java snippet was not checked (no checker for 'java' on this machine; install a JDK to check Java); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 6",
+    "C5"
+   ],
+   "message": "slide 6 ('Role of Contextualisation in AI Coding') cites [C5] 'Query Tuning Framework Using the Model Context Protocol for Workflows', which matches it weakly (0.27; average source 0.30): check the citation",
+   "evidence": {
+    "similarity": 0.273
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 15",
+    "C4"
+   ],
+   "message": "slide 15 ('Human-in-the-Loop Verification Strategies') cites [C4] '8 Redefining and Transforming Software Development with Generative AI', which matches it weakly (0.28; average source 0.37): check the citation",
+   "evidence": {
+    "similarity": 0.284
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 17",
+    "C2"
+   ],
+   "message": "slide 17 ('Workflow Example: Adding a Feature with AI Support') cites [C2] 'SPECIFICATION-DRIVEN DEVELOPMENT AS STRUCTURED APPROACH FOR SOURCE CODE GENERATION', which matches it weakly (0.20; average source 0.26): check the citation",
+   "evidence": {
+    "similarity": 0.203
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 18",
+    "C3"
+   ],
+   "message": "slide 18 ('Concept Check: Developer Workflow Components') cites [C3] 'Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks', which matches it weakly (0.27; average source 0.32): check the citation",
+   "evidence": {
+    "similarity": 0.267
+   },
+   "stage": "content"
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Competition-level code generation with AlphaCode",
+   "year": 2022,
+   "url": "https://doi.org/10.1126/science.abq1158",
+   "kind": "reading",
+   "approved": true
+  },
+  "C2": {
+   "title": "SPECIFICATION-DRIVEN DEVELOPMENT AS STRUCTURED APPROACH FOR SOURCE CODE GENERATION",
+   "year": 2026,
+   "url": "https://doi.org/10.52058/2786-6025-2026-4(58)-2631-2644",
+   "kind": "reading",
+   "approved": true
+  },
+  "C3": {
+   "title": "Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks",
+   "year": 2026,
+   "url": "https://doi.org/10.1109/sse72781.2026.00047",
+   "kind": "reading",
+   "approved": true
+  },
+  "C4": {
+   "title": "8 Redefining and Transforming Software Development with Generative AI",
+   "year": 2025,
+   "url": "https://doi.org/10.1515/9783111677798-008",
+   "kind": "reference",
+   "approved": true
+  },
+  "C5": {
+   "title": "Query Tuning Framework Using the Model Context Protocol for Workflows",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.6172059",
+   "kind": "reading",
+   "approved": true
+  },
+  "C6": {
+   "title": "Autonomous Coding Agents for Software Development Testing and Debugging",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.7515638",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1",
+  "C2",
+  "C3",
+  "C4",
+  "C5",
+  "C6"
+ ],
+ "calls": [
+  {
+   "endpoint": "gemini:gemini-3.5-flash:k3ca4d81f",
+   "prompt_tokens": 1564,
+   "output_tokens": 11078
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 9,
+   "language": "java",
+   "status": "unchecked",
+   "detail": "no checker for 'java' on this machine; install a JDK to check Java"
+  },
+  {
+   "slide": 10,
+   "language": "java",
+   "status": "unchecked",
+   "detail": "no checker for 'java' on this machine; install a JDK to check Java"
+  },
+  {
+   "slide": 17,
+   "language": "java",
+   "status": "unchecked",
+   "detail": "no checker for 'java' on this machine; install a JDK to check Java"
+  }
+ ]
+}

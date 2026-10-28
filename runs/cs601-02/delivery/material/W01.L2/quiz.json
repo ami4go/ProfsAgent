@@ -1,0 +1,17 @@
+[
+ {
+  "slide": 9,
+  "los": [
+   "CO1.LO1"
+  ],
+  "question": "In a developer workspace template, which JSON structure correctly defines a local stdio MCP server named 'git-helper'?",
+  "options": [
+   "{\"mcpServers\": {\"git-helper\": {\"command\": \"npx\", \"args\": [\"-y\", \"@mcp/git\"]}}}",
+   "{\"tools\": [{\"name\": \"git-helper\", \"exec\": \"npx -y @mcp/git\"}]}",
+   "{\"mcp-client\": {\"servers\": [\"git-helper\": \"npx -y @mcp/git\"]}}",
+   "{\"servers\": {\"git-helper\": {\"path\": \"npx\", \"params\": [\"-y\", \"@mcp/git\"]}}}"
+  ],
+  "answer": 0,
+  "explanation": "Option 0 correctly uses the top-level mcpServers object with a named server dictionary containing command and args array. Option 1 incorrectly uses a tools array; Option 2 uses an invalid mcp-client format; Option 3 uses non-standard schema keys (path and params instead of command and args)."
+ }
+]

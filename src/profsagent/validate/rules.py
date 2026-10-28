@@ -12,7 +12,7 @@ from collections import Counter, defaultdict
 from profsagent.config import pedagogy
 from profsagent.design.deterministic import find_cycle
 from profsagent.kg.quality import PREFIX_RE, banned_in, bloom_of_verb, bloom_range_of_verb, lemma, vague_degree, verbs_in
-from profsagent.validate import constraints, regulation, text
+from profsagent.validate import constraints, regulation, semantic, text
 from profsagent.validate.record import ERR, FIX_HINTS, WARN, errors, v  # noqa: F401 (errors, FIX_HINTS re-exported)
 
 
@@ -22,6 +22,10 @@ def _statement_checks(items: list[dict], kind: str) -> list[dict]:
     for it in items:
         i, st = it["id"], it.get("statement", "")
         verb = lemma(it.get("verb", ""))
+        # VT-TEMPLATE: a degree-bank template copied without filling it in ("for {n} of {m} short items")
+        holes = sorted({h for f in ("statement", "condition", "degree") for h in re.findall(r"\{[A-Za-z_]+\}", it.get(f) or "")})
+        if holes:
+            out.append(v("VT-TEMPLATE", ERR, [i], f"{kind} {i} still contains unfilled template text {holes}", statement=st))
         # V12 banned verbs: the declared verb, the statement's leading verb, or a verb chained with and/or/then.
         # Not anywhere in the clause: "Evaluate natural-language understanding models" or "a robot grasp planner"
         # use the words as nouns.
@@ -108,7 +112,7 @@ def check_cos(state: dict) -> list[dict]:
     if bad:
         out.append(v("T10", ERR, sorted(bad), f"COs reference unknown topic groups {sorted(bad)}"))
     out += constraints.check_stage(state, "cos")          # co.count, co.bloom_min / bloom_max
-    return out + _statement_checks(cos, "CO")
+    return out + _statement_checks(cos, "CO") + semantic.check_cos(state)
 
 
 def check_copo(state: dict) -> list[dict]:
@@ -192,7 +196,21 @@ def check_los(state: dict) -> list[dict]:
         lec = sum(float(lo.get("est_lecture_h", 0)) for lo in los)
         if hb["lecture_hours_total"] and abs(lec - hb["lecture_hours_total"]) / hb["lecture_hours_total"] > 0.15:
             out.append(v("V21", WARN, [], f"LO lecture-hour estimates sum to {lec:.1f} h vs budget {hb['lecture_hours_total']} h (±15%)"))
-    return out
+    return out + _lab_fit_checks(state, los) + semantic.check_los(state)
+
+
+def _lab_fit_checks(state: dict, los: list[dict]) -> list[dict]:
+    """VC-NOLAB: most LOs are hands-on but L-T-P has no lab, and the professor never decided against one (a "no" in the
+    form's lab field is respected: the CSE201 runs teach hands-on LOs in tutorials by choice)."""
+    if not los or (state.get("ltp") or {}).get("P") or state.get("lab_required") == "no":
+        return []
+    hands_on = [lo["id"] for lo in los if lo.get("hands_on")]
+    share = len(hands_on) / len(los)
+    if share < pedagogy()["thresholds"]["hands_on_without_lab_share"]:
+        return []
+    return [v("VC-NOLAB", WARN, ["ltp"],
+              f"{len(hands_on)} of {len(los)} LOs are hands-on but L-T-P has no lab hours (P = 0) and no lab decision was "
+              f"given; add lab hours or confirm that tutorials are enough", hands_on=hands_on, share=round(share, 2))]
 
 
 def check_structure(state: dict) -> list[dict]:
@@ -487,13 +505,37 @@ def check_resources(state: dict) -> list[dict]:
                                      + "; ".join(str(x.get("title"))[:60] for x in rej)))
     if "resources" in state and len(state["resources"]) < 2:
         out.append(v("V15", WARN, [], f"only {len(state['resources'])} verified resource(s); add sources manually or widen the search"))
+    policy = (state.get("resource_policy") or {}).get("textbook_policy")
+    if policy in ("textbook", "mixed") and "resources" in state and not any(
+            str(r.get("candidate_id", "")).startswith("OL:") or (r.get("identifier") or {}).get("isbn") for r in state["resources"]):
+        out.append(v("V15", WARN, [], f"the resource policy is '{policy}' but no verified textbook is listed; add one"))
     out += constraints.check_stage(state, "resources")    # resource.type_allowed, resource.max_age_years
     return out
 
 
 def check_intake(state: dict) -> list[dict]:
-    """S1: the course frame against the regulation, and constraints on it (course.credits)."""
-    return regulation.check_regulation(state) + constraints.check_stage(state, "intake")
+    """S1: the course frame against the regulation, constraints on it (course.credits), and the audience its title names."""
+    return regulation.check_regulation(state) + constraints.check_stage(state, "intake") + _audience_checks(state)
+
+
+# Words that name a broad or beginner audience. "Introduction to" / "Foundations of" are NOT among them: 22 of the 39
+# IIIT-D catalogue courses titled "Introduction to ..." are level 5 or 6 (data/stub_kg/index.json, 2026-10-28).
+AUDIENCE_RE = re.compile(r"\bfor\s+(all|everyone|everybody|beginners|non[- ]?majors|non[- ]?engineers)\b|\b101\b|\bprimer\b", re.I)
+
+
+def _audience_checks(state: dict) -> list[dict]:
+    """VC-AUDIENCE: the title names a broad audience but the course frame is level 3 or above, which the professor
+    should confirm at gate 1 (level and target students are often inferred, not given)."""
+    title = (state.get("form") or {}).get("1. COURSE NAME") or ""
+    m, level = AUDIENCE_RE.search(title), state.get("level")
+    if not m or level is None or int(level) < 3:
+        return []
+    given = (((state.get("cco") or {}).get("fields") or {}).get("level_or_code") or {}).get("status") == "given"
+    return [v("VC-AUDIENCE", WARN, ["level"],
+              f"the title says '{m.group(0)}' but the course is level {level} ({'as given' if given else 'inferred, not given'}) "
+              f"for {', '.join(state.get('programmes') or []) or 'no programme yet'}; a course for a broad audience is "
+              f"usually level 1–2 and open to every programme: confirm the level and the target students",
+              level=int(level), audience=m.group(0), level_given=given)]
 
 
 def check_constraint_set(state: dict) -> list[dict]:
@@ -501,11 +543,64 @@ def check_constraint_set(state: dict) -> list[dict]:
     return constraints.check_constraints(state)
 
 
+def check_kg(state: dict) -> list[dict]:
+    """After S5: the design against facts from the institutional graph (state["kg_facts"], kg/facts.py). Warnings only:
+    the graph describes how IIIT-D courses usually are, not rules a new course must follow."""
+    kf = state.get("kg_facts")
+    if not kf:
+        return []
+    out = []
+    th = pedagogy()["thresholds"]
+    first = {tid: min(ws) for tid, ws in (state.get("schedule") or {}).get("topic_weeks", {}).items() if ws}
+    for e in kf.get("precedence", []):
+        a, b = first.get(e["from"]), first.get(e["to"])
+        if a is not None and b is not None and a > b:
+            out.append(v("VKG-PREC", WARN, [e["from"], e["to"]],
+                         f"'{e['from_title']}' starts in week {a}, after '{e['to_title']}' (week {b}); {e['support']} IIIT-D "
+                         f"courses teach it first ({', '.join(e['courses'][:4])}), {e['against']} the other way round",
+                         support=e["support"], against=e["against"], courses=e["courses"]))
+    pos = state.get("positioning") or {}
+    declared = {a["course_uid"] for a in pos.get("anti_requisites", [])} | {p["course_uid"] for p in pos.get("prerequisites", [])}
+    for o in kf.get("catalogue_overlap", []):
+        if o["weighted_jaccard"] >= th["anti_requisite_overlap"] and o["course_uid"] not in declared:
+            out.append(v("VKG-DUP", WARN, [o["course_uid"]],
+                         f"topics overlap {o['course_uid']} ({o.get('name') or ''}) at {o['weighted_jaccard']} "
+                         f"(≥ {th['anti_requisite_overlap']}), but it is not declared as an anti-requisite: {o['shared_topics'][:4]}",
+                         shared_topics=o["shared_topics"]))
+    out += _norm_checks(state, kf.get("norms") or {}, th["kg_norms"])
+    return out
+
+
+def _norm_checks(state: dict, n: dict, cfg: dict) -> list[dict]:
+    if (n.get("n") or 0) < cfg["min_courses"]:
+        return []
+    out, lvl = [], f"{n['level']}xx"
+    credits = (state.get("defaults") or {}).get("credits")
+    if credits is not None:
+        share = n["credits"].get(str(credits), 0) / n["n"]
+        if share < cfg["rare_credit_share"]:
+            out.append(v("VKG-NORM", WARN, ["credits"], f"{credits} credits: {share:.0%} of the {n['n']} level-{lvl} courses "
+                                                        f"have that ({n['credits']})", share=round(share, 3)))
+    cos = state.get("cos") or []
+    bl = [int(c["bloom_level"]) for c in cos if str(c.get("bloom_level", "")).isdigit()]
+    comps = (state.get("assessment") or {}).get("components") or []
+    for key, what, value in (("co_count", "COs", len(cos) if cos else None), ("bloom_max", "highest CO Bloom level", max(bl) if bl else None),
+                             ("components", "assessment components", len(comps) if comps else None)):
+        s = n.get(key)
+        if value is None or not s or s["n"] < cfg["min_courses"]:
+            continue
+        if not s["lo"] <= value <= s["hi"]:
+            out.append(v("VKG-NORM", WARN, [key], f"{value} {what}: unusual for level {lvl} (IIIT-D median {s['median']:g}, "
+                                                  f"usual range {max(s['lo'], 0):g}–{s['hi']:g}, {s['n']} courses)",
+                         median=s["median"], lo=s["lo"], hi=s["hi"]))
+    return out
+
+
 STAGE_CHECKS = {
     "intake": [check_intake], "constraints": [check_constraint_set],
     "positioning": [check_positioning], "cos": [check_cos], "copo": [check_copo], "los": [check_los],
     "structure": [check_structure], "schedule": [check_schedule], "labs": [check_labs],
-    "assessment": [check_assessment, check_copo_computed], "resources": [check_resources],
+    "assessment": [check_assessment, check_copo_computed], "resources": [check_resources], "kg": [check_kg],
 }
 
 

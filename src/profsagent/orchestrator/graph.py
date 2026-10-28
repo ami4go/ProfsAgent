@@ -12,7 +12,6 @@ blocked, that is recorded in state["would_block"].
 """
 from __future__ import annotations
 
-import json
 import sqlite3
 from typing import TypedDict
 
@@ -22,7 +21,7 @@ from langgraph.types import interrupt
 
 from profsagent.agents import pipeline as P
 from profsagent.render.proposal import render
-from profsagent.validate import engine, rules
+from profsagent.validate import engine
 
 _RT: dict[str, P.Runtime] = {}
 
@@ -62,9 +61,9 @@ def _gate(name, summary_fn):
             return {}
         vs = P.all_violations(rt.state)
         view = engine.gate_view(rt.state)
-        payload = {"gate": name, "summary": summary_fn(rt.state), "open_errors": len(rules.errors(vs)),
-                   "open_warnings": len(vs) - len(rules.errors(vs)), "blocked": view["blocked"], "open": view["open"],
-                   "coverage": view["coverage"]}
+        payload = {"gate": name, "summary": summary_fn(rt.state), "open_errors": len(engine.errors(vs)),
+                   "open_warnings": len(vs) - len(engine.errors(vs)), "blocked": view["blocked"], "report": view["report"],
+                   "open": view["open"], "coverage": view["coverage"]}
         if state.get("auto_approve"):
             decision, _ = engine.resolve_gate(view, None, auto=True)
         else:   # blocked: approving needs a reason (override); ask again until there is one, or the professor rejects
@@ -89,17 +88,14 @@ def _after_gate(state: S) -> str:
 def _render(state: S) -> S:
     rt = _rt(state)
     render(rt)
-    try:   # evaluation tier 1: deterministic metrics of the finished design (scripts/evaluate_design.py re-runs it)
-        from profsagent.evaluate.deterministic import evaluate
-        ev = evaluate(rt.state)
-        (rt.run_dir / "evaluation_deterministic.json").write_text(json.dumps(ev, indent=1, ensure_ascii=False, default=str), encoding="utf-8")
-        rt.state["evaluation_deterministic"] = ev["summary"]
-        s = ev["summary"]
-        rt.log(f"evaluation (tier 1): {s['verdict']} · {s['errors']} errors · alignment min {s['alignment_min_pct']}% · "
-               f"hard constraints satisfied {s['hard_constraints_satisfied_pct']}%")
+    try:   # evaluation tiers 1-3 (evaluate/engine.py; tier 3 is only planned unless judging is on). Re-run any time
+        from profsagent.evaluate.engine import evaluate_run   # with scripts/evaluate_design.py --all-tiers
+        ev = evaluate_run(rt.state, rt.run_dir, rt.llm, log=rt.log)
+        rt.state["evaluation_deterministic"] = ev["tier1"]
+        rt.state["evaluation"] = {k: ev[k] for k in ("verdict", "tier2", "tier3")}
         rt.save()
     except Exception as e:  # noqa: BLE001 — the proposal is complete either way
-        rt.log(f"evaluation (tier 1) skipped: {type(e).__name__}: {str(e)[:160]}")
+        rt.log(f"evaluation skipped: {type(e).__name__}: {str(e)[:160]}")
     return {}
 
 

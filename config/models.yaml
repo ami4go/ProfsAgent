@@ -20,7 +20,8 @@
 providers:             # OpenAI-compatible chat endpoints besides Groq; several comma-separated keys per variable are fine
   mistral:    {base_url: "https://api.mistral.ai/v1", keys_env: MISTRAL_API_KEYS, min_interval_s: 1.2}
   nvidia:     {base_url: "https://integrate.api.nvidia.com/v1", keys_env: NVIDIA_API_KEYS, min_interval_s: 1.6, max_tokens: 8192,
-               timeout_s: 75}   # 40 RPM; some NIM models hang instead of failing, so give up sooner than Gemini's 180 s
+               timeout_s: 240}  # 40 RPM. Was 75 s (some NIM models hang; those are no longer listed), which is too short for
+                                # a lecture deck: ~7.5K output tokens take 2-3 min, so every B1/B2 call timed out (2026-10-28)
   openrouter: {base_url: "https://openrouter.ai/api/v1", keys_env: OPENROUTER_API_KEYS, min_interval_s: 3.5,
                headers: {X-Title: ProfsAgent}}
 roles:
@@ -43,6 +44,7 @@ roles:
     - {provider: ollama, model: "qwen3.5:9b"}
   extract:             # X2 page reading, X3/D1 queries: Gemini -> NVIDIA -> Groq gpt-oss -> the rest
     - {provider: gemini, model: gemini-3.7-flash}
+    - {provider: gemini, model: gemini-3.5-flash}       # second strong model, so PROFSAGENT_STRONG_ONLY runs are not left with one
     - {provider: gemini, model: gemini-3.5-flash-lite}
     - {provider: gemini, model: gemini-3.1-flash-lite}
     - {provider: nvidia, model: minimaxai/minimax-m3.1-flash}
@@ -57,6 +59,32 @@ roles:
     - {provider: ollama, model: "qwen3.5:9b"}
   search:              # Google-Search grounding: free tier only works on 2.5-flash (3.x grounding quota = 0)
     - {provider: gemini, model: gemini-2.5-flash}
+  check:               # the LLM check of the llm validation profile (config/llm_check.yaml): a different model
+                       # order from `generate`, so the generator's first-choice model is not the first checker.
+                       # gemini-2.5-flash removed: "404 model unsupported" on every key (21 Oct 2026)
+    - {provider: gemini, model: gemini-3.7-flash}
+    - {provider: gemini, model: gemini-3.5-flash}
+    - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 6500}
+    - {provider: gemini, model: gemini-3.8-flash}
+    - {provider: gemini, model: gemini-3.1-flash-lite}
+  review:              # B2 AI review of a lecture deck (content/ai_review.py). The deck's own generator model is excluded
+                       # per call, so the reviewer is always a different model; this order only says which one comes first
+    - {provider: gemini, model: gemini-3.7-flash}
+    - {provider: gemini, model: gemini-3.5-flash}
+    - {provider: gemini, model: gemini-3.8-flash}
+    - {provider: nvidia, model: nvidia/nemotron-3-ultra-550b-a55b}
+    - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 6500}
+    - {provider: nvidia, model: minimaxai/minimax-m3.1-flash}
+  # Stage 5 judge panel (config/judging.yaml): ONE model per judge, so a judge never silently becomes another model;
+  # a judge with no key or no quota is reported missing. judge_c needs a Groq key (GROQ_API_KEYS); none is set now.
+  judge_a:             # was gemini-2.5-flash ("404 model unsupported" on every key, 21 Oct 2026)
+    - {provider: gemini, model: gemini-3.5-flash}
+  judge_b:
+    - {provider: gemini, model: gemini-3.7-flash}
+  judge_c:             # a J1 prompt is ~6K tokens (rubrics + design) + ~1.5K output: inside Groq's 8K tokens/minute
+    - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 6500}
+  judge_d:
+    - {provider: gemini, model: gemini-3.5-flash-lite}
 embedding:
   model: gemini-embedding-001
   dim: 768
@@ -73,4 +101,7 @@ limits:
   native_json_schema: false  # send the Pydantic JSON Schema to Gemini (responseJsonSchema, constrained decoding);
                              # off until a live call confirms the models accept it (a rejected schema falls back to plain JSON)
   max_wait_s: 600            # when every slot is cooling down, wait up to this long for the soonest
+  repair_stall_rounds: 2     # stop R1 after this many rejected patches in a row (each round is one call)
+  regenerate_on_stall: 0     # 1: when repair stalls with errors left that R1 could fix, call the generator once more with
+                             # the open errors as evidence; kept only if it has fewer errors. Off: it costs a call per stage
   ollama_timeout_s: 2400

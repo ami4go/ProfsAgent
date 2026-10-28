@@ -12,7 +12,7 @@ Design docs: `docs/01_stage1_architecture.md`. Prompts: `prompts/README.md`.
 
 ## Run
 ```bash
-pip install ddgs langgraph langgraph-checkpoint-sqlite beautifulsoup4 httpx pydantic jinja2 pyyaml numpy pytest neo4j python-dotenv sentence-transformers openpyxl reportlab youtube-transcript-api
+pip install ddgs python-pptx langgraph langgraph-checkpoint-sqlite beautifulsoup4 httpx pydantic jinja2 pyyaml numpy pytest neo4j python-dotenv sentence-transformers openpyxl reportlab youtube-transcript-api
 # .env (git-ignored): GEMINI_API_KEYS=k1,k2,k3   GROQ_API_KEYS=k1   NEO4J_PASSWORD=password
 
 # --- LAYER A: Build the Knowledge Graph ---
@@ -102,6 +102,37 @@ S5 keeps a topic's `SAME_AS` link to an IIIT-D topic only if the KG also finds t
 `load.py --wipe` clears only the IIIT-D graph; design runs stay and their links are re-attached.
 Load, check or remove a run by hand: `python scripts/load_design_to_neo4j.py --run-id <id> [--check | --delete]`.
 
+## Validation (Phase 1 core)
+Every generated part is checked before the next one is built: format guard → rule checks (university regulations and
+course template, the professor's requirements, IIIT-D catalogue facts, consistency, outcome quality) → deterministic
+fixers → R1 repair (kept only if errors drop; stops when it cannot help) → blocking gate (approving with open errors
+needs a written reason).
+
+- **One entry point:** `validate/engine.py` selects the profile (`configure`), runs a stage's checks (`check`), applies
+  fixers and reports what stays open; the checks themselves live in `validate/rules.py` and its helpers.
+- **Profile:** `config/validation.yaml` → `profile: core` (default: rules + IIIT-D graph checks; 23/23 planted defects,
+  no AI calls). `full` (or `PROFSAGENT_VALIDATION=full`) adds meaning checks with the local embedding model; `llm` uses
+  one LLM check per stage (4/23 when it was the only checker, `eval/compare_validation/`).
+- **Course fit** (family `fit`, warnings the professor settles, never sent to R1): `VC-AUDIENCE` when the title names a
+  broad audience ("for All", "101", …) but the level is 3+ ("Introduction to" is not such a word: most IIIT-D
+  "Introduction to …" courses are level 5–6); `VC-NOLAB` when at least half the LOs are hands-on, P = 0 and the
+  professor never said "no lab". Either sends the design to REVIEW.
+- **Report:** gates and Appendix E show findings under plain headings with repeats merged into one line
+  (`validate/report.py`); every individual finding is in `runs/<id>/validation_report.json`.
+
+## Evaluation (tiers 1–3)
+`evaluate/engine.py` evaluates every finished design (and `scripts/evaluate_design.py --run-id <id> --all-tiers` any
+saved one). Each tier runs on its own, so one failing does not stop the others:
+
+| Tier | What | Cost | File |
+|---|---|---|---|
+| 1 | completeness, alignment, constraints, regulation, workload, course fit → PASS / REVIEW / FAIL | none | `evaluation_deterministic.json` |
+| 2 | the design against a real IIIT-D sheet (topics, COs, assessment, prerequisites, resources) when the run names `run.reference_course` or holds one out | local embeddings | `evaluation_reference.json` |
+| 3 | LLM judge panel on G-Eval rubrics (`config/judging.yaml`); only **planned** (panel, call count) unless `run.judge: true` or `PROFSAGENT_JUDGE=1` | 0 calls by default | `evaluation_judges.json` |
+
+`evaluation.json` holds every tier's summary and the overall verdict. Other tools: `scripts/evaluate_reference.py`
+(tier 2 for any course), `scripts/judge_design.py` (tier 3 on its own), `scripts/audit_kg.py` (Layer A audit).
+
 ## Phase 2 · Deliverable C: learning resources and expert speakers
 For an approved Phase 1 course run, per lecture (plan: `docs/03_phase2_C_learning_resources_and_experts_plan.md`):
 1. **Lecture briefs** from the design (no AI): topic, learning outcomes, what students must already know, what depends on it,
@@ -127,6 +158,41 @@ python scripts/run_delivery.py graph     --run-id cs601-02
 ```
 Needs `YOUTUBE_API_KEY` and `OPENALEX_API_KEY` in `.env` (free). Tunables: `config/resources.yaml`, `config/experts.yaml`.
 Transcripts are fetched locally (YouTube blocks cloud servers). Budget per lecture: ~300 YouTube units (of 10,000/day) and 3–5 AI calls.
+
+## Phase 2 · Deliverable B: lecture slides and notes
+For a lecture of an approved Phase 1 course run (`src/profsagent/content/`, settings `config/content.yaml`). This is
+the survey's `generate_material` choice: `content.generate.generate_material(run_id, lecture_id, options)`.
+1. **Inputs (no AI):** the lecture brief (topic, LOs, CO, prerequisites, where it is assessed) and the sources slides
+   may cite: the course's verified Phase 1 resources (`C1…`) and C's resources for the lecture once approved (`L1…`).
+2. **B1, one AI call:** the content slides (`content/models.LectureDeck`): concept, example, worked problem, activity,
+   check (a multiple-choice question with answer and explanation) and summary slides, with speaker notes.
+3. **Checks (no AI):** every LO served, Bloom 3+ LOs shown in use, slide count fits the hours, valid figures and
+   questions, no unknown ids or `{placeholders}`, density, timing, one check per hour (`content/checks.py`); code
+   snippets compiled for syntax (Python built in; C/C++ with gcc; Java with javac and JavaScript with node when
+   installed, otherwise reported as not verified) and citations matched to the slide text with the local embedding model
+   (`content/verify.py`). With errors, B1 is asked once more with the findings and the new deck is kept only if errors drop.
+4. **Render:** code writes the title, objectives and references slides. `slides.pptx` is 16:9 with speaker notes, and
+   flows, code and tables are drawn as editable shapes. Text is fitted to its box; text that still cannot fit is a
+   `D-OVERFLOW` warning. Also written: `notes.md` (handout), `quiz.json`, `deck.json`, `material.json` (findings,
+   sources, calls).
+```bash
+python scripts/run_content.py plan     --run-id cs601-02 --lectures W01.L1     # inputs and cost, no AI calls
+python scripts/run_content.py generate --run-id cs601-02 --lectures W01.L1     # or --from-survey
+python scripts/run_content.py check    --run-id cs601-02 --lectures W01.L1     # re-check and re-render, no AI calls
+python scripts/run_content.py review   --run-id cs601-02 [--apply]             # professor: approve / redo / reject
+python scripts/run_content.py generate --run-id cs601-02 --redo                # regenerate the decks sent back, with the reason
+python scripts/run_content.py generate --run-id cs601-02 --lectures W01.L2 --auto-review   # a second AI model checks the deck
+```
+4b. **AI review, optional** (`--auto-review`, `content/ai_review.py`): for a professor who wants the system to check
+   the slides. A model other than the writer reads every slide and notes (wrong facts, wrong code behaviour, ambiguous
+   questions, unclear steps, level) and answers the quiz without the key. Its errors get one repair. The deck becomes
+   `ai-reviewed`, not approved. Cost: 1–2 more calls per lecture.
+5. **Professor review** (`content/review.py`): `material/review.yaml` lists every deck; `approve` freezes it (a new
+   generation needs `--force`), `redo` regenerates it with the professor's reason as instructions, `reject` drops it.
+   `material.json → status` is draft | ai-reviewed | approved | redo | rejected.
+Decks are made per class: each week's lecture hours are packed into `classes.per_week` classes of `classes.minutes`
+(2 × 90 min; ids `W03.S1`, `W03.S2`, `content/sessions.py`). C's per-topic brief ids (`W03.L1`) also work.
+Output: `runs/<id>/delivery/material/<lecture>/`. Example: `eval/content_examples/cs601-02_W01.L1/`.
 
 ## Other scripts
 - `scripts/export_course_template.py --run-id <id>`: (re)writes `runs/<id>/course_template.xlsx`.

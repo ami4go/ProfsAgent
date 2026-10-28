@@ -110,3 +110,31 @@ def test_rejected_schema_degrades_to_plain_json(client, monkeypatch):
     assert "model-a" in client.no_native_schema
     client.structured(system="s", user="u2", model_cls=Out)              # later calls skip the schema for that model
     assert calls[-1] == ("model-a", False)
+
+
+def test_strong_only_waits_for_strong_models_instead_of_lite(client, monkeypatch):
+    client.cfg = {**client.cfg, "roles": {"generate": [{"provider": "gemini", "model": "model-a"},
+                                                       {"provider": "gemini", "model": "model-a-lite"},
+                                                       {"provider": "ollama", "model": "local"}]}}
+    calls = []
+    monkeypatch.setattr(client, "_gemini", fake_gemini({"model-a": _HTTPError(503, "high demand"), "model-a-lite": GOOD}, calls))
+    obj, rec = client.structured(system="s", user="u", model_cls=Out)       # default: falls back to the lite model
+    assert rec.endpoint.startswith("gemini:model-a-lite")
+    client.strong_only = True
+    client.slots = SlotState(client.slots.path.parent / "fresh_state.json")
+    calls.clear()
+    assert [s.split(":")[1] for _, _, _, s in client._slots_for("generate", 10)] == ["model-a"]
+    with pytest.raises(Exception):                                          # max_wait_s 0: no weak fallback, the call fails
+        client.structured(system="s2", user="u2", model_cls=Out)
+    assert [m for m, _ in calls] == ["model-a"]
+
+
+def test_excluded_models_are_never_called(client, monkeypatch):
+    calls = []
+    monkeypatch.setattr(client, "_gemini", fake_gemini({"model-a": GOOD, "model-b": GOOD}, calls))
+    obj, rec = client.structured(system="s", user="u", model_cls=Out, exclude_models=frozenset({"gemini:model-a"}))
+    assert [m for m, _ in calls] == ["model-b"] and rec.endpoint.startswith("gemini:model-b:")
+    calls.clear()
+    monkeypatch.setattr(client, "_gemini", fake_gemini({"model-b": BROKEN, "model-c": GOOD}, calls))
+    client.structured(system="s", user="u", model_cls=Out, exclude_models=frozenset({"gemini:model-a"}))
+    assert "model-a" not in [m for m, _ in calls] and calls[-1][0] == "model-c"   # fallback still skips the excluded one

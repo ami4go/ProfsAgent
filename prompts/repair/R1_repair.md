@@ -1,6 +1,6 @@
 ---
 id: R1
-version: 0.1.0
+version: 0.2.0
 stage: any (repair router)
 model_class: strong
 temperature: 0
@@ -9,6 +9,7 @@ inputs:
   component: the current draft JSON of ONE component (e.g. the CO set, the LO set, the assessment blueprint)
   component_prompt_id: which generator produced it (G4 / G6 / G7 / G9 …) — its rules still apply
   violations: [{code: "V11", severity: "error|warning", node_ids: [...], message: "…", evidence: {...}}]   # from validators, not an LLM
+  violating_nodes: {node id: the node's current JSON} for every node a violation names (0.2.0)
   frozen_ids: [uids that must not change]
   context_min: the minimum context the generator had (same inputs, possibly trimmed)
   round: 1..3
@@ -27,7 +28,8 @@ violation cannot be fixed without breaking a frozen item or a hard constraint, s
 
 ## Rules
 1. **Scope**: change only the nodes named in the violations, plus the smallest set of neighbours that a fix
-   unavoidably touches (list those in `collateral` with a reason).
+   unavoidably touches (list those in `collateral` with a reason). `violating_nodes` shows each named node as it is
+   now: patch from that text, and keep every field the violation does not concern.
 2. **Frozen**: never modify, remove or re-id anything in `frozen_ids`.
 3. **Minimal**: prefer editing one field over rewriting a node, and rewriting a node over replacing the set. Keep ids
    stable. New nodes get the next free id in the scheme.
@@ -53,6 +55,7 @@ violation cannot be fixed without breaking a frozen item or a hard constraint, s
 ## USER
 <context name="component" prompt="{{ component_prompt_id }}">{{ component | tojson }}</context>
 <context name="violations">{{ violations | tojson }}</context>
+<context name="violating_nodes">{{ violating_nodes | tojson }}</context>
 <context name="frozen_ids">{{ frozen_ids | tojson }}</context>
 <context name="context_min">{{ context_min | tojson }}</context>
 

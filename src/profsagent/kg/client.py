@@ -48,3 +48,8 @@ class KGClient(Protocol):
 
     def topic_precedence(self, topic_uids: list[str]) -> list[dict]:
         """[{from, to, support}] among the given canonical topics (may be empty in the stub)."""
+
+    def precedence_evidence(self, titles: list[str], exclude: set[str] = frozenset(), min_support: int = 2,
+                            min_confidence: float = 0.8) -> list[dict]:
+        """[{from, to, support, against, courses}] for pairs of free-text topic titles that real weekly plans teach in a
+        consistent order (`support` courses reach `from` first, `against` the other way); empty in the stub."""

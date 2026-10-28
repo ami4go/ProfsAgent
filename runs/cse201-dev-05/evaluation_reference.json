@@ -1,0 +1,176 @@
+{
+ "summary": {
+  "reference": "CSE201",
+  "topic_f1": 0.259,
+  "topic_soft_f1": 0.601,
+  "topic_coverage_recall": 0.205,
+  "order_tau_b": 0.769,
+  "co_soft_f1": 0.525,
+  "co_rouge_l": 0.133,
+  "assessment_tv": 0.05,
+  "prereq_jaccard": 1.0,
+  "resource_recall": 0.333
+ },
+ "topics": {
+  "design": 15,
+  "reference": 39,
+  "matched": 7,
+  "precision": 0.467,
+  "recall": 0.179,
+  "f1": 0.259,
+  "coverage_recall": 0.205,
+  "soft": {
+   "precision": 0.654,
+   "recall": 0.556,
+   "f1": 0.601
+  },
+  "order_kendall_tau_b": 0.769,
+  "match_sim": 0.66,
+  "pairs": [
+   {
+    "design": "Object relationships, association, and composition",
+    "design_week": 1,
+    "reference": "Class relationship (association, composition, dependency)",
+    "reference_week": 2,
+    "sim": 0.815
+   },
+   {
+    "design": "Interface-based polymorphism and method resolution",
+    "design_week": 2,
+    "reference": "Polymorphism using interfaces",
+    "reference_week": 3,
+    "sim": 0.783
+   },
+   {
+    "design": "Exception handling and assertions",
+    "design_week": 4,
+    "reference": "Exception handling",
+    "reference_week": 6,
+    "sim": 0.779
+   },
+   {
+    "design": "Threads, mutual exclusion, and locks",
+    "design_week": 8,
+    "reference": "Mutual exclusion (race conditions, monitor locks, deadlocks)",
+    "reference_week": 10,
+    "sim": 0.765
+   },
+   {
+    "design": "Inheritance hierarchies and abstract classes",
+    "design_week": 2,
+    "reference": "Abstract classes",
+    "reference_week": 4,
+    "sim": 0.724
+   },
+   {
+    "design": "Event-driven programming, GUIs, and pair programming workflows",
+    "design_week": 9,
+    "reference": "Introduction to event driven programming using JavaFX",
+    "reference_week": 8,
+    "sim": 0.681
+   },
+   {
+    "design": "Thread pools and producer-consumer patterns",
+    "design_week": 8,
+    "reference": "Producer-consumer application",
+    "reference_week": 10,
+    "sim": 0.669
+   }
+  ],
+  "missed_reference": [
+   "Introduction to Object Oriented Paradigm",
+   "Examples of OOP",
+   "Data encapsulation, modularity, code reuse",
+   "Identifying classes and objects",
+   "Working with objects (constructors, variable reassignment, instance variables)",
+   "Interfaces",
+   "Inheritance",
+   "Polymorphism using inheritance",
+   "Method resolution",
+   "Interfaces v/s Inheritance",
+   "Constructor invocation in inheritance tree",
+   "Immutable classes",
+   "Object class in Java",
+   "Comparing objects (equals method, Comparable and Comparator interfaces)",
+   "Object cloning",
+   "Generic programming",
+   "Introduction to defensive and secure programming",
+   "Assertions",
+   "Collection framework",
+   "IO Streams",
+   "Object serialization and deserialization",
+   "Unit testing using JUnit",
+   "Uinfied Modelling Language (sequence diagram, class diagram, use case diagram)",
+   "Introduction to multithreading",
+   "Ahmdals law, speedup, parallel efficiency",
+   "Thread creation (Runnable interface, Thread class)",
+   "Multithreaded client server application",
+   "Thread pool (ExecutorService, ForkJoinPool)",
+   "Parallel performance analysis by controlling task granularity",
+   "Java memory model",
+   "Introduction to design patterns (iterator, singleton, flyweight, adapter, strategy)",
+   "Introduction to design patterns (template, prototype, factory, façade, decorator, composite, proxy, chain of responsibility, observer, state)"
+  ]
+ },
+ "cos": {
+  "design": 5,
+  "reference": 5,
+  "soft": {
+   "precision": 0.525,
+   "recall": 0.526,
+   "f1": 0.525
+  },
+  "rouge_l_f1": 0.133,
+  "bloom_max": {
+   "design": 5,
+   "reference": 5
+  },
+  "bloom_mean": {
+   "design": 3.6,
+   "reference": 3.6
+  }
+ },
+ "assessment": {
+  "design": {
+   "assignment": 20.0,
+   "endsem": 25.0,
+   "midsem": 20.0,
+   "project": 25.0,
+   "quiz": 10.0
+  },
+  "reference": {
+   "assignment": 20.0,
+   "endsem": 30.0,
+   "midsem": 20.0,
+   "project": 20.0,
+   "quiz": 10.0
+  },
+  "total_variation": 0.05,
+  "type_jaccard": 1.0
+ },
+ "structure": {
+  "credits_equal": true,
+  "co_count_diff": 0,
+  "weeks_diff": 0,
+  "component_count_diff": 0,
+  "prereq": {
+   "design": [
+    "CSE101",
+    "CSE102"
+   ],
+   "reference": [
+    "CSE101",
+    "CSE102"
+   ],
+   "jaccard": 1.0
+  }
+ },
+ "resources": {
+  "design": 3,
+  "reference": 3,
+  "reference_named": [
+   "Design Patterns: Elements of Reusable Object-Oriented Software"
+  ],
+  "recall": 0.333
+ }
+}

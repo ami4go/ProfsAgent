@@ -1,0 +1,26 @@
+# Phase 2 deliverable B (lecture content): settings read by src/profsagent/content/.
+# Slide pacing follows common lecture practice: about 2-3 minutes per content slide, i.e. 8-14 content slides per hour,
+# plus the title, objectives and references slides that code adds.
+classes:                                   # how the week's lecture hours are taught: one deck per class (content/sessions.py)
+  per_week: 2                              # IIIT-D: L = 3 is taught as 2 classes a week
+  minutes: 90                              # 2 x 90 min = the 3 lecture hours (Parth, 2026-10-28; some courses use 80)
+deck:
+  slides_per_hour: {min: 8, max: 14}       # content slides the AI writes (B1), per lecture hour
+  max_bullets: 6                           # D-DENSE warning above this per slide
+  max_bullet_words: 22                     # D-DENSE warning above this per bullet
+  minutes_tolerance: 0.2                   # D-TIME warning when the slides' minutes differ from the lecture by more
+  repair_rounds: 1                         # extra B1 calls when the deck has errors (kept only if errors drop)
+verify:
+  grounding_floor: 0.35                    # D-GROUND when a cited source's similarity to the slide is below both this and
+                                           # the slide's median over all offered sources. Calibrated on cs601-02 W01.L1
+                                           # (titles only): cited median 0.38, uncited 0.28; flags 4 of 29 citations
+sources:
+  include_pending: false                   # cite C's resources only once the professor approved them (review.yaml)
+  max_external: 8                          # C items offered to B1 as sources, best-ranked first
+render:
+  width_in: 13.333                         # 16:9
+  height_in: 7.5
+  font: Calibri
+  mono_font: Consolas
+  colors: {ink: "1F2937", muted: "6B7280", accent: "0F766E", accent_soft: "CCFBF1", panel: "F3F4F6", code_bg: "111827",
+           code_ink: "E5E7EB"}

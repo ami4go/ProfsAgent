@@ -1,7 +1,68 @@
 # ProfsAgent: where the work is (read this first)
 
 Short status note for teammates and their coding agents, so nobody has to re-read the whole repo or chat history.
-Newest entry on top. Owner of Phase 2 deliverable C: Vihan.
+Newest entry on top. Owners: Phase 2 deliverable A (UI, simulations) Amit, B (lecture content) Parth, C (resources,
+experts) Vihan.
+
+## 2026-10-28, afternoon (Parth): deliverable B slide generation v1; validation and evaluation layers
+
+### Deliverable B: lecture slides and notes (`src/profsagent/content/`, README section "Deliverable B")
+- **The call for `generate_material`** (UI guide §4, "Parth to define the call"):
+  - `content.generate.generate_material(run_id, lecture_id, options) -> manifest`. Options: `include_pending` (cite C
+    items not yet approved; testing only) and `note` (what the professor wants emphasised).
+  - It reads `delivery/briefs` (built from the run's state) and C's `delivery/lectures/<id>.json` items whose
+    `status_decision` is `approve`.
+- **Output** in `runs/<id>/delivery/material/<lecture>/`:
+  - `slides.pptx`, `notes.md`, `quiz.json`, `deck.json`.
+  - `material.json`: what the UI reads. It has `files`, `slides`, `errors`, `warnings`, `findings`, `sources`, `cited`
+    and `calls`.
+- **Cost:** one B1 call per lecture (plus one repair call only if the deck has errors).
+- **First live run:** cs601-02 W01.L1, 21 slides, 0 errors and 0 warnings after layout fixes, 1 call. A copy is in
+  `eval/content_examples/cs601-02_W01.L1/`.
+  - The copy in `runs/cs601-02/delivery/material/` is not committed: Amit's app tests expect that run unchanged.
+- **Ideas taken from THU-MAIC/OpenMAIC:** structured quiz scenes, a versioned deck contract (`schema_version`), and
+  layout checks on the rendered output.
+  - Not taken: narration/TTS, agent classmates, interactive HTML scenes. For v2: outline first, then slides, with a
+    professor gate between.
+- **Checks beyond structure (`content/verify.py`, no AI calls):**
+  - **Code snippets are compiled for syntax:** Python with ast, C/C++ with gcc/g++, Java with javac, JavaScript with
+    node. A missing compiler gives a `D-UNVERIFIED` warning, never a pass. This laptop has no JDK, so the Java in the
+    first deck is unverified; with a JDK, `query.blank()` is caught as "String has no method blank()".
+  - **Weak citations (`D-GROUND`):** a slide whose cited source matches it worse than the average offered source.
+    This is a topical match on the source title only.
+- **Professor review (`content/review.py`):**
+  - Decisions go in `material/review.yaml`: approve, redo (the reason becomes the AI's instructions), or reject.
+  - `material.json` gets a `status` the UI can show: draft, approved, redo or rejected.
+  - An approved deck is never overwritten without `--force`.
+- **AI review for a professor in a hurry (`content/ai_review.py`, `--auto-review` / `options.review: "ai"`):**
+  - A different model from the one that wrote the slides checks every slide and answers the quiz without the key.
+  - Its errors get one repair. The status becomes `ai-reviewed`; only the professor can approve.
+  - UI: show `ai-reviewed` as "checked by AI, not by you", with `material.json → ai_review.verdict` and the findings.
+  - AI calls for slides are now logged in `delivery/material/llm_calls.jsonl`, not `delivery/llm_calls.jsonl`.
+- **Slides are made per class, not per topic chunk (`content/sessions.py`, `config/content.yaml → classes`):**
+  - C's briefs (`W03.L1`, …) are one per topic chunk of the schedule, so their lengths vary (0.25–2.5 h). IIIT-D
+    teaches L = 3 as 2 classes a week, so B packs each week's chunks, in order, into **2 classes of 90 min**
+    (`W03.S1`, `W03.S2`). A class can finish one topic and start the next; B1 gets the minutes per topic.
+  - C's brief ids are unchanged (survey, resources and the UI still use them). `generate_material` accepts both kinds
+    of id. **To discuss:** should the survey and C's resources move to class ids too?
+  - CS-601 (`runs/cs601-02/delivery/material/`): weeks 1–2 were made per topic chunk (W01.L1, W01.L2, W02.L1, W02.L2);
+    weeks 3–13 per class (W03.S1 … W13.S2, being generated). W03.L1 is superseded by W03.S1.
+- **Smaller fixes:** JSON snippets are checked (a labelled request + response pair is fine); `check` keeps the AI
+  review's findings; NVIDIA timeout 75 s → 240 s (a deck takes 2–3 min to write).
+- **Java checks:** a JDK (Temurin 21) is now installed on Parth's laptop. Elsewhere, Java snippets stay "not verified"
+  until a JDK is installed.
+- **Not built yet:** `attach_material` (the professor's own pptx/pdf → summary / quiz / gap check).
+- **New dependency:** `python-pptx`.
+
+### Validation and evaluation (decisions log entry 17)
+- `validate/engine.py` is the only entry point to validation. `engine.configure(run_cfg, llm, run_id)` replaces
+  `pipeline._set_validation_profile`.
+- `evaluate/engine.py` runs tiers 1–3 after every design. Tier 3 (judges) is only planned, with 0 calls, unless
+  `run.judge: true` or `PROFSAGENT_JUDGE=1`. Writes `evaluation.json`.
+- New warning family `fit`, settled by the professor:
+  - `VC-AUDIENCE`: a "for All"-type title at level 3+.
+  - `VC-NOLAB`: mostly hands-on LOs with P = 0 and no lab decision.
+- `PROFSAGENT_STRONG_ONLY=1` (llm client) keeps a run off lite and local models. It still works with the new providers.
 
 ## 2026-10-28: provider fallbacks, transcript-block handling, quality filters
 

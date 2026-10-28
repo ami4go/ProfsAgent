@@ -8,9 +8,10 @@ from __future__ import annotations
 
 import csv
 import io
+import json
 from collections import defaultdict
 
-from profsagent.validate import rules
+from profsagent.validate import engine, report
 
 
 def _tag(sources) -> str:
@@ -53,7 +54,7 @@ def render(rt) -> None:
     d = st["defaults"]
     pos = st["positioning"]
     vs = [x for v in st.get("violations", {}).values() for x in v]
-    errs = rules.errors(vs)
+    errs = engine.errors(vs)
     L = []
     w = L.append
     w(f"# {cc['course_name']} — Course Proposal (ProfsAgent draft)\n")
@@ -211,9 +212,10 @@ def render(rt) -> None:
     w("")
 
     w("## Appendix E — Validation report (deterministic validators; not LLM self-assessment)\n")
-    w("| Stage | Code | Severity | Nodes | Message |\n|---|---|---|---|---|")
-    for x in sorted(vs, key=lambda x: (x["severity"] != "error", x["stage"], x["code"])):
-        w(f"| {x['stage']} | {x['code']} | {x['severity']} | {', '.join(map(str, x['nodes']))[:60]} | {x['message'][:220]} |")
+    w(report.markdown(vs))
+    (rt.run_dir / "validation_report.json").write_text(
+        json.dumps({"summary": report.summary(vs), "grouped": report.grouped(vs), "findings": vs}, indent=1, ensure_ascii=False,
+                   default=str), encoding="utf-8")
     w("\n**Repair history**\n")
     for stg, tr in st.get("traces", {}).items():
         if tr.get("repairs"):
@@ -269,4 +271,10 @@ def render(rt) -> None:
         made = " + course_template.xlsx"
     except Exception as e:  # noqa: BLE001 — never lose the proposal because of the spreadsheet
         made = f" (course_template.xlsx failed: {type(e).__name__}: {e})"
+    try:   # teaching hours and weekly student workload, as its own file (render/workload.py)
+        from profsagent.render.workload import write as write_workload
+        write_workload(st, rt.run_dir)
+        made += " + workload.md/.csv"
+    except Exception as e:  # noqa: BLE001 — the proposal is complete without it
+        made += f" (workload failed: {type(e).__name__}: {e})"
     rt.log(f"rendered proposal.md + proposal.csv{made} ({len(errs)} errors, {len(vs) - len(errs)} warnings)")

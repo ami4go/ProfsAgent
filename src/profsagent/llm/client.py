@@ -6,6 +6,10 @@ An (provider, model, key#) slot that fails with 429 / 503 / timeout goes on cool
 data/cache/llm_state.json) and the next slot is tried. JSON outputs are validated with Pydantic; on a
 validation error the call is retried once with the error appended (possibly on a different slot).
 
+PROFSAGENT_STRONG_ONLY=1 leaves out the weak endpoints ("lite" models and local Ollama): when the strong models are
+busy (503) the call waits for their cooldown (bounded by limits.max_wait_s) instead of falling back, and fails after
+that, so a run stops and can be resumed with --continue rather than finishing on a weak model.
+
 Keys are referred to by index only in logs.
 """
 from __future__ import annotations
@@ -54,6 +58,10 @@ class CallRecord:
 def _fp(key: str) -> str:
     """Stable, non-secret slot id for an API key (cooldowns survive reordering keys in .env)."""
     return "k" + hashlib.sha256(key.encode()).hexdigest()[:8]
+
+
+def _weak(ep: dict) -> bool:
+    return ep["provider"] == "ollama" or "lite" in ep["model"]
 
 
 def _approx_tokens(text: str) -> int:
@@ -122,6 +130,7 @@ class LLMClient:
         self.totals = {"calls": 0, "prompt_tokens": 0, "output_tokens": 0}
         self.no_native_schema: set[str] = set()   # Gemini models that rejected responseJsonSchema in this process
         self.no_json_mode: set[str] = set()       # OpenAI-compatible models that rejected response_format
+        self.strong_only = os.environ.get("PROFSAGENT_STRONG_ONLY", "").lower() in ("1", "true", "yes", "on")
 
     # ------------------------------------------------------------------ slots
     def _slots_for(self, role: str, prompt_chars: int, skip_models: frozenset[str] = frozenset()):
@@ -129,6 +138,8 @@ class LLMClient:
             if ep.get("max_prompt_tokens") and prompt_chars / 3.2 > ep["max_prompt_tokens"]:
                 continue
             if f"{ep['provider']}:{ep['model']}" in skip_models:   # this call already got invalid output from it
+                continue
+            if self.strong_only and _weak(ep):
                 continue
             ks = {"gemini": self.gemini_keys, "groq": self.groq_keys, "ollama": ["local"]}.get(ep["provider"])
             if ks is None:
@@ -343,12 +354,16 @@ class LLMClient:
 
     # ------------------------------------------------------------------ structured calls
     def structured(self, *, system: str, user: str, model_cls: type[T], role: str = "generate", temperature: float = 0.2,
-                   prompt_id: str = "?", prompt_version: str = "?", run_id: str | None = None) -> tuple[T, CallRecord]:
+                   prompt_id: str = "?", prompt_version: str = "?", run_id: str | None = None,
+                   exclude_models: frozenset[str] = frozenset()) -> tuple[T, CallRecord]:
+        """exclude_models: "provider:model" entries never to use for this call (e.g. a reviewer must not be the model whose
+        output it reviews)."""
         rec = CallRecord(prompt_id=prompt_id, prompt_version=prompt_version, role=role)
         t0 = time.time()
         cache_path = None
         if self.cfg.get("cache", {}).get("enabled") and self.cache_enabled:
-            key = hashlib.sha256(f"{role}|{temperature}|{model_cls.__name__}|{system}|{user}".encode()).hexdigest()[:32]
+            avoid = f"|{sorted(exclude_models)}" if exclude_models else ""
+            key = hashlib.sha256(f"{role}|{temperature}|{model_cls.__name__}|{system}|{user}{avoid}".encode()).hexdigest()[:32]
             cache_path = CACHE / "llm" / f"{key}.json"
             if cache_path.exists():
                 cached = json.loads(cache_path.read_text(encoding="utf-8"))
@@ -361,7 +376,7 @@ class LLMClient:
                     pass
         raw_text = ""
         schema = model_cls.model_json_schema() if self.lim.get("native_json_schema") else None
-        skip: set[str] = set()      # "provider:model" whose output stayed invalid after its retries
+        skip: set[str] = set(exclude_models)   # plus "provider:model" whose output stayed invalid after its retries
         failure: Exception | None = None
         for _ in range(1 + int(self.lim.get("schema_fallback_models", 2))):
             msg_user = user
@@ -370,7 +385,7 @@ class LLMClient:
                     text, usage, _ = self.raw(role, system, msg_user, temperature, json_mode=True, record=rec,
                                               skip_models=frozenset(skip), response_schema=schema)
                 except AllEndpointsFailed:
-                    if not skip:
+                    if skip == set(exclude_models):
                         raise
                     break           # no model left to fall back to: report the invalid output below
                 raw_text = text

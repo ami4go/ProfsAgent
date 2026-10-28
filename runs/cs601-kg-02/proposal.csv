@@ -1,0 +1,67 @@
+Course Code,
+Course Name,Software Development using AI
+Credits,4
+Course Offered to,UG
+Course Description,"This course examines AI-native software development, focusing on how developers collaborate with AI coding agents within structured software engineering workflows. Intended for third- and fourth-year B.Tech. Computer Science and Engineering students, the course addresses the core challenges of defining developer intent, managing context resources, and coordinating agentic tools. Students learn to configure agent workspaces using the Model Context Protocol, design executable software specifications from ambiguous requirements, instrument human-agent development loops to diagnose context failure modes, and establish continuous verification pipelines using synthetic defect injection. Additionally, students evaluate software quality metrics to refactor agent-generated technical debt across multi-turn workflows. The course is not a general introduction to artificial intelligence or basic programming, but a specialized study of collaborative human-AI software engineering. Instruction is delivered through a combination of lectures, tutorial sessions, and hands-on laboratory work, culminating in practical project development."
+Pre-requisites
+Pre-requisite (Mandatory),Pre-requisite (Desirable),Pre-requisite(other)
+CSE201,,
+Post Conditions
+CO1,CO2,CO3,CO4,CO5
+"Configure AI coding agent environments and context resources, given a multi-component software specification and Model Context Protocol (MCP) tool definitions, such that all required tool invocations and context retrievals complete without protocol errors.","Construct executable software specifications and test-driven prompt context from ambiguous functional software requirements, using structured spec-driven development methods, such that at least 80% of generated code modules satisfy all specified unit tests on first synthesis.","Diagnose failure modes and context drift in human-agent iterative development loops, given execution traces and interaction logs from an automated AI software factory workflow, identifying at least three distinct root causes of sub-optimal code generation with supporting log evidence.","Analyse automated testing and verification pipelines for agent-generated software components, using synthetic defect insertion and automated regression suites in a continuous integration environment, determining code coverage gaps and identifying at least 90% of introduced functional defects.","Evaluate the reliability and maintainability of AI-assisted software projects across multi-turn human-agent collaborative workflows using standardized software quality benchmarks, justifying each architectural refactoring recommendation against quantitative reliability and maintainability metrics."
+Weekly Lecture Plan
+Week Number,Lecture Topic,COs Met,Tutorial,Assignments / Project
+1,"Model Context Protocol Specifications and Tool Schemas (M1.T1)
+MCP Server Adapters Implementation (M1.T2)",CO1,Worked analysis and tracing of JSON-RPC protocol schemas for four MCP core message types in pairs.,
+2,"MCP Server Adapters Implementation (M1.T2)
+Integrated Agentic Workspace and Multi-File Context Indexing (M1.T3)",CO1,Walkthrough and debugging session on handling protocol schema validation errors in MCP server adapters.,
+3,"Integrated Agentic Workspace and Multi-File Context Indexing (M1.T3)
+Requirements Translation and Specification Schema Design (M2.T1)","CO1, CO2",Group drafting and peer review of structured specification schemas from ambiguous feature requests.,A:Assignment1 released
+4,"Requirements Translation and Specification Schema Design (M2.T1)
+Test-Driven Prompt Harnessing and Unit Test Assertions (M2.T2)",CO2,Formulate edge-case input/output schemas for requirements translation and evaluate assertion completeness.,A:Quiz1 (quiz); A:Assignment1 due
+5,"Test-Driven Prompt Harnessing and Unit Test Assertions (M2.T2)
+Executable Specification Packages and Agent Code Synthesis (M2.T3)",CO2,Interactive problem-solving on writing non-ambiguous prompt harnesses and unit assertions.,
+6,"Executable Specification Packages and Agent Code Synthesis (M2.T3)
+Context Degradation and Hallucination Pattern Analysis (M3.T1)","CO2, CO3",Categorize context window degradation and hallucination patterns using multi-turn conversation transcripts.,A:Assignment2 released
+7,"Context Degradation and Hallucination Pattern Analysis (M3.T1)
+Agentic Loop Instrumentation and Trajectory Profiling (M3.T2)",CO3,Mid-semester review and problem-solving session analyzing context window degradation scenarios.,A:Assignment2 due; A:Midsem (midsem)
+8,Software Factory Log Diagnosis and Context Failure Root-Cause Analysis (M3.T3),CO3,Trace diagnosis of trajectory log files identifying context failure root causes in pairs.,A:Quiz2 (quiz); A:ProjM1 released
+9,Continuous Integration and Automated Regression Pipelines for Agent Commits (M4.T1),CO4,Hands-on walkthrough of containerized CI build configurations and automated regression validation.,A:ProjM1 due
+10,Synthetic Fault Injection and Mutation Testing (M4.T2),CO4,Analysis of mutation score outputs and un-tested execution paths in mutation test reports.,A:Assignment3 released
+11,"Automated Defect Detection Efficiency and Pipeline Evaluation (M4.T3)
+Code Quality Benchmarking and Static Maintainability Metrics (M5.T1)","CO4, CO5",Calculations and comparison of static maintainability metrics across generated code bases.,A:Assignment3 due; A:ProjM2 released
+12,"Code Quality Benchmarking and Static Maintainability Metrics (M5.T1)
+Architectural Refactoring Strategies for Agent-Generated Debt (M5.T2)",CO5,Peer evaluation of refactoring strategies preserving 100% test pass rates on target subsystems.,A:ProjM2 due; A:ProjM3 released
+13,"Architectural Refactoring Strategies for Agent-Generated Debt (M5.T2)
+Maintainability Evaluation and Collaborative Project Benchmarking (M5.T3)",CO5,Practice 10-minute presentations justifying refactoring recommendations based on quality benchmarks.,A:ProjM3 due; A:Endsem (endsem)
+Weekly Lab Plan
+Week Number,Laboratory Exercise,COs Met,Platform
+1,Build a baseline custom Model Context Protocol (MCP) server adapter using Python or TypeScript SDKs to expose local codebase metadata to a coding agent.,CO1,"Python SDK, TypeScript SDK, VS Code"
+2,"Implement custom MCP server adapters and configure multi-file context indexing for a 3-service backend specification, verifying MCP tool definitions.",CO1,"Python SDK, AI coding tools/APIs"
+3,Configure and test an integrated agentic workspace with multi-file context indexing to verify 5 required MCP tool invocations without execution errors.,CO1,"AI coding tools/APIs, MCP Inspector"
+4,Develop test-driven prompt harnesses containing executable PyTest unit test cases targeting a single module interface.,CO2,"PyTest, Python, AI coding tools/APIs"
+5,"Construct an executable specification package for a microservice module, ensuring AI agent code synthesis passes all initial unit test assertions.",CO2,"PyTest, AI coding tools/APIs"
+6,Finalize executable specification packages and execute automated synthesis verification across pre-written unit test suites.,CO2,"PyTest, AI coding tools/APIs"
+7,Open lab session for catch-up on MCP adapters and specification package tasks prior to mid-sem exams.,"CO1, CO2","Student development machines, AI coding tools/APIs"
+8,Profile 10-step agentic loop execution traces and diagnose context degradation failures in supplied software factory logs.,CO3,"Python Logging, Execution Profiler"
+9,Instrument automated regression testing workflows in CI/CD pipelines to validate agent-generated commits across dynamic containerized builds.,CO4,"GitHub Actions, Docker"
+10,Apply synthetic fault injection on generated code suites using automated mutation tools to discover un-tested execution paths.,CO4,"MutMut / Mutation Framework, PyTest"
+11,"Analyse pipeline defect detection efficiency and measure software maintainability metrics, including cyclomatic complexity and dependency coupling.","CO4, CO5","Radon, SonarQube / Static Analyzers"
+12,Formulate and execute architectural refactoring strategies on agent-generated code debt while preserving 100% of functional test pass rates.,CO5,"PyTest, Static Analysis Tools"
+13,Evaluate the maintainability of a multi-turn collaborative project codebase using quality benchmarks and prepare refactoring recommendations.,CO5,"Benchmarking Suite, Presentation Tools"
+Assessment Plan
+Type of Evaluation,% Contribution in Grade
+quiz,10.0
+assignment,20.0
+midsem,20.0
+project,25.0
+endsem,25.0
+Resource Material
+Type,Title
+primary,"Chen Qian, Wei Liu, Hongzhang Liu, Nuo Chen (2024). ChatDev: Communicative Agents for Software Development"
+reference,Kent Beck (2002). Test-driven development
+reference,Paul Ammann (2017). Introduction to software testing
+reference,"Titus Winters, Tom Manshreck, Hyrum Wright (2020). Software Engineering at Google"
+reference,Martin Fowler (1999). Refactoring: Improving the Design of Existing Code
+reading,"Henrique Nunes, Eduardo Figueiredo, Larissa Rocha, Sarah Nadi (2025). Evaluating the Effectiveness of LLMs in Fixing Maintainability Issues in Real-World Projects"
+reading,"Shanchao Liang, Spandan Garg, Roshanak Zilouchian Moghaddam (2026). The SWE-Bench Illusion: When State-of-the-Art LLMs Remember Instead of Reason"

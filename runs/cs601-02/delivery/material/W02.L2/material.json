@@ -1,0 +1,115 @@
+{
+ "lecture_id": "W02.L2",
+ "topic": "Coding agents and context engineering",
+ "generated_at": "2026-10-28 20:57:54",
+ "prompt": "B1 0.2.0",
+ "files": {
+  "slides": "material\\W02.L2\\slides.pptx",
+  "notes": "material\\W02.L2\\notes.md",
+  "deck": "material\\W02.L2\\deck.json",
+  "quiz": "material\\W02.L2\\quiz.json"
+ },
+ "slides": 12,
+ "content_slides": 9,
+ "minutes": 60.0,
+ "errors": 0,
+ "warnings": 2,
+ "findings": [
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6 ('Configuring Custom Tools via MCP'): [fact] The speaker notes cite a fabricated future study ('2026 SSRN paper') and an invented statistic (37% reduction in integration failures). Fix: Remove the citation and fake statistic from the speaker notes. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Configuring Custom Tools via MCP"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6 ('Configuring Custom Tools via MCP'): [fact] The notes describe MCP registration as a POST request to a registry service, misrepresenting the Model Context Protocol which operates via JSON-RPC 2.0 over stdio/SSE between host and server. Fix: Clarify that MCP tools are exposed directly by local or remote MCP servers to client hosts over JSON-RPC transport rather than registered via a central REST API endpoint. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Configuring Custom Tools via MCP"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 5,
+   "language": "json",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 7,
+   "language": "json",
+   "status": "ok",
+   "detail": ""
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Autonomous Coding Agents for Software Development Testing and Debugging",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.7515638",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1"
+ ],
+ "calls": [
+  {
+   "endpoint": "cache(nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f)",
+   "prompt_tokens": 0,
+   "output_tokens": 0
+  },
+  {
+   "endpoint": "cache(gemini:gemini-3.5-flash:k3ca4d81f)",
+   "prompt_tokens": 0,
+   "output_tokens": 0
+  },
+  {
+   "endpoint": "gemini:gemini-3.5-flash:k3ca4d81f",
+   "prompt_tokens": 1532,
+   "output_tokens": 7396
+  }
+ ],
+ "ai_review": {
+  "endpoint": "cache(gemini:gemini-3.5-flash:k3ca4d81f)",
+  "model": "gemini:gemini-3.5-flash",
+  "prompt_tokens": 0,
+  "output_tokens": 0,
+  "verdict": "The slides accurately target the learning outcome but contain a fabricated citation in slide 6 notes and inaccurate technical descriptions of how MCP tool discovery operates.",
+  "questions": 1,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 6,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The speaker notes cite a fabricated future study ('2026 SSRN paper') and an invented statistic (37% reduction in integration failures).",
+    "fix": "Remove the citation and fake statistic from the speaker notes."
+   },
+   {
+    "slide": 6,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The notes describe MCP registration as a POST request to a registry service, misrepresenting the Model Context Protocol which operates via JSON-RPC 2.0 over stdio/SSE between host and server.",
+    "fix": "Clarify that MCP tools are exposed directly by local or remote MCP servers to client hosts over JSON-RPC transport rather than registered via a central REST API endpoint."
+   }
+  ],
+  "repaired": true
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

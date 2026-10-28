@@ -1,0 +1,287 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W02.L2",
+ "title": "Coding agents and context engineering",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "Agent Workspaces and Context Engineering",
+   "bullets": [
+    "Coding agents rely on structured workspace context to generate accurate code.",
+    "Context engineering curates prompts, project files, and tool definitions for the agent.",
+    "Poor context configuration leads to hallucinated dependencies and execution failures.",
+    "Integration with development tools expands agent capabilities dynamically in the workspace."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Welcome everyone. In this lecture, we examine how autonomous coding agents interact with development workspaces through context engineering and tool protocols. An agent's effectiveness depends heavily on what context it receives in its prompt window. Context engineering goes beyond basic prompt writing; it involves structuring workspace metadata, local file snapshots, and available tools so the agent understands the repository layout. Without structured context, agents frequently hallucinate non-existent methods or misuse libraries. Today, we will explore how tool integration standardizes this flow.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Model Context Protocol (MCP) Architecture",
+   "bullets": [
+    "MCP standardizes communication between host environments and language model agents.",
+    "Hosts run MCP client interfaces connected to lightweight local or remote servers.",
+    "Servers expose tools, resources, and prompt templates without hardcoding API endpoints.",
+    "Separation of host and server promotes modular and secure tool extensions."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "",
+    "steps": [
+     "Client Host Environment",
+     "MCP Client Protocol Layer",
+     "JSON-RPC Transport",
+     "MCP Server Tool Execution"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "The Model Context Protocol (MCP) provides an open standard connecting agent hosts—such as IDEs or CLI tools—with capability providers known as MCP servers. Rather than hardcoding custom integrations inside the agent codebase, MCP decouples the LLM host from tool execution. An MCP server exposes specific tools, system resources, and contextual prompt templates. The client host discovers these capabilities at startup. This modularity allows developers to plug in custom linters, test runners, or database inspection tools cleanly without altering the underlying agent logic.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Communication via JSON-RPC 2.0 and Transports",
+   "bullets": [
+    "MCP exchanges messages using standard JSON-RPC 2.0 requests and responses.",
+    "Local MCP servers communicate over standard input/output (stdio) channels.",
+    "Remote MCP servers use Server-Sent Events (SSE) with HTTP POST messages.",
+    "Tool discovery occurs dynamically via protocol handshakes rather than REST registries."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "",
+    "steps": [],
+    "code": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"tools/list\",\n  \"params\": {}\n}\n// Response from MCP Server:\n{\n  \"jsonrpc\": \"2.0\",\n  \"result\": {\n    \"tools\": [{\n      \"name\": \"run_linter\",\n      \"description\": \"Executes static code analysis\",\n      \"inputSchema\": { \"type\": \"object\" }\n    }]\n  },\n  \"id\": 1\n}",
+    "language": "json",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "It is vital to understand how MCP host-server communication works. MCP relies on the JSON-RPC 2.0 protocol over two primary transports: stdio for local subprocesses and SSE (Server-Sent Events) for remote network connections. Tool registration does not involve calling a central REST API endpoint or sending POST requests to a central registry service. Instead, when the client host starts, it initiates a bidirectional JSON-RPC handshake directly with configured local or remote MCP servers. The host sends a tools/list request, and the server returns JSON schemas describing available functions and expected parameters.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Context Engineering Strategies for Agents",
+   "bullets": [
+    "Dynamic context retrieval limits token overhead while preserving key signals.",
+    "System prompts define agent roles, tool usage constraints, and output formats.",
+    "Tool schema descriptions direct when and how the model invokes tools.",
+    "Context pollution occurs when excessive unformatted tool output fills the prompt."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Context engineering balances precision and token consumption. Providing full source files for large codebases exhausts context windows quickly and introduces noise. Effective context engineering selectively feeds relevant snippets, static analysis diagnostics, and test results into the agent prompt window. Accurate tool schemas are critical: clear descriptions guide the model on when to trigger an execution. Furthermore, tool outputs must be truncated or formatted cleanly to prevent context pollution from obscure stack traces or verbose logs.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Configuring a Custom MCP Tool Step-by-Step",
+   "bullets": [
+    "Problem: Expose a local test runner as an MCP tool within an agent workspace.",
+    "Step 1: Define tool metadata and input parameters using JSON Schema.",
+    "Step 2: Implement JSON-RPC handler to execute test commands over stdio.",
+    "Step 3: Register server entry in host workspace configuration file.",
+    "Step 4: Verify tool availability and argument parsing via RPC logs."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "",
+    "steps": [],
+    "code": "{\n  \"mcpServers\": {\n    \"junit-runner\": {\n      \"command\": \"node\",\n      \"args\": [\"./mcp-servers/junit-server.js\"],\n      \"env\": {\n        \"TEST_PATH\": \"./src/test/java\"\n      }\n    }\n  }\n}",
+    "language": "json",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Let's walk through configuring a custom tool step by step. Suppose we want our agent to trigger local JUnit tests. First, we define the tool schema, specifying required inputs like the test class name. Second, we write the server script using an MCP SDK, binding the tool handler to execute the build tool CLI. Third, in the agent host config—such as mcp_config.json—we add an entry under mcpServers pointing to our executable over stdio. Finally, we launch the client host and check that the server initializes without warnings and responds correctly to tool requests.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 10.0
+  },
+  {
+   "kind": "example",
+   "title": "Integrating Static Analysis and Testing Tools",
+   "bullets": [
+    "Static analyzers check for code style, security flaws, and type errors.",
+    "Agents receive diagnostics as structured feedback loops directly in context.",
+    "Custom tool wrappers parse raw build output into clean MCP tool results.",
+    "Clean tool outputs allow agents to iteratively fix bugs until all tests pass."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "",
+    "steps": [
+     "Agent Generates Code",
+     "MCP Invokes Static Analyzer",
+     "Analyzer Returns Warnings",
+     "Agent Iterates & Fixes Code",
+     "All Integration Tests Pass"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Here is a concrete example of integrating static analyzers alongside unit test runners. When an agent generates code, it triggers a static analysis tool server via MCP. If the static analyzer flags missing imports or type mismatches, the tool returns formatted JSON diagnostic messages back to the agent. The agent processes these structured errors, modifies the source code, and runs the unit test tool. This feedback loop continues until the static analyzer reports zero configuration warnings and all public integration tests pass successfully.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 8.0
+  },
+  {
+   "kind": "check",
+   "title": "Concept Check: MCP Tool Communication Protocol",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "How does an agent host discover tools provided by a local Model Context Protocol (MCP) server?",
+    "options": [
+     "By making an HTTP POST request to a centralized web API registry.",
+     "By sending a JSON-RPC 2.0 tools/list request over stdio or SSE transport.",
+     "By parsing static Markdown annotations embedded in source code files.",
+     "By scanning remote Docker container registries for published tool images."
+    ],
+    "answer": 1,
+    "explanation": "MCP servers expose tools directly to host environments via JSON-RPC 2.0 messages transmitted over stdio (for local servers) or SSE (for remote servers). Host environments discover tools by requesting 'tools/list' during connection initialization. Option 0 is incorrect because MCP does not rely on a central REST API endpoint or registry service."
+   },
+   "notes": "Take a minute to answer this question individually. Think about how the host client establishes communication with local vs remote tools under the Model Context Protocol.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Zero-Warning Workspace Integration Guidelines",
+   "bullets": [
+    "Environment variables must match local path and compiler setups.",
+    "Schema mismatches between host and server lead to silent execution drops.",
+    "Static analyzer outputs must be formatted to prevent warnings in host logs.",
+    "Pre-flight verification ensures tool availability before agent execution."
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Check Item",
+      "Common Cause",
+      "Resolution Strategy"
+     ],
+     [
+      "Unresolved Tool",
+      "Mismatched server name",
+      "Verify key in mcpServers JSON"
+     ],
+     [
+      "Schema Error",
+      "Missing required schema field",
+      "Validate against JSON Schema spec"
+     ],
+     [
+      "Analyzer Warning",
+      "Deprecated ruleset flag",
+      "Update local tool config flags"
+     ],
+     [
+      "Test Timeout",
+      "Interactive prompt in script",
+      "Pass non-interactive batch flags"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "To achieve a seamless workspace integration, configuration hygiene is essential. Common issues include schema validation errors, missing environment variables, or tool execution timeouts. When an MCP server returns unhandled stdout noise, static analyzers or client hosts may flag configuration warnings. Developers should run pre-flight checks: verifying that tool execution commands execute headlessly without waiting for user input, validating JSON Schemas against standard specifications, and ensuring that all paths in the host config resolve cleanly on the development machine.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [],
+   "minutes": 7.0
+  },
+  {
+   "kind": "summary",
+   "title": "Workspace Tool Integration Summary",
+   "bullets": [
+    "Context engineering structures workspace prompts and tool interfaces for agents.",
+    "MCP standardizes tool access via JSON-RPC 2.0 over stdio and SSE transports.",
+    "Local tool servers extend capabilities without centralized service registries.",
+    "Systematic validation ensures clean logs and zero static analyzer warnings."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "In summary, configuring custom tools for AI coding agents requires understanding both context engineering and protocol-level integration. By using the Model Context Protocol over stdio or SSE, host applications can dynamically discover and execute custom tools like test runners and static analyzers via JSON-RPC 2.0. Clean tool definitions, precise schemas, and thorough validation eliminate warnings and enable autonomous agents to pass all public integration tests reliably.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 6.0
+  }
+ ]
+}

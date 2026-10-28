@@ -260,3 +260,6 @@ class StubKG:
 
     def topic_precedence(self, topic_uids):
         return []
+
+    def precedence_evidence(self, titles, exclude=frozenset(), min_support=2, min_confidence=0.8):
+        return []

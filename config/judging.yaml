@@ -1,0 +1,123 @@
+# Evaluation tier 3 (validation layer v2, Stage 5): the LLM judge panel. Read by src/profsagent/evaluate/judges.py.
+#
+# Rubrics follow G-Eval: each dimension has criteria, fixed evaluation steps the judge follows, and an anchored 1-5
+# scale. One judge call scores every dimension (the Gemini free tier allows 20 requests/day/model, so one call per
+# dimension per judge would cost 18 calls per design). Judges see the professor's brief and the design, never the
+# validator findings, so their scores are an independent opinion rather than a rephrasing of the deterministic tiers.
+
+rubrics:
+  co_quality:
+    name: Course outcomes
+    criteria: >-
+      Each CO states one observable capability: an action verb, what it acts on, a condition and a checkable degree.
+      The COs suit the course level and credits, do not overlap, and together cover the intent in the brief.
+    steps:
+      - Read the brief's intent, target students and level.
+      - For each CO, check that it names one observable action with a condition and a degree an assessment could check.
+      - Check that the COs do not overlap and that together they cover the intent; note any part of the intent no CO covers.
+    anchors:
+      5: every CO is observable, measurable and well scoped, and the set covers the intent
+      4: minor issues in one CO (a vague degree, a slightly broad scope)
+      3: several COs are vague or overlapping, or the set misses part of the intent
+      2: most COs are vague, lists of topics, or misaligned with the intent
+      1: COs are missing or unusable
+
+  lo_decomposition:
+    name: Learning outcomes
+    criteria: >-
+      Each CO is decomposed into LOs that are narrower, single-task steps; together they lead up to the CO, at least
+      one reaches the CO's level, and no LO restates its CO or a sibling.
+    steps:
+      - For each CO, read its LOs in order.
+      - Check that each LO is one concrete task, narrower than its CO, and different from its siblings.
+      - Check that the LOs together build up to the CO, ending at the CO's level.
+    anchors:
+      5: every CO is decomposed into distinct, concrete steps that build up to it
+      4: one LO restates its CO or two LOs overlap
+      3: several LOs restate their CO, or a CO's LOs do not build up to it
+      2: LOs are mostly restatements or topic lists
+      1: LOs are missing or unrelated to the COs
+
+  alignment:
+    name: Constructive alignment
+    criteria: >-
+      What is taught, what students practise and what is assessed match the outcomes (Biggs): every LO is taught by
+      some topic and assessed by some task at its Bloom level; nothing important is taught but never assessed.
+    steps:
+      - For each LO, find the topics that serve it and the assessment tasks that assess it.
+      - Check that the assessing tasks work at the LO's Bloom level (a design task for a Create LO, not a recall quiz).
+      - Note LOs taught but not assessed, assessed but not taught, or assessed below their level.
+    anchors:
+      5: every LO is taught and assessed at its level
+      4: one LO is assessed below its level or weakly taught
+      3: several LOs are not assessed, or assessed below their level
+      2: teaching and assessment largely ignore the outcomes
+      1: no visible link between outcomes, teaching and assessment
+
+  sequencing:
+    name: Sequencing and workload
+    criteria: >-
+      Topics come after what they build on; assessments come after the teaching they test; weekly load is even and
+      realistic for the credits; the mid-semester exam falls where it should.
+    steps:
+      - Walk through the weeks in order and check that each topic's prerequisites come earlier.
+      - Check that each assessment is released after the topics it covers are taught.
+      - Check that no week is overloaded and that labs and assignments are spread out.
+    anchors:
+      5: a clear progression with evenly spread work
+      4: one topic or assessment slightly out of order, or one heavy week
+      3: several ordering problems or an uneven load
+      2: the order works against learning (advanced topics first, exams before teaching)
+      1: no meaningful order
+
+  assessment_validity:
+    name: Assessment validity
+    criteria: >-
+      Each assessment component measures the outcomes it claims, in a format that suits them; weights reflect the
+      importance of the outcomes; the plan is feasible for students and instructors and fair (enough proctored work).
+    steps:
+      - For each component, compare its format with the outcomes it assesses.
+      - Check that the weights put most marks on the most important outcomes.
+      - Check feasibility (number of tasks, timing) and the share of proctored assessment.
+    anchors:
+      5: valid, well-weighted and feasible
+      4: one component's format or weight is questionable
+      3: several components measure the wrong thing or weights are off
+      2: the assessment mostly measures something else than the outcomes
+      1: no usable assessment plan
+
+  brief_fit:
+    name: Fit to the brief
+    criteria: >-
+      The design does what the professor asked: the requested topics and intent, the target students and level, the
+      lab and assessment preferences, and the special constraints in the brief.
+    steps:
+      - List what the brief asks for (topics, intent, students, lab, assessment preferences, constraints).
+      - For each item, find where the design provides it.
+      - Note anything requested but missing, or added against the brief.
+    anchors:
+      5: everything requested is there and nothing contradicts the brief
+      4: one minor request missing
+      3: a notable request missing or partly contradicted
+      2: several requests missing or contradicted
+      1: the design does not match the brief
+
+panel:
+  # Judge roles (config/models.yaml), in order of preference. Up to `size` are used; a judge whose model generated
+  # most of the design is skipped (self-preference); a judge with no API key or no quota is reported as missing.
+  candidates: [judge_a, judge_b, judge_c, judge_d]
+  size: 3
+  temperature: 0
+  self_preference_share: 0.5   # skip a judge whose model generated >= half of the design stages
+
+cascade:
+  # The cheapest decisive order: Tier 1 first, then one judge, then the rest of the panel only when needed.
+  skip_if_tier1: [FAIL]               # a design with open errors is not judged unless --force
+  stop_after_first_if:                # the first judge alone decides when it is clearly good or clearly weak
+    good: {mean_at_least: 4.0, min_at_least: 3}
+    weak: {mean_at_most: 2.0}
+
+verdict:
+  good: {mean_at_least: 4.0, min_at_least: 3}
+  acceptable: {mean_at_least: 3.0, min_at_least: 2}
+  disagreement_spread: 2             # judges 2+ points apart on a dimension: flagged for the professor

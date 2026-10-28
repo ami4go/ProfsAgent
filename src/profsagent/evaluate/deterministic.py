@@ -13,7 +13,8 @@ numbers, not one opaque score:
     resources      verified share and age
     gates          overrides and "would have blocked"
     summary        verdict PASS | REVIEW | FAIL: FAIL = open errors; REVIEW = something needs a human to confirm
-                   (coverage below 100%, unenforced or malformed constraints, confirm-warnings); else PASS
+                   (coverage below 100%, unenforced or malformed constraints, confirm-warnings, course-fit
+                   warnings); else PASS
 """
 from __future__ import annotations
 
@@ -23,7 +24,7 @@ from collections import Counter
 
 from profsagent.config import pedagogy
 from profsagent.validate import constraints as K
-from profsagent.validate import engine, regulation, rules
+from profsagent.validate import engine, regulation
 
 CONFIRM_CODES = {"VK", "VK-CONTENT", "VK-MALFORMED", "VK-UNENFORCED"}   # warnings that ask a human to confirm
 
@@ -95,7 +96,7 @@ def evaluate(state: dict) -> dict:
     # ---- regulation and validation
     reg = regulation.check_regulation(state)
     vs = engine.check(state)
-    errs = rules.errors(vs)
+    errs = engine.errors(vs)
     validation = {"errors": len(errs), "warnings": len(vs) - len(errs),
                   "errors_by_family": dict(Counter(x["family"] for x in errs)),
                   "errors_by_code": dict(Counter(x["code"] for x in errs).most_common()),
@@ -153,6 +154,9 @@ def evaluate(state: dict) -> dict:
     confirm = [x for x in vs if x["severity"] != "error" and x["code"] in CONFIRM_CODES]
     if confirm:
         review_reasons.append(f"{len(confirm)} warnings ask for confirmation")
+    fit = sorted({x["code"] for x in vs if x.get("family") == "fit"})
+    if fit:
+        review_reasons.append(f"course fit to confirm ({', '.join(fit)}): level or lab may not suit the course")
     verdict = "FAIL" if errs else ("REVIEW" if review_reasons else "PASS")
     summary = {"verdict": verdict, "errors": len(errs), "regulation_ok": not reg,
                "alignment_min_pct": min(cov_values) if cov_values else None,

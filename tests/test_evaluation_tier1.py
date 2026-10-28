@@ -20,9 +20,13 @@ def s():
 
 
 def passing(s):
-    """The fixture without its two known findings: the unevidenced CO–PO claims (V23) and the unresolvable
-    'hands-on coding exercises' component constraint (K14, a confirm-warning)."""
+    """The fixture without its known findings: the unevidenced CO–PO claims (V23), the unfilled "{n} of {m}"
+    template text in two LOs (VT-TEMPLATE) and the unresolvable 'hands-on coding exercises' component constraint
+    (K14, a confirm-warning)."""
     s["copo_computed"] = [r for r in s["copo_computed"] if not r["claimed"] or r["strength_computed"] > 0]
+    for lo in s["los"]:
+        for f in ("statement", "degree"):
+            lo[f] = (lo.get(f) or "").replace("{n} of {m}", "3 of 5")
     s["constraints"] = [c for c in s["constraints"] if c["id"] != "K14"]
     return s
 
@@ -36,7 +40,7 @@ def test_report_sections(s):
 
 def test_fixture_fails_on_its_open_errors(s):
     ev = evaluate(s)
-    assert ev["summary"]["verdict"] == "FAIL" and ev["validation"]["errors_by_code"] == {"V23": ev["summary"]["errors"]}
+    assert ev["summary"]["verdict"] == "FAIL" and set(ev["validation"]["errors_by_code"]) == {"V23", "VT-TEMPLATE"}         and sum(ev["validation"]["errors_by_code"].values()) == ev["summary"]["errors"]
     assert ev["constraints"]["to_confirm"] == ["K14"] and ev["alignment"]["los_taught_pct"] == 100.0
 
 

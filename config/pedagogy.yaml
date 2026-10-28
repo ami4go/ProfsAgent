@@ -27,6 +27,8 @@ copo_per_programme: {min: 1, max_warn: 5}
 thresholds:
   statement_words: {CO: [8, 35], LO: [6, 45]}   # VT-LEN warning outside. Real IIIT-D COs (1,899): median 16 words, p95 33, 96% <= 35;
                                                 # CO max lowered 50 -> 35 on 2026-10-28 to match them (docs/decisions.md). LOs unchanged.
+  hands_on_without_lab_share: 0.5   # VC-NOLAB: share of hands-on LOs above which P = 0 needs the professor's confirmation
+                                    # (courses with labs run 0.55-0.80 in the saved runs; dept-webdev-title-01: 0.75, P = 0)
   anti_requisite_overlap: 0.35
   substantial_overlap: 0.15
   topic_match_sim: 0.87      # gemini-embedding-001 SEMANTIC_SIMILARITY: wrong pairs <= 0.85, true >= 0.89 (10-pair calibration, 2026-09-30)
@@ -34,6 +36,8 @@ thresholds:
   weight_band_fallback: {quiz: [5, 15], assignment: [15, 30], lab: [10, 25], project: [15, 40], midsem: [15, 30], endsem: [20, 40], presentation: [5, 20], report: [5, 20], participation: [0, 10]}
   component_count: {min: 3, max: 6}
   max_events_per_week: 2
+  semantic: {lo_copy_sim: 0.92, lo_fit_margin: 0.10, co_dup_sim: 0.85, calibrated: false}   # all-MiniLM-L6-v2 cosine; set from the 28 saved runs (2026-10-15), to be calibrated on professor labels
+  kg_norms: {min_courses: 8, rare_credit_share: 0.05}   # VKG-NORM: compare with same-level courses only when >= 8 exist; Tukey fences for counts
 assessment_evidence_types: [exam_question, lab_task, programming_assignment, project_deliverable, design_document, presentation, report, code_review, quiz]
 activity_vocabulary: [design, implement, analyse-data, evaluate-critique, teamwork, written-communication, oral-presentation, ethics-reflection, self-directed-learning, research-investigation, tool-use, project-management, theory]
 # activity_type -> programme outcome uids (all four CSE programmes, TEMPLATE outcome lists).

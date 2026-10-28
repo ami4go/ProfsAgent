@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 12,
+  "los": [
+   "CO1.LO1"
+  ],
+  "question": "Which component in the Model Context Protocol architecture is responsible for initiating handshakes and executing JSON Schema validation on AI tool calls?",
+  "options": [
+   "MCP Host",
+   "MCP Client",
+   "MCP Server",
+   "JSON-RPC Gateway"
+  ],
+  "answer": 1,
+  "explanation": "The MCP Client acts as the bridge inside the Host app; it manages protocol connections, handshakes, and validates tool arguments against JSON Schema before sending requests. The Host handles UI/UX, while the Server exposes capabilities."
+ },
+ {
+  "slide": 19,
+  "los": [
+   "CO1.LO1"
+  ],
+  "question": "A developer receives a runtime warning stating 'Tool invocation failed: input parameter does not match schema'. Which component is failing validation?",
+  "options": [
+   "The transport layer payload headers",
+   "The client validation of LLM arguments against the server tool JSON Schema",
+   "The server URI string format in the prompt resource request",
+   "The initial handshake protocol version string"
+  ],
+  "answer": 1,
+  "explanation": "When an LLM generates tool arguments, the MCP Client validates those arguments against the server's published JSON Schema before sending the JSON-RPC call. Failure indicates the LLM output violates parameter types specified in the tool schema."
+ }
+]

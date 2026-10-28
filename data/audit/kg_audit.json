@@ -1,0 +1,4359 @@
+{
+ "source": "files+neo4j",
+ "stats": {
+  "courses": 471,
+  "with_cos": 469,
+  "with_weeks": 471,
+  "with_topics": 471,
+  "with_assessment": 467,
+  "cos": 1899,
+  "bloom_ingest": {
+   "Create": 516,
+   "Unclassified": 499,
+   "Apply": 320,
+   "Understand": 191,
+   "Analyze": 165,
+   "Evaluate": 117,
+   "Remember": 91
+  },
+  "bloom_unclassified_pct": 26.3,
+  "bloom_disagree_pct": 21.0,
+  "raw_topics": 9120,
+  "canonical_topics": 8025,
+  "canonical_singleton_pct": 90.0,
+  "canonical_in_2plus_courses": 714,
+  "courses_in_graph": 471,
+  "courses_in_files": 471,
+  "topics_in_graph": 8025,
+  "empty_cos": 0
+ },
+ "summary": {
+  "errors": 71,
+  "warnings": 560,
+  "by_code": {
+   "KA-BLOOM-DISAGREE": 254,
+   "KA-BLOOM-UNCLASSIFIED": 268,
+   "KA-CO-UNMET": 16,
+   "KA-DUP-SHEET": 3,
+   "KA-NO-ASSESS": 4,
+   "KA-NO-COS": 2,
+   "KA-TOPIC-SLUG": 8,
+   "KA-WEEK-DUP": 63,
+   "KA-WEIGHTS": 13
+  },
+  "courses_with_errors": 21
+ },
+ "findings": [
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "AI501",
+   "message": "ingest vs lexicon level: ['CO1 3≠2', 'CO2 5≠4', 'CO3 3≠1']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "AI502",
+   "message": "ingest vs lexicon level: ['CO4 6≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-CO-UNMET",
+   "severity": "warning",
+   "course": "BIO101",
+   "message": "no week meets ['CO3', 'CO4']"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "BIO101",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "BIO101",
+   "message": "ingest vs lexicon level: ['CO2 4≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "BIO102",
+   "message": "2 of 4 COs unclassified: ['CO3', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "BIO201",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "BIO201",
+   "message": "ingest vs lexicon level: ['CO3 1≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "BIO211",
+   "message": "ingest vs lexicon level: ['CO1 1≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "BIO213",
+   "message": "2 of 4 COs unclassified: ['CO2', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "BIO214",
+   "message": "2 of 4 COs unclassified: ['CO2', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "BIO221",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "BIO222",
+   "message": "ingest vs lexicon level: ['CO1 4≠2', 'CO2 6≠4', 'CO3 3≠2', 'CO4 6≠5']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "BIO321",
+   "message": "1 of 4 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "BIO321",
+   "message": "ingest vs lexicon level: ['CO1 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "BIO361",
+   "message": "1 of 4 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "BIO361",
+   "message": "ingest vs lexicon level: ['CO3 4≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "BIO511",
+   "message": "1 of 5 COs unclassified: ['CO5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "BIO512",
+   "message": "ingest vs lexicon level: ['CO2 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "BIO513",
+   "message": "3 of 4 COs unclassified: ['CO2', 'CO3', 'CO4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "BIO516",
+   "message": "ingest vs lexicon level: ['CO4 4≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "BIO522",
+   "message": "2 of 4 COs unclassified: ['CO2', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "BIO523",
+   "message": "ingest vs lexicon level: ['CO2 3≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "BIO524",
+   "message": "2 weeks numbered Week 7-8"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "BIO524",
+   "message": "4 of 4 COs unclassified: ['CO1', 'CO2', 'CO3', 'CO4']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "BIO525",
+   "message": "2 of 3 COs unclassified: ['CO1', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "BIO531",
+   "message": "ingest vs lexicon level: ['CO4 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "BIO533",
+   "message": "ingest vs lexicon level: ['CO2 6≠3', 'CO3 4≠2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "BIO534",
+   "message": "2 of 5 COs unclassified: ['CO3', 'CO5']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "BIO541",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO3', 'CO4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "BIO542",
+   "message": "ingest vs lexicon level: ['CO2 5≠3', 'CO3 3≠6']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "BIO543",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "BIO544",
+   "message": "ingest vs lexicon level: ['CO2 4≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "BIO546",
+   "message": "ingest vs lexicon level: ['CO3 6≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "BIO548",
+   "message": "ingest vs lexicon level: ['CO2 6≠2', 'CO3 6≠2', 'CO4 6≠2', 'CO5 5≠1']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "BIO549",
+   "message": "ingest vs lexicon level: ['CO1 2≠1', 'CO2 3≠1', 'CO3 4≠1', 'CO4 3≠2', 'CO5 1≠2']",
+   "n": 5
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "BIO5XX",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "COM101",
+   "message": "4 of 5 COs unclassified: ['CO1', 'CO2', 'CO3', 'CO4']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "COM301A",
+   "message": "3 of 5 COs unclassified: ['CO1', 'CO3', 'CO4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE102",
+   "message": "ingest vs lexicon level: ['CO1 4≠2', 'CO3 4≠2', 'CO4 4≠2']",
+   "n": 3
+  },
+  {
+   "code": "KA-CO-UNMET",
+   "severity": "warning",
+   "course": "CSE112",
+   "message": "no week meets ['CO4']"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE112",
+   "message": "1 of 4 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE121",
+   "message": "ingest vs lexicon level: ['CO2 6≠1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE140",
+   "message": "ingest vs lexicon level: ['CO1 1≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE201",
+   "message": "ingest vs lexicon level: ['CO1 6≠3', 'CO3 6≠4', 'CO4 6≠5']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE202",
+   "message": "2 of 5 COs unclassified: ['CO2', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE222",
+   "message": "1 of 5 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE223",
+   "message": "ingest vs lexicon level: ['CO3 3≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE231",
+   "message": "ingest vs lexicon level: ['CO2 4≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE232",
+   "message": "ingest vs lexicon level: ['CO3 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE233",
+   "message": "2 of 3 COs unclassified: ['CO2', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE319",
+   "message": "ingest vs lexicon level: ['CO1 6≠3', 'CO2 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-WEIGHTS",
+   "severity": "warning",
+   "course": "CSE320",
+   "message": "weights sum to 0"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE320",
+   "message": "2 of 3 COs unclassified: ['CO1', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE322",
+   "message": "2 of 3 COs unclassified: ['CO1', 'CO2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE333",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE342",
+   "message": "1 of 3 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE344",
+   "message": "1 of 5 COs unclassified: ['CO5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE344",
+   "message": "ingest vs lexicon level: ['CO3 3≠1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE345",
+   "message": "ingest vs lexicon level: ['CO1 1≠2', 'CO2 4≠2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE347",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-CO-UNMET",
+   "severity": "warning",
+   "course": "CSE350",
+   "message": "no week meets ['CO5']"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE350",
+   "message": "3 of 5 COs unclassified: ['CO2', 'CO3', 'CO4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE421",
+   "message": "5 of 5 COs unclassified: ['CO1', 'CO2', 'CO3', 'CO4', 'CO5']",
+   "n": 5
+  },
+  {
+   "code": "KA-WEIGHTS",
+   "severity": "warning",
+   "course": "CSE441",
+   "message": "weights sum to 105"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE441",
+   "message": "1 of 3 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE501",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE502",
+   "message": "3 of 4 COs unclassified: ['CO2', 'CO3', 'CO4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE503",
+   "message": "ingest vs lexicon level: ['CO2 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE504",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE507",
+   "message": "ingest vs lexicon level: ['CO1 3≠1', 'CO2 5≠1', 'CO3 2≠1', 'CO4 2≠1']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE508",
+   "message": "ingest vs lexicon level: ['CO2 5≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE511",
+   "message": "ingest vs lexicon level: ['CO4 5≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-WEIGHTS",
+   "severity": "warning",
+   "course": "CSE515",
+   "message": "weights sum to 95"
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE515",
+   "message": "ingest vs lexicon level: ['CO3 3≠4', 'CO5 3≠2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE516",
+   "message": "ingest vs lexicon level: ['CO2 3≠1', 'CO3 2≠4']",
+   "n": 2
+  },
+  {
+   "code": "KA-CO-UNMET",
+   "severity": "warning",
+   "course": "CSE518",
+   "message": "no week meets ['CO4']"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE523",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO2', 'CO4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE524",
+   "message": "ingest vs lexicon level: ['CO1 1≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE525",
+   "message": "1 of 4 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE526",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO2', 'CO3']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE528",
+   "message": "3 of 3 COs unclassified: ['CO1', 'CO2', 'CO3']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE529",
+   "message": "ingest vs lexicon level: ['CO2 4≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE530",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE530",
+   "message": "ingest vs lexicon level: ['CO4 5≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE535",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE546",
+   "message": "ingest vs lexicon level: ['CO2 6≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE552",
+   "message": "1 of 4 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE553",
+   "message": "ingest vs lexicon level: ['CO4 1≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE555",
+   "message": "2 of 3 COs unclassified: ['CO1', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE556",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE556",
+   "message": "ingest vs lexicon level: ['CO2 4≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE557",
+   "message": "1 of 3 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE558",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO2', 'CO3']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE559",
+   "message": "ingest vs lexicon level: ['CO1 4≠2', 'CO2 3≠6']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE560",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO2', 'CO3']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE561",
+   "message": "ingest vs lexicon level: ['CO1 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE562",
+   "message": "1 of 3 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE563",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO2', 'CO3']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE563",
+   "message": "ingest vs lexicon level: ['CO4 4≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE567",
+   "message": "ingest vs lexicon level: ['CO1 6≠1', 'CO4 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE568",
+   "message": "ingest vs lexicon level: ['CO1 4≠2', 'CO2 3≠6']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE569",
+   "message": "1 of 5 COs unclassified: ['CO5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE569",
+   "message": "ingest vs lexicon level: ['CO1 5≠1', 'CO3 5≠2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE570",
+   "message": "1 of 4 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE570",
+   "message": "ingest vs lexicon level: ['CO1 6≠3', 'CO3 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE571",
+   "message": "1 of 4 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE571",
+   "message": "ingest vs lexicon level: ['CO2 6≠3', 'CO4 4≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE573",
+   "message": "ingest vs lexicon level: ['CO1 6≠1']",
+   "n": 1
+  },
+  {
+   "code": "KA-NO-COS",
+   "severity": "warning",
+   "course": "CSE576",
+   "message": "no course outcomes"
+  },
+  {
+   "code": "KA-CO-UNMET",
+   "severity": "warning",
+   "course": "CSE577",
+   "message": "no week meets ['CO4']"
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE581",
+   "message": "ingest vs lexicon level: ['CO1 6≠1', 'CO2 6≠2', 'CO4 6≠1', 'CO5 3≠1']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE582",
+   "message": "ingest vs lexicon level: ['CO3 6≠2', 'CO4 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE583",
+   "message": "4 of 5 COs unclassified: ['CO1', 'CO2', 'CO3', 'CO5']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE584",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE586",
+   "message": "ingest vs lexicon level: ['CO2 4≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE587",
+   "message": "ingest vs lexicon level: ['CO2 4≠5', 'CO4 6≠5', 'CO5 6≠4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE587A",
+   "message": "ingest vs lexicon level: ['CO1 4≠5', 'CO2 6≠4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE588",
+   "message": "2 of 5 COs unclassified: ['CO1', 'CO5']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE588",
+   "message": "ingest vs lexicon level: ['CO4 5≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE589",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE592",
+   "message": "ingest vs lexicon level: ['CO1 6≠2', 'CO2 6≠3', 'CO3 2≠3']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE593",
+   "message": "ingest vs lexicon level: ['CO1 6≠2', 'CO2 4≠2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE594A",
+   "message": "1 of 3 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE594A",
+   "message": "ingest vs lexicon level: ['CO2 6≠5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE596",
+   "message": "ingest vs lexicon level: ['CO5 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE597",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE5GP",
+   "message": "3 of 3 COs unclassified: ['CO1', 'CO2', 'CO3']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE600A",
+   "message": "ingest vs lexicon level: ['CO2 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-NO-ASSESS",
+   "severity": "warning",
+   "course": "CSE600",
+   "message": "no assessment components"
+  },
+  {
+   "code": "KA-CO-UNMET",
+   "severity": "warning",
+   "course": "CSE600",
+   "message": "no week meets ['CO2']"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE601",
+   "message": "2 of 4 COs unclassified: ['CO2', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE605A",
+   "message": "1 of 3 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE605A",
+   "message": "ingest vs lexicon level: ['CO1 1≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE606",
+   "message": "2 of 4 COs unclassified: ['CO2', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE606",
+   "message": "ingest vs lexicon level: ['CO1 4≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE606A",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE606A",
+   "message": "ingest vs lexicon level: ['CO4 6≠5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE609",
+   "message": "1 of 4 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE609",
+   "message": "ingest vs lexicon level: ['CO2 5≠1', 'CO4 5≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE615",
+   "message": "ingest vs lexicon level: ['CO2 5≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE618",
+   "message": "ingest vs lexicon level: ['CO2 5≠3', 'CO4 5≠6']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE619",
+   "message": "ingest vs lexicon level: ['CO1 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE621",
+   "message": "ingest vs lexicon level: ['CO1 1≠2', 'CO2 2≠5']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE622",
+   "message": "ingest vs lexicon level: ['CO1 3≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE622A",
+   "message": "ingest vs lexicon level: ['CO1 3≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE624A",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE631",
+   "message": "ingest vs lexicon level: ['CO2 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE632",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE633A",
+   "message": "ingest vs lexicon level: ['CO1 6≠4', 'CO3 2≠6']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE633",
+   "message": "ingest vs lexicon level: ['CO3 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE634",
+   "message": "2 of 5 COs unclassified: ['CO4', 'CO5']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE634",
+   "message": "ingest vs lexicon level: ['CO2 4≠1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE636",
+   "message": "ingest vs lexicon level: ['CO1 4≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE638",
+   "message": "1 of 4 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "CSE642",
+   "message": "2 weeks numbered 10-11"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE642",
+   "message": "1 of 5 COs unclassified: ['CO5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE642",
+   "message": "ingest vs lexicon level: ['CO2 5≠4', 'CO3 6≠4', 'CO4 6≠3']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE643",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE645",
+   "message": "ingest vs lexicon level: ['CO2 1≠2', 'CO3 5≠2']",
+   "n": 2
+  },
+  {
+   "code": "KA-CO-UNMET",
+   "severity": "warning",
+   "course": "CSE651",
+   "message": "no week meets ['CO4']"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE651",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE653",
+   "message": "2 of 4 COs unclassified: ['CO2', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE654",
+   "message": "ingest vs lexicon level: ['CO1 3≠2', 'CO2 5≠3', 'CO4 3≠1']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE655",
+   "message": "ingest vs lexicon level: ['CO1 4≠2', 'CO2 3≠4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE656",
+   "message": "1 of 4 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE660",
+   "message": "2 of 3 COs unclassified: ['CO1', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE660",
+   "message": "ingest vs lexicon level: ['CO2 5≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE661",
+   "message": "ingest vs lexicon level: ['CO1 6≠3', 'CO2 5≠3', 'CO4 2≠6']",
+   "n": 3
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "CSE662A",
+   "message": "2 weeks numbered 1"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "CSE662A",
+   "message": "2 weeks numbered 2"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "CSE662A",
+   "message": "2 weeks numbered 3"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "CSE662A",
+   "message": "2 weeks numbered 4"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "CSE662A",
+   "message": "2 weeks numbered 5"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "CSE662A",
+   "message": "2 weeks numbered 6"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "CSE662A",
+   "message": "2 weeks numbered 7"
+  },
+  {
+   "code": "KA-NO-COS",
+   "severity": "warning",
+   "course": "CSE663",
+   "message": "no course outcomes"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "CSE663",
+   "message": "2 weeks numbered 10"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "CSE663",
+   "message": "2 weeks numbered 7"
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE663A",
+   "message": "ingest vs lexicon level: ['CO1 3≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "CSE665",
+   "message": "2 weeks numbered 1"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE665",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE665A",
+   "message": "4 of 4 COs unclassified: ['CO1', 'CO2', 'CO3', 'CO4']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE666",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE666",
+   "message": "ingest vs lexicon level: ['CO3 6≠5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE667",
+   "message": "1 of 4 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE694F",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE694F",
+   "message": "ingest vs lexicon level: ['CO2 5≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE701",
+   "message": "2 of 5 COs unclassified: ['CO1', 'CO5']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "CSE701",
+   "message": "ingest vs lexicon level: ['CO4 5≠6']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE734",
+   "message": "1 of 3 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "CSE749",
+   "message": "1 of 2 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES102",
+   "message": "ingest vs lexicon level: ['CO1 6≠2', 'CO2 6≠3', 'CO4 6≠5']",
+   "n": 3
+  },
+  {
+   "code": "KA-CO-UNMET",
+   "severity": "warning",
+   "course": "DES130",
+   "message": "no week meets ['CO4']"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES130",
+   "message": "2 of 5 COs unclassified: ['CO1', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES202",
+   "message": "ingest vs lexicon level: ['CO5 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES204",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES204",
+   "message": "ingest vs lexicon level: ['CO4 4≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES206",
+   "message": "2 of 5 COs unclassified: ['CO2', 'CO5']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES206",
+   "message": "ingest vs lexicon level: ['CO3 6≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES302",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES302",
+   "message": "ingest vs lexicon level: ['CO2 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-CO-UNMET",
+   "severity": "warning",
+   "course": "DES303",
+   "message": "no week meets ['CO5']"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES303",
+   "message": "4 of 5 COs unclassified: ['CO1', 'CO3', 'CO4', 'CO5']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES305",
+   "message": "2 of 4 COs unclassified: ['CO3', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES501",
+   "message": "1 of 3 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES502",
+   "message": "1 of 3 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES503",
+   "message": "4 of 4 COs unclassified: ['CO1', 'CO2', 'CO3', 'CO4']",
+   "n": 4
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES504",
+   "message": "2 weeks numbered 1"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES504",
+   "message": "2 weeks numbered 10"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES504",
+   "message": "2 weeks numbered 11"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES504",
+   "message": "2 weeks numbered 12"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES504",
+   "message": "2 weeks numbered 13"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES504",
+   "message": "2 weeks numbered 2"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES504",
+   "message": "2 weeks numbered 3"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES504",
+   "message": "2 weeks numbered 4"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES504",
+   "message": "2 weeks numbered 5"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES504",
+   "message": "2 weeks numbered 6"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES504",
+   "message": "2 weeks numbered 7"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES504",
+   "message": "2 weeks numbered 8"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES504",
+   "message": "2 weeks numbered 9"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES504",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-WEIGHTS",
+   "severity": "warning",
+   "course": "DES506",
+   "message": "weights sum to 90"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES506",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES506",
+   "message": "ingest vs lexicon level: ['CO2 5≠1', 'CO4 6≠5']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES509",
+   "message": "ingest vs lexicon level: ['CO1 6≠2', 'CO4 6≠5']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES512",
+   "message": "ingest vs lexicon level: ['CO1 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES513",
+   "message": "2 weeks numbered 1"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES513",
+   "message": "2 weeks numbered 10"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES513",
+   "message": "2 weeks numbered 11"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES513",
+   "message": "2 weeks numbered 12"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES513",
+   "message": "2 weeks numbered 13"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES513",
+   "message": "2 weeks numbered 2"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES513",
+   "message": "2 weeks numbered 3"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES513",
+   "message": "2 weeks numbered 4"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES513",
+   "message": "2 weeks numbered 5"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES513",
+   "message": "2 weeks numbered 6"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES513",
+   "message": "2 weeks numbered 7"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES513",
+   "message": "2 weeks numbered 8"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES513",
+   "message": "2 weeks numbered 9"
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES513",
+   "message": "ingest vs lexicon level: ['CO3 6≠5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES514",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES515",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO2', 'CO4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES515",
+   "message": "ingest vs lexicon level: ['CO3 5≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES516",
+   "message": "1 of 3 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES516S",
+   "message": "3 of 3 COs unclassified: ['CO1', 'CO2', 'CO3']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES518",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO2', 'CO3']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES521",
+   "message": "1 of 3 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES521",
+   "message": "ingest vs lexicon level: ['CO2 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES522",
+   "message": "ingest vs lexicon level: ['CO3 6≠5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES523",
+   "message": "ingest vs lexicon level: ['CO1 6≠3', 'CO3 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES524",
+   "message": "ingest vs lexicon level: ['CO3 6≠5', 'CO4 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES526",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES527",
+   "message": "ingest vs lexicon level: ['CO2 6≠3', 'CO3 6≠4', 'CO4 6≠5']",
+   "n": 3
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES529",
+   "message": "2 weeks numbered 3"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "DES529",
+   "message": "2 weeks numbered 8"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES529",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO2', 'CO3']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES530",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO2', 'CO3']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES531",
+   "message": "1 of 4 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES531",
+   "message": "ingest vs lexicon level: ['CO4 6≠5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES532A",
+   "message": "1 of 3 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES532A",
+   "message": "ingest vs lexicon level: ['CO3 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES533",
+   "message": "1 of 4 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES534",
+   "message": "ingest vs lexicon level: ['CO1 6≠1', 'CO2 6≠3', 'CO3 6≠5']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES535",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES535",
+   "message": "ingest vs lexicon level: ['CO3 6≠3', 'CO4 6≠5']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES536",
+   "message": "ingest vs lexicon level: ['CO2 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "DES537A",
+   "message": "1 of 4 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES537A",
+   "message": "ingest vs lexicon level: ['CO1 6≠1', 'CO4 6≠5']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES539",
+   "message": "ingest vs lexicon level: ['CO2 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "DES591",
+   "message": "ingest vs lexicon level: ['CO1 1≠3', 'CO3 6≠3', 'CO4 6≠5']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE111",
+   "message": "ingest vs lexicon level: ['CO1 6≠3', 'CO2 6≠2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE113",
+   "message": "ingest vs lexicon level: ['CO1 1≠2', 'CO2 4≠2', 'CO4 3≠2', 'CO5 3≠2']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE210",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE210",
+   "message": "ingest vs lexicon level: ['CO2 1≠2', 'CO3 1≠2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE211",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO2', 'CO3']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE214",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE215",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE240",
+   "message": "2 of 5 COs unclassified: ['CO3', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE250",
+   "message": "2 of 5 COs unclassified: ['CO2', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE314",
+   "message": "1 of 5 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE314",
+   "message": "ingest vs lexicon level: ['CO3 3≠2', 'CO5 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE315",
+   "message": "ingest vs lexicon level: ['CO3 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE318",
+   "message": "3 of 5 COs unclassified: ['CO1', 'CO3', 'CO5']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE318",
+   "message": "ingest vs lexicon level: ['CO4 4≠5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE321",
+   "message": "1 of 3 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE321",
+   "message": "ingest vs lexicon level: ['CO2 6≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE323",
+   "message": "ingest vs lexicon level: ['CO2 6≠3', 'CO3 6≠5']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE331",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE331",
+   "message": "ingest vs lexicon level: ['CO4 6≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE340",
+   "message": "4 of 5 COs unclassified: ['CO2', 'CO3', 'CO4', 'CO5']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE343",
+   "message": "ingest vs lexicon level: ['CO2 3≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE351",
+   "message": "1 of 5 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE351",
+   "message": "ingest vs lexicon level: ['CO4 6≠3', 'CO5 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE366",
+   "message": "ingest vs lexicon level: ['CO1 2≠6', 'CO2 6≠5', 'CO3 6≠4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE412",
+   "message": "ingest vs lexicon level: ['CO2 6≠5', 'CO4 6≠5']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE431",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE431",
+   "message": "ingest vs lexicon level: ['CO3 6≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE432",
+   "message": "2 of 3 COs unclassified: ['CO1', 'CO2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE452",
+   "message": "1 of 4 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE452",
+   "message": "ingest vs lexicon level: ['CO4 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE501",
+   "message": "ingest vs lexicon level: ['CO1 3≠1', 'CO4 5≠1']",
+   "n": 2
+  },
+  {
+   "code": "KA-CO-UNMET",
+   "severity": "warning",
+   "course": "ECE510",
+   "message": "no week meets ['CO4']"
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE510",
+   "message": "ingest vs lexicon level: ['CO2 4≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE513",
+   "message": "ingest vs lexicon level: ['CO1 6≠2', 'CO2 6≠5', 'CO4 6≠3']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE516",
+   "message": "ingest vs lexicon level: ['CO3 6≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE517",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE517",
+   "message": "ingest vs lexicon level: ['CO2 1≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-WEIGHTS",
+   "severity": "warning",
+   "course": "ECE519",
+   "message": "weights sum to 80"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE519",
+   "message": "4 of 4 COs unclassified: ['CO1', 'CO2', 'CO3', 'CO4']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE520",
+   "message": "ingest vs lexicon level: ['CO1 6≠1', 'CO2 6≠4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE522",
+   "message": "1 of 4 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE522",
+   "message": "ingest vs lexicon level: ['CO1 2≠1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE524",
+   "message": "ingest vs lexicon level: ['CO1 1≠2', 'CO3 1≠2', 'CO4 1≠2']",
+   "n": 3
+  },
+  {
+   "code": "KA-NO-ASSESS",
+   "severity": "warning",
+   "course": "ECE525",
+   "message": "no assessment components"
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE527",
+   "message": "ingest vs lexicon level: ['CO2 6≠5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE529",
+   "message": "ingest vs lexicon level: ['CO2 2≠5', 'CO4 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE530",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE532",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE533",
+   "message": "ingest vs lexicon level: ['CO1 1≠2', 'CO2 4≠2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE534",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE536S",
+   "message": "ingest vs lexicon level: ['CO3 5≠6']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE537",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE539",
+   "message": "1 of 4 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE543",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE545",
+   "message": "ingest vs lexicon level: ['CO3 1≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE546",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE548",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE554",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO3', 'CO4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE557",
+   "message": "1 of 4 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE557",
+   "message": "ingest vs lexicon level: ['CO1 6≠2', 'CO3 6≠4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE558",
+   "message": "4 of 4 COs unclassified: ['CO1', 'CO2', 'CO3', 'CO4']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE55G",
+   "message": "4 of 5 COs unclassified: ['CO1', 'CO3', 'CO4', 'CO5']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE55G",
+   "message": "ingest vs lexicon level: ['CO2 4≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE560",
+   "message": "3 of 3 COs unclassified: ['CO1', 'CO2', 'CO3']",
+   "n": 3
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "ECE564A",
+   "message": "2 weeks numbered 10"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "ECE564A",
+   "message": "2 weeks numbered 11"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "ECE564A",
+   "message": "2 weeks numbered 12"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "ECE564A",
+   "message": "2 weeks numbered 13"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "ECE564A",
+   "message": "2 weeks numbered 14"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "ECE564A",
+   "message": "2 weeks numbered 15"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "ECE564A",
+   "message": "2 weeks numbered 16"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE564A",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE564A",
+   "message": "ingest vs lexicon level: ['CO2 6≠4', 'CO3 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE564",
+   "message": "ingest vs lexicon level: ['CO1 4≠3', 'CO2 3≠2', 'CO3 3≠2']",
+   "n": 3
+  },
+  {
+   "code": "KA-CO-UNMET",
+   "severity": "warning",
+   "course": "ECE565",
+   "message": "no week meets ['CO5']"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE565",
+   "message": "3 of 5 COs unclassified: ['CO1', 'CO4', 'CO5']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE565",
+   "message": "ingest vs lexicon level: ['CO2 5≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE567",
+   "message": "1 of 5 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE567",
+   "message": "ingest vs lexicon level: ['CO1 4≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-CO-UNMET",
+   "severity": "warning",
+   "course": "ECE570",
+   "message": "no week meets ['CO4']"
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE570",
+   "message": "ingest vs lexicon level: ['CO2 1≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE572",
+   "message": "1 of 5 COs unclassified: ['CO5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE572",
+   "message": "ingest vs lexicon level: ['CO1 6≠1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE573",
+   "message": "ingest vs lexicon level: ['CO2 4≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE577",
+   "message": "1 of 5 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE579",
+   "message": "2 of 5 COs unclassified: ['CO1', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE579",
+   "message": "ingest vs lexicon level: ['CO2 6≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-WEIGHTS",
+   "severity": "warning",
+   "course": "ECE581",
+   "message": "weights sum to 50"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE581",
+   "message": "1 of 3 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "ECE611",
+   "message": "2 weeks numbered 12"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE611",
+   "message": "1 of 5 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE611",
+   "message": "ingest vs lexicon level: ['CO1 6≠5', 'CO5 5≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE613",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE613",
+   "message": "ingest vs lexicon level: ['CO3 1≠2', 'CO4 1≠2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE614",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE614",
+   "message": "ingest vs lexicon level: ['CO2 1≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE615A",
+   "message": "ingest vs lexicon level: ['CO2 6≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE634",
+   "message": "ingest vs lexicon level: ['CO3 5≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE666",
+   "message": "1 of 4 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECE667A",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECE667A",
+   "message": "ingest vs lexicon level: ['CO3 5≠6']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECO201",
+   "message": "ingest vs lexicon level: ['CO1 2≠1', 'CO2 6≠5']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECO221",
+   "message": "2 of 5 COs unclassified: ['CO2', 'CO5']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECO221",
+   "message": "ingest vs lexicon level: ['CO1 5≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECO223",
+   "message": "1 of 5 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECO301",
+   "message": "3 of 5 COs unclassified: ['CO1', 'CO3', 'CO4']",
+   "n": 3
+  },
+  {
+   "code": "KA-CO-UNMET",
+   "severity": "warning",
+   "course": "ECO311",
+   "message": "no week meets ['CO4']"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECO311",
+   "message": "1 of 4 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECO311",
+   "message": "ingest vs lexicon level: ['CO3 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECO312",
+   "message": "5 of 5 COs unclassified: ['CO1', 'CO2', 'CO3', 'CO4', 'CO5']",
+   "n": 5
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "ECO313",
+   "message": "2 weeks numbered 3, 4"
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECO313",
+   "message": "ingest vs lexicon level: ['CO3 6≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECO314",
+   "message": "3 of 5 COs unclassified: ['CO2', 'CO3', 'CO4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECO314",
+   "message": "ingest vs lexicon level: ['CO5 1≠6']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECO322",
+   "message": "ingest vs lexicon level: ['CO1 3≠2', 'CO3 2≠3', 'CO4 5≠2']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECO323",
+   "message": "ingest vs lexicon level: ['CO3 3≠5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECO324",
+   "message": "2 of 5 COs unclassified: ['CO1', 'CO2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECO324",
+   "message": "ingest vs lexicon level: ['CO4 4≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECO325",
+   "message": "1 of 4 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECO331",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECO332",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECO333",
+   "message": "ingest vs lexicon level: ['CO1 4≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECO341",
+   "message": "1 of 3 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ECO502",
+   "message": "ingest vs lexicon level: ['CO2 6≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ECO503",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO2', 'CO4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ENG599S",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO3', 'CO4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ENG599S",
+   "message": "ingest vs lexicon level: ['CO2 4≠6']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ENT201",
+   "message": "ingest vs lexicon level: ['CO1 3≠4', 'CO2 6≠4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ENT202",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ENT202",
+   "message": "ingest vs lexicon level: ['CO3 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "ENT303A",
+   "message": "3 weeks numbered 1"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "ENT303A",
+   "message": "2 weeks numbered 2"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "ENT303A",
+   "message": "2 weeks numbered 5"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ENT303A",
+   "message": "2 of 3 COs unclassified: ['CO1', 'CO2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ENT303A",
+   "message": "ingest vs lexicon level: ['CO3 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ENT304",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO2', 'CO3']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ENT304",
+   "message": "ingest vs lexicon level: ['CO4 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ENT305",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ENT305",
+   "message": "ingest vs lexicon level: ['CO3 6≠1']",
+   "n": 1
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "ENT306",
+   "message": "2 weeks numbered 1"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "ENT306",
+   "message": "2 weeks numbered 5"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ENT306",
+   "message": "1 of 5 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ENT307",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO3', 'CO4']",
+   "n": 3
+  },
+  {
+   "code": "KA-WEIGHTS",
+   "severity": "warning",
+   "course": "ENT308",
+   "message": "weights sum to 105"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "ENT308",
+   "message": "2 weeks numbered 12"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "ENT308",
+   "message": "2 weeks numbered 13"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ENT308",
+   "message": "5 of 5 COs unclassified: ['CO1', 'CO2', 'CO3', 'CO4', 'CO5']",
+   "n": 5
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ENT309",
+   "message": "4 of 5 COs unclassified: ['CO1', 'CO2', 'CO4', 'CO5']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ENT405",
+   "message": "ingest vs lexicon level: ['CO1 3≠4', 'CO2 6≠4']",
+   "n": 2
+  },
+  {
+   "code": "KA-WEIGHTS",
+   "severity": "warning",
+   "course": "ENT411",
+   "message": "weights sum to 95"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "ENT411",
+   "message": "2 weeks numbered 8"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ENT411",
+   "message": "1 of 5 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ENT412",
+   "message": "ingest vs lexicon level: ['CO1 3≠4', 'CO2 6≠4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ENT413",
+   "message": "2 of 4 COs unclassified: ['CO3', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ENT413",
+   "message": "ingest vs lexicon level: ['CO1 6≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ENT414",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ENT415",
+   "message": "4 of 5 COs unclassified: ['CO1', 'CO2', 'CO3', 'CO5']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ENT415",
+   "message": "ingest vs lexicon level: ['CO4 3≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ENT416",
+   "message": "ingest vs lexicon level: ['CO4 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ENT417",
+   "message": "1 of 5 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ENT421",
+   "message": "ingest vs lexicon level: ['CO1 5≠4', 'CO2 5≠4', 'CO3 5≠4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ENT301",
+   "message": "4 of 4 COs unclassified: ['CO1', 'CO2', 'CO3', 'CO4']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "ESC205",
+   "message": "2 of 2 COs unclassified: ['CO1', 'CO2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "ESC207A",
+   "message": "ingest vs lexicon level: ['CO1 1≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MGT310",
+   "message": "ingest vs lexicon level: ['CO1 6≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MGT311",
+   "message": "ingest vs lexicon level: ['CO1 3≠2', 'CO2 3≠2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH100",
+   "message": "ingest vs lexicon level: ['CO2 5≠3', 'CO4 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH201",
+   "message": "2 of 5 COs unclassified: ['CO1', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH201",
+   "message": "ingest vs lexicon level: ['CO5 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH203",
+   "message": "ingest vs lexicon level: ['CO1 5≠3', 'CO4 3≠5']",
+   "n": 2
+  },
+  {
+   "code": "KA-CO-UNMET",
+   "severity": "warning",
+   "course": "MTH204",
+   "message": "no week meets ['CO4', 'CO5']"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH204",
+   "message": "2 of 5 COs unclassified: ['CO1', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH210",
+   "message": "ingest vs lexicon level: ['CO2 6≠3', 'CO3 4≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "MTH211",
+   "message": "2 weeks numbered 6"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH211",
+   "message": "1 of 8 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH211",
+   "message": "ingest vs lexicon level: ['CO4 1≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH212",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH240",
+   "message": "1 of 3 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH240",
+   "message": "ingest vs lexicon level: ['CO2 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH270",
+   "message": "ingest vs lexicon level: ['CO1 4≠1', 'CO5 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH300",
+   "message": "ingest vs lexicon level: ['CO1 2≠3', 'CO2 5≠3', 'CO3 3≠5']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH302",
+   "message": "1 of 5 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH310",
+   "message": "2 of 4 COs unclassified: ['CO3', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH340",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH340",
+   "message": "ingest vs lexicon level: ['CO2 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH341",
+   "message": "5 of 5 COs unclassified: ['CO1', 'CO2', 'CO3', 'CO4', 'CO5']",
+   "n": 5
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH343",
+   "message": "ingest vs lexicon level: ['CO1 6≠1', 'CO3 3≠2', 'CO4 3≠2']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH359",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH371",
+   "message": "4 of 5 COs unclassified: ['CO1', 'CO2', 'CO4', 'CO5']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH372",
+   "message": "ingest vs lexicon level: ['CO1 3≠1', 'CO2 6≠3', 'CO3 5≠3']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH373",
+   "message": "1 of 5 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH373",
+   "message": "ingest vs lexicon level: ['CO2 3≠1', 'CO3 4≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH375",
+   "message": "1 of 5 COs unclassified: ['CO5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH376",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO3', 'CO4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH501",
+   "message": "1 of 3 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH501",
+   "message": "ingest vs lexicon level: ['CO3 6≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH504",
+   "message": "1 of 3 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH504",
+   "message": "ingest vs lexicon level: ['CO2 6≠3', 'CO3 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH504A",
+   "message": "1 of 3 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH504A",
+   "message": "ingest vs lexicon level: ['CO2 6≠3', 'CO3 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH506",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH506",
+   "message": "ingest vs lexicon level: ['CO2 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH510",
+   "message": "2 of 5 COs unclassified: ['CO1', 'CO5']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH512",
+   "message": "ingest vs lexicon level: ['CO1 4≠2', 'CO2 3≠2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH513",
+   "message": "ingest vs lexicon level: ['CO5 6≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH514",
+   "message": "ingest vs lexicon level: ['CO1 6≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH515",
+   "message": "ingest vs lexicon level: ['CO3 2≠5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH516",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO2', 'CO3']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH517",
+   "message": "ingest vs lexicon level: ['CO1 3≠1', 'CO4 3≠1']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH518",
+   "message": "ingest vs lexicon level: ['CO2 6≠2', 'CO3 6≠2', 'CO4 3≠2', 'CO5 3≠2']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH519A",
+   "message": "3 of 5 COs unclassified: ['CO1', 'CO4', 'CO5']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH519A",
+   "message": "ingest vs lexicon level: ['CO3 4≠5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH521A",
+   "message": "ingest vs lexicon level: ['CO1 4≠1']",
+   "n": 1
+  },
+  {
+   "code": "KA-NO-ASSESS",
+   "severity": "warning",
+   "course": "MTH523",
+   "message": "no assessment components"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH535",
+   "message": "2 of 3 COs unclassified: ['CO1', 'CO2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH536",
+   "message": "4 of 4 COs unclassified: ['CO1', 'CO2', 'CO3', 'CO4']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH542",
+   "message": "ingest vs lexicon level: ['CO2 6≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH544",
+   "message": "1 of 4 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH544",
+   "message": "ingest vs lexicon level: ['CO1 3≠2', 'CO3 3≠2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH545",
+   "message": "2 of 4 COs unclassified: ['CO3', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH546",
+   "message": "ingest vs lexicon level: ['CO4 2≠1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH547",
+   "message": "ingest vs lexicon level: ['CO1 3≠1', 'CO2 1≠2', 'CO4 6≠3']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH547A",
+   "message": "ingest vs lexicon level: ['CO2 2≠1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH548",
+   "message": "ingest vs lexicon level: ['CO1 5≠4', 'CO3 5≠4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH550",
+   "message": "1 of 4 COs unclassified: ['CO4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH550",
+   "message": "ingest vs lexicon level: ['CO2 1≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH551",
+   "message": "ingest vs lexicon level: ['CO1 2≠1', 'CO4 1≠2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH552A",
+   "message": "ingest vs lexicon level: ['CO1 6≠1', 'CO2 4≠2', 'CO3 4≠2', 'CO4 3≠1']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH561",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH562",
+   "message": "3 of 5 COs unclassified: ['CO3', 'CO4', 'CO5']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH562",
+   "message": "ingest vs lexicon level: ['CO2 6≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH562A",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO3', 'CO4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH562A",
+   "message": "ingest vs lexicon level: ['CO2 6≠5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH563",
+   "message": "2 of 4 COs unclassified: ['CO2', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH564A",
+   "message": "3 of 4 COs unclassified: ['CO2', 'CO3', 'CO4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH564A",
+   "message": "ingest vs lexicon level: ['CO1 4≠5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH566",
+   "message": "ingest vs lexicon level: ['CO1 4≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH570",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH571",
+   "message": "1 of 3 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH576",
+   "message": "ingest vs lexicon level: ['CO4 4≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH577",
+   "message": "ingest vs lexicon level: ['CO2 6≠1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH578A",
+   "message": "2 of 5 COs unclassified: ['CO1', 'CO2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH579",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH598",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH599",
+   "message": "1 of 4 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH552B",
+   "message": "ingest vs lexicon level: ['CO1 4≠2', 'CO2 5≠4', 'CO4 6≠3']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH578",
+   "message": "ingest vs lexicon level: ['CO4 4≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "MTH580A",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "MTH580A",
+   "message": "ingest vs lexicon level: ['CO4 6≠5']",
+   "n": 1
+  },
+  {
+   "code": "KA-WEIGHTS",
+   "severity": "warning",
+   "course": "PSY201",
+   "message": "weights sum to 102"
+  },
+  {
+   "code": "KA-CO-UNMET",
+   "severity": "warning",
+   "course": "PSY201",
+   "message": "no week meets ['CO4']"
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "PSY201",
+   "message": "ingest vs lexicon level: ['CO2 3≠2', 'CO5 6≠2']",
+   "n": 2
+  },
+  {
+   "code": "KA-WEIGHTS",
+   "severity": "warning",
+   "course": "PSY301",
+   "message": "weights sum to 110"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "PSY301",
+   "message": "2 weeks numbered 9"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "PSY301",
+   "message": "1 of 5 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "PSY301",
+   "message": "ingest vs lexicon level: ['CO2 2≠1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "PSY302",
+   "message": "ingest vs lexicon level: ['CO1 1≠2', 'CO2 4≠2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "PSY305",
+   "message": "ingest vs lexicon level: ['CO1 1≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-CO-UNMET",
+   "severity": "warning",
+   "course": "PSY306",
+   "message": "no week meets ['CO5']"
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "PSY306",
+   "message": "ingest vs lexicon level: ['CO1 1≠2', 'CO5 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "PSY307",
+   "message": "ingest vs lexicon level: ['CO1 1≠2', 'CO5 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "PSY308",
+   "message": "ingest vs lexicon level: ['CO1 1≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC101",
+   "message": "1 of 5 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SOC101",
+   "message": "ingest vs lexicon level: ['CO5 5≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC202",
+   "message": "2 of 5 COs unclassified: ['CO2', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC204",
+   "message": "4 of 5 COs unclassified: ['CO1', 'CO2', 'CO4', 'CO5']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC205",
+   "message": "1 of 4 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SOC205",
+   "message": "ingest vs lexicon level: ['CO4 4≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC206",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC207",
+   "message": "1 of 4 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC208",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC210",
+   "message": "1 of 5 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SOC210",
+   "message": "ingest vs lexicon level: ['CO2 5≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC211",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SOC211",
+   "message": "ingest vs lexicon level: ['CO3 4≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC212",
+   "message": "2 of 3 COs unclassified: ['CO1', 'CO2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SOC212",
+   "message": "ingest vs lexicon level: ['CO3 6≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC213",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SOC214",
+   "message": "ingest vs lexicon level: ['CO3 3≠4', 'CO4 6≠5']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC216",
+   "message": "2 of 3 COs unclassified: ['CO2', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC302",
+   "message": "1 of 4 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC306",
+   "message": "1 of 3 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SOC306",
+   "message": "ingest vs lexicon level: ['CO3 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC307",
+   "message": "1 of 4 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SOC307",
+   "message": "ingest vs lexicon level: ['CO1 6≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC308",
+   "message": "1 of 4 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC309",
+   "message": "1 of 3 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC310",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-WEIGHTS",
+   "severity": "warning",
+   "course": "SOC311",
+   "message": "weights sum to 200"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC313",
+   "message": "1 of 5 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SOC313",
+   "message": "ingest vs lexicon level: ['CO5 6≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-NO-ASSESS",
+   "severity": "warning",
+   "course": "SOC314",
+   "message": "no assessment components"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC314",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SOC314",
+   "message": "ingest vs lexicon level: ['CO4 6≠5']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC315",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC502",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SOC502",
+   "message": "ingest vs lexicon level: ['CO2 6≠2', 'CO4 5≠4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC504",
+   "message": "1 of 3 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SOC504",
+   "message": "ingest vs lexicon level: ['CO2 5≠1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SOC513",
+   "message": "ingest vs lexicon level: ['CO2 4≠2', 'CO5 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "SOC719A",
+   "message": "2 weeks numbered 5"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SOC719A",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "SSH101",
+   "message": "2 weeks numbered 13"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH101",
+   "message": "2 of 5 COs unclassified: ['CO3', 'CO5']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH121",
+   "message": "1 of 4 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH124",
+   "message": "5 of 9 COs unclassified: ['CO4', 'CO5', 'CO6', 'CO8', 'CO9']",
+   "n": 5
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "SSH201",
+   "message": "2 weeks numbered 9"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH201",
+   "message": "2 of 4 COs unclassified: ['CO1', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SSH201",
+   "message": "ingest vs lexicon level: ['CO2 6≠1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH211",
+   "message": "4 of 4 COs unclassified: ['CO1', 'CO2', 'CO3', 'CO4']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH214",
+   "message": "2 of 3 COs unclassified: ['CO1', 'CO3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SSH215",
+   "message": "ingest vs lexicon level: ['CO3 2≠4', 'CO4 5≠3', 'CO5 1≠6']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SSH216",
+   "message": "ingest vs lexicon level: ['CO1 5≠2', 'CO2 5≠2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH217",
+   "message": "1 of 3 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH221",
+   "message": "2 of 5 COs unclassified: ['CO1', 'CO2']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SSH221",
+   "message": "ingest vs lexicon level: ['CO3 5≠1', 'CO4 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH222",
+   "message": "1 of 5 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH223",
+   "message": "1 of 4 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SSH224",
+   "message": "ingest vs lexicon level: ['CO1 3≠1', 'CO2 2≠1']",
+   "n": 2
+  },
+  {
+   "code": "KA-WEIGHTS",
+   "severity": "warning",
+   "course": "SSH225A",
+   "message": "weights sum to 90"
+  },
+  {
+   "code": "KA-WEEK-DUP",
+   "severity": "error",
+   "course": "SSH225A",
+   "message": "2 weeks numbered 5"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH225A",
+   "message": "2 of 4 COs unclassified: ['CO2', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH240",
+   "message": "1 of 5 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH261",
+   "message": "4 of 5 COs unclassified: ['CO1', 'CO2', 'CO3', 'CO4']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SSH300",
+   "message": "ingest vs lexicon level: ['CO2 5≠4', 'CO4 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH311",
+   "message": "4 of 5 COs unclassified: ['CO1', 'CO3', 'CO4', 'CO5']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SSH311",
+   "message": "ingest vs lexicon level: ['CO2 2≠3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH321",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SSH321",
+   "message": "ingest vs lexicon level: ['CO4 5≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH323",
+   "message": "2 of 5 COs unclassified: ['CO1', 'CO4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SSH323",
+   "message": "ingest vs lexicon level: ['CO2 6≠2', 'CO3 5≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH324",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO2', 'CO4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SSH324",
+   "message": "ingest vs lexicon level: ['CO3 5≠4']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH326",
+   "message": "4 of 4 COs unclassified: ['CO1', 'CO2', 'CO3', 'CO4']",
+   "n": 4
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SSH327A",
+   "message": "ingest vs lexicon level: ['CO4 3≠6']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH341",
+   "message": "1 of 4 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-WEIGHTS",
+   "severity": "warning",
+   "course": "SSH342",
+   "message": "weights sum to 110"
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH361",
+   "message": "1 of 5 COs unclassified: ['CO3']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH526",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SSH526",
+   "message": "ingest vs lexicon level: ['CO2 4≠2', 'CO4 5≠4']",
+   "n": 2
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH529",
+   "message": "1 of 5 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SSH529",
+   "message": "ingest vs lexicon level: ['CO5 5≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH544",
+   "message": "1 of 4 COs unclassified: ['CO2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH743",
+   "message": "1 of 4 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH700",
+   "message": "1 of 5 COs unclassified: ['CO1']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SSH700",
+   "message": "ingest vs lexicon level: ['CO2 6≠2']",
+   "n": 1
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH711",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO2', 'CO4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-UNCLASSIFIED",
+   "severity": "warning",
+   "course": "SSH721",
+   "message": "3 of 4 COs unclassified: ['CO1', 'CO2', 'CO4']",
+   "n": 3
+  },
+  {
+   "code": "KA-BLOOM-DISAGREE",
+   "severity": "warning",
+   "course": "SSH728",
+   "message": "ingest vs lexicon level: ['CO2 6≠4', 'CO3 6≠3']",
+   "n": 2
+  },
+  {
+   "code": "KA-DUP-SHEET",
+   "severity": "warning",
+   "course": "CSE559",
+   "message": "CSE559 and CSE568 share 100% of their lecture topics",
+   "other": "CSE568"
+  },
+  {
+   "code": "KA-DUP-SHEET",
+   "severity": "warning",
+   "course": "ENT201",
+   "message": "ENT201 and ENT412 share 100% of their lecture topics",
+   "other": "ENT412"
+  },
+  {
+   "code": "KA-DUP-SHEET",
+   "severity": "warning",
+   "course": "MTH504",
+   "message": "MTH504 and MTH504A share 100% of their lecture topics",
+   "other": "MTH504A"
+  },
+  {
+   "code": "KA-TOPIC-SLUG",
+   "severity": "error",
+   "course": null,
+   "message": "T:applications names ['TOPIC_0714', 'TOPIC_6308']: ['Applications', 'applications']"
+  },
+  {
+   "code": "KA-TOPIC-SLUG",
+   "severity": "error",
+   "course": null,
+   "message": "T:decision-trees names ['TOPIC_1103', 'TOPIC_3607']: ['Decision Trees', 'decision trees']"
+  },
+  {
+   "code": "KA-TOPIC-SLUG",
+   "severity": "error",
+   "course": null,
+   "message": "T:derivation names ['TOPIC_0441', 'TOPIC_1336']: ['Derivation', 'derivation']"
+  },
+  {
+   "code": "KA-TOPIC-SLUG",
+   "severity": "error",
+   "course": null,
+   "message": "T:mid-recess names ['TOPIC_1210', 'TOPIC_1327']: ['MID RECESS', 'Mid Recess']"
+  },
+  {
+   "code": "KA-TOPIC-SLUG",
+   "severity": "error",
+   "course": null,
+   "message": "T:molecular-biology-primer names ['TOPIC_1704', 'TOPIC_6505']: ['Molecular biology primer', 'molecular biology primer']"
+  },
+  {
+   "code": "KA-TOPIC-SLUG",
+   "severity": "error",
+   "course": null,
+   "message": "T:problem-statement names ['TOPIC_6079', 'TOPIC_7431']: ['PROBLEM STATEMENT', 'Problem Statement']"
+  },
+  {
+   "code": "KA-TOPIC-SLUG",
+   "severity": "error",
+   "course": null,
+   "message": "T:propositional-logic names ['TOPIC_0477', 'TOPIC_4365']: ['Propositional logic', 'propositional logic']"
+  },
+  {
+   "code": "KA-TOPIC-SLUG",
+   "severity": "error",
+   "course": null,
+   "message": "T:visualisation names ['TOPIC_1767', 'TOPIC_3767']: ['Visualisation', 'visualisation']"
+  }
+ ]
+}

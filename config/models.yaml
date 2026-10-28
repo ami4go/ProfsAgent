@@ -66,6 +66,14 @@ roles:
     - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 6500}
     - {provider: gemini, model: gemini-3.8-flash}
     - {provider: gemini, model: gemini-3.1-flash-lite}
+  review:              # B2 AI review of a lecture deck (content/ai_review.py). The deck's own generator model is excluded
+                       # per call, so the reviewer is always a different model; this order only says which one comes first
+    - {provider: gemini, model: gemini-3.7-flash}
+    - {provider: gemini, model: gemini-3.5-flash}
+    - {provider: gemini, model: gemini-3.8-flash}
+    - {provider: nvidia, model: nvidia/nemotron-3-ultra-550b-a55b}
+    - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 6500}
+    - {provider: nvidia, model: minimaxai/minimax-m3.1-flash}
   # Stage 5 judge panel (config/judging.yaml): ONE model per judge, so a judge never silently becomes another model;
   # a judge with no key or no quota is reported missing. judge_c needs a Groq key (GROQ_API_KEYS); none is set now.
   judge_a:             # was gemini-2.5-flash ("404 model unsupported" on every key, 21 Oct 2026)

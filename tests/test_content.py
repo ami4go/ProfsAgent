@@ -107,12 +107,20 @@ def test_fit_shrinks_long_text_and_reports_what_cannot_fit():
 
 # ------------------------------------------------------------------ generate_material
 class FakeLLM:
-    def __init__(self, decks):
-        self.decks, self.calls = decks, []
+    """Returns the given decks (B1) and reviews (B2) in order; records each prompt and the models it was told to avoid."""
+    def __init__(self, decks, reviews=()):
+        self.decks, self.reviews, self.calls, self.excluded = decks, list(reviews), [], []
 
-    def structured(self, *, system, user, model_cls, role, temperature, prompt_id, prompt_version, run_id=None):
+    def structured(self, *, system, user, model_cls, role, temperature, prompt_id, prompt_version, run_id=None,
+                   exclude_models=frozenset()):
         self.calls.append(user)
-        return self.decks.pop(0), SimpleNamespace(endpoint="fake:model", prompt_tokens=10, output_tokens=20, latency_s=0.1)
+        self.excluded.append(set(exclude_models))
+        if prompt_id == "B2":
+            r = self.reviews.pop(0)
+            if isinstance(r, Exception):
+                raise r
+            return r, SimpleNamespace(endpoint="fake:reviewer:k1", prompt_tokens=10, output_tokens=20, latency_s=0.1)
+        return self.decks.pop(0), SimpleNamespace(endpoint="fake:model:k1", prompt_tokens=10, output_tokens=20, latency_s=0.1)
 
 
 @pytest.fixture
@@ -239,3 +247,39 @@ def test_redo_feedback_goes_to_the_ai_and_an_approved_deck_is_protected(run, lec
         G.generate_material("cs601", lecture["lecture_id"], llm=FakeLLM([good_deck(lecture)]), log=lambda _: None)
     assert G.generate_material("cs601", lecture["lecture_id"], {"force": True}, llm=FakeLLM([good_deck(lecture)]),
                                log=lambda _: None)["status"] == "draft"
+
+
+# ------------------------------------------------------------------ the AI review (a professor in a hurry)
+from profsagent.content.models import DeckReview, QuizAnswer, ReviewIssue  # noqa: E402
+
+AI = {"review": "ai"}
+
+
+def test_ai_review_by_another_model_answers_the_quiz_blind(run, lecture):
+    deck = good_deck(lecture)                       # check slides are .pptx slides 18 (answer 1) and 19 (answer 0)
+    ok = DeckReview(issues=[ReviewIssue(slide=5, severity="warning", kind="clarity", problem="term used before defined")],
+                    quiz_answers=[QuizAnswer(slide=18, answer=1), QuizAnswer(slide=19, answer=0)], verdict="safe to teach")
+    llm = FakeLLM([deck], [ok])
+    m = G.generate_material("cs601", lecture["lecture_id"], AI, llm=llm, log=lambda _: None)
+    assert len(llm.calls) == 2 and llm.excluded[1] == {"fake:model"}             # the writer never reviews its own deck
+    review_prompt = llm.calls[1]
+    assert '"Which?"' in review_prompt and '"answer"' not in review_prompt       # questions go without their key
+    assert m["status"] == "ai-reviewed" and m["ai_review"]["model"] == "fake:reviewer" and not m["ai_review"]["repaired"]
+    assert m["errors"] == 0 and [x["code"] for x in m["findings"]] == ["D-AI"]
+
+
+def test_ai_review_errors_are_repaired_once_and_left_for_a_glance(run, lecture):
+    bad = DeckReview(issues=[ReviewIssue(slide=4, severity="error", kind="fact", problem="MCP is not a REST API",
+                                         fix="describe it as JSON-RPC")],
+                     quiz_answers=[QuizAnswer(slide=18, answer=2, why="c is also right")], verdict="two errors")
+    llm = FakeLLM([good_deck(lecture), good_deck(lecture)], [bad])
+    m = G.generate_material("cs601", lecture["lecture_id"], AI, llm=llm, log=lambda _: None)
+    assert len(llm.calls) == 3 and "D-QUIZKEY" in llm.calls[2] and "JSON-RPC" in llm.calls[2]
+    assert m["ai_review"]["repaired"] and m["ai_review"]["quiz_disagreements"] == 1 and m["status"] == "ai-reviewed"
+    assert m["errors"] == 0 and [x["code"] for x in m["findings"]] == ["D-AI-FIXED", "D-AI-FIXED"]
+
+
+def test_a_failed_ai_review_keeps_the_draft(run, lecture):
+    llm = FakeLLM([good_deck(lecture)], [RuntimeError("no quota")])
+    m = G.generate_material("cs601", lecture["lecture_id"], AI, llm=llm, log=lambda _: None)
+    assert m["status"] == "draft" and "no quota" in m["ai_review"]["error"] and (run / "material" / lecture["lecture_id"] / "slides.pptx").exists()

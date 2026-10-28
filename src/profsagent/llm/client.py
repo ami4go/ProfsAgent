@@ -354,12 +354,16 @@ class LLMClient:
 
     # ------------------------------------------------------------------ structured calls
     def structured(self, *, system: str, user: str, model_cls: type[T], role: str = "generate", temperature: float = 0.2,
-                   prompt_id: str = "?", prompt_version: str = "?", run_id: str | None = None) -> tuple[T, CallRecord]:
+                   prompt_id: str = "?", prompt_version: str = "?", run_id: str | None = None,
+                   exclude_models: frozenset[str] = frozenset()) -> tuple[T, CallRecord]:
+        """exclude_models: "provider:model" entries never to use for this call (e.g. a reviewer must not be the model whose
+        output it reviews)."""
         rec = CallRecord(prompt_id=prompt_id, prompt_version=prompt_version, role=role)
         t0 = time.time()
         cache_path = None
         if self.cfg.get("cache", {}).get("enabled") and self.cache_enabled:
-            key = hashlib.sha256(f"{role}|{temperature}|{model_cls.__name__}|{system}|{user}".encode()).hexdigest()[:32]
+            avoid = f"|{sorted(exclude_models)}" if exclude_models else ""
+            key = hashlib.sha256(f"{role}|{temperature}|{model_cls.__name__}|{system}|{user}{avoid}".encode()).hexdigest()[:32]
             cache_path = CACHE / "llm" / f"{key}.json"
             if cache_path.exists():
                 cached = json.loads(cache_path.read_text(encoding="utf-8"))
@@ -372,7 +376,7 @@ class LLMClient:
                     pass
         raw_text = ""
         schema = model_cls.model_json_schema() if self.lim.get("native_json_schema") else None
-        skip: set[str] = set()      # "provider:model" whose output stayed invalid after its retries
+        skip: set[str] = set(exclude_models)   # plus "provider:model" whose output stayed invalid after its retries
         failure: Exception | None = None
         for _ in range(1 + int(self.lim.get("schema_fallback_models", 2))):
             msg_user = user
@@ -381,7 +385,7 @@ class LLMClient:
                     text, usage, _ = self.raw(role, system, msg_user, temperature, json_mode=True, record=rec,
                                               skip_models=frozenset(skip), response_schema=schema)
                 except AllEndpointsFailed:
-                    if not skip:
+                    if skip == set(exclude_models):
                         raise
                     break           # no model left to fall back to: report the invalid output below
                 raw_text = text

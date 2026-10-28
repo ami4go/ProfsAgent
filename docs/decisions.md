@@ -47,8 +47,19 @@ Mark anything still waiting for someone as **Open**.
   - **Professor review:** `material/review.yaml` with approve, redo or reject. A redo passes the reason to B1; an
     approved deck is protected.
   - **Slide numbers:** findings, quiz.json and the handout use the slide numbers of the .pptx.
-- **Agreed by:** Parth. **Open:** the `attach_material` processor; the UI screens (Amit); automatic content review for a
-  professor in a hurry (an optional AI reviewer, off by default).
+  - **AI review for a professor in a hurry** (`content/ai_review.py`, prompt B2, `--auto-review`, off by default):
+    - **The reviewer is never the writer:** one call to a model other than the deck's generator (the client's new
+      `exclude_models`, as for the Stage 5 judges). It reports wrong facts, code that does the wrong thing, ambiguous
+      quiz questions, unclear steps and level mismatches (`D-AI`).
+    - **Blind quiz check:** it answers every quiz question without the key; a different answer is `D-QUIZKEY`.
+    - **Repair:** its errors get one B1 repair, kept unless the code checks find more errors. Fixed errors stay as
+      `D-AI-FIXED` warnings for a glance, because the reviewer does not re-read the new slides.
+    - **Status `ai-reviewed`, never `approved`:** only the professor approves. A failed review leaves a draft.
+    - **Cost:** 1 more call per lecture, 2 when the reviewer finds errors.
+  - **JDK installed** (Temurin 21): Java snippets are now compiled. On W01.L1 it confirmed the `query.blank()` bug
+    (slide 17).
+- **Agreed by:** Parth. **Open:** the `attach_material` processor; the UI screens (Amit); measuring the AI reviewer
+  on planted mistakes (not done: no new mutations for now).
 
 ## 2026-10-28 (night): validation and evaluation as one layer each; course-fit warnings
 

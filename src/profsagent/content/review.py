@@ -5,8 +5,9 @@ material/review.yaml lists every generated lecture with `decision: pending`. The
     redo      generate again; the reason is passed to B1 as the professor's instructions (one AI call, on request)
     reject    do not use generated slides for this lecture
 (a reason is required for redo and reject) and runs `run_content.py review --apply`. The decision is written to the
-lecture's material.json as `status` (draft | approved | redo | rejected), which is what the UI shows; an approved deck is
-never overwritten by a new generation unless forced.
+lecture's material.json as `status`, which is what the UI shows: draft (not reviewed), ai-reviewed (checked by a second
+AI model at the professor's request, content/ai_review.py: not an approval), approved, redo, rejected. An approved deck
+is never overwritten by a new generation unless forced.
 """
 from __future__ import annotations
 

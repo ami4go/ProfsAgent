@@ -50,3 +50,25 @@ class LectureDeck(BaseModel):
     lecture_id: str
     title: str
     slides: list[Slide]
+
+
+# ------------------------------------------------------------------ B2: the AI reviewer's answer (content/ai_review.py)
+class ReviewIssue(BaseModel):
+    slide: int = Field(description="the slide number as given in the deck")
+    severity: Literal["error", "warning"] = Field(description="error: students would learn something wrong; warning: unclear, "
+                                                              "too hard or too easy for the level, or missing a step")
+    kind: Literal["fact", "code", "quiz", "clarity", "level", "other"]
+    problem: str
+    fix: str = Field("", description="what the slide should say instead")
+
+
+class QuizAnswer(BaseModel):
+    slide: int
+    answer: int = Field(description="index of the option the reviewer thinks is correct, from 0")
+    why: str = ""
+
+
+class DeckReview(BaseModel):
+    issues: list[ReviewIssue] = Field(default_factory=list)
+    quiz_answers: list[QuizAnswer] = Field(default_factory=list)
+    verdict: str = Field("", description="one sentence: is the deck safe to teach from, and what most needs a look")

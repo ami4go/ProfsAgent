@@ -34,6 +34,13 @@ experts) Vihan.
   - Decisions go in `material/review.yaml`: approve, redo (the reason becomes the AI's instructions), or reject.
   - `material.json` gets a `status` the UI can show: draft, approved, redo or rejected.
   - An approved deck is never overwritten without `--force`.
+- **AI review for a professor in a hurry (`content/ai_review.py`, `--auto-review` / `options.review: "ai"`):**
+  - A different model from the one that wrote the slides checks every slide and answers the quiz without the key.
+  - Its errors get one repair. The status becomes `ai-reviewed`; only the professor can approve.
+  - UI: show `ai-reviewed` as "checked by AI, not by you", with `material.json → ai_review.verdict` and the findings.
+  - AI calls for slides are now logged in `delivery/material/llm_calls.jsonl`, not `delivery/llm_calls.jsonl`.
+- **Java checks:** a JDK (Temurin 21) is now installed on Parth's laptop. Elsewhere, Java snippets stay "not verified"
+  until a JDK is installed.
 - **Not built yet:** `attach_material` (the professor's own pptx/pdf → summary / quiz / gap check).
 - **New dependency:** `python-pptx`.
 

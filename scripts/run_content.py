@@ -4,12 +4,14 @@
   python scripts/run_content.py generate --run-id cs601-02 --lectures W01.L1 [--include-pending] [--note "..."]
   python scripts/run_content.py generate --run-id cs601-02 --from-survey              # every lecture with generate_material: yes
   python scripts/run_content.py generate --run-id cs601-02 --redo                     # decks the professor sent back (review.yaml)
+  python scripts/run_content.py generate --run-id cs601-02 --lectures W01.L2 --auto-review   # a different AI checks the deck
   python scripts/run_content.py check    --run-id cs601-02 --lectures W01.L1          # re-check and re-render a saved deck
   python scripts/run_content.py review   --run-id cs601-02 [--apply]                  # write review.yaml / apply decisions
 
 Outputs: runs/<id>/delivery/material/<lecture>/ (slides.pptx, notes.md, quiz.json, deck.json, material.json) and
 material/review.yaml. One B1 call per lecture, plus at most `deck.repair_rounds` when the deck has errors
-(config/content.yaml). check and review make no AI calls.
+(config/content.yaml); --auto-review adds one B2 call, and one more B1 call when the reviewer finds errors. check and
+review make no AI calls. With several lectures, one that fails is reported at the end and the others still run.
 """
 from __future__ import annotations
 
@@ -48,6 +50,9 @@ def lectures(a, briefs: dict) -> list[str]:
 
 def show(lid: str, m: dict) -> None:
     print(f"{lid}: {m['errors']} errors, {m['warnings']} warnings, {m['slides']} slides, status {m.get('status', 'draft')}")
+    ai = m.get("ai_review")
+    if ai:
+        print(f"  AI review: {ai.get('error') or (ai['model'] + ' · ' + ai['verdict'] + (' · repaired' if ai['repaired'] else ''))}")
     for x in m["findings"]:
         print(f"  {x['severity']:7} {x['code']:12} {x['message']}")
     for r in m.get("code_checks") or []:
@@ -64,6 +69,7 @@ def main() -> None:
     ap.add_argument("--include-pending", action="store_true", help="also cite C's resources the professor has not approved yet")
     ap.add_argument("--note", default="", help="what the professor wants emphasised")
     ap.add_argument("--force", action="store_true", help="generate: replace a deck the professor approved")
+    ap.add_argument("--auto-review", action="store_true", help="generate: a different AI model checks each deck (1-2 more calls)")
     ap.add_argument("--apply", action="store_true", help="review: apply the decisions in review.yaml")
     a = ap.parse_args()
 
@@ -89,13 +95,26 @@ def main() -> None:
             lo, hi = content_range(b["hours"], c)
             print(f"{lid}  {b['topic']}  ({b['hours']:g} h, {len(b['learning_outcomes'])} LOs)  content slides {lo}–{hi}  "
                   f"sources {list(src)}")
-        print(f"AI calls: {len(ids)} (up to {len(ids) * (1 + c['deck']['repair_rounds'])} with repairs)")
+        per = 1 + c["deck"]["repair_rounds"] + (2 if a.auto_review else 0)
+        print(f"AI calls: {len(ids) * (2 if a.auto_review else 1)} (up to {len(ids) * per} with repairs)")
     elif a.cmd == "generate":
         feedback = R.redo_requests(a.run_id) if a.redo else {}
-        for lid in ids:
-            m = G.generate_material(a.run_id, lid, {"include_pending": pending, "note": a.note, "force": a.force,
-                                                    "feedback": feedback.get(lid)})
+        failed = {}
+        for n, lid in enumerate(ids, 1):
+            print(f"\n=== {n}/{len(ids)} {lid}")
+            try:
+                m = G.generate_material(a.run_id, lid, {"include_pending": pending, "note": a.note, "force": a.force,
+                                                        "feedback": feedback.get(lid),
+                                                        "review": "ai" if a.auto_review else None})
+            except Exception as e:                  # e.g. no model or quota left: the other lectures still run
+                failed[lid] = f"{type(e).__name__}: {e}"[:300]
+                print(f"{lid}: FAILED {failed[lid]}")
+                continue
             show(lid, m)
+        print(f"\n{len(ids) - len(failed)} of {len(ids)} lectures generated")
+        if failed:
+            print("failed (run them again with --lectures):", ",".join(failed))
+            sys.exit(1)
     else:
         for lid in ids:
             d = G.material_dir(a.run_id, lid)

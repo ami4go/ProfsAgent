@@ -127,3 +127,14 @@ def test_strong_only_waits_for_strong_models_instead_of_lite(client, monkeypatch
     with pytest.raises(Exception):                                          # max_wait_s 0: no weak fallback, the call fails
         client.structured(system="s2", user="u2", model_cls=Out)
     assert [m for m, _ in calls] == ["model-a"]
+
+
+def test_excluded_models_are_never_called(client, monkeypatch):
+    calls = []
+    monkeypatch.setattr(client, "_gemini", fake_gemini({"model-a": GOOD, "model-b": GOOD}, calls))
+    obj, rec = client.structured(system="s", user="u", model_cls=Out, exclude_models=frozenset({"gemini:model-a"}))
+    assert [m for m, _ in calls] == ["model-b"] and rec.endpoint.startswith("gemini:model-b:")
+    calls.clear()
+    monkeypatch.setattr(client, "_gemini", fake_gemini({"model-b": BROKEN, "model-c": GOOD}, calls))
+    client.structured(system="s", user="u", model_cls=Out, exclude_models=frozenset({"gemini:model-a"}))
+    assert "model-a" not in [m for m, _ in calls] and calls[-1][0] == "model-c"   # fallback still skips the excluded one

@@ -181,10 +181,15 @@ python scripts/run_content.py generate --run-id cs601-02 --lectures W01.L1     #
 python scripts/run_content.py check    --run-id cs601-02 --lectures W01.L1     # re-check and re-render, no AI calls
 python scripts/run_content.py review   --run-id cs601-02 [--apply]             # professor: approve / redo / reject
 python scripts/run_content.py generate --run-id cs601-02 --redo                # regenerate the decks sent back, with the reason
+python scripts/run_content.py generate --run-id cs601-02 --lectures W01.L2 --auto-review   # a second AI model checks the deck
 ```
+4b. **AI review, optional** (`--auto-review`, `content/ai_review.py`): for a professor who wants the system to check
+   the slides. A model other than the writer reads every slide and notes (wrong facts, wrong code behaviour, ambiguous
+   questions, unclear steps, level) and answers the quiz without the key. Its errors get one repair. The deck becomes
+   `ai-reviewed`, not approved. Cost: 1–2 more calls per lecture.
 5. **Professor review** (`content/review.py`): `material/review.yaml` lists every deck; `approve` freezes it (a new
    generation needs `--force`), `redo` regenerates it with the professor's reason as instructions, `reject` drops it.
-   `material.json → status` is draft | approved | redo | rejected.
+   `material.json → status` is draft | ai-reviewed | approved | redo | rejected.
 Output: `runs/<id>/delivery/material/<lecture>/`. Example: `eval/content_examples/cs601-02_W01.L1/`.
 
 ## Other scripts

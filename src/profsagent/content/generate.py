@@ -8,10 +8,13 @@ Flow, one lecture at a time:
   2. B1       one AI call writes the content slides (content/models.LectureDeck)
   3. checks   content/checks.py (structure) and content/verify.py (code syntax, citation match); with errors, B1 is
               asked again with the findings (kept only if errors drop)
-  4. frame    code writes the title, objectives and references slides from the brief and the cited sources
-  5. render   slides.pptx (with speaker notes) and notes.md
-Output: runs/<id>/delivery/material/<lecture_id>/{deck.json, slides.pptx, notes.md, quiz.json, material.json}.
-material.json `status` starts as draft; the professor's decision (content/review.py) sets approved | redo | rejected.
+  4. B2       only when options.review == "ai" (a professor who wants the system to check the slides): a different
+              model reviews the deck and answers its quiz blind (content/ai_review.py); its errors get one B1 repair
+  5. frame    code writes the title, objectives and references slides from the brief and the cited sources
+  6. render   slides.pptx (with speaker notes) and notes.md
+Output: runs/<id>/delivery/material/<lecture_id>/{deck.json, slides.pptx, notes.md, quiz.json, material.json}; the AI
+calls are logged in material/llm_calls.jsonl. material.json `status` starts as draft (ai-reviewed after B2); the
+professor's decision (content/review.py) sets approved | redo | rejected.
 """
 from __future__ import annotations
 
@@ -19,6 +22,7 @@ from pathlib import Path
 from typing import Callable
 
 from profsagent.config import load_yaml
+from profsagent.content.ai_review import after_repair, model_of, review_deck
 from profsagent.content.checks import check_deck, content_range
 from profsagent.content.models import FIRST_CONTENT_SLIDE, LectureDeck
 from profsagent.content.render import render_markdown, render_pptx
@@ -117,11 +121,35 @@ def _ask(llm, ctx: dict, run_id: str, log) -> tuple[LectureDeck, dict]:
     return deck, {"endpoint": rec.endpoint, "prompt_tokens": rec.prompt_tokens, "output_tokens": rec.output_tokens}
 
 
+def _ai_review(llm, deck, found, code, ctx, lecture, calls, check, run_id, log):
+    """B2 on the checked deck, then one B1 repair when the reviewer reports errors (kept unless the code checks find more
+    errors than before). A failed review leaves the deck as it was, recorded in ai_review.error."""
+    try:
+        ai_found, ai = review_deck(llm, deck, ctx["course"], lecture, {model_of(x["endpoint"]) for x in calls}, run_id, log)
+    except Exception as e:                          # no reviewer model or quota left: keep the draft, say so
+        log(f"  [B2] review failed: {e}")
+        return deck, found, code, {"error": str(e)[:300]}
+    calls.append({k: ai[k] for k in ("endpoint", "prompt_tokens", "output_tokens")})
+    ai["repaired"] = False
+    if errors(ai_found):
+        ctx["problems"] = ([{"code": x["code"], "where": x["nodes"], "problem": x["message"]} for x in errors(ai_found + found)]
+                           + [p for p in ctx["problems"] if p["code"] == "PROFESSOR"])
+        deck2, call = _ask(llm, ctx, run_id, log)
+        calls.append(call)
+        found2, code2 = check(deck2)
+        keep = len(errors(found2)) <= len(errors(found))
+        log(f"  [{PID} after review] code-check errors {len(errors(found))} → {len(errors(found2))} {'ACCEPT' if keep else 'REJECT'}")
+        if keep:
+            deck, found, code, ai_found, ai["repaired"] = deck2, found2, code2, after_repair(ai_found), True
+    return deck, found + ai_found, code, ai
+
+
 def generate_material(run_id: str, lecture_id: str, options: dict | None = None, *, llm=None,
                       log: Callable[[str], None] = print) -> dict:
     """Slides and notes for one lecture. options: include_pending (bool); note (str: what the professor wants
     emphasised); feedback (str: the professor's redo instructions, given to B1 as a problem to fix); force (bool: replace
-    an approved deck). Returns the manifest written to material.json."""
+    an approved deck); review ("ai": a different model checks the deck, see content/ai_review.py). Returns the manifest
+    written to material.json."""
     o, c = options or {}, cfg()
     old = read_json(material_dir(run_id, lecture_id) / "material.json") or {}
     if old.get("status") == "approved" and not o.get("force"):
@@ -131,7 +159,7 @@ def generate_material(run_id: str, lecture_id: str, options: dict | None = None,
     if brief is None:
         raise KeyError(f"no lecture {lecture_id} in runs/{run_id}")
     d = material_dir(run_id, lecture_id)
-    llm = llm or LLMClient(out_dir(run_id) / "llm_calls.jsonl")
+    llm = llm or LLMClient(out_dir(run_id) / "material" / "llm_calls.jsonl")
     lecture = lecture_input(brief, o.get("note", ""))
     sources = gather_sources(st, run_id, brief, o.get("include_pending", c["sources"]["include_pending"]), c["sources"]["max_external"])
     lo_min, lo_max = content_range(brief["hours"], c)
@@ -162,6 +190,10 @@ def generate_material(run_id: str, lecture_id: str, options: dict | None = None,
         if keep:
             deck, found, code = deck2, found2, code2
 
+    ai = None
+    if o.get("review") == "ai":
+        deck, found, code, ai = _ai_review(llm, deck, found, code, ctx, lecture, calls, check, run_id, log)
+
     deck.lecture_id = lecture_id
     n, found = write_outputs(d, deck, frame(st, brief), sources, c, found)
     manifest = {"lecture_id": lecture_id, "topic": brief["topic"], "generated_at": now(), "prompt": f"{PID} {load_prompt(PID).version}",
@@ -172,7 +204,8 @@ def generate_material(run_id: str, lecture_id: str, options: dict | None = None,
                 "slides": n, "content_slides": len(deck.slides), "minutes": sum(s.minutes for s in deck.slides),
                 "errors": len(errors(found)), "warnings": len(found) - len(errors(found)), "findings": found,
                 "code_checks": code, "sources": sources, "cited": sorted({s for sl in deck.slides for s in sl.sources}),
-                "calls": calls, "status": "draft", "review_history": old.get("review_history", []),
+                "calls": calls, "ai_review": ai, "status": "ai-reviewed" if ai and not ai.get("error") else "draft",
+                "review_history": old.get("review_history", []),
                 "feedback": o.get("feedback") or None}
     write_json(d / "material.json", manifest)
     log(f"  slides: {n} ({len(deck.slides)} content) · {manifest['errors']} errors, {manifest['warnings']} warnings → {d}")

@@ -8,7 +8,7 @@
 
 - Identify the core components of developer workflows and AI-assisted coding using contextualisation guidelines for most short items (CO1.LO3)
 
-## 1. Traditional vs. AI-Augmented Developer Workflows
+## 3. Traditional vs. AI-Augmented Developer Workflows
 
 - Traditional workflows rely on manual coding, local search, and manual test execution.
 - AI-augmented workflows integrate generative models directly into the edit, test, and debug loop.
@@ -21,7 +21,7 @@ Specification → Prompt / Context Setup → AI Generation → Verification & Te
 
 **Notes** (6 min · outcomes CO1.LO3 · sources [C4]): In traditional software engineering, developers spend a significant portion of their time searching documentation, writing repetitive boilerplate code, and manually crafting initial implementations. With generative AI integrated into the workflow, the developer's role evolves. Developers now act as architects and reviewers who specify requirements, provide context, evaluate AI-generated drafts, and verify outputs against test suites. This shift speeds up prototype development, but requires developers to maintain strict verification practices.
 
-## 2. Core Stages of Developer Workflows
+## 4. Core Stages of Developer Workflows
 
 - Software development follows predictable stages from requirement specification to deployment.
 - Core stages include design, implementation, code review, testing, and debugging.
@@ -34,7 +34,7 @@ Requirements → Design & Spec → Implementation → Testing & Debug → Review
 
 **Notes** (6 min · outcomes CO1.LO3 · sources [C4]): Developer workflows consist of structured feedback loops. Requirements are converted into design specs, which lead to code implementation. Next comes automated testing, debugging, and code review before merging into main branches. AI tools enhance each step: generating boilerplate during implementation, suggesting test cases during testing, and identifying potential bugs during debugging. Knowing where AI adds the most value in each stage is fundamental to designing productive workflows.
 
-## 3. Spectrum of AI-Assisted Coding Tools
+## 5. Spectrum of AI-Assisted Coding Tools
 
 - AI coding tools range from simple inline auto-completion to fully me-autonomous agents.
 - Inline completion suggests the next few tokens or lines as you type.
@@ -51,7 +51,7 @@ Requirements → Design & Spec → Implementation → Testing & Debug → Review
 
 **Notes** (6 min · outcomes CO1.LO3 · sources [C4] [C6]): AI coding tools exist on a continuum based on autonomy and scope. Inline completion offers real-time suggestions within an editor, maintaining high developer control. Conversational chat interfaces allow developers to discuss code, explain errors, or request refactoring across entire methods or files. Autonomous coding agents take high-level goals, edit files across repository boundaries, run terminal commands, and interpret test results with minimal human intervention.
 
-## 4. Role of Contextualisation in AI Coding
+## 6. Role of Contextualisation in AI Coding
 
 - Language models lack inherent knowledge of your local workspace state.
 - Contextualisation feeds relevant code, types, dependencies, and rules to the model.
@@ -64,7 +64,7 @@ User Intent → Local Code Context → Environment & Types → Prompt Constructi
 
 **Notes** (7 min · outcomes CO1.LO3 · sources [C5]): Large language models are pre-trained on generic codebases, but they know nothing about your specific project structure, variable names, or architectural decisions unless you provide that context. Contextualisation is the process of supplying the exact code snippets, class signatures, unit test frameworks, and constraints necessary for the model to produce accurate completions. Proper context dramatically increases the quality and compilability of generated code.
 
-## 5. Context Windows and Token Constraints
+## 7. Context Windows and Token Constraints
 
 - Models have finite context window limits measured in tokens.
 - Tokens represent word fragments, code characters, or symbols.
@@ -73,7 +73,7 @@ User Intent → Local Code Context → Environment & Types → Prompt Constructi
 
 **Notes** (7 min · outcomes CO1.LO3 · sources [C3] [C5]): Although modern LLMs have expanding context windows, blindly feeding entire codebases into prompts is inefficient and counterproductive. Excess irrelevant code consumes token budgets, slows down inference response times, and can confuse the model with irrelevant noise. When working with short items—such as a single utility function or a JUnit test case—developers must select only the essential signatures, imported types, and constraints.
 
-## 6. Contextualisation Guidelines for Short Coding Tasks
+## 8. Contextualisation Guidelines for Short Coding Tasks
 
 - State the specific goal clearly in the initial line or comment.
 - Include required class definitions, interface signatures, and import statements.
@@ -82,7 +82,7 @@ User Intent → Local Code Context → Environment & Types → Prompt Constructi
 
 **Notes** (7 min · outcomes CO1.LO3 · sources [C2] [C5]): To achieve optimal results when requesting short code snippets, follow four contextualisation guidelines. First, state the goal clearly. Second, provide type definitions and imports so the model uses the correct API signatures. Third, include sample inputs and expected outputs, or a failing test case. Fourth, state constraints explicitly—for example, specifying JUnit 5 instead of JUnit 4, or avoiding external dependencies.
 
-## 7. Contextualising a Short Utility Method Request (Example)
+## 9. Contextualising a Short Utility Method Request (Example)
 
 - A weak prompt lacks environment and class structure details.
 - A contextualised prompt provides signature, imports, and validation constraints.
@@ -107,7 +107,7 @@ public class UserValidator {
 
 **Notes** (7 min · outcomes CO1.LO3 · sources [C2]): Compare a weak prompt like 'Write an email validator in Java' with the structured example shown here. The contextualised example specifies the language version, existing constants, import statements, and expected exception handling behaviour. By giving the model the exact class context and constraints, the resulting code integrates seamlessly into the existing repository without needing manual refactoring or extra import additions.
 
-## 8. Step-by-Step Contextualisation for a JUnit Test (Worked problem)
+## 10. Step-by-Step Contextualisation for a JUnit Test (Worked problem)
 
 - Goal: Generate a unit test for a custom Stack class using JUnit 5.
 - Step 1: Provide class interface and methods to be tested.
@@ -134,7 +134,7 @@ class BoundedStackTest {
 
 **Notes** (8 min · outcomes CO1.LO3 · sources [C2] [C6]): In this worked problem, we build a contextualised request for unit test generation. First, we provide the model with the class under test (BoundedStack) and its constructor parameter. Second, we specify JUnit 5 assertions like assertThrows. The generated test directly reflects our project's framework choices. Step three requires us to manually check whether edge cases, such as pushing to a full stack, are tested correctly.
 
-## 9. Concept Check: Effective Contextualisation (Check)
+## 11. Concept Check: Effective Contextualisation (Check)
 
 
 **Which of the following prompt configurations follows best guidelines for contextualising a short Java helper method generation?**
@@ -148,7 +148,7 @@ D. Asking the model to guess the project requirements based on generic naming co
 
 **Notes** (5 min · outcomes CO1.LO3 · sources [C5]): Let's check your understanding of contextualisation guidelines. Think about how context quality directly influences model accuracy. Option 1 provides precise context without cluttering the prompt, ensuring clean and reusable code.
 
-## 10. Contextualising Bug Fixes and Debugging Logs
+## 12. Contextualising Bug Fixes and Debugging Logs
 
 - Debugging requires providing failing inputs, call stacks, and relevant source lines.
 - Isolate the problematic function alongside the thrown exception log.
@@ -161,7 +161,7 @@ Capture Failure Log → Isolate Target Function → Attach Expected vs Actual �
 
 **Notes** (7 min · outcomes CO1.LO3 · sources [C6]): When using AI for debugging, simply pasting a stack trace is rarely enough. Effective bug-fixing context requires three key elements: the exact source code where the crash occurred, the raw stack trace or log output, and a concise statement explaining what was expected versus what actually happened. Supplying failing unit tests alongside this information allows the model to verify its proposed fix against known failures.
 
-## 11. Specification-Driven Development with AI
+## 13. Specification-Driven Development with AI
 
 - Specification-driven development uses formal specs as primary input for AI tools.
 - Specifications define inputs, outputs, preconditions, postconditions, and invariants.
@@ -170,7 +170,7 @@ Capture Failure Log → Isolate Target Function → Attach Expected vs Actual �
 
 **Notes** (7 min · outcomes CO1.LO3 · sources [C2]): Specification-Driven Development (SDD) is an effective paradigm for AI-assisted workflows. Instead of writing code directly or providing informal prompt descriptions, developers craft precise specifications—defining pre-conditions, post-conditions, domain models, and constraints. Generative AI tools convert these specifications into functional code, while automated unit tests verify that the implementation adheres strictly to the contract.
 
-## 12. Complexity Backpressure in AI-Assisted Workflows
+## 14. Complexity Backpressure in AI-Assisted Workflows
 
 - As project complexity grows, AI agents encounter accumulated context drift.
 - Complexity backpressure occurs when subtle bugs compound across generated commits.
@@ -179,7 +179,7 @@ Capture Failure Log → Isolate Target Function → Attach Expected vs Actual �
 
 **Notes** (7 min · outcomes CO1.LO3 · sources [C3]): Recent empirical studies highlight the phenomenon of 'complexity backpressure'. While AI coding assistants excel at small, isolated tasks, their reliability drops when working on complex, tightly coupled systems. Errors can compound across successive generated edits if not carefully checked. Developers must combat complexity backpressure by maintaining clean modular boundaries, writing comprehensive unit tests, and keeping individual AI tasks tightly scoped.
 
-## 13. Human-in-the-Loop Verification Strategies
+## 15. Human-in-the-Loop Verification Strategies
 
 - Never accept generated code into production without human review.
 - Verify AI output through automated test suites, static analysis, and code review.
@@ -192,7 +192,7 @@ AI Code Generation → Automated Linting → Unit Test Suite → Human Code Revi
 
 **Notes** (7 min · outcomes CO1.LO3 · sources [C1] [C4]): The human-in-the-loop paradigm is indispensable in AI-assisted software development. Generative AI models are probabilistic and can produce syntactically plausible but logically flawed or insecure code (such as hallucinating non-existent library methods or missing security sanitisation). Developers must enforce mandatory verification steps: static analysis linting, running unit tests, and performing careful human code review prior to merging.
 
-## 14. Integrating AI Tools into Git and CI/CD Pipelines
+## 16. Integrating AI Tools into Git and CI/CD Pipelines
 
 - AI assistants plug into editor IDEs, git pre-commit hooks, and CI/CD actions.
 - Pre-commit hooks can invoke AI linters to enforce prompt-based style guide compliance.
@@ -205,7 +205,7 @@ Local IDE + AI Edit → Git Commit Hook → PR Generation → CI Test Suite Run 
 
 **Notes** (7 min · outcomes CO1.LO3 · sources [C4] [C6]): Integrating AI into the developer workflow extends beyond the text editor. Modern workflows embed AI into the continuous integration pipeline and version control practices. Developer commits generated code to git branches where automated CI pipelines run tests, perform security scans, and check formatting. Clean version control commit messages document both human intent and AI-assisted changes, keeping the audit trail clear.
 
-## 15. Workflow Example: Adding a Feature with AI Support (Example)
+## 17. Workflow Example: Adding a Feature with AI Support (Example)
 
 - End-to-end task: Add user search endpoint to an existing REST controller.
 - Step 1: Define repository interface and model constraints.
@@ -236,7 +236,7 @@ public class UserController {
 
 **Notes** (7 min · outcomes CO1.LO3 · sources [C2] [C4]): This example shows a full feature addition workflow. We supply the controller structure, constructor injection pattern, and request mapping conventions to the AI assistant. The generated endpoint includes basic query validation and delegates execution to UserService. The developer verifies that @RequestParam and HTTP status codes match project REST standards, then runs the test suite to confirm functionality.
 
-## 16. Concept Check: Developer Workflow Components (Check)
+## 18. Concept Check: Developer Workflow Components (Check)
 
 
 **What primary mechanism prevents 'complexity backpressure' and context drift in multi-file AI-assisted development tasks?**
@@ -250,7 +250,7 @@ D. Disabling static analysis tools and unit tests to speed up AI code execution.
 
 **Notes** (5 min · outcomes CO1.LO3 · sources [C3] [C6]): Let's review how developers control complexity backpressure when working with AI agents on larger systems. Keeping tasks modular and supported by automated unit tests is the most effective defense against context drift and unexpected side effects.
 
-## 17. Introduction to Model Context Protocols
+## 19. Introduction to Model Context Protocols
 
 - Model Context Protocol (MCP) standardises context delivery to AI tools.
 - Decouples AI clients (IDEs) from context providers (databases, tools, repos).
@@ -263,7 +263,7 @@ IDE / Client → MCP Protocol Boundary → MCP Server → Data Sources / Tools �
 
 **Notes** (6 min · outcomes CO1.LO3 · sources [C5]): As AI workflows mature, manually copying context into prompts becomes inefficient. The Model Context Protocol (MCP) introduces an open standard for connecting AI clients to external context sources and tools safely. MCP allows IDEs to query context servers dynamically—retrieving schema definitions, issue tracker logs, or file trees seamlessly. This foundational architecture leads directly into advanced agent configurations in subsequent lectures.
 
-## 18. Summary: AI-Assisted Developer Workflows (Summary)
+## 20. Summary: AI-Assisted Developer Workflows (Summary)
 
 - AI-assisted workflows transform developers into architects, prompt designers, and verifiers.
 - Core workflow components include specification, context assembly, generation, and test-driven verification.

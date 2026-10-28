@@ -167,8 +167,10 @@ the survey's `generate_material` choice: `content.generate.generate_material(run
 2. **B1, one AI call:** the content slides (`content/models.LectureDeck`): concept, example, worked problem, activity,
    check (a multiple-choice question with answer and explanation) and summary slides, with speaker notes.
 3. **Checks (no AI):** every LO served, Bloom 3+ LOs shown in use, slide count fits the hours, valid figures and
-   questions, no unknown ids or `{placeholders}`, density, timing, one check per hour. With errors, B1 is asked once more
-   with the findings and the new deck is kept only if errors drop.
+   questions, no unknown ids or `{placeholders}`, density, timing, one check per hour (`content/checks.py`); code
+   snippets compiled for syntax (Python built in; C/C++ with gcc; Java with javac and JavaScript with node when
+   installed, otherwise reported as not verified) and citations matched to the slide text with the local embedding model
+   (`content/verify.py`). With errors, B1 is asked once more with the findings and the new deck is kept only if errors drop.
 4. **Render:** code writes the title, objectives and references slides. `slides.pptx` is 16:9 with speaker notes, and
    flows, code and tables are drawn as editable shapes. Text is fitted to its box; text that still cannot fit is a
    `D-OVERFLOW` warning. Also written: `notes.md` (handout), `quiz.json`, `deck.json`, `material.json` (findings,
@@ -177,7 +179,12 @@ the survey's `generate_material` choice: `content.generate.generate_material(run
 python scripts/run_content.py plan     --run-id cs601-02 --lectures W01.L1     # inputs and cost, no AI calls
 python scripts/run_content.py generate --run-id cs601-02 --lectures W01.L1     # or --from-survey
 python scripts/run_content.py check    --run-id cs601-02 --lectures W01.L1     # re-check and re-render, no AI calls
+python scripts/run_content.py review   --run-id cs601-02 [--apply]             # professor: approve / redo / reject
+python scripts/run_content.py generate --run-id cs601-02 --redo                # regenerate the decks sent back, with the reason
 ```
+5. **Professor review** (`content/review.py`): `material/review.yaml` lists every deck; `approve` freezes it (a new
+   generation needs `--force`), `redo` regenerates it with the professor's reason as instructions, `reject` drops it.
+   `material.json → status` is draft | approved | redo | rejected.
 Output: `runs/<id>/delivery/material/<lecture>/`. Example: `eval/content_examples/cs601-02_W01.L1/`.
 
 ## Other scripts

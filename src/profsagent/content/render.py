@@ -23,7 +23,7 @@ from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.oxml.ns import qn
 from pptx.util import Emu, Inches, Pt
 
-from profsagent.content.models import Figure, LectureDeck, Quiz, Slide
+from profsagent.content.models import FIRST_CONTENT_SLIDE, Figure, LectureDeck, Quiz, Slide
 
 BADGE = {"example": "Example", "worked_problem": "Worked problem", "activity": "Activity", "check": "Check", "summary": "Summary"}
 def answer(q: Quiz) -> str:
@@ -290,7 +290,7 @@ def render_markdown(deck: LectureDeck, frame: dict, sources: dict[str, dict]) ->
     """The handout: every slide with its notes, then the references."""
     L = [f"# {deck.title}", "", f"*{frame['course']} · {frame['subtitle']}*", "", f"> {frame['draft_note']}", "",
          "## Learning outcomes", "", *[f"- {o}" for o in frame["objectives"]], ""]
-    for i, sl in enumerate(deck.slides, 1):
+    for i, sl in enumerate(deck.slides, FIRST_CONTENT_SLIDE):
         L += [f"## {i}. {sl.title}" + (f" ({BADGE[sl.kind]})" if sl.kind in BADGE else ""), ""]
         L += [f"- {b}" for b in sl.bullets]
         f = sl.figure

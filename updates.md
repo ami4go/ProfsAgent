@@ -24,8 +24,17 @@ experts) Vihan.
   layout checks on the rendered output.
   - Not taken: narration/TTS, agent classmates, interactive HTML scenes. For v2: outline first, then slides, with a
     professor gate between.
-- **Not built yet:** `attach_material` (the professor's own pptx/pdf → summary / quiz / gap check), and a syntax check
-  for code snippets. The first deck had `query.blank()` where Java needs `isBlank()`: decks are drafts to review.
+- **Checks beyond structure (`content/verify.py`, no AI calls):**
+  - **Code snippets are compiled for syntax:** Python with ast, C/C++ with gcc/g++, Java with javac, JavaScript with
+    node. A missing compiler gives a `D-UNVERIFIED` warning, never a pass. This laptop has no JDK, so the Java in the
+    first deck is unverified; with a JDK, `query.blank()` is caught as "String has no method blank()".
+  - **Weak citations (`D-GROUND`):** a slide whose cited source matches it worse than the average offered source.
+    This is a topical match on the source title only.
+- **Professor review (`content/review.py`):**
+  - Decisions go in `material/review.yaml`: approve, redo (the reason becomes the AI's instructions), or reject.
+  - `material.json` gets a `status` the UI can show: draft, approved, redo or rejected.
+  - An approved deck is never overwritten without `--force`.
+- **Not built yet:** `attach_material` (the professor's own pptx/pdf → summary / quiz / gap check).
 - **New dependency:** `python-pptx`.
 
 ### Validation and evaluation (decisions log entry 17)

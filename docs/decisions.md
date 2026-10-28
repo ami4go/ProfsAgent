@@ -39,7 +39,16 @@ Mark anything still waiting for someone as **Open**.
   - **Prompt and settings:** `prompts/content/B1_lecture_deck.md`, `config/content.yaml`.
   - **Script and tests:** `scripts/run_content.py`, `tests/test_content.py`.
   - **Docs:** README, `updates.md`.
-- **Agreed by:** Parth. **Open:** the `attach_material` processor; the UI screens (Amit).
+- **Added the same day:**
+  - **Code checks:** snippets are syntax-checked with real compilers (`D-CODE`); a missing compiler gives
+    `D-UNVERIFIED`, never a pass.
+  - **Citation checks:** a citation that matches its slide weakly gives `D-GROUND`. The floor of 0.35 is calibrated
+    on W01.L1 (cited median 0.38 vs uncited 0.28).
+  - **Professor review:** `material/review.yaml` with approve, redo or reject. A redo passes the reason to B1; an
+    approved deck is protected.
+  - **Slide numbers:** findings, quiz.json and the handout use the slide numbers of the .pptx.
+- **Agreed by:** Parth. **Open:** the `attach_material` processor; the UI screens (Amit); automatic content review for a
+  professor in a hurry (an optional AI reviewer, off by default).
 
 ## 2026-10-28 (night): validation and evaluation as one layer each; course-fit warnings
 

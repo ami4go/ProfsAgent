@@ -7,6 +7,10 @@ deck:
   max_bullet_words: 22                     # D-DENSE warning above this per bullet
   minutes_tolerance: 0.2                   # D-TIME warning when the slides' minutes differ from the lecture by more
   repair_rounds: 1                         # extra B1 calls when the deck has errors (kept only if errors drop)
+verify:
+  grounding_floor: 0.35                    # D-GROUND when a cited source's similarity to the slide is below both this and
+                                           # the slide's median over all offered sources. Calibrated on cs601-02 W01.L1
+                                           # (titles only): cited median 0.38, uncited 0.28; flags 4 of 29 citations
 sources:
   include_pending: false                   # cite C's resources only once the professor approved them (review.yaml)
   max_external: 8                          # C items offered to B1 as sources, best-ranked first

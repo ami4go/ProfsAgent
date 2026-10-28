@@ -40,6 +40,8 @@ class Slide(BaseModel):
     minutes: float = 3.0
 
 
+FIRST_CONTENT_SLIDE = 3   # the .pptx opens with the title and objectives slides code adds; every finding, the quiz
+                          # and the handout number content slides as they appear in the .pptx
 SCHEMA_VERSION = "1"   # bump when a field changes meaning; deck.json records it so old decks are recognised
 
 

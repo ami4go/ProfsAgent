@@ -20,7 +20,7 @@ from __future__ import annotations
 
 import re
 
-from profsagent.content.models import LectureDeck
+from profsagent.content.models import FIRST_CONTENT_SLIDE, LectureDeck
 from profsagent.validate.record import ERR, WARN, v
 
 HOLE = re.compile(r"\{[a-z_][a-z0-9_]*\}", re.I)
@@ -47,7 +47,7 @@ def check_deck(deck: LectureDeck, lecture: dict, source_ids: set[str], cfg: dict
     if not lo_min <= len(deck.slides) <= lo_max:
         out.append(v("D-COUNT", ERR, [], f"{len(deck.slides)} content slides for a {lecture['hours']:g}-hour lecture "
                                          f"(expected {lo_min}–{lo_max})", expected=[lo_min, lo_max]))
-    for i, s in enumerate(deck.slides, 1):
+    for i, s in enumerate(deck.slides, FIRST_CONTENT_SLIDE):
         sid = f"slide {i}"
         for bad in sorted(set(s.los) - set(los)):
             out.append(v("D-REF", ERR, [sid], f"{sid} names unknown outcome {bad}"))

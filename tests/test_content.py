@@ -119,6 +119,8 @@ class FakeLLM:
 def run(st, tmp_path, monkeypatch):
     monkeypatch.setattr(G, "load_state", lambda run_id: st)
     monkeypatch.setattr(G, "out_dir", lambda run_id: tmp_path)
+    monkeypatch.setattr("profsagent.content.review.out_dir", lambda run_id: tmp_path)
+    monkeypatch.setattr(G, "verify", lambda deck, sources, cfg: ([], []))      # no embedding model in these tests
     return tmp_path
 
 
@@ -155,3 +157,85 @@ def test_sources_are_course_resources_then_approved_lecture_resources(st, brief,
     assert [s["title"] for k, s in src.items() if k.startswith("L")] == ["Approved"]
     assert all(s["approved"] for s in src.values()) and any(k.startswith("C") for k in src)
     assert len([k for k in G.gather_sources(st, "cs601", brief, True, 8) if k.startswith("L")]) == 2
+
+
+# ------------------------------------------------------------------ verify: code syntax and citation match
+from profsagent.content import review as R  # noqa: E402
+from profsagent.content import verify as V  # noqa: E402
+
+
+def code_deck(language: str, code: str) -> LectureDeck:
+    return LectureDeck(lecture_id="X", title="T", slides=[Slide(kind="example", title="Code", bullets=["b"], notes="n",
+                                                               figure=Figure(kind="code", language=language, code=code))])
+
+
+def test_python_snippets_are_parsed():
+    found, report = V.check_code(code_deck("python", "def f(x):\n    return x + 1\n"))
+    assert found == [] and report[0]["status"] == "ok"
+    found, report = V.check_code(code_deck("python", "def f(x)\n    return x\n"))
+    assert found[0]["code"] == "D-CODE" and found[0]["nodes"] == ["slide 3"] and report[0]["status"] == "error"
+
+
+@pytest.mark.skipif(not __import__("shutil").which("gcc"), reason="needs gcc")
+def test_c_fragments_are_wrapped_and_only_syntax_counts():
+    assert V.check_code(code_deck("c", "int n = 3;\nprintf(\"%d\", n);"))[0] == []          # statements go inside main()
+    assert V.check_code(code_deck("c", "int y = undeclared_helper(2);"))[0] == []            # unknown name: not syntax
+    assert V.check_code(code_deck("c", "int n = 3\nprintf(\"%d\", n);"))[0][0]["code"] == "D-CODE"
+
+
+def test_java_without_a_jdk_is_reported_as_not_verified(monkeypatch):
+    real = V.shutil.which
+    monkeypatch.setattr(V.shutil, "which", lambda name: None if name == "javac" else real(name))
+    found, report = V.check_code(code_deck("java", "String s = q.isBlank() ? \"a\" : \"b\";"))
+    assert found[0]["code"] == "D-UNVERIFIED" and found[0]["severity"] == "warning" and report[0]["status"] == "unchecked"
+
+
+def test_java_wrapping_and_javac_messages():
+    assert V.wrap_java("import java.util.*;\nclass A {}") .startswith("import")
+    assert V.wrap_java("int twice(int x) {\n  return 2 * x;\n}").startswith("class Snippet {\nint twice")
+    assert "void snippet()" in V.wrap_java("int n = 2;\nSystem.out.println(n);")
+    blank = ("Snippet.java:9: error: cannot find symbol\n        if (query.blank()) {\n                 ^\n"
+             "  symbol:   method blank()\n  location: variable query of type String\n1 error")
+    assert V.java_problem(blank) == "String has no method blank()"                       # the bug in the first deck
+    assert V.java_problem("Snippet.java:3: error: cannot find symbol\n  symbol:   class BoundedStack\n"
+                          "  location: class Snippet") is None                            # undeclared in a fragment: fine
+    assert V.java_problem("Snippet.java:2: error: ';' expected") == "';' expected"
+
+
+def test_a_weak_citation_is_flagged():
+    sources = {"C1": {"title": "about apples"}, "C2": {"title": "about pears"}, "C3": {"title": "about plums"}}
+    vec = {"about apples": [1, 0, 0], "about pears": [0, 1, 0], "about plums": [0, 0, 1]}
+
+    def embed(texts):
+        import numpy as np
+        return np.array([vec.get(t, [0.9, 0.1, 0.0]) for t in texts], dtype=float)       # every slide is about apples
+    deck = LectureDeck(lecture_id="X", title="T", slides=[Slide(kind="concept", title="Apples", bullets=["a"], sources=["C1"]),
+                                                          Slide(kind="concept", title="Apples", bullets=["a"], sources=["C3"])])
+    found = V.check_grounding(deck, sources, 0.35, embed)
+    assert [(x["code"], x["nodes"]) for x in found] == [("D-GROUND", ["slide 4", "C3"])]
+
+
+# ------------------------------------------------------------------ the professor's review
+def test_review_decisions_reach_material_json(run, lecture):
+    llm = FakeLLM([good_deck(lecture)])
+    G.generate_material("cs601", lecture["lecture_id"], llm=llm, log=lambda _: None)
+    rows = R.write("cs601")
+    lid = lecture["lecture_id"]
+    assert rows[lid]["decision"] == "pending" and rows[lid]["status"] == "draft"
+    p = run / "material" / "review.yaml"
+    p.write_text(p.read_text(encoding="utf-8").replace("decision: pending", "decision: redo"), encoding="utf-8")
+    assert R.apply("cs601")["refused"] == [{"lecture": lid, "why": "redo needs a reason"}]
+    p.write_text(p.read_text(encoding="utf-8").replace("reason: ''", "reason: more worked examples"), encoding="utf-8")
+    assert R.apply("cs601")["redo"] == 1 and R.redo_requests("cs601") == {lid: "more worked examples"}
+
+
+def test_redo_feedback_goes_to_the_ai_and_an_approved_deck_is_protected(run, lecture):
+    llm = FakeLLM([good_deck(lecture)])
+    m = G.generate_material("cs601", lecture["lecture_id"], {"feedback": "more worked examples"}, llm=llm, log=lambda _: None)
+    assert "more worked examples" in llm.calls[0] and "PROFESSOR" in llm.calls[0] and m["feedback"] == "more worked examples"
+    mp = run / "material" / lecture["lecture_id"] / "material.json"
+    mp.write_text(mp.read_text(encoding="utf-8").replace('"status": "draft"', '"status": "approved"'), encoding="utf-8")
+    with pytest.raises(ValueError, match="approved"):
+        G.generate_material("cs601", lecture["lecture_id"], llm=FakeLLM([good_deck(lecture)]), log=lambda _: None)
+    assert G.generate_material("cs601", lecture["lecture_id"], {"force": True}, llm=FakeLLM([good_deck(lecture)]),
+                               log=lambda _: None)["status"] == "draft"

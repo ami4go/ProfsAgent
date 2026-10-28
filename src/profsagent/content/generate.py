@@ -6,10 +6,12 @@ Flow, one lecture at a time:
   1. inputs   the lecture brief (delivery/brief.py), the course's verified Phase 1 resources and C's resources for the
               lecture (approved only, unless options.include_pending), each given a short id the slides can cite
   2. B1       one AI call writes the content slides (content/models.LectureDeck)
-  3. checks   content/checks.py; with errors, B1 is asked again with the findings (kept only if errors drop)
+  3. checks   content/checks.py (structure) and content/verify.py (code syntax, citation match); with errors, B1 is
+              asked again with the findings (kept only if errors drop)
   4. frame    code writes the title, objectives and references slides from the brief and the cited sources
   5. render   slides.pptx (with speaker notes) and notes.md
 Output: runs/<id>/delivery/material/<lecture_id>/{deck.json, slides.pptx, notes.md, quiz.json, material.json}.
+material.json `status` starts as draft; the professor's decision (content/review.py) sets approved | redo | rejected.
 """
 from __future__ import annotations
 
@@ -18,8 +20,9 @@ from typing import Callable
 
 from profsagent.config import load_yaml
 from profsagent.content.checks import check_deck, content_range
-from profsagent.content.models import LectureDeck
+from profsagent.content.models import FIRST_CONTENT_SLIDE, LectureDeck
 from profsagent.content.render import render_markdown, render_pptx
+from profsagent.content.verify import verify
 from profsagent.delivery.brief import build_briefs, clean
 from profsagent.delivery.common import load_state, now, out_dir, read_json, write_json
 from profsagent.llm.client import LLMClient
@@ -97,7 +100,7 @@ def write_outputs(d: Path, deck: LectureDeck, fr: dict, sources: dict, c: dict, 
     write_json(d / "deck.json", deck.model_dump())
     n, overflows = render_pptx(deck, fr, sources, c, d / "slides.pptx")
     (d / "notes.md").write_text(render_markdown(deck, fr, sources), encoding="utf-8")
-    write_json(d / "quiz.json", [{"slide": i, "los": s.los, **s.quiz.model_dump()} for i, s in enumerate(deck.slides, 1) if s.quiz])
+    write_json(d / "quiz.json", [{"slide": i, "los": s.los, **s.quiz.model_dump()} for i, s in enumerate(deck.slides, FIRST_CONTENT_SLIDE) if s.quiz])
     over = [{**v("D-OVERFLOW", WARN, [f"slide {o['slide']}"], f"slide {o['slide']}: the {o['what']} text may not fit its "
                                                                 "box; shorten it in PowerPoint"), "stage": "render"} for o in overflows]
     return n, [x for x in found if x["code"] != "D-OVERFLOW"] + over
@@ -116,9 +119,13 @@ def _ask(llm, ctx: dict, run_id: str, log) -> tuple[LectureDeck, dict]:
 
 def generate_material(run_id: str, lecture_id: str, options: dict | None = None, *, llm=None,
                       log: Callable[[str], None] = print) -> dict:
-    """Slides and notes for one lecture. options: include_pending (bool), note (str: what the professor wants
-    emphasised). Returns the manifest written to material.json."""
+    """Slides and notes for one lecture. options: include_pending (bool); note (str: what the professor wants
+    emphasised); feedback (str: the professor's redo instructions, given to B1 as a problem to fix); force (bool: replace
+    an approved deck). Returns the manifest written to material.json."""
     o, c = options or {}, cfg()
+    old = read_json(material_dir(run_id, lecture_id) / "material.json") or {}
+    if old.get("status") == "approved" and not o.get("force"):
+        raise ValueError(f"{lecture_id}: the professor approved these slides; pass force to replace them")
     st = load_state(run_id)
     brief = next((b for b in build_briefs(st) if b["lecture_id"] == lecture_id), None)
     if brief is None:
@@ -130,24 +137,30 @@ def generate_material(run_id: str, lecture_id: str, options: dict | None = None,
     lo_min, lo_max = content_range(brief["hours"], c)
     ctx = {"course": {"course_name": st["cco_compact"]["course_name"], "level": st.get("level")}, "lecture": lecture,
            "sources": [{"id": k, **{f: s[f] for f in ("kind", "title", "year", "url")}} for k, s in sources.items()],
-           "slides": {"min": lo_min, "max": lo_max}, "problems": []}
+           "slides": {"min": lo_min, "max": lo_max},
+           "problems": [{"code": "PROFESSOR", "where": [], "problem": o["feedback"]}] if o.get("feedback") else []}
+
+    def check(dk: LectureDeck) -> tuple[list[dict], list[dict]]:
+        more, code = verify(dk, sources, c)
+        return check_deck(dk, lecture, set(sources), c) + more, code
 
     log(f"B lecture material {run_id} {lecture_id}: {brief['topic']} ({brief['hours']:g} h, {len(sources)} sources)")
     deck, call = _ask(llm, ctx, run_id, log)
     calls = [call]
-    found = check_deck(deck, lecture, set(sources), c)
+    found, code = check(deck)
     log(f"  [{PID}] checks: {len(errors(found))} errors, {len(found) - len(errors(found))} warnings")
     for rnd in range(1, c["deck"]["repair_rounds"] + 1):
         if not errors(found):
             break
-        ctx["problems"] = [{"code": x["code"], "where": x["nodes"], "problem": x["message"]} for x in found]
+        ctx["problems"] = [{"code": x["code"], "where": x["nodes"], "problem": x["message"]} for x in found
+                           if x["severity"] == "error"] + [p for p in ctx["problems"] if p["code"] == "PROFESSOR"]
         deck2, call = _ask(llm, ctx, run_id, log)
         calls.append(call)
-        found2 = check_deck(deck2, lecture, set(sources), c)
+        found2, code2 = check(deck2)
         keep = len(errors(found2)) < len(errors(found))
         log(f"  [{PID} repair {rnd}] errors {len(errors(found))} → {len(errors(found2))} {'ACCEPT' if keep else 'REJECT'}")
         if keep:
-            deck, found = deck2, found2
+            deck, found, code = deck2, found2, code2
 
     deck.lecture_id = lecture_id
     n, found = write_outputs(d, deck, frame(st, brief), sources, c, found)
@@ -158,7 +171,9 @@ def generate_material(run_id: str, lecture_id: str, options: dict | None = None,
                           "quiz": str((d / "quiz.json").relative_to(out_dir(run_id)))},
                 "slides": n, "content_slides": len(deck.slides), "minutes": sum(s.minutes for s in deck.slides),
                 "errors": len(errors(found)), "warnings": len(found) - len(errors(found)), "findings": found,
-                "sources": sources, "cited": sorted({s for sl in deck.slides for s in sl.sources}), "calls": calls}
+                "code_checks": code, "sources": sources, "cited": sorted({s for sl in deck.slides for s in sl.sources}),
+                "calls": calls, "status": "draft", "review_history": old.get("review_history", []),
+                "feedback": o.get("feedback") or None}
     write_json(d / "material.json", manifest)
     log(f"  slides: {n} ({len(deck.slides)} content) · {manifest['errors']} errors, {manifest['warnings']} warnings → {d}")
     return manifest

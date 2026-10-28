@@ -4,6 +4,22 @@ Short status note for teammates and their coding agents, so nobody has to re-rea
 Newest entry on top. Owners: Phase 2 deliverable A (UI, simulations) Amit, B (lecture content) Parth, C (resources,
 experts) Vihan.
 
+## 2026-10-29 (Vihan): deliverable C full run, architecture PDF, AI reply deadline
+
+- **Full run done** (28–29 Oct, all 27 lectures, transcripts worked, nothing partial): 58 videos, 31 readings,
+  11 practice items, 33 clip entries, 72 guest speakers. Snapshot: `outputs/cs601-02_deliverableC_2026-10-29/`
+  (start with its `report.md`). `runs/cs601-02` still holds only W01.L1, W01.L2 and W02.L1 results, because the app's
+  tests use it as the example course.
+- **How C works, with results and gaps:** `docs/08_phase2_C_resources_and_guests.pdf` (6 pages).
+- **Known gaps:**
+  - W05.L1, W10.L1 and W12.L1 (continuations) are empty.
+  - No readings for W08.L2, W09.L1 or W11.L3: their topic names aren't web terms.
+  - W08.L2 has no guests.
+  - Prof. Jalote is in W01.L1's reserve, not its top 7.
+- **`llm/client.py`:** every AI reply now has a hard deadline (`_post_deadline`). The provider's `timeout_s` (NVIDIA
+  240 s) or `limits.timeout_s` (Gemini 180 s) now limits the whole reply, not only the gap between chunks: one review
+  call in this run waited ~27 min. Failed attempts now log their duration (`"s"`) in `llm_calls.jsonl`.
+
 ## 2026-10-28, afternoon (Parth): deliverable B slide generation v1; validation and evaluation layers
 
 ### Deliverable B: lecture slides and notes (`src/profsagent/content/`, README section "Deliverable B")

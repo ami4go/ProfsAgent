@@ -12,7 +12,7 @@ Design docs: `docs/01_stage1_architecture.md`. Prompts: `prompts/README.md`.
 
 ## Run
 ```bash
-pip install ddgs langgraph langgraph-checkpoint-sqlite beautifulsoup4 httpx pydantic jinja2 pyyaml numpy pytest neo4j python-dotenv sentence-transformers openpyxl reportlab youtube-transcript-api
+pip install ddgs python-pptx langgraph langgraph-checkpoint-sqlite beautifulsoup4 httpx pydantic jinja2 pyyaml numpy pytest neo4j python-dotenv sentence-transformers openpyxl reportlab youtube-transcript-api
 # .env (git-ignored): GEMINI_API_KEYS=k1,k2,k3   GROQ_API_KEYS=k1   NEO4J_PASSWORD=password
 
 # --- LAYER A: Build the Knowledge Graph ---
@@ -158,6 +158,27 @@ python scripts/run_delivery.py graph     --run-id cs601-02
 ```
 Needs `YOUTUBE_API_KEY` and `OPENALEX_API_KEY` in `.env` (free). Tunables: `config/resources.yaml`, `config/experts.yaml`.
 Transcripts are fetched locally (YouTube blocks cloud servers). Budget per lecture: ~300 YouTube units (of 10,000/day) and 3–5 AI calls.
+
+## Phase 2 · Deliverable B: lecture slides and notes
+For a lecture of an approved Phase 1 course run (`src/profsagent/content/`, settings `config/content.yaml`). This is
+the survey's `generate_material` choice: `content.generate.generate_material(run_id, lecture_id, options)`.
+1. **Inputs (no AI):** the lecture brief (topic, LOs, CO, prerequisites, where it is assessed) and the sources slides
+   may cite: the course's verified Phase 1 resources (`C1…`) and C's resources for the lecture once approved (`L1…`).
+2. **B1, one AI call:** the content slides (`content/models.LectureDeck`): concept, example, worked problem, activity,
+   check (a multiple-choice question with answer and explanation) and summary slides, with speaker notes.
+3. **Checks (no AI):** every LO served, Bloom 3+ LOs shown in use, slide count fits the hours, valid figures and
+   questions, no unknown ids or `{placeholders}`, density, timing, one check per hour. With errors, B1 is asked once more
+   with the findings and the new deck is kept only if errors drop.
+4. **Render:** code writes the title, objectives and references slides. `slides.pptx` is 16:9 with speaker notes, and
+   flows, code and tables are drawn as editable shapes. Text is fitted to its box; text that still cannot fit is a
+   `D-OVERFLOW` warning. Also written: `notes.md` (handout), `quiz.json`, `deck.json`, `material.json` (findings,
+   sources, calls).
+```bash
+python scripts/run_content.py plan     --run-id cs601-02 --lectures W01.L1     # inputs and cost, no AI calls
+python scripts/run_content.py generate --run-id cs601-02 --lectures W01.L1     # or --from-survey
+python scripts/run_content.py check    --run-id cs601-02 --lectures W01.L1     # re-check and re-render, no AI calls
+```
+Output: `runs/<id>/delivery/material/<lecture>/`. Example: `eval/content_examples/cs601-02_W01.L1/`.
 
 ## Other scripts
 - `scripts/export_course_template.py --run-id <id>`: (re)writes `runs/<id>/course_template.xlsx`.

@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 9,
+  "los": [
+   "CO1.LO3"
+  ],
+  "question": "Which of the following prompt configurations follows best guidelines for contextualising a short Java helper method generation?",
+  "options": [
+   "Providing only a single line prompt: 'Write a helper function to format dates in Java.'",
+   "Providing the method signature, relevant imported classes, framework version, and expected exception behavior.",
+   "Pasting the entire 10,000 line codebase into the prompt without any specific task focus.",
+   "Asking the model to guess the project requirements based on generic naming conventions."
+  ],
+  "answer": 1,
+  "explanation": "Option 1 (index 1) correctly follows contextualisation guidelines by supplying method signatures, explicit dependencies, framework versions, and edge-case requirements. Option 0 lacks necessary project context, leading to generic outputs. Option 2 overflows the context window with irrelevant code and creates noise."
+ },
+ {
+  "slide": 16,
+  "los": [
+   "CO1.LO3"
+  ],
+  "question": "What primary mechanism prevents 'complexity backpressure' and context drift in multi-file AI-assisted development tasks?",
+  "options": [
+   "Allowing the autonomous agent to modify all files across the repository without test verification.",
+   "Decomposing tasks into tightly scoped modules, enforcing strict interfaces, and verifying edits with automated tests.",
+   "Increasing the prompt length by pasting whole stack traces repeatedly.",
+   "Disabling static analysis tools and unit tests to speed up AI code execution."
+  ],
+  "answer": 1,
+  "explanation": "Option 1 (index 1) is correct: modular design, clear contracts, and automated testing bound the complexity of each task, preventing compounding errors. Option 0 increases complexity backpressure. Option 3 creates token noise and degrades model focus."
+ }
+]

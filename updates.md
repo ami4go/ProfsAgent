@@ -1,7 +1,42 @@
 # ProfsAgent: where the work is (read this first)
 
 Short status note for teammates and their coding agents, so nobody has to re-read the whole repo or chat history.
-Newest entry on top. Owner of Phase 2 deliverable C: Vihan.
+Newest entry on top. Owners: Phase 2 deliverable A (UI, simulations) Amit, B (lecture content) Parth, C (resources,
+experts) Vihan.
+
+## 2026-10-28, afternoon (Parth): deliverable B slide generation v1; validation and evaluation layers
+
+### Deliverable B: lecture slides and notes (`src/profsagent/content/`, README section "Deliverable B")
+- **The call for `generate_material`** (UI guide §4, "Parth to define the call"):
+  - `content.generate.generate_material(run_id, lecture_id, options) -> manifest`. Options: `include_pending` (cite C
+    items not yet approved; testing only) and `note` (what the professor wants emphasised).
+  - It reads `delivery/briefs` (built from the run's state) and C's `delivery/lectures/<id>.json` items whose
+    `status_decision` is `approve`.
+- **Output** in `runs/<id>/delivery/material/<lecture>/`:
+  - `slides.pptx`, `notes.md`, `quiz.json`, `deck.json`.
+  - `material.json`: what the UI reads. It has `files`, `slides`, `errors`, `warnings`, `findings`, `sources`, `cited`
+    and `calls`.
+- **Cost:** one B1 call per lecture (plus one repair call only if the deck has errors).
+- **First live run:** cs601-02 W01.L1, 21 slides, 0 errors and 0 warnings after layout fixes, 1 call. A copy is in
+  `eval/content_examples/cs601-02_W01.L1/`.
+  - The copy in `runs/cs601-02/delivery/material/` is not committed: Amit's app tests expect that run unchanged.
+- **Ideas taken from THU-MAIC/OpenMAIC:** structured quiz scenes, a versioned deck contract (`schema_version`), and
+  layout checks on the rendered output.
+  - Not taken: narration/TTS, agent classmates, interactive HTML scenes. For v2: outline first, then slides, with a
+    professor gate between.
+- **Not built yet:** `attach_material` (the professor's own pptx/pdf → summary / quiz / gap check), and a syntax check
+  for code snippets. The first deck had `query.blank()` where Java needs `isBlank()`: decks are drafts to review.
+- **New dependency:** `python-pptx`.
+
+### Validation and evaluation (decisions log entry 17)
+- `validate/engine.py` is the only entry point to validation. `engine.configure(run_cfg, llm, run_id)` replaces
+  `pipeline._set_validation_profile`.
+- `evaluate/engine.py` runs tiers 1–3 after every design. Tier 3 (judges) is only planned, with 0 calls, unless
+  `run.judge: true` or `PROFSAGENT_JUDGE=1`. Writes `evaluation.json`.
+- New warning family `fit`, settled by the professor:
+  - `VC-AUDIENCE`: a "for All"-type title at level 3+.
+  - `VC-NOLAB`: mostly hands-on LOs with P = 0 and no lab decision.
+- `PROFSAGENT_STRONG_ONLY=1` (llm client) keeps a run off lite and local models. It still works with the new providers.
 
 ## 2026-10-28: provider fallbacks, transcript-block handling, quality filters
 

@@ -8,6 +8,39 @@ Mark anything still waiting for someone as **Open**.
 
 ---
 
+## 2026-10-28 (afternoon): Phase 2 deliverable B, slide generation v1
+
+### 18. Lecture slides are generated per lecture from the brief, checked in code and rendered as editable .pptx
+- **Decision:** `generate_material(run_id, lecture_id, options)` (`src/profsagent/content/`) is B's call for the survey's
+  `generate_material` choice.
+  - **One AI call (B1) per lecture** writes only the content slides.
+  - **Code writes the rest:** the title, objectives and references slides, from the brief and the cited sources.
+  - **Checks in code:** LO coverage, slide count per hour, figures, quizzes, references, density, timing.
+  - **Repair:** at most one call, kept only if errors drop.
+  - **Rendering:** python-pptx, native shapes, text fitted to its box, `D-OVERFLOW` when it cannot fit.
+- **Sources:**
+  - The course's verified Phase 1 resources, plus C's resources once the professor approved them ("retrieve before
+    generate", D6).
+  - Pending C items only with `include_pending` (tests).
+- **Reference: THU-MAIC/OpenMAIC.**
+  - **Taken:** structured quiz scenes (options, answer, explanation; answer in the speaker notes only), a versioned deck
+    contract (`schema_version`), and checks on the rendered layout.
+  - **Not taken:** narration, AI classmates, interactive HTML. Their pipeline is a web classroom; ours produces material
+    the professor edits and teaches.
+  - **For v2:** outline first, then slides, with a professor gate between.
+- **Why:** the slide text is the only part that needs judgement. The structure, references and checks are fully
+  decided by the course design, so code owns them, as in Phase 1.
+- **Checked:**
+  - **Tests:** `tests/test_content.py`, 10 offline tests with a fake AI.
+  - **Live:** cs601-02 W01.L1 gave 21 slides, 0 errors and 0 warnings, in 1 call. It was inspected as images through
+    PowerPoint. Code panels and bullets were fixed after that inspection.
+- **Changed:**
+  - **Code:** `src/profsagent/content/` (models, checks, render, generate).
+  - **Prompt and settings:** `prompts/content/B1_lecture_deck.md`, `config/content.yaml`.
+  - **Script and tests:** `scripts/run_content.py`, `tests/test_content.py`.
+  - **Docs:** README, `updates.md`.
+- **Agreed by:** Parth. **Open:** the `attach_material` processor; the UI screens (Amit).
+
 ## 2026-10-28 (night): validation and evaluation as one layer each; course-fit warnings
 
 ### 17. Validation has one entry point, evaluation runs all three tiers, and two course-fit warnings are added

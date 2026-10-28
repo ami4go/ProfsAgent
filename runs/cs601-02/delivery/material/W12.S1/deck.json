@@ -1,0 +1,510 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W12.S1",
+ "title": "Reliable and Safe Trustworthy Software Architectures",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "Reliability Requirements for AI-Native Pipelines",
+   "bullets": [
+    "Correctness: outputs match specification",
+    "Robustness: graceful handling of unexpected inputs",
+    "Performance: latency and throughput bounds",
+    "Reproducibility: deterministic results across runs",
+    "Maintainability: clear contracts and low coupling",
+    "Security: protection against injection and leakage"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Introduce the six core reliability requirements that any AI‑native testing pipeline must address. Emphasize that these requirements are not independent; a design decision often trades off one against another. Relate each requirement to concrete pipeline stages (generation, testing, evaluation, deployment).",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [
+    "C4"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Automated Testing Pipeline Stages",
+   "bullets": [
+    "Specification capture (requirements, contracts)",
+    "Code generation (LLM or agent)",
+    "Static analysis (lint, type check, security scan)",
+    "Dynamic testing (unit, integration, contract, property‑based)",
+    "Stress & mutation testing for robustness",
+    "Evaluation & selection (metrics, thresholds)"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Typical AI‑native pipeline flow",
+    "steps": [
+     "Spec",
+     "Generate",
+     "Static Analysis",
+     "Dynamic Tests",
+     "Stress/Mutation",
+     "Evaluate"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Walk through each stage, highlighting where AI‑specific nondeterminism appears (generation, dynamic testing). Note that static analysis is deterministic and can catch many defects early, while dynamic stages must be designed for flakiness mitigation.",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [
+    "C4",
+    "C6"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Specification‑Driven Development for AI Code Generation",
+   "bullets": [
+    "Formal specs (pre/post conditions, invariants) guide generation",
+    "Specs become executable contracts for testing",
+    "Reduces ambiguity between human intent and model output",
+    "Enables automated verification of generated code",
+    "Supports traceability from requirement to test"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Explain how specification‑driven development (SDD) structures the prompt and the evaluation harness. Cite the 2026 SDD paper (C2) which shows that explicit specs improve both correctness and reproducibility of generated artifacts.",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [
+    "C2"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "example",
+   "title": "AlphaCode Competition Pipeline Case Study",
+   "bullets": [
+    "Problem parsing → natural language to formal spec",
+    "Large‑scale candidate generation (millions of programs)",
+    "Filtering by syntax and static checks",
+    "Clustering by output behavior on generated tests",
+    "Evaluation on held‑out test suite (generated + hidden)",
+    "Selection of top‑k submissions for final ranking"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "AlphaCode pipeline",
+    "steps": [
+     "Parse",
+     "Generate",
+     "Filter",
+     "Cluster",
+     "Evaluate",
+     "Select"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Describe the AlphaCode pipeline accurately: it parses the problem, generates massive numbers of candidates, filters and clusters them, then evaluates using both generated and held‑out tests before selecting a submission. This illustrates how correctness, performance, and reproducibility are addressed at each stage (C1).",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Complexity Backpressure as a Policy for AI Agents",
+   "bullets": [
+    "Definition: reject or refactor generated code exceeding complexity thresholds",
+    "Configurable token‑budget limits per module",
+    "Modularity metrics (cyclomatic complexity, depth)",
+    "Integrated as a gate in the static analysis stage",
+    "Not a universal standard; a course‑proposed policy"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Present complexity backpressure as the course’s proposed policy for controlling overly complex AI‑generated code. The 2026 cross‑model study (C3) shows that token and modularity thresholds reduce downstream debugging effort, but they are configurable checks, not an industry standard.",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [
+    "C3"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Assessing a Multi‑Component Pipeline Design",
+   "bullets": [
+    "Scenario: three services (API, ML model, data prep) with shared contract",
+    "Requirement list: correctness, robustness, reproducibility, maintainability",
+    "Design decision 1: contract tests at service boundaries → correctness & maintainability",
+    "Design decision 2: property‑based tests on ML outputs → robustness",
+    "Design decision 3: deterministic seed & versioned data for ML → reproducibility",
+    "Design decision 4: complexity backpressure gate on generated glue code → maintainability",
+    "Justify each decision against at least one requirement"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Decision‑requirement mapping",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Decision",
+      "Primary Requirement",
+      "Secondary"
+     ],
+     [
+      "Contract tests",
+      "Correctness",
+      "Maintainability"
+     ],
+     [
+      "Property‑based ML tests",
+      "Robustness",
+      "Correctness"
+     ],
+     [
+      "Deterministic seed & versioned data",
+      "Reproducibility",
+      "Correctness"
+     ],
+     [
+      "Complexity backpressure gate",
+      "Maintainability",
+      "Robustness"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "Walk through the worked problem step by step, showing how to map each pipeline design decision to explicit reliability requirements. This demonstrates the assessment skill required for CO4.LO2 (Bloom level 5). Encourage students to practice with their own project milestones.",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [
+    "C2",
+    "C3",
+    "C4"
+   ],
+   "minutes": 10.0
+  },
+  {
+   "kind": "concept",
+   "title": "Contract Testing for Service Interfaces",
+   "bullets": [
+    "Verifies provider/consumer compatibility",
+    "Runs against a shared contract (OpenAPI, gRPC proto)",
+    "Detects breaking changes early in CI",
+    "Primary reliability target: correctness of integration",
+    "Secondary benefit: maintainability through explicit contracts"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Explain contract testing as a specialized integration test that validates interface compliance. It directly supports correctness by catching mismatched schemas, and indirectly aids maintainability by making contracts first‑class artifacts (C4).",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [
+    "C4"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Model Context Protocol (MCP) for Context Exchange",
+   "bullets": [
+    "MCP standardizes tool, resource, and context exposure",
+    "Clients request context; servers provide typed resources",
+    "Does not itself adjust context windows or perform retrieval",
+    "Context selection and token‑budget policies are client‑side",
+    "Improves traceability when versions and execution settings are controlled"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Clarify that MCP is a protocol for exchanging context and invoking tools, not a built‑in context‑tuning mechanism. The 2026 query‑tuning framework (C5) uses MCP to standardize the context supplied to an agent; reproducibility gains come from the client controlling retrieval, versioning, and execution parameters.",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [
+    "C5"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "example",
+   "title": "Query Tuning via MCP in a Testing Workflow",
+   "bullets": [
+    "Test harness requests relevant schema via MCP",
+    "Agent receives versioned contract and data samples",
+    "Client enforces token budget and deterministic retrieval",
+    "Generated tests are executed in a sandboxed runner",
+    "Results logged with full context provenance for replay"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "MCP‑enabled test generation",
+    "steps": [
+     "Request Context",
+     "Receive Resources",
+     "Generate Tests",
+     "Execute",
+     "Log Provenance"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Illustrate a concrete workflow where MCP standardizes the context fed to a test‑generation agent. By fixing the context version and token budget, the pipeline achieves better traceability and reproducibility, consistent with the query‑tuning framework (C5).",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [
+    "C5"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Reliability Requirement Identification",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "Which reliability requirement is primarily addressed by static analysis gates (lint, type checking, security scans) in an AI‑native pipeline?",
+    "options": [
+     "Correctness",
+     "Robustness",
+     "Performance",
+     "Reproducibility"
+    ],
+    "answer": 0,
+    "explanation": "Static analysis detects defects and violations before execution, directly supporting correctness. While it can also catch some robustness issues, its primary purpose is to ensure the generated code conforms to language rules and specified contracts, i.e., correctness."
+   },
+   "notes": "Use this quick poll to confirm students distinguish correctness (static guarantees) from robustness (runtime behavior). The most tempting distractor is robustness because static analysis can flag unchecked error paths, but the core target is correctness.",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Pipeline Design Decision Justification",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "Contract testing of service interfaces primarily verifies which reliability requirement for AI‑native pipelines?",
+    "options": [
+     "Correctness",
+     "Maintainability",
+     "Performance",
+     "Security"
+    ],
+    "answer": 0,
+    "explanation": "Contract testing ensures that provider and consumer implementations honor the same interface specification, directly guaranteeing integration correctness. Maintainability is a secondary benefit because contracts become explicit documentation, but the primary verification target is correctness."
+   },
+   "notes": "Reinforce that contract testing’s main goal is correctness of integration. Maintainability appears as a distractor; clarify that while contracts aid maintenance, the test itself validates correct behavior.",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "activity",
+   "title": "Hands‑On Reliability Assessment Lab",
+   "bullets": [
+    "Clone the provided multi‑component repo (API, ML, data prep)",
+    "Run the existing CI pipeline and collect test reports",
+    "Identify gaps against the six reliability requirements",
+    "Propose two concrete pipeline improvements with justifications",
+    "Submit a short markdown report via the course portal"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Students work in pairs on their development machines using the AI coding tools from the lab (week 11). They practice the assessment skill from CO4.LO2 by mapping observed pipeline stages to reliability requirements and proposing justified enhancements. Instructor circulates to answer questions.",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [],
+   "minutes": 12.0
+  },
+  {
+   "kind": "concept",
+   "title": "Flakiness Mitigation in AI‑Generated Tests",
+   "bullets": [
+    "Quarantine flaky tests and rerun with fixed seeds",
+    "Use deterministic test data and mock external services",
+    "Apply statistical thresholds (e.g., 95% pass rate over 10 runs)",
+    "Log environment hashes for reproducibility",
+    "Integrate flakiness dashboard into CI"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Summarize practical strategies from the autonomous coding agents study (C6) to reduce nondeterministic test failures. Emphasize that flakiness undermines reproducibility and correctness guarantees, so systematic mitigation is essential in AI‑native pipelines.",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [
+    "C6"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Ensuring Reproducibility via Controlled Reruns",
+   "bullets": [
+    "Pin model versions, prompts, and temperature settings",
+    "Version control all generated artifacts and test inputs",
+    "Use containerized execution environments",
+    "Record full provenance (context, seed, dependencies)",
+    "Enable on‑demand replay for audit and debugging"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Detail concrete steps to achieve reproducibility, drawing on AlphaCode’s evaluation methodology (C1) and the complexity backpressure study (C3). Controlled reruns turn nondeterministic generation into an auditable process, supporting both reproducibility and correctness.",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [
+    "C1",
+    "C3"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Deployment and Reliability Metric Evaluation Preview",
+   "bullets": [
+    "Next week: canary releases, SLO/SLI definitions",
+    "Metrics: error rate, latency percentiles, drift detection",
+    "Automated rollback tied to reliability thresholds",
+    "Continuous evaluation loops feed back into pipeline",
+    "Project milestone due: integrated pipeline demo"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Briefly outline the upcoming deployment‑focused lecture, linking current pipeline assessment to production reliability metrics. This sets expectations for the project milestone due in week 12.",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [
+    "C4"
+   ],
+   "minutes": 4.0
+  },
+  {
+   "kind": "summary",
+   "title": "Key Takeaways",
+   "bullets": [
+    "Six reliability requirements guide every pipeline decision",
+    "Specification‑driven development and contract testing anchor correctness",
+    "Complexity backpressure and flakiness mitigation protect maintainability and reproducibility",
+    "MCP standardizes context exchange; reproducibility comes from client‑side controls",
+    "Assessment skill: map design choices to explicit requirements with justification"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Conclude by recapping the main themes: requirements‑driven design, concrete AI‑native testing stages, and the assessment mindset needed for the project milestone and final exam. Remind students to review the lab report feedback.",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  }
+ ]
+}

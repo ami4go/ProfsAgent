@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 13,
+  "los": [
+   "CO4.LO3"
+  ],
+  "question": "Which metric is most critical for detecting model serving performance degradation in real-time?",
+  "options": [
+   "CPU utilization of the model server",
+   "Prediction latency p99",
+   "Number of model parameters",
+   "Training loss on validation set"
+  ],
+  "answer": 1,
+  "explanation": "Prediction latency p99 directly reflects user-facing performance. CPU utilization is a resource metric but doesn't guarantee latency SLOs. Model parameters and training loss are offline metrics, not deployment metrics."
+ },
+ {
+  "slide": 14,
+  "los": [
+   "CO4.LO3"
+  ],
+  "question": "During a canary deployment, the error budget burn rate exceeds 10x. What is the correct automated action?",
+  "options": [
+   "Increase canary traffic to 100%",
+   "Pause deployment and alert on-call",
+   "Rollback canary to previous version",
+   "Ignore and continue monitoring"
+  ],
+  "answer": 2,
+  "explanation": "A burn rate >10x indicates rapid error budget consumption. Automated rollback protects users. Pausing and alerting is slower. Increasing traffic worsens impact. Ignoring violates SLO commitments."
+ }
+]

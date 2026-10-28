@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 7,
+  "los": [
+   "CO3.LO2"
+  ],
+  "question": "An execution trace shows an agent calling `pytest` 15 times in a row, with identical stderr outputs of 'ImportError: cannot import name bar'. What failure category is this?",
+  "options": [
+   "Oscillating patch loop across multiple files",
+   "Environment / missing dependency loop",
+   "Verification bypass via modified test suite",
+   "Context window overflow truncation"
+  ],
+  "answer": 1,
+  "explanation": "Option 1 is correct because repeating the exact same failing command without resolving the missing dependency indicates an environment setup failure loop. Option 0 is incorrect because oscillating loops involve alternating code changes, not identical static retries."
+ },
+ {
+  "slide": 11,
+  "los": [
+   "CO3.LO2"
+  ],
+  "question": "In a 1500-line trace log, an agent edits 'src/parser.py' at Step 5. Step 6 shows 'SyntaxError: invalid syntax' on line 42. Steps 7 through 12 show the agent running 'pytest' repeatedly without editing 'src/parser.py'. What is the primary failure cause?",
+  "options": [
+   "Oscillating test failure between parser and main module",
+   "Test suite modification bypass",
+   "Uncorrected syntax error leading to unhandled test loop",
+   "Environment package version mismatch"
+  ],
+  "answer": 2,
+  "explanation": "Option 2 is correct because the agent introduced a syntax error in Step 5 and then re-ran tests without editing the broken file, trapping itself in a failure loop. Option 0 is incorrect because there is no alternating edit between multiple files."
+ }
+]

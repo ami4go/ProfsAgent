@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 10,
+  "los": [
+   "CO2.LO2"
+  ],
+  "question": "Why are executable specifications preferred over natural language prompts when guiding AI code generation?",
+  "options": [
+   "Executable specs replace the need to write unit tests manually.",
+   "Executable specs provide deterministic, programmatic verification of generated code against explicit interface contracts.",
+   "Executable specs automatically fix syntax errors inside prompt descriptions.",
+   "Executable specs allow AI models to modify public interface signatures dynamically."
+  ],
+  "answer": 1,
+  "explanation": "Executable specifications serve as concrete, automated test suites that verify whether AI-generated code meets interface contracts and edge cases. Option 0 is wrong because specs ARE written as automated tests. Option 2 is incorrect because specs verify runtime correctness, not prompt syntax."
+ },
+ {
+  "slide": 14,
+  "los": [
+   "CO2.LO2"
+  ],
+  "question": "When AI-generated code fails 2 out of 10 executable specification tests, what is the recommended next step?",
+  "options": [
+   "Manually re-write the entire module implementation from scratch.",
+   "Feed the failed test assertions and traceback output back into the AI model for targeted refinement.",
+   "Delete the two failing tests from the specification suite to achieve a pass state.",
+   "Change the public method signatures to match whatever the AI produced."
+  ],
+  "answer": 1,
+  "explanation": "Passing the specific failing test outputs back to the AI provides explicit context on broken behavioral contracts, allowing targeted correction. Option 2 (removing failing tests) violates requirement integrity, while Option 3 undermines interface consistency."
+ }
+]

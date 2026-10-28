@@ -319,3 +319,17 @@ def test_a_class_deck_is_generated_with_its_topic_minutes(run, st):
     llm = FakeLLM([good_deck(lecture)])
     m = G.generate_material("cs601", s["lecture_id"], llm=llm, log=lambda _: None)
     assert m["errors"] == 0 and m["lecture_id"].endswith(".S2") and '"parts"' in llm.calls[0]
+
+
+def test_the_reviewer_is_barred_only_from_the_model_that_wrote_the_kept_deck(run, lecture):
+    class TwoWriters(FakeLLM):                      # B1 by model a (with errors), the kept repair by model b
+        writers = ["fake:a:k1", "fake:b:k1"]
+
+        def structured(self, **kw):
+            obj, rec = super().structured(**kw)
+            if kw["prompt_id"] == "B1":
+                rec = SimpleNamespace(**{**vars(rec), "endpoint": self.writers.pop(0)})
+            return obj, rec
+    llm = TwoWriters([good_deck(lecture, n=6), good_deck(lecture)], [DeckReview(verdict="ok")])
+    m = G.generate_material("cs601", lecture["lecture_id"], AI, llm=llm, log=lambda _: None)
+    assert llm.excluded[-1] == {"fake:b"} and m["status"] == "ai-reviewed"   # model a may review model b's deck

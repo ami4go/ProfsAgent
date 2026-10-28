@@ -1,0 +1,130 @@
+{
+ "lecture_id": "W05.S2",
+ "topic": "Software requirements and requirements engineering · Spec-driven development frameworks",
+ "generated_at": "2026-10-28 22:29:42",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W05.S2\\slides.pptx",
+  "notes": "material\\W05.S2\\notes.md",
+  "deck": "material\\W05.S2\\deck.json",
+  "quiz": "material\\W05.S2\\quiz.json"
+ },
+ "slides": 18,
+ "content_slides": 15,
+ "minutes": 85.0,
+ "errors": 0,
+ "warnings": 3,
+ "findings": [
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 12"
+   ],
+   "message": "slide 12 ('Worked Example: Writing Executable Specifications in Python'): [code] The test code calls `process_refund` which is not defined in the snippet, causing a NameError if executed. Fix: Add an import for the function under test, or define a stub, or clarify that the spec is run against the generated implementation. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Worked Example: Writing Executable Specifications in Python"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 7"
+   ],
+   "message": "slide 7 ('Structuring Requirements for AI-Driven Engineering'): [fact] The claim that structured specs lower hallucination rates in LLM-assisted pipelines is presented as a fact but lacks citation and may be an overstatement. Fix: Qualify the statement: 'Structured specs can help reduce hallucination rates...' or provide a reference. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Structuring Requirements for AI-Driven Engineering"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 13"
+   ],
+   "message": "slide 13 ('Example: Generating Code from Executable Specifications'): [clarity] The generated code references `RefundResult` dataclass without showing its definition or import, which may confuse students about where the type comes from. Fix: Include the dataclass definition in the generated code snippet or add an import statement. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Example: Generating Code from Executable Specifications"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 14,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "SPECIFICATION-DRIVEN DEVELOPMENT AS STRUCTURED APPROACH FOR SOURCE CODE GENERATION",
+   "year": 2026,
+   "url": "https://doi.org/10.52058/2786-6025-2026-4(58)-2631-2644",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1"
+ ],
+ "calls": [
+  {
+   "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+   "prompt_tokens": 1429,
+   "output_tokens": 4982
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 3423,
+   "output_tokens": 3284
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1587,
+   "output_tokens": 4174
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+  "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+  "prompt_tokens": 3423,
+  "output_tokens": 3284,
+  "verdict": "The deck is largely safe to teach from, but the professor must fix the broken code example on slide 12 and qualify the unverified claim about hallucination rates on slide 7 before class.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 12,
+    "severity": "error",
+    "kind": "code",
+    "problem": "The test code calls `process_refund` which is not defined in the snippet, causing a NameError if executed.",
+    "fix": "Add an import for the function under test, or define a stub, or clarify that the spec is run against the generated implementation."
+   },
+   {
+    "slide": 7,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The claim that structured specs lower hallucination rates in LLM-assisted pipelines is presented as a fact but lacks citation and may be an overstatement.",
+    "fix": "Qualify the statement: 'Structured specs can help reduce hallucination rates...' or provide a reference."
+   },
+   {
+    "slide": 13,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The generated code references `RefundResult` dataclass without showing its definition or import, which may confuse students about where the type comes from.",
+    "fix": "Include the dataclass definition in the generated code snippet or add an import statement."
+   }
+  ],
+  "repaired": true
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

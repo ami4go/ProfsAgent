@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 7,
+  "los": [
+   "CO3.LO1"
+  ],
+  "question": "When tracing an agent log artifact, which log event signals a transition from internal reasoning to active workspace modification?",
+  "options": [
+   "The raw system prompt dispatch sent to the model context window.",
+   "A tool invocation event executing a patch or write_file command.",
+   "A stdout stream capture containing unit test assertion results.",
+   "The final model response token indicating execution completion."
+  ],
+  "answer": 1,
+  "explanation": "Option 1 is correct because a tool invocation event (e.g., executing a patch or writing a file) represents the exact boundary where the agent acts upon the environment. Option 0 is model input, Option 2 is environment feedback (observation), and Option 3 represents loop completion rather than an active workspace modification step."
+ },
+ {
+  "slide": 12,
+  "los": [
+   "CO3.LO1"
+  ],
+  "question": "While inspecting an execution log trace, you notice an agent executing identical patch tools and test runs across four consecutive iterations with no code changes. What does this log pattern signify?",
+  "options": [
+   "Successful convergence toward an optimal patch solution.",
+   "An unhandled error state causing an infinite non-convergent loop.",
+   "Normal behavior caused by stochastic variation in model output.",
+   "External network rate limiting forcing tool command replay."
+  ],
+  "answer": 1,
+  "explanation": "Option 1 is correct because executing identical actions without modifying environment state indicates the agent is trapped in an infinite non-convergent loop. Option 0 is wrong because the code is not changing or converging. Option 2 misattributes loop stagnation to normal variation. Option 3 is incorrect because tool calls are explicit agent decisions, not replayed network packets."
+ }
+]

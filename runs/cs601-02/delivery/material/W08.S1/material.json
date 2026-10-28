@@ -1,0 +1,231 @@
+{
+ "lecture_id": "W08.S1",
+ "topic": "Iterative development and loop engineering · Iterative development logs and software factory outputs",
+ "generated_at": "2026-10-28 23:51:25",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W08.S1\\slides.pptx",
+  "notes": "material\\W08.S1\\notes.md",
+  "deck": "material\\W08.S1\\deck.json",
+  "quiz": "material\\W08.S1\\quiz.json"
+ },
+ "slides": 19,
+ "content_slides": 16,
+ "minutes": 90.0,
+ "errors": 0,
+ "warnings": 7,
+ "findings": [
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10: the text snippet was not checked (no checker for 'text' on this machine); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 14"
+   ],
+   "message": "slide 14: the text snippet was not checked (no checker for 'text' on this machine); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 15"
+   ],
+   "message": "slide 15: the text snippet was not checked (no checker for 'text' on this machine); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 16"
+   ],
+   "message": "slide 16: the diff snippet was not checked (no checker for 'diff' on this machine); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 14"
+   ],
+   "message": "slide 14 ('Worked Example: Identifying Defect 2 (Mocked Test Bypass)'): [fact] The worked example identifies a mocked test bypass as 'Defect 2', but the taxonomy on slide 10 lists mocked test bypass as Defect 3 (Shallow/Mocked Test Passes). Defect 2 is 'Regression in Unchecked Edge Cases'. Fix: Change the title and bullet to 'Defect 3 (Mocked Test Bypass)' to match the taxonomy. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Worked Example: Identifying Defect 2 (Mocked Test Bypass)"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 7"
+   ],
+   "message": "slide 7 ('Complexity Backpressure and Loop Failures'): [clarity] The notes mention 'recent research on AI coding agents (such as C3)' but C3 is not defined or explained, which may confuse students. Fix: Either define C3 (e.g., a specific paper or system) or remove the reference if not essential. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Complexity Backpressure and Loop Failures"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9 ('Software Factory Pipelines and Automated Artifacts'): [clarity] The notes refer to 'software factories (C4)' without defining C4. Fix: Define C4 or remove the parenthetical reference. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Software Factory Pipelines and Automated Artifacts"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 5,
+   "language": "json",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 10,
+   "language": "text",
+   "status": "unchecked",
+   "detail": "no checker for 'text' on this machine"
+  },
+  {
+   "slide": 14,
+   "language": "text",
+   "status": "unchecked",
+   "detail": "no checker for 'text' on this machine"
+  },
+  {
+   "slide": 15,
+   "language": "text",
+   "status": "unchecked",
+   "detail": "no checker for 'text' on this machine"
+  },
+  {
+   "slide": 16,
+   "language": "diff",
+   "status": "unchecked",
+   "detail": "no checker for 'diff' on this machine"
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Competition-level code generation with AlphaCode",
+   "year": 2022,
+   "url": "https://doi.org/10.1126/science.abq1158",
+   "kind": "reading",
+   "approved": true
+  },
+  "C2": {
+   "title": "SPECIFICATION-DRIVEN DEVELOPMENT AS STRUCTURED APPROACH FOR SOURCE CODE GENERATION",
+   "year": 2026,
+   "url": "https://doi.org/10.52058/2786-6025-2026-4(58)-2631-2644",
+   "kind": "reading",
+   "approved": true
+  },
+  "C3": {
+   "title": "Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks",
+   "year": 2026,
+   "url": "https://doi.org/10.1109/sse72781.2026.00047",
+   "kind": "reading",
+   "approved": true
+  },
+  "C4": {
+   "title": "8 Redefining and Transforming Software Development with Generative AI",
+   "year": 2025,
+   "url": "https://doi.org/10.1515/9783111677798-008",
+   "kind": "reference",
+   "approved": true
+  },
+  "C5": {
+   "title": "Query Tuning Framework Using the Model Context Protocol for Workflows",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.6172059",
+   "kind": "reading",
+   "approved": true
+  },
+  "C6": {
+   "title": "Autonomous Coding Agents for Software Development Testing and Debugging",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.7515638",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C3",
+  "C4",
+  "C6"
+ ],
+ "calls": [
+  {
+   "endpoint": "gemini:gemini-3.5-flash:kaf6cdf0b",
+   "prompt_tokens": 1769,
+   "output_tokens": 9043
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 3871,
+   "output_tokens": 3002
+  },
+  {
+   "endpoint": "gemini:gemini-3.5-flash:k3ca4d81f",
+   "prompt_tokens": 1923,
+   "output_tokens": 7264
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+  "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+  "prompt_tokens": 3871,
+  "output_tokens": 3002,
+  "verdict": "The deck is largely safe to teach from, but the professor must correct the defect numbering error on slide 14 and clarify the undefined references C3 and C4 before class.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 14,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The worked example identifies a mocked test bypass as 'Defect 2', but the taxonomy on slide 10 lists mocked test bypass as Defect 3 (Shallow/Mocked Test Passes). Defect 2 is 'Regression in Unchecked Edge Cases'.",
+    "fix": "Change the title and bullet to 'Defect 3 (Mocked Test Bypass)' to match the taxonomy."
+   },
+   {
+    "slide": 7,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The notes mention 'recent research on AI coding agents (such as C3)' but C3 is not defined or explained, which may confuse students.",
+    "fix": "Either define C3 (e.g., a specific paper or system) or remove the reference if not essential."
+   },
+   {
+    "slide": 9,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The notes refer to 'software factories (C4)' without defining C4.",
+    "fix": "Define C4 or remove the parenthetical reference."
+   }
+  ],
+  "repaired": true
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

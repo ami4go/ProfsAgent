@@ -1,0 +1,553 @@
+{
+ "lecture_id": "W10.S2",
+ "topic": "Automated testing and evaluation mechanisms",
+ "generated_at": "2026-10-29 01:01:41",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W10.S2\\slides.pptx",
+  "notes": "material\\W10.S2\\notes.md",
+  "deck": "material\\W10.S2\\deck.json",
+  "quiz": "material\\W10.S2\\quiz.json"
+ },
+ "slides": 18,
+ "content_slides": 15,
+ "minutes": 80.0,
+ "errors": 0,
+ "warnings": 24,
+ "findings": [
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6: the text snippet was not checked (no checker for 'text' on this machine); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 3",
+    "C4"
+   ],
+   "message": "slide 3 ('Why automated testing matters for AI-generated code') cites [C4] '8 Redefining and Transforming Software Development with Generative AI', which matches it weakly (0.31; average source 0.35): check the citation",
+   "evidence": {
+    "similarity": 0.313
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 8",
+    "C3"
+   ],
+   "message": "slide 8 ('Mutation testing for AI‑generated code') cites [C3] 'Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks', which matches it weakly (0.34; average source 0.42): check the citation",
+   "evidence": {
+    "similarity": 0.343
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 13",
+    "C4"
+   ],
+   "message": "slide 13 ('Reliability requirements and test adequacy criteria') cites [C4] '8 Redefining and Transforming Software Development with Generative AI', which matches it weakly (0.06; average source 0.19): check the citation",
+   "evidence": {
+    "similarity": 0.059
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 14",
+    "C4"
+   ],
+   "message": "slide 14 ('Comparing two testing pipelines (hypothetical assumptions)') cites [C4] '8 Redefining and Transforming Software Development with Generative AI', which matches it weakly (0.08; average source 0.17): check the citation",
+   "evidence": {
+    "similarity": 0.08
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 3"
+   ],
+   "message": "slide 3 ('Why AI-native software needs new testing'): [fact] The claim that AI-generated code is non-deterministic is too broad, because many code-generation systems can be made deterministic with fixed seeds, temperature settings, and pinned model versions. Fix: Say that AI-generated code can vary across prompts, model versions, or sampling settings, so repeated generations may produce different implementations. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Why AI-native software needs new testing"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 4"
+   ],
+   "message": "slide 4 ('Traditional vs AI-native testing goals'): [fact] The table presents Pass@k as an AI-native testing metric, but Pass@k is primarily a code-generation benchmark metric rather than a general test-suite metric. Fix: Label Pass@k as a code-generation evaluation metric and distinguish it from pass rate or mutation score for a fixed test suite. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Traditional vs AI-native testing goals"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 5"
+   ],
+   "message": "slide 5 ('Automated testing mechanism categories'): [clarity] The pipeline diagram implies that learned evaluation and human review occur only after dynamic execution, although these mechanisms can be used independently or in different orders. Fix: Present the mechanisms as complementary layers or possible stages rather than a mandatory linear sequence. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Automated testing mechanism categories"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6 ('Static analysis for generated code'): [code] The example is labeled TypeScript but uses undefined functions and variables such as isPermutation, isSorted, input, output, and fail, so it is not runnable and does not demonstrate a static specification check. Fix: Use a valid, self-contained example or explicitly label it as pseudocode and explain that the checks are performed by a specification checker rather than by ordinary TypeScript execution. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Static analysis for generated code"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6 ('Static analysis for generated code'): [fact] The slide says static checkers verify pre/postconditions before execution, but many pre/postcondition and invariant checks require executing the implementation or analyzing it with a formal verification tool. Fix: Say that static or formal verification tools check specifications before deployment, while runtime checks may still be needed to validate behavior. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Static analysis for generated code"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 7"
+   ],
+   "message": "slide 7 ('Dynamic execution in sandboxes'): [fact] Differential testing is described as comparing multiple generations, but its usual purpose is to compare two implementations or versions of the same system, not merely to flag differences between valid candidate solutions. Fix: Define differential testing as comparing the generated implementation with a reference implementation or an earlier version on the same inputs. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Dynamic execution in sandboxes"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('Learned evaluators: LLM-as-judge and reward models'): [fact] The slide says reward models can score functional correctness without running code, but reward models are generally trained to predict human preferences or other learned quality signals and are not reliable substitutes for execution-based correctness tests. Fix: Say that reward models estimate learned quality or preference signals, while functional correctness is normally established by executing tests. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Learned evaluators: LLM-as-judge and reward models"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('Learned evaluators: LLM-as-judge and reward models'): [fact] The table restricts reward-model outputs to a score in [0,1], although reward models may produce unbounded or otherwise arbitrary scalar scores. Fix: Say that reward models produce a scalar score whose scale depends on the training setup, rather than implying a universal [0,1] range. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Learned evaluators: LLM-as-judge and reward models"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9 ('Evaluation metrics for code generation'): [fact] The definition of Pass@k as the fraction of problems solved in k attempts is incorrect; the standard unbiased estimator is the probability that at least one of k independently sampled candidates passes the tests. Fix: Define Pass@k as the probability that at least one of k sampled candidates passes the hidden tests, and explain that it is estimated from the number of passing candidates per problem. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Evaluation metrics for code generation"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9 ('Evaluation metrics for code generation'): [fact] The AlphaCode results are presented as approximate percentages without identifying the evaluation subset, sampling protocol, or source, so students may treat them as universal benchmark values. Fix: Cite the specific AlphaCode paper, dataset split, and sampling setup for each reported number, or label the values as illustrative rather than authoritative. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Evaluation metrics for code generation"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9 ('Evaluation metrics for code generation'): [fact] The claim that syntax validity is near-perfect for modern LLMs is an unsupported generalization that does not hold uniformly across models, languages, or generation settings. Fix: Qualify the claim with a cited model, language, and measurement protocol, or remove the generalization. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Evaluation metrics for code generation"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10 ('Specification-driven evaluation (C2)'): [fact] The transfer example does not state that the total balance is conserved only when the transfer is atomic and no fees or external effects occur, so the invariant is not universally valid. Fix: Add the assumption that the transfer is atomic and preserves the sum of account balances, or specify the invariant as applying to the modeled system. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Specification-driven evaluation (C2)"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 11"
+   ],
+   "message": "slide 11 ('Complexity backpressure as quality gate (C3)'): [fact] The claim that complexity correlates with bug density in generated code is presented without a source or qualification, and token count is not a standard software-complexity metric. Fix: Cite evidence for the correlation and distinguish established structural metrics such as cyclomatic complexity and nesting from proxy measures such as token count. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Complexity backpressure as quality gate (C3)"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 12"
+   ],
+   "message": "slide 12 ('Autonomous agents for test generation and repair (C6)'): [fact] The slide describes a self-improving system in which test quality and code quality co-evolve, but agents can also overfit to generated tests or weaken assertions to make failures disappear. Fix: Mention independent or held-out tests and safeguards against agents weakening or deleting failing tests. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Autonomous agents for test generation and repair (C6)"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 13"
+   ],
+   "message": "slide 13 ('Worked example: comparing two testing pipelines'): [fact] The table presents invented costs of $0.50 and $0.10 per pull request and unsupported false-negative and latency ratings as if they were measured results. Fix: Remove the numerical costs and unsupported ratings, or label them explicitly as hypothetical assumptions and provide a measurement method. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Worked example: comparing two testing pipelines"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 13"
+   ],
+   "message": "slide 13 ('Worked example: comparing two testing pipelines'): [fact] The recommendation that safety-critical systems favor Pipeline A is not justified because Pipeline A's LLM judge can miss semantic defects and its false-negative rate is not established. Fix: State that safety-critical systems require validated requirements, execution-based tests, and appropriate human or independent review, and that the choice depends on evidence rather than the pipeline labels alone. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Worked example: comparing two testing pipelines"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 14"
+   ],
+   "message": "slide 14 ('Check: Which metric measures single-shot reliability?'): [clarity] The check slide has no visible question or answer options, so it cannot function as an interactive check when the slide is displayed. Fix: Display the question and answer choices on the slide, or provide an explicit interaction protocol in the notes. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Check: Which metric measures single-shot reliability?"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 15"
+   ],
+   "message": "slide 15 ('Check: What does complexity backpressure prevent?'): [clarity] The check slide has no visible question or answer options, so it cannot function as an interactive check when the slide is displayed. Fix: Display the question and answer choices on the slide, or provide an explicit interaction protocol in the notes. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Check: What does complexity backpressure prevent?"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 16"
+   ],
+   "message": "slide 16 ('Summary: Choosing testing mechanisms for AI-native systems'): [fact] The recommendation to use Pass@1 for production is incomplete because Pass@1 measures benchmark problem solving rather than the reliability of a deployed system under real inputs. Fix: Say that Pass@1 is a useful proxy for single-sample benchmark reliability, while production quality also requires execution-based tests, operational monitoring, and domain-specific acceptance criteria. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Summary: Choosing testing mechanisms for AI-native systems"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 6,
+   "language": "text",
+   "status": "unchecked",
+   "detail": "no checker for 'text' on this machine"
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Competition-level code generation with AlphaCode",
+   "year": 2022,
+   "url": "https://doi.org/10.1126/science.abq1158",
+   "kind": "reading",
+   "approved": true
+  },
+  "C2": {
+   "title": "SPECIFICATION-DRIVEN DEVELOPMENT AS STRUCTURED APPROACH FOR SOURCE CODE GENERATION",
+   "year": 2026,
+   "url": "https://doi.org/10.52058/2786-6025-2026-4(58)-2631-2644",
+   "kind": "reading",
+   "approved": true
+  },
+  "C3": {
+   "title": "Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks",
+   "year": 2026,
+   "url": "https://doi.org/10.1109/sse72781.2026.00047",
+   "kind": "reading",
+   "approved": true
+  },
+  "C4": {
+   "title": "8 Redefining and Transforming Software Development with Generative AI",
+   "year": 2025,
+   "url": "https://doi.org/10.1515/9783111677798-008",
+   "kind": "reference",
+   "approved": true
+  },
+  "C5": {
+   "title": "Query Tuning Framework Using the Model Context Protocol for Workflows",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.6172059",
+   "kind": "reading",
+   "approved": true
+  },
+  "C6": {
+   "title": "Autonomous Coding Agents for Software Development Testing and Debugging",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.7515638",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1",
+  "C2",
+  "C3",
+  "C4",
+  "C6"
+ ],
+ "calls": [
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1636,
+   "output_tokens": 5477
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 3472,
+   "output_tokens": 12198
+  },
+  {
+   "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+   "prompt_tokens": 3588,
+   "output_tokens": 1586
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 2095,
+   "output_tokens": 5421
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "prompt_tokens": 3588,
+  "output_tokens": 1586,
+  "verdict": "The deck is not yet safe to teach without correction because several central claims about Pass@k, reward models, and the worked-example measurements are wrong or unsupported, and the professor should verify the AlphaCode figures and pipeline assumptions.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 3,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The claim that AI-generated code is non-deterministic is too broad, because many code-generation systems can be made deterministic with fixed seeds, temperature settings, and pinned model versions.",
+    "fix": "Say that AI-generated code can vary across prompts, model versions, or sampling settings, so repeated generations may produce different implementations."
+   },
+   {
+    "slide": 4,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The table presents Pass@k as an AI-native testing metric, but Pass@k is primarily a code-generation benchmark metric rather than a general test-suite metric.",
+    "fix": "Label Pass@k as a code-generation evaluation metric and distinguish it from pass rate or mutation score for a fixed test suite."
+   },
+   {
+    "slide": 5,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The pipeline diagram implies that learned evaluation and human review occur only after dynamic execution, although these mechanisms can be used independently or in different orders.",
+    "fix": "Present the mechanisms as complementary layers or possible stages rather than a mandatory linear sequence."
+   },
+   {
+    "slide": 6,
+    "severity": "error",
+    "kind": "code",
+    "problem": "The example is labeled TypeScript but uses undefined functions and variables such as isPermutation, isSorted, input, output, and fail, so it is not runnable and does not demonstrate a static specification check.",
+    "fix": "Use a valid, self-contained example or explicitly label it as pseudocode and explain that the checks are performed by a specification checker rather than by ordinary TypeScript execution."
+   },
+   {
+    "slide": 6,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The slide says static checkers verify pre/postconditions before execution, but many pre/postcondition and invariant checks require executing the implementation or analyzing it with a formal verification tool.",
+    "fix": "Say that static or formal verification tools check specifications before deployment, while runtime checks may still be needed to validate behavior."
+   },
+   {
+    "slide": 7,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "Differential testing is described as comparing multiple generations, but its usual purpose is to compare two implementations or versions of the same system, not merely to flag differences between valid candidate solutions.",
+    "fix": "Define differential testing as comparing the generated implementation with a reference implementation or an earlier version on the same inputs."
+   },
+   {
+    "slide": 8,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The slide says reward models can score functional correctness without running code, but reward models are generally trained to predict human preferences or other learned quality signals and are not reliable substitutes for execution-based correctness tests.",
+    "fix": "Say that reward models estimate learned quality or preference signals, while functional correctness is normally established by executing tests."
+   },
+   {
+    "slide": 8,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The table restricts reward-model outputs to a score in [0,1], although reward models may produce unbounded or otherwise arbitrary scalar scores.",
+    "fix": "Say that reward models produce a scalar score whose scale depends on the training setup, rather than implying a universal [0,1] range."
+   },
+   {
+    "slide": 9,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The definition of Pass@k as the fraction of problems solved in k attempts is incorrect; the standard unbiased estimator is the probability that at least one of k independently sampled candidates passes the tests.",
+    "fix": "Define Pass@k as the probability that at least one of k sampled candidates passes the hidden tests, and explain that it is estimated from the number of passing candidates per problem."
+   },
+   {
+    "slide": 9,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The AlphaCode results are presented as approximate percentages without identifying the evaluation subset, sampling protocol, or source, so students may treat them as universal benchmark values.",
+    "fix": "Cite the specific AlphaCode paper, dataset split, and sampling setup for each reported number, or label the values as illustrative rather than authoritative."
+   },
+   {
+    "slide": 9,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The claim that syntax validity is near-perfect for modern LLMs is an unsupported generalization that does not hold uniformly across models, languages, or generation settings.",
+    "fix": "Qualify the claim with a cited model, language, and measurement protocol, or remove the generalization."
+   },
+   {
+    "slide": 10,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The transfer example does not state that the total balance is conserved only when the transfer is atomic and no fees or external effects occur, so the invariant is not universally valid.",
+    "fix": "Add the assumption that the transfer is atomic and preserves the sum of account balances, or specify the invariant as applying to the modeled system."
+   },
+   {
+    "slide": 11,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The claim that complexity correlates with bug density in generated code is presented without a source or qualification, and token count is not a standard software-complexity metric.",
+    "fix": "Cite evidence for the correlation and distinguish established structural metrics such as cyclomatic complexity and nesting from proxy measures such as token count."
+   },
+   {
+    "slide": 12,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The slide describes a self-improving system in which test quality and code quality co-evolve, but agents can also overfit to generated tests or weaken assertions to make failures disappear.",
+    "fix": "Mention independent or held-out tests and safeguards against agents weakening or deleting failing tests."
+   },
+   {
+    "slide": 13,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The table presents invented costs of $0.50 and $0.10 per pull request and unsupported false-negative and latency ratings as if they were measured results.",
+    "fix": "Remove the numerical costs and unsupported ratings, or label them explicitly as hypothetical assumptions and provide a measurement method."
+   },
+   {
+    "slide": 13,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The recommendation that safety-critical systems favor Pipeline A is not justified because Pipeline A's LLM judge can miss semantic defects and its false-negative rate is not established.",
+    "fix": "State that safety-critical systems require validated requirements, execution-based tests, and appropriate human or independent review, and that the choice depends on evidence rather than the pipeline labels alone."
+   },
+   {
+    "slide": 14,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The check slide has no visible question or answer options, so it cannot function as an interactive check when the slide is displayed.",
+    "fix": "Display the question and answer choices on the slide, or provide an explicit interaction protocol in the notes."
+   },
+   {
+    "slide": 15,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The check slide has no visible question or answer options, so it cannot function as an interactive check when the slide is displayed.",
+    "fix": "Display the question and answer choices on the slide, or provide an explicit interaction protocol in the notes."
+   },
+   {
+    "slide": 16,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The recommendation to use Pass@1 for production is incomplete because Pass@1 measures benchmark problem solving rather than the reliability of a deployed system under real inputs.",
+    "fix": "Say that Pass@1 is a useful proxy for single-sample benchmark reliability, while production quality also requires execution-based tests, operational monitoring, and domain-specific acceptance criteria."
+   }
+  ],
+  "repaired": true
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

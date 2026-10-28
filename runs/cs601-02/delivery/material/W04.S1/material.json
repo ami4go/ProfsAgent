@@ -1,0 +1,117 @@
+{
+ "lecture_id": "W04.S1",
+ "topic": "Custom tool integrations using model context protocols · Standards and specification guidelines for use cases",
+ "generated_at": "2026-10-28 21:45:39",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W04.S1\\slides.pptx",
+  "notes": "material\\W04.S1\\notes.md",
+  "deck": "material\\W04.S1\\deck.json",
+  "quiz": "material\\W04.S1\\quiz.json"
+ },
+ "slides": 17,
+ "content_slides": 14,
+ "minutes": 90.0,
+ "errors": 0,
+ "warnings": 2,
+ "findings": [
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 12"
+   ],
+   "message": "slide 12: the yaml snippet was not checked (no checker for 'yaml' on this machine); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 12"
+   ],
+   "message": "slide 12 ('From product description to use cases'): [fact] Slide 12 lists 'System' as an actor, which contradicts Slide 10's correct definition that actors must be external entities interacting with the system. Fix: Replace 'System' as the actor with an external entity such as 'Carrier' or 'System Administrator'. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "From product description to use cases"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 5,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 6,
+   "language": "json",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 12,
+   "language": "yaml",
+   "status": "unchecked",
+   "detail": "no checker for 'yaml' on this machine"
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Query Tuning Framework Using the Model Context Protocol for Workflows",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.6172059",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1"
+ ],
+ "calls": [
+  {
+   "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+   "prompt_tokens": 1604,
+   "output_tokens": 1726
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1626,
+   "output_tokens": 4528
+  },
+  {
+   "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+   "prompt_tokens": 2560,
+   "output_tokens": 2050
+  },
+  {
+   "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+   "prompt_tokens": 1618,
+   "output_tokens": 8160
+  }
+ ],
+ "ai_review": {
+  "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+  "model": "gemini:gemini-3.5-flash",
+  "prompt_tokens": 2560,
+  "output_tokens": 2050,
+  "verdict": "The lecture slides cover the learning outcomes well, but the professor should fix the actor classification on Slide 12 to avoid confusing students on use-case boundaries.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 12,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "Slide 12 lists 'System' as an actor, which contradicts Slide 10's correct definition that actors must be external entities interacting with the system.",
+    "fix": "Replace 'System' as the actor with an external entity such as 'Carrier' or 'System Administrator'."
+   }
+  ],
+  "repaired": true
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

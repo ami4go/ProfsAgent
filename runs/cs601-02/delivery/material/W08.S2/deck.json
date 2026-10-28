@@ -1,0 +1,442 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W08.S2",
+ "title": "Iterative development logs and software factory outputs",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "Recap: Iterative Development and Loop Engineering",
+   "bullets": [
+    "Iterative loops: plan, code, test, reflect",
+    "Loop engineering structures AI-agent interactions",
+    "Previous week: basic loop patterns and tooling"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Four-phase iterative loop",
+    "steps": [
+     "Plan",
+     "Code",
+     "Test",
+     "Reflect"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Remind students of the four-phase loop from Week 7. Emphasize that each iteration produces logs and artifacts. This lecture focuses on analyzing those outputs.",
+   "los": [
+    "CO3.LO3"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "What Are Iterative Development Logs?",
+   "bullets": [
+    "Structured records of each loop iteration",
+    "Capture prompts, code diffs, test results, agent decisions",
+    "Enable traceability and debugging of AI-assisted coding"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Common log types in iterative development",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Prompt Log",
+      "Agent reasoning and user prompts",
+      "Reveals reasoning errors"
+     ],
+     [
+      "Code Diff Log",
+      "Changes between iterations",
+      "Shows introduced bugs"
+     ],
+     [
+      "Test Result Log",
+      "Pass/fail, coverage, errors",
+      "Indicates functional defects"
+     ],
+     [
+      "Reflection Log",
+      "Agent self-assessment",
+      "Highlights strategy shifts"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "Logs are the primary evidence for understanding agent behavior. They differ from traditional version control by including natural language interactions. Source C3 discusses complexity backpressure and logs.",
+   "los": [
+    "CO3.LO3"
+   ],
+   "sources": [
+    "C3"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Software Factory Outputs in AI-Assisted Development",
+   "bullets": [
+    "Software factory: automated pipeline from spec to deployable code",
+    "Outputs: generated code, test suites, documentation, deployment scripts",
+    "Logs link factory stages to iterative loop iterations"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Software factory pipeline stages",
+    "steps": [
+     "Specification",
+     "Code Generation",
+     "Testing",
+     "Packaging",
+     "Deployment"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "The software factory concept (C2, C4) structures the end-to-end process. Outputs at each stage are logged for analysis.",
+   "los": [
+    "CO3.LO3"
+   ],
+   "sources": [
+    "C2",
+    "C4"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Key Log and Output Types for Analysis",
+   "bullets": [
+    "Prompt/response logs: agent reasoning traces",
+    "Execution traces: tool calls, file edits, command outputs",
+    "Test logs: pass/fail, coverage, error messages",
+    "Artifact diffs: code changes between iterations"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Log types and their analysis value",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Prompt/Response",
+      "Natural language reasoning",
+      "Reasoning errors, missed requirements"
+     ],
+     [
+      "Execution Trace",
+      "Tool calls, file edits, commands",
+      "Tool misuse, runtime errors"
+     ],
+     [
+      "Test Log",
+      "Pass/fail, coverage, stack traces",
+      "Functional defects, regressions"
+     ],
+     [
+      "Artifact Diff",
+      "Code changes between iterations",
+      "Introduced bugs, refactoring issues"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "Different log types reveal different failure causes. Prompt logs show reasoning errors; execution traces show tool misuse; test logs show functional defects.",
+   "los": [
+    "CO3.LO3"
+   ],
+   "sources": [
+    "C3",
+    "C6"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Seeded Defects: Purpose and Categories",
+   "bullets": [
+    "Seeded defects: intentional faults inserted for evaluation",
+    "Four categories: logic error, API misuse, security flaw, performance bottleneck",
+    "Identifying them validates log analysis skills"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "In the lab, you will work with logs containing four seeded defects. This lecture prepares you to spot at least two. The categories are based on common AI coding agent failures (C1, C6).",
+   "los": [
+    "CO3.LO3"
+   ],
+   "sources": [
+    "C1",
+    "C6"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "example",
+   "title": "Example: Finding a Logic Error in Prompt Logs",
+   "bullets": [
+    "Defect: off-by-one error in loop boundary condition",
+    "Log shows agent reasoning: \"loop from 0 to n inclusive\"",
+    "Code diff reveals `for i in range(n+1):` instead of `range(n)`",
+    "Fix: change to `range(n)` and add test for boundary"
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Off-by-one error and fix",
+    "steps": [],
+    "code": "# Agent-generated code (buggy)\nfor i in range(n+1):\n    process(item[i])\n\n# Fixed code\nfor i in range(n):\n    process(item[i])\n\n# Added boundary test\ndef test_boundary():\n    assert process(item[0]) == expected\n    assert process(item[n-1]) == expected",
+    "language": "python",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Walk through the log entries step by step. Show how the agent's natural language reasoning leads to the code error. This is a worked example of the analysis process.",
+   "los": [
+    "CO3.LO3"
+   ],
+   "sources": [
+    "C3",
+    "C6"
+   ],
+   "minutes": 10.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Worked Problem: API Misuse in Generated Code",
+   "bullets": [
+    "Defect: incorrect use of library function `json.load` vs `json.loads`",
+    "Factory output: generated code reads string but uses `json.load(file)`",
+    "Execution trace shows `AttributeError: 'str' object has no attribute 'read'`",
+    "Fix: replace with `json.loads(string)` and add input validation"
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "API misuse error and correction",
+    "steps": [],
+    "code": "# Generated code (buggy)\nimport json\ndata = json.load(json_string)  # expects file-like object\n\n# Corrected code\ndata = json.loads(json_string)  # parses string directly\n\n# Added validation\nif not isinstance(json_string, str):\n    raise TypeError(\"Expected JSON string\")",
+    "language": "python",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Demonstrate how to trace from test failure back to the factory stage that generated the code. Use execution trace to pinpoint the line. This models the skill for the lab.",
+   "los": [
+    "CO3.LO3"
+   ],
+   "sources": [
+    "C2",
+    "C6"
+   ],
+   "minutes": 10.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Log Analysis Fundamentals",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "Which log type would most directly reveal an agent's reasoning error leading to an off-by-one loop bug?",
+    "options": [
+     "Prompt/response log",
+     "Execution trace",
+     "Test result log",
+     "Artifact diff"
+    ],
+    "answer": 0,
+    "explanation": "Prompt/response logs capture the agent's natural language reasoning, where the off-by-one logic was expressed. Execution traces show the resulting code execution, not the reasoning. Test logs only show failure, not cause. Artifact diffs show code changes but not the reasoning."
+   },
+   "notes": "This checks understanding of log types. The most tempting wrong answer is execution trace because it shows the bug manifestation.",
+   "los": [
+    "CO3.LO3"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "activity",
+   "title": "Activity: Identify Seeded Defects in Provided Logs",
+   "bullets": [
+    "Work in pairs with provided log packages",
+    "Each package contains 4 seeded defects across log types",
+    "Goal: identify at least 2 defects and propose fixes",
+    "Document findings in the lab worksheet"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Distribute log packages (prepared from lab materials). Students apply the analysis techniques demonstrated. TAs circulate to guide. This is the core hands-on component.",
+   "los": [
+    "CO3.LO3"
+   ],
+   "sources": [],
+   "minutes": 20.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Defect Identification Strategy",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "When analyzing a software factory output, you see a test failure due to a missing authentication check. Which log should you examine first to find the root cause?",
+    "options": [
+     "Prompt log from the code generation stage",
+     "Execution trace of the test run",
+     "Deployment script log",
+     "Specification document"
+    ],
+    "answer": 0,
+    "explanation": "The prompt log from code generation shows whether the agent considered security requirements. The execution trace only shows the test failure. Deployment logs are too late. The specification may not reflect what the agent actually did."
+   },
+   "notes": "Reinforces the importance of tracing back to the generation stage. The tempting wrong answer is execution trace because it's the immediate failure context.",
+   "los": [
+    "CO3.LO3"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Common Failure Causes in Iterative Loop Engineering",
+   "bullets": [
+    "Reasoning errors: flawed logic in agent's natural language",
+    "Tool misuse: incorrect API calls, wrong parameters",
+    "Context loss: agent forgets earlier constraints",
+    "Complexity backpressure: agent degrades on large tasks (C3)"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Failure causes and corresponding log evidence",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Reasoning Error",
+      "Prompt log shows flawed logic",
+      "Off-by-one, incorrect algorithm"
+     ],
+     [
+      "Tool Misuse",
+      "Execution trace shows wrong API",
+      "json.load vs json.loads"
+     ],
+     [
+      "Context Loss",
+      "Prompt log misses earlier constraint",
+      "Security requirement dropped"
+     ],
+     [
+      "Complexity Backpressure",
+      "Later iterations show degradation",
+      "Incomplete code, hallucinations"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "These categories are drawn from research (C3, C6). Understanding them helps target log analysis. The lab defects represent these categories.",
+   "los": [
+    "CO3.LO3"
+   ],
+   "sources": [
+    "C3",
+    "C6"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Best Practices for Analyzing Iterative Logs",
+   "bullets": [
+    "Start from test failures and trace backward",
+    "Correlate prompt logs with code diffs",
+    "Use execution traces to verify tool usage",
+    "Document findings with log references"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Systematic log analysis workflow",
+    "steps": [
+     "Test Failure",
+     "Execution Trace",
+     "Code Diff",
+     "Prompt Log",
+     "Root Cause"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Emphasize a systematic approach. The activity should follow this pattern. Good documentation is essential for the lab report.",
+   "los": [
+    "CO3.LO3"
+   ],
+   "sources": [
+    "C3",
+    "C5"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "summary",
+   "title": "Summary: Iterative Logs and Factory Outputs",
+   "bullets": [
+    "Logs and outputs are the evidence for analyzing AI-assisted development",
+    "Four log types: prompt, execution, test, artifact",
+    "Seeded defects represent common failure categories",
+    "Systematic tracing from failure to root cause enables fixes",
+    "Lab: identify at least 2 of 4 seeded defects with fixes"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Recap the key points. Remind students of the lab deliverables and how this connects to next week's topic on trace analysis.",
+   "los": [
+    "CO3.LO3"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  }
+ ]
+}

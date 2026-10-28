@@ -1,0 +1,463 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W07.S2",
+ "title": "Iterative Development and Loop Engineering",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "What Is Iterative Loop Engineering in AI Development?",
+   "bullets": [
+    "Iterative loop engineering drives autonomous agent code creation through feedback loops.",
+    "Agents generate code, execute tests, evaluate output, and refine solutions repeatedly.",
+    "Tracking agent behavior requires inspecting execution logs across every iteration cycle."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Iterative agent execution loop",
+    "steps": [
+     "Prompt Dispatch",
+     "Code Generation",
+     "Test Execution",
+     "Log Feedback & Refine"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Iterative development with AI agents shifts programming from single-shot prompt engineering to managing structured execution loops. In an iterative loop, the coding agent continuously generates source code, executes tests or static analysis tools, inspects the failure output, and modifies its approach. Understanding this loop requires software engineers to trace state updates and control flow through agent log artifacts, ensuring that iterations converge toward correct code rather than infinite repetition or divergent bugs.",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [
+    "C4",
+    "C6"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "The Structural Components of Agent Execution Loops",
+   "bullets": [
+    "Observation: Agent receives test logs, compiler errors, or tool outputs.",
+    "Thought: Model reasons about the failure cause and selects an action.",
+    "Action: Model issues tool calls such as file edits or test commands.",
+    "Environment State: Execution environment updates state and returns new logs."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Four-phase agent loop interaction",
+    "steps": [
+     "Observation",
+     "Reasoning",
+     "Action Execution",
+     "Environment State Update"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Coding agents operate using an action-observation loop commonly structured around reasoning frameworks like ReAct. Each iteration begins with an observation of the workspace state, followed by internal reasoning where the LLM plans its next edit or command. The agent then executes a tool call, modifying files or running test scripts. Observing how control flows across these four phases in execution logs allows developers to pinpoint exactly where an agent strays off course during complex tasks.",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [
+    "C6"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Log Artifacts as Execution History Records",
+   "bullets": [
+    "Logs capture timestamped records of prompts, model calls, and environmental responses.",
+    "Structured logs format tool invocations, shell commands, and stdout/stderr streams.",
+    "Unstructured trace files contain full raw context windows sent back and forth.",
+    "Tracing logs enables post-mortem analysis of agent reasoning and failure trajectories."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Log artifacts produced during iterative agent tasks serve as the primary source of truth for software developers. Unlike standard application logs, agent logs contain interleaved streams of LLM prompts, model responses, system tool invocations, and workspace environmental feedback like compiler outputs. By systematically analyzing these log artifacts, developers can trace every decision point, verify whether feedback was interpreted correctly, and diagnose systemic failure patterns across long-running development loops.",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [
+    "C3",
+    "C6"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Identifying Control-Flow Steps in Execution Tracing",
+   "bullets": [
+    "Prompt dispatch marks the start of a logical reasoning step.",
+    "Tool invocation indicates a transition from reasoning to environment action.",
+    "Shell execution records system-level tool results and exit codes.",
+    "State evaluation determines whether to continue looping or terminate."
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Control-flow step classification in agent logs",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Step Type",
+      "Log Indicator",
+      "Information Captured"
+     ],
+     [
+      "Prompt Dispatch",
+      "system_prompt / user_input",
+      "Context window & instructions"
+     ],
+     [
+      "Tool Invoc",
+      "call_tool / function_call",
+      "Arguments & file targets"
+     ],
+     [
+      "Shell Output",
+      "stdout / stderr / exit_code",
+      "Test results & error traces"
+     ],
+     [
+      "Evaluation",
+      "loop_status / terminate",
+      "Convergence state"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "Tracing execution logs requires categorizing log events into distinct control-flow steps. A typical trace includes prompt dispatch steps, tool calls like file reading or patch application, shell execution steps with process status codes, and loop condition evaluations. Recognizing these steps within multi-megabyte log files allows engineers to construct a step-by-step state machine of the agent's behavior, showing how inputs led to actions and how test outcomes modified subsequent prompts.",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [
+    "C2",
+    "C6"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "check",
+   "title": "Check Point: Identifying Agent Loop Components",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "When tracing an agent log artifact, which log event signals a transition from internal reasoning to active workspace modification?",
+    "options": [
+     "The raw system prompt dispatch sent to the model context window.",
+     "A tool invocation event executing a patch or write_file command.",
+     "A stdout stream capture containing unit test assertion results.",
+     "The final model response token indicating execution completion."
+    ],
+    "answer": 1,
+    "explanation": "Option 1 is correct because a tool invocation event (e.g., executing a patch or writing a file) represents the exact boundary where the agent acts upon the environment. Option 0 is model input, Option 2 is environment feedback (observation), and Option 3 represents loop completion rather than an active workspace modification step."
+   },
+   "notes": "This check tests your understanding of execution control flow in agent logs. Identifying the distinction between model prompt dispatches, tool invocations, and environment feedback is essential when reading structured traces to determine when and how an agent modifies project state.",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [
+    "C6"
+   ],
+   "minutes": 4.0
+  },
+  {
+   "kind": "concept",
+   "title": "Log Formatting and Schema Standards",
+   "bullets": [
+    "JSON-Lines and OpenTelemetry provide structured formats for agent trace events.",
+    "Key fields include trace_id, span_id, timestamp, step_type, and payload.",
+    "Tool execution payloads record input arguments, execution duration, and exit status.",
+    "Standardized schemas allow automated log parsing and visual trace representation."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Structured JSON-Lines event entry from an agent execution trace",
+    "steps": [],
+    "code": "{\n  \"timestamp\": \"2026-03-29T10:15:00Z\",\n  \"trace_id\": \"tr-8842\",\n  \"step\": 2,\n  \"type\": \"tool_call\",\n  \"tool\": \"patch_file\",\n  \"args\": {\"path\": \"src/app.py\", \"diff\": \"@@ -10 +10 @@\"},\n  \"result\": {\"status\": \"success\", \"exit_code\": 0}\n}",
+    "language": "json",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Standardized log schemas like OpenTelemetry or JSON lines structure agent trace data into parseable events. Each entry captures essential metadata such as trace identifiers, step counters, timestamped payloads, and execution status. Using structured schemas ensures that both human developers and automated trace analysis tools can quickly parse control-flow steps, isolate failed tool invocations, and measure iteration latency across complex software engineering tasks.",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [
+    "C5",
+    "C6"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "example",
+   "title": "Example: Tracing a Multi-Step Fix Execution Log",
+   "bullets": [
+    "Trace begins with user bug report passed to the prompt builder.",
+    "Iteration 1: Agent reads test logs and locates broken method in source code.",
+    "Iteration 2: Agent generates git patch and executes test suite runner.",
+    "Iteration 3: Test runner fails; agent inspects trace and applies second patch."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Multi-step bug repair trace progression",
+    "steps": [
+     "Read Bug Report",
+     "Locate Source File",
+     "Apply Initial Patch",
+     "Inspect Test Failure",
+     "Apply Final Fix"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Let us walk through a real-world trace artifact generated during a bug fix loop. In iteration 1, the log records a file-read tool invocation targeted at the failing module. In iteration 2, the agent generates a patch, but the test runner outputs a non-zero exit code due to an unhandled null pointer. In iteration 3, the agent extracts the stack trace from stdout, rewrites the conditional logic, and re-executes tests, yielding a zero exit code and successful termination.",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [
+    "C2",
+    "C6"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Worked Problem: Manual Log Tracing of an Oscillating Loop",
+   "bullets": [
+    "Problem: Trace a 5-step log where an agent toggles between two bad fixes.",
+    "Step 1: Identify initial test failure log in iteration 1.",
+    "Step 2: Record file edit action in iteration 2 that causes new regression.",
+    "Step 3: Observe revert and re-application of initial bug in iteration 3.",
+    "Step 4: Map control-flow loop cycles to document agent oscillation."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Oscillating loop trace progression",
+    "steps": [
+     "Test Failure A",
+     "Edit Function 1",
+     "Test Failure B",
+     "Revert Function 1",
+     "Return to Failure A"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "In this worked problem, we trace a log artifact where an agent becomes stuck in an oscillating loop. Step 1 records the initial failure. In step 2, the agent modifies function A, fixing bug 1 but breaking bug 2. In step 3, seeing bug 2 fail, the agent reverts function A and breaks bug 1 again. By mapping each tool invocation and test exit code chronologically in our trace sheet, we document how missing context in the prompt causes endless cycling between two failure states.",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [
+    "C3",
+    "C6"
+   ],
+   "minutes": 8.0
+  },
+  {
+   "kind": "concept",
+   "title": "Complexity Backpressure and Failure Modes in Traces",
+   "bullets": [
+    "Complexity backpressure occurs when context accumulation degrades model reasoning.",
+    "Repeated patch failures introduce noise and context window bloat in traces.",
+    "Oscillating loops, premature termination, and hallucinated tool arguments appear in logs.",
+    "Tracing logs exposes when context limits degrade patch quality."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "As agent loops extend over many iterations, context windows accumulate historical failure logs, standard error outputs, and discarded diffs. Research shows this causes 'complexity backpressure,' where model reasoning degrades due to context saturation. In execution logs, backpressure manifests as repeated patch retries, hallucinated file paths, or premature agent termination. Tracing these indicators helps engineers determine when to reset agent state rather than letting the loop run continuously.",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [
+    "C3"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "check",
+   "title": "Check Point: Analyzing Loop Failure Indicators",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "While inspecting an execution log trace, you notice an agent executing identical patch tools and test runs across four consecutive iterations with no code changes. What does this log pattern signify?",
+    "options": [
+     "Successful convergence toward an optimal patch solution.",
+     "An unhandled error state causing an infinite non-convergent loop.",
+     "Normal behavior caused by stochastic variation in model output.",
+     "External network rate limiting forcing tool command replay."
+    ],
+    "answer": 1,
+    "explanation": "Option 1 is correct because executing identical actions without modifying environment state indicates the agent is trapped in an infinite non-convergent loop. Option 0 is wrong because the code is not changing or converging. Option 2 misattributes loop stagnation to normal variation. Option 3 is incorrect because tool calls are explicit agent decisions, not replayed network packets."
+   },
+   "notes": "This question tests your ability to diagnose failure modes directly from trace observations. Recognizing when an agent repeats actions without modifying state allows you to catch infinite loops early and intervene.",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [
+    "C3",
+    "C6"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "activity",
+   "title": "Hands-on Activity: Trace Construction from Raw Logs",
+   "bullets": [
+    "Download the provided raw log artifact containing 20 execution step events.",
+    "Parse log JSON entries and map out the agent's control-flow trajectory.",
+    "Identify all tool calls, test outcomes, and iteration boundaries in your trace table.",
+    "Highlight the exact log step where control flow diverged from expected logic."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "In this hands-on activity, you will work in pairs using student development machines. You are given a raw JSON-lines log artifact from an agent attempting a refactoring task. Your goal is to construct a complete chronological trace map, listing every control-flow step, tool invocation, test result, and state transition. Identify the exact step where the agent misinterpreted a compiler error and record your findings in the lab worksheet.",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [
+    "C6"
+   ],
+   "minutes": 12.0
+  },
+  {
+   "kind": "concept",
+   "title": "Log-Informed Loop Engineering and Query Tuning",
+   "bullets": [
+    "Traces reveal exact prompts and context states that triggered agent errors.",
+    "Query tuning modifies prompt templates based on observed log failure points.",
+    "Context pruning truncates historical tool outputs to alleviate backpressure.",
+    "Model Context Protocol (MCP) enables standardized context injection in loops."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Trace-driven loop tuning workflow",
+    "steps": [
+     "Trace Log Analysis",
+     "Identify Context Bloat",
+     "Tune MCP Prompt",
+     "Re-run Agent Loop"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Tracing logs is not just a diagnostic tool—it directly informs query tuning and loop refinement. By analyzing execution traces, engineers discover where prompts were ambiguous or where tool output flooded the context window. Using frameworks like the Model Context Protocol (MCP), developers can dynamically prune irrelevant history or adjust system prompts, ensuring subsequent iterations maintain lean context and precise instruction flow.",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [
+    "C5"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "concept",
+   "title": "Integrating Automated Tracing into Software Pipelines",
+   "bullets": [
+    "Automated log collectors capture telemetry across multi-agent software tasks.",
+    "Dashboard visualizations render state transitions, tool latency, and token costs.",
+    "Guardrail checks monitor log traces in real time to break infinite loops.",
+    "Structured log retention enables continuous evaluation of agent capabilities."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Automated log telemetry and guardrail pipeline",
+    "steps": [
+     "Agent Execution",
+     "Telemetry Collector",
+     "Real-Time Guardrail",
+     "Dashboard / Intervene"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "In modern software factories, log tracing is integrated directly into CI/CD pipelines and developer tooling. Telemetry collectors stream log events in real time, feeding dashboards that visualize state transitions, token consumption, and execution bottlenecks. Furthermore, automated guardrails monitor traces live: if a log shows three identical failing iterations, the execution loop is automatically halted, saving API costs and preventing corrupted git commits.",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [
+    "C4",
+    "C6"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "summary",
+   "title": "Summary: Tracing Agent Iterative Development Loops",
+   "bullets": [
+    "Iterative loop engineering relies on observing and directing agent execution loops.",
+    "Tracing log artifacts requires tracking prompt dispatch, tool calls, and state changes.",
+    "Log patterns expose failure modes like complexity backpressure and infinite loops.",
+    "Continuous trace analysis enables targeted query tuning and pipeline guardrails."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "To summarize today's lecture, mastering iterative development with AI coding agents requires deep visibility into execution logs. By tracing every control-flow step across log artifacts, you can diagnose where agents fail, detect complexity backpressure early, and apply query tuning to fix loop behavior. Next week, we will expand on these trace artifacts to analyze software factory outputs and multi-agent coordination records.",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [
+    "C3",
+    "C4",
+    "C6"
+   ],
+   "minutes": 5.0
+  }
+ ]
+}

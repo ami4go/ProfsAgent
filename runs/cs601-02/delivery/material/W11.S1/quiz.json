@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 13,
+  "los": [
+   "CO4.LO1"
+  ],
+  "question": "Which testing mechanism is best suited for verifying that a new model version does not break downstream pipeline stages?",
+  "options": [
+   "Unit tests for model wrapper",
+   "Model evaluation tests on held-out data",
+   "Pipeline integration tests",
+   "Contract tests for service interfaces"
+  ],
+  "answer": 2,
+  "explanation": "Pipeline integration tests exercise the full flow from data ingestion through model inference to downstream consumers, making them the right choice for catching breakages across stages. Unit tests and model evaluation tests are too narrow, while contract tests only check interface compliance, not functional correctness."
+ },
+ {
+  "slide": 14,
+  "los": [
+   "CO4.LO1"
+  ],
+  "question": "A team wants to measure how often a pipeline stage fails intermittently despite automatic retries. Which reliability metric should they track?",
+  "options": [
+   "Mean time between failures (MTBF)",
+   "Stage success rate",
+   "Flakiness rate",
+   "Rollback frequency"
+  ],
+  "answer": 2,
+  "explanation": "Flakiness rate directly captures the frequency of intermittent failures that succeed on retry. MTBF measures time between any failures, not specifically intermittent ones. Stage success rate aggregates all outcomes, and rollback frequency reflects deployment issues, not stage flakiness."
+ }
+]

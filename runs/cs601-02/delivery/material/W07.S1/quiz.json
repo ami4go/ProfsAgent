@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 9,
+  "los": [
+   "CO2.LO2"
+  ],
+  "question": "Which artifact is the single source of truth for the expected behavior of a public method in spec‑driven development?",
+  "options": [
+   "The implementation code",
+   "The executable specification",
+   "The requirements document",
+   "The test report"
+  ],
+  "answer": 1,
+  "explanation": "The executable specification (e.g., Gherkin scenarios) is the authoritative, runnable contract. The implementation must satisfy it; the requirements document is higher‑level and not directly executable."
+ },
+ {
+  "slide": 15,
+  "los": [
+   "CO3.LO1"
+  ],
+  "question": "In an iterative loop engineering log, which event type most directly reveals a branch decision that caused a spec violation?",
+  "options": [
+   "CALL",
+   "RETURN",
+   "BRANCH",
+   "REFLECT"
+  ],
+  "answer": 2,
+  "explanation": "BRANCH events record the outcome of conditional statements. A mismatch between the expected branch (per spec) and the logged branch pinpoints the exact control‑flow deviation. CALL/RETURN show entry/exit but not the decision."
+ }
+]

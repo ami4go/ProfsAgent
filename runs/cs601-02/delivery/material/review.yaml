@@ -1,0 +1,222 @@
+# Decide each lecture's generated slides: decision: approve | redo | reject   (reason: required for redo / reject)
+#   approve  the slides are final as they are now in slides.pptx (your PowerPoint edits included)
+#   redo     generate them again; write in `reason` what to change (one AI call when you run generate --redo)
+#   reject   do not use generated slides for this lecture
+# Then run: python scripts/run_content.py review --run-id <id> --apply
+lectures:
+  W01.L1:
+    topic: Developer workflows and AI-assisted coding
+    slides: 21
+    errors: 1
+    warnings: 4
+    status: draft
+    decision: pending
+    reason: ''
+  W01.L2:
+    topic: Model context protocols and architecture
+    slides: 13
+    errors: 0
+    warnings: 3
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W02.L1:
+    topic: Model context protocols and architecture
+    slides: 21
+    errors: 1
+    warnings: 0
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W02.L2:
+    topic: Coding agents and context engineering
+    slides: 12
+    errors: 0
+    warnings: 2
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W03.L1:
+    topic: Coding agents and context engineering
+    slides: 13
+    errors: 0
+    warnings: 2
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W03.S1:
+    topic: Coding agents and context engineering · Custom tool integrations using model context protocols
+    slides: 19
+    errors: 0
+    warnings: 5
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W03.S2:
+    topic: Custom tool integrations using model context protocols
+    slides: 17
+    errors: 0
+    warnings: 17
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W04.S1:
+    topic: Custom tool integrations using model context protocols · Standards and specification guidelines for use cases
+    slides: 17
+    errors: 0
+    warnings: 2
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W04.S2:
+    topic: Standards and specification guidelines for use cases · Software requirements and requirements engineering
+    slides: 21
+    errors: 0
+    warnings: 18
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W05.S1:
+    topic: Software requirements and requirements engineering
+    slides: 17
+    errors: 0
+    warnings: 7
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W05.S2:
+    topic: Software requirements and requirements engineering · Spec-driven development frameworks
+    slides: 18
+    errors: 0
+    warnings: 3
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W06.S1:
+    topic: Spec-driven development frameworks
+    slides: 18
+    errors: 0
+    warnings: 19
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W06.S2:
+    topic: Requirements to executable specifications and code generation
+    slides: 17
+    errors: 0
+    warnings: 4
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W07.S1:
+    topic: Requirements to executable specifications and code generation · Iterative development and loop engineering
+    slides: 18
+    errors: 8
+    warnings: 4
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W07.S2:
+    topic: Iterative development and loop engineering
+    slides: 17
+    errors: 0
+    warnings: 6
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W08.S1:
+    topic: Iterative development and loop engineering · Iterative development logs and software factory outputs
+    slides: 19
+    errors: 0
+    warnings: 7
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W08.S2:
+    topic: Iterative development logs and software factory outputs
+    slides: 16
+    errors: 0
+    warnings: 3
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W09.S1:
+    topic: Software factories and execution trace analysis
+    slides: 17
+    errors: 0
+    warnings: 13
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W09.S2:
+    topic: Software factories and execution trace analysis · Testing and validation in iterative development
+    slides: 17
+    errors: 0
+    warnings: 14
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W10.S1:
+    topic: Testing and validation in iterative development
+    slides: 18
+    errors: 0
+    warnings: 11
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W10.S2:
+    topic: Automated testing and evaluation mechanisms
+    slides: 18
+    errors: 0
+    warnings: 24
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W11.S1:
+    topic: Automated testing and evaluation mechanisms · Pipeline evaluation mechanisms and metrics
+    slides: 16
+    errors: 0
+    warnings: 10
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W11.S2:
+    topic: Pipeline evaluation mechanisms and metrics · Reliable and safe trustworthy software architectures
+    slides: 18
+    errors: 0
+    warnings: 15
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W12.S1:
+    topic: Reliable and safe trustworthy software architectures
+    slides: 19
+    errors: 0
+    warnings: 13
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W12.S2:
+    topic: Deployment and reliability metric evaluation
+    slides: 17
+    errors: 0
+    warnings: 16
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W13.S1:
+    topic: Deployment and reliability metric evaluation
+    slides: 16
+    errors: 0
+    warnings: 13
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W13.S2:
+    topic: Deployment and reliability metric evaluation
+    slides: 16
+    errors: 8
+    warnings: 12
+    status: ai-reviewed
+    decision: pending
+    reason: ''

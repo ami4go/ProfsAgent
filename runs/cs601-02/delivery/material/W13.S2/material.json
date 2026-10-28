@@ -1,0 +1,465 @@
+{
+ "lecture_id": "W13.S2",
+ "topic": "Deployment and reliability metric evaluation",
+ "generated_at": "2026-10-29 03:13:08",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W13.S2\\slides.pptx",
+  "notes": "material\\W13.S2\\notes.md",
+  "deck": "material\\W13.S2\\deck.json",
+  "quiz": "material\\W13.S2\\quiz.json"
+ },
+ "slides": 16,
+ "content_slides": 13,
+ "minutes": 91.0,
+ "errors": 8,
+ "warnings": 12,
+ "findings": [
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 5",
+    "C4"
+   ],
+   "message": "slide 5 ('Core Deployment Metrics: Definitions and Targets') cites [C4] '8 Redefining and Transforming Software Development with Generative AI', which matches it weakly (0.06; average source 0.09): check the citation",
+   "evidence": {
+    "similarity": 0.063
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 6",
+    "C4"
+   ],
+   "message": "slide 6 ('Reliability Metrics: From MTBF to SLOs') cites [C4] '8 Redefining and Transforming Software Development with Generative AI', which matches it weakly (0.05; average source 0.09): check the citation",
+   "evidence": {
+    "similarity": 0.047
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 7",
+    "C6"
+   ],
+   "message": "slide 7 ('Evaluating Metrics in Multi-Component AI Pipelines') cites [C6] 'Autonomous Coding Agents for Software Development Testing and Debugging', which matches it weakly (0.27; average source 0.28): check the citation",
+   "evidence": {
+    "similarity": 0.274
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 8",
+    "C4"
+   ],
+   "message": "slide 8 ('Scenario 1: Evaluating a RAG Chatbot Deployment') cites [C4] '8 Redefining and Transforming Software Development with Generative AI', which matches it weakly (0.15; average source 0.16): check the citation",
+   "evidence": {
+    "similarity": 0.148
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 9",
+    "C3"
+   ],
+   "message": "slide 9 ('Scenario 2: Evaluating a Code Generation Pipeline') cites [C3] 'Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks', which matches it weakly (0.26; average source 0.39): check the citation",
+   "evidence": {
+    "similarity": 0.263
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 13",
+    "C4"
+   ],
+   "message": "slide 13 ('Best Practices for Continuous Metric Evaluation') cites [C4] '8 Redefining and Transforming Software Development with Generative AI', which matches it weakly (0.16; average source 0.17): check the citation",
+   "evidence": {
+    "similarity": 0.158
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 14",
+    "C4"
+   ],
+   "message": "slide 14 ('Common Pitfalls in Metric Evaluation') cites [C4] '8 Redefining and Transforming Software Development with Generative AI', which matches it weakly (0.05; average source 0.06): check the citation",
+   "evidence": {
+    "similarity": 0.051
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-AI",
+   "severity": "error",
+   "nodes": [
+    "slide 5"
+   ],
+   "message": "slide 5 ('Core Deployment Metrics: Definitions and Targets'): [fact] The table presents context-dependent example targets as universal \"Typical Target\" values, including a 99.9% availability target and a cost target of < $0.002 per 1k tokens that are not generally valid for AI deployments. Fix: Label these as illustrative examples only and state that targets must be derived from the service's user needs, historical baselines, and business constraints.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Core Deployment Metrics: Definitions and Targets"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "error",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6 ('Reliability Metrics: From MTBF to SLOs'): [fact] The error budget is defined as \"1 - SLO\" and as an \"error allowance,\" which is incorrect for availability SLOs because the error budget is the allowed proportion of bad events, not the allowed proportion of good events. Fix: Define the error budget as the allowed proportion of bad events, such as 1 - 0.999 = 0.001 for a 99.9% availability SLO, and distinguish it from the SLO attainment percentage.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Reliability Metrics: From MTBF to SLOs"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "error",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6 ('Reliability Metrics: From MTBF to SLOs'): [fact] The table defines MTBF as \"Average uptime between failures,\" which is misleading because MTBF measures time between failures and includes both operating and repair intervals rather than uptime alone. Fix: Define MTBF as the average time between system failures, and explain that it is commonly used for reliability and capacity planning.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Reliability Metrics: From MTBF to SLOs"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "error",
+   "nodes": [
+    "slide 7"
+   ],
+   "message": "slide 7 ('Evaluating Metrics in Multi-Component AI Pipelines'): [fact] The note says that if the model server consumes 80% of the latency budget, the retriever must stay within 20%, which incorrectly treats a latency SLO as a shared allocation budget. Fix: Explain that latency SLOs are usually measured end-to-end, while component-level latency budgets are an optional allocation policy that must be defined separately.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Evaluating Metrics in Multi-Component AI Pipelines"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "error",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('Scenario 1: Evaluating a RAG Chatbot Deployment'): [fact] The scenario says that a 0.5% error rate against a 0.1% SLO means the error budget is exhausted and releases should be frozen, but the error-budget calculation and burn period are not supplied. Fix: State that the observed error rate exceeds the allowed 0.1% and therefore consumes the error budget faster than the SLO permits, while explaining that a release freeze depends on the organization's burn-rate policy.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Scenario 1: Evaluating a RAG Chatbot Deployment"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "error",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('Scenario 1: Evaluating a RAG Chatbot Deployment'): [code] The pseudo-code computes a percentile over all span durations grouped by service, so a service with multiple spans per trace can be incorrectly labeled as the bottleneck and the result does not necessarily represent end-to-end latency. Fix: Aggregate spans by trace and service using a defined attribution rule, or explicitly label the output as per-span latency and compare it with a separately computed end-to-end trace duration.",
+   "evidence": {
+    "kind": "code",
+    "title": "Scenario 1: Evaluating a RAG Chatbot Deployment"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "error",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9 ('Scenario 2: Evaluating a Code Generation Pipeline'): [code] The flakiness code uses `runs` after the loop, so it refers only to the final test group rather than the group belonging to each flaky test, and the reported percentage divides the number of flaky tests by the number of result groups rather than by the number of tests. Fix: Store each test's grouped results in a dictionary or iterate over the groups again, and calculate the flaky-test percentage as the number of flaky tests divided by the total number of distinct tests.",
+   "evidence": {
+    "kind": "code",
+    "title": "Scenario 2: Evaluating a Code Generation Pipeline"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "error",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9 ('Scenario 2: Evaluating a Code Generation Pipeline'): [fact] The scenario asserts that flakiness correlates with LLM non-determinism without providing evidence or a controlled comparison, so students may learn that non-determinism is the established cause rather than a hypothesis to test. Fix: Present non-determinism as a hypothesis and require students to compare seeded and unseeded runs or otherwise test the relationship before attributing causality.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Scenario 2: Evaluating a Code Generation Pipeline"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10 ('Hands-On: Evaluate a Supplied Multi-Component Project'): [other] The activity depends on a supplied repository, local Kubernetes tooling, load-generation scripts, and Prometheus/Grafana access, but the slides do not state that these prerequisites have been provided or tested. Fix: Add a pre-class setup checklist with repository access, Docker, kind or k3d, Kubernetes configuration, and the exact commands for running the load and metrics stack.",
+   "evidence": {
+    "kind": "other",
+    "title": "Hands-On: Evaluate a Supplied Multi-Component Project"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 11"
+   ],
+   "message": "slide 11 ('Check: Deployment Metric Selection'): [other] The check slide contains no visible question or answer options, so the slide cannot function as a quiz without the professor supplying them separately. Fix: Display the question and all four options on the slide, or explicitly label the slide as a professor-led prompt and provide the options in the notes.",
+   "evidence": {
+    "kind": "other",
+    "title": "Check: Deployment Metric Selection"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 12"
+   ],
+   "message": "slide 12 ('Check: Reliability Metric Relationships'): [other] The check slide contains no visible question or answer options, so the slide cannot function as a quiz without the professor supplying them separately. Fix: Display the question and all four options on the slide, or explicitly label the slide as a professor-led prompt and provide the options in the notes.",
+   "evidence": {
+    "kind": "other",
+    "title": "Check: Reliability Metric Relationships"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 13"
+   ],
+   "message": "slide 13 ('Best Practices for Continuous Metric Evaluation'): [other] The recommendation to review and adjust SLOs quarterly is presented as a universal practice without noting that SLO changes should be deliberate and justified rather than routine. Fix: Say that SLOs should be reviewed periodically and changed only with explicit approval, documented rationale, and consideration of stakeholder and customer impact.",
+   "evidence": {
+    "kind": "other",
+    "title": "Best Practices for Continuous Metric Evaluation"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 15"
+   ],
+   "message": "slide 15 ('Summary: Evaluating Deployment and Reliability'): [other] The note states that the end-semester assessment will require live evaluation with two evaluator-chosen scenarios \"exactly as practiced today,\" although the activity uses one supplied project and the deck does not establish that the assessment format is confirmed. Fix: Confirm the assessment requirements with the course coordinator, or phrase this as a likely preparation exercise rather than a guaranteed assessment format.",
+   "evidence": {
+    "kind": "other",
+    "title": "Summary: Evaluating Deployment and Reliability"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 8,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 9,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Competition-level code generation with AlphaCode",
+   "year": 2022,
+   "url": "https://doi.org/10.1126/science.abq1158",
+   "kind": "reading",
+   "approved": true
+  },
+  "C2": {
+   "title": "SPECIFICATION-DRIVEN DEVELOPMENT AS STRUCTURED APPROACH FOR SOURCE CODE GENERATION",
+   "year": 2026,
+   "url": "https://doi.org/10.52058/2786-6025-2026-4(58)-2631-2644",
+   "kind": "reading",
+   "approved": true
+  },
+  "C3": {
+   "title": "Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks",
+   "year": 2026,
+   "url": "https://doi.org/10.1109/sse72781.2026.00047",
+   "kind": "reading",
+   "approved": true
+  },
+  "C4": {
+   "title": "8 Redefining and Transforming Software Development with Generative AI",
+   "year": 2025,
+   "url": "https://doi.org/10.1515/9783111677798-008",
+   "kind": "reference",
+   "approved": true
+  },
+  "C5": {
+   "title": "Query Tuning Framework Using the Model Context Protocol for Workflows",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.6172059",
+   "kind": "reading",
+   "approved": true
+  },
+  "C6": {
+   "title": "Autonomous Coding Agents for Software Development Testing and Debugging",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.7515638",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C3",
+  "C4",
+  "C6"
+ ],
+ "calls": [
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1675,
+   "output_tokens": 4895
+  },
+  {
+   "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+   "prompt_tokens": 3700,
+   "output_tokens": 1305
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 6068,
+   "output_tokens": 12727
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "prompt_tokens": 3700,
+  "output_tokens": 1305,
+  "verdict": "The deck is not yet safe to teach without correcting the error-budget and MTBF definitions, fixing the scenario code, and confirming the hands-on setup and assessment claims.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 5,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The table presents context-dependent example targets as universal \"Typical Target\" values, including a 99.9% availability target and a cost target of < $0.002 per 1k tokens that are not generally valid for AI deployments.",
+    "fix": "Label these as illustrative examples only and state that targets must be derived from the service's user needs, historical baselines, and business constraints."
+   },
+   {
+    "slide": 6,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The error budget is defined as \"1 - SLO\" and as an \"error allowance,\" which is incorrect for availability SLOs because the error budget is the allowed proportion of bad events, not the allowed proportion of good events.",
+    "fix": "Define the error budget as the allowed proportion of bad events, such as 1 - 0.999 = 0.001 for a 99.9% availability SLO, and distinguish it from the SLO attainment percentage."
+   },
+   {
+    "slide": 6,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The table defines MTBF as \"Average uptime between failures,\" which is misleading because MTBF measures time between failures and includes both operating and repair intervals rather than uptime alone.",
+    "fix": "Define MTBF as the average time between system failures, and explain that it is commonly used for reliability and capacity planning."
+   },
+   {
+    "slide": 7,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The note says that if the model server consumes 80% of the latency budget, the retriever must stay within 20%, which incorrectly treats a latency SLO as a shared allocation budget.",
+    "fix": "Explain that latency SLOs are usually measured end-to-end, while component-level latency budgets are an optional allocation policy that must be defined separately."
+   },
+   {
+    "slide": 8,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The scenario says that a 0.5% error rate against a 0.1% SLO means the error budget is exhausted and releases should be frozen, but the error-budget calculation and burn period are not supplied.",
+    "fix": "State that the observed error rate exceeds the allowed 0.1% and therefore consumes the error budget faster than the SLO permits, while explaining that a release freeze depends on the organization's burn-rate policy."
+   },
+   {
+    "slide": 8,
+    "severity": "error",
+    "kind": "code",
+    "problem": "The pseudo-code computes a percentile over all span durations grouped by service, so a service with multiple spans per trace can be incorrectly labeled as the bottleneck and the result does not necessarily represent end-to-end latency.",
+    "fix": "Aggregate spans by trace and service using a defined attribution rule, or explicitly label the output as per-span latency and compare it with a separately computed end-to-end trace duration."
+   },
+   {
+    "slide": 9,
+    "severity": "error",
+    "kind": "code",
+    "problem": "The flakiness code uses `runs` after the loop, so it refers only to the final test group rather than the group belonging to each flaky test, and the reported percentage divides the number of flaky tests by the number of result groups rather than by the number of tests.",
+    "fix": "Store each test's grouped results in a dictionary or iterate over the groups again, and calculate the flaky-test percentage as the number of flaky tests divided by the total number of distinct tests."
+   },
+   {
+    "slide": 9,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The scenario asserts that flakiness correlates with LLM non-determinism without providing evidence or a controlled comparison, so students may learn that non-determinism is the established cause rather than a hypothesis to test.",
+    "fix": "Present non-determinism as a hypothesis and require students to compare seeded and unseeded runs or otherwise test the relationship before attributing causality."
+   },
+   {
+    "slide": 10,
+    "severity": "warning",
+    "kind": "other",
+    "problem": "The activity depends on a supplied repository, local Kubernetes tooling, load-generation scripts, and Prometheus/Grafana access, but the slides do not state that these prerequisites have been provided or tested.",
+    "fix": "Add a pre-class setup checklist with repository access, Docker, kind or k3d, Kubernetes configuration, and the exact commands for running the load and metrics stack."
+   },
+   {
+    "slide": 11,
+    "severity": "warning",
+    "kind": "other",
+    "problem": "The check slide contains no visible question or answer options, so the slide cannot function as a quiz without the professor supplying them separately.",
+    "fix": "Display the question and all four options on the slide, or explicitly label the slide as a professor-led prompt and provide the options in the notes."
+   },
+   {
+    "slide": 12,
+    "severity": "warning",
+    "kind": "other",
+    "problem": "The check slide contains no visible question or answer options, so the slide cannot function as a quiz without the professor supplying them separately.",
+    "fix": "Display the question and all four options on the slide, or explicitly label the slide as a professor-led prompt and provide the options in the notes."
+   },
+   {
+    "slide": 13,
+    "severity": "warning",
+    "kind": "other",
+    "problem": "The recommendation to review and adjust SLOs quarterly is presented as a universal practice without noting that SLO changes should be deliberate and justified rather than routine.",
+    "fix": "Say that SLOs should be reviewed periodically and changed only with explicit approval, documented rationale, and consideration of stakeholder and customer impact."
+   },
+   {
+    "slide": 15,
+    "severity": "warning",
+    "kind": "other",
+    "problem": "The note states that the end-semester assessment will require live evaluation with two evaluator-chosen scenarios \"exactly as practiced today,\" although the activity uses one supplied project and the deck does not establish that the assessment format is confirmed.",
+    "fix": "Confirm the assessment requirements with the course coordinator, or phrase this as a likely preparation exercise rather than a guaranteed assessment format."
+   }
+  ],
+  "repaired": false
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

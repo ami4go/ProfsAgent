@@ -1,0 +1,466 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W04.S1",
+ "title": "Custom Tool Integrations using Model Context Protocols & Use Case Standards",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "Model Context Protocol for Agent Tool Integrations",
+   "bullets": [
+    "Model Context Protocol (MCP) standardizes how AI agents communicate with external development tools and servers.",
+    "Context servers expose tools, resources, and prompt templates through a standardized JSON-RPC schema.",
+    "Standardized interfaces decouple model capabilities from specific workspace implementations."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "MCP Architecture Flow",
+    "steps": [
+     "AI Agent Workspace",
+     "MCP Protocol Interface",
+     "Tool Server",
+     "External API/DB"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Welcome back. Today we cover custom tool integrations using the Model Context Protocol (MCP) and requirements specification. MCP provides an open standard for connecting AI agent workspaces to local or remote tools safely and deterministically. Rather than writing ad-hoc wrappers for every tool, MCP standardizes how tools expose their capabilities, arguments, and return types.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Architecture of MCP Tool Servers",
+   "bullets": [
+    "MCP architecture separates the host client from isolated server tools.",
+    "Tools are registered with strict JSON Schema parameter definitions for model validation.",
+    "Transport options include stdio for local tools and Server-Sent Events (SSE) for remote services."
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "MCP System Components",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "MCP Client",
+      "Workspace host requesting actions",
+      "VS Code Agent Extension"
+     ],
+     [
+      "MCP Server",
+      "Exposes executable tools & data",
+      "Custom Git/Database Server"
+     ],
+     [
+      "Tool Definition",
+      "JSON schema defining input parameters",
+      "run_linter(path, rules)"
+     ],
+     [
+      "Transport Layer",
+      "Communication channel",
+      "stdio / HTTP-SSE"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "The architecture relies on a client-server structure. The client is typically the workspace IDE or agent runtime. The tool server executes functions locally or remotely. Defining strict JSON schemas for inputs ensures that LLM agent function calls can be validated prior to execution.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Implementing an MCP Tool Server",
+   "bullets": [
+    "Define explicit input/output schemas using typed function signatures.",
+    "Implement error handling directly in the tool handler to avoid runtime crashes.",
+    "Return formatted strings or JSON structures that agents can interpret directly."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Python FastMCP Tool Implementation",
+    "steps": [],
+    "code": "from mcp.server.fastmcp import FastMCP\n\nmcp = FastMCP(\"code-analysis-server\")\n\n@mcp.tool()\ndef run_static_analysis(file_path: str) -> str:\n    \"\"\"Run static analysis on a file and return report.\"\"\"\n    if not file_path.endswith(\".py\"):\n        return \"Error: Only Python files supported\"\n    # Execute linter and return clean result\n    return \"0 errors, 0 warnings\"\n\nif __name__ == \"__main__\":\n    mcp.run()",
+    "language": "python",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Here is a worked example of defining an MCP server using FastMCP in Python. Notice how parameter types and docstrings serve as the specification for the AI agent. The function signature and docstring tell the LLM what inputs are required and what the tool accomplishes.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [],
+   "minutes": 7.0
+  },
+  {
+   "kind": "example",
+   "title": "Configuring Tool Workspaces without Warnings",
+   "bullets": [
+    "Configuration files map local tool commands into the agent's active workspace.",
+    "Environmental variables and paths must be set explicitly to satisfy static analysis.",
+    "Passing static analysis verification requires clean type annotations and valid JSON syntax."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Workspace Agent Tool Configuration",
+    "steps": [],
+    "code": "{\n  \"mcpServers\": {\n    \"linter_tool\": {\n      \"command\": \"python\",\n      \"args\": [\"-m\", \"my_mcp_linter\"],\n      \"env\": {\n        \"PYTHONPATH\": \".\"\n      }\n    }\n  }\n}",
+    "language": "json",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Once the MCP server is written, we register it inside the workspace configuration file. To achieve a zero-warning build with static analysis, ensure path definitions, environment variables, and schema types pass validation. A clean configuration ensures agents invoke tools reliably without runtime failures.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [],
+   "minutes": 7.0
+  },
+  {
+   "kind": "check",
+   "title": "Check Understanding: MCP Server Configuration",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "Which component in an MCP architecture is responsible for validating tool parameters against a JSON schema prior to execution?",
+    "options": [
+     "The client runtime or model context protocol layer before function invocation",
+     "The raw LLM base weights during text generation",
+     "The host operating system kernel process manager",
+     "The static markdown documentation generator"
+    ],
+    "answer": 0,
+    "explanation": "Option 0 is correct because the MCP client layer uses the schema defined by the server to validate generated arguments. Option 1 is wrong because raw model weights generate text but do not enforce structured runtime validation."
+   },
+   "notes": "Let's test our understanding of MCP tool handling. Take a moment to select the correct answer on how parameters are validated.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "From Product Descriptions to System Boundaries",
+   "bullets": [
+    "Raw product descriptions are often informal, ambiguous, and incomplete.",
+    "System boundaries define what is inside the application versus what remains external.",
+    "Translating requirements into structured use cases bridges business goals and technical specs."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Requirements Structuring Flow",
+    "steps": [
+     "Unstructured Text",
+     "Identify Entities",
+     "Define Scope & Boundaries",
+     "Formal Use Cases"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Now we transition to the second part of our lecture: standards and specification guidelines for use cases. Development projects often start with unstructured text from product owners. Our task is to establish clear system boundaries and extract well-defined use cases.",
+   "los": [
+    "CO2.LO3"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Defining Actors and External Interfaces",
+   "bullets": [
+    "Actors must always be external entities (human users or external systems) interacting with the system.",
+    "The software system being designed is NEVER an actor itself.",
+    "Primary actors trigger use cases; secondary actors assist in completing them."
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Actor Identification Matrix",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Primary Actor",
+      "User initiating interaction to achieve a goal",
+      "Store Customer"
+     ],
+     [
+      "Secondary Actor",
+      "External system or role providing services",
+      "Payment Gateway"
+     ],
+     [
+      "System Boundary",
+      "Limit dividing internal logic from actors",
+      "E-commerce API"
+     ],
+     [
+      "System Administrator",
+      "Actor managing configuration and access",
+      "System Administrator"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "A critical rule in system modeling: actors are external entities that interact with your system. Humans like 'Customer' or external systems like 'Payment Gateway' or operational actors like 'System Administrator' are actors. The system under design is inside the boundary, so it can never be an actor.",
+   "los": [
+    "CO2.LO3"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Standard Specification Guidelines for Use Cases",
+   "bullets": [
+    "Standard use case templates ensure consistency across development teams.",
+    "Preconditions state necessary requirements before execution can begin.",
+    "Main success scenarios document step-by-step user interactions and system responses.",
+    "Postconditions define system state changes after successful completion."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Use Case Specification Anatomy",
+    "steps": [
+     "Name & Goal",
+     "Actors",
+     "Preconditions",
+     "Main Success Scenario",
+     "Postconditions"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Following a standardized specification format keeps requirements unambiguous. Every short use case should capture the goal, external actors, preconditions, step-by-step interaction flow, and postconditions.",
+   "los": [
+    "CO2.LO3"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "example",
+   "title": "Analyzing an Unstructured Product Description",
+   "bullets": [
+    "Read unstructured descriptions to isolate actors, actions, and integrations.",
+    "Map human users to primary actors and third-party APIs to secondary actors.",
+    "Group related actions under concise, verb-noun use case titles."
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Requirement Extraction Mapping",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "'Users sign in and schedule package deliveries.'",
+      "Customer schedules delivery",
+      "Use Case"
+     ],
+     [
+      "'Deliveries are dispatched via third-party couriers.'",
+      "Carrier",
+      "Secondary Actor"
+     ],
+     [
+      "'Admins monitor system status and manage users.'",
+      "System Administrator",
+      "Primary Actor"
+     ],
+     [
+      "'Payment processed via Stripe integration.'",
+      "Payment Gateway",
+      "Secondary Actor"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "In this example, we break down a product statement for a logistics platform. Notice how human roles like 'Admins' map to System Administrator, third-party services like couriers map to 'Carrier', and actions become defined use cases.",
+   "los": [
+    "CO2.LO3"
+   ],
+   "sources": [],
+   "minutes": 8.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "From Product Description to Use Cases",
+   "bullets": [
+    "Primary actor (System Administrator) initiates the dispatch workflow.",
+    "External partner (Carrier) acts as a secondary actor providing routing data.",
+    "Note: The internal software system coordinates actions but is not listed as an actor.",
+    "Preconditions and postconditions explicitly lock down state transition criteria."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Structured Use Case Spec in YAML",
+    "steps": [],
+    "code": "use_case: Dispatch Package Delivery\nprimary_actor: System Administrator\nsecondary_actor: Carrier\npreconditions:\n  - Customer order is paid and verified.\nmain_flow:\n  1. System Administrator selects pending package for dispatch.\n  2. System requests delivery route from Carrier.\n  3. Carrier returns tracking ID and estimated arrival.\n  4. System Administrator confirms assignment.\npostconditions:\n  - Package status set to Dispatched with assigned tracking ID.",
+    "language": "yaml",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Here is a step-by-step worked problem showing a fully structured use case. Pay close attention to the actors: 'System Administrator' is the primary actor initiating the action, and 'Carrier' is the secondary actor responding with tracking details. Neither the software platform nor the internal system is listed as an actor because actors must be external entities.",
+   "los": [
+    "CO2.LO3"
+   ],
+   "sources": [],
+   "minutes": 8.0
+  },
+  {
+   "kind": "check",
+   "title": "Check Understanding: System Boundaries and Actors",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "When drafting a use case diagram for an automated order fulfillment application, which entity CANNOT be listed as an actor?",
+    "options": [
+     "The Order Fulfillment Application itself",
+     "The System Administrator managing user permissions",
+     "An external Carrier API providing shipping quotes",
+     "The end Customer placing an order online"
+    ],
+    "answer": 0,
+    "explanation": "Option 0 is correct because the system under design lies inside the system boundary and cannot be an actor. Options 1, 2, and 3 are all valid external entities (human or third-party system)."
+   },
+   "notes": "Let's reinforce the system boundary concept. Remember that actors interact with the system from the outside.",
+   "los": [
+    "CO2.LO3"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Handling Ambiguity in Specifications",
+   "bullets": [
+    "Unstructured requirements often use vague language like 'fast' or 'secure'.",
+    "AI tools require structured, concrete conditions to generate accurate code/tests.",
+    "Transform vague expectations into measurable SLA targets and boundary events."
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Ambiguity Resolution Patterns",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "'Fast system responses'",
+      "Unmeasurable goal",
+      "Specify SLA: latency < 200ms"
+     ],
+     [
+      "'Process payments safely'",
+      "Undefined external actor",
+      "Explicitly integrate Payment Gateway"
+     ],
+     [
+      "'System updates status'",
+      "Missing primary trigger",
+      "Carrier sends status update callback"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "When converting requirements into executable specs, watch out for vague claims. AI coding assistants fail or hallucinate when specifications contain ambiguous terms. Clarifying boundaries and metrics ensures both human developers and AI agents produce correct code.",
+   "los": [
+    "CO2.LO3"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "activity",
+   "title": "Hands-On Exercise: Outlining System Use Cases",
+   "bullets": [
+    "Task: Read the provided product blurb for a smart warehouse service.",
+    "Step 1: List all primary actors and secondary external integrations (e.g., Carrier, System Administrator).",
+    "Step 2: Draft one short use case in YAML format including pre/postconditions.",
+    "Step 3: Peer review to confirm no internal system elements are misclassified as actors."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Activity Workflow",
+    "steps": [
+     "Read Short Description",
+     "Identify External Actors",
+     "Draft YAML Use Case",
+     "Validate Boundaries"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Now it's time for an in-class hands-on exercise. Take 10 minutes to work through the provided warehouse management product blurb. Identify the external actors—remembering never to list the system itself as an actor—and write down a structured YAML use case.",
+   "los": [
+    "CO2.LO3"
+   ],
+   "sources": [],
+   "minutes": 10.0
+  },
+  {
+   "kind": "summary",
+   "title": "Summary: Custom Tools and Requirements Specs",
+   "bullets": [
+    "Model Context Protocol enables standardized, warning-free integration of tools into AI workspaces.",
+    "Typed parameters and clean schemas prevent runtime errors during agent tool calls.",
+    "System boundaries isolate internal application logic from external actors (users and external APIs).",
+    "Standardized use case specs provide clear, executable guidelines for software development."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "To summarize today's lecture: MCP gives us a clean, standard protocol for extending agent capabilities with custom tools. Meanwhile, standard use case guidelines help us translate unstructured requirements into clear system boundaries with external actors like carriers and system administrators. In the upcoming lab, you will build and test custom MCP tools hands-on!",
+   "los": [
+    "CO1.LO2",
+    "CO2.LO3"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 4.0
+  }
+ ]
+}

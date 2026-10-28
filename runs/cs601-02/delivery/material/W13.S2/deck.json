@@ -1,0 +1,457 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W13.S2",
+ "title": "Deployment and reliability metric evaluation",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "Recap: Trustworthy AI-Native Architectures",
+   "bullets": [
+    "Week 11 covered safety and reliability patterns",
+    "Key principles: isolation, observability, graceful degradation",
+    "Architectures must support measurable SLIs/SLOs",
+    "AI components add non-determinism and complexity"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Briefly remind students of the architectural patterns from Week 11: circuit breakers, bulkheads, canary deployments, and the need for explicit reliability contracts. Emphasize that AI-native pipelines introduce stochastic behavior, making metric-based evaluation essential. Connect to today's goal: evaluating whether deployed systems meet those contracts.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C4"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Why Deployment Metrics Matter for AI-Native Systems",
+   "bullets": [
+    "AI models drift, latency spikes, token costs vary",
+    "Traditional metrics insufficient for generative components",
+    "Need end-to-end visibility across model, data, code",
+    "Metrics drive automated rollback and scaling decisions"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Explain that AI-native pipelines combine deterministic code with probabilistic models. Deployment metrics must capture model-specific signals (e.g., token latency, hallucination rate, embedding drift) alongside classic infrastructure metrics. These metrics feed into reliability evaluation and automated remediation. Cite C4 for the changing landscape of software deployment with generative AI.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C4"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Core Deployment Metrics: Definitions and Targets",
+   "bullets": [
+    "Latency: p50, p95, p99 per component and end-to-end",
+    "Throughput: requests/sec, tokens/sec, batch size",
+    "Error rate: HTTP 5xx, model exceptions, validation failures",
+    "Availability: uptime %, SLA adherence, degradation minutes",
+    "Resource utilization: GPU/CPU, memory, network, cost per request"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Key deployment metrics with typical measurement points",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Metric",
+      "Scope",
+      "Typical Target",
+      "Collection Method"
+     ],
+     [
+      "Latency (p99)",
+      "End-to-end",
+      "< 2s",
+      "Distributed tracing"
+     ],
+     [
+      "Throughput",
+      "Per replica",
+      "> 100 req/s",
+      "Prometheus counters"
+     ],
+     [
+      "Error rate",
+      "Service",
+      "< 0.1%",
+      "Structured logging"
+     ],
+     [
+      "Availability",
+      "System",
+      "99.9%",
+      "Health checks"
+     ],
+     [
+      "Cost per 1k tokens",
+      "Model",
+      "< $0.002",
+      "Billing API"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "Walk through each metric, emphasizing that targets are context-dependent. Show how to instrument a multi-component system (API gateway, model server, vector DB, feature store) to collect these. Mention that AI components add token-level latency and cost metrics. Use the table to compare scope and collection methods. Source C4 discusses metric shifts in generative AI deployments.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C4"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "concept",
+   "title": "Reliability Metrics: From MTBF to SLOs",
+   "bullets": [
+    "MTBF: mean time between failures (system-level)",
+    "MTTR: mean time to recover (incident response)",
+    "SLI: service level indicator (quantifiable measure)",
+    "SLO: service level objective (target for SLI)",
+    "Error budget: inverse of SLO, guides release velocity"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Reliability metrics hierarchy and relationships",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Metric",
+      "Definition",
+      "Example",
+      "Used For"
+     ],
+     [
+      "MTBF",
+      "Average uptime between failures",
+      "720 hours",
+      "Capacity planning"
+     ],
+     [
+      "MTTR",
+      "Average repair time",
+      "15 minutes",
+      "On-call readiness"
+     ],
+     [
+      "SLI",
+      "Measurable behavior",
+      "Request latency < 500ms",
+      "Monitoring"
+     ],
+     [
+      "SLO",
+      "Target for SLI",
+      "99% of requests < 500ms",
+      "Alerting"
+     ],
+     [
+      "Error budget",
+      "1 - SLO",
+      "1% error allowance",
+      "Release gating"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "Define each term and show how they form a hierarchy: SLIs are measured, SLOs are set, error budgets are consumed. MTBF/MTTR are operational outcomes. For AI-native systems, SLIs must include model quality signals (e.g., correctness rate). Cite C3 on complexity backpressure: as AI agent complexity grows, MTTR increases without proper observability.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C3",
+    "C4"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "concept",
+   "title": "Evaluating Metrics in Multi-Component AI Pipelines",
+   "bullets": [
+    "Correlate metrics across service boundaries",
+    "Identify bottleneck components via latency breakdown",
+    "Aggregate error budgets across dependent services",
+    "Detect cascading failures from model drift",
+    "Use distributed tracing and unified dashboards"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Metric evaluation pipeline for multi-component system",
+    "steps": [
+     "Collect per-component metrics",
+     "Correlate via trace IDs",
+     "Compute end-to-end SLIs",
+     "Compare against SLOs",
+     "Trigger alerts or rollback"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Describe the evaluation workflow: instrument each component (model server, retriever, orchestrator), propagate trace context, compute composite SLIs (e.g., end-to-end latency = sum of component latencies + queueing). Explain how error budgets propagate: if the model server consumes 80% of the latency budget, the retriever must stay within 20%. Mention C6 on autonomous agents needing cross-component observability for debugging.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C6"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Scenario 1: Evaluating a RAG Chatbot Deployment",
+   "bullets": [
+    "System: API gateway → embedding service → vector DB → LLM",
+    "Given: p99 latency 3.2s (SLO 2s), error rate 0.5% (SLO 0.1%)",
+    "Step 1: Break down latency per component via traces",
+    "Step 2: Identify vector DB p99 = 1.8s (bottleneck)",
+    "Step 3: Check error budget: 0.5% > 0.1% → freeze releases",
+    "Step 4: Propose fix: add read replicas, cache frequent queries"
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Pseudo-code for latency breakdown analysis",
+    "steps": [],
+    "code": "traces = fetch_traces(service='rag', window='1h')\nlatencies = {}\nfor trace in traces:\n    for span in trace.spans:\n        latencies.setdefault(span.service, []).append(span.duration)\nfor svc, vals in latencies.items():\n    print(f'{svc}: p99={np.percentile(vals,99):.2f}s')",
+    "language": "python",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Walk through a concrete evaluation. Start with the SLO violation. Show how to query distributed traces (e.g., Jaeger, Zipkin) to get per-component latency distributions. Identify the vector DB as the bottleneck. Explain that error budget exhaustion triggers a release freeze per SRE practice. Propose mitigations and how to verify they restore SLO compliance. This demonstrates the evaluation skill required for CO4.LO3.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C4",
+    "C6"
+   ],
+   "minutes": 10.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Scenario 2: Evaluating a Code Generation Pipeline",
+   "bullets": [
+    "System: spec parser → planner → code generator → test runner",
+    "Given: MTTR 45 min (target 15 min), test flakiness 12%",
+    "Step 1: Analyze incident logs for root cause categories",
+    "Step 2: Find 60% of MTTR spent in manual triage",
+    "Step 3: Flakiness correlates with LLM non-determinism",
+    "Step 4: Propose: automated classification, seeded generation, retries"
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Flakiness detection and classification snippet",
+    "steps": [],
+    "code": "results = load_test_runs(pipeline='codegen', days=7)\nflaky = []\nfor test, runs in results.groupby('test_id'):\n    outcomes = runs['status'].unique()\n    if len(outcomes) > 1:\n        flaky.append(test)\nprint(f'Flaky tests: {len(flaky)} ({len(flaky)/len(results):.1%})')\n# Classify failure reasons\nfor test in flaky:\n    failures = runs[runs['status']=='fail']\n    print(test, failures['error_type'].value_counts())",
+    "language": "python",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Second scenario focuses on reliability metrics (MTTR, flakiness) in an AI coding agent pipeline. Show how to analyze test history to quantify flakiness and categorize failures. Highlight that non-deterministic LLM outputs cause sporadic test failures. Demonstrate how to compute MTTR from incident timestamps and identify manual triage as the main contributor. Propose automation (classification, retries) to reduce MTTR. Relates to C6 on autonomous coding agents and C3 on complexity backpressure.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C3",
+    "C6"
+   ],
+   "minutes": 10.0
+  },
+  {
+   "kind": "activity",
+   "title": "Hands-On: Evaluate a Supplied Multi-Component Project",
+   "bullets": [
+    "Clone the provided repository (microservices + model server)",
+    "Run the deployment in a local Kubernetes cluster (kind/k3d)",
+    "Collect metrics: latency, error rate, throughput for 10 min",
+    "Compute SLIs and compare to given SLOs",
+    "Identify top two violations and propose remediation",
+    "Present findings in 3-minute lightning talks"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "This is the main hands-on activity. Students work in pairs. The repository includes a pre-instrumented AI-native application (e.g., a document QA system with retriever, reranker, LLM). They deploy it, generate load with a provided script, and use Prometheus/Grafana to evaluate metrics against SLOs. They must produce a short evaluation report. Instructor circulates to guide. This directly practices CO4.LO3.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [],
+   "minutes": 15.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Deployment Metric Selection",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "Which metric is MOST appropriate for capturing the user-perceived responsiveness of an LLM-based chat endpoint?",
+    "options": [
+     "Average CPU utilization of the model server",
+     "p99 end-to-end latency including token generation",
+     "Number of GPU instances running",
+     "Training loss of the underlying model"
+    ],
+    "answer": 1,
+    "explanation": "p99 end-to-end latency directly measures the worst-case user experience, including token streaming delays. CPU utilization and GPU count are infrastructure metrics, not user-facing. Training loss is a model development metric, not a deployment metric."
+   },
+   "notes": "Quick check to ensure students distinguish user-facing latency metrics from infrastructure and model metrics. The most tempting wrong answer is average CPU utilization because it's commonly monitored but doesn't reflect tail latency.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Reliability Metric Relationships",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "If a service has an SLO of 99.9% availability over 30 days, what is its error budget in minutes?",
+    "options": [
+     "43.2 minutes",
+     "4.32 minutes",
+     "432 minutes",
+     "0.432 minutes"
+    ],
+    "answer": 0,
+    "explanation": "30 days = 43,200 minutes. 0.1% of 43,200 = 43.2 minutes. The error budget is the allowed downtime. 4.32 minutes would be for 99.99% (four nines). 432 minutes is 1% (two nines). 0.432 minutes is 0.001% (five nines)."
+   },
+   "notes": "Tests understanding of error budget calculation. Common mistake: confusing percentage with decimal (0.1% vs 0.1). Also confusing days to minutes conversion.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Best Practices for Continuous Metric Evaluation",
+   "bullets": [
+    "Automate SLO dashboards and alerting on error budget burn rate",
+    "Include model quality SLIs (correctness, hallucination rate)",
+    "Run synthetic canary requests every minute",
+    "Correlate deployments with metric shifts using change events",
+    "Review and adjust SLOs quarterly with stakeholders"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Summarize operational practices: burn-rate alerting (fast vs slow burn), adding model-specific SLIs, synthetic monitoring to detect silent failures, deployment correlation for rapid rollback, and periodic SLO recalibration. Reference C4 on the need for new evaluation frameworks in generative AI.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C4"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Common Pitfalls in Metric Evaluation",
+   "bullets": [
+    "Averaging percentiles (p99 of averages != average of p99)",
+    "Ignoring cold-start latency in serverless model endpoints",
+    "Using only aggregate metrics, missing per-tenant SLOs",
+    "Setting SLOs without historical baseline data",
+    "Alerting on raw metrics instead of error budget burn"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Highlight frequent mistakes: percentile math errors, cold starts in AI model servers (GPU initialization), multi-tenancy requiring per-customer SLOs, arbitrary SLOs leading to constant paging, and noisy alerts. Emphasize that AI-native systems amplify these due to variable token generation times and model loading.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C3",
+    "C4"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "summary",
+   "title": "Summary: Evaluating Deployment and Reliability",
+   "bullets": [
+    "Deployment metrics: latency, throughput, errors, availability, cost",
+    "Reliability metrics: MTBF, MTTR, SLI, SLO, error budget",
+    "Multi-component evaluation requires correlated traces and composite SLIs",
+    "Scenario walkthroughs: identify bottlenecks, quantify error budget burn",
+    "Hands-on: instrument, collect, evaluate, propose fixes",
+    "Continuous evaluation: automation, model-quality SLIs, burn-rate alerts"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Recap the key takeaways. Remind students that the end-semester assessment (Endsem) will require them to perform live evaluation of a supplied project with two evaluator-chosen scenarios, exactly as practiced today. Encourage them to review the lab materials from Weeks 12 and 13.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  }
+ ]
+}

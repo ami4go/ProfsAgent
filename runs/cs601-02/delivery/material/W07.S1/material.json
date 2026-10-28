@@ -1,0 +1,305 @@
+{
+ "lecture_id": "W07.S1",
+ "topic": "Requirements to executable specifications and code generation · Iterative development and loop engineering",
+ "generated_at": "2026-10-28 23:19:10",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W07.S1\\slides.pptx",
+  "notes": "material\\W07.S1\\notes.md",
+  "deck": "material\\W07.S1\\deck.json",
+  "quiz": "material\\W07.S1\\quiz.json"
+ },
+ "slides": 18,
+ "content_slides": 15,
+ "minutes": 90.0,
+ "errors": 8,
+ "warnings": 4,
+ "findings": [
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6: the gherkin snippet was not checked (no checker for 'gherkin' on this machine); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 13"
+   ],
+   "message": "slide 13: the text snippet was not checked (no checker for 'text' on this machine); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 14"
+   ],
+   "message": "slide 14: the text snippet was not checked (no checker for 'text' on this machine); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-AI",
+   "severity": "error",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6 ('Example: Requirement → Spec'): [fact] The Gherkin scenario says the dispenser provides $60, but the requirement only specifies that the user can withdraw cash when the balance is sufficient and does not define a dispenser or any cash-delivery behavior. Fix: Either change the requirement to explicitly include cash dispensation and specify that behavior, or change the scenario to assert only the withdrawal result and resulting balance.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Example: Requirement → Spec"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "error",
+   "nodes": [
+    "slide 7"
+   ],
+   "message": "slide 7 ('Worked Problem: Translate Requirement to Spec & Generate Code'): [code] The generated method mutates account.balance directly and returns only the new balance, so it does not implement the stated withdraw(amount) -> Result contract or provide the transaction result needed to verify the Gherkin scenarios. Fix: Define the public method as withdraw(amount: Decimal) -> Result, keep account state handling consistent with the Account contract, and return a result that explicitly represents success or failure and the resulting balance.",
+   "evidence": {
+    "kind": "code",
+    "title": "Worked Problem: Translate Requirement to Spec & Generate Code"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "error",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('AI‑Assisted Code Generation from Specs'): [fact] The notes incorrectly describe AlphaCode as treating an executable specification as a prompt and automatically running the specification's test suite; AlphaCode used competitive-programming problem statements and generated candidate programs evaluated by hidden tests. Fix: Describe AlphaCode as a competition-oriented code-generation system that generated candidate programs from problem statements and evaluated them with hidden tests, or omit the AlphaCode example and describe the generic spec-to-code feedback loop shown on the slide.",
+   "evidence": {
+    "kind": "fact",
+    "title": "AI‑Assisted Code Generation from Specs"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "error",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10 ('Iterative Loop Engineering Recap'): [fact] The notes claim that execution logs capture every control-flow decision made by a coding agent, which is not guaranteed by ordinary execution logs and is stronger than the later claim that structured logs enable full tracing. Fix: Say that execution logs capture the instrumented control-flow events and other runtime evidence needed for the trace, and that the log schema determines which events can be reconstructed.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Iterative Loop Engineering Recap"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "error",
+   "nodes": [
+    "slide 12"
+   ],
+   "message": "slide 12 ('Execution Logs and Tracing'): [fact] The bullet says logs record every function call, branch, and exception, but the sample entry contains only a call and return and does not demonstrate branch or exception events. Fix: Either qualify the claim as 'logs can record instrumented function calls, branches, and exceptions' or add representative branch and exception entries to the example.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Execution Logs and Tracing"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "error",
+   "nodes": [
+    "slide 13"
+   ],
+   "message": "slide 13 ('Example: Annotated Execution Log'): [fact] The log claims that the agent exercised both scenarios, but it shows only one successful $60 withdrawal and one failed $60 withdrawal; the insufficient-funds scenario requires a $30 balance, which is not shown. Fix: Show the account balance or scenario setup in the log, or change the failed call to use a $30 balance so that both specified scenarios are evidenced.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Example: Annotated Execution Log"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "error",
+   "nodes": [
+    "slide 13"
+   ],
+   "message": "slide 13 ('Example: Annotated Execution Log'): [fact] The annotation labels the failed withdrawal as the insufficient-balance scenario even though the log does not show the required $30 starting balance, so the claimed spec compliance is not established. Fix: Include the starting balance in the log entry or explicitly annotate the scenario setup before the failed call.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Example: Annotated Execution Log"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "error",
+   "nodes": [
+    "slide 14"
+   ],
+   "message": "slide 14 ('Worked Problem: Trace Log to Find Failure'): [fact] The log says the balance condition was reversed, but a false balance>=amount branch for a $60 withdrawal is consistent with an account balance below $60 and does not by itself prove that the condition was reversed. Fix: Show the actual balance and the expected comparison, or describe the bug as an incorrect comparison or missing balance check rather than asserting that the condition was reversed.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Worked Problem: Trace Log to Find Failure"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 17"
+   ],
+   "message": "slide 17 ('Summary: Specs, Generation, and Loop Engineering'): [other] The notes state that both skills are assessed in Assignment 3 and the mid-semester exam, but the provided course context does not verify those assessment claims. Fix: Confirm the assessment mapping with the course coordinator, or remove the specific assessment references if they cannot be verified.",
+   "evidence": {
+    "kind": "other",
+    "title": "Summary: Specs, Generation, and Loop Engineering"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 6,
+   "language": "gherkin",
+   "status": "unchecked",
+   "detail": "no checker for 'gherkin' on this machine"
+  },
+  {
+   "slide": 7,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 12,
+   "language": "json",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 13,
+   "language": "text",
+   "status": "unchecked",
+   "detail": "no checker for 'text' on this machine"
+  },
+  {
+   "slide": 14,
+   "language": "text",
+   "status": "unchecked",
+   "detail": "no checker for 'text' on this machine"
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Competition-level code generation with AlphaCode",
+   "year": 2022,
+   "url": "https://doi.org/10.1126/science.abq1158",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1"
+ ],
+ "calls": [
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1469,
+   "output_tokens": 6067
+  },
+  {
+   "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+   "prompt_tokens": 3480,
+   "output_tokens": 918
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 2405,
+   "output_tokens": 6420
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "prompt_tokens": 3480,
+  "output_tokens": 918,
+  "verdict": "The deck is not yet safe to teach from because several examples overclaim what the logs and generated code demonstrate; the professor should first reconcile the withdrawal contract, scenario evidence, and AlphaCode description.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 6,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The Gherkin scenario says the dispenser provides $60, but the requirement only specifies that the user can withdraw cash when the balance is sufficient and does not define a dispenser or any cash-delivery behavior.",
+    "fix": "Either change the requirement to explicitly include cash dispensation and specify that behavior, or change the scenario to assert only the withdrawal result and resulting balance."
+   },
+   {
+    "slide": 7,
+    "severity": "error",
+    "kind": "code",
+    "problem": "The generated method mutates account.balance directly and returns only the new balance, so it does not implement the stated withdraw(amount) -> Result contract or provide the transaction result needed to verify the Gherkin scenarios.",
+    "fix": "Define the public method as withdraw(amount: Decimal) -> Result, keep account state handling consistent with the Account contract, and return a result that explicitly represents success or failure and the resulting balance."
+   },
+   {
+    "slide": 8,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The notes incorrectly describe AlphaCode as treating an executable specification as a prompt and automatically running the specification's test suite; AlphaCode used competitive-programming problem statements and generated candidate programs evaluated by hidden tests.",
+    "fix": "Describe AlphaCode as a competition-oriented code-generation system that generated candidate programs from problem statements and evaluated them with hidden tests, or omit the AlphaCode example and describe the generic spec-to-code feedback loop shown on the slide."
+   },
+   {
+    "slide": 10,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The notes claim that execution logs capture every control-flow decision made by a coding agent, which is not guaranteed by ordinary execution logs and is stronger than the later claim that structured logs enable full tracing.",
+    "fix": "Say that execution logs capture the instrumented control-flow events and other runtime evidence needed for the trace, and that the log schema determines which events can be reconstructed."
+   },
+   {
+    "slide": 12,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The bullet says logs record every function call, branch, and exception, but the sample entry contains only a call and return and does not demonstrate branch or exception events.",
+    "fix": "Either qualify the claim as 'logs can record instrumented function calls, branches, and exceptions' or add representative branch and exception entries to the example."
+   },
+   {
+    "slide": 13,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The log claims that the agent exercised both scenarios, but it shows only one successful $60 withdrawal and one failed $60 withdrawal; the insufficient-funds scenario requires a $30 balance, which is not shown.",
+    "fix": "Show the account balance or scenario setup in the log, or change the failed call to use a $30 balance so that both specified scenarios are evidenced."
+   },
+   {
+    "slide": 13,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The annotation labels the failed withdrawal as the insufficient-balance scenario even though the log does not show the required $30 starting balance, so the claimed spec compliance is not established.",
+    "fix": "Include the starting balance in the log entry or explicitly annotate the scenario setup before the failed call."
+   },
+   {
+    "slide": 14,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The log says the balance condition was reversed, but a false balance>=amount branch for a $60 withdrawal is consistent with an account balance below $60 and does not by itself prove that the condition was reversed.",
+    "fix": "Show the actual balance and the expected comparison, or describe the bug as an incorrect comparison or missing balance check rather than asserting that the condition was reversed."
+   },
+   {
+    "slide": 17,
+    "severity": "warning",
+    "kind": "other",
+    "problem": "The notes state that both skills are assessed in Assignment 3 and the mid-semester exam, but the provided course context does not verify those assessment claims.",
+    "fix": "Confirm the assessment mapping with the course coordinator, or remove the specific assessment references if they cannot be verified."
+   }
+  ],
+  "repaired": false
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

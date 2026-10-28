@@ -1,0 +1,476 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W10.S2",
+ "title": "Automated testing and evaluation mechanisms",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "Why automated testing matters for AI-generated code",
+   "bullets": [
+    "AI code is nondeterministic and may hide subtle bugs",
+    "Manual review does not scale with generated volume",
+    "Automated pipelines give fast, repeatable confidence",
+    "Testing must cover syntax, semantics, and runtime behavior"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "AI-native software factories produce large amounts of code from models that can hallucinate or misinterpret specifications. Because the output varies across runs, a single manual inspection cannot guarantee quality. Automated testing provides a systematic, repeatable way to catch regressions, enforce contracts, and measure reliability before deployment. This slide sets the motivation for the entire lecture.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [
+    "C4"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Testing pyramid adapted for AI-native pipelines",
+   "bullets": [
+    "Unit tests: check individual generated functions",
+    "Integration tests: verify component interactions",
+    "System tests: run end‑to‑end scenarios with real data",
+    "Property‑based tests: express invariants that must hold for all outputs"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "The classic testing pyramid still applies, but the layers shift. Unit tests are often generated alongside code; integration tests must exercise the boundaries where AI‑generated modules meet hand‑written ones; system tests use realistic workloads; property‑based tests capture high‑level specifications that are hard to enumerate as concrete cases. This structure guides where to invest automation effort.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [
+    "C4",
+    "C6"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Static analysis and specification‑driven checks",
+   "bullets": [
+    "Specifications written in a formal or semi‑formal language",
+    "A spec checker verifies generated code against the spec",
+    "Catches type errors, contract violations, and missing cases",
+    "Runs before any code execution, cheap and fast"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Specification‑driven development (C2) lets developers write pre‑ and post‑conditions, invariants, or interface contracts. A static verifier then proves that the generated implementation satisfies those contracts without executing it. This early gate eliminates a whole class of defects and reduces the load on later dynamic testing stages.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [
+    "C2"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "example",
+   "title": "Specification‑driven example (pseudocode)",
+   "bullets": [
+    "Spec: sort(input) returns output such that output is a permutation of input and is sorted",
+    "Generated code: function sort(arr) { … }",
+    "Static checker validates: isPermutation(input, output) ∧ isSorted(output)",
+    "Checker runs as a separate tool, not as part of the language runtime"
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Pseudocode illustration of a spec and a static check",
+    "steps": [],
+    "code": "// Specification (in a contract language)\nspec sort(input: List<int>) -> output: List<int> {\n  requires true;\n  ensures isPermutation(input, output) && isSorted(output);\n}\n\n// Generated implementation (pseudocode)\nfunction sort(arr) {\n  // ... sorting algorithm ...\n  return sortedArr;\n}\n\n// Static verification step (conceptual)\nverify(sort, spec);",
+    "language": "text",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "The slide shows a tiny contract for a sorting function. The spec states two post‑conditions: the output must be a permutation of the input and must be sorted. The generated code is not executed; instead a separate verification tool (e.g., an SMT‑based checker) proves that the implementation meets the spec for all possible inputs. This illustrates how static specification checks differ from ordinary type checking.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [
+    "C2"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Dynamic testing: execution‑based test generation",
+   "bullets": [
+    "Fuzzing generated functions with random inputs",
+    "Property‑based frameworks (e.g., Hypothesis) derive test cases from specs",
+    "Differential testing: compare AI output with a trusted reference",
+    "Collect coverage to guide further generation"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Static checks cannot catch all semantic errors. Dynamic testing runs the code. Fuzzing explores the input space automatically; property‑based testing turns specifications into executable predicates; differential testing uses a known‑good implementation as an oracle. Coverage feedback can be fed back to the model to improve future generations (see C3 on complexity backpressure).",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [
+    "C1",
+    "C6"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Mutation testing for AI‑generated code",
+   "bullets": [
+    "Inject small syntactic changes into generated code",
+    "Run test suite; surviving mutants indicate weak tests",
+    "Helps measure test adequacy beyond coverage",
+    "Can be automated in CI pipelines"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Mutation testing evaluates the quality of the test suite itself. By systematically mutating the generated code (e.g., flipping operators, changing constants) and checking whether tests fail, we learn whether the tests would catch real defects. This is especially valuable for AI code where the test suite may also be generated.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [
+    "C3"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Learned evaluators: LLM‑as‑judge and reward models",
+   "bullets": [
+    "LLM‑as‑judge: a separate model scores candidate outputs",
+    "Reward models predict human preference or quality signals",
+    "They estimate style, readability, or adherence to instructions",
+    "Functional correctness still requires execution‑based tests"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Learned evaluators are useful for ranking many candidates quickly. A reward model is trained on human feedback and predicts which output a person would prefer. However, it does not execute code, so it cannot reliably certify functional correctness. Execution‑based tests remain the ground truth for correctness; reward models complement them by filtering obvious low‑quality samples.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [
+    "C1",
+    "C6"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Evaluation metrics for code generation",
+   "bullets": [
+    "Pass@k: probability that at least one of k samples passes hidden tests",
+    "Syntax correctness: fraction of parsable programs",
+    "Semantic similarity: e.g., CodeBLEU, execution match",
+    "Runtime performance: latency, memory within limits"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Pass@k is the standard metric in code generation benchmarks (C1). It is defined as the probability that at least one of k independently sampled candidates passes the hidden test suite. The unbiased estimator counts, for each problem, how many of the k samples pass and applies the formula 1 - C(n‑c, k) / C(n, k) where n is total samples and c is passing samples. Syntax and semantic metrics give complementary views.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "example",
+   "title": "Computing Pass@k from sample results (illustrative)",
+   "bullets": [
+    "Problem: 100 samples generated, 30 pass hidden tests",
+    "k = 10, n = 100, c = 30",
+    "Pass@10 = 1 - C(70,10)/C(100,10) ≈ 0.96",
+    "Numbers are illustrative; real benchmarks use many problems"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Illustrative Pass@k calculation",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Parameter",
+      "Value"
+     ],
+     [
+      "Total samples (n)",
+      "100"
+     ],
+     [
+      "Passing samples (c)",
+      "30"
+     ],
+     [
+      "k",
+      "10"
+     ],
+     [
+      "Pass@10 (approx.)",
+      "0.96"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "This table walks through the unbiased estimator for Pass@k. With 100 generated samples and 30 that pass, the chance that a random set of 10 contains at least one passing sample is about 96%. The calculation uses combinatorics; in practice libraries compute it directly. The figures are purely illustrative to show the mechanics.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Benchmark suites for code generation",
+   "bullets": [
+    "HumanEval: 164 Python problems with unit tests",
+    "MBPP: 974 basic programming problems",
+    "APPS: 10,000 problems from easy to competition level",
+    "Benchmarks enable reproducible comparison of models and pipelines"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Standard benchmarks provide a common ground for evaluating code generation. HumanEval and MBPP focus on functional correctness; APPS adds algorithmic difficulty. When reporting Pass@k or other metrics, always state the benchmark and the exact evaluation protocol (temperature, number of samples, test suite version).",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [
+    "C1",
+    "C4"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Reliability requirements and test adequacy criteria",
+   "bullets": [
+    "Safety‑critical: require mutation score > 90% and zero critical mutants",
+    "Business‑critical: target Pass@k ≥ 0.95 on representative benchmarks",
+    "Regulatory: traceability from requirement to test case",
+    "Adequacy criteria guide where to invest testing effort"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Different domains impose different reliability targets. Safety‑critical systems often mandate high mutation scores and evidence that all requirements are exercised. Business‑critical AI services may set a Pass@k threshold on a curated benchmark. Explicit adequacy criteria turn vague quality goals into measurable testing objectives.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [
+    "C4"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Comparing two testing pipelines (hypothetical assumptions)",
+   "bullets": [
+    "Pipeline A: static spec check + mutation testing + execution suite",
+    "Pipeline B: LLM‑as‑judge filter + lightweight unit tests",
+    "Assumed cost per PR: A = $0.50 (hypothetical), B = $0.10 (hypothetical)",
+    "Assumed false‑negative rate: A low, B moderate (illustrative)",
+    "Measurement method: run both pipelines on a fixed benchmark set, record cost, latency, and defect escape rate"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Hypothetical comparison of two pipelines (assumptions only)",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Criterion",
+      "Pipeline A (assumed)",
+      "Pipeline B (assumed)",
+      "Measurement method"
+     ],
+     [
+      "Cost per PR",
+      "$0.50",
+      "$0.10",
+      "Instrument CI billing"
+     ],
+     [
+      "False‑negative rate",
+      "Low",
+      "Moderate",
+      "Inject known defects, measure detection"
+     ],
+     [
+      "Latency",
+      "Higher",
+      "Lower",
+      "Timestamp start/end of pipeline"
+     ],
+     [
+      "Defect escape rate",
+      "Lower",
+      "Higher",
+      "Track production incidents"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "This worked problem shows how to structure a comparison. All numbers are explicitly labeled as hypothetical assumptions; they are not measured data. The rightmost column describes how each criterion would be measured in practice: instrument the CI system for cost, seed known mutants for false‑negative rate, timestamp pipeline stages for latency, and monitor production for escaped defects. This teaches the evaluation process without presenting fabricated results as facts.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [
+    "C4",
+    "C6"
+   ],
+   "minutes": 10.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Pass@k definition",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "What does Pass@k measure in code generation evaluation?",
+    "options": [
+     "The fraction of generated programs that compile successfully",
+     "The probability that at least one of k sampled candidates passes the hidden tests",
+     "The average similarity score between generated and reference solutions",
+     "The percentage of test cases covered by the generated code"
+    ],
+    "answer": 1,
+    "explanation": "Pass@k is defined as the probability that at least one of k independently sampled candidates passes the hidden test suite. Option 0 describes syntax correctness, option 2 describes semantic similarity metrics like CodeBLEU, and option 3 describes test coverage. The most tempting wrong answer is option 0 because compilation is a prerequisite but not the definition of Pass@k."
+   },
+   "notes": "This question checks the precise definition of Pass@k, a core metric for the learning outcome. The explanation clarifies why the other options are related but distinct concepts.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Role of reward models",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "Which statement best describes the role of a reward model in AI code generation pipelines?",
+    "options": [
+     "It executes generated code and reports pass/fail results",
+     "It predicts human preference or quality signals without running the code",
+     "It formally verifies that the code satisfies a given specification",
+     "It mutates the code to assess test suite adequacy"
+    ],
+    "answer": 1,
+    "explanation": "Reward models are trained on human feedback to predict which outputs humans would prefer; they do not execute code, perform formal verification, or conduct mutation testing. Option 0 describes execution‑based testing, option 2 describes static specification checking, and option 3 describes mutation testing. The most tempting wrong answer is option 0 because both reward models and execution tests are used for quality assessment, but they operate differently."
+   },
+   "notes": "This question reinforces the distinction between learned evaluators and execution‑based correctness checks, a key point for comparing testing mechanisms.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "summary",
+   "title": "Summary: Automated testing and evaluation mechanisms",
+   "bullets": [
+    "Static spec checks catch contract violations early",
+    "Dynamic testing (fuzzing, property‑based, differential) validates runtime behavior",
+    "Mutation testing measures test suite quality",
+    "Learned evaluators rank candidates but cannot replace execution tests",
+    "Pass@k and benchmark suites provide standardized effectiveness metrics",
+    "Reliability requirements drive adequacy criteria and pipeline design"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Recap the main mechanisms: static specification‑driven verification, dynamic execution‑based testing, mutation analysis, learned evaluators, and quantitative metrics. Emphasize that each mechanism addresses different reliability requirements and that a robust AI‑native pipeline combines them in a layered fashion. This summary directly supports CO4.LO1.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  }
+ ]
+}

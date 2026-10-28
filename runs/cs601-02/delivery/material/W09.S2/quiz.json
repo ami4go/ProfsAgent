@@ -1,0 +1,30 @@
+[
+ {
+  "slide": 10,
+  "los": [
+   "CO3.LO2"
+  ],
+  "question": "Which trace element most directly compares required behavior with observed behavior?",
+  "options": [
+   "A diff between two file versions",
+   "A prompt containing only the task description",
+   "A test output showing expected and received values",
+   "A timestamp between two tool calls"
+  ],
+  "answer": 2,
+  "explanation": "The test output directly places expected and received values side by side, so it compares required behavior with observed behavior. A diff shows what changed, but does not itself establish the required result. A prompt containing only the task description states an intention without showing what happened. A timestamp establishes ordering, not correctness."
+ },
+ {
+  "slide": 16,
+  "los": [],
+  "question": "A trace shows the agent repeatedly running the same unavailable test command. Which validation evidence is most directly useful?",
+  "options": [
+   "A unit test for an unrelated helper function",
+   "A trace review of the repeated tool calls",
+   "A broader integration test with no environment check",
+   "A second identical test command"
+  ],
+  "answer": 1,
+  "explanation": "A trace review directly shows the repeated command and the unchanged error, supporting a diagnosis of a stalled process in an unavailable environment. An unrelated unit test does not address that evidence. A broader integration test may encounter the same environment problem without explaining it. Repeating the identical command adds no new diagnostic information."
+ }
+]

@@ -1,0 +1,150 @@
+{
+ "lecture_id": "W08.S2",
+ "topic": "Iterative development logs and software factory outputs",
+ "generated_at": "2026-10-28 23:55:05",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W08.S2\\slides.pptx",
+  "notes": "material\\W08.S2\\notes.md",
+  "deck": "material\\W08.S2\\deck.json",
+  "quiz": "material\\W08.S2\\quiz.json"
+ },
+ "slides": 16,
+ "content_slides": 13,
+ "minutes": 90.0,
+ "errors": 0,
+ "warnings": 3,
+ "findings": [
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 7",
+    "C1"
+   ],
+   "message": "slide 7 ('Seeded Defects: Purpose and Categories') cites [C1] 'Competition-level code generation with AlphaCode', which matches it weakly (0.21; average source 0.22): check the citation",
+   "evidence": {
+    "similarity": 0.212
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 9",
+    "C6"
+   ],
+   "message": "slide 9 ('Worked Problem: API Misuse in Generated Code') cites [C6] 'Autonomous Coding Agents for Software Development Testing and Debugging', which matches it weakly (0.05; average source 0.06): check the citation",
+   "evidence": {
+    "similarity": 0.054
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 14",
+    "C3"
+   ],
+   "message": "slide 14 ('Best Practices for Analyzing Iterative Logs') cites [C3] 'Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks', which matches it weakly (0.21; average source 0.21): check the citation",
+   "evidence": {
+    "similarity": 0.213
+   },
+   "stage": "content"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 8,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 9,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Competition-level code generation with AlphaCode",
+   "year": 2022,
+   "url": "https://doi.org/10.1126/science.abq1158",
+   "kind": "reading",
+   "approved": true
+  },
+  "C2": {
+   "title": "SPECIFICATION-DRIVEN DEVELOPMENT AS STRUCTURED APPROACH FOR SOURCE CODE GENERATION",
+   "year": 2026,
+   "url": "https://doi.org/10.52058/2786-6025-2026-4(58)-2631-2644",
+   "kind": "reading",
+   "approved": true
+  },
+  "C3": {
+   "title": "Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks",
+   "year": 2026,
+   "url": "https://doi.org/10.1109/sse72781.2026.00047",
+   "kind": "reading",
+   "approved": true
+  },
+  "C4": {
+   "title": "8 Redefining and Transforming Software Development with Generative AI",
+   "year": 2025,
+   "url": "https://doi.org/10.1515/9783111677798-008",
+   "kind": "reference",
+   "approved": true
+  },
+  "C5": {
+   "title": "Query Tuning Framework Using the Model Context Protocol for Workflows",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.6172059",
+   "kind": "reading",
+   "approved": true
+  },
+  "C6": {
+   "title": "Autonomous Coding Agents for Software Development Testing and Debugging",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.7515638",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1",
+  "C2",
+  "C3",
+  "C4",
+  "C5",
+  "C6"
+ ],
+ "calls": [
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:k4de9076c",
+   "prompt_tokens": 1679,
+   "output_tokens": 5831
+  },
+  {
+   "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+   "prompt_tokens": 2845,
+   "output_tokens": 1346
+  }
+ ],
+ "ai_review": {
+  "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+  "model": "gemini:gemini-3.5-flash",
+  "prompt_tokens": 2845,
+  "output_tokens": 1346,
+  "verdict": "The deck is safe to teach from and clearly structured around analyzing iterative development logs and software factory outputs.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [],
+  "repaired": false
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

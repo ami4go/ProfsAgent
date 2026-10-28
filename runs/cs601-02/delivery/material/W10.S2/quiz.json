@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 15,
+  "los": [
+   "CO4.LO1"
+  ],
+  "question": "What does Pass@k measure in code generation evaluation?",
+  "options": [
+   "The fraction of generated programs that compile successfully",
+   "The probability that at least one of k sampled candidates passes the hidden tests",
+   "The average similarity score between generated and reference solutions",
+   "The percentage of test cases covered by the generated code"
+  ],
+  "answer": 1,
+  "explanation": "Pass@k is defined as the probability that at least one of k independently sampled candidates passes the hidden test suite. Option 0 describes syntax correctness, option 2 describes semantic similarity metrics like CodeBLEU, and option 3 describes test coverage. The most tempting wrong answer is option 0 because compilation is a prerequisite but not the definition of Pass@k."
+ },
+ {
+  "slide": 16,
+  "los": [
+   "CO4.LO1"
+  ],
+  "question": "Which statement best describes the role of a reward model in AI code generation pipelines?",
+  "options": [
+   "It executes generated code and reports pass/fail results",
+   "It predicts human preference or quality signals without running the code",
+   "It formally verifies that the code satisfies a given specification",
+   "It mutates the code to assess test suite adequacy"
+  ],
+  "answer": 1,
+  "explanation": "Reward models are trained on human feedback to predict which outputs humans would prefer; they do not execute code, perform formal verification, or conduct mutation testing. Option 0 describes execution‑based testing, option 2 describes static specification checking, and option 3 describes mutation testing. The most tempting wrong answer is option 0 because both reward models and execution tests are used for quality assessment, but they operate differently."
+ }
+]

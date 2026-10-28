@@ -1,0 +1,466 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W13.S1",
+ "title": "Deployment and reliability metric evaluation",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "Why Deployment Metrics Matter for AI-Native Pipelines",
+   "bullets": [
+    "AI components add non-determinism",
+    "Traditional metrics insufficient",
+    "Need end-to-end reliability view",
+    "Metrics drive automated remediation"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Explain that AI-native pipelines include model serving, data preprocessing, and inference services. Traditional deployment metrics (CPU, memory) don't capture model drift, prediction latency distributions, or cascade failures. This lecture teaches how to evaluate deployment and reliability metrics for multi-component AI systems, using live scenario walkthroughs.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C4"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Core Deployment Metrics for Multi-Component Systems",
+   "bullets": [
+    "Latency percentiles (p50, p95, p99)",
+    "Throughput (requests/second)",
+    "Error rates by type",
+    "Rollback frequency and duration",
+    "Resource saturation indicators"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Key deployment metrics and collection methods",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Metric",
+      "Target",
+      "Collection Method"
+     ],
+     [
+      "Latency p99",
+      "<500ms",
+      "Prometheus histogram"
+     ],
+     [
+      "Throughput",
+      ">1000 req/s",
+      "Counter increments"
+     ],
+     [
+      "Error rate",
+      "<0.5%",
+      "Counter by type"
+     ],
+     [
+      "Rollback frequency",
+      "<1/week",
+      "Deployment logs"
+     ],
+     [
+      "CPU saturation",
+      "<80%",
+      "Node exporter"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "Deployment metrics must be collected per component and aggregated. Latency percentiles reveal tail latency issues. Throughput indicates capacity. Error rates categorized by HTTP codes, model errors, timeouts. Rollback frequency shows deployment stability. Resource saturation (CPU, GPU, memory) predicts failures.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C3"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Reliability Metrics: MTBF, MTTR, Availability, SLOs",
+   "bullets": [
+    "Mean Time Between Failures (MTBF)",
+    "Mean Time To Recovery (MTTR)",
+    "Availability = MTBF/(MTBF+MTTR)",
+    "Service Level Objectives (SLOs) and Indicators (SLIs)",
+    "Error budgets for release decisions"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "SLO-driven reliability loop",
+    "steps": [
+     "Define SLIs",
+     "Set SLOs",
+     "Measure",
+     "Alert on error budget burn",
+     "Automate rollback"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Reliability metrics quantify system health over time. MTBF and MTTR are classic. SLOs translate business requirements into measurable targets (e.g., 99.9% requests <200ms). Error budgets allow balancing feature velocity vs reliability. These metrics guide automated deployment decisions.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C6"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Evaluating Multi-Component Projects: Dependency Mapping",
+   "bullets": [
+    "Identify all services, models, data stores",
+    "Map synchronous vs asynchronous calls",
+    "Define contract tests for interfaces",
+    "Trace request flows across components",
+    "Detect single points of failure"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Dependency mapping process",
+    "steps": [
+     "Inventory components",
+     "Map dependencies",
+     "Define contracts",
+     "Instrument tracing",
+     "Analyze failure domains"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "A multi-component AI project may include data pipelines, feature stores, model servers, and business logic services. Dependency mapping reveals cascading failure risks. Contract tests ensure compatibility. Distributed tracing (e.g., OpenTelemetry) provides latency breakdowns. This slide sets up the scenario walkthroughs.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C2"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Scenario 1: Microservice Deployment Evaluation",
+   "bullets": [
+    "Given: 3-service order processing system",
+    "Metrics: p99 latency 800ms, error rate 2%",
+    "SLO: p99 <500ms, error rate <0.5%",
+    "Walkthrough: identify bottleneck, correlate logs, propose fix",
+    "Outcome: error budget exhausted, rollback triggered"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Live walkthrough: The evaluator provides a scenario. We demonstrate evaluating deployment metrics for a 3-service order system (API gateway, order service, payment service). We examine dashboards, find payment service p99 latency spike due to downstream database contention. Correlate with deployment event. Show how error budget burn triggers automated rollback. This demonstrates the evaluation skill.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C3",
+    "C6"
+   ],
+   "minutes": 12.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Scenario 2: AI Model Serving Pipeline Evaluation",
+   "bullets": [
+    "Given: Model serving with pre/post processing",
+    "Metrics: prediction latency p99 1.2s, drift detection alerts",
+    "SLO: p99 <800ms, drift score <0.1",
+    "Walkthrough: trace through preprocess, inference, postprocess",
+    "Outcome: identify preprocessing bottleneck, scale horizontally"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Model serving request flow",
+    "steps": [
+     "Request received",
+     "Preprocess",
+     "Inference",
+     "Postprocess",
+     "Response sent",
+     "Drift check"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Second scenario: an AI model serving pipeline with preprocessing, inference, and postprocessing. Metrics show prediction latency SLO breach and data drift alerts. We trace a request, find preprocessing step taking 600ms due to inefficient tokenization. Demonstrate horizontal scaling of preprocessing workers and model batching. Show how drift detection integrates with deployment pipeline.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C1",
+    "C5"
+   ],
+   "minutes": 12.0
+  },
+  {
+   "kind": "concept",
+   "title": "Metric Collection and Observability Stack",
+   "bullets": [
+    "Prometheus for metric scraping",
+    "Grafana for dashboards",
+    "OpenTelemetry for distributed tracing",
+    "Log aggregation (Loki, ELK)",
+    "Alerting rules and notification channels"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Observability stack components",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Tool",
+      "Purpose",
+      "Integration"
+     ],
+     [
+      "Prometheus",
+      "Metric collection",
+      "Service exporters"
+     ],
+     [
+      "Grafana",
+      "Visualization",
+      "Prometheus datasource"
+     ],
+     [
+      "OpenTelemetry",
+      "Distributed tracing",
+      "Auto-instrumentation"
+     ],
+     [
+      "Loki",
+      "Log aggregation",
+      "Promtail agents"
+     ],
+     [
+      "Alertmanager",
+      "Alert routing",
+      "Webhook, PagerDuty"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "Observability stack is essential for metric evaluation. Prometheus pulls metrics from exporters. Grafana visualizes. OpenTelemetry provides vendor-neutral tracing. Logs complement metrics. Alerting rules encode SLOs. This stack enables the live evaluation demonstrated in scenarios.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C4"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Automated Evaluation Pipelines: Continuous Validation",
+   "bullets": [
+    "Canary analysis with metric comparison",
+    "Automated rollback on SLO breach",
+    "Chaos engineering for resilience testing",
+    "Synthetic transaction monitoring",
+    "Feedback loop to development"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Canary evaluation pipeline",
+    "steps": [
+     "Deploy canary",
+     "Collect metrics",
+     "Compare to baseline",
+     "Decide promote/rollback",
+     "Update baseline"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Automated evaluation pipelines continuously validate deployments. Canary analysis compares new version metrics against baseline. Automated rollback protects users. Chaos engineering injects failures to test resilience. Synthetic transactions monitor critical paths. Feedback loop informs developers. This closes the reliability loop.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C6"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Complexity Backpressure and Its Impact on Reliability",
+   "bullets": [
+    "AI agents generate complex code under pressure",
+    "Complexity backpressure degrades reliability",
+    "Metrics: cyclomatic complexity, dependency depth",
+    "Mitigation: modular design, automated refactoring",
+    "Monitor complexity trends in CI/CD"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Complexity backpressure loop",
+    "steps": [
+     "Code generated",
+     "Complexity measured",
+     "Threshold exceeded",
+     "Backpressure applied",
+     "Refactor triggered"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Based on C3, complexity backpressure occurs when AI coding agents produce increasingly complex code under tight deadlines, leading to higher failure rates. Tracking code complexity metrics in CI/CD provides early warning. Automated refactoring or human review can relieve pressure. This connects to reliability metric evaluation.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C3"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "activity",
+   "title": "Hands-On: Instrument and Evaluate a Sample Project",
+   "bullets": [
+    "Clone provided multi-component repo",
+    "Add Prometheus metrics to each service",
+    "Deploy to local Kubernetes (kind)",
+    "Generate load and observe dashboards",
+    "Evaluate against given SLOs, propose improvements"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Students work on their development machines. They instrument a sample project (e.g., a simple AI pipeline with model serving and preprocessing). They deploy locally, generate load, and use Grafana dashboards to evaluate deployment and reliability metrics against predefined SLOs. They document findings and propose improvements. This activity directly practices CO4.LO3.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [],
+   "minutes": 20.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Metric Selection for AI Model Serving",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "Which metric is most critical for detecting model serving performance degradation in real-time?",
+    "options": [
+     "CPU utilization of the model server",
+     "Prediction latency p99",
+     "Number of model parameters",
+     "Training loss on validation set"
+    ],
+    "answer": 1,
+    "explanation": "Prediction latency p99 directly reflects user-facing performance. CPU utilization is a resource metric but doesn't guarantee latency SLOs. Model parameters and training loss are offline metrics, not deployment metrics."
+   },
+   "notes": "This check assesses understanding of deployment vs offline metrics. The most tempting wrong answer is CPU utilization because it's commonly monitored but doesn't capture tail latency.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [],
+   "minutes": 3.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Reliability Evaluation Decision",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "During a canary deployment, the error budget burn rate exceeds 10x. What is the correct automated action?",
+    "options": [
+     "Increase canary traffic to 100%",
+     "Pause deployment and alert on-call",
+     "Rollback canary to previous version",
+     "Ignore and continue monitoring"
+    ],
+    "answer": 2,
+    "explanation": "A burn rate >10x indicates rapid error budget consumption. Automated rollback protects users. Pausing and alerting is slower. Increasing traffic worsens impact. Ignoring violates SLO commitments."
+   },
+   "notes": "This check tests knowledge of error budget policies and automated remediation. The tempting wrong answer is pausing and alerting, which is manual and slower than automated rollback.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [],
+   "minutes": 3.0
+  },
+  {
+   "kind": "summary",
+   "title": "Key Takeaways: Deployment and Reliability Metric Evaluation",
+   "bullets": [
+    "Deployment metrics: latency, throughput, errors, rollbacks",
+    "Reliability metrics: MTBF, MTTR, SLOs, error budgets",
+    "Multi-component evaluation requires dependency mapping",
+    "Live scenario walkthroughs demonstrate evaluation skill",
+    "Automated pipelines enforce reliability continuously",
+    "Hands-on practice with observability stack"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Summarize the lecture: We covered core deployment and reliability metrics, how to evaluate them for multi-component AI-native systems, and walked through two live scenarios. We introduced the observability stack and automated evaluation pipelines. The hands-on activity gave practical experience. These skills are assessed in the endsem exam.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  }
+ ]
+}

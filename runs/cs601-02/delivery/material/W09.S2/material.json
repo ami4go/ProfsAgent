@@ -1,0 +1,340 @@
+{
+ "lecture_id": "W09.S2",
+ "topic": "Software factories and execution trace analysis · Testing and validation in iterative development",
+ "generated_at": "2026-10-29 00:33:43",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W09.S2\\slides.pptx",
+  "notes": "material\\W09.S2\\notes.md",
+  "deck": "material\\W09.S2\\deck.json",
+  "quiz": "material\\W09.S2\\quiz.json"
+ },
+ "slides": 17,
+ "content_slides": 14,
+ "minutes": 79.0,
+ "errors": 0,
+ "warnings": 14,
+ "findings": [
+  {
+   "code": "D-NOTES",
+   "severity": "warning",
+   "nodes": [
+    "slide 16"
+   ],
+   "message": "slide 16 ('Check: Choosing the Right Validation') has no speaker notes",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 7"
+   ],
+   "message": "slide 7: the text snippet was not checked (no checker for 'text' on this machine); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8: the text snippet was not checked (no checker for 'text' on this machine); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9: the text snippet was not checked (no checker for 'text' on this machine); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 5"
+   ],
+   "message": "slide 5 ('Typical failure categories in agent traces'): [fact] The claim that empirical studies of AlphaCode and autonomous agents reveal exactly four dominant failure modes is unsupported and likely misleading, since AlphaCode is primarily a code-generation system rather than evidence for this specific four-category taxonomy. Fix: Say that the four categories are a practical taxonomy for this exercise, not a definitive result from AlphaCode studies. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Typical failure categories in agent traces"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6 ('Trace excerpt: a type error cascade'): [fact] The slide labels the excerpt as a type-error cascade and refers to a runtime TypeError, but the shown trace contains a TypeError followed by a ValueError and does not show the caller, input, or line references. Fix: Describe it as an input-coercion failure sequence and either include the caller/input evidence or remove the unsupported line-number claims. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Trace excerpt: a type error cascade"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6 ('Trace excerpt: a type error cascade'): [clarity] The bullets cite lines 12, 45, and 78, but the displayed JSONL has only four records and no line-number field, so students cannot map the bullets to the excerpt. Fix: Use record numbers that match the displayed excerpt or label the bullets as hypothetical locations in the full trace. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Trace excerpt: a type error cascade"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('Toolchain for trace collection and querying'): [fact] The table implies that JSONL plus jq supports SQL queries, although jq is a JSON processor and does not provide SQL querying. Fix: List jq under JSONL filtering and list a separate SQL-capable tool for relational queries. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Toolchain for trace collection and querying"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('Toolchain for trace collection and querying'): [fact] The table lists Grafana as the visualization tool for Parquet plus SQL, but Grafana is primarily a dashboard and visualization layer and does not itself query Parquet files. Fix: Name a Parquet-compatible query engine such as DuckDB and state that Grafana can visualize its exported query results. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Toolchain for trace collection and querying"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9 ('Check: trace analysis fundamentals'): [quiz] The question asks which log element most directly reveals a specification mismatch, but both the prompt text and the diff between expected and actual output can provide direct evidence of such a mismatch. Fix: Ask which element most directly compares required behavior with observed behavior, or make the prompt-text option explicitly insufficient by stating that it contains only the task description. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Check: trace analysis fundamentals"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 15"
+   ],
+   "message": "slide 15 ('Reliability metrics for software factories'): [other] The targets of greater than 90 percent, less than 30 minutes, and a balanced failure-type distribution are presented as universal targets without a stated basis. Fix: Label these as illustrative team targets to be set from project context rather than standard requirements. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "other",
+    "title": "Reliability metrics for software factories"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 16"
+   ],
+   "message": "slide 16 ('Closing the loop: trace‑driven model improvement'): [fact] The claim that this mirrors the AlphaCode approach of using execution outcomes as reward signals misstates AlphaCode, which used large-scale sampling and filtering for code generation rather than this trace-driven fine-tuning and reward-model loop. Fix: Remove the AlphaCode comparison or describe it accurately as an example of execution-based filtering for generated programs. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Closing the loop: trace‑driven model improvement"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 16"
+   ],
+   "message": "slide 16 ('Closing the loop: trace‑driven model improvement'): [fact] The slide presents trace-derived fine-tuning and reward modeling as a direct consequence of trace analysis without noting that successful execution alone does not establish correctness or provide a reliable training signal. Fix: State that traces must be curated and independently validated before use as training or reward data. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Closing the loop: trace‑driven model improvement"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 17"
+   ],
+   "message": "slide 17 ('Key takeaways'): [fact] The takeaway that testing must be independent of the generator is too absolute because independently generated tests can still share the generator's blind spots. Fix: Say that validation should use diverse and independently validated tests, including human-authored or property-based checks. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Key takeaways"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 7,
+   "language": "text",
+   "status": "unchecked",
+   "detail": "no checker for 'text' on this machine"
+  },
+  {
+   "slide": 8,
+   "language": "text",
+   "status": "unchecked",
+   "detail": "no checker for 'text' on this machine"
+  },
+  {
+   "slide": 9,
+   "language": "text",
+   "status": "unchecked",
+   "detail": "no checker for 'text' on this machine"
+  },
+  {
+   "slide": 14,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Competition-level code generation with AlphaCode",
+   "year": 2022,
+   "url": "https://doi.org/10.1126/science.abq1158",
+   "kind": "reading",
+   "approved": true
+  },
+  "C2": {
+   "title": "8 Redefining and Transforming Software Development with Generative AI",
+   "year": 2025,
+   "url": "https://doi.org/10.1515/9783111677798-008",
+   "kind": "reference",
+   "approved": true
+  },
+  "C3": {
+   "title": "Autonomous Coding Agents for Software Development Testing and Debugging",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.7515638",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C3"
+ ],
+ "calls": [
+  {
+   "endpoint": "cache(nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f)",
+   "prompt_tokens": 0,
+   "output_tokens": 0
+  },
+  {
+   "endpoint": "cache(nvidia:minimaxai/minimax-m3.1-flash:ke411530f)",
+   "prompt_tokens": 0,
+   "output_tokens": 0
+  },
+  {
+   "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+   "prompt_tokens": 1913,
+   "output_tokens": 3159
+  }
+ ],
+ "ai_review": {
+  "endpoint": "cache(nvidia:minimaxai/minimax-m3.1-flash:ke411530f)",
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "prompt_tokens": 0,
+  "output_tokens": 0,
+  "verdict": "The deck is broadly teachable, but the professor should correct the unsupported AlphaCode claim, the mislabeled trace example, and the ambiguous specification-mismatch quiz before class.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 5,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The claim that empirical studies of AlphaCode and autonomous agents reveal exactly four dominant failure modes is unsupported and likely misleading, since AlphaCode is primarily a code-generation system rather than evidence for this specific four-category taxonomy.",
+    "fix": "Say that the four categories are a practical taxonomy for this exercise, not a definitive result from AlphaCode studies."
+   },
+   {
+    "slide": 6,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The slide labels the excerpt as a type-error cascade and refers to a runtime TypeError, but the shown trace contains a TypeError followed by a ValueError and does not show the caller, input, or line references.",
+    "fix": "Describe it as an input-coercion failure sequence and either include the caller/input evidence or remove the unsupported line-number claims."
+   },
+   {
+    "slide": 6,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The bullets cite lines 12, 45, and 78, but the displayed JSONL has only four records and no line-number field, so students cannot map the bullets to the excerpt.",
+    "fix": "Use record numbers that match the displayed excerpt or label the bullets as hypothetical locations in the full trace."
+   },
+   {
+    "slide": 8,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The table implies that JSONL plus jq supports SQL queries, although jq is a JSON processor and does not provide SQL querying.",
+    "fix": "List jq under JSONL filtering and list a separate SQL-capable tool for relational queries."
+   },
+   {
+    "slide": 8,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The table lists Grafana as the visualization tool for Parquet plus SQL, but Grafana is primarily a dashboard and visualization layer and does not itself query Parquet files.",
+    "fix": "Name a Parquet-compatible query engine such as DuckDB and state that Grafana can visualize its exported query results."
+   },
+   {
+    "slide": 9,
+    "severity": "error",
+    "kind": "quiz",
+    "problem": "The question asks which log element most directly reveals a specification mismatch, but both the prompt text and the diff between expected and actual output can provide direct evidence of such a mismatch.",
+    "fix": "Ask which element most directly compares required behavior with observed behavior, or make the prompt-text option explicitly insufficient by stating that it contains only the task description."
+   },
+   {
+    "slide": 15,
+    "severity": "warning",
+    "kind": "other",
+    "problem": "The targets of greater than 90 percent, less than 30 minutes, and a balanced failure-type distribution are presented as universal targets without a stated basis.",
+    "fix": "Label these as illustrative team targets to be set from project context rather than standard requirements."
+   },
+   {
+    "slide": 16,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The claim that this mirrors the AlphaCode approach of using execution outcomes as reward signals misstates AlphaCode, which used large-scale sampling and filtering for code generation rather than this trace-driven fine-tuning and reward-model loop.",
+    "fix": "Remove the AlphaCode comparison or describe it accurately as an example of execution-based filtering for generated programs."
+   },
+   {
+    "slide": 16,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The slide presents trace-derived fine-tuning and reward modeling as a direct consequence of trace analysis without noting that successful execution alone does not establish correctness or provide a reliable training signal.",
+    "fix": "State that traces must be curated and independently validated before use as training or reward data."
+   },
+   {
+    "slide": 17,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The takeaway that testing must be independent of the generator is too absolute because independently generated tests can still share the generator's blind spots.",
+    "fix": "Say that validation should use diverse and independently validated tests, including human-authored or property-based checks."
+   }
+  ],
+  "repaired": true
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

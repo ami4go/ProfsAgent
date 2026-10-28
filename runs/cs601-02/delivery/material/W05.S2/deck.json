@@ -1,0 +1,427 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W05.S2",
+ "title": "Software Requirements and Spec-Driven Development Frameworks",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "What Are Software Requirements?",
+   "bullets": [
+    "Definition: statements of what the system must do",
+    "Serve as contract between stakeholders and developers",
+    "Foundation for design, testing, and acceptance"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Introduce the concept of requirements as the bridge between business needs and technical solutions. Emphasize that clear requirements reduce rework later.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Functional vs Non-Functional Requirements",
+   "bullets": [
+    "Functional: specific behaviors, inputs, outputs",
+    "Non-functional: performance, security, usability",
+    "Both must be captured for a complete specification"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Explain the distinction with examples: a login function (functional) vs response time under 200 ms (non-functional). Mention that non-functional requirements often drive architecture decisions.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Requirements Engineering Process",
+   "bullets": [
+    "Elicitation – gather needs from stakeholders",
+    "Analysis – resolve conflicts, prioritize",
+    "Specification – document in a structured format",
+    "Validation – ensure requirements meet stakeholder intent"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Requirements engineering lifecycle",
+    "steps": [
+     "Elicitation",
+     "Analysis",
+     "Specification",
+     "Validation"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Walk through each phase, noting that iteration is common. Highlight that validation includes reviews, prototypes, and test case derivation.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 7.0
+  },
+  {
+   "kind": "concept",
+   "title": "Use Cases and System Boundaries",
+   "bullets": [
+    "Use case: a goal-oriented interaction between actor and system",
+    "System boundary defines what is inside vs outside the system",
+    "Actors can be humans, other systems, or devices"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Show a simple context diagram. Stress that identifying the boundary early prevents scope creep. Relate to the spec-driven guideline of writing use cases before detailed specs.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 7.0
+  },
+  {
+   "kind": "example",
+   "title": "Deriving Use Cases from a Product Description",
+   "bullets": [
+    "Product: online refund request portal",
+    "Actors: Customer, Support Agent, Payment Gateway",
+    "Use cases: Submit Request, Review Request, Process Refund, Notify Customer"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Actors and Use Cases",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Actor",
+      "Use Cases"
+     ],
+     [
+      "Customer",
+      "Submit Request, View Status"
+     ],
+     [
+      "Support Agent",
+      "Review Request, Approve/Reject"
+     ],
+     [
+      "Payment Gateway",
+      "Process Refund"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "Demonstrate how to read a narrative and extract actors and use cases. This directly supports LO1 (outline use cases from unstructured descriptions).",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 7.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Classifying Requirements",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "Which of the following is a non-functional requirement for the refund portal?",
+    "options": [
+     "The system shall allow a customer to submit a refund request.",
+     "The system shall process refunds within 2 business days.",
+     "The system shall send an email notification after refund approval.",
+     "The system shall integrate with the existing payment gateway."
+    ],
+    "answer": 1,
+    "explanation": "Option B describes a performance constraint (time bound), which is a non-functional requirement. Option A, C, and D describe specific system behaviors (functional)."
+   },
+   "notes": "Quick in-class poll. Discuss why performance, security, and usability are non-functional.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Writing Good Requirements (SMART & IEEE 830)",
+   "bullets": [
+    "Specific, Measurable, Achievable, Relevant, Time-bound",
+    "Unambiguous, testable, traceable",
+    "Use consistent terminology and structure"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Present a before/after example: vague vs SMART requirement. Mention IEEE 830 as a standard template for requirement specifications.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 7.0
+  },
+  {
+   "kind": "concept",
+   "title": "Traceability and Validation",
+   "bullets": [
+    "Trace each requirement to design, code, and test artifacts",
+    "Bidirectional traceability supports impact analysis",
+    "Validation techniques: reviews, prototypes, acceptance tests"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Traceability links",
+    "steps": [
+     "Requirement",
+     "Design",
+     "Implementation",
+     "Test"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Explain how traceability matrices are built and used during change management. Connect to later spec-driven development where executable specs serve as living traceability artifacts.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "summary",
+   "title": "Part 1 Recap: Requirements Engineering Essentials",
+   "bullets": [
+    "Requirements define what the system must do",
+    "Functional and non-functional types",
+    "Process: elicitation → analysis → specification → validation",
+    "Use cases capture actor–system interactions",
+    "Good requirements are SMART and traceable"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Briefly recap the first 60 minutes. Ask if any concepts need clarification before moving to spec-driven frameworks.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 3.0
+  },
+  {
+   "kind": "concept",
+   "title": "Spec-Driven Development Overview",
+   "bullets": [
+    "Specifications written in executable form drive implementation",
+    "Reduces gap between requirements and code",
+    "Enables automated test generation and verification"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Introduce the paradigm shift: specs become first-class artifacts. Cite the 2026 paper on specification-driven development as a structured approach for source code generation.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Executable Specifications: Definition and Benefits",
+   "bullets": [
+    "Executable spec = formal, machine-readable description of behavior",
+    "Can be run as tests before any implementation exists",
+    "Supports continuous validation and living documentation"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Contrast with traditional textual specs. Mention tools like Gherkin, SpecFlow, or Python's pytest-bdd. Highlight that executable specs meet the interface specification for every public method (LO2).",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Worked Example: Executable Spec for Refund Processing",
+   "bullets": [
+    "Define the public interface: process_refund(request_id, amount)",
+    "Write a spec that asserts expected outcomes",
+    "Provide a minimal implementation to make the spec pass"
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Executable specification and stub implementation in Python",
+    "steps": [],
+    "code": "def process_refund(request_id: str, amount: float) -> dict:\n    \"\"\"Stub implementation for demonstration.\"\"\"\n    return {\"request_id\": request_id, \"status\": \"approved\", \"amount\": amount}\n\n# Executable specification (runnable as a test)\ndef test_process_refund_approval():\n    result = process_refund(\"REQ-123\", 99.50)\n    assert result[\"request_id\"] == \"REQ-123\"\n    assert result[\"status\"] == \"approved\"\n    assert result[\"amount\"] == 99.50\n\nif __name__ == \"__main__\":\n    test_process_refund_approval()\n    print(\"Spec passed\")",
+    "language": "python",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Walk through the code line by line. Explain that the spec (test) is written first, then the stub makes it pass. In practice, the spec would be more detailed and the implementation generated or written to satisfy it. This demonstrates translating module requirements into executable specifications (LO2).",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 10.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Characteristics of Executable Specifications",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "What is a key benefit of executable specifications over traditional textual specs?",
+    "options": [
+     "They are easier to write for non-technical stakeholders.",
+     "They can be automatically executed to validate behavior.",
+     "They eliminate the need for any testing.",
+     "They replace the need for version control."
+    ],
+    "answer": 1,
+    "explanation": "Executable specifications can be run as automated tests, providing continuous validation. Option A is false because they often require technical syntax. Option C is false; they complement but do not replace testing. Option D is unrelated."
+   },
+   "notes": "In-class quiz to reinforce the definition and value of executable specs.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "From Executable Specs to Code Generation",
+   "bullets": [
+    "Specs define contracts for each public method",
+    "Code generators can scaffold implementations from specs",
+    "Human developers fill in business logic, preserving spec compliance"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Spec → Generator → Scaffold → Developer",
+    "steps": [
+     "Executable Spec",
+     "Code Generator",
+     "Scaffolded Code",
+     "Developer Logic"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Describe the workflow: write spec, run generator to produce interface stubs, developers implement bodies. Mention that this aligns with the course's later lab on executable specification and code generation.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "summary",
+   "title": "Lecture Summary: Requirements to Executable Specs",
+   "bullets": [
+    "Requirements engineering provides the foundation",
+    "Use cases capture system boundaries and actor goals",
+    "Spec-driven development turns requirements into executable specifications",
+    "Executable specs serve as living documentation and automated tests",
+    "Next steps: lab on writing and running executable specs"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Conclude the 90-minute session. Highlight the two learning outcomes achieved. Remind students of upcoming lab and assignments.",
+   "los": [
+    "CO2.LO1",
+    "CO2.LO2"
+   ],
+   "sources": [],
+   "minutes": 3.0
+  }
+ ]
+}

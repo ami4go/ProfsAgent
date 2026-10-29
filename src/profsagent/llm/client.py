@@ -164,7 +164,7 @@ class LLMClient:
                 body["generationConfig"]["responseJsonSchema"] = response_schema
         if tools:
             body["tools"] = tools
-        r = self.http.post(f"{GEMINI}/{model}:generateContent", headers={"x-goog-api-key": key}, json=body)
+        r = self._post_deadline(f"{GEMINI}/{model}:generateContent", {"x-goog-api-key": key}, body, self.lim["timeout_s"])
         if r.status_code != 200:
             raise _HTTPError(r.status_code, r.text)
         j = r.json()
@@ -205,11 +205,11 @@ class LLMClient:
             body["response_format"] = {"type": "json_object"}
         hdr = {"Authorization": f"Bearer {key}", **(p.get("headers") or {})}
         tmo = p.get("timeout_s", self.lim["timeout_s"])
-        r = self.http.post(p["base_url"].rstrip("/") + "/chat/completions", headers=hdr, json=body, timeout=tmo)
+        r = self._post_deadline(p["base_url"].rstrip("/") + "/chat/completions", hdr, body, tmo)
         if r.status_code in (400, 422) and "response_format" in body and re.search(r"response_format|json", r.text, re.I):
             self.no_json_mode.add(model)
             body.pop("response_format")
-            r = self.http.post(p["base_url"].rstrip("/") + "/chat/completions", headers=hdr, json=body, timeout=tmo)
+            r = self._post_deadline(p["base_url"].rstrip("/") + "/chat/completions", hdr, body, tmo)
         if r.status_code != 200:
             raise _HTTPError(r.status_code, r.text)
         j = r.json()
@@ -219,6 +219,18 @@ class LLMClient:
         msg = (j.get("choices") or [{}])[0].get("message") or {}
         u = j.get("usage") or {}
         return msg.get("content") or "", {"prompt": u.get("prompt_tokens", 0), "output": u.get("completion_tokens", 0)}, {}
+
+    def _post_deadline(self, url: str, headers: dict, body: dict, seconds: float) -> httpx.Response:
+        """POST with a deadline on the WHOLE response. httpx's timeout only bounds each gap between chunks, so a model
+        that trickles its reply could hold a run for half an hour (seen on NVIDIA NIM, 2026-10-28)."""
+        t0 = time.time()
+        with self.http.stream("POST", url, headers=headers, json=body, timeout=seconds) as r:
+            chunks = []
+            for chunk in r.iter_bytes():
+                chunks.append(chunk)
+                if time.time() - t0 > seconds:
+                    raise httpx.ReadTimeout(f"no complete reply within {seconds:.0f} s")
+            return httpx.Response(r.status_code, headers=r.headers, content=b"".join(chunks), request=r.request)
 
     @staticmethod
     def _until_pacific_midnight() -> float:
@@ -323,7 +335,7 @@ class LLMClient:
                     continue
                 secs, why = self._cooldown_for(e)
                 if record is not None:
-                    record.attempts.append({"slot": slot, "ok": False, "status": e.status, "why": why or e.text[:120]})
+                    record.attempts.append({"slot": slot, "ok": False, "status": e.status, "why": why or e.text[:120], "s": round(time.time() - t0, 1)})
                 if secs:
                     if e.status in (401, 403):
                         self.slots.cool(f"key:{ep['provider']}:{_fp(key)}", secs, why)
@@ -347,7 +359,7 @@ class LLMClient:
                     for kx in ks:
                         self.slots.cool(f"{ep['provider']}:{ep['model']}:{_fp(kx)}", self.lim["cooldown_503_s"], "ReadTimeout (model busy)")
                 if record is not None:
-                    record.attempts.append({"slot": slot, "ok": False, "why": type(e).__name__})
+                    record.attempts.append({"slot": slot, "ok": False, "why": type(e).__name__, "s": round(time.time() - t0, 1)})
                 last = e
                 continue
         raise AllEndpointsFailed(f"all endpoints for role '{role}' unavailable; last: {str(last)[:200]}")

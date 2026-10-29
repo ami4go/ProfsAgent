@@ -1,0 +1,312 @@
+{
+ "lecture_id": "W12.S1",
+ "topic": "Reliable and safe trustworthy software architectures",
+ "generated_at": "2026-10-29 01:17:31",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W12.S1\\slides.pptx",
+  "notes": "material\\W12.S1\\notes.md",
+  "deck": "material\\W12.S1\\deck.json",
+  "quiz": "material\\W12.S1\\quiz.json"
+ },
+ "slides": 19,
+ "content_slides": 16,
+ "minutes": 90.0,
+ "errors": 0,
+ "warnings": 13,
+ "findings": [
+  {
+   "code": "D-DENSE",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8: 7 bullets, 0 over 22 words",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 4",
+    "C4"
+   ],
+   "message": "slide 4 ('Automated Testing Pipeline Stages') cites [C4] '8 Redefining and Transforming Software Development with Generative AI', which matches it weakly (0.20; average source 0.24): check the citation",
+   "evidence": {
+    "similarity": 0.204
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 8",
+    "C4"
+   ],
+   "message": "slide 8 ('Assessing a Multi‑Component Pipeline Design') cites [C4] '8 Redefining and Transforming Software Development with Generative AI', which matches it weakly (0.19; average source 0.22): check the citation",
+   "evidence": {
+    "similarity": 0.195
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 9",
+    "C4"
+   ],
+   "message": "slide 9 ('Contract Testing for Service Interfaces') cites [C4] '8 Redefining and Transforming Software Development with Generative AI', which matches it weakly (0.09; average source 0.16): check the citation",
+   "evidence": {
+    "similarity": 0.091
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 16",
+    "C3"
+   ],
+   "message": "slide 16 ('Ensuring Reproducibility via Controlled Reruns') cites [C3] 'Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks', which matches it weakly (0.13; average source 0.24): check the citation",
+   "evidence": {
+    "similarity": 0.13
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 17",
+    "C4"
+   ],
+   "message": "slide 17 ('Deployment and Reliability Metric Evaluation Preview') cites [C4] '8 Redefining and Transforming Software Development with Generative AI', which matches it weakly (0.15; average source 0.18): check the citation",
+   "evidence": {
+    "similarity": 0.148
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('AlphaCode Competition Pipeline Case Study'): [fact] The AlphaCode pipeline is mischaracterized: AlphaCode primarily generates candidate programs and filters and clusters them, while its evaluation uses generated tests and submission-time tests rather than the stated generic sequence of unit and stress tests. Fix: Describe the AlphaCode pipeline accurately: problem parsing, large-scale candidate generation, filtering and clustering, evaluation using generated and held-out tests, and selection of a submitted solution. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "AlphaCode Competition Pipeline Case Study"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('AlphaCode Competition Pipeline Case Study'): [fact] The table labels selection as addressing reproducibility, although selecting a passing candidate is primarily a correctness and performance decision and does not itself establish reproducibility. Fix: Label Selection with the requirements it directly supports, such as correctness and performance, and explain reproducibility separately through deterministic evaluation and controlled reruns. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "AlphaCode Competition Pipeline Case Study"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9 ('Complexity Backpressure in AI Coding Agents'): [fact] Complexity backpressure is presented as a standard mechanism that detects overly complex generated code and applies token and modularity limits, but no such named mechanism or standard implementation is established in the supplied material. Fix: Define complexity backpressure explicitly as the course's proposed policy for rejecting or refactoring overly complex generated code, and state that token and modularity thresholds are examples of configurable checks rather than an established standard. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Complexity Backpressure in AI Coding Agents"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10 ('Query Tuning via Model Context Protocol'): [fact] The Model Context Protocol is incorrectly described as providing dynamic context-window adjustment and retrieval-augmented prompt optimization; MCP is a protocol for exchanging context and invoking tools, not a built-in context-tuning or retrieval mechanism. Fix: State that MCP standardizes how AI applications expose tools, resources, and contextual information, and that context selection, retrieval, and token-budget policies are implemented by the client or application. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Query Tuning via Model Context Protocol"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10 ('Query Tuning via Model Context Protocol'): [fact] The claim that MCP tuning reduces flaky test outcomes and improves reproducibility is unsupported and misleading because MCP does not itself control nondeterminism or guarantee consistent model outputs. Fix: Explain that MCP can standardize the context and tool interfaces supplied to an agent, which may improve traceability and reproducibility when the client also controls retrieval, versions, and execution settings. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Query Tuning via Model Context Protocol"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 14"
+   ],
+   "message": "slide 14 ('Check: Reliability Requirement Identification'): [quiz] The answer key identifies robustness as the primary requirement addressed by static analysis, but static analysis primarily detects defects and violations before execution, which more directly supports correctness and can also support robustness depending on the checks performed. Fix: Either change the correct answer to correctness or rewrite the question to specify a robustness-oriented static check, such as detecting unchecked error paths or unsafe failure handling. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Check: Reliability Requirement Identification"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 15"
+   ],
+   "message": "slide 15 ('Check: Pipeline Design Decision Justification'): [quiz] The answer key identifies correctness as the only requirement addressed by contract testing, but contract testing also directly supports maintainability by detecting incompatible interface changes, so the wording does not support a unique answer. Fix: Ask which requirement contract testing primarily verifies for service-interface compatibility, with correctness as the intended answer, or include maintainability only as a clearly secondary distractor. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Check: Pipeline Design Decision Justification"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [],
+ "sources": {
+  "C1": {
+   "title": "Competition-level code generation with AlphaCode",
+   "year": 2022,
+   "url": "https://doi.org/10.1126/science.abq1158",
+   "kind": "reading",
+   "approved": true
+  },
+  "C2": {
+   "title": "SPECIFICATION-DRIVEN DEVELOPMENT AS STRUCTURED APPROACH FOR SOURCE CODE GENERATION",
+   "year": 2026,
+   "url": "https://doi.org/10.52058/2786-6025-2026-4(58)-2631-2644",
+   "kind": "reading",
+   "approved": true
+  },
+  "C3": {
+   "title": "Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks",
+   "year": 2026,
+   "url": "https://doi.org/10.1109/sse72781.2026.00047",
+   "kind": "reading",
+   "approved": true
+  },
+  "C4": {
+   "title": "8 Redefining and Transforming Software Development with Generative AI",
+   "year": 2025,
+   "url": "https://doi.org/10.1515/9783111677798-008",
+   "kind": "reference",
+   "approved": true
+  },
+  "C5": {
+   "title": "Query Tuning Framework Using the Model Context Protocol for Workflows",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.6172059",
+   "kind": "reading",
+   "approved": true
+  },
+  "C6": {
+   "title": "Autonomous Coding Agents for Software Development Testing and Debugging",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.7515638",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1",
+  "C2",
+  "C3",
+  "C4",
+  "C5",
+  "C6"
+ ],
+ "calls": [
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1695,
+   "output_tokens": 6335
+  },
+  {
+   "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+   "prompt_tokens": 2785,
+   "output_tokens": 751
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 2513,
+   "output_tokens": 4889
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "prompt_tokens": 2785,
+  "output_tokens": 751,
+  "verdict": "The deck is not yet safe to teach from because the AlphaCode case study and the description of MCP contain material inaccuracies, and both check questions need clearer single-answer wording.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 8,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The AlphaCode pipeline is mischaracterized: AlphaCode primarily generates candidate programs and filters and clusters them, while its evaluation uses generated tests and submission-time tests rather than the stated generic sequence of unit and stress tests.",
+    "fix": "Describe the AlphaCode pipeline accurately: problem parsing, large-scale candidate generation, filtering and clustering, evaluation using generated and held-out tests, and selection of a submitted solution."
+   },
+   {
+    "slide": 8,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The table labels selection as addressing reproducibility, although selecting a passing candidate is primarily a correctness and performance decision and does not itself establish reproducibility.",
+    "fix": "Label Selection with the requirements it directly supports, such as correctness and performance, and explain reproducibility separately through deterministic evaluation and controlled reruns."
+   },
+   {
+    "slide": 9,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "Complexity backpressure is presented as a standard mechanism that detects overly complex generated code and applies token and modularity limits, but no such named mechanism or standard implementation is established in the supplied material.",
+    "fix": "Define complexity backpressure explicitly as the course's proposed policy for rejecting or refactoring overly complex generated code, and state that token and modularity thresholds are examples of configurable checks rather than an established standard."
+   },
+   {
+    "slide": 10,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The Model Context Protocol is incorrectly described as providing dynamic context-window adjustment and retrieval-augmented prompt optimization; MCP is a protocol for exchanging context and invoking tools, not a built-in context-tuning or retrieval mechanism.",
+    "fix": "State that MCP standardizes how AI applications expose tools, resources, and contextual information, and that context selection, retrieval, and token-budget policies are implemented by the client or application."
+   },
+   {
+    "slide": 10,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The claim that MCP tuning reduces flaky test outcomes and improves reproducibility is unsupported and misleading because MCP does not itself control nondeterminism or guarantee consistent model outputs.",
+    "fix": "Explain that MCP can standardize the context and tool interfaces supplied to an agent, which may improve traceability and reproducibility when the client also controls retrieval, versions, and execution settings."
+   },
+   {
+    "slide": 14,
+    "severity": "error",
+    "kind": "quiz",
+    "problem": "The answer key identifies robustness as the primary requirement addressed by static analysis, but static analysis primarily detects defects and violations before execution, which more directly supports correctness and can also support robustness depending on the checks performed.",
+    "fix": "Either change the correct answer to correctness or rewrite the question to specify a robustness-oriented static check, such as detecting unchecked error paths or unsafe failure handling."
+   },
+   {
+    "slide": 15,
+    "severity": "error",
+    "kind": "quiz",
+    "problem": "The answer key identifies correctness as the only requirement addressed by contract testing, but contract testing also directly supports maintainability by detecting incompatible interface changes, so the wording does not support a unique answer.",
+    "fix": "Ask which requirement contract testing primarily verifies for service-interface compatibility, with correctness as the intended answer, or include maintainability only as a clearly secondary distractor."
+   }
+  ],
+  "repaired": true
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

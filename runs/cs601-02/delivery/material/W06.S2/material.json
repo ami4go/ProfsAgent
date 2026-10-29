@@ -1,0 +1,169 @@
+{
+ "lecture_id": "W06.S2",
+ "topic": "Requirements to executable specifications and code generation",
+ "generated_at": "2026-10-28 23:09:18",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W06.S2\\slides.pptx",
+  "notes": "material\\W06.S2\\notes.md",
+  "deck": "material\\W06.S2\\deck.json",
+  "quiz": "material\\W06.S2\\quiz.json"
+ },
+ "slides": 17,
+ "content_slides": 14,
+ "minutes": 90.0,
+ "errors": 0,
+ "warnings": 4,
+ "findings": [
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6 ('Structuring Requirements with Pytest Specifications'): [clarity] The example test code calls `calculate_discount` which is not defined or imported, making the specification non-executable as written; students may think it can run immediately. Fix: Add a comment indicating the function is imported from the module under test, or show a stub import.",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Structuring Requirements with Pytest Specifications"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('Step 1: Writing Executable Specs for a Module Contract'): [clarity] The `pytest.raises` `match` parameter uses a plain string which is interpreted as a regex pattern; students might assume it requires an exact match. Fix: Note that `match` is a regex pattern, or use a raw string `match=r\"Insufficient funds\"` to make the regex nature explicit.",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Step 1: Writing Executable Specs for a Module Contract"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9 ('Step 2: Generating and Verifying Implementation Against Specs'): [clarity] The AI-generated implementation adds a `deposit` method not present in the original interface stub or test suite, which may imply the AI can extend the public interface beyond the spec. Fix: Either include `deposit` in the executable specification or add a note that the AI introduced an extra method not required by the given spec.",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Step 2: Generating and Verifying Implementation Against Specs"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 12"
+   ],
+   "message": "slide 12 ('Automated Feedback Loops for Code Refinement'): [clarity] The flow diagram step \"Pass or Feedback Loop\" is ambiguous; it conflates two distinct outcomes. Fix: Split into two branches: \"Pass\" and \"Feedback Loop\" to clearly show the iterative cycle.",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Automated Feedback Loops for Code Refinement"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 6,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 8,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 9,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 13,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Competition-level code generation with AlphaCode",
+   "year": 2022,
+   "url": "https://doi.org/10.1126/science.abq1158",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1"
+ ],
+ "calls": [
+  {
+   "endpoint": "gemini:gemini-3.5-flash:kaf6cdf0b",
+   "prompt_tokens": 1262,
+   "output_tokens": 8257
+  },
+  {
+   "endpoint": "gemini:gemini-3.5-flash:kaf6cdf0b",
+   "prompt_tokens": 1334,
+   "output_tokens": 7780
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 3492,
+   "output_tokens": 4692
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+  "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+  "prompt_tokens": 3492,
+  "output_tokens": 4692,
+  "verdict": "The deck is safe to teach from with minor clarifications needed on executable spec runnability, pytest match regex behavior, AI interface adherence, and the feedback loop diagram.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 6,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The example test code calls `calculate_discount` which is not defined or imported, making the specification non-executable as written; students may think it can run immediately.",
+    "fix": "Add a comment indicating the function is imported from the module under test, or show a stub import."
+   },
+   {
+    "slide": 8,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The `pytest.raises` `match` parameter uses a plain string which is interpreted as a regex pattern; students might assume it requires an exact match.",
+    "fix": "Note that `match` is a regex pattern, or use a raw string `match=r\"Insufficient funds\"` to make the regex nature explicit."
+   },
+   {
+    "slide": 9,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The AI-generated implementation adds a `deposit` method not present in the original interface stub or test suite, which may imply the AI can extend the public interface beyond the spec.",
+    "fix": "Either include `deposit` in the executable specification or add a note that the AI introduced an extra method not required by the given spec."
+   },
+   {
+    "slide": 12,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The flow diagram step \"Pass or Feedback Loop\" is ambiguous; it conflates two distinct outcomes.",
+    "fix": "Split into two branches: \"Pass\" and \"Feedback Loop\" to clearly show the iterative cycle."
+   }
+  ],
+  "repaired": false
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

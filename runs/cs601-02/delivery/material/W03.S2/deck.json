@@ -1,0 +1,413 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W03.S2",
+ "title": "Custom tool integrations using model context protocols",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "Recap: Agent Workspaces and External Tools",
+   "bullets": [
+    "Coding agents extend LLM capabilities by executing external tools within local workspace environments.",
+    "Custom tool integrations allow agents to run linters, query databases, and execute custom scripts.",
+    "Standardized protocols prevent custom, brittle integration code for every tool and IDE pair.",
+    "Clean workspace configuration requires zero static analysis warnings and passing integration tests."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "In our previous session on coding agents, we saw how models use workspace context to understand repository structures. Today, we focus on extending agent capabilities by integrating custom tools using the Model Context Protocol (MCP). Without a standard protocol, connecting an agent in an IDE to a local linter, build system, or custom API requires writing custom glue code for every tool and environment combination.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "concept",
+   "title": "What is the Model Context Protocol (MCP)?",
+   "bullets": [
+    "MCP is an open standard enabling AI models to interact securely with local and remote context sources.",
+    "Decouples AI application hosts from specific tool implementations using standard client-server interfaces.",
+    "Replaces bespoke plug-in adapters with uniform protocol interfaces across development environments.",
+    "Provides structured workflows for context retrieval, template prompts, and executable tool calls."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "MCP architecture decoupling host applications from workspace tools",
+    "steps": [
+     "LLM Host",
+     "MCP Client",
+     "Protocol Transport",
+     "MCP Server",
+     "Workspace Tool"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "The Model Context Protocol (MCP) solves the N-by-M integration problem in AI-assisted development. Instead of every AI host creating custom drivers for every tool, MCP standardizes how AI applications connect to context providers and tool executors.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "MCP Architecture: Hosts, Clients, and Servers",
+   "bullets": [
+    "An MCP Host (e.g., IDE or agent runner) manages user interactions and coordinates AI sessions.",
+    "An MCP Client maintains a logical connection to a particular MCP Server.",
+    "A host may instantiate multiple clients to communicate with multiple specialized servers simultaneously.",
+    "Communication uses standard transports: local stdio for subprocesses or Streamable HTTP for remote servers.",
+    "HTTP+SSE remains as a legacy transport mechanism in older implementations."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "It is critical to understand the relationship between Hosts, Clients, and Servers. An MCP Host coordinates the application. To connect to tools, the host creates separate MCP Clients. Each MCP Client maintains a logical connection to a single MCP Server. If a workspace uses three servers (a database server, a linter server, and a git server), the host creates three clients. Standard transports include stdio for local child processes and Streamable HTTP for network services, while HTTP+SSE is a legacy transport.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "MCP Core Primitives: Resources, Prompts, and Tools",
+   "bullets": [
+    "Resources expose readable context data like log files, database schemas, or workspace documentation.",
+    "Prompts provide reusable template structures to guide model reasoning for specific tasks.",
+    "Tools allow models to perform side-effect actions such as running builds or invoking static analyzers.",
+    "Tools use JSON Schema to define their input arguments so models know how to call them.",
+    "Tool execution results return as structured MCP content, including text, images, or resource references."
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Comparison of MCP Core Primitives",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Primitive",
+      "Direction",
+      "Purpose",
+      "Data Format"
+     ],
+     [
+      "Resources",
+      "Server to Client",
+      "Expose readable context",
+      "Text / Binary Data"
+     ],
+     [
+      "Prompts",
+      "Server to Client",
+      "Provide contextual templates",
+      "Prompt Messages"
+     ],
+     [
+      "Tools",
+      "Client to Server",
+      "Execute workspace actions",
+      "JSON Input / Content Output"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "MCP defines three core primitives: Resources, Prompts, and Tools. Notice the distinct role of Tools: they are designed for actions that modify state or execute commands in the workspace. Tools define their accepted input arguments using JSON Schema, while their output is returned as structured MCP content blocks like text stdout, error reports, or images.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Tool Schema Definitions and Input Validation",
+   "bullets": [
+    "Tools declare exact parameter types, descriptions, and required fields using JSON Schema format.",
+    "Clear parameter descriptions guide model call generation, reducing malformed parameter attempts.",
+    "Schema guidance reduces but does not eliminate malformed tool call attempts by models.",
+    "Server-side validation rejects invalid arguments before executing actual tool or shell logic.",
+    "Structured error responses inform the agent of validation failures so it can retry correctly."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Defining a clean JSON Schema is necessary for the AI model to construct valid calls. However, never rely on the model alone for system security or program safety. Schema guidance reduces malformed calls, but the MCP Server must validate incoming arguments on the server side before executing any shell command or linter.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Worked Problem: Writing a Tool Definition in JSON Schema",
+   "bullets": [
+    "Step 1: Define the tool name and human-readable description for the LLM tool selector.",
+    "Step 2: Construct the JSON Schema inputSchema object with type 'object'.",
+    "Step 3: Define properties for filePath (string) and linterName (enum: eslint, flake8).",
+    "Step 4: Specify required array ensuring mandatory properties are enforced during validation."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Complete JSON Schema definition for a custom linter tool",
+    "steps": [],
+    "code": "{\n  \"name\": \"run_linter\",\n  \"description\": \"Runs a specified linter on a target file path.\",\n  \"inputSchema\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"filePath\": {\n        \"type\": \"string\",\n        \"description\": \"Relative path to source file within workspace\"\n      },\n      \"linterName\": {\n        \"type\": \"string\",\n        \"enum\": [\"eslint\", \"flake8\"],\n        \"description\": \"Linter tool to execute\"\n      }\n    },\n    \"required\": [\"filePath\", \"linterName\"]\n  }\n}",
+    "language": "json",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Let's work through writing a custom tool schema. Notice how every parameter includes a clear description. The linterName parameter restricts options via an enum array to prevent arbitrary binary execution.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [],
+   "minutes": 8.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: MCP Transports and Schema Rules",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "Which statement correctly describes MCP tool execution and transport architecture?",
+    "options": [
+     "An MCP Host connects directly to servers without clients, using JSON Schema to validate server responses.",
+     "An MCP Client maintains a logical connection to a specific MCP Server, using stdio or Streamable HTTP transport.",
+     "MCP Tools use JSON Schema to define output return types, and use HTTP+SSE as the required primary transport.",
+     "MCP Servers automatically validate all LLM outputs before they leave the model runner process."
+    ],
+    "answer": 1,
+    "explanation": "Option 1 is correct: an MCP Client maintains a logical connection to a particular MCP Server over stdio or Streamable HTTP. Option 0 is false because hosts create clients to manage connections. Option 2 is false because JSON Schema defines tool input arguments, not output return types, and Streamable HTTP is preferred over legacy HTTP+SSE. Option 3 is false because input validation occurs on the MCP Server upon receiving a call request."
+   },
+   "notes": "Let's check our understanding of MCP client-server topology and schema rules before moving on to code implementation.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "example",
+   "title": "Implementing a Custom MCP Tool Server",
+   "bullets": [
+    "Server validates incoming arguments against the tool schema prior to executing workspace commands.",
+    "Actual tool invocation occurs safely after parameter verification.",
+    "Return responses formatted as MCP content blocks containing stdout or structured error reports."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "TypeScript server handling run_linter request with parameter validation",
+    "steps": [],
+    "code": "import { Server } from \"@modelcontextprotocol/sdk/server/index.js\";\nimport { CallToolRequestSchema } from \"@modelcontextprotocol/sdk/types.js\";\nimport { execSync } from \"child_process\";\n\nserver.setRequestHandler(CallToolRequestSchema, async (req) => {\n  const { name, arguments: args } = req.params;\n  if (name !== \"run_linter\") throw new Error(\"Unknown tool\");\n  const path = String(args?.filePath || \"\");\n  const linter = String(args?.linterName || \"\");\n  if (!path || ![\"eslint\", \"flake8\"].includes(linter)) {\n    return { content: [{ type: \"text\", text: \"Error: Invalid tool arguments supplied.\" }] };\n  }\n  try {\n    const stdout = execSync(`${linter} ${path}`).toString();\n    return { content: [{ type: \"text\", text: stdout || \"Linting passed with 0 errors.\" }] };\n  } catch (err: unknown) {\n    const msg = err instanceof Error ? err.message : String(err);\n    return { content: [{ type: \"text\", text: `Linter failed: ${msg}` }] };\n  }\n});",
+    "language": "typescript",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Here is a complete server handler implementation in TypeScript. Notice two essential practices: first, we explicitly validate that filePath and linterName match our expected constraints before calling execSync. Second, we capture errors safely using modern TypeScript typing.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [],
+   "minutes": 8.0
+  },
+  {
+   "kind": "concept",
+   "title": "Integrating MCP Servers into Agent Workspaces",
+   "bullets": [
+    "Workspace configuration files (e.g., mcp.json) declare active tool servers for agent host applications.",
+    "Specifies server launch command, binary executable, environment variables, and argument flags.",
+    "IDEs spawn client instances using stdio sub-processes or establish Streamable HTTP connections.",
+    "Workspace static analyzers check configuration files for schema compliance and unreachable binaries."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Example mcp.json workspace configuration entry",
+    "steps": [],
+    "code": "{\n  \"mcpServers\": {\n    \"code-quality\": {\n      \"command\": \"node\",\n      \"args\": [\"./build/index.js\"],\n      \"env\": {\n        \"LOG_LEVEL\": \"info\"\n      }\n    }\n  }\n}",
+    "language": "json",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Once your server code is written, you register it in the workspace configuration file. The agent host reads this configuration and automatically creates an MCP Client to launch or connect to the server when starting an agent session.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Static Analysis & Configuration Diagnostics",
+   "bullets": [
+    "Configured static analyzers evaluate workspace settings and server code for type safety and path errors.",
+    "Typical integration warnings stem from missing permissions, unescaped path variables, or missing types.",
+    "Modern TypeScript configurations enforce strict type narrowing for caught errors and request payloads.",
+    "Elimination of compiler warnings ensures robust execution during automated agent invocations."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "In strict development environments, integration tasks require zero static analysis warnings. Common configuration issues include missing environmental variables or ambiguous type assertions in tool handlers.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "example",
+   "title": "Fixing Configuration and Analysis Warnings",
+   "bullets": [
+    "Common warning: Catch blocks using err.message fail strict compiler checks when err is unknown.",
+    "Fix: Narrow the unknown type safely using an instanceof Error guard before accessing properties.",
+    "Common config warning: Missing server configuration fields or unvalidated input parameter types.",
+    "Ensuring zero static analysis warnings guarantees reliable agent tool invocation during integration tests."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Type-safe error narrowing function preventing compiler diagnostics",
+    "steps": [],
+    "code": "function getErrorMessage(err: unknown): string {\n  if (err instanceof Error) {\n    return err.message;\n  }\n  if (typeof err === \"object\" && err !== null && \"message\" in err) {\n    return String((err as { message: unknown }).message);\n  }\n  return String(err);\n}\n\ntry {\n  const res = execSync(\"eslint src/index.ts\");\n} catch (err: unknown) {\n  const safeMessage = getErrorMessage(err);\n  console.error(\"Static analysis output:\", safeMessage);\n}",
+    "language": "typescript",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Notice how the catch block types `err` as `unknown`. Accessing `err.message` directly causes a static analyzer diagnostic error. By creating a helper with an `instanceof Error` guard, we satisfy strict compiler checks and avoid runtime crashes.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [],
+   "minutes": 8.0
+  },
+  {
+   "kind": "activity",
+   "title": "Activity: Build and Integrate a Custom MCP Linter Tool",
+   "bullets": [
+    "Implement a custom MCP server exposing a run_linter tool with JSON Schema validation.",
+    "Configure your local workspace settings (mcp.json) to register the newly built MCP server.",
+    "Run the workspace static analyzer and verify 0 warnings are reported in the build log.",
+    "Execute public integration tests to confirm the AI agent successfully invokes the linter tool."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Step-by-step workflow for the lab activity",
+    "steps": [
+     "Define Tool Schema",
+     "Implement Handler",
+     "Configure mcp.json",
+     "Run Static Analyzer",
+     "Pass Integration Tests"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Now it is time for practical exercise. Open your development environment and implement the custom linter server. Make sure to run your workspace static analyzer until all warnings are resolved, and run the public test suite.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [],
+   "minutes": 12.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Resolving Diagnostics and Errors",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "You encounter a static analyzer warning in strict TypeScript when logging tool execution errors: 'Property message does not exist on type unknown'. What is the correct fix?",
+    "options": [
+     "Cast the error using (err as any).message to bypass compiler type checking permanently.",
+     "Disable strict null and unknown checks in tsconfig.json so the workspace build succeeds.",
+     "Narrow the caught error using an 'err instanceof Error' check before accessing err.message.",
+     "Change the MCP tool input schema to declare that errors are returned as JSON objects."
+    ],
+    "answer": 2,
+    "explanation": "Option 2 is correct because in strict TypeScript, caught errors are of type 'unknown' and must be narrowed (e.g., via 'err instanceof Error') before accessing properties. Option 0 uses 'any' which circumvents type checking and violates workspace standards. Option 1 disables strict checks rather than resolving the code issue. Option 3 confuses runtime MCP input schema with static compiler error handling."
+   },
+   "notes": "Review this check to reinforce how static analysis issues should be solved cleanly without disabling strict compiler flags.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "summary",
+   "title": "Summary: Custom Tool Integrations with MCP",
+   "bullets": [
+    "Model Context Protocol standardizes agent tool integration through host, client, and server roles.",
+    "MCP Clients connect to individual MCP Servers using stdio or Streamable HTTP.",
+    "Tools use JSON Schema for input argument validation, returning text or structured content objects.",
+    "Server-side validation enforces input parameters before invoking underlying workspace scripts.",
+    "Resolving static analysis diagnostics and narrowing error types ensures warning-free tool configuration."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "To summarize, MCP provides a clean standard for integrating external tools into AI agent workspaces. Remember to validate inputs on the server, configure stdio or Streamable HTTP transports properly, and ensure strict type narrowing to eliminate all static analysis warnings.",
+   "los": [
+    "CO1.LO2"
+   ],
+   "sources": [],
+   "minutes": 3.0
+  }
+ ]
+}

@@ -1,0 +1,253 @@
+{
+ "lecture_id": "W11.S1",
+ "topic": "Automated testing and evaluation mechanisms · Pipeline evaluation mechanisms and metrics",
+ "generated_at": "2026-10-29 01:07:39",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W11.S1\\slides.pptx",
+  "notes": "material\\W11.S1\\notes.md",
+  "deck": "material\\W11.S1\\deck.json",
+  "quiz": "material\\W11.S1\\quiz.json"
+ },
+ "slides": 16,
+ "content_slides": 14,
+ "minutes": 90.0,
+ "errors": 0,
+ "warnings": 10,
+ "findings": [
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 3"
+   ],
+   "message": "slide 3 ('Recap: Automated Testing Mechanisms (Week 10)'): [clarity] The notes describe property-based checks as capturing “distributional expectations,” which conflates property-based testing with statistical validation and may mislead students about what properties are normally asserted. Fix: Describe property-based testing as checking invariant properties over generated inputs; reserve distributional comparisons for statistical validation. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Recap: Automated Testing Mechanisms (Week 10)"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6 ('Why Pipeline Evaluation Matters'): [fact] The reference to a “2026 cross-model study (C1)” and its finding about “complexity backpressure” is unsupported and appears to be an invented source or result. Fix: Remove the study citation and claim, or replace it with a verifiable source and an accurate summary of its findings. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Why Pipeline Evaluation Matters"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 7"
+   ],
+   "message": "slide 7 ('Metric Categories for AI Pipelines'): [fact] The table presents “Demographic parity” and “SHAP fidelity” as generic safety metrics without stating that their appropriateness depends on the task, decision context, and explanation method. Fix: Add a caveat that fairness and explanation-fidelity metrics must be selected for the relevant task and should not be treated as universal requirements. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Metric Categories for AI Pipelines"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('Functional Correctness Metrics'): [fact] BLEU and CodeBLEU are presented as functional-correctness metrics even though they measure textual or token-level similarity and can assign low scores to semantically correct code. Fix: Label BLEU and CodeBLEU as similarity or partial-credit metrics and state that execution-based tests are preferred for functional correctness. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Functional Correctness Metrics"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10 ('Reliability Metrics'): [fact] The attribution to C1 that agent complexity correlates with higher flakiness is unsupported because C1 is not identified and no verifiable result is provided. Fix: Remove the attribution or cite a specific, verifiable study and state its actual finding. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Reliability Metrics"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 11"
+   ],
+   "message": "slide 11 ('Safety & Trustworthiness Metrics'): [fact] The note says hallucination detection “uses reference-based verification,” which is misleading because reference-based checks can detect factual inconsistency but cannot reliably establish that a response is hallucinated when no reference exists. Fix: Say that hallucination detection combines reference-based checks where available with consistency, retrieval, or human review, and acknowledge its limitations. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Safety & Trustworthiness Metrics"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 12"
+   ],
+   "message": "slide 12 ('Worked Example: Selecting Metrics for a Code‑Generation Pipeline'): [clarity] The worked example does not actually map each stage to all four metric families as the notes claim, and the weighted score of 0.85 is given without metric weights, normalization, or thresholds. Fix: Show a metric for every family at each stage, or revise the notes, and specify the weights, normalization, and thresholds used to compute the aggregate gate. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Worked Example: Selecting Metrics for a Code‑Generation Pipeline"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 12"
+   ],
+   "message": "slide 12 ('Worked Example: Selecting Metrics for a Code‑Generation Pipeline'): [clarity] The example’s “weighted score ≥ 0.85” is not meaningful without explaining how metrics with different units and directions are combined. Fix: State that metrics must be normalized to a common scale and specify whether higher values are better before applying weights. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Worked Example: Selecting Metrics for a Code‑Generation Pipeline"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 16"
+   ],
+   "message": "slide 16 ('Integrating Metrics into CI/CD Pipelines'): [clarity] The flow automatically rolls back on a failed gate even though a failed pre-deployment CI gate normally means the release is blocked rather than an already deployed version being rolled back. Fix: Distinguish “Fail → block deployment” from “Fail → trigger rollback” when a deployed version is affected. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Integrating Metrics into CI/CD Pipelines"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 15"
+   ],
+   "message": "slide 15 ('Check: Reliability Metric Choice'): the reviewer answered 'Flakiness rate' but the key says 'Mean time between failures (MTBF)' (Flakiness rate directly captures how often a stage intermittently fails despite automatic recovery.): check the question and its key (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Check: Reliability Metric Choice"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [],
+ "sources": {
+  "C1": {
+   "title": "Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks",
+   "year": 2026,
+   "url": "https://doi.org/10.1109/sse72781.2026.00047",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [],
+ "calls": [
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1308,
+   "output_tokens": 4933
+  },
+  {
+   "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+   "prompt_tokens": 2912,
+   "output_tokens": 792
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1523,
+   "output_tokens": 5954
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "prompt_tokens": 2912,
+  "output_tokens": 792,
+  "verdict": "The deck is broadly teachable, but the professor should verify or remove the unsupported C1 study claims and tighten the worked example’s metric mapping and weighted-gate calculation before class.",
+  "questions": 2,
+  "quiz_disagreements": 1,
+  "issues": [
+   {
+    "slide": 3,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The notes describe property-based checks as capturing “distributional expectations,” which conflates property-based testing with statistical validation and may mislead students about what properties are normally asserted.",
+    "fix": "Describe property-based testing as checking invariant properties over generated inputs; reserve distributional comparisons for statistical validation."
+   },
+   {
+    "slide": 6,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The reference to a “2026 cross-model study (C1)” and its finding about “complexity backpressure” is unsupported and appears to be an invented source or result.",
+    "fix": "Remove the study citation and claim, or replace it with a verifiable source and an accurate summary of its findings."
+   },
+   {
+    "slide": 7,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The table presents “Demographic parity” and “SHAP fidelity” as generic safety metrics without stating that their appropriateness depends on the task, decision context, and explanation method.",
+    "fix": "Add a caveat that fairness and explanation-fidelity metrics must be selected for the relevant task and should not be treated as universal requirements."
+   },
+   {
+    "slide": 8,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "BLEU and CodeBLEU are presented as functional-correctness metrics even though they measure textual or token-level similarity and can assign low scores to semantically correct code.",
+    "fix": "Label BLEU and CodeBLEU as similarity or partial-credit metrics and state that execution-based tests are preferred for functional correctness."
+   },
+   {
+    "slide": 10,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The attribution to C1 that agent complexity correlates with higher flakiness is unsupported because C1 is not identified and no verifiable result is provided.",
+    "fix": "Remove the attribution or cite a specific, verifiable study and state its actual finding."
+   },
+   {
+    "slide": 11,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The note says hallucination detection “uses reference-based verification,” which is misleading because reference-based checks can detect factual inconsistency but cannot reliably establish that a response is hallucinated when no reference exists.",
+    "fix": "Say that hallucination detection combines reference-based checks where available with consistency, retrieval, or human review, and acknowledge its limitations."
+   },
+   {
+    "slide": 12,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The worked example does not actually map each stage to all four metric families as the notes claim, and the weighted score of 0.85 is given without metric weights, normalization, or thresholds.",
+    "fix": "Show a metric for every family at each stage, or revise the notes, and specify the weights, normalization, and thresholds used to compute the aggregate gate."
+   },
+   {
+    "slide": 12,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The example’s “weighted score ≥ 0.85” is not meaningful without explaining how metrics with different units and directions are combined.",
+    "fix": "State that metrics must be normalized to a common scale and specify whether higher values are better before applying weights."
+   },
+   {
+    "slide": 16,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The flow automatically rolls back on a failed gate even though a failed pre-deployment CI gate normally means the release is blocked rather than an already deployed version being rolled back.",
+    "fix": "Distinguish “Fail → block deployment” from “Fail → trigger rollback” when a deployed version is affected."
+   }
+  ],
+  "repaired": true
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

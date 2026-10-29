@@ -1,0 +1,409 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W07.S1",
+ "title": "Requirements to Executable Specifications and Code Generation · Iterative Development and Loop Engineering",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "Spec‑Driven Development Recap",
+   "bullets": [
+    "Specs capture behavior before code",
+    "Frameworks: Gherkin, OpenAPI, custom DSLs",
+    "Enable automated test generation"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Remind students that Week 5 introduced spec‑driven development: requirements are expressed as executable specifications that can be run as tests. This shifts verification left and makes later AI‑assisted generation reliable. Emphasize the contract between spec and implementation — every public method must satisfy its spec.",
+   "los": [],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "From Requirements to Executable Specs",
+   "bullets": [
+    "Identify actors, actions, and outcomes",
+    "Write scenario‑level acceptance criteria",
+    "Encode pre‑conditions, post‑conditions, invariants"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Show how a natural‑language requirement is decomposed into concrete, testable scenarios. Each scenario becomes an executable specification that defines the exact interface contract for a public method. Stress traceability: every requirement line maps to at least one spec.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Writing Executable Specifications",
+   "bullets": [
+    "Parse requirements into structured stories",
+    "Define Given/When/Then steps",
+    "Validate specs against a schema",
+    "Store specs alongside source code"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Specification authoring pipeline",
+    "steps": [
+     "Parse requirements",
+     "Define scenarios",
+     "Encode pre/post conditions",
+     "Validate against schema"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Walk through the pipeline: a requirements document is parsed, each user story is turned into Given/When/Then steps, pre‑ and post‑conditions are made explicit, and a schema validator ensures completeness. This pipeline is the foundation for later code generation — the spec is the single source of truth.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "example",
+   "title": "Example: Requirement → Spec",
+   "bullets": [
+    "Requirement: \"User can withdraw cash if balance sufficient\"",
+    "Spec written in Gherkin",
+    "Covers happy path and insufficient‑funds path"
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Gherkin spec for cash withdrawal",
+    "steps": [],
+    "code": "Feature: Cash withdrawal\n  Scenario: Sufficient balance\n    Given the account balance is $100\n    When the user requests $60\n    Then the dispenser provides $60\n    And the account balance becomes $40\n  Scenario: Insufficient balance\n    Given the account balance is $30\n    When the user requests $60\n    Then the transaction is rejected\n    And the account balance remains $30",
+    "language": "gherkin",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Present the two scenarios side‑by‑side. Highlight that each step maps directly to a method contract (e.g., `withdraw(amount) -> Result`). The spec is executable: a test runner can invoke the system under test and verify the post‑conditions automatically.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Worked Problem: Translate Requirement to Spec & Generate Code",
+   "bullets": [
+    "Step 1: Extract actors, actions, data",
+    "Step 2: Write Gherkin scenarios",
+    "Step 3: Derive method signatures",
+    "Step 4: Prompt AI model for implementation",
+    "Step 5: Run generated tests against spec"
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Generated Python withdrawal method",
+    "steps": [],
+    "code": "def withdraw(account: Account, amount: Decimal) -> Result:\n    if amount <= 0:\n        return Result.fail(\"Amount must be positive\")\n    if account.balance < amount:\n        return Result.fail(\"Insufficient funds\")\n    account.balance -= amount\n    return Result.ok(account.balance)",
+    "language": "python",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Demonstrate the full translation live: start from the textual requirement, produce the Gherkin spec (as in previous slide), infer the `withdraw` signature, feed the spec to an AI coding agent, and show the generated implementation. Run the spec‑driven test suite to confirm the code meets every scenario. This models the skill assessed in CO2.LO2.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [],
+   "minutes": 10.0
+  },
+  {
+   "kind": "concept",
+   "title": "AI‑Assisted Code Generation from Specs",
+   "bullets": [
+    "Spec → structured prompt → LLM",
+    "Model returns candidate implementation",
+    "Automated test harness validates output",
+    "Iterate on failures via feedback loop"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Spec‑to‑code generation loop",
+    "steps": [
+     "Executable spec",
+     "Prompt construction",
+     "Model inference",
+     "Code candidate",
+     "Test execution",
+     "Feedback / repair"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Explain how modern systems (e.g., AlphaCode) treat the executable spec as a prompt, ask a large language model for code, then automatically run the spec’s test suite. Failures are fed back as additional context for a repair iteration. Cite the AlphaCode paper for the competition‑level results.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Spec‑Driven Concepts",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "Which artifact is the single source of truth for the expected behavior of a public method in spec‑driven development?",
+    "options": [
+     "The implementation code",
+     "The executable specification",
+     "The requirements document",
+     "The test report"
+    ],
+    "answer": 1,
+    "explanation": "The executable specification (e.g., Gherkin scenarios) is the authoritative, runnable contract. The implementation must satisfy it; the requirements document is higher‑level and not directly executable."
+   },
+   "notes": "Quick poll to verify students grasp that the spec, not the code, defines the contract. The most tempting wrong answer is the requirements document because it originates the spec.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [],
+   "minutes": 3.0
+  },
+  {
+   "kind": "concept",
+   "title": "Iterative Loop Engineering Recap",
+   "bullets": [
+    "Loop: plan → generate → execute → reflect",
+    "Agents produce code, tests, and logs",
+    "Each iteration refines the artifact"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Briefly recap the iterative loop engineering cycle introduced in the previous week. Emphasize that the loop is driven by execution logs, which capture every control‑flow decision made by the coding agent. This sets the stage for trace analysis (CO3.LO1).",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Loop Engineering Phases",
+   "bullets": [
+    "Plan: define goal and constraints",
+    "Generate: agent writes code/tests",
+    "Execute: run in sandbox, collect logs",
+    "Reflect: analyse logs, decide next step"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Four phases of an engineering loop",
+    "steps": [
+     "Plan",
+     "Generate",
+     "Execute",
+     "Reflect"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Detail each phase. In Plan, the human or a planner agent states the objective (e.g., implement `withdraw`). Generate invokes the coding agent. Execute runs the code in an isolated environment, producing a structured log. Reflect parses the log to detect errors, performance issues, or spec violations, then feeds insights back to Plan.",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Execution Logs and Tracing",
+   "bullets": [
+    "Logs record every function call, branch, exception",
+    "Structured format: timestamp, thread, event, payload",
+    "Enable replay and automated analysis"
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Sample JSON log entry",
+    "steps": [],
+    "code": "{\n  \"ts\": \"2025-09-27T10:15:03.123Z\",\n  \"thread\": \"agent-1\",\n  \"event\": \"call\",\n  \"func\": \"withdraw\",\n  \"args\": {\"amount\": 60},\n  \"ret\": \"ok\"\n}",
+    "language": "json",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Show a concrete log line. Explain that each entry captures a control‑flow step (call, return, branch, exception). The structured schema makes it possible to reconstruct the full execution trace automatically, which is essential for the tracing skill in CO3.LO1.",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "example",
+   "title": "Example: Annotated Execution Log",
+   "bullets": [
+    "Log shows successful withdrawal then retry",
+    "Annotations mark spec checkpoints",
+    "Deviations highlight failure points"
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Annotated log excerpt",
+    "steps": [],
+    "code": "[INFO] CALL withdraw(amount=60)   # spec: sufficient balance\n[INFO] RETURN ok balance=40          # post‑condition met\n[WARN] CALL withdraw(amount=60)   # spec: insufficient balance\n[ERROR] RETURN fail \"Insufficient funds\"  # expected failure\n[INFO] REFLECT: all scenarios passed",
+    "language": "text",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Walk through the annotated log line by line. Show how the spec’s Given/When/Then checkpoints appear as comments. The log demonstrates that the agent exercised both scenarios and the reflection step confirmed compliance. This models the tracing activity required for CO3.LO1.",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Worked Problem: Trace Log to Find Failure",
+   "bullets": [
+    "Given a full execution log",
+    "Identify control‑flow steps for each scenario",
+    "Locate the first deviation from spec",
+    "Classify failure cause: logic, env, spec mismatch",
+    "Record evidence (log lines) for each cause"
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Log snippet with injected bug",
+    "steps": [],
+    "code": "[INFO] CALL withdraw(amount=60)\n[INFO] BRANCH balance>=amount? false   # bug: condition reversed\n[ERROR] RETURN fail \"Insufficient funds\"\n[INFO] REFLECT: scenario 1 failed",
+    "language": "text",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Present a log where the agent incorrectly implements the balance check (condition reversed). Guide students to trace the BRANCH event, compare with the spec’s pre‑condition, and classify the failure as a logic error. Emphasize recording the exact log lines as evidence — this is the core of CO3.LO1.",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [],
+   "minutes": 8.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Loop Engineering & Tracing",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "In an iterative loop engineering log, which event type most directly reveals a branch decision that caused a spec violation?",
+    "options": [
+     "CALL",
+     "RETURN",
+     "BRANCH",
+     "REFLECT"
+    ],
+    "answer": 2,
+    "explanation": "BRANCH events record the outcome of conditional statements. A mismatch between the expected branch (per spec) and the logged branch pinpoints the exact control‑flow deviation. CALL/RETURN show entry/exit but not the decision."
+   },
+   "notes": "Reinforce that BRANCH entries are the key to tracing control‑flow errors. The distractor RETURN is tempting because it shows the result, but it does not expose the decision logic.",
+   "los": [
+    "CO3.LO1"
+   ],
+   "sources": [],
+   "minutes": 3.0
+  },
+  {
+   "kind": "activity",
+   "title": "Hands‑On: Write Spec, Run Agent, Inspect Log",
+   "bullets": [
+    "Pair up: each pair gets a tiny requirement",
+    "Write executable spec (Gherkin)",
+    "Invoke coding agent via provided API",
+    "Collect execution log, annotate checkpoints",
+    "Identify any spec violations and classify causes"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Students apply the full pipeline: requirement → spec → AI generation → log tracing. TAs circulate to help with the agent API and log format. The activity directly practices CO2.LO2 (spec authoring and code generation) and CO3.LO1 (log tracing and failure classification). Allocate 12 minutes; pairs submit annotated logs for quick review.",
+   "los": [
+    "CO2.LO2",
+    "CO3.LO1"
+   ],
+   "sources": [],
+   "minutes": 12.0
+  },
+  {
+   "kind": "summary",
+   "title": "Summary: Specs, Generation, and Loop Engineering",
+   "bullets": [
+    "Executable specs are the contract for every public method",
+    "AI agents generate code from specs; tests close the loop",
+    "Iterative loops: plan → generate → execute → reflect",
+    "Structured logs enable full control‑flow tracing",
+    "Failure classification requires log evidence"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Recap the two pillars of the lecture. First, spec‑driven development turns vague requirements into runnable contracts that guide AI code generation. Second, iterative loop engineering uses execution logs to observe, diagnose, and repair agent behavior. Both skills are assessed in Assignment 3 and the mid‑semester exam.",
+   "los": [
+    "CO2.LO2",
+    "CO3.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  }
+ ]
+}

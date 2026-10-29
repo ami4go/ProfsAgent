@@ -1,0 +1,214 @@
+{
+ "lecture_id": "W05.S1",
+ "topic": "Software requirements and requirements engineering",
+ "generated_at": "2026-10-28 21:59:00",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W05.S1\\slides.pptx",
+  "notes": "material\\W05.S1\\notes.md",
+  "deck": "material\\W05.S1\\deck.json",
+  "quiz": "material\\W05.S1\\quiz.json"
+ },
+ "slides": 17,
+ "content_slides": 14,
+ "minutes": 90.0,
+ "errors": 0,
+ "warnings": 7,
+ "findings": [
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 13"
+   ],
+   "message": "slide 13: the yaml snippet was not checked (no checker for 'yaml' on this machine); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 7",
+    "C2"
+   ],
+   "message": "slide 7 ('Establishing Clear System Boundaries') cites [C2] 'SPECIFICATION-DRIVEN DEVELOPMENT AS STRUCTURED APPROACH FOR SOURCE CODE GENERATION', which matches it weakly (0.11; average source 0.15): check the citation",
+   "evidence": {
+    "similarity": 0.107
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 14",
+    "C3"
+   ],
+   "message": "slide 14 ('Concept Check: Specification-Driven Requirements') cites [C3] 'Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks', which matches it weakly (0.26; average source 0.26): check the citation",
+   "evidence": {
+    "similarity": 0.257
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 15",
+    "C5"
+   ],
+   "message": "slide 15 ('Preparing Specifications for Autonomous AI Agents') cites [C5] 'Query Tuning Framework Using the Model Context Protocol for Workflows', which matches it weakly (0.26; average source 0.39): check the citation",
+   "evidence": {
+    "similarity": 0.259
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 12"
+   ],
+   "message": "slide 12 ('Managing Complexity Backpressure in Requirement Specs'): [fact] The slide states 'Research shows that AI coding performance drops significantly as task complexity and prompt size increase—a phenomenon known as complexity backpressure.' The term 'complexity backpressure' is not a widely established research term; it appears to be a course-specific metaphor presented as an established fact without citation. Fix: Either provide a citation for the research or rephrase to 'We refer to this phenomenon as complexity backpressure' to indicate it is a conceptual label.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Managing Complexity Backpressure in Requirement Specs"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 13"
+   ],
+   "message": "slide 13 ('YAML Specification Artifact Walkthrough'): [clarity] The YAML example uses a mapping for the scenario with keys 'given', 'when', 'then', which differs from standard Gherkin syntax where steps are an ordered list. This may confuse students when they encounter actual Gherkin or BDD tools. Fix: Represent the scenario as a list of steps (e.g., steps: ['Given a PDF file uploaded by the user', 'When file size is under 10MB', 'Then validate schema and return status code 200']) or explicitly note this is a simplified custom schema.",
+   "evidence": {
+    "kind": "clarity",
+    "title": "YAML Specification Artifact Walkthrough"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 7"
+   ],
+   "message": "slide 7 ('Establishing Clear System Boundaries'): [clarity] The table categorizes 'Token validation logic' as inside the boundary and 'Third-party OAuth provider' as outside, but token validation often requires interaction with the provider (e.g., token introspection or fetching JWKS), which blurs the boundary. The simplification may mislead students about where network calls occur. Fix: Add a note that token validation may involve calls to the provider's endpoints, or adjust the example to show 'JWT signature verification' as inside and 'Token issuance/introspection endpoint' as outside.",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Establishing Clear System Boundaries"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 13,
+   "language": "yaml",
+   "status": "unchecked",
+   "detail": "no checker for 'yaml' on this machine"
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Competition-level code generation with AlphaCode",
+   "year": 2022,
+   "url": "https://doi.org/10.1126/science.abq1158",
+   "kind": "reading",
+   "approved": true
+  },
+  "C2": {
+   "title": "SPECIFICATION-DRIVEN DEVELOPMENT AS STRUCTURED APPROACH FOR SOURCE CODE GENERATION",
+   "year": 2026,
+   "url": "https://doi.org/10.52058/2786-6025-2026-4(58)-2631-2644",
+   "kind": "reading",
+   "approved": true
+  },
+  "C3": {
+   "title": "Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks",
+   "year": 2026,
+   "url": "https://doi.org/10.1109/sse72781.2026.00047",
+   "kind": "reading",
+   "approved": true
+  },
+  "C4": {
+   "title": "8 Redefining and Transforming Software Development with Generative AI",
+   "year": 2025,
+   "url": "https://doi.org/10.1515/9783111677798-008",
+   "kind": "reference",
+   "approved": true
+  },
+  "C5": {
+   "title": "Query Tuning Framework Using the Model Context Protocol for Workflows",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.6172059",
+   "kind": "reading",
+   "approved": true
+  },
+  "C6": {
+   "title": "Autonomous Coding Agents for Software Development Testing and Debugging",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.7515638",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C2",
+  "C3",
+  "C4",
+  "C5",
+  "C6"
+ ],
+ "calls": [
+  {
+   "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+   "prompt_tokens": 1624,
+   "output_tokens": 5846
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 3067,
+   "output_tokens": 4142
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+  "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+  "prompt_tokens": 3067,
+  "output_tokens": 4142,
+  "verdict": "The deck is safe to teach from with minor clarifications needed on the 'complexity backpressure' claim and the YAML example's syntax.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 12,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The slide states 'Research shows that AI coding performance drops significantly as task complexity and prompt size increase—a phenomenon known as complexity backpressure.' The term 'complexity backpressure' is not a widely established research term; it appears to be a course-specific metaphor presented as an established fact without citation.",
+    "fix": "Either provide a citation for the research or rephrase to 'We refer to this phenomenon as complexity backpressure' to indicate it is a conceptual label."
+   },
+   {
+    "slide": 13,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The YAML example uses a mapping for the scenario with keys 'given', 'when', 'then', which differs from standard Gherkin syntax where steps are an ordered list. This may confuse students when they encounter actual Gherkin or BDD tools.",
+    "fix": "Represent the scenario as a list of steps (e.g., steps: ['Given a PDF file uploaded by the user', 'When file size is under 10MB', 'Then validate schema and return status code 200']) or explicitly note this is a simplified custom schema."
+   },
+   {
+    "slide": 7,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The table categorizes 'Token validation logic' as inside the boundary and 'Third-party OAuth provider' as outside, but token validation often requires interaction with the provider (e.g., token introspection or fetching JWKS), which blurs the boundary. The simplification may mislead students about where network calls occur.",
+    "fix": "Add a note that token validation may involve calls to the provider's endpoints, or adjust the example to show 'JWT signature verification' as inside and 'Token issuance/introspection endpoint' as outside."
+   }
+  ],
+  "repaired": false
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

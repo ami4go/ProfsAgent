@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 10,
+  "los": [
+   "CO1.LO2"
+  ],
+  "question": "Why must failure logs be appended to an ongoing context prompt rather than resetting the prompt on every loop iteration?",
+  "options": [
+   "Resetting the prompt increases LLM inference speed by reducing token count.",
+   "Appending failure logs preserves memory of prior attempts so the model avoids repeating identical mistakes.",
+   "LLMs cannot generate valid code if the prompt contains stack trace details.",
+   "Appending logs is required by the JUnit framework for test execution."
+  ],
+  "answer": 1,
+  "explanation": "Appending failure feedback retains context across attempts, allowing the agent to learn from prior failures. Resetting the prompt causes the agent to lose context and potentially repeat the same incorrect fix."
+ },
+ {
+  "slide": 17,
+  "los": [
+   "CO1.LO2"
+  ],
+  "question": "In Model Context Protocol (MCP), what is the primary role of an MCP Tool server?",
+  "options": [
+   "To train the underlying Large Language Model using local file datasets.",
+   "To expose executable functions and schemas that allow agent clients to run tools and query context.",
+   "To automatically rewrite git history when public unit tests fail.",
+   "To replace unit testing frameworks like JUnit with AI prompt templates."
+  ],
+  "answer": 1,
+  "explanation": "MCP Tool servers expose executable tools and resources with standard JSON schemas, enabling agent clients to invoke actions and fetch context in a uniform way."
+ }
+]

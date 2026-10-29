@@ -138,11 +138,13 @@ def _ask(llm, ctx: dict, run_id: str, log) -> tuple[LectureDeck, dict]:
     return deck, {"endpoint": rec.endpoint, "prompt_tokens": rec.prompt_tokens, "output_tokens": rec.output_tokens}
 
 
-def _ai_review(llm, deck, found, code, ctx, lecture, calls, check, run_id, log):
-    """B2 on the checked deck, then one B1 repair when the reviewer reports errors (kept unless the code checks find more
-    errors than before). A failed review leaves the deck as it was, recorded in ai_review.error."""
+def _ai_review(llm, deck, found, code, ctx, lecture, calls, author, check, run_id, log):
+    """B2 on the checked deck by any model but its `author` (the endpoint of the B1 call that wrote the kept deck; a
+    rejected repair by another model does not bar that model), then one B1 repair when the reviewer reports errors
+    (kept unless the code checks find more errors than before). A failed review leaves the deck as it was, recorded in
+    ai_review.error."""
     try:
-        ai_found, ai = review_deck(llm, deck, ctx["course"], lecture, {model_of(x["endpoint"]) for x in calls}, run_id, log)
+        ai_found, ai = review_deck(llm, deck, ctx["course"], lecture, {model_of(author)}, run_id, log)
     except Exception as e:                          # no reviewer model or quota left: keep the draft, say so
         log(f"  [B2] review failed: {e}")
         return deck, found, code, {"error": str(e)[:300]}
@@ -191,7 +193,7 @@ def generate_material(run_id: str, lecture_id: str, options: dict | None = None,
 
     log(f"B lecture material {run_id} {lecture_id}: {brief['topic']} ({brief['hours']:g} h, {len(sources)} sources)")
     deck, call = _ask(llm, ctx, run_id, log)
-    calls = [call]
+    calls, author = [call], call["endpoint"]           # author: who wrote the deck that is kept
     found, code = check(deck)
     log(f"  [{PID}] checks: {len(errors(found))} errors, {len(found) - len(errors(found))} warnings")
     for rnd in range(1, c["deck"]["repair_rounds"] + 1):
@@ -205,11 +207,11 @@ def generate_material(run_id: str, lecture_id: str, options: dict | None = None,
         keep = len(errors(found2)) < len(errors(found))
         log(f"  [{PID} repair {rnd}] errors {len(errors(found))} → {len(errors(found2))} {'ACCEPT' if keep else 'REJECT'}")
         if keep:
-            deck, found, code = deck2, found2, code2
+            deck, found, code, author = deck2, found2, code2, call["endpoint"]
 
     ai = None
     if o.get("review") == "ai":
-        deck, found, code, ai = _ai_review(llm, deck, found, code, ctx, lecture, calls, check, run_id, log)
+        deck, found, code, ai = _ai_review(llm, deck, found, code, ctx, lecture, calls, author, check, run_id, log)
 
     deck.lecture_id = lecture_id
     n, found = write_outputs(d, deck, frame(st, brief), sources, c, found)

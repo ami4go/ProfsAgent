@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 11,
+  "los": [
+   "CO4.LO3"
+  ],
+  "question": "A service has an SLO of 99.9% availability over a 30‑day window. After 15 days it has experienced 0.05% downtime. What is the remaining error budget as a fraction of the total budget?",
+  "options": [
+   "0.50",
+   "0.75",
+   "0.25",
+   "0.90"
+  ],
+  "answer": 1,
+  "explanation": "Total error budget = 0.1% of 30 days = 0.03 day‑equivalents. Consumed = 0.05% of 15 days = 0.0075 day‑equivalents. Remaining = 0.03 - 0.0075 = 0.0225, which is 75% of the total budget. Option A (0.50) incorrectly assumes linear time scaling without accounting for the SLO percentage."
+ },
+ {
+  "slide": 12,
+  "los": [
+   "CO4.LO3"
+  ],
+  "question": "If a service’s error budget is being consumed at a burn rate of 2.5×, what does this indicate about the remaining budget?",
+  "options": [
+   "Budget will last the full window",
+   "Budget will be exhausted before the window ends",
+   "Budget is increasing",
+   "Burn rate is irrelevant to budget"
+  ],
+  "answer": 1,
+  "explanation": "A burn rate > 1× means the budget is being spent faster than the window’s duration allows; at 2.5× the budget will run out well before the window closes. Option A is the common misconception that any burn rate below 10× is safe."
+ }
+]

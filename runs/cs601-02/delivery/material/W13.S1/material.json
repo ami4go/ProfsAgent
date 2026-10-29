@@ -1,0 +1,336 @@
+{
+ "lecture_id": "W13.S1",
+ "topic": "Deployment and reliability metric evaluation",
+ "generated_at": "2026-10-29 03:02:48",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W13.S1\\slides.pptx",
+  "notes": "material\\W13.S1\\notes.md",
+  "deck": "material\\W13.S1\\deck.json",
+  "quiz": "material\\W13.S1\\quiz.json"
+ },
+ "slides": 16,
+ "content_slides": 13,
+ "minutes": 90.0,
+ "errors": 0,
+ "warnings": 13,
+ "findings": [
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 5",
+    "C6"
+   ],
+   "message": "slide 5 ('Reliability Metrics: MTBF, MTTR, Availability, SLOs') cites [C6] 'Autonomous Coding Agents for Software Development Testing and Debugging', which matches it weakly (0.06; average source 0.10): check the citation",
+   "evidence": {
+    "similarity": 0.062
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 7",
+    "C6"
+   ],
+   "message": "slide 7 ('Scenario 1: Microservice Deployment Evaluation') cites [C6] 'Autonomous Coding Agents for Software Development Testing and Debugging', which matches it weakly (0.09; average source 0.10): check the citation",
+   "evidence": {
+    "similarity": 0.092
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 8",
+    "C1"
+   ],
+   "message": "slide 8 ('Scenario 2: AI Model Serving Pipeline Evaluation') cites [C1] 'Competition-level code generation with AlphaCode', which matches it weakly (0.19; average source 0.28): check the citation",
+   "evidence": {
+    "similarity": 0.19
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 9",
+    "C4"
+   ],
+   "message": "slide 9 ('Metric Collection and Observability Stack') cites [C4] '8 Redefining and Transforming Software Development with Generative AI', which matches it weakly (0.09; average source 0.10): check the citation",
+   "evidence": {
+    "similarity": 0.087
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 4"
+   ],
+   "message": "slide 4 ('Core Deployment Metrics for Multi-Component Systems'): [fact] The table presents the example targets as universal deployment targets without stating that they are illustrative and workload-dependent. Fix: Label the target column as example targets for the scenario, or state that thresholds must be derived from each service's SLO and workload.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Core Deployment Metrics for Multi-Component Systems"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 5"
+   ],
+   "message": "slide 5 ('Reliability Metrics: MTBF, MTTR, Availability, SLOs'): [fact] The availability formula is presented without noting that it assumes comparable measurement intervals and a steady-state system, and it can be confused with the percentage form of availability. Fix: State the assumptions and show the equivalent percentage formula, Availability = MTBF/(MTBF + MTTR) × 100%.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Reliability Metrics: MTBF, MTTR, Availability, SLOs"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 7"
+   ],
+   "message": "slide 7 ('Scenario 1: Microservice Deployment Evaluation'): [fact] The stated outcome that the error budget is exhausted is not derivable from the supplied latency and error-rate metrics because no SLO window, request volume, or burn-rate data are given. Fix: Either provide the observation window and request volume needed to calculate the burn rate, or phrase the outcome as an SLO breach with error-budget status to be evaluated.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Scenario 1: Microservice Deployment Evaluation"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('Scenario 2: AI Model Serving Pipeline Evaluation'): [fact] The SLO is described as a drift score below 0.1 without defining the drift metric, its scale, or direction, so the threshold cannot be evaluated reliably. Fix: Name the drift metric and scale, for example PSI, and state the threshold and alert direction explicitly.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Scenario 2: AI Model Serving Pipeline Evaluation"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('Scenario 2: AI Model Serving Pipeline Evaluation'): [fact] The notes claim that preprocessing takes 600ms and that horizontal scaling and model batching are demonstrated, but the slide provides no supporting measurements or batching details. Fix: Include the measured stage latencies and explain how the proposed scaling or batching changes the p99 latency, or remove the unsupported specifics.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Scenario 2: AI Model Serving Pipeline Evaluation"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 11"
+   ],
+   "message": "slide 11 ('Complexity Backpressure and Its Impact on Reliability'): [other] The term \"complexity backpressure\" is introduced without a definition or source, and the connection to deployment and reliability metric evaluation is asserted rather than demonstrated. Fix: Define the term in the course context and explain how complexity metrics relate to deployment reliability, or omit the slide if it is outside the lecture scope.",
+   "evidence": {
+    "kind": "other",
+    "title": "Complexity Backpressure and Its Impact on Reliability"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 12"
+   ],
+   "message": "slide 12 ('Hands-On: Instrument and Evaluate a Sample Project'): [other] The activity requires students to clone a repository and deploy to local Kubernetes, but no repository URL, setup instructions, prerequisites, or fallback for environments without Kubernetes are provided. Fix: Provide the repository and setup instructions before class, verify the required tooling, and include a non-Kubernetes fallback such as Docker Compose.",
+   "evidence": {
+    "kind": "other",
+    "title": "Hands-On: Instrument and Evaluate a Sample Project"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 13"
+   ],
+   "message": "slide 13 ('Check: Metric Selection for AI Model Serving'): [quiz] The question asks for the most critical metric for detecting real-time model-serving performance degradation, but CPU utilization can also reveal resource-related degradation and the question does not specify the failure mode. Fix: Ask which metric directly measures real-time tail-latency degradation, or specify that the concern is user-facing request performance.",
+   "evidence": {
+    "kind": "quiz",
+    "title": "Check: Metric Selection for AI Model Serving"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 14"
+   ],
+   "message": "slide 14 ('Check: Reliability Evaluation Decision'): [quiz] A burn rate above 10x does not uniquely determine the automated action because the correct response depends on the configured burn-rate policy and the remaining error budget. Fix: State that the policy mandates automatic rollback for this burn-rate condition, or provide the error-budget policy and remaining budget in the question.",
+   "evidence": {
+    "kind": "quiz",
+    "title": "Check: Reliability Evaluation Decision"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [],
+ "sources": {
+  "C1": {
+   "title": "Competition-level code generation with AlphaCode",
+   "year": 2022,
+   "url": "https://doi.org/10.1126/science.abq1158",
+   "kind": "reading",
+   "approved": true
+  },
+  "C2": {
+   "title": "SPECIFICATION-DRIVEN DEVELOPMENT AS STRUCTURED APPROACH FOR SOURCE CODE GENERATION",
+   "year": 2026,
+   "url": "https://doi.org/10.52058/2786-6025-2026-4(58)-2631-2644",
+   "kind": "reading",
+   "approved": true
+  },
+  "C3": {
+   "title": "Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks",
+   "year": 2026,
+   "url": "https://doi.org/10.1109/sse72781.2026.00047",
+   "kind": "reading",
+   "approved": true
+  },
+  "C4": {
+   "title": "8 Redefining and Transforming Software Development with Generative AI",
+   "year": 2025,
+   "url": "https://doi.org/10.1515/9783111677798-008",
+   "kind": "reference",
+   "approved": true
+  },
+  "C5": {
+   "title": "Query Tuning Framework Using the Model Context Protocol for Workflows",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.6172059",
+   "kind": "reading",
+   "approved": true
+  },
+  "C6": {
+   "title": "Autonomous Coding Agents for Software Development Testing and Debugging",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.7515638",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1",
+  "C2",
+  "C3",
+  "C4",
+  "C5",
+  "C6"
+ ],
+ "calls": [
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 3394,
+   "output_tokens": 12892
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1747,
+   "output_tokens": 7191
+  },
+  {
+   "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+   "prompt_tokens": 3109,
+   "output_tokens": 833
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "prompt_tokens": 3109,
+  "output_tokens": 833,
+  "verdict": "The deck is broadly teachable, but the professor should verify the unsupported scenario calculations, define the drift and complexity-backpressure terminology, and confirm that the hands-on repository and Kubernetes setup are ready.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 4,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The table presents the example targets as universal deployment targets without stating that they are illustrative and workload-dependent.",
+    "fix": "Label the target column as example targets for the scenario, or state that thresholds must be derived from each service's SLO and workload."
+   },
+   {
+    "slide": 5,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The availability formula is presented without noting that it assumes comparable measurement intervals and a steady-state system, and it can be confused with the percentage form of availability.",
+    "fix": "State the assumptions and show the equivalent percentage formula, Availability = MTBF/(MTBF + MTTR) × 100%."
+   },
+   {
+    "slide": 7,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The stated outcome that the error budget is exhausted is not derivable from the supplied latency and error-rate metrics because no SLO window, request volume, or burn-rate data are given.",
+    "fix": "Either provide the observation window and request volume needed to calculate the burn rate, or phrase the outcome as an SLO breach with error-budget status to be evaluated."
+   },
+   {
+    "slide": 8,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The SLO is described as a drift score below 0.1 without defining the drift metric, its scale, or direction, so the threshold cannot be evaluated reliably.",
+    "fix": "Name the drift metric and scale, for example PSI, and state the threshold and alert direction explicitly."
+   },
+   {
+    "slide": 8,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The notes claim that preprocessing takes 600ms and that horizontal scaling and model batching are demonstrated, but the slide provides no supporting measurements or batching details.",
+    "fix": "Include the measured stage latencies and explain how the proposed scaling or batching changes the p99 latency, or remove the unsupported specifics."
+   },
+   {
+    "slide": 11,
+    "severity": "warning",
+    "kind": "other",
+    "problem": "The term \"complexity backpressure\" is introduced without a definition or source, and the connection to deployment and reliability metric evaluation is asserted rather than demonstrated.",
+    "fix": "Define the term in the course context and explain how complexity metrics relate to deployment reliability, or omit the slide if it is outside the lecture scope."
+   },
+   {
+    "slide": 12,
+    "severity": "warning",
+    "kind": "other",
+    "problem": "The activity requires students to clone a repository and deploy to local Kubernetes, but no repository URL, setup instructions, prerequisites, or fallback for environments without Kubernetes are provided.",
+    "fix": "Provide the repository and setup instructions before class, verify the required tooling, and include a non-Kubernetes fallback such as Docker Compose."
+   },
+   {
+    "slide": 13,
+    "severity": "warning",
+    "kind": "quiz",
+    "problem": "The question asks for the most critical metric for detecting real-time model-serving performance degradation, but CPU utilization can also reveal resource-related degradation and the question does not specify the failure mode.",
+    "fix": "Ask which metric directly measures real-time tail-latency degradation, or specify that the concern is user-facing request performance."
+   },
+   {
+    "slide": 14,
+    "severity": "warning",
+    "kind": "quiz",
+    "problem": "A burn rate above 10x does not uniquely determine the automated action because the correct response depends on the configured burn-rate policy and the remaining error budget.",
+    "fix": "State that the policy mandates automatic rollback for this burn-rate condition, or provide the error-budget policy and remaining budget in the question."
+   }
+  ],
+  "repaired": false
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

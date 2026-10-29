@@ -1,0 +1,436 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W12.S2",
+ "title": "Deployment and reliability metric evaluation",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "Recap: Reliable AI‑native architectures",
+   "bullets": [
+    "Week 11 covered safety layers",
+    "Trustworthy pipelines need observability",
+    "Metrics close the feedback loop"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Remind students that the previous lecture introduced layered safety mechanisms — guardrails, sandboxing, and human‑in‑the‑loop checkpoints. Emphasize that without measurable signals those layers cannot be validated in production. Connect the idea of observability to today’s focus on quantitative deployment metrics.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C3",
+    "C4"
+   ],
+   "minutes": 4.0
+  },
+  {
+   "kind": "concept",
+   "title": "Why deployment metrics matter",
+   "bullets": [
+    "Metrics expose real‑world behavior",
+    "Guide automated rollback decisions",
+    "Enable continuous reliability improvement"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Explain that AI‑native systems change rapidly — model versions, prompt templates, and data pipelines all shift. Without concrete metrics, teams rely on anecdotal evidence. Metrics turn subjective confidence into objective release criteria and feed automated control loops.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C4",
+    "C6"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "SLIs and SLOs defined",
+   "bullets": [
+    "SLI = measurable service behavior",
+    "SLO = target threshold for SLI",
+    "Examples: latency <200 ms, error rate <0.1%"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Common SLI / SLO pairs",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "SLI",
+      "SLO example"
+     ],
+     [
+      "Latency (p99)",
+      "<200 ms"
+     ],
+     [
+      "Error rate",
+      "<0.1%"
+     ],
+     [
+      "Availability",
+      "99.9%"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "Define Service Level Indicator (SLI) as a quantifiable measure such as request latency or error count. Service Level Objective (SLO) is the target value the team commits to. Stress that SLOs must be realistic, measurable, and agreed upon by stakeholders. Use the table to illustrate typical pairs for AI‑model serving and micro‑services.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C3"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Error budgets and burn rate",
+   "bullets": [
+    "Error budget = 1 – SLO",
+    "Burn rate = budget consumed / time",
+    "High burn rate triggers alerts"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Error budget lifecycle",
+    "steps": [
+     "Budget allocated",
+     "Consumption measured",
+     "Burn rate computed",
+     "Alert if > threshold"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Error budget quantifies how much unreliability is tolerable before the SLO is violated. Burn rate expresses how fast that budget is being spent. A burn rate above 1× means the budget will be exhausted before the window ends; 2× or higher is a common alert threshold. This concept underpins automated rollback policies.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C3",
+    "C6"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "example",
+   "title": "Scenario 1: Microservice deployment walkthrough",
+   "bullets": [
+    "Deploy new version to canary",
+    "Monitor latency and error SLIs",
+    "Roll back if SLO breached or burn rate spikes"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Canary deployment decision loop",
+    "steps": [
+     "Canary deploy",
+     "Collect SLIs",
+     "Evaluate SLO",
+     "Rollback or promote"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Walk through a typical canary release: a small traffic slice receives the new build. Real‑time SLIs (p99 latency, 5xx rate) are compared against SLOs. If the new version breaches an SLO or the short‑window burn rate exceeds the alert threshold, the automation rolls back immediately. Otherwise the rollout proceeds.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C4",
+    "C6"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "example",
+   "title": "Scenario 2: AI model serving deployment",
+   "bullets": [
+    "Blue‑green deploy model endpoint",
+    "Track inference latency & error codes",
+    "Auto‑rollback on error‑budget exhaustion"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Blue‑green model swap with budget guard",
+    "steps": [
+     "Blue‑green switch",
+     "Observe metrics",
+     "Check error budget",
+     "Rollback if needed"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "In blue‑green deployments the new model runs alongside the current one. Traffic is switched atomically. Metrics such as inference latency (p95), token‑generation errors, and safety‑filter rejections are monitored. If the remaining error budget falls below a safety margin, the system automatically reverts to the green (stable) model.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C1",
+    "C4"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Evaluating supplied project metrics step‑by‑step",
+   "bullets": [
+    "Load per‑service SLI logs",
+    "Compute SLO compliance per service",
+    "Calculate remaining error budget safely"
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Safe metric evaluation snippet",
+    "steps": [],
+    "code": "def evaluate_service(logs, slo_target):\n    if not logs:\n        return {'compliance': None, 'budget_remaining': None, 'note': 'no observations'}\n    bad = sum(1 for e in logs if e['latency_ms'] > slo_target['latency_ms'] or e['error'])\n    total = len(logs)\n    compliance = 1 - bad / total\n    max_err = slo_target.get('max_error_rate', 0.001)\n    if max_err <= 0:\n        budget = None\n    else:\n        budget = max(0, (max_err - bad/total) / max_err)\n    return {'compliance': compliance, 'budget_remaining': budget}",
+    "language": "python",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Demonstrate a robust evaluation routine that guards against empty log lists (avoiding division by zero) and validates that the SLO’s permitted error rate is positive before computing a budget ratio. Show how the function returns a clear ‘no observations’ marker instead of crashing. This mirrors the safe‑coding practices required for automated rollback pipelines.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C2",
+    "C3"
+   ],
+   "minutes": 12.0
+  },
+  {
+   "kind": "activity",
+   "title": "Hands‑on: Metric evaluation lab",
+   "bullets": [
+    "Clone supplied repo",
+    "Run metric collector script",
+    "Produce dashboard and rollback decision"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Students pull the provided multi‑component project, execute the metric collector (which emits SLI JSON per service), then apply the evaluation function from the worked problem. They visualise compliance and error‑budget remaining in a simple dashboard (e.g., Grafana or Matplotlib) and decide whether a simulated new release should be rolled back. Instructor circulates to discuss edge cases.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C5",
+    "C6"
+   ],
+   "minutes": 15.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Error budget calculation",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "A service has an SLO of 99.9% availability over a 30‑day window. After 15 days it has experienced 0.05% downtime. What is the remaining error budget as a fraction of the total budget?",
+    "options": [
+     "0.50",
+     "0.75",
+     "0.25",
+     "0.90"
+    ],
+    "answer": 1,
+    "explanation": "Total error budget = 0.1% of 30 days = 0.03 day‑equivalents. Consumed = 0.05% of 15 days = 0.0075 day‑equivalents. Remaining = 0.03 - 0.0075 = 0.0225, which is 75% of the total budget. Option A (0.50) incorrectly assumes linear time scaling without accounting for the SLO percentage."
+   },
+   "notes": "This question tests the ability to compute error‑budget consumption proportionally. The most tempting wrong answer (0.50) comes from assuming half the time means half the budget, ignoring the SLO’s percentage definition.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Burn rate interpretation",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "If a service’s error budget is being consumed at a burn rate of 2.5×, what does this indicate about the remaining budget?",
+    "options": [
+     "Budget will last the full window",
+     "Budget will be exhausted before the window ends",
+     "Budget is increasing",
+     "Burn rate is irrelevant to budget"
+    ],
+    "answer": 1,
+    "explanation": "A burn rate > 1× means the budget is being spent faster than the window’s duration allows; at 2.5× the budget will run out well before the window closes. Option A is the common misconception that any burn rate below 10× is safe."
+   },
+   "notes": "Reinforces the operational meaning of burn rate. Students often confuse burn‑rate magnitude with absolute safety; the key is the ratio to 1×.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "concept",
+   "title": "Reliability metric dashboards",
+   "bullets": [
+    "Unified view of SLIs across services",
+    "Show error budget remaining",
+    "Highlight burn‑rate trends"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Dashboard data pipeline",
+    "steps": [
+     "Data ingest",
+     "Aggregation",
+     "Visualization",
+     "Alerting"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Effective dashboards aggregate per‑service SLIs into a single pane of glass. They display current compliance, remaining error budget, and burn‑rate sparklines. Alerting rules are attached to the same pipeline so that operators see the same numbers that automation uses for rollback decisions.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C4"
+   ],
+   "minutes": 4.0
+  },
+  {
+   "kind": "concept",
+   "title": "Alerting and automated rollback policies",
+   "bullets": [
+    "Define burn‑rate thresholds",
+    "Link alerts to CI/CD rollback",
+    "Prevent cascade failures"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Example rollback policies",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Policy",
+      "Trigger"
+     ],
+     [
+      "Fast burn",
+      "Burn rate > 2×"
+     ],
+     [
+      "Slow burn",
+      "Budget < 10%"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "Two common policy tiers: a fast‑burn alert (e.g., >2×) triggers immediate rollback; a slow‑burn alert (budget below 10%) pauses further releases and notifies on‑call. Both are wired into the CI/CD system so that a failing deployment cannot propagate to downstream services.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C3",
+    "C6"
+   ],
+   "minutes": 4.0
+  },
+  {
+   "kind": "concept",
+   "title": "Common pitfalls in metric evaluation",
+   "bullets": [
+    "Dividing by zero on empty logs",
+    "Ignoring cold‑start latency spikes",
+    "Treating all errors equally"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Highlight three frequent bugs: (1) naive division by len(logs) when a service has no traffic yet; (2) including cold‑start requests in latency SLIs, which inflates p99; (3) counting harmless validation errors the same as safety‑filter rejections. The worked problem earlier demonstrates a guard against the first pitfall.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [
+    "C2",
+    "C3"
+   ],
+   "minutes": 4.0
+  },
+  {
+   "kind": "summary",
+   "title": "Key takeaways",
+   "bullets": [
+    "SLIs/SLOs drive quantitative reliability",
+    "Error budgets guide release decisions",
+    "Automated rollback needs safe metric code"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Conclude by restating that reliable AI‑native deployment hinges on well‑defined SLIs, realistic SLOs, and error‑budget accounting. Emphasize that the automation only works when the metric code handles edge cases (empty logs, zero‑error SLOs). Remind students that the end‑semester assessment will ask them to evaluate a supplied project using exactly these techniques.",
+   "los": [
+    "CO4.LO3"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  }
+ ]
+}

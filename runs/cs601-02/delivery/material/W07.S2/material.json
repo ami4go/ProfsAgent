@@ -1,0 +1,209 @@
+{
+ "lecture_id": "W07.S2",
+ "topic": "Iterative development and loop engineering",
+ "generated_at": "2026-10-28 23:31:08",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W07.S2\\slides.pptx",
+  "notes": "material\\W07.S2\\notes.md",
+  "deck": "material\\W07.S2\\deck.json",
+  "quiz": "material\\W07.S2\\quiz.json"
+ },
+ "slides": 17,
+ "content_slides": 14,
+ "minutes": 90.0,
+ "errors": 0,
+ "warnings": 6,
+ "findings": [
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 3",
+    "C4"
+   ],
+   "message": "slide 3 ('What Is Iterative Loop Engineering in AI Development?') cites [C4] '8 Redefining and Transforming Software Development with Generative AI', which matches it weakly (0.29; average source 0.31): check the citation",
+   "evidence": {
+    "similarity": 0.293
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 5",
+    "C3"
+   ],
+   "message": "slide 5 ('Log Artifacts as Execution History Records') cites [C3] 'Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks', which matches it weakly (0.23; average source 0.25): check the citation",
+   "evidence": {
+    "similarity": 0.234
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 16",
+    "C4"
+   ],
+   "message": "slide 16 ('Summary: Tracing Agent Iterative Development Loops') cites [C4] '8 Redefining and Transforming Software Development with Generative AI', which matches it weakly (0.23; average source 0.30): check the citation",
+   "evidence": {
+    "similarity": 0.226
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6 ('Identifying Control-Flow Steps in Execution Tracing'): [clarity] Table uses abbreviated 'Tool Invoc' for 'Tool Invocation' without explanation; log indicator 'call_tool / function_call' may not match the example schema's 'tool_call' type. Fix: Spell out 'Tool Invocation' in table header and align log indicator terminology with the JSON example (e.g., 'tool_call').",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Identifying Control-Flow Steps in Execution Tracing"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('Log Formatting and Schema Standards'): [clarity] Bullet lists key fields (trace_id, span_id, timestamp, step_type, payload) but the JSON example lacks span_id, step_type, and payload, using instead 'step', 'type', 'tool', 'args', 'result'. Fix: Either update the example to include the mentioned key fields or adjust the bullet to reflect the actual example schema.",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Log Formatting and Schema Standards"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 11"
+   ],
+   "message": "slide 11 ('Complexity Backpressure and Failure Modes in Traces'): [clarity] States 'Research shows this causes complexity backpressure' without citation; unclear if this is an established research term or a course-specific concept. Fix: Add a citation or clarify that 'complexity backpressure' is a term used in this course to describe context saturation effects.",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Complexity Backpressure and Failure Modes in Traces"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 8,
+   "language": "json",
+   "status": "ok",
+   "detail": ""
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Competition-level code generation with AlphaCode",
+   "year": 2022,
+   "url": "https://doi.org/10.1126/science.abq1158",
+   "kind": "reading",
+   "approved": true
+  },
+  "C2": {
+   "title": "SPECIFICATION-DRIVEN DEVELOPMENT AS STRUCTURED APPROACH FOR SOURCE CODE GENERATION",
+   "year": 2026,
+   "url": "https://doi.org/10.52058/2786-6025-2026-4(58)-2631-2644",
+   "kind": "reading",
+   "approved": true
+  },
+  "C3": {
+   "title": "Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks",
+   "year": 2026,
+   "url": "https://doi.org/10.1109/sse72781.2026.00047",
+   "kind": "reading",
+   "approved": true
+  },
+  "C4": {
+   "title": "8 Redefining and Transforming Software Development with Generative AI",
+   "year": 2025,
+   "url": "https://doi.org/10.1515/9783111677798-008",
+   "kind": "reference",
+   "approved": true
+  },
+  "C5": {
+   "title": "Query Tuning Framework Using the Model Context Protocol for Workflows",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.6172059",
+   "kind": "reading",
+   "approved": true
+  },
+  "C6": {
+   "title": "Autonomous Coding Agents for Software Development Testing and Debugging",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.7515638",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C2",
+  "C3",
+  "C4",
+  "C5",
+  "C6"
+ ],
+ "calls": [
+  {
+   "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+   "prompt_tokens": 1674,
+   "output_tokens": 2968
+  },
+  {
+   "endpoint": "gemini:gemini-3.5-flash:kaf6cdf0b",
+   "prompt_tokens": 1699,
+   "output_tokens": 8788
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 3842,
+   "output_tokens": 4525
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+  "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+  "prompt_tokens": 3842,
+  "output_tokens": 4525,
+  "verdict": "The deck is safe to teach from; the professor should mainly ensure the log schema example matches the described key fields and clarify the research claim about complexity backpressure.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 6,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "Table uses abbreviated 'Tool Invoc' for 'Tool Invocation' without explanation; log indicator 'call_tool / function_call' may not match the example schema's 'tool_call' type.",
+    "fix": "Spell out 'Tool Invocation' in table header and align log indicator terminology with the JSON example (e.g., 'tool_call')."
+   },
+   {
+    "slide": 8,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "Bullet lists key fields (trace_id, span_id, timestamp, step_type, payload) but the JSON example lacks span_id, step_type, and payload, using instead 'step', 'type', 'tool', 'args', 'result'.",
+    "fix": "Either update the example to include the mentioned key fields or adjust the bullet to reflect the actual example schema."
+   },
+   {
+    "slide": 11,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "States 'Research shows this causes complexity backpressure' without citation; unclear if this is an established research term or a course-specific concept.",
+    "fix": "Add a citation or clarify that 'complexity backpressure' is a term used in this course to describe context saturation effects."
+   }
+  ],
+  "repaired": false
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

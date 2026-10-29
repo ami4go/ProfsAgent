@@ -1,0 +1,382 @@
+{
+ "lecture_id": "W12.S2",
+ "topic": "Deployment and reliability metric evaluation",
+ "generated_at": "2026-10-29 02:53:19",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W12.S2\\slides.pptx",
+  "notes": "material\\W12.S2\\notes.md",
+  "deck": "material\\W12.S2\\deck.json",
+  "quiz": "material\\W12.S2\\quiz.json"
+ },
+ "slides": 17,
+ "content_slides": 14,
+ "minutes": 84.0,
+ "errors": 0,
+ "warnings": 16,
+ "findings": [
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 4",
+    "C4"
+   ],
+   "message": "slide 4 ('Why deployment metrics matter') cites [C4] '8 Redefining and Transforming Software Development with Generative AI', which matches it weakly (0.16; average source 0.17): check the citation",
+   "evidence": {
+    "similarity": 0.164
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 7",
+    "C4"
+   ],
+   "message": "slide 7 ('Scenario 1: Microservice deployment walkthrough') cites [C4] '8 Redefining and Transforming Software Development with Generative AI', which matches it weakly (0.06; average source 0.09): check the citation",
+   "evidence": {
+    "similarity": 0.057
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 8",
+    "C1"
+   ],
+   "message": "slide 8 ('Scenario 2: AI model serving deployment') cites [C1] 'Competition-level code generation with AlphaCode', which matches it weakly (0.16; average source 0.28): check the citation",
+   "evidence": {
+    "similarity": 0.16
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 10",
+    "C6"
+   ],
+   "message": "slide 10 ('Hands‑on: Metric evaluation lab') cites [C6] 'Autonomous Coding Agents for Software Development Testing and Debugging', which matches it weakly (0.16; average source 0.17): check the citation",
+   "evidence": {
+    "similarity": 0.165
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 13",
+    "C4"
+   ],
+   "message": "slide 13 ('Reliability metric dashboards') cites [C4] '8 Redefining and Transforming Software Development with Generative AI', which matches it weakly (0.06; average source 0.08): check the citation",
+   "evidence": {
+    "similarity": 0.062
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 15",
+    "C2"
+   ],
+   "message": "slide 15 ('Common pitfalls in metric evaluation') cites [C2] 'SPECIFICATION-DRIVEN DEVELOPMENT AS STRUCTURED APPROACH FOR SOURCE CODE GENERATION', which matches it weakly (0.06; average source 0.09): check the citation",
+   "evidence": {
+    "similarity": 0.062
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6 ('Aggregating metrics across components'): [fact] The note recommends a “p99 across services” as percentile aggregation, but averaging component p99 values does not produce the system-wide p99 experienced by users. Fix: Explain that end-to-end percentiles should be computed from correlated request-level measurements or a suitable latency-distribution model; component p99 values may be shown separately but should not be averaged into a system p99. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Aggregating metrics across components"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 7"
+   ],
+   "message": "slide 7 ('Scenario 1: Microservice deployment walkthrough'): [fact] The automatic rollback rule is misstated: exceeding the error budget is not itself a rollback trigger, because an exhausted budget indicates that the budget has already been consumed rather than that the current deployment has breached it. Fix: Say to roll back when the new version breaches a defined SLO or short-window burn-rate threshold, and to stop releases when the remaining error budget is insufficient. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Scenario 1: Microservice deployment walkthrough"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9 ('Evaluating supplied project metrics step‑by‑step'): [code] The scorecard divides by len(entries) without handling an empty service log, and its budget calculation can divide by zero when an SLO permits no errors. Fix: Skip or explicitly report services with no observations, validate that max_error is positive, and define the budget calculation using the SLO’s permitted bad-event rate and the measured bad-event rate. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Evaluating supplied project metrics step‑by‑step"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9 ('Evaluating supplied project metrics step‑by‑step'): [fact] The slide does not define the observation window, request denominator, or incident semantics needed to interpret the computed error rate, MTBF, and MTTR reproducibly. Fix: State that error rate uses failed requests divided by all valid requests in a defined window, MTBF uses the observation interval divided by the number of failures, and MTTR uses the mean time from failure detection to service restoration. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Evaluating supplied project metrics step‑by‑step"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10 ('Hands‑on: Compute metrics from sample logs'): [other] The lab commands point to a placeholder GitHub organization and provide no repository URL, setup instructions, dependency installation, or verification that the referenced script and data files exist. Fix: Provide the actual accessible repository URL, Python and dependency setup steps, and the expected input-file formats or a command for checking that the lab is ready. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "other",
+    "title": "Hands‑on: Compute metrics from sample logs"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 11"
+   ],
+   "message": "slide 11 ('Check: Metric definitions'): [clarity] The check asks which metric captures the “worst-case” latency even though no finite percentile captures the absolute worst case. Fix: Ask which metric best captures high-tail user latency and state that p99 estimates the latency below which 99% of observations fall, while the maximum is the observed worst case. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Check: Metric definitions"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 13"
+   ],
+   "message": "slide 13 ('Alerting and anomaly detection on metrics'): [fact] The static threshold example of “error rate > 1%” is presented without a traffic or window qualifier, so it can be misleading for low-volume services or short-lived spikes. Fix: Specify the measurement window and minimum request count, or use an SLO burn-rate threshold that accounts for both rate and traffic. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Alerting and anomaly detection on metrics"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 16"
+   ],
+   "message": "slide 16 ('Using specification‑driven contracts for metrics'): [fact] The CI rule “fails if projected error budget < 10%” is ambiguous about whether 10% means remaining budget or budget consumed, and a projected production error budget is not generally available from ordinary CI tests. Fix: Define the quantity and threshold explicitly, such as “block the release when the projected remaining error budget is below 10%,” and explain how the projection is obtained or use a directly testable SLO assertion. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Using specification‑driven contracts for metrics"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 16"
+   ],
+   "message": "slide 16 ('Using specification‑driven contracts for metrics'): [other] The notes ask the instructor to cite a specification-driven development paper without identifying it, so the attribution cannot be verified or located. Fix: Name the specific paper, authors, and publication details, or remove the citation request. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "other",
+    "title": "Using specification‑driven contracts for metrics"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-OVERFLOW",
+   "severity": "warning",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9: the code text may not fit its box; shorten it in PowerPoint",
+   "evidence": {},
+   "stage": "render"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 9,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Competition-level code generation with AlphaCode",
+   "year": 2022,
+   "url": "https://doi.org/10.1126/science.abq1158",
+   "kind": "reading",
+   "approved": true
+  },
+  "C2": {
+   "title": "SPECIFICATION-DRIVEN DEVELOPMENT AS STRUCTURED APPROACH FOR SOURCE CODE GENERATION",
+   "year": 2026,
+   "url": "https://doi.org/10.52058/2786-6025-2026-4(58)-2631-2644",
+   "kind": "reading",
+   "approved": true
+  },
+  "C3": {
+   "title": "Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks",
+   "year": 2026,
+   "url": "https://doi.org/10.1109/sse72781.2026.00047",
+   "kind": "reading",
+   "approved": true
+  },
+  "C4": {
+   "title": "8 Redefining and Transforming Software Development with Generative AI",
+   "year": 2025,
+   "url": "https://doi.org/10.1515/9783111677798-008",
+   "kind": "reference",
+   "approved": true
+  },
+  "C5": {
+   "title": "Query Tuning Framework Using the Model Context Protocol for Workflows",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.6172059",
+   "kind": "reading",
+   "approved": true
+  },
+  "C6": {
+   "title": "Autonomous Coding Agents for Software Development Testing and Debugging",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.7515638",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1",
+  "C2",
+  "C3",
+  "C4",
+  "C5",
+  "C6"
+ ],
+ "calls": [
+  {
+   "endpoint": "cache(nvidia:minimaxai/minimax-m3.1-flash:ke411530f)",
+   "prompt_tokens": 0,
+   "output_tokens": 0
+  },
+  {
+   "endpoint": "cache(nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f)",
+   "prompt_tokens": 0,
+   "output_tokens": 0
+  },
+  {
+   "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+   "prompt_tokens": 2902,
+   "output_tokens": 894
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1937,
+   "output_tokens": 5860
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "prompt_tokens": 2902,
+  "output_tokens": 894,
+  "verdict": "The deck is broadly teachable, but the professor should correct the rollback rule and scorecard edge cases, and verify the lab repository and specification-driven-development citation before class.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 6,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The note recommends a “p99 across services” as percentile aggregation, but averaging component p99 values does not produce the system-wide p99 experienced by users.",
+    "fix": "Explain that end-to-end percentiles should be computed from correlated request-level measurements or a suitable latency-distribution model; component p99 values may be shown separately but should not be averaged into a system p99."
+   },
+   {
+    "slide": 7,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The automatic rollback rule is misstated: exceeding the error budget is not itself a rollback trigger, because an exhausted budget indicates that the budget has already been consumed rather than that the current deployment has breached it.",
+    "fix": "Say to roll back when the new version breaches a defined SLO or short-window burn-rate threshold, and to stop releases when the remaining error budget is insufficient."
+   },
+   {
+    "slide": 9,
+    "severity": "error",
+    "kind": "code",
+    "problem": "The scorecard divides by len(entries) without handling an empty service log, and its budget calculation can divide by zero when an SLO permits no errors.",
+    "fix": "Skip or explicitly report services with no observations, validate that max_error is positive, and define the budget calculation using the SLO’s permitted bad-event rate and the measured bad-event rate."
+   },
+   {
+    "slide": 9,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The slide does not define the observation window, request denominator, or incident semantics needed to interpret the computed error rate, MTBF, and MTTR reproducibly.",
+    "fix": "State that error rate uses failed requests divided by all valid requests in a defined window, MTBF uses the observation interval divided by the number of failures, and MTTR uses the mean time from failure detection to service restoration."
+   },
+   {
+    "slide": 10,
+    "severity": "warning",
+    "kind": "other",
+    "problem": "The lab commands point to a placeholder GitHub organization and provide no repository URL, setup instructions, dependency installation, or verification that the referenced script and data files exist.",
+    "fix": "Provide the actual accessible repository URL, Python and dependency setup steps, and the expected input-file formats or a command for checking that the lab is ready."
+   },
+   {
+    "slide": 11,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The check asks which metric captures the “worst-case” latency even though no finite percentile captures the absolute worst case.",
+    "fix": "Ask which metric best captures high-tail user latency and state that p99 estimates the latency below which 99% of observations fall, while the maximum is the observed worst case."
+   },
+   {
+    "slide": 13,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The static threshold example of “error rate > 1%” is presented without a traffic or window qualifier, so it can be misleading for low-volume services or short-lived spikes.",
+    "fix": "Specify the measurement window and minimum request count, or use an SLO burn-rate threshold that accounts for both rate and traffic."
+   },
+   {
+    "slide": 16,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The CI rule “fails if projected error budget < 10%” is ambiguous about whether 10% means remaining budget or budget consumed, and a projected production error budget is not generally available from ordinary CI tests.",
+    "fix": "Define the quantity and threshold explicitly, such as “block the release when the projected remaining error budget is below 10%,” and explain how the projection is obtained or use a directly testable SLO assertion."
+   },
+   {
+    "slide": 16,
+    "severity": "warning",
+    "kind": "other",
+    "problem": "The notes ask the instructor to cite a specification-driven development paper without identifying it, so the attribution cannot be verified or located.",
+    "fix": "Name the specific paper, authors, and publication details, or remove the citation request."
+   }
+  ],
+  "repaired": true
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

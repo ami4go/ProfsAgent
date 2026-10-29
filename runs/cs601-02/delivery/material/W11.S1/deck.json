@@ -1,0 +1,367 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W11.S1",
+ "title": "Automated testing and evaluation mechanisms · Pipeline evaluation mechanisms and metrics",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "Recap: Automated Testing in AI-Native Systems",
+   "bullets": [
+    "Previous week covered AI-native architecture testing",
+    "Key challenge: nondeterministic model behavior",
+    "Testing must address data, model, and pipeline"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Remind students that Week 10 introduced the need for automated testing in AI-native software factories. Emphasize that AI components introduce stochastic outputs, requiring testing strategies beyond traditional deterministic code. Highlight three layers: data validation, model evaluation, and pipeline integration.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Testing Mechanisms Overview",
+   "bullets": [
+    "Unit tests for deterministic code",
+    "Model evaluation tests for accuracy",
+    "Pipeline integration tests for end-to-end flow",
+    "Contract tests for service interfaces"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Introduce four main testing mechanisms used in AI-native pipelines. Unit tests cover traditional code. Model evaluation tests assess predictive performance on held-out data. Pipeline integration tests verify that data flows correctly through preprocessing, inference, and postprocessing. Contract tests ensure that service APIs meet agreed schemas.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Unit Testing for AI Components",
+   "bullets": [
+    "Test data preprocessing functions",
+    "Test feature engineering logic",
+    "Test model wrapper error handling",
+    "Mock external model APIs"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Explain that unit tests for AI components focus on deterministic transformations: data cleaning, feature extraction, and wrapper logic. Mocking external model endpoints isolates tests from network latency and model version changes. This keeps unit tests fast and reliable.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Integration Testing for Pipelines",
+   "bullets": [
+    "Validate data schema compatibility",
+    "Check model version rollout",
+    "Verify monitoring hooks",
+    "Test rollback procedures"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Integration tests exercise the full pipeline from raw input to final output. They check that schema contracts between stages hold, that new model versions can be deployed without breaking downstream stages, and that observability hooks (metrics, logs) fire correctly. Include rollback tests to ensure safe recovery.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Evaluation Metrics for AI Models",
+   "bullets": [
+    "Accuracy, precision, recall for classification",
+    "RMSE, MAE for regression",
+    "Calibration error for probability outputs",
+    "Latency and throughput for serving"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "List common model-level metrics. Classification tasks use accuracy, precision, recall, F1. Regression tasks use RMSE, MAE. Calibration error measures how well predicted probabilities match true frequencies. Serving metrics like latency and throughput are critical for production SLAs.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Why Pipeline Evaluation Matters",
+   "bullets": [
+    "Model metrics alone miss system failures",
+    "Data drift can degrade downstream stages",
+    "Resource constraints affect reliability",
+    "End-to-end metrics guide release decisions"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Explain that evaluating only the model is insufficient. Pipeline evaluation captures issues like data drift, schema mismatches, and resource bottlenecks that only appear when components interact. End-to-end metrics such as pipeline success rate and end-to-end latency inform go/no-go release decisions.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Pipeline Evaluation Mechanisms",
+   "bullets": [
+    "Automated canary deployments",
+    "Shadow traffic mirroring",
+    "Synthetic data probes",
+    "Continuous evaluation dashboards"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Describe mechanisms to evaluate pipelines in production. Canary deployments route a small fraction of traffic to new pipeline versions. Shadow mirroring runs new pipeline alongside current without affecting users. Synthetic probes inject known inputs to detect regressions. Dashboards aggregate metrics for continuous visibility.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 10.0
+  },
+  {
+   "kind": "concept",
+   "title": "Metric Categories: Reliability, Performance, Quality",
+   "bullets": [
+    "Reliability: success rate, MTBF, flakiness",
+    "Performance: latency, throughput, resource use",
+    "Quality: prediction accuracy, drift detection",
+    "Operational: deployment frequency, rollback time"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Group pipeline metrics into four categories. Reliability metrics measure how often the pipeline completes without error (success rate, mean time between failures, flakiness). Performance metrics capture speed and resource consumption. Quality metrics track model prediction health and data drift. Operational metrics reflect process health.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 10.0
+  },
+  {
+   "kind": "example",
+   "title": "Example: Choosing Metrics for a CI/CD Pipeline",
+   "bullets": [
+    "Scenario: nightly model retraining pipeline",
+    "Reliability: stage success rate > 99%",
+    "Performance: end-to-end runtime < 30 min",
+    "Quality: validation AUC drop < 2%"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Walk through a concrete scenario: a nightly retraining pipeline that pulls data, trains a model, validates, and deploys. Show how to select one metric per category: stage success rate for reliability, total runtime for performance, validation AUC drop for quality. Explain thresholds are set based on business SLAs.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 10.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Worked Problem: Comparing Two Evaluation Strategies",
+   "bullets": [
+    "Strategy A: canary with 5% traffic",
+    "Strategy B: shadow mirroring full traffic",
+    "Compare reliability detection speed",
+    "Compare resource overhead"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Present a worked comparison. Strategy A (canary) exposes real users to new version, detecting reliability issues quickly but risking user impact. Strategy B (shadow) runs new pipeline silently, zero user risk but requires double compute and may miss issues that only appear under real load. Step through trade-offs and conclude with a recommendation matrix.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 10.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Testing Mechanism Comparison",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "Which testing mechanism is best suited for verifying that a new model version does not break downstream pipeline stages?",
+    "options": [
+     "Unit tests for model wrapper",
+     "Model evaluation tests on held-out data",
+     "Pipeline integration tests",
+     "Contract tests for service interfaces"
+    ],
+    "answer": 2,
+    "explanation": "Pipeline integration tests exercise the full flow from data ingestion through model inference to downstream consumers, making them the right choice for catching breakages across stages. Unit tests and model evaluation tests are too narrow, while contract tests only check interface compliance, not functional correctness."
+   },
+   "notes": "Ask students to select the best answer. Discuss why integration tests are the correct choice and why the other options are insufficient for this specific goal.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Reliability Metric Choice",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "A team wants to measure how often a pipeline stage fails intermittently despite automatic retries. Which reliability metric should they track?",
+    "options": [
+     "Mean time between failures (MTBF)",
+     "Stage success rate",
+     "Flakiness rate",
+     "Rollback frequency"
+    ],
+    "answer": 2,
+    "explanation": "Flakiness rate directly captures the frequency of intermittent failures that succeed on retry. MTBF measures time between any failures, not specifically intermittent ones. Stage success rate aggregates all outcomes, and rollback frequency reflects deployment issues, not stage flakiness."
+   },
+   "notes": "Highlight that flakiness rate is the metric designed for intermittent failures. Clarify the distinction between MTBF and flakiness.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Common Pitfalls in Pipeline Evaluation",
+   "bullets": [
+    "Relying solely on model accuracy",
+    "Ignoring data schema evolution",
+    "Overlooking resource saturation",
+    "Skipping rollback validation"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Summarize frequent mistakes: focusing only on model-level metrics while missing system-level failures; not testing schema changes that break downstream stages; not monitoring CPU/GPU/memory under load; and not practicing rollback procedures, leading to prolonged outages.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "summary",
+   "title": "Best Practices Summary",
+   "bullets": [
+    "Layer tests: unit, model, integration, contract",
+    "Evaluate pipelines end-to-end, not just models",
+    "Select metrics per reliability, performance, quality",
+    "Automate canary, shadow, and synthetic probes",
+    "Continuously review and adjust thresholds"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Conclude with five best practices. Emphasize a layered testing approach, end-to-end pipeline evaluation, metric categorization, automated evaluation mechanisms, and ongoing threshold calibration. Connect back to the learning outcome: comparing mechanisms and metrics for AI-native architectures.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  }
+ ]
+}

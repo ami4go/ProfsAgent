@@ -1,0 +1,451 @@
+{
+ "lecture_id": "W04.S2",
+ "topic": "Standards and specification guidelines for use cases · Software requirements and requirements engineering",
+ "generated_at": "2026-10-28 21:55:05",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W04.S2\\slides.pptx",
+  "notes": "material\\W04.S2\\notes.md",
+  "deck": "material\\W04.S2\\deck.json",
+  "quiz": "material\\W04.S2\\quiz.json"
+ },
+ "slides": 21,
+ "content_slides": 18,
+ "minutes": 86.0,
+ "errors": 0,
+ "warnings": 18,
+ "findings": [
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 3"
+   ],
+   "message": "slide 3 ('Why Use Case Standards Matter'): [fact] IEEE 830 is not a use-case standard and does not provide a shared language for use cases; it is the superseded Recommended Practice for Software Requirements Specifications, while ISO/IEC 25010 is a product-quality model rather than a use-case standard. Fix: Describe IEEE 830 as a legacy SRS-writing guideline and ISO/IEC 25010 as a quality model; identify UML 2.x use-case diagrams and a recognized use-case template, such as OMG's, as the relevant use-case standards. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Why Use Case Standards Matter"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 4"
+   ],
+   "message": "slide 4 ('Key Standards: IEEE 830 & ISO/IEC 25010'): [fact] The claim that IEEE 830 structures SRS documents and that both IEEE 830 and ISO/IEC 25010 reference use-case modeling is misleading because IEEE 830 was withdrawn in 2017 and neither standard defines use-case modeling. Fix: State that IEEE 830 was a legacy SRS structure superseded by ISO/IEC/IEEE 29148, that ISO/IEC 25010 defines product-quality characteristics, and that UML use-case modeling is defined separately by OMG. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Key Standards: IEEE 830 & ISO/IEC 25010"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 4"
+   ],
+   "message": "slide 4 ('Key Standards: IEEE 830 & ISO/IEC 25010'): [fact] The assertion that these standards are widely adopted in industry is unsupported and obscures that IEEE 830 is obsolete and ISO/IEC 25010 is a quality model rather than a requirements or use-case specification standard. Fix: Replace the adoption claim with the standards' actual roles and current status, including the 2017 withdrawal of IEEE 830 and the 2018 edition of ISO/IEC 25010. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Key Standards: IEEE 830 & ISO/IEC 25010"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 4"
+   ],
+   "message": "slide 4 ('Key Standards: IEEE 830 & ISO/IEC 25010'): [fact] The reference to recent spec-driven development literature is vague and unverifiable, so students cannot judge which guidance is authoritative. Fix: Name and cite the specific current standard or publication being referenced, or remove the claim. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Key Standards: IEEE 830 & ISO/IEC 25010"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6 ('Example: Online Ordering Use Case Diagram'): [fact] The notes incorrectly treat Payment and Inventory as use cases invoked by Place Order without showing the required include relationships or identifying the external Payment service as an actor. Fix: Show Payment Service and Inventory Service as external actors connected to the relevant use cases, and label any include relationships explicitly. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Example: Online Ordering Use Case Diagram"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6 ('Example: Online Ordering Use Case Diagram'): [other] The figure is described as a use-case diagram but is only a linear flow, so it does not demonstrate the system boundary, actors, or include relationships that the notes discuss. Fix: Replace or supplement the flow with an actual use-case diagram containing the boundary, actors, use-case ovals, and labeled relationships. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "other",
+    "title": "Example: Online Ordering Use Case Diagram"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6 ('Example: Online Ordering Use Case Diagram'): [other] The claim that the diagram can be fed to AI code generators that understand spec-driven inputs is unsupported and may lead students to expect reliable direct generation from a diagram. Fix: State that AI tools may assist with converting a sufficiently detailed specification into implementation artifacts, but require human review and do not reliably consume arbitrary diagrams. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "other",
+    "title": "Example: Online Ordering Use Case Diagram"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('Worked Problem: Extract Use Cases from Description'): [clarity] The instruction to list every external role is too broad for the short product description and may cause students to invent actors that the description does not support. Fix: Ask students to identify only actors evidenced by the description and to state assumptions for any additional roles. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Worked Problem: Extract Use Cases from Description"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('Worked Problem: Extract Use Cases from Description'): [clarity] The example does not show how the derived use cases map to the actors, so it does not fully model the actor–use-case relationships required by the learning outcome. Fix: Add the actor associations and explain that actors outside the boundary interact with use cases inside it. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Worked Problem: Extract Use Cases from Description"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10 ('Identifying the System Boundary'): [fact] The statement that everything inside the boundary is built and everything outside is given is false because external systems, actors, and supporting infrastructure may also need to be developed or procured. Fix: Say that the boundary identifies the responsibilities of the system being specified, while external actors and systems remain outside its scope. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Identifying the System Boundary"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10 ('Identifying the System Boundary'): [clarity] A context diagram is described as a level-0 DFD without explaining that this is a data-flow-diagram convention rather than a UML use-case concept. Fix: Call it a context diagram and explain that it is a DFD-style scope view showing external entities and data flows. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Identifying the System Boundary"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 11"
+   ],
+   "message": "slide 11 ('Example: System Boundary for Mobile Banking'): [fact] The example treats Bank Server as an actor while also placing authentication, transfer, and balance logic inside an app-only boundary, which conflicts with the stated boundary and omits the Regulator's interaction. Fix: Choose one coherent scope, such as a mobile banking client with Bank Server and Regulator outside, and show the Regulator connected to an appropriate use case. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Example: System Boundary for Mobile Banking"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 12"
+   ],
+   "message": "slide 12 ('Specification Guidelines for Use Cases'): [other] The under-one-page rule is presented as a universal specification requirement even though it is a common template guideline rather than a standard requirement. Fix: Label the one-page limit as a common team guideline and note that the governing template or standard takes precedence. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "other",
+    "title": "Specification Guidelines for Use Cases"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 14"
+   ],
+   "message": "slide 14 ('Software Requirements Engineering Process'): [fact] The claim that modern toolchains such as DOORS and Jira automate impact analysis and consistency checks overstates what those tools do by default. Fix: Say that requirements-management tools can support traceability, impact analysis, and consistency checks when configured with the appropriate integrations and project practices. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Software Requirements Engineering Process"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 15"
+   ],
+   "message": "slide 15 ('Requirements Elicitation Techniques'): [fact] The claim that recent research shows AI can cluster feedback and suggest missing use cases is uncited and may imply greater reliability than current tools warrant. Fix: Cite specific evidence and qualify the capability as an assistant that can suggest candidates for human review rather than guarantee complete requirements. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Requirements Elicitation Techniques"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 16"
+   ],
+   "message": "slide 16 ('Validation & Management of Requirements'): [fact] Deriving test cases directly from use-case narratives guarantees coverage is false because narratives can omit requirements and do not by themselves establish test completeness. Fix: State that narratives support test-case derivation and traceability, while coverage must also be checked against requirements, risks, and acceptance criteria. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Validation & Management of Requirements"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 16"
+   ],
+   "message": "slide 16 ('Validation & Management of Requirements'): [fact] The statement that baselines freeze a version for development, enabling reproducible builds, conflates requirements baselining with software build reproducibility. Fix: Say that baselines establish an agreed requirements baseline for change control and impact analysis, not that they make builds reproducible. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Validation & Management of Requirements"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 17"
+   ],
+   "message": "slide 17 ('Key Takeaways'): [fact] The takeaway that IEEE 830 and ISO 25010 structure use cases repeats the false claim that these standards define use-case structure. Fix: State that UML and use-case templates structure use cases, ISO/IEC/IEEE 29148 guides requirements specifications, and ISO/IEC 25010 guides quality modeling. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Key Takeaways"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [],
+ "sources": {
+  "C1": {
+   "title": "Competition-level code generation with AlphaCode",
+   "year": 2022,
+   "url": "https://doi.org/10.1126/science.abq1158",
+   "kind": "reading",
+   "approved": true
+  },
+  "C2": {
+   "title": "SPECIFICATION-DRIVEN DEVELOPMENT AS STRUCTURED APPROACH FOR SOURCE CODE GENERATION",
+   "year": 2026,
+   "url": "https://doi.org/10.52058/2786-6025-2026-4(58)-2631-2644",
+   "kind": "reading",
+   "approved": true
+  },
+  "C3": {
+   "title": "Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks",
+   "year": 2026,
+   "url": "https://doi.org/10.1109/sse72781.2026.00047",
+   "kind": "reading",
+   "approved": true
+  },
+  "C4": {
+   "title": "8 Redefining and Transforming Software Development with Generative AI",
+   "year": 2025,
+   "url": "https://doi.org/10.1515/9783111677798-008",
+   "kind": "reference",
+   "approved": true
+  },
+  "C5": {
+   "title": "Query Tuning Framework Using the Model Context Protocol for Workflows",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.6172059",
+   "kind": "reading",
+   "approved": true
+  },
+  "C6": {
+   "title": "Autonomous Coding Agents for Software Development Testing and Debugging",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.7515638",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C2"
+ ],
+ "calls": [
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1742,
+   "output_tokens": 5634
+  },
+  {
+   "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+   "prompt_tokens": 2810,
+   "output_tokens": 1552
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 2740,
+   "output_tokens": 7482
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "prompt_tokens": 2810,
+  "output_tokens": 1552,
+  "verdict": "The deck is not yet safe to teach because it misidentifies obsolete and unrelated standards as use-case standards and contains misleading system-boundary and validation claims; the professor should first correct slides 3–4, 6, 10–11, 16, and 17.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 3,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "IEEE 830 is not a use-case standard and does not provide a shared language for use cases; it is the superseded Recommended Practice for Software Requirements Specifications, while ISO/IEC 25010 is a product-quality model rather than a use-case standard.",
+    "fix": "Describe IEEE 830 as a legacy SRS-writing guideline and ISO/IEC 25010 as a quality model; identify UML 2.x use-case diagrams and a recognized use-case template, such as OMG's, as the relevant use-case standards."
+   },
+   {
+    "slide": 4,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The claim that IEEE 830 structures SRS documents and that both IEEE 830 and ISO/IEC 25010 reference use-case modeling is misleading because IEEE 830 was withdrawn in 2017 and neither standard defines use-case modeling.",
+    "fix": "State that IEEE 830 was a legacy SRS structure superseded by ISO/IEC/IEEE 29148, that ISO/IEC 25010 defines product-quality characteristics, and that UML use-case modeling is defined separately by OMG."
+   },
+   {
+    "slide": 4,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The assertion that these standards are widely adopted in industry is unsupported and obscures that IEEE 830 is obsolete and ISO/IEC 25010 is a quality model rather than a requirements or use-case specification standard.",
+    "fix": "Replace the adoption claim with the standards' actual roles and current status, including the 2017 withdrawal of IEEE 830 and the 2018 edition of ISO/IEC 25010."
+   },
+   {
+    "slide": 4,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The reference to recent spec-driven development literature is vague and unverifiable, so students cannot judge which guidance is authoritative.",
+    "fix": "Name and cite the specific current standard or publication being referenced, or remove the claim."
+   },
+   {
+    "slide": 6,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The notes incorrectly treat Payment and Inventory as use cases invoked by Place Order without showing the required include relationships or identifying the external Payment service as an actor.",
+    "fix": "Show Payment Service and Inventory Service as external actors connected to the relevant use cases, and label any include relationships explicitly."
+   },
+   {
+    "slide": 6,
+    "severity": "warning",
+    "kind": "other",
+    "problem": "The figure is described as a use-case diagram but is only a linear flow, so it does not demonstrate the system boundary, actors, or include relationships that the notes discuss.",
+    "fix": "Replace or supplement the flow with an actual use-case diagram containing the boundary, actors, use-case ovals, and labeled relationships."
+   },
+   {
+    "slide": 6,
+    "severity": "warning",
+    "kind": "other",
+    "problem": "The claim that the diagram can be fed to AI code generators that understand spec-driven inputs is unsupported and may lead students to expect reliable direct generation from a diagram.",
+    "fix": "State that AI tools may assist with converting a sufficiently detailed specification into implementation artifacts, but require human review and do not reliably consume arbitrary diagrams."
+   },
+   {
+    "slide": 8,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The instruction to list every external role is too broad for the short product description and may cause students to invent actors that the description does not support.",
+    "fix": "Ask students to identify only actors evidenced by the description and to state assumptions for any additional roles."
+   },
+   {
+    "slide": 8,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The example does not show how the derived use cases map to the actors, so it does not fully model the actor–use-case relationships required by the learning outcome.",
+    "fix": "Add the actor associations and explain that actors outside the boundary interact with use cases inside it."
+   },
+   {
+    "slide": 10,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The statement that everything inside the boundary is built and everything outside is given is false because external systems, actors, and supporting infrastructure may also need to be developed or procured.",
+    "fix": "Say that the boundary identifies the responsibilities of the system being specified, while external actors and systems remain outside its scope."
+   },
+   {
+    "slide": 10,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "A context diagram is described as a level-0 DFD without explaining that this is a data-flow-diagram convention rather than a UML use-case concept.",
+    "fix": "Call it a context diagram and explain that it is a DFD-style scope view showing external entities and data flows."
+   },
+   {
+    "slide": 11,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The example treats Bank Server as an actor while also placing authentication, transfer, and balance logic inside an app-only boundary, which conflicts with the stated boundary and omits the Regulator's interaction.",
+    "fix": "Choose one coherent scope, such as a mobile banking client with Bank Server and Regulator outside, and show the Regulator connected to an appropriate use case."
+   },
+   {
+    "slide": 12,
+    "severity": "warning",
+    "kind": "other",
+    "problem": "The under-one-page rule is presented as a universal specification requirement even though it is a common template guideline rather than a standard requirement.",
+    "fix": "Label the one-page limit as a common team guideline and note that the governing template or standard takes precedence."
+   },
+   {
+    "slide": 14,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The claim that modern toolchains such as DOORS and Jira automate impact analysis and consistency checks overstates what those tools do by default.",
+    "fix": "Say that requirements-management tools can support traceability, impact analysis, and consistency checks when configured with the appropriate integrations and project practices."
+   },
+   {
+    "slide": 15,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The claim that recent research shows AI can cluster feedback and suggest missing use cases is uncited and may imply greater reliability than current tools warrant.",
+    "fix": "Cite specific evidence and qualify the capability as an assistant that can suggest candidates for human review rather than guarantee complete requirements."
+   },
+   {
+    "slide": 16,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "Deriving test cases directly from use-case narratives guarantees coverage is false because narratives can omit requirements and do not by themselves establish test completeness.",
+    "fix": "State that narratives support test-case derivation and traceability, while coverage must also be checked against requirements, risks, and acceptance criteria."
+   },
+   {
+    "slide": 16,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The statement that baselines freeze a version for development, enabling reproducible builds, conflates requirements baselining with software build reproducibility.",
+    "fix": "Say that baselines establish an agreed requirements baseline for change control and impact analysis, not that they make builds reproducible."
+   },
+   {
+    "slide": 17,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The takeaway that IEEE 830 and ISO 25010 structure use cases repeats the false claim that these standards define use-case structure.",
+    "fix": "State that UML and use-case templates structure use cases, ISO/IEC/IEEE 29148 guides requirements specifications, and ISO/IEC 25010 guides quality modeling."
+   }
+  ],
+  "repaired": true
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

@@ -1,0 +1,156 @@
+{
+ "lecture_id": "W03.S1",
+ "topic": "Coding agents and context engineering · Custom tool integrations using model context protocols",
+ "generated_at": "2026-10-28 21:20:27",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W03.S1\\slides.pptx",
+  "notes": "material\\W03.S1\\notes.md",
+  "deck": "material\\W03.S1\\deck.json",
+  "quiz": "material\\W03.S1\\quiz.json"
+ },
+ "slides": 19,
+ "content_slides": 16,
+ "minutes": 90.0,
+ "errors": 0,
+ "warnings": 5,
+ "findings": [
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 9",
+    "C1"
+   ],
+   "message": "slide 9 ('Handling Static Analysis and Linter Warnings') cites [C1] 'Query Tuning Framework Using the Model Context Protocol for Workflows', which matches it weakly (0.09; average source 0.22): check the citation",
+   "evidence": {
+    "similarity": 0.092
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 14",
+    "C1"
+   ],
+   "message": "slide 14 ('Structuring MCP Tool Servers for Agent Workspaces') cites [C1] 'Query Tuning Framework Using the Model Context Protocol for Workflows', which matches it weakly (0.32; average source 0.37): check the citation",
+   "evidence": {
+    "similarity": 0.323
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 15",
+    "C1"
+   ],
+   "message": "slide 15 ('Example: Implementing a Custom MCP Tool Server for Linter Integrations') cites [C1] 'Query Tuning Framework Using the Model Context Protocol for Workflows', which matches it weakly (0.24; average source 0.30): check the citation",
+   "evidence": {
+    "similarity": 0.238
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 16",
+    "C1"
+   ],
+   "message": "slide 16 ('Integrating MCP Tools into Agent Configuration without Warnings') cites [C1] 'Query Tuning Framework Using the Model Context Protocol for Workflows', which matches it weakly (0.19; average source 0.31): check the citation",
+   "evidence": {
+    "similarity": 0.191
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 7"
+   ],
+   "message": "slide 7 ('Building a test‑generation agent step by step'): [code] The prompt variable is reassigned at the start of every iteration, which overwrites and discards the failure feedback appended in prompt += ... during previous failed attempts. Fix: Define the base prompt before entering the loop and append error feedback to it across iterations so the agent receives failure context. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Building a test‑generation agent step by step"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 8,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 15,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Query Tuning Framework Using the Model Context Protocol for Workflows",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.6172059",
+   "kind": "reading",
+   "approved": true
+  },
+  "C2": {
+   "title": "Autonomous Coding Agents for Software Development Testing and Debugging",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.7515638",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1",
+  "C2"
+ ],
+ "calls": [
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1558,
+   "output_tokens": 4205
+  },
+  {
+   "endpoint": "gemini:gemini-3.5-flash:k3ca4d81f",
+   "prompt_tokens": 2617,
+   "output_tokens": 2434
+  },
+  {
+   "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+   "prompt_tokens": 1647,
+   "output_tokens": 9897
+  }
+ ],
+ "ai_review": {
+  "endpoint": "gemini:gemini-3.5-flash:k3ca4d81f",
+  "model": "gemini:gemini-3.5-flash",
+  "prompt_tokens": 2617,
+  "output_tokens": 2434,
+  "verdict": "The slide deck is largely accurate and directly aligns with CO1.LO2, but the professor should fix the logic bug in the Slide 7 pseudo-code where failure feedback is erased on subsequent loop iterations.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 7,
+    "severity": "error",
+    "kind": "code",
+    "problem": "The prompt variable is reassigned at the start of every iteration, which overwrites and discards the failure feedback appended in prompt += ... during previous failed attempts.",
+    "fix": "Define the base prompt before entering the loop and append error feedback to it across iterations so the agent receives failure context."
+   }
+  ],
+  "repaired": true
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

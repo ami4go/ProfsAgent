@@ -1,0 +1,419 @@
+{
+ "lecture_id": "W06.S1",
+ "topic": "Spec-driven development frameworks",
+ "generated_at": "2026-10-28 23:04:07",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W06.S1\\slides.pptx",
+  "notes": "material\\W06.S1\\notes.md",
+  "deck": "material\\W06.S1\\deck.json",
+  "quiz": "material\\W06.S1\\quiz.json"
+ },
+ "slides": 18,
+ "content_slides": 15,
+ "minutes": 87.0,
+ "errors": 0,
+ "warnings": 19,
+ "findings": [
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10: the yaml snippet was not checked (no checker for 'yaml' on this machine); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 11"
+   ],
+   "message": "slide 11: the graphql snippet was not checked (no checker for 'graphql' on this machine); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 12"
+   ],
+   "message": "slide 12: the protobuf snippet was not checked (no checker for 'protobuf' on this machine); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 4"
+   ],
+   "message": "slide 4 ('What Is Spec-Driven Development?'): [fact] The notes claim that spec-driven development eliminates the gap where documentation diverges from actual API behavior, which is an overstatement because specifications can still drift from implementations unless conformance is continuously validated. Fix: Say that spec-driven development reduces documentation drift by making the specification authoritative and by validating implementations against it. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "What Is Spec-Driven Development?"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 5"
+   ],
+   "message": "slide 5 ('Core Principles of SDD'): [fact] The claim that contracts are expressed in neutral formats such as YAML, JSON, and Protobuf so any language or tool can consume them is misleading because Protobuf is a language-specific interface-definition mechanism and the listed formats do not make every contract tool-compatible. Fix: Say that contracts use structured, machine-readable formats such as YAML or JSON, while framework-specific formats such as Protobuf are used where their type system and tooling are appropriate. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Core Principles of SDD"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6 ('Major Spec‑Driven Frameworks'): [fact] Calling OpenAPI, GraphQL SDL, Protocol Buffers, and AsyncAPI all \"spec-driven frameworks\" conflates specification formats and schemas with development frameworks that generate code and enforce contracts. Fix: Describe these as widely used API specification formats or contract-definition technologies used within spec-driven development. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Major Spec‑Driven Frameworks"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('GraphQL Schema Definition Language'): [fact] The bullet \"Directives for auth & caching\" is misleading because GraphQL SDL has no built-in standard directives for authentication or caching; @auth is not a standard GraphQL directive. Fix: Say that custom directives can carry application metadata such as authorization hints or caching policy, while @deprecated is a built-in directive. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "GraphQL Schema Definition Language"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('GraphQL Schema Definition Language'): [fact] The statement that introspection is enabled by default is not universally true because GraphQL servers may disable or restrict introspection in production. Fix: Say that introspection is commonly enabled by default in development and can be disabled or restricted in production. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "GraphQL Schema Definition Language"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9 ('Protocol Buffers (proto3)'): [fact] The claim that Protobuf field numbers provide forward and backward compatibility is too broad because compatibility depends on correct field-number management and valid wire changes. Fix: Say that stable field numbers and compatible wire-format changes support backward and forward compatibility. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Protocol Buffers (proto3)"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9 ('Protocol Buffers (proto3)'): [fact] The statement that the Protobuf binary encoding is smaller and faster than JSON is not universally true because relative size and performance depend on the data and implementation. Fix: Say that Protobuf's compact binary encoding is often smaller and faster to parse than equivalent JSON representations. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Protocol Buffers (proto3)"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 11"
+   ],
+   "message": "slide 11 ('Worked Example: User Login API'): [code] The OpenAPI snippet uses `format: password`, which is not a standard OpenAPI 3.1 format and may be rejected by strict validators. Fix: Remove `format: password` and describe the password field with `type: string`, optionally adding `writeOnly: true` and an appropriate length or pattern constraint. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Worked Example: User Login API"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 11"
+   ],
+   "message": "slide 11 ('Worked Example: User Login API'): [fact] The notes describe the access token as JWT-style, but the schema does not constrain or document the token format, so the example does not establish that property. Fix: Either describe the token as an opaque access token or add a description stating that it is a JWT. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Worked Example: User Login API"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 13"
+   ],
+   "message": "slide 13 ('Executable Specifications & Contract Testing'): [fact] The bullet \"Prevents breaking changes\" overstates what consumer-driven contract testing guarantees because it detects incompatible changes but does not prevent them from being introduced or merged. Fix: Say that consumer-driven contract testing detects breaking changes before deployment. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Executable Specifications & Contract Testing"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 14"
+   ],
+   "message": "slide 14 ('Ensuring Interface Conformance at Runtime'): [fact] The bullet \"Schema validation libraries (ajv, protoc)\" incorrectly presents protoc as a schema-validation library; protoc is the Protocol Buffers compiler, while ajv validates JSON Schema. Fix: List ajv as a JSON Schema validator and describe protoc separately as the Protocol Buffers compiler and code-generation entry point. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Ensuring Interface Conformance at Runtime"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 14"
+   ],
+   "message": "slide 14 ('Ensuring Interface Conformance at Runtime'): [fact] The notes say that code generators produce router skeletons that enforce the spec, but generated skeletons generally do not enforce request and response schemas by themselves. Fix: Say that generated code provides typed routes and models, while separate validation middleware or generated validation hooks enforce the contract. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Ensuring Interface Conformance at Runtime"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 14"
+   ],
+   "message": "slide 14 ('Ensuring Interface Conformance at Runtime'): [fact] The notes describe Schemathesis and Dredd as property-based test generators, but they are primarily API testing tools that derive test cases from an API description rather than general property-based generators. Fix: Describe Schemathesis and Dredd as tools that generate and run API tests from an OpenAPI description. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Ensuring Interface Conformance at Runtime"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 17"
+   ],
+   "message": "slide 17 ('Key Takeaways'): [fact] The takeaway \"Contract testing guarantees conformance across services\" overstates the guarantee because contract tests cover only the interactions and rules encoded in the contracts. Fix: Say that contract testing helps detect conformance regressions across service boundaries. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Key Takeaways"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 18"
+   ],
+   "message": "slide 18 ('Lab Preview: Executable Specification Lab'): [other] The lab preview combines OpenAPI stub generation with a Pact contract test suite without explaining how the Pact contract relates to the OpenAPI document, which may confuse students about which artifact is under test. Fix: State whether students will derive Pact contracts from the OpenAPI document or author them separately, and identify which artifact each test validates. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "other",
+    "title": "Lab Preview: Executable Specification Lab"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-OVERFLOW",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10: the code text may not fit its box; shorten it in PowerPoint",
+   "evidence": {},
+   "stage": "render"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 10,
+   "language": "yaml",
+   "status": "unchecked",
+   "detail": "no checker for 'yaml' on this machine"
+  },
+  {
+   "slide": 11,
+   "language": "graphql",
+   "status": "unchecked",
+   "detail": "no checker for 'graphql' on this machine"
+  },
+  {
+   "slide": 12,
+   "language": "protobuf",
+   "status": "unchecked",
+   "detail": "no checker for 'protobuf' on this machine"
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "SPECIFICATION-DRIVEN DEVELOPMENT AS STRUCTURED APPROACH FOR SOURCE CODE GENERATION",
+   "year": 2026,
+   "url": "https://doi.org/10.52058/2786-6025-2026-4(58)-2631-2644",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1"
+ ],
+ "calls": [
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:k4de9076c",
+   "prompt_tokens": 1355,
+   "output_tokens": 5772
+  },
+  {
+   "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+   "prompt_tokens": 3185,
+   "output_tokens": 1232
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1789,
+   "output_tokens": 5882
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "prompt_tokens": 3185,
+  "output_tokens": 1232,
+  "verdict": "The deck is broadly teachable, but the professor should correct the OpenAPI password format, the GraphQL directive and introspection claims, and the ajv/protoc and contract-testing overstatements before class.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 4,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The notes claim that spec-driven development eliminates the gap where documentation diverges from actual API behavior, which is an overstatement because specifications can still drift from implementations unless conformance is continuously validated.",
+    "fix": "Say that spec-driven development reduces documentation drift by making the specification authoritative and by validating implementations against it."
+   },
+   {
+    "slide": 5,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The claim that contracts are expressed in neutral formats such as YAML, JSON, and Protobuf so any language or tool can consume them is misleading because Protobuf is a language-specific interface-definition mechanism and the listed formats do not make every contract tool-compatible.",
+    "fix": "Say that contracts use structured, machine-readable formats such as YAML or JSON, while framework-specific formats such as Protobuf are used where their type system and tooling are appropriate."
+   },
+   {
+    "slide": 6,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "Calling OpenAPI, GraphQL SDL, Protocol Buffers, and AsyncAPI all \"spec-driven frameworks\" conflates specification formats and schemas with development frameworks that generate code and enforce contracts.",
+    "fix": "Describe these as widely used API specification formats or contract-definition technologies used within spec-driven development."
+   },
+   {
+    "slide": 8,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The bullet \"Directives for auth & caching\" is misleading because GraphQL SDL has no built-in standard directives for authentication or caching; @auth is not a standard GraphQL directive.",
+    "fix": "Say that custom directives can carry application metadata such as authorization hints or caching policy, while @deprecated is a built-in directive."
+   },
+   {
+    "slide": 8,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The statement that introspection is enabled by default is not universally true because GraphQL servers may disable or restrict introspection in production.",
+    "fix": "Say that introspection is commonly enabled by default in development and can be disabled or restricted in production."
+   },
+   {
+    "slide": 9,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The claim that Protobuf field numbers provide forward and backward compatibility is too broad because compatibility depends on correct field-number management and valid wire changes.",
+    "fix": "Say that stable field numbers and compatible wire-format changes support backward and forward compatibility."
+   },
+   {
+    "slide": 9,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The statement that the Protobuf binary encoding is smaller and faster than JSON is not universally true because relative size and performance depend on the data and implementation.",
+    "fix": "Say that Protobuf's compact binary encoding is often smaller and faster to parse than equivalent JSON representations."
+   },
+   {
+    "slide": 11,
+    "severity": "error",
+    "kind": "code",
+    "problem": "The OpenAPI snippet uses `format: password`, which is not a standard OpenAPI 3.1 format and may be rejected by strict validators.",
+    "fix": "Remove `format: password` and describe the password field with `type: string`, optionally adding `writeOnly: true` and an appropriate length or pattern constraint."
+   },
+   {
+    "slide": 11,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The notes describe the access token as JWT-style, but the schema does not constrain or document the token format, so the example does not establish that property.",
+    "fix": "Either describe the token as an opaque access token or add a description stating that it is a JWT."
+   },
+   {
+    "slide": 13,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The bullet \"Prevents breaking changes\" overstates what consumer-driven contract testing guarantees because it detects incompatible changes but does not prevent them from being introduced or merged.",
+    "fix": "Say that consumer-driven contract testing detects breaking changes before deployment."
+   },
+   {
+    "slide": 14,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The bullet \"Schema validation libraries (ajv, protoc)\" incorrectly presents protoc as a schema-validation library; protoc is the Protocol Buffers compiler, while ajv validates JSON Schema.",
+    "fix": "List ajv as a JSON Schema validator and describe protoc separately as the Protocol Buffers compiler and code-generation entry point."
+   },
+   {
+    "slide": 14,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The notes say that code generators produce router skeletons that enforce the spec, but generated skeletons generally do not enforce request and response schemas by themselves.",
+    "fix": "Say that generated code provides typed routes and models, while separate validation middleware or generated validation hooks enforce the contract."
+   },
+   {
+    "slide": 14,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The notes describe Schemathesis and Dredd as property-based test generators, but they are primarily API testing tools that derive test cases from an API description rather than general property-based generators.",
+    "fix": "Describe Schemathesis and Dredd as tools that generate and run API tests from an OpenAPI description."
+   },
+   {
+    "slide": 17,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The takeaway \"Contract testing guarantees conformance across services\" overstates the guarantee because contract tests cover only the interactions and rules encoded in the contracts.",
+    "fix": "Say that contract testing helps detect conformance regressions across service boundaries."
+   },
+   {
+    "slide": 18,
+    "severity": "warning",
+    "kind": "other",
+    "problem": "The lab preview combines OpenAPI stub generation with a Pact contract test suite without explaining how the Pact contract relates to the OpenAPI document, which may confuse students about which artifact is under test.",
+    "fix": "State whether students will derive Pact contracts from the OpenAPI document or author them separately, and identify which artifact each test validates."
+   }
+  ],
+  "repaired": true
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

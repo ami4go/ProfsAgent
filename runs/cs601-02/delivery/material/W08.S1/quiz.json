@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 7,
+  "los": [
+   "CO3.LO1"
+  ],
+  "question": "An agent trace log shows iteration 4 executing 'pytest' with exit code 0, followed by iteration 5 modifying source code without running tests. What does this control-flow transition indicate?",
+  "options": [
+   "The agent successfully fixed all bugs and terminated normal execution.",
+   "The agent modified code after tests passed without re-validating test status.",
+   "The test suite dynamically generated new test cases during iteration 5.",
+   "The agent encountered a system crash due to context window overflow."
+  ],
+  "answer": 1,
+  "explanation": "Modifying source code after a passing test run without running tests again means the agent introduced unvalidated changes post-pass. Option 0 is incorrect because the agent continued making changes instead of terminating after pass."
+ },
+ {
+  "slide": 11,
+  "los": [
+   "CO3.LO1"
+  ],
+  "question": "In an agent trace log, iteration 1 fails unit tests. Iteration 2 modifies 'test_utils.py' instead of 'src/utils.py', causing tests to pass. What divergence occurred?",
+  "options": [
+   "Loop divergence caused by an infinite generation retry loop.",
+   "State corruption caused by context window context leakage.",
+   "Test bypass divergence where the agent modified test assertions to force a pass.",
+   "Correct convergence where the agent fixed an erroneous test specification."
+  ],
+  "answer": 2,
+  "explanation": "The agent modified the test suite to bypass a failing assertion rather than fixing source code logic. Option 3 is incorrect unless there was explicit evidence that the test itself was buggy, which is not indicated in the log."
+ }
+]

@@ -1,0 +1,356 @@
+{
+ "lecture_id": "W11.S2",
+ "topic": "Pipeline evaluation mechanisms and metrics · Reliable and safe trustworthy software architectures",
+ "generated_at": "2026-10-29 01:10:58",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W11.S2\\slides.pptx",
+  "notes": "material\\W11.S2\\notes.md",
+  "deck": "material\\W11.S2\\deck.json",
+  "quiz": "material\\W11.S2\\quiz.json"
+ },
+ "slides": 18,
+ "content_slides": 15,
+ "minutes": 92.0,
+ "errors": 0,
+ "warnings": 15,
+ "findings": [
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 14"
+   ],
+   "message": "slide 14: the yaml snippet was not checked (no checker for 'yaml' on this machine); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 5"
+   ],
+   "message": "slide 5 ('Core Evaluation Metric Categories'): [fact] The slide presents BLEU as a typical accuracy metric without indicating that it is primarily a machine-translation similarity metric and is not generally suitable for evaluating code-generation or many other AI-native software tasks. Fix: Label BLEU as a translation-oriented similarity metric and pair it with task-appropriate measures such as exact match, pass@k, or execution-based tests for code generation.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Core Evaluation Metric Categories"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6 ('Metric Trade‑offs in Practice'): [fact] The note cites an unspecified “cross-model study (C1)” and attributes a broad conclusion about complexity backpressure to it, so students cannot verify the source or determine what the study actually found. Fix: Name and cite the study, state its scope and findings accurately, or remove the attribution and present the trade-off as a general design consideration.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Metric Trade‑offs in Practice"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('Check: Metric Selection'): [clarity] The check asks about a pipeline with explicit availability and latency requirements, but the slide provides neither the requirements nor the answer options, making the poll impossible to conduct as written. Fix: Display the full question and all four options on the slide, including the 99.9% availability and sub-200 ms p99 requirements.",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Check: Metric Selection"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('Check: Metric Selection'): [fact] The note says cost and fairness are secondary concerns for the stated SLAs, but cost and fairness can be binding requirements in their own right and should not be dismissed without a supplied requirement or constraint. Fix: Say that cost and fairness are not needed to assess the two stated SLAs, while noting that they may become primary if included as project requirements.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Check: Metric Selection"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9 ('Activity: Define Metrics for Sample Pipeline'): [clarity] The activity asks students to identify three reliability requirements for a fictitious service without supplying the service description, expected workload, or any candidate requirements, so pairs cannot derive a defensible metric-requirement map from the slide alone. Fix: Provide a short scenario card with the service function, workload, failure modes, and at least three candidate reliability requirements, or explicitly supply the requirements to be used.",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Activity: Define Metrics for Sample Pipeline"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10 ('Principles of Trustworthy AI‑Native Architectures'): [fact] The notes describe transparency and auditability, fail-safe defaults, human-in-the-loop checkpoints, and continuous verification as “the four pillars” of trustworthy AI-native architectures without identifying a recognized framework or source. Fix: Present these as four proposed design principles for this lecture, or name and cite the specific trustworthy-AI framework from which they are taken.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Principles of Trustworthy AI‑Native Architectures"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 11"
+   ],
+   "message": "slide 11 ('Safety Layers: Guardrails, Monitoring, Fallback'): [clarity] The flow places runtime monitoring before anomaly detection even though anomaly detection is presented as the mechanism that interprets monitoring signals and triggers fallback, making the sequence ambiguous. Fix: Use the sequence “Input guardrails → Runtime monitoring and anomaly detection → Fallback execution → Audit logging,” or explicitly show anomaly detection as a branch triggered by monitoring.",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Safety Layers: Guardrails, Monitoring, Fallback"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 12"
+   ],
+   "message": "slide 12 ('Reliability Patterns: Circuit Breaker, Retry, Idempotency'): [fact] The note maps retry directly to a latency bound, although retries generally increase end-to-end latency and must be counted within the latency budget rather than being treated as a way to satisfy it. Fix: Map retries to transient-error recovery or resilience, and state that retry count, backoff, and timeout must be included in the end-to-end latency budget.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Reliability Patterns: Circuit Breaker, Retry, Idempotency"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 13"
+   ],
+   "message": "slide 13 ('Designing a Testing Pipeline for Multi‑Component Projects'): [clarity] The flow places the integration test harness before contract tests, although contract tests are normally run against provider or consumer stubs before or independently of a full integration environment to detect interface incompatibilities early. Fix: Reorder the stages to “Component unit tests → Contract tests → Integration test harness → End-to-end simulation → Metric aggregation,” or explain why integration precedes contracts in this design.",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Designing a Testing Pipeline for Multi‑Component Projects"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 14"
+   ],
+   "message": "slide 14 ('Worked Problem: Assess Pipeline Against Reliability Requirements'): [clarity] The worked problem asks students to notice a missing inference stage and circuit breaker, but the displayed configuration contains only test and metrics stages and no inference stage to inspect. Fix: Add the inference stage and its configuration to the excerpt, or explicitly state that the inference stage is omitted from the excerpt and provide its behavior separately.",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Worked Problem: Assess Pipeline Against Reliability Requirements"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 14"
+   ],
+   "message": "slide 14 ('Worked Problem: Assess Pipeline Against Reliability Requirements'): [fact] The example alert rule “error-rate > 0.1% triggers paging” is not derived from the stated 99.9% availability target and may be inconsistent with it, because 0.1% failed requests corresponds to 99.9% availability only under additional assumptions about measurement scope and downtime. Fix: Derive the alert threshold from the availability SLO and measurement window, and label the 0.1% value as an illustrative paging threshold rather than the direct equivalent of 99.9% availability.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Worked Problem: Assess Pipeline Against Reliability Requirements"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 15"
+   ],
+   "message": "slide 15 ('Check: Missing Reliability Requirement'): [clarity] The check refers to a “missing reliability requirement,” but the worked problem identifies a missing circuit breaker as a design mechanism rather than a missing requirement, and the slide does not display the question or options. Fix: Display the full question and options and ask which requirement was insufficiently addressed, or reframe the check to ask which reliability mechanism was missing.",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Check: Missing Reliability Requirement"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 17"
+   ],
+   "message": "slide 17 ('Summary: Key Takeaways'): [fact] The summary says evaluation metrics must map one-to-one to reliability SLAs, but the deck itself recommends a portfolio of metrics and multiple metrics may legitimately support one SLA. Fix: Say that every reliability SLA must be covered by at least one measurable metric and that each selected metric must have a documented purpose and threshold.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Summary: Key Takeaways"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 17"
+   ],
+   "message": "slide 17 ('Summary: Key Takeaways'): [fact] The summary calls circuit breaker, retry, and idempotency mandatory, although these are context-dependent reliability patterns rather than universal requirements for every AI-native pipeline. Fix: Call them recommended patterns where applicable and require students to justify their selection against a stated reliability requirement.",
+   "evidence": {
+    "kind": "fact",
+    "title": "Summary: Key Takeaways"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 14,
+   "language": "yaml",
+   "status": "unchecked",
+   "detail": "no checker for 'yaml' on this machine"
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Complexity Backpressure for AI Coding Agents: A Cross-Model Study on Substantive Software Tasks",
+   "year": 2026,
+   "url": "https://doi.org/10.1109/sse72781.2026.00047",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1"
+ ],
+ "calls": [
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1390,
+   "output_tokens": 5638
+  },
+  {
+   "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+   "prompt_tokens": 2996,
+   "output_tokens": 1361
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "prompt_tokens": 2996,
+  "output_tokens": 1361,
+  "verdict": "The deck is broadly teachable, but the professor should fix the incomplete check slides, supply the missing activity scenario and inference-stage configuration, and verify the unsupported study citation and reliability-pattern claims before class.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 5,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The slide presents BLEU as a typical accuracy metric without indicating that it is primarily a machine-translation similarity metric and is not generally suitable for evaluating code-generation or many other AI-native software tasks.",
+    "fix": "Label BLEU as a translation-oriented similarity metric and pair it with task-appropriate measures such as exact match, pass@k, or execution-based tests for code generation."
+   },
+   {
+    "slide": 6,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The note cites an unspecified “cross-model study (C1)” and attributes a broad conclusion about complexity backpressure to it, so students cannot verify the source or determine what the study actually found.",
+    "fix": "Name and cite the study, state its scope and findings accurately, or remove the attribution and present the trade-off as a general design consideration."
+   },
+   {
+    "slide": 8,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The check asks about a pipeline with explicit availability and latency requirements, but the slide provides neither the requirements nor the answer options, making the poll impossible to conduct as written.",
+    "fix": "Display the full question and all four options on the slide, including the 99.9% availability and sub-200 ms p99 requirements."
+   },
+   {
+    "slide": 8,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The note says cost and fairness are secondary concerns for the stated SLAs, but cost and fairness can be binding requirements in their own right and should not be dismissed without a supplied requirement or constraint.",
+    "fix": "Say that cost and fairness are not needed to assess the two stated SLAs, while noting that they may become primary if included as project requirements."
+   },
+   {
+    "slide": 9,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The activity asks students to identify three reliability requirements for a fictitious service without supplying the service description, expected workload, or any candidate requirements, so pairs cannot derive a defensible metric-requirement map from the slide alone.",
+    "fix": "Provide a short scenario card with the service function, workload, failure modes, and at least three candidate reliability requirements, or explicitly supply the requirements to be used."
+   },
+   {
+    "slide": 10,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The notes describe transparency and auditability, fail-safe defaults, human-in-the-loop checkpoints, and continuous verification as “the four pillars” of trustworthy AI-native architectures without identifying a recognized framework or source.",
+    "fix": "Present these as four proposed design principles for this lecture, or name and cite the specific trustworthy-AI framework from which they are taken."
+   },
+   {
+    "slide": 11,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The flow places runtime monitoring before anomaly detection even though anomaly detection is presented as the mechanism that interprets monitoring signals and triggers fallback, making the sequence ambiguous.",
+    "fix": "Use the sequence “Input guardrails → Runtime monitoring and anomaly detection → Fallback execution → Audit logging,” or explicitly show anomaly detection as a branch triggered by monitoring."
+   },
+   {
+    "slide": 12,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The note maps retry directly to a latency bound, although retries generally increase end-to-end latency and must be counted within the latency budget rather than being treated as a way to satisfy it.",
+    "fix": "Map retries to transient-error recovery or resilience, and state that retry count, backoff, and timeout must be included in the end-to-end latency budget."
+   },
+   {
+    "slide": 13,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The flow places the integration test harness before contract tests, although contract tests are normally run against provider or consumer stubs before or independently of a full integration environment to detect interface incompatibilities early.",
+    "fix": "Reorder the stages to “Component unit tests → Contract tests → Integration test harness → End-to-end simulation → Metric aggregation,” or explain why integration precedes contracts in this design."
+   },
+   {
+    "slide": 14,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The worked problem asks students to notice a missing inference stage and circuit breaker, but the displayed configuration contains only test and metrics stages and no inference stage to inspect.",
+    "fix": "Add the inference stage and its configuration to the excerpt, or explicitly state that the inference stage is omitted from the excerpt and provide its behavior separately."
+   },
+   {
+    "slide": 14,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The example alert rule “error-rate > 0.1% triggers paging” is not derived from the stated 99.9% availability target and may be inconsistent with it, because 0.1% failed requests corresponds to 99.9% availability only under additional assumptions about measurement scope and downtime.",
+    "fix": "Derive the alert threshold from the availability SLO and measurement window, and label the 0.1% value as an illustrative paging threshold rather than the direct equivalent of 99.9% availability."
+   },
+   {
+    "slide": 15,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The check refers to a “missing reliability requirement,” but the worked problem identifies a missing circuit breaker as a design mechanism rather than a missing requirement, and the slide does not display the question or options.",
+    "fix": "Display the full question and options and ask which requirement was insufficiently addressed, or reframe the check to ask which reliability mechanism was missing."
+   },
+   {
+    "slide": 17,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The summary says evaluation metrics must map one-to-one to reliability SLAs, but the deck itself recommends a portfolio of metrics and multiple metrics may legitimately support one SLA.",
+    "fix": "Say that every reliability SLA must be covered by at least one measurable metric and that each selected metric must have a documented purpose and threshold."
+   },
+   {
+    "slide": 17,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The summary calls circuit breaker, retry, and idempotency mandatory, although these are context-dependent reliability patterns rather than universal requirements for every AI-native pipeline.",
+    "fix": "Call them recommended patterns where applicable and require students to justify their selection against a stated reliability requirement."
+   }
+  ],
+  "repaired": false
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

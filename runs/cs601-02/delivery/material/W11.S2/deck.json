@@ -1,0 +1,445 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W11.S2",
+ "title": "Pipeline evaluation mechanisms and metrics · Reliable and safe trustworthy software architectures",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "Recap: Automated Testing Mechanisms",
+   "bullets": [
+    "Unit, integration, contract tests",
+    "Property‑based and metamorphic testing",
+    "Continuous evaluation in CI/CD",
+    "Test‑result dashboards and alerts"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Briefly remind students of the testing taxonomy covered in Week 10. Emphasise that AI‑native pipelines add non‑deterministic components, so traditional pass/fail gates are insufficient. Mention the shift from static test suites to continuous metric collection.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Why Evaluate AI‑Native Pipelines?",
+   "bullets": [
+    "Model drift and data shift",
+    "Non‑deterministic outputs",
+    "Regulatory and safety mandates",
+    "Cost‑performance trade‑offs"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Explain that evaluation is not a one‑off activity; it must run continuously because models evolve. Highlight that reliability requirements (availability, latency bounds, safety) translate directly into measurable pipeline metrics.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Core Evaluation Metric Categories",
+   "bullets": [
+    "Accuracy‑type metrics (F1, BLEU, exact match)",
+    "Latency percentiles (p50, p99)",
+    "Cost measures (API calls, GPU‑hours)",
+    "Robustness indicators (adversarial pass rate)",
+    "Fairness / bias proxies"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Metric categories and typical measures",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Category",
+      "Typical Measures",
+      "Tool Support"
+     ],
+     [
+      "Accuracy",
+      "F1, BLEU, Exact Match",
+      "Eval frameworks"
+     ],
+     [
+      "Latency",
+      "p50, p99 ms",
+      "Profiling"
+     ],
+     [
+      "Cost",
+      "API calls, GPU hrs",
+      "Billing"
+     ],
+     [
+      "Robustness",
+      "Adversarial pass rate",
+      "Stress tests"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "Walk through each category, linking to concrete tools (e.g., HuggingFace evaluate, Prometheus for latency). Stress that a single metric never tells the whole story; a portfolio is required for trustworthy deployment.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Metric Trade‑offs in Practice",
+   "bullets": [
+    "Higher accuracy often raises latency",
+    "Cost constraints limit model size",
+    "Robustness testing adds pipeline stages",
+    "Fairness checks may conflict with accuracy"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Decision flow for metric prioritisation",
+    "steps": [
+     "Define reliability goals",
+     "Select primary metrics",
+     "Add secondary metrics",
+     "Validate with pilot runs",
+     "Iterate"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Use the flow to illustrate how teams negotiate competing objectives. Cite the cross‑model study (C1) showing that complexity backpressure forces explicit trade‑off decisions in AI coding agents.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Aligning Metrics to Reliability Requirements",
+   "bullets": [
+    "Map each SLA to a measurable metric",
+    "Define acceptance thresholds",
+    "Automate threshold alerts",
+    "Document justification per requirement"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Show a template: Requirement → Metric → Threshold → Monitoring. Emphasise traceability: every design decision in the pipeline must reference at least one reliability requirement, a core expectation for LO2.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Metric Selection",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "A pipeline must guarantee 99.9 % availability and sub‑200 ms p99 latency. Which metric set best satisfies both?",
+    "options": [
+     "Accuracy + cost only",
+     "Latency p99 + error‑rate monitoring",
+     "Throughput + GPU utilisation",
+     "Fairness + adversarial pass rate"
+    ],
+    "answer": 1,
+    "explanation": "Option 1 (index 1) directly measures the two stated SLAs: latency percentile and error rate (availability). The other sets miss at least one SLA."
+   },
+   "notes": "Poll the class, then discuss why latency and error‑rate are the primary indicators for the given SLAs. Clarify that cost and fairness are secondary concerns here.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "activity",
+   "title": "Activity: Define Metrics for Sample Pipeline",
+   "bullets": [
+    "Identify three reliability requirements",
+    "Pick primary & secondary metrics",
+    "Set provisional thresholds",
+    "Share with neighbour for critique"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Students work in pairs on a fictitious AI‑native service (e.g., code‑generation API). They produce a one‑page metric‑requirement map. Instructor circulates to probe justification.",
+   "los": [
+    "CO4.LO1"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "concept",
+   "title": "Principles of Trustworthy AI‑Native Architectures",
+   "bullets": [
+    "Transparency & auditability",
+    "Fail‑safe defaults",
+    "Human‑in‑the‑loop checkpoints",
+    "Continuous verification"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Introduce the four pillars from recent trustworthy‑AI literature. Connect each pillar to concrete architectural mechanisms (logging, sandboxing, policy engines). This frames the design decisions students must justify in LO2.",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [],
+   "minutes": 7.0
+  },
+  {
+   "kind": "concept",
+   "title": "Safety Layers: Guardrails, Monitoring, Fallback",
+   "bullets": [
+    "Input validation & schema enforcement",
+    "Runtime anomaly detection",
+    "Automatic fallback to safe model",
+    "Immutable audit log"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Safety‑layer pipeline",
+    "steps": [
+     "Input guardrails",
+     "Runtime monitoring",
+     "Anomaly detection",
+     "Fallback execution",
+     "Audit logging"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Walk through the flow: every request passes guardrails, then monitoring; anomalies trigger fallback. Stress that each layer addresses a distinct reliability requirement (integrity, availability, safety).",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [],
+   "minutes": 7.0
+  },
+  {
+   "kind": "concept",
+   "title": "Reliability Patterns: Circuit Breaker, Retry, Idempotency",
+   "bullets": [
+    "Circuit breaker prevents cascade failures",
+    "Exponential back‑off retry for transient errors",
+    "Idempotent operations enable safe retries",
+    "Pattern composition in pipeline stages"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Explain each pattern with a one‑sentence scenario. Show how they map to requirements: circuit breaker → availability, retry → latency bound, idempotency → data consistency. Mention that AI‑native steps (model inference) often need custom timeouts.",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [],
+   "minutes": 7.0
+  },
+  {
+   "kind": "concept",
+   "title": "Designing a Testing Pipeline for Multi‑Component Projects",
+   "bullets": [
+    "Component‑level unit tests",
+    "Contract tests between services",
+    "Integration test harness",
+    "End‑to‑end simulation",
+    "Automated metric aggregation"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Testing pipeline stages",
+    "steps": [
+     "Component unit tests",
+     "Integration test harness",
+     "Contract tests",
+     "End‑to‑end simulation",
+     "Metric aggregation"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Detail the rationale for each stage. Emphasise that contract tests catch schema drift early, while end‑to‑end simulation validates the full reliability envelope. This pipeline is the artefact students will assess in the worked problem.",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [],
+   "minutes": 7.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Worked Problem: Assess Pipeline Against Reliability Requirements",
+   "bullets": [
+    "Requirement: 99.9 % uptime, p99 < 200 ms",
+    "Map each pipeline stage to metrics",
+    "Identify missing circuit‑breaker on inference",
+    "Add fallback model stage",
+    "Set alert thresholds & justify"
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Sample pipeline config (excerpt)",
+    "steps": [],
+    "code": "stages:\n  - name: unit_test\n    script: pytest unit/\n  - name: integration_test\n    script: pytest integration/\n  - name: contract_test\n    script: pact-verifier\n  - name: e2e_sim\n    script: run_sim.sh\n  - name: metrics_collect\n    script: collect_metrics.py\n",
+    "language": "yaml",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Step through the assessment: (1) list requirements, (2) trace each to a metric collected in metrics_collect, (3) notice the inference stage lacks a circuit breaker, (4) propose a fallback model stage with its own latency budget, (5) define alert rules (e.g., error‑rate >0.1 % triggers paging). This demonstrates the justification skill required for LO2.",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 10.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Missing Reliability Requirement",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "In the worked problem, which reliability requirement was not addressed by the original pipeline?",
+    "options": [
+     "Latency bound",
+     "Availability target",
+     "Circuit‑breaker protection",
+     "Cost ceiling"
+    ],
+    "answer": 2,
+    "explanation": "The original config had no circuit‑breaker stage for model inference, leaving the system vulnerable to cascade failures. Latency and availability were covered by metrics; cost was out of scope."
+   },
+   "notes": "Quick poll, then reinforce that architectural patterns (circuit breaker) are explicit design decisions that must be traced to a requirement.",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "activity",
+   "title": "Activity: Group Design of Pipeline Architecture",
+   "bullets": [
+    "Form groups of 3‑4",
+    "Sketch a pipeline with safety layers",
+    "Annotate each stage with a requirement",
+    "Present 2‑minute rationale"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Groups produce a one‑page diagram (paper or digital). Instructor evaluates whether every stage cites a requirement and whether patterns like circuit breaker, fallback, and audit log appear. This mirrors the project milestone assessment.",
+   "los": [
+    "CO4.LO2"
+   ],
+   "sources": [],
+   "minutes": 7.0
+  },
+  {
+   "kind": "summary",
+   "title": "Summary: Key Takeaways",
+   "bullets": [
+    "Evaluation metrics must map 1‑to‑1 to reliability SLAs",
+    "Trade‑offs are explicit decisions, not accidents",
+    "Trustworthy architectures layer guardrails, monitoring, fallbacks",
+    "Reliability patterns (circuit breaker, retry, idempotency) are mandatory",
+    "Every pipeline design choice needs a documented justification"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Recap the two lecture parts. Remind students that the project milestone (due Week 12) requires a full pipeline assessment with justifications. Point to the lab next week for hands‑on metric implementation.",
+   "los": [
+    "CO4.LO1",
+    "CO4.LO2"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  }
+ ]
+}

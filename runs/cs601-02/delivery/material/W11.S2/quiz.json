@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 8,
+  "los": [
+   "CO4.LO1"
+  ],
+  "question": "A pipeline must guarantee 99.9 % availability and sub‑200 ms p99 latency. Which metric set best satisfies both?",
+  "options": [
+   "Accuracy + cost only",
+   "Latency p99 + error‑rate monitoring",
+   "Throughput + GPU utilisation",
+   "Fairness + adversarial pass rate"
+  ],
+  "answer": 1,
+  "explanation": "Option 1 (index 1) directly measures the two stated SLAs: latency percentile and error rate (availability). The other sets miss at least one SLA."
+ },
+ {
+  "slide": 15,
+  "los": [
+   "CO4.LO2"
+  ],
+  "question": "In the worked problem, which reliability requirement was not addressed by the original pipeline?",
+  "options": [
+   "Latency bound",
+   "Availability target",
+   "Circuit‑breaker protection",
+   "Cost ceiling"
+  ],
+  "answer": 2,
+  "explanation": "The original config had no circuit‑breaker stage for model inference, leaving the system vulnerable to cascade failures. Latency and availability were covered by metrics; cost was out of scope."
+ }
+]

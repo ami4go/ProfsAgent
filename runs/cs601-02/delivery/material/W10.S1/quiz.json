@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 12,
+  "los": [
+   "CO3.LO2"
+  ],
+  "question": "Which log line most clearly indicates a specification mismatch?",
+  "options": [
+   "ERROR SpecParser: missing required field 'timeout'",
+   "WARN ConfigLoader: env VAR_API_KEY not set",
+   "ERROR DependencyResolver: version conflict libfoo 1.2 vs 2.0",
+   "ERROR MemoryMonitor: process exceeded 2GB limit"
+  ],
+  "answer": 0,
+  "explanation": "The SpecParser error shows the agent cannot understand the specification, a classic specification mismatch. The config warning is environment drift, the dependency error is a version conflict, and the memory error is resource exhaustion."
+ },
+ {
+  "slide": 13,
+  "los": [
+   "CO3.LO2"
+  ],
+  "question": "What is the correct order of the trace analysis workflow steps?",
+  "options": [
+   "Collect logs → Parse events → Filter errors → Cluster patterns → Summarize causes",
+   "Parse events → Collect logs → Filter errors → Summarize causes → Cluster patterns",
+   "Filter errors → Collect logs → Parse events → Cluster patterns → Summarize causes",
+   "Collect logs → Filter errors → Parse events → Summarize causes → Cluster patterns"
+  ],
+  "answer": 0,
+  "explanation": "The workflow starts with collection, then parsing, filtering, clustering, and finally summarizing. Other orders break dependencies between steps."
+ }
+]

@@ -1,0 +1,503 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W04.S2",
+ "title": "Standards and Specification Guidelines for Use Cases & Software Requirements Engineering",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "From Product Description to Use Cases",
+   "bullets": [
+    "Unstructured product descriptions are the starting point",
+    "Standards give a shared vocabulary",
+    "Spec‑driven development turns descriptions into executable specs"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Open the lecture by framing the problem: we receive a narrative product description and must produce precise use cases. Standards provide the common language that lets analysts, developers, and testers agree on what the system must do. Spec‑driven development then uses those use cases as executable specifications that can drive code generation and test creation.",
+   "los": [
+    "CO2.LO3",
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "concept",
+   "title": "Why Use‑Case Standards Matter",
+   "bullets": [
+    "Common language for stakeholders",
+    "Enables traceability to code and tests",
+    "Supports tooling and automation"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Without a standard notation, each team invents its own way of writing use cases, leading to ambiguity and gaps. A shared standard lets requirements be traced forward to design, code, and test cases, and it enables tools to parse, validate, and even generate artifacts automatically.",
+   "los": [
+    "CO2.LO3",
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "concept",
+   "title": "Key Use‑Case Standards: UML 2.x & OMG Template",
+   "bullets": [
+    "UML 2.x defines use‑case diagram notation",
+    "OMG provides a textual use‑case template",
+    "Both are maintained by the Object Management Group"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Core elements of a UML use‑case diagram",
+    "steps": [
+     "Actor",
+     "Use Case",
+     "Include/Extend",
+     "System Boundary"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "UML 2.x is the de‑facto graphical standard for use‑case diagrams; the OMG also publishes a textual template (often called the Cockburn template) that captures preconditions, postconditions, main flow, and alternatives. Both are actively maintained and widely supported by modeling tools.",
+   "los": [
+    "CO2.LO3",
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Requirements Specification Standard: ISO/IEC/IEEE 29148",
+   "bullets": [
+    "Replaces withdrawn IEEE 830 (2017)",
+    "Structures SRS: purpose, scope, functional & non‑functional requirements",
+    "Guides traceability and verification"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "IEEE 830 was withdrawn in 2017. The current international standard for writing Software Requirements Specifications is ISO/IEC/IEEE 29148, which defines the required sections of an SRS and emphasizes bidirectional traceability between requirements, design, and test.",
+   "los": [
+    "CO2.LO3",
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Quality Model: ISO/IEC 25010",
+   "bullets": [
+    "Defines product quality characteristics (e.g., functionality, reliability)",
+    "Not a use‑case standard but informs non‑functional requirements",
+    "Used to derive quality‑focused use cases"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "ISO/IEC 25010 (2018 edition) provides a taxonomy of quality attributes such as performance, security, and usability. While it does not define use‑case notation, it is the reference for writing non‑functional requirements that later become quality‑focused use cases or acceptance criteria.",
+   "los": [
+    "CO2.LO3",
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "example",
+   "title": "Example: Online Ordering Use‑Case Diagram",
+   "bullets": [
+    "Actors: Customer, Payment Service, Inventory Service",
+    "Use cases: Place Order, Process Payment, Check Inventory",
+    "Include relationships: Place Order includes Process Payment and Check Inventory"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Simplified flow for the Place Order use case",
+    "steps": [
+     "Customer",
+     "Place Order",
+     "Process Payment",
+     "Check Inventory",
+     "Confirm Order"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Walk through the diagram: the Customer initiates Place Order. The system includes two sub‑use cases — Process Payment (interacting with the external Payment Service actor) and Check Inventory (interacting with the Inventory Service actor). Both are marked with «include» because they are mandatory parts of every order.",
+   "los": [
+    "CO2.LO3",
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 7.0
+  },
+  {
+   "kind": "concept",
+   "title": "Identifying the System Boundary",
+   "bullets": [
+    "Boundary encloses responsibilities of the system under design",
+    "Actors and external systems stay outside",
+    "Clarifies scope for development and testing"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "The system boundary is a conceptual line that separates what the project team must build from what is given (actors, external services, hardware). It is drawn on the use‑case diagram as a rectangle; everything inside is in scope, everything outside is an actor or an external system.",
+   "los": [
+    "CO2.LO3",
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "example",
+   "title": "Example: System Boundary for Mobile Banking App",
+   "bullets": [
+    "Actors: Customer, Bank Server, Regulator",
+    "Inside boundary: Mobile App UI, Local Validation, Transaction Logic",
+    "Outside: Bank Server APIs, Regulatory Reporting Service"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Actors and the mobile‑app system boundary",
+    "steps": [
+     "Customer",
+     "Mobile App",
+     "Bank Server",
+     "Regulator"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Choose a single coherent scope — here the mobile client. The Customer interacts with the app; the app calls Bank Server APIs (outside) for core banking functions; the Regulator receives compliance reports via a separate reporting service (also outside). This makes clear which components the team must deliver.",
+   "los": [
+    "CO2.LO3",
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 7.0
+  },
+  {
+   "kind": "concept",
+   "title": "Spec‑Driven Development Guidelines for Use Cases",
+   "bullets": [
+    "Write use cases as executable specifications",
+    "Link each use case to acceptance criteria",
+    "Generate test scaffolding from use‑case steps"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Spec‑driven development treats a well‑structured use case (with clear preconditions, main flow, and postconditions) as a living specification. Tools can parse the steps to generate BDD‑style test skeletons, API contracts, or even prototype code, keeping implementation aligned with requirements.",
+   "los": [
+    "CO2.LO3",
+    "CO2.LO1"
+   ],
+   "sources": [
+    "C2"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Worked Problem: Extract Use Cases from a Short Product Description",
+   "bullets": [
+    "Step 1: Identify actors from nouns",
+    "Step 2: List user goals as use cases",
+    "Step 3: Draw system boundary",
+    "Step 4: Add include/extend relationships",
+    "Step 5: Write brief textual template for each use case"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Step‑by‑step extraction process",
+    "steps": [
+     "Identify Actors",
+     "List Goals",
+     "Draw Boundary",
+     "Add Relationships",
+     "Write Templates"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Given a paragraph describing a ‘library self‑checkout’ system, we first spot actors (Patron, Librarian, Catalog Service). Next we write goals: ‘Check out book’, ‘Return book’, ‘Pay fine’. We draw a boundary around the self‑checkout kiosk software, add «include» for ‘Authenticate Patron’ used by both check‑out and return, and finally fill the OMG textual template for each use case.",
+   "los": [
+    "CO2.LO3",
+    "CO2.LO1"
+   ],
+   "sources": [
+    "C2"
+   ],
+   "minutes": 9.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Use‑Case Identification",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "Which artifact is defined by UML 2.x for visualizing use cases?",
+    "options": [
+     "Use‑case diagram",
+     "Class diagram",
+     "Sequence diagram",
+     "State machine diagram"
+    ],
+    "answer": 0,
+    "explanation": "UML 2.x defines the use‑case diagram notation; class, sequence, and state machine diagrams serve other purposes."
+   },
+   "notes": "Common confusion: class diagram shows structure, not use cases. The use‑case diagram is the only UML diagram whose primary purpose is to capture functional requirements from the user's perspective.",
+   "los": [
+    "CO2.LO3",
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "concept",
+   "title": "Software Requirements Engineering Overview",
+   "bullets": [
+    "Elicitation, analysis, specification, validation, management",
+    "Iterative and incremental in modern practice",
+    "Bridges stakeholder needs and technical solution"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Requirements engineering is the disciplined process of discovering, documenting, and maintaining what the software must do. It is not a one‑shot activity; modern projects revisit each phase as knowledge grows.",
+   "los": [],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "concept",
+   "title": "Requirements Elicitation Techniques",
+   "bullets": [
+    "Interviews and workshops",
+    "Observation and ethnography",
+    "Prototyping and storyboarding"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Common elicitation techniques compared",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Technique",
+      "Strength",
+      "Weakness"
+     ],
+     [
+      "Interviews",
+      "Deep insight",
+      "Time‑consuming"
+     ],
+     [
+      "Workshops",
+      "Consensus building",
+      "Groupthink risk"
+     ],
+     [
+      "Prototyping",
+      "Early feedback",
+      "Scope creep"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "No single technique suffices. Interviews uncover detailed needs, workshops align stakeholders, and prototypes make abstract ideas concrete. Combining them reduces the risk of missing critical requirements.",
+   "los": [],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "concept",
+   "title": "Requirements Analysis & Modeling",
+   "bullets": [
+    "Use cases and user stories capture functional needs",
+    "Domain models clarify data concepts",
+    "Non‑functional requirements mapped to ISO/IEC 25010"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Analysis transforms raw elicitation data into structured models. Use cases (or user stories) describe behavior; domain models (class diagrams, ER diagrams) capture data; quality attributes from ISO/IEC 25010 become non‑functional requirements with measurable targets.",
+   "los": [],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "concept",
+   "title": "Requirements Specification & Validation",
+   "bullets": [
+    "SRS structured per ISO/IEC/IEEE 29148",
+    "Reviews, inspections, and prototypes validate completeness",
+    "Traceability matrix links requirements to tests"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "The SRS is the contract between stakeholders and developers. Following ISO/IEC/IEEE 29148 ensures all required sections exist. Validation uses peer reviews, executable prototypes, and a traceability matrix to confirm every requirement is testable and covered.",
+   "los": [],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "concept",
+   "title": "Requirements Management & Traceability",
+   "bullets": [
+    "Version control for requirements artifacts",
+    "Change impact analysis via trace links",
+    "Tool support (e.g., DOORS, Jama, Git‑based)"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Requirements evolve. A management process stores each version, records rationale, and maintains trace links to design, code, and tests. When a requirement changes, impact analysis shows which downstream artifacts must be updated. Modern tools integrate with Git to keep requirements close to the codebase.",
+   "los": [],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Requirements Engineering Activities",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "Which standard structures a Software Requirements Specification (SRS) today?",
+    "options": [
+     "ISO/IEC/IEEE 29148",
+     "IEEE 830",
+     "ISO/IEC 25010",
+     "UML 2.x"
+    ],
+    "answer": 0,
+    "explanation": "ISO/IEC/IEEE 29148 superseded IEEE 830 in 2017; ISO/IEC 25010 is a quality model, and UML 2.x defines diagrams, not SRS structure."
+   },
+   "notes": "Remember IEEE 830 is withdrawn. The current SRS standard is ISO/IEC/IEEE 29148, which also emphasizes traceability and verification.",
+   "los": [],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "summary",
+   "title": "Key Takeaways",
+   "bullets": [
+    "UML 2.x & OMG template standardize use‑case notation",
+    "ISO/IEC/IEEE 29148 guides SRS structure",
+    "ISO/IEC 25010 informs quality requirements",
+    "System boundary defines scope of the system under design",
+    "Spec‑driven development turns use cases into executable specs",
+    "Requirements engineering cycles through elicitation, analysis, specification, validation, management"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Recap the main points: use‑case standards give a common language, the SRS standard structures the full specification, the quality model shapes non‑functional needs, and the system boundary sets scope. Spec‑driven development leverages these artifacts for automation. The requirements engineering lifecycle ties everything together and prepares us for next week’s spec‑driven frameworks.",
+   "los": [
+    "CO2.LO3",
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  }
+ ]
+}

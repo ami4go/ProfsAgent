@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 10,
+  "los": [
+   "CO3.LO3"
+  ],
+  "question": "Which log type would most directly reveal an agent's reasoning error leading to an off-by-one loop bug?",
+  "options": [
+   "Prompt/response log",
+   "Execution trace",
+   "Test result log",
+   "Artifact diff"
+  ],
+  "answer": 0,
+  "explanation": "Prompt/response logs capture the agent's natural language reasoning, where the off-by-one logic was expressed. Execution traces show the resulting code execution, not the reasoning. Test logs only show failure, not cause. Artifact diffs show code changes but not the reasoning."
+ },
+ {
+  "slide": 12,
+  "los": [
+   "CO3.LO3"
+  ],
+  "question": "When analyzing a software factory output, you see a test failure due to a missing authentication check. Which log should you examine first to find the root cause?",
+  "options": [
+   "Prompt log from the code generation stage",
+   "Execution trace of the test run",
+   "Deployment script log",
+   "Specification document"
+  ],
+  "answer": 0,
+  "explanation": "The prompt log from code generation shows whether the agent considered security requirements. The execution trace only shows the test failure. Deployment logs are too late. The specification may not reflect what the agent actually did."
+ }
+]

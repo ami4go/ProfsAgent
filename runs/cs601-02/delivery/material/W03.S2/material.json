@@ -1,0 +1,393 @@
+{
+ "lecture_id": "W03.S2",
+ "topic": "Custom tool integrations using model context protocols",
+ "generated_at": "2026-10-28 21:34:36",
+ "prompt": "B1 0.3.0",
+ "files": {
+  "slides": "material\\W03.S2\\slides.pptx",
+  "notes": "material\\W03.S2\\notes.md",
+  "deck": "material\\W03.S2\\deck.json",
+  "quiz": "material\\W03.S2\\quiz.json"
+ },
+ "slides": 17,
+ "content_slides": 14,
+ "minutes": 86.0,
+ "errors": 0,
+ "warnings": 17,
+ "findings": [
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10: the typescript snippet was not checked (no checker for 'typescript' on this machine); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-UNVERIFIED",
+   "severity": "warning",
+   "nodes": [
+    "slide 13"
+   ],
+   "message": "slide 13: the typescript snippet was not checked (no checker for 'typescript' on this machine); read it before teaching",
+   "evidence": {},
+   "stage": "content"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 4"
+   ],
+   "message": "slide 4 ('MCP Architecture: Hosts, Clients, and Servers'): [fact] The slide says an MCP Client maintains 1:1 connections with one or more MCP servers, which is internally contradictory and does not describe the usual one-client-to-one-server relationship accurately. Fix: State that an MCP Client maintains a logical connection to a particular MCP Server, and that a host may create multiple clients for multiple servers. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "MCP Architecture: Hosts, Clients, and Servers"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 4"
+   ],
+   "message": "slide 4 ('MCP Architecture: Hosts, Clients, and Servers'): [fact] The transport description \"stdio or HTTP with SSE\" is outdated for current MCP because Streamable HTTP has replaced the older HTTP+SSE transport. Fix: Say that MCP uses stdio or Streamable HTTP, and mention HTTP+SSE only as a legacy transport if it is needed for historical context. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "MCP Architecture: Hosts, Clients, and Servers"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 5"
+   ],
+   "message": "slide 5 ('MCP Core Primitives: Resources, Prompts, and Tools'): [fact] The claim that tools use JSON Schema to define return types is misleading because MCP tool input schemas define accepted arguments, while output is represented by structured content and optional output schemas. Fix: Say that tools use JSON Schema to define their input arguments, and that results are returned as MCP content such as text, images, or structured data. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "MCP Core Primitives: Resources, Prompts, and Tools"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 6"
+   ],
+   "message": "slide 6 ('Configuring MCP Servers in Agent Workspaces'): [clarity] The slides do not identify the specific agent workspace or configuration file and schema being used, so students cannot know where to place the example configuration or which keys are valid. Fix: Name the workspace and exact configuration file, show its expected schema or a link to it, and state whether the example is for VS Code, Claude Desktop, or another client. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Configuring MCP Servers in Agent Workspaces"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 7"
+   ],
+   "message": "slide 7 ('Example Workspace MCP Configuration'): [clarity] The example is presented as universally valid even though MCP client configuration formats and supported fields differ between clients. Fix: Label the example with the specific MCP client and schema version it targets, and note that other clients may use different file names or keys. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Example Workspace MCP Configuration"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('Tool Schema Definitions and Input Validation'): [fact] The statement that strict validation prevents invalid model outputs from reaching server logic is false because the server must validate arguments itself and the model does not guarantee valid calls. Fix: Say that server-side validation rejects invalid arguments before executing tool logic, and that schema guidance reduces but does not eliminate malformed calls. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Tool Schema Definitions and Input Validation"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9 ('Implementing a Custom MCP Tool Server'): [code] The handler never validates req.params.arguments against the declared schema and always returns \"Linting passed with 0 errors.\", so it does not implement the promised run_linter behavior. Fix: Validate the arguments with the tool's schema, run the requested linter against the supplied path, and return its actual result or a structured error. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Implementing a Custom MCP Tool Server"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9 ('Implementing a Custom MCP Tool Server'): [clarity] The task mentions source-file and fix flags, but the schema exposes only a required path and the code contains no fix option or linter invocation. Fix: Make the task, schema, and implementation agree, for example by adding an optional fix boolean and executing the linter with the selected options. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Implementing a Custom MCP Tool Server"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9 ('Implementing a Custom MCP Tool Server'): [clarity] The notes claim that the server validates the input and returns structured content, but the shown code performs neither validation nor any linter execution. Fix: Describe only what the code does, or add the missing validation and execution logic before making those claims. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Implementing a Custom MCP Tool Server"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 11"
+   ],
+   "message": "slide 11 ('Error Handling and Static Analysis Rules for Integration'): [clarity] The slide does not identify the static analyzer or its configuration, so students are not told how to produce the required zero-warning report. Fix: Name the analyzer and show the exact command or workspace task that students should run and include in their deliverable. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Error Handling and Static Analysis Rules for Integration"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 12"
+   ],
+   "message": "slide 12 ('Fixing Configuration and Analysis Warnings'): [code] The catch block accesses err.message even though err has unknown type under modern TypeScript strict checking, which can itself produce a compiler diagnostic. Fix: Use a typed unknown error and narrow it before reading the message, for example with an Error-instance check or a safe error-message helper. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Fixing Configuration and Analysis Warnings"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 12"
+   ],
+   "message": "slide 12 ('Fixing Configuration and Analysis Warnings'): [clarity] The code omits the surrounding handler and the definition of executeTool, so it is not a complete copyable fix and does not show where the try-catch belongs. Fix: Show the complete request handler with its imports, argument validation, executeTool implementation or call, and the MCP error response. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "Fixing Configuration and Analysis Warnings"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 13"
+   ],
+   "message": "slide 13 ('In-Class Activity: Custom MCP Tool Integration'): [clarity] The activity refers to mcp_config.json and run_tests without identifying the repository path, expected tool schema, or exact test and analyzer commands. Fix: Provide the lab repository path, the relevant file locations, the required run_tests input contract, and the exact verification commands. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "clarity",
+    "title": "In-Class Activity: Custom MCP Tool Integration"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 15"
+   ],
+   "message": "slide 15 ('Security and Best Practices for Custom MCP Integrations'): [fact] The advice to store secrets in standard env files is ambiguous and can conflict with the earlier instruction to use environment variables, because committed .env files can expose credentials. Fix: Say that secrets should be supplied through environment variables or a secret manager, and that any .env file must be excluded from version control. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Security and Best Practices for Custom MCP Integrations"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-OVERFLOW",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10: the code text may not fit its box; shorten it in PowerPoint",
+   "evidence": {},
+   "stage": "render"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 8,
+   "language": "json",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 10,
+   "language": "typescript",
+   "status": "unchecked",
+   "detail": "no checker for 'typescript' on this machine"
+  },
+  {
+   "slide": 11,
+   "language": "json",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 13,
+   "language": "typescript",
+   "status": "unchecked",
+   "detail": "no checker for 'typescript' on this machine"
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Query Tuning Framework Using the Model Context Protocol for Workflows",
+   "year": 2026,
+   "url": "https://doi.org/10.2139/ssrn.6172059",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1"
+ ],
+ "calls": [
+  {
+   "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+   "prompt_tokens": 1378,
+   "output_tokens": 9056
+  },
+  {
+   "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+   "prompt_tokens": 4072,
+   "output_tokens": 1194
+  },
+  {
+   "endpoint": "gemini:gemini-3.5-flash:k25e39c0a",
+   "prompt_tokens": 2012,
+   "output_tokens": 9335
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "prompt_tokens": 4072,
+  "output_tokens": 1194,
+  "verdict": "The deck is not yet safe to teach from because several MCP behavior and code claims are inaccurate, and the professor should first verify the transport, tool-schema, and error-handling details against the current SDK and the actual workspace configuration.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 4,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The slide says an MCP Client maintains 1:1 connections with one or more MCP servers, which is internally contradictory and does not describe the usual one-client-to-one-server relationship accurately.",
+    "fix": "State that an MCP Client maintains a logical connection to a particular MCP Server, and that a host may create multiple clients for multiple servers."
+   },
+   {
+    "slide": 4,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The transport description \"stdio or HTTP with SSE\" is outdated for current MCP because Streamable HTTP has replaced the older HTTP+SSE transport.",
+    "fix": "Say that MCP uses stdio or Streamable HTTP, and mention HTTP+SSE only as a legacy transport if it is needed for historical context."
+   },
+   {
+    "slide": 5,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The claim that tools use JSON Schema to define return types is misleading because MCP tool input schemas define accepted arguments, while output is represented by structured content and optional output schemas.",
+    "fix": "Say that tools use JSON Schema to define their input arguments, and that results are returned as MCP content such as text, images, or structured data."
+   },
+   {
+    "slide": 6,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The slides do not identify the specific agent workspace or configuration file and schema being used, so students cannot know where to place the example configuration or which keys are valid.",
+    "fix": "Name the workspace and exact configuration file, show its expected schema or a link to it, and state whether the example is for VS Code, Claude Desktop, or another client."
+   },
+   {
+    "slide": 7,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The example is presented as universally valid even though MCP client configuration formats and supported fields differ between clients.",
+    "fix": "Label the example with the specific MCP client and schema version it targets, and note that other clients may use different file names or keys."
+   },
+   {
+    "slide": 8,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The statement that strict validation prevents invalid model outputs from reaching server logic is false because the server must validate arguments itself and the model does not guarantee valid calls.",
+    "fix": "Say that server-side validation rejects invalid arguments before executing tool logic, and that schema guidance reduces but does not eliminate malformed calls."
+   },
+   {
+    "slide": 9,
+    "severity": "error",
+    "kind": "code",
+    "problem": "The handler never validates req.params.arguments against the declared schema and always returns \"Linting passed with 0 errors.\", so it does not implement the promised run_linter behavior.",
+    "fix": "Validate the arguments with the tool's schema, run the requested linter against the supplied path, and return its actual result or a structured error."
+   },
+   {
+    "slide": 9,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The task mentions source-file and fix flags, but the schema exposes only a required path and the code contains no fix option or linter invocation.",
+    "fix": "Make the task, schema, and implementation agree, for example by adding an optional fix boolean and executing the linter with the selected options."
+   },
+   {
+    "slide": 9,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The notes claim that the server validates the input and returns structured content, but the shown code performs neither validation nor any linter execution.",
+    "fix": "Describe only what the code does, or add the missing validation and execution logic before making those claims."
+   },
+   {
+    "slide": 11,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The slide does not identify the static analyzer or its configuration, so students are not told how to produce the required zero-warning report.",
+    "fix": "Name the analyzer and show the exact command or workspace task that students should run and include in their deliverable."
+   },
+   {
+    "slide": 12,
+    "severity": "error",
+    "kind": "code",
+    "problem": "The catch block accesses err.message even though err has unknown type under modern TypeScript strict checking, which can itself produce a compiler diagnostic.",
+    "fix": "Use a typed unknown error and narrow it before reading the message, for example with an Error-instance check or a safe error-message helper."
+   },
+   {
+    "slide": 12,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The code omits the surrounding handler and the definition of executeTool, so it is not a complete copyable fix and does not show where the try-catch belongs.",
+    "fix": "Show the complete request handler with its imports, argument validation, executeTool implementation or call, and the MCP error response."
+   },
+   {
+    "slide": 13,
+    "severity": "warning",
+    "kind": "clarity",
+    "problem": "The activity refers to mcp_config.json and run_tests without identifying the repository path, expected tool schema, or exact test and analyzer commands.",
+    "fix": "Provide the lab repository path, the relevant file locations, the required run_tests input contract, and the exact verification commands."
+   },
+   {
+    "slide": 15,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The advice to store secrets in standard env files is ambiguous and can conflict with the earlier instruction to use environment variables, because committed .env files can expose credentials.",
+    "fix": "Say that secrets should be supplied through environment variables or a secret manager, and that any .env file must be excluded from version control."
+   }
+  ],
+  "repaired": true
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

@@ -1,0 +1,375 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W06.S2",
+ "title": "Requirements to Executable Specifications and Code Generation",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "Transforming Unstructured Requirements into Executable Specifications",
+   "bullets": [
+    "Unstructured natural language requirements contain ambiguities, missing edge cases, and implicit assumptions.",
+    "Executable specifications express requirements as automated, runnable test cases and formal interface contracts.",
+    "Translating requirements to specs before code generation provides precise targets for AI synthesis.",
+    "Guarantees that public methods meet explicit functional and boundary constraints."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Unstructured human requirements are often ambiguous, incomplete, or open to subjective interpretation. When feeding raw requirements into AI code generation models, the resulting code frequently misses subtle assumptions or violates interface expectations. Executable specifications solve this problem by converting natural language requirements into unambiguous, programmatic test cases and interface contracts before code generation takes place.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Core Anatomy of an Executable Specification",
+   "bullets": [
+    "Defines explicit function signatures, parameter types, and expected return types.",
+    "Encapsulates behavioral preconditions, postconditions, and invariant assertions.",
+    "Executes automatically inside standard testing frameworks like Pytest or JUnit.",
+    "Serves as automated guardrails to evaluate AI-generated code correctness."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Workflow from requirement to verified code",
+    "steps": [
+     "Natural Language Req",
+     "Formal Interface Spec",
+     "Executable Test Suite",
+     "Verified Code"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "An executable specification combines formal type signatures, exact input-output expectations, pre-conditions, and post-conditions into run-time assertions. Unlike static documentation, executable specifications can be executed by automated test runners. They act as automated guardrails: if an AI model generates code that fails any specification test, the defect is flagged immediately, providing instant feedback for code repair.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Spec-Driven Development Workflow with AI",
+   "bullets": [
+    "Developer shifts focus from writing implementation to designing specification suites.",
+    "Interface contracts define all public method signatures before implementation.",
+    "AI prompts incorporate the specification suite as explicit context.",
+    "Generated modules are automatically validated against the test suite."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "In spec-driven development using AI, the developer's primary job shifts from writing raw algorithm code to crafting comprehensive, executable specifications. First, developers analyze product requirements and specify interface signatures and test assertions. Then, the specification and public method contracts are supplied to the AI as context. Finally, generated code is automatically verified against the specs.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "example",
+   "title": "Structuring Requirements with Pytest Specifications",
+   "bullets": [
+    "Translates business logic into explicit test functions.",
+    "Defines expected inputs, invocation context, and output assertions.",
+    "Establishes contract bounds for AI generation target."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Executable Pytest specification for discount calculation",
+    "steps": [],
+    "code": "import pytest\n\ndef test_calculate_discount_valid_user():\n    # Given a premium user with a cart total of 100\n    user_type = \"premium\"\n    cart_total = 100.0\n    \n    # When calculating discount\n    discount = calculate_discount(user_type, cart_total)\n    \n    # Then discount should be 20.0\n    assert discount == 20.0",
+    "language": "python",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "This code example demonstrates how behavioral requirements translate directly into executable Pytest specifications. By expressing expected behavior as concrete test functions before implementation exist, we establish unambiguous acceptance criteria. The spec defines the public function signature, input parameter types, and expected return value, serving as a clean target for AI generation.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [],
+   "minutes": 7.0
+  },
+  {
+   "kind": "concept",
+   "title": "Prompting AI with Executable Specifications",
+   "bullets": [
+    "Provide interface stubs and Pytest suites inside the AI prompt.",
+    "Instruct the model to implement missing logic without altering public signatures.",
+    "Constrains the model search space to solutions meeting formal type constraints.",
+    "Eliminates interface misalignment between caller and generated module."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "AI models perform significantly better when given clear, unambiguous specifications rather than vague feature descriptions. When prompting an AI assistant, supplying the public class skeleton alongside executable Pytest assertions constrains the solution space. The AI is tasked with generating code that passes all provided test assertions without modifying public interface signatures.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Step 1: Writing Executable Specs for a Module Contract",
+   "bullets": [
+    "Define public interface skeletons with explicit type annotations.",
+    "Write assertions covering nominal behavior and expected exceptions.",
+    "Establish boundary conditions for invalid input state."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Module stub and Pytest executable spec for BankAccount",
+    "steps": [],
+    "code": "import pytest\n\nclass BankAccount:\n    def __init__(self, balance: float = 0.0):\n        self.balance = balance\n    def withdraw(self, amount: float) -> float:\n        pass\n\ndef test_withdraw_insufficient_funds():\n    account = BankAccount(balance=50.0)\n    with pytest.raises(ValueError, match=\"Insufficient funds\"):\n        account.withdraw(100.0)",
+    "language": "python",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "In this worked problem step, we construct an executable specification for a bank account module. Notice how we explicitly define the class signature and write pytest assertions for error conditions, such as withdrawing more money than available. The `pytest.raises` assertion guarantees that the implementation must raise a `ValueError` with a matching error message.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [],
+   "minutes": 8.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Step 2: Generating and Verifying Implementation Against Specs",
+   "bullets": [
+    "Prompt AI with class signature and executable test cases.",
+    "Generate module implementation fulfilling interface requirements.",
+    "Run Pytest to verify exact contract compliance across all cases."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "AI-generated implementation passing the executable specification",
+    "steps": [],
+    "code": "class BankAccount:\n    def __init__(self, balance: float = 0.0):\n        self.balance = balance\n\n    def deposit(self, amount: float) -> float:\n        if amount <= 0:\n            raise ValueError(\"Deposit must be positive\")\n        self.balance += amount\n        return self.balance\n\n    def withdraw(self, amount: float) -> float:\n        if amount > self.balance:\n            raise ValueError(\"Insufficient funds\")\n        self.balance -= amount\n        return self.balance",
+    "language": "python",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Here is the AI-generated implementation satisfying the bank account specification defined in the previous step. Notice how every public method strictly adheres to the specified signature and meets all runtime assertions. Both valid balance modifications and invalid edge cases like negative deposits or overdrawing are handled precisely as specified.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [],
+   "minutes": 8.0
+  },
+  {
+   "kind": "check",
+   "title": "Concept Check: Executable Specifications vs Prompts",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "Why are executable specifications preferred over natural language prompts when guiding AI code generation?",
+    "options": [
+     "Executable specs replace the need to write unit tests manually.",
+     "Executable specs provide deterministic, programmatic verification of generated code against explicit interface contracts.",
+     "Executable specs automatically fix syntax errors inside prompt descriptions.",
+     "Executable specs allow AI models to modify public interface signatures dynamically."
+    ],
+    "answer": 1,
+    "explanation": "Executable specifications serve as concrete, automated test suites that verify whether AI-generated code meets interface contracts and edge cases. Option 0 is wrong because specs ARE written as automated tests. Option 2 is incorrect because specs verify runtime correctness, not prompt syntax."
+   },
+   "notes": "Executable specifications provide a deterministic mechanism to verify whether AI-generated code meets requirements. While natural language prompts can lead to subtle logic errors, executable specs run programmatically in test suites. This provides instant, objective verification of every public method contract.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "concept",
+   "title": "Handling Edge Cases and Boundary Verification",
+   "bullets": [
+    "AI models frequently generate code that succeeds on happy paths but fails on boundaries.",
+    "Large language models require rigorous test evaluation to filter candidate solutions.",
+    "Specifications must explicitly cover edge cases (zero values, negative inputs, nulls).",
+    "Execution against specs prevents silent failures in generated code."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "AI code generation models often excel at basic happy paths but struggle with boundary conditions and unstated edge cases. AlphaCode research demonstrates that thorough automated test evaluation is critical for filtering correct candidates from plausible-looking incorrect code. Executable specifications must explicitly test edge conditions, such as zero values, null inputs, and boundary numeric thresholds.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Automated Feedback Loops for Code Refinement",
+   "bullets": [
+    "Test failure outputs provide precise error tracebacks and assertion context.",
+    "Failure logs can be re-fed directly into the AI prompt for iterative fixing.",
+    "Enables targeted repair of broken interface contracts without manual editing.",
+    "Closes the loop between requirement validation and code generation."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Iterative AI refinement cycle",
+    "steps": [
+     "Executable Spec",
+     "AI Generation",
+     "Run Spec Suite",
+     "Pass or Feedback Loop"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "When an AI-generated module fails a specification test, the compiler or test framework output serves as rich diagnostic feedback. Instead of manually rewriting code, developers can feed failure tracebacks back into the AI assistant. This creates an automated feedback loop where the AI iteratively refines code until all executable specifications pass.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  },
+  {
+   "kind": "example",
+   "title": "Iterative Prompting with Pytest Failure Tracebacks",
+   "bullets": [
+    "Identify missing validation logic from Pytest traceback output.",
+    "Re-prompt AI with failing test signature and traceback details.",
+    "Receive corrected module adhering to edge case specification."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "Refined implementation after handling negative refund amounts",
+    "steps": [],
+    "code": "def process_refund(amount: float, status: str) -> bool:\n    if amount <= 0:\n        raise ValueError(\"Invalid amount\")\n    if status != \"COMPLETED\":\n        return False\n    return True",
+    "language": "python",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "This example shows an implementation refined through test feedback. The initial prompt generated code that omitted validation for zero or negative refund amounts. By running our executable specification, pytest caught the missing exception, enabling us to re-prompt the AI with the exact failure traceback to produce this corrected code.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [],
+   "minutes": 7.0
+  },
+  {
+   "kind": "check",
+   "title": "Concept Check: Iterative Code Repair",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "When AI-generated code fails 2 out of 10 executable specification tests, what is the recommended next step?",
+    "options": [
+     "Manually re-write the entire module implementation from scratch.",
+     "Feed the failed test assertions and traceback output back into the AI model for targeted refinement.",
+     "Delete the two failing tests from the specification suite to achieve a pass state.",
+     "Change the public method signatures to match whatever the AI produced."
+    ],
+    "answer": 1,
+    "explanation": "Passing the specific failing test outputs back to the AI provides explicit context on broken behavioral contracts, allowing targeted correction. Option 2 (removing failing tests) violates requirement integrity, while Option 3 undermines interface consistency."
+   },
+   "notes": "When AI code fails test assertions, supplying failure tracebacks directly back to the model enables precise corrections. Removing tests or altering interface signatures undermines system safety and breaks requirements. Automated iteration leverages executable specs to guide the AI toward contract compliance without manual code rewrites.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "activity",
+   "title": "Hands-On Lab: Executable Specs and AI Generation",
+   "bullets": [
+    "Task 1: Translate a written module requirement into Pytest executable specifications.",
+    "Task 2: Define strict public method signatures for all required endpoints.",
+    "Task 3: Prompt AI to generate the implementation satisfying your spec suite.",
+    "Task 4: Run Pytest and iteratively refine the output using test tracebacks."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "In this lab session, you will practice spec-driven development with AI. Start by writing executable Pytest specifications for a public shopping cart module based on given user requirements. Next, use your specs as prompts to generate Python code with an AI assistant. Finally, run Pytest to verify your generated implementation.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [],
+   "minutes": 12.0
+  },
+  {
+   "kind": "summary",
+   "title": "Summary: Executable Specs & Code Generation",
+   "bullets": [
+    "Unstructured requirements must be formalized into executable specifications before AI code generation.",
+    "Specs establish unambiguous interface signatures and runtime behavioral guardrails.",
+    "AI code generation combined with automated test suites ensures verification of every public method.",
+    "Test tracebacks provide an automated feedback loop for iterative AI code refinement."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Executable specifications bridge unstructured product requirements and automated AI code generation. By writing clear Pytest specs before generating code, you establish rigid interface contracts and behavioral boundaries. Leveraging automated test feedback loops allows AI assistants to iteratively produce reliable, specification-compliant software.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [],
+   "minutes": 6.0
+  }
+ ]
+}

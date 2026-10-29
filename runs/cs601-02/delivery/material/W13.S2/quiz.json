@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 11,
+  "los": [
+   "CO4.LO3"
+  ],
+  "question": "Which metric is MOST appropriate for capturing the user-perceived responsiveness of an LLM-based chat endpoint?",
+  "options": [
+   "Average CPU utilization of the model server",
+   "p99 end-to-end latency including token generation",
+   "Number of GPU instances running",
+   "Training loss of the underlying model"
+  ],
+  "answer": 1,
+  "explanation": "p99 end-to-end latency directly measures the worst-case user experience, including token streaming delays. CPU utilization and GPU count are infrastructure metrics, not user-facing. Training loss is a model development metric, not a deployment metric."
+ },
+ {
+  "slide": 12,
+  "los": [
+   "CO4.LO3"
+  ],
+  "question": "If a service has an SLO of 99.9% availability over 30 days, what is its error budget in minutes?",
+  "options": [
+   "43.2 minutes",
+   "4.32 minutes",
+   "432 minutes",
+   "0.432 minutes"
+  ],
+  "answer": 0,
+  "explanation": "30 days = 43,200 minutes. 0.1% of 43,200 = 43.2 minutes. The error budget is the allowed downtime. 4.32 minutes would be for 99.99% (four nines). 432 minutes is 1% (two nines). 0.432 minutes is 0.001% (five nines)."
+ }
+]

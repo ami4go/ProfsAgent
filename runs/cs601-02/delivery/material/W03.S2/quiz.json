@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 9,
+  "los": [
+   "CO1.LO2"
+  ],
+  "question": "Which statement correctly describes MCP tool execution and transport architecture?",
+  "options": [
+   "An MCP Host connects directly to servers without clients, using JSON Schema to validate server responses.",
+   "An MCP Client maintains a logical connection to a specific MCP Server, using stdio or Streamable HTTP transport.",
+   "MCP Tools use JSON Schema to define output return types, and use HTTP+SSE as the required primary transport.",
+   "MCP Servers automatically validate all LLM outputs before they leave the model runner process."
+  ],
+  "answer": 1,
+  "explanation": "Option 1 is correct: an MCP Client maintains a logical connection to a particular MCP Server over stdio or Streamable HTTP. Option 0 is false because hosts create clients to manage connections. Option 2 is false because JSON Schema defines tool input arguments, not output return types, and Streamable HTTP is preferred over legacy HTTP+SSE. Option 3 is false because input validation occurs on the MCP Server upon receiving a call request."
+ },
+ {
+  "slide": 15,
+  "los": [
+   "CO1.LO2"
+  ],
+  "question": "You encounter a static analyzer warning in strict TypeScript when logging tool execution errors: 'Property message does not exist on type unknown'. What is the correct fix?",
+  "options": [
+   "Cast the error using (err as any).message to bypass compiler type checking permanently.",
+   "Disable strict null and unknown checks in tsconfig.json so the workspace build succeeds.",
+   "Narrow the caught error using an 'err instanceof Error' check before accessing err.message.",
+   "Change the MCP tool input schema to declare that errors are returned as JSON objects."
+  ],
+  "answer": 2,
+  "explanation": "Option 2 is correct because in strict TypeScript, caught errors are of type 'unknown' and must be narrowed (e.g., via 'err instanceof Error') before accessing properties. Option 0 uses 'any' which circumvents type checking and violates workspace standards. Option 1 disables strict checks rather than resolving the code issue. Option 3 confuses runtime MCP input schema with static compiler error handling."
+ }
+]

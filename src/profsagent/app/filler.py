@@ -37,7 +37,10 @@ SPEC = {
     "topics": "4–7 topic groups, one per line, each as 'A. Group title: topic, topic, topic'",
     "intent_question": "the one central question the course answers (one sentence)",
     "intent_emphasis": "the teaching emphasis (a short phrase)",
-    "intent_avoid": "1–3 lines: what the course should NOT become (for example a repeat of an existing IIIT-D course)",
+    # one plain phrase per line: the pipeline turns each line into a "must not become" rule and compares words, so a
+    # double negative ("… without backend logic") also became a "must include backend logic" rule that clashed with it
+    "intent_avoid": ("1–3 lines, each one plain phrase naming a kind of course this should NOT become (for example 'a repeat of CSE201' "
+                     "or 'a front-end-only design course'); no double negatives such as '… without backend logic'"),
     "department": "the proposing department (one of allowed_values.departments)",
     "credits": "1, 2 or 4",
     "l": "lecture hours per week, as the regulations set them for these credits",

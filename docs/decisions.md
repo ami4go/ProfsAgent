@@ -8,6 +8,107 @@ Mark anything still waiting for someone as **Open**.
 
 ---
 
+## 2026-10-29: the professor can change everything at the checks, in place
+
+### 23. Fix in Vihan's `_post_deadline`: every gzipped Gemini reply failed (for Vihan)
+- **What happened:** after pulling 8f27687, Web Development stopped at "Writing course outcomes" with `httpx.DecodingError: Error -3 while decompressing data: incorrect header check` (`llm/client.py` line 233). The fix is in the same file.
+- **Cause:** `_post_deadline` collected the reply with `r.iter_bytes()`, which already unzips it. It then built `httpx.Response(..., headers=r.headers, content=...)` with the original `Content-Encoding: gzip`, so httpx tried to unzip the plain bytes a second time.
+  - Gemini replies are gzipped, so **every Gemini call** failed. Groq and NVIDIA replies are not compressed, which is why the Context step (G3 on Groq) still worked.
+- **Changed (Vihan's file, with Amit's OK):** `llm/client.py` `_post_deadline` collects `r.iter_raw()` (the bytes as sent), so the rebuilt response is decoded exactly once.
+  - One word changed, plus a comment. The whole-reply deadline is unchanged.
+- **Checked:**
+  - a real Gemini call through `_post_deadline` returns 200 with `Content-Encoding: gzip` and the text "OK";
+  - NVIDIA `minimax-m3.1-flash` and `nemotron-3.5-lightning` return 200 through the same path;
+  - the full suite passes (366).
+- **Keys:** Amit's `.env` now has `NVIDIA_API_KEYS` (1 key; tested OK), so the NVIDIA fallbacks in `config/models.yaml` are usable on his laptop too.
+- **Agreed by:** Amit.
+- **Open (Vihan):** please keep `iter_raw()` if you change `_post_deadline` again. A test with a gzipped fake response would catch this.
+
+### 22. "Should NOT become" lines are written as plain phrases
+- **Decision:** the AI fill in the Details step (`app/filler.py`) writes each "should NOT become" line as one plain phrase, e.g. "a front-end-only design course". No double negatives such as "… without backend logic".
+- **Why:** on Web Development the filled line "…nor focus purely on static visual design without functional backend logic" was split by G3 into two hard rules:
+  - K15 *must include* "functional backend logic";
+  - K16 *must exclude* "static visual design without functional backend".
+  - The conflict check compares words, and 2 of K15's 3 words appear in K16, so it raised `VK-CONFLICT`. Both rules actually ask for the same thing, so it was a false alarm that blocked the Context check.
+- **Changed:** `app/filler.py` (the `intent_avoid` instruction).
+- **Agreed by:** Amit.
+- **Open (Vihan):** the root cause is in `validate/constraints.py` `conflicts()` (lines 499–503), which uses `text.covers()`: ≥ 60 % shared words counts as "the same thing". Two options:
+  - skip the pair when the exclude phrase says "without <the required thing>";
+  - or compare meaning with the local embedding model before calling it a conflict.
+
+### 21. Edit at the Context, Outcomes and Final checks: change, check again, continue (no restart)
+- **Decision:** everything ProfsAgent wrote can be changed by the professor on the check screens.
+  - **Save and check again** applies the change to the run, re-runs the same deterministic checks (no AI calls) and refreshes the open problems on the same screen.
+  - If the problems are gone, **Continue** needs no reason.
+  - Before this, a professor who disagreed could only continue with a reason or stop and start again, about 40 minutes for a new run.
+- **What can be changed:**
+  | Check | Editable |
+  |---|---|
+  | Context | topic groups and topics (add, remove, rename, reorder); course level and mid-sem week (the other assumptions can be confirmed); the rules made from the professor's words (reword the checked phrase, must/preferred, remove, add); prerequisites (add/remove; codes must exist in the course database). The regulation rules stay fixed. |
+  | Outcomes | every CO: statement, Bloom level, condition, standard, topic groups, evidence; add or remove COs. Its LOs (statement, level, condition, standard, how assessed; add, remove, reorder) and its programme-outcome links (strength 1–3, add, remove). Reject the AI's proposed topic changes. |
+  | Final sheet | modules and topics (titles, hours, order, which LOs a topic teaches; the weeks are then planned again by the pipeline's own scheduler `deterministic.schedule`); labs (title, week); assessment (weights, invigilated, due weeks, add or remove a component; the CO marks shares are recomputed); books and papers (role, remove, add by ISBN or DOI, looked up on OpenLibrary or Crossref and added only if found); the course description. The proposal and the Excel template are drawn again. |
+- **How it works without changing the pipeline:**
+  - **Where an edit goes:** at a check the pipeline is paused in a LangGraph `interrupt`, and on resume `orchestrator/graph.py` re-attaches from `state.json` and `design_graph.json`. So `app/edits.py` edits those two files while the run waits.
+  - **The design graph is updated the same way the stage writes it,** so Neo4j gets the professor's version. Changed nodes get `created_by: professor`.
+  - **The rechecks** run `engine.check` per stage, and `engine.gate_view` gives the new open problems. When the professor continues, the gate recomputes its view from the edited state, so the same result holds inside the pipeline.
+  - **Every change is recorded:** in `state["professor_edits"]`, in `run.log`, and on the approval (`professor_edits` in the gate decision, so it reaches the Approval node). The Review record lists them.
+- **Checked:**
+  - **Tests:** 14 new tests in `tests/test_app_edits.py`, on copies of `cs601-02` cut back to each check (52 app tests pass). Among them, the Web Development case: removing K15 clears the `VK-CONFLICT`.
+  - **Screens:** a headless click-through of every editor at laptop and phone width, with no page errors.
+- **Changed:** `app/edits.py` (new), `app/runner.py` (`edit`, and edits stored with the decision), `app/server.py` (`POST /api/runs/{id}/edit`), `app/views.py` (editable data on each check screen) and `app/static/index.html` (Edit buttons and editors).
+- **Agreed by:** Amit.
+- **Open (Vihan):**
+  - **A "revise" decision inside the pipeline.** Native support would be cleaner than the app editing the paused run's files: `resume={"decision": "revise", "changes": …}`, with the stage applying the changes and the gate asking again. The app would then send its edits that way. Until then the app's edits rely on the gate re-reading `state.json` on resume, so please keep that behaviour, or tell Amit if it changes.
+  - **Topic overlaps aren't recomputed after topic edits.** Context shows the S2 overlaps worked out from the topics before the edit, with a note saying so; recomputing them needs the KG in the app.
+  - **Professor's text isn't rewritten by the AI.** A CO, LO or rule the professor wrote is checked by the deterministic rules only (verb, Bloom level, length, conditions); later stages build on it as written.
+
+## 2026-10-28 (night): Parth's lecture slides (deliverable B) in the app
+
+### 20. Generated slides on the lecture page, through Parth's `generate_material` and `content.review`
+- **Decision:** when the professor ticks **Generate the lecture material for me**, saving the choices starts Parth's `content.generate.generate_material(run, lecture, {note})`. It runs as a background job in its own process (`app/delivery_step.py`, kind `material`), like the resource search.
+  - **When slides are made:** once, when the choice is first saved. After that only on request: **Generate again**, or **Redo with my instructions**, whose text becomes B1's `feedback`.
+  - **Optional second-AI check:** a box (`review: "ai"`, B2) for a professor in a hurry; it costs 1–2 more AI calls.
+  - **Approved slides are protected:** replacing them asks for confirmation (`force`).
+- **The Generated slides tab** (shown whenever slides exist for the lecture):
+  - **Top:** status (draft · "checked by a second AI, not by you" · approved · being redone · rejected), slide count, minutes, the AI reviewer's verdict, and downloads (`slides.pptx`, `notes.md`, `quiz.json`).
+  - **Review:** approve / redo / reject go through `content.review.write` + `apply` (`material/review.yaml`). A reason is required for redo and reject.
+  - **Below:** every problem found by Parth's checks, then a preview of each content slide from `deck.json`, numbered as in the .pptx (from slide 3). It shows bullets, flow, code or table figures, quizzes with the answer marked, outcomes, sources and speaker notes.
+  - **Elsewhere:** a slides chip on the lecture list, a progress row, and approved slides offered in the student view.
+- **Not connected:** `attach_material` (Parth: not built yet). The choice and uploaded files are saved for it.
+- **Checked:**
+  - **Tests:** 4 new app tests (14 delivery tests in all). Parth's own W01.L1 deck is used for the preview and review.
+  - **Live:** W05.L2 on a CS-601 example copy took 73 s and gave 8 slides (5 with content, for a 30-min topic), 0 errors and 0 warnings.
+  - **Screens:** a headless click-through at laptop and phone width on a read-only copy of the app.
+  - **Full suite:** 360 pass.
+- **Changed:** `app/delivery.py` (`material_summary`, `material_detail`, `material_review`, `queue_material`), `app/delivery_step.py`, `app/server.py` (4 endpoints) and `app/static/index.html`.
+- **Agreed by:** Amit. Parth's code is unchanged.
+- **Open:**
+  - **Parth:** `scripts/compare_validation.py` line 181 uses a Python 3.12 f-string (the same quotes nested inside), so it fails to import on Python 3.10, and `tests/test_llm_check.py` fails on Amit's laptop. Use other quotes there, or agree that the team runs Python ≥ 3.12.
+  - **Team:** Parth's per-class decks (`W03.S1`, 90-min classes) have no place in the lecture list yet. The UI follows C's per-topic lectures (`W03.L1`). Decide whether the survey and C move to class ids.
+
+## 2026-10-28 (late evening): the app on Vihan's delivery update (e4ace89)
+
+### 19. Why the app found no resources or speakers, and what changed
+- **Cause:** a crash, not a missing key. `delivery/experts.py` line 164 (`iiitd_faculty`) takes `research_queries[0]`, but the query planner returns **no** research queries for applied topics.
+  - Both Web Development lectures tried (W01.L1 HTML, W01.L2 CSS) had 0 research queries, so each search ended in `IndexError` after finding the academics, and nothing was saved: no resources, no speakers.
+  - The other three places in `experts.py` already fall back with `or [b["topic"]]`.
+- **App change (Vihan's file not edited):** the app's search process (`app/delivery_step.py`, `guard_empty_research_queries`) wraps `iiitd_faculty` so an empty list falls back to the lecture topic.
+  - **Verified:** re-running W01.L2 on a private copy now saves 3 videos and 2 readings (MDN among them; 9 of 58 candidates passed).
+- **Speakers:** for CSS, no speaker passed. Of 27 candidates, 10 were assessed and none reached Vihan's floor (topical fit ≥ 0.5, total ≥ 0.45). OpenAlex finds unrelated researchers for an applied topic. The one real CSS expert found (Jen Simmons) scored 0.21. That is the quality floor working, not a key problem.
+- **Vihan's update taken into the app:**
+  - lectures saved as `partial` (blocked transcripts) show an amber Partial banner and status, and a **Finish the search** button. It runs a plain `recommend`, which redoes only partial lectures;
+  - the new D2 filters and the provider order need nothing from the UI.
+- **Delete:** removing a course now also removes its lecture-delivery records from Neo4j (`(:Delivery {run_id})`), not only its design records (`app/runner.py`).
+- **Installed on Amit's laptop:**
+  - `ddgs`, new in Vihan's update;
+  - `youtube-transcript-api`, in the README install line but missing here. Without it, videos were judged from title and description only, and Vihan's transcript test failed.
+- **Keys:** compared with Vihan's `.env`, Amit's lacked `OPENALEX_API_KEY` (added later the same evening, tested OK) and still lacks `NVIDIA_API_KEYS` (an optional, faster LLM fallback when Gemini is slow or out of quota).
+- **Tests:** 220 pass, including 2 new app tests (the guard, partial lectures).
+- **Agreed by:** Amit.
+- **Open (Vihan):**
+  - change line 164 to `((q or {}).get("research_queries") or [b["topic"]])[0]`; the app's guard then becomes a no-op;
+  - consider a practitioner-first speaker search for applied topics (web development, tools), where academic records don't fit.
+
 ## 2026-10-28 (afternoon): Phase 2 deliverable B, slide generation v1
 
 ### 18. Lecture slides are generated per lecture from the brief, checked in code and rendered as editable .pptx

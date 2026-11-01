@@ -1,8 +1,9 @@
 """One background delivery job in its own process (so the app can cancel it), over Vihan's deliverable C backend.
 
-    python -m profsagent.app.delivery_step <run_id> recommend|health <args.json>
+    python -m profsagent.app.delivery_step <run_id> recommend|material|health <args.json>
 
 recommend: profsagent.delivery.pipeline.recommend(run_id, lectures, refresh), then graph.write (skipped if Neo4j is down)
+material:  profsagent.content.generate.generate_material(run_id, lecture, options) (Parth's deliverable B: slides)
 health:    profsagent.delivery.review.health(run_id)
 Result: runs/<id>/delivery/app_step_result.json = {"ok": ...} or {"error": {type, message, quota}}. C's log lines go to
 stdout (the app's terminal) and to runs/<id>/delivery/delivery.log, which the lecture pages show.
@@ -13,6 +14,24 @@ import json
 import os
 import sys
 import traceback
+
+
+def guard_empty_research_queries() -> None:
+    """Stopgap, until Vihan's experts.iiitd_faculty handles it: when the query planner returns no research queries
+    (common for applied topics such as CSS layout), `research_queries[0]` raised IndexError and the whole lecture was
+    lost, resources included. The rest of experts.py already falls back to the lecture topic; do the same here.
+    Vihan's file is not edited (docs/decisions.md, entry 19)."""
+    from profsagent.delivery import experts
+    orig = experts.iiitd_faculty
+    if getattr(orig, "_app_guard", False):
+        return
+
+    def iiitd_faculty(b, st, q):
+        if q and not q.get("research_queries"):
+            q = {**q, "research_queries": [b["topic"]]}
+        return orig(b, st, q)
+    iiitd_faculty._app_guard = True
+    experts.iiitd_faculty = iiitd_faculty
 
 
 def main(argv: list[str]) -> int:
@@ -26,6 +45,7 @@ def main(argv: list[str]) -> int:
     args = json.loads(open(af, encoding="utf-8").read())
     try:
         if kind == "recommend":
+            guard_empty_research_queries()
             from profsagent.delivery import pipeline
             out = {"ok": pipeline.recommend(rid, lectures=args.get("lectures"), refresh=bool(args.get("refresh")))}
             try:
@@ -33,6 +53,11 @@ def main(argv: list[str]) -> int:
                 out["graph"] = write(rid)
             except Exception as e:  # noqa: BLE001 — the files are complete; Neo4j records can be written later
                 out["graph"] = f"skipped ({type(e).__name__})"
+        elif kind == "material":
+            from profsagent.content.generate import generate_material
+            from profsagent.delivery.pipeline import Log
+            m = generate_material(rid, args["lecture"], args.get("options") or {}, log=Log(rid))
+            out = {"ok": {"lecture": args["lecture"], "slides": m.get("slides"), "errors": m.get("errors"), "status": m.get("status")}}
         elif kind == "health":
             from profsagent.delivery import review
             out = {"ok": {"dead": review.health(rid)}}

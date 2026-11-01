@@ -7,6 +7,7 @@ KG_BACKEND (neo4j | stub, read by the pipeline), NEO4J_URI.
 from __future__ import annotations
 
 import importlib.util
+import json
 import os
 import re
 import socket
@@ -165,6 +166,17 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True, del
             return JSONResponse({"problem": problem}, status_code=409)
         return {"ok": True}
 
+    @app.post("/api/runs/{rid}/edit")
+    def edit(rid: str, body: dict = Body(...)):
+        """The professor changes part of a waiting check (app/edits.py); returns what changed and the refreshed run."""
+        run_dir(rid)
+        out = mgr.edit(rid, body.get("gate", ""), body.get("section", ""), body.get("value"), body.get("by", ""))
+        if out.get("problem"):
+            return JSONResponse({"problem": out["problem"]}, status_code=409)
+        if out.get("errors"):
+            return JSONResponse({"errors": out["errors"]}, status_code=422)
+        return {**out, "run": json.loads(run(rid).body)}
+
     @app.delete("/api/runs/{rid}")
     def delete(rid: str):
         """Move the course to runs/_deleted/ (nothing is erased), take a published design out of Neo4j, end a running step."""
@@ -272,7 +284,56 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True, del
             return JSONResponse(out, status_code=422)
         if out.get("start_c"):
             dmgr.queue_recommend(rid, [lid], refresh=out["refresh"])
+        if out.get("start_b"):
+            dmgr.queue_material(rid, lid, {"note": str(answers.get("note") or ""), **({"review": "ai"} if answers.get("_ai_review") else {})})
         return out
+
+    # ---- B: lecture slides (Parth's deliverable B)
+    @app.get("/api/delivery/{rid}/material/{lid}")
+    def delivery_material(rid: str, lid: str):
+        course_dir(rid)
+        m = dv.material_detail(rid, lecture_id(lid))
+        if m is None:
+            raise HTTPException(404, "No slides for this lecture yet")
+        return nocache(m)
+
+    @app.post("/api/delivery/{rid}/material/{lid}/generate")
+    def delivery_material_generate(rid: str, lid: str, body: dict = Body(...)):
+        course_dir(rid)
+        lecture_id(lid)
+        s = (dv.view(rid, mgr.runs)["survey"].get(lid) or {})
+        opts = {"note": str(s.get("note") or "")}
+        if body.get("ai_review"):
+            opts["review"] = "ai"
+        if str(body.get("feedback") or "").strip():
+            opts["feedback"] = str(body["feedback"]).strip()
+        if body.get("force"):
+            opts["force"] = True
+        dmgr.queue_material(rid, lid, opts)
+        return {"queued": True}
+
+    @app.post("/api/delivery/{rid}/material/{lid}/review")
+    def delivery_material_review(rid: str, lid: str, body: dict = Body(...)):
+        course_dir(rid)
+        out = dv.material_review(rid, lecture_id(lid), str(body.get("decision", "")), str(body.get("reason") or ""))
+        if out.get("problem"):
+            return JSONResponse(out, status_code=409)
+        if body.get("decision") == "redo":   # redo = generate again with the professor's instructions (Parth's B1 feedback)
+            s = (dv.view(rid, mgr.runs)["survey"].get(lid) or {})
+            dmgr.queue_material(rid, lid, {"note": str(s.get("note") or ""), "feedback": str(body.get("reason")).strip(),
+                                           **({"review": "ai"} if body.get("ai_review") else {})})
+        return out
+
+    @app.get("/api/delivery/{rid}/material/{lid}/file/{name}")
+    def delivery_material_file(rid: str, lid: str, name: str):
+        d = course_dir(rid)
+        if name not in dv.MATERIAL_FILES:
+            raise HTTPException(404, "No such file")
+        p = d / "delivery" / "material" / lecture_id(lid) / name
+        if not p.exists():
+            raise HTTPException(404, "Not made yet")
+        title = re.sub(r"[^A-Za-z0-9]+", "_", read_meta(d).get("title") or rid).strip("_")
+        return FileResponse(p, filename=f"{title}_{lid}_{name}", media_type=dv.MATERIAL_FILES[name], headers=NO_CACHE)
 
     @app.post("/api/delivery/{rid}/start")
     def delivery_start(rid: str, body: dict = Body(...)):

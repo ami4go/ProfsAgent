@@ -7,7 +7,9 @@ deliverable C backend (profsagent.delivery). His files under runs/<id>/delivery/
   app_actions.json       what the professor approved / replaced / rejected, with titles, for display
   app_health_dismissed.json   link-health alerts the professor dismissed
   app_feedback_log.yaml  every rating, each sent to review.record_feedback exactly once
-  attachments/<lecture>/ files the professor attached for B (Parth's material generator, not connected yet)
+  attachments/<lecture>/ files the professor attached for B (Parth's attach processor is not built yet)
+Slides (Parth's deliverable B, profsagent.content): generate_material writes delivery/material/<lecture>/ (slides.pptx,
+notes.md, quiz.json, deck.json, material.json); the professor's approve / redo / reject goes through content.review.
 
 Only the app's own courses (runs/app-*) are changed; Vihan's committed example run is copied, never edited.
 """
@@ -147,6 +149,7 @@ def _result(lec: dict, topic_id: str | None) -> dict:
     r = lec.get("resources") or {}
     e = lec.get("experts")
     out = {"generated_at": lec.get("generated_at"), "continuation_of": lec.get("continuation_of"), "note": r.get("note"), "counts": r.get("counts"),
+           "partial": lec.get("partial"),
            "has_resources": bool(lec.get("resources")),
            "items": {k: [_resource(c, topic_id) for c in v] for k, v in (r.get("items") or {}).items()},
            "reserve": {k: [_resource(c, topic_id) for c in v] for k, v in (r.get("reserve") or {}).items()},
@@ -207,7 +210,8 @@ def view(rid: str, runs: Path | None = None) -> dict:
                                            "dead": [x for x in health.get("dead", []) if x.get("url") not in dismissed]},
         "keys": {"youtube": bool(os.environ.get("YOUTUBE_API_KEY")), "openalex": bool(os.environ.get("OPENALEX_API_KEY")),
                  "tavily": bool(os.environ.get("TAVILY_API_KEY"))},
-        "material_connected": False,      # B (Parth): attach / generate calls are not defined yet (guide §4)
+        "material": material_summary(rid, runs),
+        "material_connected": {"generate": True, "attach": False},   # B (Parth): generate is built; attach is not yet
     }
 
 
@@ -257,11 +261,15 @@ def save_choices(rid: str, lid: str, answers: dict) -> dict:
     changed_c = any(str(old.get(k)) != str(new.get(k)) for k in C_KEYS)
     s["lectures"][lid].update(new)
     sv.save(rid, s)
+    has_material = (_d(rid) / "material" / lid / "material.json").exists()
     wants_c = _yes(new["assistance"]) or _yes(new["guest_lecture"])
     jobs = _rj(_d(rid) / "app_jobs.json", {"lectures": {}})
     never_ran = (jobs["lectures"].get(lid) or {}).get("state") is None and not has_results
     start = wants_c and (changed_c or never_ran or not has_results)
-    return {"saved": True, "start_c": start, "refresh": start and has_results}
+    # B: slides are made once when "generate the material" is first chosen; after that only on request (Generate again)
+    m_job = (jobs.get("material") or {}).get(lid) or {}
+    start_b = _yes(new["generate_material"]) and not has_material and m_job.get("state") not in ("queued", "running")
+    return {"saved": True, "start_c": start, "refresh": start and has_results, "start_b": start_b}
 
 
 def bulk(rid: str, lid: str, scope: str) -> dict:
@@ -390,6 +398,65 @@ def dismiss_dead(rid: str, url: str) -> None:
     _wj(d / "app_health_dismissed.json", lst)
 
 
+# ------------------------------------------------------------------ B: lecture slides (Parth, profsagent.content)
+MATERIAL_FILES = {"slides.pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                  "notes.md": "text/markdown", "quiz.json": "application/json"}
+
+
+def material_summary(rid: str, runs: Path | None = None) -> dict:
+    """Per lecture with generated slides: what the list and the progress card show (status, size, problems)."""
+    root = _d(rid, runs) / "material"
+    out = {}
+    for p in sorted(root.glob("*/material.json")) if root.exists() else []:
+        m = _rj(p) or {}
+        out[p.parent.name] = {"status": m.get("status", "draft"), "slides": m.get("slides"), "content_slides": m.get("content_slides"),
+                              "minutes": m.get("minutes"), "errors": m.get("errors", 0), "warnings": m.get("warnings", 0),
+                              "generated_at": m.get("generated_at"), "ai_verdict": (m.get("ai_review") or {}).get("verdict"),
+                              "review": m.get("review"), "files": [f for f in MATERIAL_FILES if (p.parent / f).exists()]}
+    return out
+
+
+def material_detail(rid: str, lid: str) -> dict | None:
+    """Everything the slide preview needs: the deck (numbered as in the .pptx), the quiz, findings, sources, review."""
+    from profsagent.content.models import FIRST_CONTENT_SLIDE
+    d = _d(rid) / "material" / lid
+    m = _rj(d / "material.json")
+    if not m:
+        return None
+    deck = _rj(d / "deck.json", {}) or {}
+    slides = [{**s, "number": i + FIRST_CONTENT_SLIDE} for i, s in enumerate(deck.get("slides", []))]
+    return {"lecture_id": lid, "title": deck.get("title") or m.get("topic"), "status": m.get("status", "draft"),
+            "generated_at": m.get("generated_at"), "slides_total": m.get("slides"), "minutes": m.get("minutes"),
+            "errors": m.get("errors", 0), "warnings": m.get("warnings", 0),
+            "findings": [{"code": f.get("code"), "severity": f.get("severity"), "where": ", ".join(f.get("nodes") or []), "message": f.get("message")}
+                         for f in m.get("findings", [])],
+            "sources": m.get("sources", {}), "cited": m.get("cited", []), "ai_review": m.get("ai_review"), "review": m.get("review"),
+            "review_history": m.get("review_history", []), "feedback": m.get("feedback"), "slides": slides,
+            "files": [f for f in MATERIAL_FILES if (d / f).exists()], "prompt": m.get("prompt"), "calls": len(m.get("calls") or [])}
+
+
+def material_review(rid: str, lid: str, decision: str, reason: str) -> dict:
+    """approve | redo | reject one deck through Parth's content.review (reason required for redo and reject)."""
+    from profsagent.content import review as cr
+    if decision not in ("approve", "redo", "reject"):
+        return {"problem": "Unknown decision"}
+    reason = (reason or "").strip()
+    if decision in ("redo", "reject") and not reason:
+        return {"problem": "Say what should change." if decision == "redo" else "Write a short reason to reject the slides."}
+    rows = cr.write(rid)
+    if lid not in rows:
+        return {"problem": "There are no generated slides for this lecture yet."}
+    p = _d(rid) / "material" / "review.yaml"
+    data = yaml.safe_load(p.read_text(encoding="utf-8")) or {}
+    data["lectures"][lid].update(decision=decision, reason=reason)
+    p.write_text(cr.HEADER + yaml.safe_dump(data, sort_keys=False, allow_unicode=True, width=120), encoding="utf-8")
+    stats = cr.apply(rid)
+    refused = [r for r in stats.get("refused", []) if r.get("lecture") == lid]
+    if refused:
+        return {"problem": refused[0]["why"]}
+    return {"ok": True, "status": (material_summary(rid).get(lid) or {}).get("status")}
+
+
 # ------------------------------------------------------------------ S8: ratings (each sent to C once)
 def _ratings(d: Path) -> dict:
     p = d / "app_feedback_log.yaml"
@@ -447,10 +514,12 @@ class DeliveryManager:
     def _jobs(self, rid: str) -> dict:
         return _rj(_d(rid, self.runs) / "app_jobs.json", {"lectures": {}})
 
-    def _set(self, rid: str, lids: list[str] | None, **kw) -> None:
+    def _set(self, rid: str, lids: list[str] | None, material: str | None = None, **kw) -> None:
         with self.lock:
             j = self._jobs(rid)
-            if lids is None:
+            if material:
+                j.setdefault("material", {})[material] = {**(j.get("material", {}).get(material) or {}), **kw, "at": time.time()}
+            elif lids is None:
                 j["health"] = {**(j.get("health") or {}), **kw, "at": time.time()}
             for lid in lids or []:
                 j["lectures"][lid] = {**(j["lectures"].get(lid) or {}), **kw, "at": time.time()}
@@ -464,11 +533,20 @@ class DeliveryManager:
             lids = [lid for lid, x in j.get("lectures", {}).items() if x.get("state") in ("queued", "running")]
             if lids:
                 self.queue_recommend(d.name, lids, refresh=any(j["lectures"][x].get("refresh") for x in lids))
+            for lid, x in (j.get("material") or {}).items():
+                if x.get("state") in ("queued", "running"):
+                    self.queue_material(d.name, lid, x.get("options") or {})
 
     def queue_recommend(self, rid: str, lectures: list[str], refresh: bool = False) -> None:
         self.cancelled.discard(rid)
         self._set(rid, lectures, state="queued", refresh=refresh, error=None)
         self.q.put(("recommend", rid, {"lectures": lectures, "refresh": refresh}))
+
+    def queue_material(self, rid: str, lid: str, options: dict) -> None:
+        """B: generate (or redo) one lecture's slides with Parth's generate_material."""
+        self.cancelled.discard(rid)
+        self._set(rid, None, material=lid, state="queued", error=None, options=options)
+        self.q.put(("material", rid, {"lecture": lid, "options": options}))
 
     def queue_health(self, rid: str) -> None:
         self.cancelled.discard(rid)
@@ -492,7 +570,8 @@ class DeliveryManager:
             if rid in self.cancelled or not (self.runs / rid / "delivery").exists():
                 continue
             lids = args.get("lectures") if kind == "recommend" else None
-            self._set(rid, lids, state="running")
+            mat = args.get("lecture") if kind == "material" else None
+            self._set(rid, lids, material=mat, state="running")
             d = _d(rid, self.runs)
             af, rf = d / "app_step_args.json", d / "app_step_result.json"
             _wj(af, args)
@@ -510,15 +589,19 @@ class DeliveryManager:
                 continue
             res = _rj(rf) or {"error": {"message": "the job's process ended without a result", "type": "StepCrashed"}}
             if "ok" in res:
-                self._set(rid, lids, state="done", error=None)
+                self._set(rid, lids, material=mat, state="done", error=None)
             else:
-                self._set(rid, lids, state="error", error=_plain_error(res["error"]))
+                self._set(rid, lids, material=mat, state="error", error=_plain_error(res["error"], kind))
 
 
-def _plain_error(err: dict) -> str:
+def _plain_error(err: dict, kind: str = "recommend") -> str:
     t, msg = err.get("type", ""), err.get("message", "")
     if err.get("quota"):
         return "The free AI quota is used up for today; try again after about 1:30 pm IST."
+    if kind == "material":
+        if "approved these slides" in msg:
+            return "You approved these slides, so they are protected. Use Generate again and confirm to replace them."
+        return f"Making the slides stopped ({t}). Press Generate again; nothing you approved is lost."
     if t == "SystemExit" or "No lecture asked for anything" in msg:
         return "Nothing to search: no lecture asked for resources or a guest."
     return f"The search stopped ({t}). Press Try again; lectures already finished are kept."

@@ -28,7 +28,7 @@ from pathlib import Path
 
 import yaml
 
-from profsagent.app import formmap
+from profsagent.app import formmap, views
 from profsagent.config import CACHE, ROOT, RUNS, keys, models_cfg
 
 GATES = ["gate0_details", "gate1_context", "gate2_outcomes", "gate3_proposal"]
@@ -295,6 +295,10 @@ class RunManager:
             payload = {"decision": decision, "by": by, "comment": comment}
             if decision == "approve" and blocked:
                 payload["reason"] = comment
+            from profsagent.app.edits import edits_at
+            changed = [c for e in edits_at(views.state_of(d), gate) for c in e["changes"]]
+            if changed:   # stored with the approval in state.json and on the design graph's Approval node
+                payload["professor_edits"] = changed[:200]
             m.update(status="queued", pending={"kind": "resume", "payload": payload})
             self._log(d, m, f"{gate}: {decision} by {payload['by']}" + (f" — {comment}" if comment else ""))
             write_meta(d, m)
@@ -313,6 +317,28 @@ class RunManager:
             write_meta(d, m)
         self.q.put((rid, kind, None))
         return None
+
+    def edit(self, rid: str, gate: str, section: str, value, by: str = "") -> dict:
+        """The professor changes part of what a waiting check shows (app/edits.py): applied to the run in place, checked
+        again, and the gate's open problems refreshed. Returns {"changes", "open_before", "open_after"} or {"problem"} /
+        {"errors": {field: message}}."""
+        from profsagent.app import edits
+        d = self.runs / rid
+        with self.lock:
+            m = read_meta(d)
+            if m.get("status") != "waiting" or m.get("gate") != gate or gate not in edits.SECTIONS:
+                return {"problem": "This step is no longer waiting for you. Reload the page."}
+            by = (by or m.get("by") or "professor").strip()
+            try:
+                out = edits.apply(d, gate, section, value, by)
+            except edits.EditError as e:
+                return {"errors": e.errors}
+            if out["changes"]:
+                m["payload"] = {**(m.get("payload") or {"gate": gate}), **out["payload"]}
+                m["payload"].pop("problem", None)
+                self._log(d, m, f"{gate}: {len(out['changes'])} change{'' if len(out['changes']) == 1 else 's'} by {by} ({section})")
+                write_meta(d, m)
+            return {"changes": out["changes"], "open_before": out["open_before"], "open_after": out["open_after"], "note": out.get("problem")}
 
     @staticmethod
     def _resume_kind(m: dict) -> str:
@@ -433,12 +459,21 @@ class RunManager:
         except (OSError, ValueError):
             pass
         load = (st or {}).get("neo4j_load") or {}
-        if load and not load.get("skipped"):   # the approved design was published next to Layer A: take it out again
+        published = load and not load.get("skipped")              # the approved design was published next to Layer A
+        delivered = (d / "delivery" / "app_jobs.json").exists()   # lecture delivery writes (:Delivery {run_id}) records too
+        if published or delivered:
             try:
-                from profsagent.design.neo4j_sync import delete_run
-                note["neo4j"] = f"removed {delete_run(rid)} design nodes"
+                from profsagent.design.neo4j_sync import delete_run, driver
+                parts = [f"removed {delete_run(rid)} design nodes"] if published else []
+                if delivered:
+                    with driver() as drv, drv.session() as s:
+                        n = s.run("MATCH (n:Delivery {run_id: $r}) WITH collect(n) AS ns UNWIND ns AS n DETACH DELETE n RETURN count(*) AS n",
+                                  r=rid).single()
+                    parts.append(f"{n['n'] if n else 0} delivery records")
+                note["neo4j"] = " and ".join(parts)
             except Exception as e:  # noqa: BLE001
-                note["neo4j"] = (f"NOT removed ({type(e).__name__}); run: python scripts/load_design_to_neo4j.py --run-id {rid} --delete")
+                note["neo4j"] = (f"NOT removed ({type(e).__name__}); run: python scripts/load_design_to_neo4j.py --run-id {rid} --delete, "
+                                 f"and in Neo4j: MATCH (n:Delivery {{run_id: '{rid}'}}) DETACH DELETE n")
         dest = self.runs / BIN / f"{rid}-{time.strftime('%Y%m%d-%H%M%S')}"
         dest.parent.mkdir(parents=True, exist_ok=True)
         for i in range(20):        # SQLite or OneDrive may hold a file for a moment after a step ends

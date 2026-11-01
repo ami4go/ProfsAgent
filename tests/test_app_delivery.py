@@ -53,7 +53,7 @@ def test_view_has_the_guide_shapes(runs, rid):
     card = r["items"]["video"][0]
     assert {"key", "url", "title", "tier", "total", "scores", "rationale", "warnings", "review", "cover", "approved"} <= set(card)
     assert r["experts"]["experts"] and v["results"]["W02.L1"]["experts"] == {"same_as": "W01.L2"}
-    assert v["material_connected"] is False and set(v["keys"]) == {"youtube", "openalex", "tavily"}
+    assert v["material_connected"] == {"generate": True, "attach": False} and set(v["keys"]) == {"youtube", "openalex", "tavily"}
 
 
 def test_choices_validation_and_when_c_starts(runs, rid):
@@ -141,3 +141,89 @@ def test_attachments_are_kept_for_the_material_team(runs, rid):
     p = dv.save_attachment(rid, "W05.L2", "../../notes week5.pdf", b"%PDF-1.4 test")
     assert p == "delivery/attachments/W05.L2/notes week5.pdf" and (runs / rid / p).read_bytes().startswith(b"%PDF")
     assert dv.save_attachment(rid, "W05.L2", "notes week5.pdf", b"x").endswith("notes week5-1.pdf")       # never overwrites
+
+
+def test_guard_for_lectures_without_research_queries(monkeypatch):
+    """Vihan's experts.iiitd_faculty took research_queries[0] even when the planner returned none (IndexError, the whole
+    lecture lost). The app's search process falls back to the lecture topic, like the rest of experts.py."""
+    from profsagent.app import delivery_step
+    from profsagent.delivery import experts
+    seen = []
+    monkeypatch.setattr(experts, "iiitd_faculty", lambda b, st, q: seen.append(q["research_queries"]) or [])
+    delivery_step.guard_empty_research_queries()
+    experts.iiitd_faculty({"topic": "CSS3 Styling, Flexbox, and Grid Systems"}, {}, {"research_queries": [], "video_queries": ["x"]})
+    experts.iiitd_faculty({"topic": "T"}, {}, {"research_queries": ["kept as it is"]})
+    assert seen == [["CSS3 Styling, Flexbox, and Grid Systems"], ["kept as it is"]]
+    delivery_step.guard_empty_research_queries()                 # installing it twice changes nothing
+    assert getattr(experts.iiitd_faculty, "_app_guard", False)
+
+
+def test_partial_lectures_are_flagged(runs, rid):
+    p = runs / rid / "delivery" / "lectures" / "W01.L1.json"
+    lec = json.loads(p.read_text(encoding="utf-8"))
+    lec["partial"] = {"reason": "YouTube blocked transcript downloads", "videos_without_transcript": 2}
+    p.write_text(json.dumps(lec), encoding="utf-8")
+    assert dv.view(rid, runs)["results"]["W01.L1"]["partial"]["videos_without_transcript"] == 2
+    assert dv.view(rid, runs)["results"]["W01.L2"]["partial"] is None
+
+
+# ------------------------------------------------------------------ B: Parth's generated slides
+EXAMPLE_DECK = Path(__file__).resolve().parents[1] / "eval" / "content_examples" / "cs601-02_W01.L1"
+
+
+@pytest.fixture
+def with_slides(runs, rid):
+    """Parth's real W01.L1 deck (eval/content_examples) placed in the course, as generate_material leaves it."""
+    import shutil
+    if not EXAMPLE_DECK.exists():
+        pytest.skip("needs eval/content_examples/cs601-02_W01.L1")
+    d = runs / rid / "delivery" / "material" / "W01.L1"
+    shutil.copytree(EXAMPLE_DECK, d, dirs_exist_ok=True)                  # the example copy may already carry Parth's decks
+    m = json.loads((d / "material.json").read_text(encoding="utf-8"))
+    m.update(status="draft", review=None, review_history=[])               # start from an unreviewed deck
+    (d / "material.json").write_text(json.dumps(m), encoding="utf-8")
+    return rid
+
+
+def test_slides_summary_and_preview(runs, with_slides):
+    rid = with_slides
+    s = dv.view(rid, runs)["material"]["W01.L1"]
+    assert s["status"] == "draft" and s["slides"] >= 10 and "slides.pptx" in s["files"]
+    d = dv.material_detail(rid, "W01.L1")
+    assert d["slides"][0]["number"] == 3                                   # numbered as in the .pptx (title, objectives first)
+    assert any(sl.get("quiz") for sl in d["slides"]) and d["sources"]
+    assert dv.material_detail(rid, "W05.L2") is None
+
+
+def test_slides_review_through_parths_module(runs, with_slides):
+    rid = with_slides
+    assert "change" in dv.material_review(rid, "W01.L1", "redo", "")["problem"]          # redo needs instructions
+    assert dv.material_review(rid, "W01.L1", "approve", "")["status"] == "approved"
+    m = json.loads((runs / rid / "delivery" / "material" / "W01.L1" / "material.json").read_text(encoding="utf-8"))
+    assert m["status"] == "approved" and m["review"]["decision"] == "approve"
+    assert dv.material_review(rid, "W01.L1", "reject", "Using my own slides")["status"] == "rejected"
+    assert dv.material_review(rid, "W05.L2", "approve", "")["problem"]                   # nothing generated there
+
+
+def test_generate_starts_once_when_chosen(runs, rid, with_slides):
+    out = dv.save_choices(rid, "W05.L2", {"own_material": "yes", "generate_material": "yes"})
+    assert out["start_b"] and not out["start_c"]
+    s = dv.view(rid, runs)["survey"]["W01.L1"]
+    assert dv.save_choices(rid, "W01.L1", {**s, "generate_material": "yes"})["start_b"] is False      # slides already exist
+
+
+def test_material_jobs_run_in_the_worker(runs, rid):
+    ok = ("import json,sys; from pathlib import Path; d=Path(sys.argv[1]); "
+          "(d/'app_step_result.json').write_text(json.dumps({'ok': {'slides': 21}}))")
+    m = dv.DeliveryManager(runs=runs, step_cmd=lambda r, kind, af: [sys.executable, "-c", ok, str(runs / r / "delivery")])
+    m.start()
+    try:
+        m.queue_material(rid, "W05.L2", {"note": "", "review": "ai"})
+        t0 = time.time()
+        while (dv.view(rid, runs)["jobs"].get("material", {}).get("W05.L2", {}).get("state") != "done") and time.time() - t0 < 20:
+            time.sleep(0.1)
+        j = dv.view(rid, runs)["jobs"]["material"]["W05.L2"]
+        assert j["state"] == "done" and j["options"]["review"] == "ai"
+    finally:
+        m.stop()
+    assert "protected" in dv._plain_error({"type": "ValueError", "message": "W01.L1: the professor approved these slides; pass force"}, "material")

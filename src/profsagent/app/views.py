@@ -10,7 +10,7 @@ import re
 from functools import lru_cache
 from pathlib import Path
 
-from profsagent.config import DATA
+from profsagent.config import DATA, pedagogy
 
 STEPS = [
     ("fill_details", "Filling in the details you left blank"),
@@ -197,7 +197,18 @@ def ref_label(ref: str | None) -> dict | None:
 
 
 # ------------------------------------------------------------------ gate 1: context
+def _edited(st: dict, gate: str) -> dict:
+    """What the professor changed at this check: {section: [changes]} (app/edits.py)."""
+    out: dict[str, list[str]] = {}
+    for e in (st.get("professor_edits") or []):
+        if e.get("gate") == gate:
+            out.setdefault(e["section"], []).extend(e.get("changes") or [])
+    return out
+
+
 def gate1(st: dict) -> dict:
+    from profsagent.app.edits import EDITABLE_ASSUMPTIONS, _content_kind, _inner, locked_rules
+    frame = locked_rules(st)
     pos = st.get("positioning") or {}
     judged = {o.get("course_uid"): o for o in pos.get("overlaps") or []}
     ext = {e["id"]: e for e in st.get("external_courses") or []}
@@ -206,9 +217,13 @@ def gate1(st: dict) -> dict:
         src = k.get("source") or {}
         text, kind = rule_text(k)
         item = {"text": text, "kind": kind, "hard": k.get("hardness") == "hard", "ref": src.get("ref"),
-                "source": ref_label(src.get("ref")), "tag": src.get("tag")}
+                "source": ref_label(src.get("ref")), "tag": src.get("tag"), "ids": [k["id"]],
+                "edit_text": _inner(k) if _content_kind(k) else None, "said": _raw(k), "by_professor": src.get("ref") == "professor edit"}
         bucket = wishes if src.get("tag") == "USER" else rules
-        if not any(x["text"] == text for x in bucket):   # the same wish is often compiled from two form fields
+        same = next((x for x in bucket if x["text"] == text), None)
+        if same:   # the same wish is often compiled from two form fields
+            same["ids"].append(k["id"])
+        else:
             bucket.append(item)
     comparable = []
     for c in pos.get("comparable") or []:
@@ -219,10 +234,24 @@ def gate1(st: dict) -> dict:
             r = course_ref(c.get("ref"))
             comparable.append({"title": f"{c.get('ref')} {r['name'] or c.get('title') or ''}".strip(), "where": "IIIT-D", "url": r["url"],
                                "take": c.get("take"), "avoid": c.get("avoid")})
+    edited = _edited(st, "gate1_context")
     return {
         "course": course_summary(st),
-        "assumptions": [{"what": a.get("what"), "value": a.get("value") if a.get("value") is not None else "Not fixed: estimated in the plan",
-                         "basis": a.get("basis"), "confirm_with": a.get("confirm_with")}
+        "edited": edited,
+        "overlaps_before_topic_edit": "topics" in edited,
+        "edit": {
+            "topics": [{"id": g.get("id"), "title": g.get("title"), "topics": [t.get("text") for t in g.get("topics") or []]} for g in st.get("topic_groups") or []],
+            "assumptions": [{"id": a["id"], "what": a.get("what"), "value": a.get("value"), "status": a.get("status"),
+                             "editable": a.get("what") in EDITABLE_ASSUMPTIONS} for a in (st.get("defaults") or {}).get("assumptions", [])],
+            "wishes": [{"ids": w["ids"], "kind": w["kind"], "text": w["edit_text"] if w["edit_text"] is not None else w["text"],
+                        "text_editable": w["edit_text"] is not None, "hard": w["hard"], "said": w["said"],
+                        "locked": all(k in frame for k in w["ids"])} for w in wishes],
+            "prerequisites": [{"code": p.get("course_uid"), "kind": p.get("kind")} for p in pos.get("prerequisites") or []],
+            "levels": sorted(int(k) for k in pedagogy()["bloom_bands"]),
+            "weeks": st.get("weeks"),
+        },
+        "assumptions": [{"id": a.get("id"), "what": a.get("what"), "value": a.get("value") if a.get("value") is not None else "Not fixed: estimated in the plan",
+                         "basis": a.get("basis"), "confirm_with": a.get("confirm_with"), "status": a.get("status") or "open"}
                         for a in (st.get("defaults") or {}).get("assumptions", [])],
         "wishes": wishes, "rules": rules,
         "untranslatable": [x if isinstance(x, str) else (x.get("raw") or x.get("text") or json.dumps(x, ensure_ascii=False)) for x in st.get("constraints_untranslatable") or []],
@@ -260,10 +289,27 @@ def gate2(st: dict) -> dict:
                             for lo in st.get("los") or [] if lo.get("parent_co") == co["id"]],
                     "pos": pos, "issues": _issues(st, {co["id"]})})
     titles = {g.get("id"): g.get("title") for g in st.get("topic_groups") or []}
-    proposals = [{"action": p.get("action"), "targets": [titles.get(t, t) for t in p.get("targets") or []], "proposal": p.get("proposal"), "reason": p.get("reason")}
-                 for p in st.get("topic_group_proposals") or []]
+    proposals = [{"i": i, "action": p.get("action"), "targets": [titles.get(t, t) for t in p.get("targets") or []], "proposal": p.get("proposal"), "reason": p.get("reason")}
+                 for i, p in enumerate(st.get("topic_group_proposals") or [])]
+    edited = _edited(st, "gate2_outcomes")
+    changed = {m.group(1) for cs in edited.values() for c in cs if (m := re.match(r"(CO\d+)", c))}
+    for c in cos:
+        c["edited"] = c["id"] in changed
+    edit = {"cos": {co["id"]: {"id": co["id"], "statement": co.get("statement"), "bloom_level": co.get("bloom_level"), "condition": co.get("condition") or "",
+                               "degree": co.get("degree") or "", "covers_topic_groups": co.get("covers_topic_groups") or [],
+                               "evidence_types": co.get("evidence_types") or [],
+                               "los": [{"id": lo["id"], "statement": lo.get("statement"), "bloom_level": lo.get("bloom_level"), "condition": lo.get("condition") or "",
+                                        "degree": lo.get("degree") or "", "suggested_task_type": lo.get("suggested_task_type")}
+                                       for lo in st.get("los") or [] if lo.get("parent_co") == co["id"]],
+                               "pos": [{"po_uid": m["po_uid"], "strength": m.get("strength_provisional")} for m in st.get("copo") or [] if m.get("co_id") == co["id"]]}
+                    for co in st.get("cos") or []},
+            "topic_groups": [{"id": g.get("id"), "title": g.get("title")} for g in st.get("topic_groups") or []],
+            "evidence": pedagogy()["assessment_evidence_types"],
+            "pos": [{"uid": po["uid"], "label": f"{PROGRAMME.get(po['uid'].split('/')[0], po['uid'].split('/')[0])} {po_label[po['uid']]['short']}",
+                     "text": po_label[po["uid"]]["text"]} for po in st.get("programme_pos") or []],
+            "bloom": BLOOM}
     return {"course": course_summary(st), "cos": cos, "co_count_target": st.get("co_count"), "band": st.get("bloom_band"),
-            "proposals": proposals, "no_topics_given": not st.get("topic_groups")}
+            "proposals": proposals, "no_topics_given": not st.get("topic_groups"), "edited": edited, "edit": edit}
 
 
 # ------------------------------------------------------------------ gate 3: the whole proposal
@@ -295,8 +341,20 @@ def gate3(st: dict, run_dir: Path) -> dict:
         except ValueError:
             ev = None
     feas = st.get("feasibility") or {}
+    edit = {"weeks": [{"id": m["id"], "title": m.get("title"), "topics": [{"id": t["id"], "title": t.get("title"), "hours": t.get("est_hours"),
+                                                                          "serves_los": ", ".join(t.get("serves_los") or [])} for t in m.get("topics", [])]}
+                      for m in st.get("modules") or []],
+            "labs": [{"id": x.get("id"), "title": x.get("title"), "week": x.get("week")} for x in (st.get("labs_tutorials") or {}).get("labs", [])],
+            "assessment": [{"key": i, "type": c.get("type"), "name": ASSESS.get(c.get("type"), c.get("type")), "weight": c.get("weight_pct"),
+                            "invigilated": bool(c.get("proctored")), "due": [x.get("due_week") for x in c.get("instances") or []],
+                            "instances": [x.get("id") for x in c.get("instances") or []]} for i, c in enumerate(comps)],
+            "books": [{"id": r.get("candidate_id"), "role": r.get("role"), "title": r.get("title")} for r in st.get("resources") or []],
+            "description": {"text": (st.get("narrative") or {}).get("course_description") or ""},
+            "assess_types": [{"type": k, "name": v} for k, v in ASSESS.items()], "n_weeks": st.get("weeks"),
+            "los": [lo["id"] for lo in st.get("los") or []]}
     return {
         "course": course_summary(st),
+        "edited": _edited(st, "gate3_proposal"), "edit": edit,
         "description": (st.get("narrative") or {}).get("course_description"),
         "weeks": weeks,
         "hours": {"planned": (st.get("structure_meta") or {}).get("hours_total"), "available": feas.get("lecture_hours_available")},
@@ -368,7 +426,7 @@ def approvals(st: dict | None, run_dir: Path | None = None) -> list[dict]:
         out.append({"gate": "gate0_details", "decision": r.get("decision"), "by": r.get("by"), "comment": r.get("comment"), "at": r.get("at"),
                     "override": None, "suggested": len(r.get("suggested_by_profsagent") or []), "changed": len(r.get("changed_by_professor") or [])})
     return out + [{"gate": a.get("gate"), "decision": a.get("decision"), "by": a.get("by"), "comment": a.get("comment"), "at": a.get("at"),
-                   "override": a.get("override")} for a in (st or {}).get("approvals", [])]
+                   "override": a.get("override"), "edits": a.get("professor_edits") or []} for a in (st or {}).get("approvals", [])]
 
 
 # ------------------------------------------------------------------ gate 0: the complete form to check

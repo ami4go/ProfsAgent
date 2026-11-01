@@ -225,8 +225,8 @@ class LLMClient:
         that trickles its reply could hold a run for half an hour (seen on NVIDIA NIM, 2026-10-28)."""
         t0 = time.time()
         with self.http.stream("POST", url, headers=headers, json=body, timeout=seconds) as r:
-            chunks = []
-            for chunk in r.iter_bytes():
+            chunks = []   # raw (still compressed) bytes: the Response below keeps the Content-Encoding header and decodes once
+            for chunk in r.iter_raw():
                 chunks.append(chunk)
                 if time.time() - t0 > seconds:
                     raise httpx.ReadTimeout(f"no complete reply within {seconds:.0f} s")

@@ -131,8 +131,17 @@ class LLMClient:
         self.no_native_schema: set[str] = set()   # Gemini models that rejected responseJsonSchema in this process
         self.no_json_mode: set[str] = set()       # OpenAI-compatible models that rejected response_format
         self.strong_only = os.environ.get("PROFSAGENT_STRONG_ONLY", "").lower() in ("1", "true", "yes", "on")
+        self._turn = 0                            # which lead Gemini key goes first on the next call
 
     # ------------------------------------------------------------------ slots
+    def _gemini_order(self) -> list[str]:
+        """The first `gemini_lead_keys` keys (separate projects, so separate quotas) take turns call by call, then the rest."""
+        n = min(self.lim.get("gemini_lead_keys", 0), len(self.gemini_keys))
+        if n < 2:
+            return self.gemini_keys
+        lead, i = self.gemini_keys[:n], self._turn % n
+        return lead[i:] + lead[:i] + self.gemini_keys[n:]
+
     def _slots_for(self, role: str, prompt_chars: int, skip_models: frozenset[str] = frozenset()):
         for ep in self.cfg["roles"][role]:
             if ep.get("max_prompt_tokens") and prompt_chars / 3.2 > ep["max_prompt_tokens"]:
@@ -141,7 +150,7 @@ class LLMClient:
                 continue
             if self.strong_only and _weak(ep):
                 continue
-            ks = {"gemini": self.gemini_keys, "groq": self.groq_keys, "ollama": ["local"]}.get(ep["provider"])
+            ks = {"gemini": self._gemini_order(), "groq": self.groq_keys, "ollama": ["local"]}.get(ep["provider"])
             if ks is None:
                 ks = self.extra.get(ep["provider"], {}).get("keys", [])
             for i, k in enumerate(ks):
@@ -297,6 +306,7 @@ class LLMClient:
                   tools: list | None, record: CallRecord | None, skip_models: frozenset[str] = frozenset(),
                   response_schema: dict | None = None) -> tuple[str, dict, dict]:
         last = None
+        self._turn += 1
         for ep, ki, key, slot in self._slots_for(role, len(system) + len(user), skip_models):
             if not self.slots.available(slot):
                 continue
@@ -377,8 +387,12 @@ class LLMClient:
             avoid = f"|{sorted(exclude_models)}" if exclude_models else ""
             key = hashlib.sha256(f"{role}|{temperature}|{model_cls.__name__}|{system}|{user}{avoid}".encode()).hexdigest()[:32]
             cache_path = CACHE / "llm" / f"{key}.json"
-            if cache_path.exists():
-                cached = json.loads(cache_path.read_text(encoding="utf-8"))
+            cached = json.loads(cache_path.read_text(encoding="utf-8")) if cache_path.exists() else None
+            # an answer from a model no longer in this role's list (e.g. a removed lite model) is asked again
+            ep = (cached or {}).get("endpoint") or ""
+            if cached and not any(ep.startswith(f"{e['provider']}:{e['model']}:") for e in self.cfg["roles"].get(role, [])):
+                cached = None
+            if cached:
                 try:
                     obj = model_cls.model_validate(cached["obj"])
                     rec.ok, rec.endpoint = True, f"cache({cached.get('endpoint')})"
@@ -431,6 +445,8 @@ class LLMClient:
         return obj, rec
 
     def grounded_search(self, query: str, instruction: str) -> dict:
+        if not self.cfg["roles"].get("search"):          # no model with free grounding is allowed: callers fall back
+            raise AllEndpointsFailed("no Google-Search grounding model configured (roles.search is empty)")
         rec = CallRecord(prompt_id="SEARCH", prompt_version="-", role="search")
         text, usage, gm = self.raw("search", "", f"{instruction}\n\nQuery: {query}", 0.0, json_mode=False,
                                    tools=[{"google_search": {}}], record=rec)

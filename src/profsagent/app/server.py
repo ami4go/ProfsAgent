@@ -417,6 +417,14 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True, del
             raise HTTPException(404, "No guest-lecture kit for this lecture yet")
         return {"md": p.read_text(encoding="utf-8")}
 
+    @app.get("/api/delivery/{rid}/notebooklm/{lid}")
+    def delivery_notebooklm(rid: str, lid: str):
+        d = course_dir(rid)
+        p = d / "delivery" / "notebooklm" / f"{lecture_id(lid)}.md"
+        if not p.exists():
+            raise HTTPException(404, "No NotebookLM pack for this lecture yet")
+        return {"md": p.read_text(encoding="utf-8")}
+
     @app.get("/api/delivery/{rid}/report")
     def delivery_report(rid: str):
         import markdown

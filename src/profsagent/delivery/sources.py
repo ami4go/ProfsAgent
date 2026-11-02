@@ -7,7 +7,7 @@
   Books                 OpenLibrary / Crossref (Phase 1 research.resources)
   Papers, authors       OpenAlex (OPENALEX_API_KEY), DBLP (no key)
   Code / practice       GitHub search (GITHUB_TOKEN optional)
-Google Scholar has no API and forbids scraping, so academics get a Scholar *search link* for the professor instead.
+  Google Scholar        through SerpApi (SERPAPI_API_KEY, 250 searches/month); Semantic Scholar (no key) as the fallback
 """
 from __future__ import annotations
 
@@ -157,7 +157,7 @@ class YouTube:
 
 # YouTube blocks an IP that asks for many transcripts quickly (IpBlocked after ~60 in 10 minutes, 2026-10-25), so
 # requests are spaced out, and after the first block none are sent for the rest of the process.
-_tx = {"blocked": None, "last": 0.0}
+_tx = {"blocked": None, "last": 0.0, "times": []}
 BLOCKED = ("IpBlocked", "RequestBlocked", "TooManyRequests")
 
 
@@ -175,7 +175,13 @@ def transcript(video_id: str) -> list[dict] | None:
         wait = _tx["last"] + cfg.get("min_interval_s", 1.5) + random.uniform(0, cfg.get("jitter_s", 1.0)) - time.time()
         if wait > 0:
             time.sleep(wait)
+        cap = cfg.get("max_per_hour")                 # rolling hourly cap: the 1 Nov block came after ~90 in an hour
+        _tx["times"] = [x for x in _tx.get("times", []) if time.time() - x < 3600]
+        if cap and len(_tx["times"]) >= cap:
+            time.sleep(max(0.0, _tx["times"][0] + 3600 - time.time()))
+            _tx["times"] = _tx["times"][1:]
         _tx["last"] = time.time()
+        _tx["times"].append(_tx["last"])
         try:
             from youtube_transcript_api import YouTubeTranscriptApi
             t = YouTubeTranscriptApi().fetch(video_id, languages=["en", "en-US", "en-GB", "en-IN"])
@@ -427,8 +433,140 @@ def dblp_author(name: str) -> dict | None:
 
 
 def scholar_search_url(name: str, affiliation: str | None = None) -> str:
-    """A Google Scholar author-search link for the professor to click (Scholar has no API and forbids scraping)."""
+    """A Google Scholar author-search link for the professor to click (used when no Scholar profile was found)."""
     return "https://scholar.google.com/citations?view_op=search_authors&mauthors=" + quote_plus(f"{name} {affiliation or ''}".strip())
+
+
+# ------------------------------------------------------------------ Google Scholar (SerpApi) and Semantic Scholar
+# Google Scholar has no API and blocks scraping; SerpApi runs the searches for us (free plan: 250 searches a month,
+# SERPAPI_API_KEY). Its author-search ("profiles") API was discontinued, so a person is found through a paper search
+# (`google_scholar`, whose results carry the authors' profile ids) and then read with `google_scholar_author`.
+# Results are cached 90 days; failed searches are not counted by SerpApi. Semantic Scholar (free, no key, often
+# rate-limited) is the fallback when SerpApi is out of searches or a person has no Scholar profile.
+_serp = {"left": None}
+
+
+def serpapi_left() -> int:
+    """Searches left this month on the SerpApi plan (the account call itself is free)."""
+    key = os.environ.get("SERPAPI_API_KEY")
+    if not key:
+        return 0
+    if _serp["left"] is None:
+        try:
+            r = _http.get("https://serpapi.com/account.json", params={"api_key": key})
+            _serp["left"] = int(r.json().get("plan_searches_left", 0)) if r.status_code == 200 else 0
+        except (httpx.HTTPError, ValueError):
+            _serp["left"] = 0
+    return _serp["left"]
+
+
+def _serpapi(params: dict, ns: str, key: str):
+    def run():
+        if serpapi_left() <= rcfg_x()["scholar"]["keep_searches"]:
+            return {"error": "SerpApi searches used up for this month"}
+        r = _get("https://serpapi.com/search.json", {**params, "api_key": os.environ["SERPAPI_API_KEY"]})
+        _serp["left"] = (_serp["left"] or 1) - 1
+        if r is None or r.status_code != 200:
+            return {"error": f"HTTP {getattr(r, 'status_code', '?')}"}
+        j = r.json()
+        return {"error": j["error"]} if j.get("error") else j
+    return _cached(ns, key, 90, run)
+
+
+def rcfg_x() -> dict:
+    from profsagent.delivery.common import xcfg
+    return xcfg()
+
+
+def short_name(name: str) -> str:
+    """'Christoph Treude' -> 'c treude' (Scholar lists authors as 'C Treude')."""
+    w = re.sub(r"[^a-z\s-]", "", (name or "").lower()).split()
+    return f"{w[0][0]} {w[-1]}" if len(w) >= 2 else " ".join(w)
+
+
+def scholar_papers(query: str, n: int = 20) -> list[dict]:
+    """Papers for a query from Google Scholar: [{title, year, link, authors: [{name, author_id}]}]."""
+    j = _serpapi({"engine": "google_scholar", "q": query, "num": n}, "scholar_q", f"{query}|{n}")
+    if "error" in j:
+        return []
+    out = []
+    for x in j.get("organic_results", []):
+        pi = x.get("publication_info") or {}
+        m = re.search(r"\b(19|20)\d{2}\b", pi.get("summary", ""))
+        out.append({"title": x.get("title", ""), "link": x.get("link"), "year": int(m.group(0)) if m else None,
+                    "cited_by": ((x.get("inline_links") or {}).get("cited_by") or {}).get("total"),
+                    "authors": [{"name": a["name"], "author_id": a.get("author_id")} for a in pi.get("authors", []) or []]})
+    return out
+
+
+def scholar_profile(author_id: str) -> dict | None:
+    """A Google Scholar profile: name, affiliation, email domain, interests, citations, h-index, recent articles."""
+    j = _serpapi({"engine": "google_scholar_author", "author_id": author_id, "num": 20, "sort": "pubdate"}, "scholar_a", author_id)
+    if "error" in j or not j.get("author"):
+        return None
+    a, table = j["author"], {}
+    for row in (j.get("cited_by") or {}).get("table", []):
+        table.update(row)
+    em = re.search(r"at\s+([\w.-]+\.\w+)", a.get("email") or "")
+    return {"name": a.get("name"), "affiliation": a.get("affiliations"), "email_domain": em.group(1) if em else None,
+            "interests": [x.get("title") for x in a.get("interests", [])], "website": a.get("website"),
+            "cited_by": (table.get("citations") or {}).get("all"), "h_index": (table.get("h_index") or {}).get("all"),
+            "i10_index": (table.get("i10_index") or {}).get("all"),
+            "articles": [{"title": x.get("title"), "year": int(x["year"]) if str(x.get("year") or "").isdigit() else None}
+                         for x in j.get("articles", [])[:20]],
+            "url": f"https://scholar.google.com/citations?user={author_id}"}
+
+
+def scholar_find(name: str, hint: str = "") -> dict | None:
+    """Find a person's Scholar profile through a paper search on their name (+ a topic hint); None if not found."""
+    if not os.environ.get("SERPAPI_API_KEY"):
+        return None
+    sn = short_name(name)
+    for p in scholar_papers(f'author:"{name}" {hint}'.strip(), 10):
+        for a in p["authors"]:
+            if a.get("author_id") and short_name(a["name"]) == sn:
+                prof = scholar_profile(a["author_id"])
+                if prof and short_name(prof["name"] or "") == sn:
+                    return {**prof, "found_via": p["title"]}       # the paper whose author list linked the profile
+    return None
+
+
+_s2 = {"limited": False}
+
+
+def s2_author(name: str, titles: list[str]) -> dict | None:
+    """Semantic Scholar author record for `name` (keyless API): the one whose papers include one of `titles`, or the
+    only match; None when several people share the name and none has those papers."""
+    def run():
+        if _s2["limited"]:
+            return {"error": "skipped: Semantic Scholar rate-limited this run"}
+        for i in range(2):                       # the keyless pool is shared and often answers 429
+            try:
+                r = _http.get("https://api.semanticscholar.org/graph/v1/author/search",
+                              params={"query": name, "limit": 5, "fields": "name,affiliations,hIndex,citationCount,paperCount,url,papers.title"})
+            except httpx.HTTPError as e:
+                return {"error": type(e).__name__}
+            if r.status_code == 429:
+                time.sleep(2 + random.uniform(0, 2))
+                continue
+            if r.status_code != 200:
+                return {"error": f"HTTP {r.status_code}"}
+            return r.json().get("data", [])
+        _s2["limited"] = True                     # stop asking for the rest of this run (each try cost seconds)
+        return {"error": "rate-limited"}
+    v = _cached("s2_author", name.lower(), 60, run)
+    if not isinstance(v, list) or not v:
+        return None
+    want = {re.sub(r"\W", "", t.lower()) for t in titles if t}
+    hit = next((a for a in v if want & {re.sub(r"\W", "", (p.get("title") or "").lower()) for p in a.get("papers") or []}), None)
+    matched = hit is not None
+    if hit is None:
+        if len(v) > 1:                           # several people with this name and no shared paper: not safe to pick one
+            return None
+        hit = v[0]
+    return {"name": hit.get("name"), "affiliation": ", ".join(hit.get("affiliations") or []) or None, "h_index": hit.get("hIndex"),
+            "cited_by": hit.get("citationCount"), "works_count": hit.get("paperCount"), "url": hit.get("url"),
+            "matched_paper": matched}
 
 
 # ------------------------------------------------------------------ GitHub

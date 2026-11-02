@@ -56,8 +56,30 @@ def units(st: dict, c: dict | None = None) -> dict[str, dict]:
 
 
 # ------------------------------------------------------------------ inputs
-def lecture_input(brief: dict, note: str = "") -> dict:
-    """The brief as B1 sees it: statements cleaned of template holes, the time in minutes."""
+def outline(run_id: str, brief: dict) -> list[dict]:
+    """C's component plan for this lecture or class (deliverable C, delivery/components.py): what each part teaches, its
+    minutes and how it is delivered (a video clip, a NotebookLM video, or in class). [] when C has no plan yet."""
+    from profsagent.delivery.components import for_window
+    parts = brief.get("parts") or [{"lecture_id": brief["lecture_id"], "brief_from_min": 0, "brief_minutes": None, "minutes": None}]
+    out = []
+    for p in parts:
+        lec = read_json(out_dir(run_id) / "lectures" / f"{p['lecture_id']}.json", {}) or {}
+        how = {x["component"]: x for x in (lec.get("resources") or {}).get("timeline") or []}
+        comps = for_window(run_id, p["lecture_id"], p.get("brief_from_min", 0), p.get("brief_minutes"))
+        scale = (p["minutes"] / p["brief_minutes"]) if p.get("minutes") and p.get("brief_minutes") else 1.0
+        for c in comps:
+            row = how.get(c["id"]) or {}
+            clip = "; ".join(f"{s['start']}–{s['end']} of \"{s['video']}\"" for s in row.get("segments") or [])
+            out.append({"id": c["id"], "title": c["title"], "teaches": c["teaches"], "key_terms": c.get("key_terms", []),
+                        "kind": c.get("kind"), "minutes": round(c.get("minutes_here", c["minutes"]) * scale),
+                        "delivered_by": row.get("delivery") or ("in_class" if c.get("in_class") else "slides"),
+                        **({"clip": clip} if clip else {})})
+    return out
+
+
+def lecture_input(brief: dict, note: str = "", run_id: str | None = None) -> dict:
+    """The brief as B1 sees it: statements cleaned of template holes, the time in minutes, and (with `run_id`) C's
+    component plan as `outline`."""
     return {"lecture_id": brief["lecture_id"], "topic": brief["topic"], "module": brief["module"], "hours": brief["hours"],
             "minutes": round(brief["hours"] * 60),
             "learning_outcomes": [{"id": lo["id"], "statement": clean(lo["statement"]), "bloom_level": lo["bloom_level"]}
@@ -67,7 +89,8 @@ def lecture_input(brief: dict, note: str = "") -> dict:
             "prerequisites": [{"course": p["course"], "relied_topics": p.get("relied_topics", [])} for p in brief.get("prerequisite_courses") or []],
             "leads_to": brief.get("leads_to") or [], "assessed_in": brief.get("assessed_in") or [],
             "hands_on": brief.get("hands_on", False), "labs": brief.get("labs") or [], "professor_note": note,
-            "parts": [{"topic": x["topic"], "minutes": x["minutes"]} for x in brief.get("parts") or []]}
+            "parts": [{"topic": x["topic"], "minutes": x["minutes"]} for x in brief.get("parts") or []],
+            **({"outline": o} if run_id and (o := outline(run_id, brief)) else {})}
 
 
 def gather_sources(st: dict, run_id: str, brief: dict, include_pending: bool, max_external: int) -> dict[str, dict]:
@@ -179,7 +202,7 @@ def generate_material(run_id: str, lecture_id: str, options: dict | None = None,
         raise KeyError(f"no lecture {lecture_id} in runs/{run_id}")
     d = material_dir(run_id, lecture_id)
     llm = llm or LLMClient(out_dir(run_id) / "material" / "llm_calls.jsonl")
-    lecture = lecture_input(brief, o.get("note", ""))
+    lecture = lecture_input(brief, o.get("note", ""), run_id)
     sources = gather_sources(st, run_id, brief, o.get("include_pending", c["sources"]["include_pending"]), c["sources"]["max_external"])
     lo_min, lo_max = content_range(brief["hours"], c)
     ctx = {"course": {"course_name": st["cco_compact"]["course_name"], "level": st.get("level")}, "lecture": lecture,

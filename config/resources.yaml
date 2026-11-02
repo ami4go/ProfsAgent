@@ -20,6 +20,36 @@ weights:                    # §3.4
 
 free_only: true             # decided 2026-10-24: no paid MOOCs or paywalled books
 
+# Components (2026-11-01): each topic's lecture time is split into components (what must be taught, for how long), and
+# each component is delivered by verified video segments, by a NotebookLM video the professor makes, or in class.
+components:
+  min_minutes: 5            # no component shorter than this
+  max_minutes: 30           # nor longer (split it)
+  target_minutes: 15        # typical length: n components ≈ lecture minutes / this
+  round_to: 5               # minutes are whole multiples of this
+  in_class_kinds: [activity, discussion]   # taught live with the slides, never assigned a video
+
+segments:
+  window_s: 30              # transcript window for locating where a component is taught
+  smooth: 3                 # moving average over this many windows: a stretch must stay on the component, not one mention
+  sim_floor: 0.40           # smoothed similarity a stretch must reach (all-MiniLM-L6-v2; on-topic peaks ~0.5–0.7)
+  drop_from_peak: 0.10      # a stretch extends while the smoothed similarity is within this of its peak
+  min_s: 300                # the stretch shown to the AI check is at least 5 min around the peak (2 min was too narrow:
+                            # it rarely held a whole explanation, 2026-11-01); the AI then sets the exact start and end
+  max_s: 1500               # ... and at most 25 min
+  min_segment_s: 60         # a checked segment shorter than this is not used
+  per_component: 4          # candidate stretches per component sent to the AI check (D6)
+  gap_share: 0.6            # a part only "partly" taught, or whose video minutes are under this share of its time, also
+                            # gets a NotebookLM prompt for what the video leaves out
+  max_words_per_stretch: 1600   # transcript words per stretch in the D6 prompt (longer stretches are sampled evenly)
+  max_words_per_call: 5000  # one D6 call checks stretches until this many transcript words (9000 timed out on
+                            # gemini-3.8-flash at 180 s, 2026-11-01)
+  min_video_s: 180          # YouTube Shorts and clips under 3 min are not used to teach a component
+  transcripts_per_topic: 10 # transcripts fetched per topic (best pre-scored videos first; 14 helped trigger a block)
+  component_searches_per_topic: 4   # extra YouTube searches (100 units each) for parts no video teaches, then those only
+                                    # partly taught (most topic searches are cached, so a full run stays under 9,000 units)
+  pad_s: 5                  # a segment starts this many seconds before the AI's start (context for the first sentence)
+
 coverage:
   window_s: 45              # transcript window length (seconds) for topic matching
   sim_covered: 0.42         # calibrated 2026-10-24 on an MIT OCW lecture: on-topic best window 0.55–0.62, off-topic <= 0.27
@@ -45,8 +75,10 @@ youtube:
 
 transcripts:
   max_per_lecture: 8           # transcripts fetched for the best pre-scored videos
-  min_interval_s: 1.5          # pause between transcript requests (plus up to jitter_s at random): YouTube blocks
-  jitter_s: 1.0                # an IP that asks for ~60 in 10 minutes; after a block none are sent that run
+  min_interval_s: 4.0          # pause between transcript requests (plus up to jitter_s at random): YouTube blocks
+  jitter_s: 3.0                # an IP that asks for ~60 in 10 minutes (and, 1 Nov, after ~90 new ones in an hour at
+                               # 1.5-2.5 s); after a block none are sent that run
+  max_per_hour: 40             # at most this many new transcript requests in any hour (cached ones are free)
 
 review:
   max_candidates_per_call: 10  # candidates the AI reviews per lecture (one call)

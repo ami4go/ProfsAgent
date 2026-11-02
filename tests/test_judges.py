@@ -60,7 +60,9 @@ def test_panel_skips_the_generator_model_and_providers_without_keys(s):
     panel, skipped = judges.select_panel(s, FakeLLM({}))
     assert panel == ["judge_a", "judge_b"]                                 # fixture: 6 of 7 stages by gemini-3.5-flash-lite
     why = {x["judge"]: x["why"] for x in skipped}
-    assert "self-preference" in why["judge_d"] and "no API key" in why["judge_c"]
+    # judge_d was gemini-3.5-flash-lite (the fixture's generator, so skipped for self-preference); since 2026-11-01 it is
+    # an NVIDIA model, and the fake client has no NVIDIA key
+    assert "no API key" in why["judge_d"] and "no API key" in why["judge_c"]
     panel2, _ = judges.select_panel(s, FakeLLM({}, groq=True))
     assert panel2 == ["judge_a", "judge_b", "judge_c"]
 

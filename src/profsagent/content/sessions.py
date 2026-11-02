@@ -40,7 +40,7 @@ def build_sessions(st: dict, per_week: int, minutes: int, briefs: list[dict] | N
             while need > 1e-9 and chunks:
                 b, left = chunks[0]
                 take = min(need, left)
-                parts.append((b, take))
+                parts.append((b, take, b["hours"] - left))     # (brief, hours taken, hours of it taught before)
                 chunks[0][1] -= take
                 need -= take
                 if chunks[0][1] <= 1e-9:
@@ -50,15 +50,18 @@ def build_sessions(st: dict, per_week: int, minutes: int, briefs: list[dict] | N
     return out
 
 
-def _session(week: int, slot: int, minutes: int, share: float, parts: list[tuple[dict, float]]) -> dict:
-    bs = [b for b, _ in parts]
+def _session(week: int, slot: int, minutes: int, share: float, parts: list[tuple[dict, float, float]]) -> dict:
+    bs = [b for b, _, _ in parts]
     first = bs[0]
     s = {"lecture_id": f"W{week:02d}.S{slot}", "week": week, "slot": slot, "hours": minutes / 60,
          "topic_id": first["topic_id"], "topic": " · ".join(dict.fromkeys(b["topic"] for b in bs)),
          "module": " · ".join(dict.fromkeys(b["module"] for b in bs)),
          "hands_on": any(b.get("hands_on") for b in bs), "novel": any(b.get("novel") for b in bs),
+         # brief_from_min / brief_minutes: where this part sits in the brief's own time, which C's component plan
+         # (delivery/components.py) uses; `minutes` is the class time it gets
          "parts": [{"lecture_id": b["lecture_id"], "topic_id": b["topic_id"], "topic": b["topic"],
-                    "minutes": round(h / share * minutes)} for b, h in parts]}
+                    "minutes": round(h / share * minutes), "brief_from_min": round(done * 60), "brief_minutes": round(h * 60)}
+                   for b, h, done in parts]}
     for k in UNION:
         s[k] = _union([b.get(k) for b in bs])
     return s

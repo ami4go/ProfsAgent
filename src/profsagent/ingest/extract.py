@@ -38,7 +38,7 @@ def call_gemini(clients, prompt_text, max_retries=14):
         client = clients[attempt % len(clients)]
         def _do():
             return client.models.generate_content(
-                model='gemini-3.5-flash',
+                model='gemini-3.8-flash',
                 contents=prompt_text,
                 config=types.GenerateContentConfig(
                     response_mime_type="application/json",

@@ -941,11 +941,13 @@ function dresultsCard(l) {
   if (yes(a, 'own_material')) tabs.push(['own', 'My material']);
   if (yes(a, 'attach_material')) tabs.push(['attach', 'Attached material']);
   if (yes(a, 'generate_material') || (DV.material || {})[l.id]) tabs.push(['gen', 'Generated slides']);
+  const hasPlan = r && (r.components || []).length;
+  if (yes(a, 'assistance') && hasPlan) tabs.push(['plan', 'Lecture plan']);
   if (yes(a, 'assistance')) tabs.push(['res', 'Resources']);
-  if (yes(a, 'assistance') && yes(a, 'want_clips')) tabs.push(['clips', 'Clip playlist']);
+  if (yes(a, 'assistance') && yes(a, 'want_clips') && !hasPlan) tabs.push(['clips', 'Clip playlist']);
   if (yes(a, 'guest_lecture')) tabs.push(['guest', 'Guest speakers']);
   if (!tabs.length) return '';
-  let cur = PUI.tab[l.id]; if (!tabs.some(t => t[0] === cur)) cur = (tabs.find(t => t[0] === 'res' || t[0] === 'guest') || tabs[0])[0];
+  let cur = PUI.tab[l.id]; if (!tabs.some(t => t[0] === cur)) cur = (tabs.find(t => t[0] === 'plan' || t[0] === 'res' || t[0] === 'guest') || tabs[0])[0];
   const running = j && ['queued', 'running'].includes(j.state);
   let body = '';
   if (cur === 'own') body = '<p style="margin-top:12px">You will teach this lecture with your own material, so nothing needs to run. It counts as covered.</p>' + downLinks(l.id);
@@ -954,6 +956,7 @@ function dresultsCard(l) {
   else if (cur === 'gen') body = dmaterialTab(l);
   else if (running && cur !== 'gen') body = '<p class="muted" style="margin-top:14px"><span class="spin"></span> Still searching. The results appear here when the search is done; the page stays usable meanwhile.</p>';
   else if (!r) body = '<p class="muted" style="margin-top:14px">No results yet. ' + (j && j.state === 'error' ? 'The last search stopped; see Progress above.' : 'Start the search under Progress.') + '</p>';
+  else if (cur === 'plan') body = dplanTab(l, r);
   else if (cur === 'res') body = r.has_resources ? dresourcesTab(l, a, r) : '<p class="muted" style="margin-top:12px">This lecture was searched for guest speakers only. Save your choices again to search for resources too.</p>';
   else if (cur === 'clips') body = (r.clips && r.clips.length ? '<ol style="margin-top:12px">' + r.clips.map(x => '<li>Watch <a href="' + esc(x.url) + '" target="_blank" rel="noopener">' + esc(x.start) + '–' + esc(x.end) + '</a> of <i>' + esc(x.video) + '</i> for ' + esc(x.target) + ' (' + esc(x.minutes) + ' min)</li>').join('') + '</ol>' : '<p class="muted" style="margin-top:12px">No clip playlist was built for this lecture.</p>');
   else if (cur === 'guest') body = dguestTab(l, r);
@@ -1087,6 +1090,47 @@ function downLinks(lid) {
       '<label class="f" for="ownk">Kind</label><select id="ownk">' + D_KINDS.map(([k, n]) => '<option value="' + k + '"' + (f.kind === k ? ' selected' : '') + '>' + n + '</option>').join('') + '</select>' + (f.err ? '<p class="err">' + esc(f.err) + '</p>' : '') +
       '<div class="acts"><button class="btn sm primary" data-act="d-ownsave">Add as approved</button><button class="btn sm" data-act="d-ownclose">Cancel</button></div></div>' : '');
 }
+// C (since 2026-11-01): the lecture as components, each delivered by checked video minutes, a NotebookLM video or in class
+function dplanTab(l, r) {
+  const tl = {}; (r.timeline || []).forEach(x => { tl[x.component] = x; });
+  const n = { video: 0, notebooklm: 0, in_class: 0, gap: 0 }, mins = { video: 0, notebooklm: 0, in_class: 0 };
+  const rows = r.components.map(c => {
+    const t = tl[c.id] || { delivery: c.in_class ? 'in_class' : (r.notebooklm || {}).components && r.notebooklm.components.includes(c.id) ? 'notebooklm' : null, segments: [] };
+    if (t.delivery in n) { n[t.delivery]++; mins[t.delivery] += c.minutes; }
+    let how;
+    if (t.delivery === 'video') how = t.segments.map(s => '<div><a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.start) + '–' + esc(s.end) + '</a> of <i>' + esc(s.video) + '</i> ' +
+      (s.verdict === 'teaches_fully' ? '<span class="chip green">teaches it</span>' : '<span class="chip amber">teaches part of it</span>') + '</div>').join('') +
+      (t.gap ? '<div class="small muted" style="margin-top:4px"><span class="chip navy">+ NotebookLM</span> ' + esc(t.gap.video_minutes) + ' of ' + esc(c.minutes) + ' min on video' +
+        ((t.gap.missing || []).length ? '; the video leaves out: ' + esc(t.gap.missing.join('; ')) : '') + '</div>' : '');
+    if (t.gap) { n.gap = (n.gap || 0) + 1; }
+    else if (t.delivery === 'notebooklm') how = '<span class="chip navy">NotebookLM video</span> <span class="small muted">no YouTube video teaches it well enough</span>';
+    else if (t.delivery === 'in_class') how = '<span class="chip grey">In class</span> <span class="small muted">' + esc((c.kind || '').replace('_', ' ')) + ', taught with your slides</span>';
+    else how = '<span class="small muted">Videos were not asked for</span>';
+    return '<tr><td style="white-space:nowrap;vertical-align:top">' + esc(c.id.split('.').pop()) + '</td><td style="vertical-align:top"><b style="font-weight:600">' + esc(c.title) + '</b>' +
+      '<div class="small muted" style="margin-top:2px">' + esc(c.teaches) + '</div>' + ((c.key_terms || []).length ? '<div class="tiny muted" style="margin-top:2px">' + esc(c.key_terms.join(' · ')) + '</div>' : '') + '</td>' +
+      '<td style="vertical-align:top;white-space:nowrap">' + esc(c.minutes) + ' min</td><td style="vertical-align:top">' + how + '</td></tr>';
+  });
+  const total = r.components.reduce((s, c) => s + c.minutes, 0);
+  const segs = (r.timeline || []).flatMap(x => x.segments || []), vmin = Math.round(segs.reduce((s, x) => s + (x.minutes || 0), 0));
+  const fully = (r.timeline || []).filter(x => (x.segments || []).some(s => s.verdict === 'teaches_fully')).length;
+  return '<p class="small" style="margin-top:12px">This lecture is planned as ' + r.components.length + ' parts (' + total + ' min). ' +
+    '<b>' + n.video + '</b> part' + (n.video === 1 ? ' has' : 's have') + ' checked YouTube minutes (' + vmin + ' min of video; ' + fully + ' taught fully), ' +
+    '<b>' + (n.notebooklm + (n.gap || 0)) + '</b> need a NotebookLM video you make' + (n.gap ? ' (' + n.gap + ' to fill what a video leaves out)' : '') +
+    ', and <b>' + n.in_class + '</b> ' + (n.in_class === 1 ? 'is an activity or discussion' : 'are activities or discussion') + ' in class.</p>' +
+    '<p class="tiny muted" style="margin-top:4px">Each video stretch was read on its transcript by an AI checker: the times skip the intro and stop where the video moves on. The same plan is used for the slides.</p>' +
+    '<table class="t" style="margin-top:10px"><tr><th style="width:40px">Part</th><th>What it teaches</th><th style="width:64px">Time</th><th style="width:38%">Delivered by</th></tr>' + rows.join('') + '</table>' +
+    ((DV.notebooklm || []).includes(l.id) ? '<div class="acts" style="margin-top:10px"><a class="btn sm' + (n.notebooklm || n.gap ? ' primary' : '') + '" href="' + dhref(l.id, 'notebooklm') + '">Open the NotebookLM pack</a>' +
+      '<span class="small muted">' + (n.notebooklm || n.gap ? 'Prompts for ' + (n.notebooklm + (n.gap || 0)) + ' NotebookLM video' + (n.notebooklm + (n.gap || 0) > 1 ? 's' : '') +
+        (n.gap ? ' (' + n.gap + ' fill what a YouTube video leaves out)' : '') + ', plus a quiz and flashcards.' : 'Quiz and flashcard prompts for revision.') + '</span></div>' : '');
+}
+function dnlm() {
+  const src = PUI.nlm || '', parts = src.split(/^```(?:text)?\s*$/m);
+  let html = '', k = 0;
+  parts.forEach((p, i) => { if (i % 2) { html += '<div class="inv" id="nlm' + k + '">' + esc(p.trim()) + '</div><div class="acts" style="margin-top:6px"><button class="btn sm" data-act="d-copynlm" data-i="' + k + '">Copy</button></div>'; k++; } else html += md(p); });
+  return header() + '<div class="wrap">' + crumbs([['Your courses', '#/'], ['Lecture delivery', '#/delivery'], [DV.run.course, dhref()], [DLID, dhref(DLID)], ['NotebookLM pack']]) +
+    (src ? '<div class="card kit">' + html + '<div class="acts" style="margin-top:14px"><a class="btn" href="' + dhref(DLID) + '">← Back to the lecture</a></div></div>'
+      : '<div class="card"><p class="muted">No NotebookLM pack for ' + esc(DLID) + ' yet. It is written when the resource search finishes.</p></div>') + '</div>';
+}
 function dguestTab(l, r) {
   const e = r.experts;
   if (!e) return '<p class="muted" style="margin-top:12px">This lecture was searched for resources only. Save your choices again to search for a guest too.</p>';
@@ -1125,6 +1169,7 @@ function md(src) {
     let m;
     if (/^#\s/.test(ln)) { flush(); out.push('<h1>' + inline(ln.slice(2)) + '</h1>'); }
     else if (/^##\s/.test(ln)) { flush(); out.push('<h2>' + inline(ln.slice(3)) + '</h2>'); }
+    else if (/^###\s/.test(ln)) { flush(); out.push('<h3 style="margin-top:14px">' + inline(ln.slice(4)) + '</h3>'); }
     else if ((m = ln.match(/^\s*-\s+(.*)/))) { if (para.length) flush(); if (list !== 'ul') { flush(); out.push('<ul>'); list = 'ul'; } out.push('<li>' + inline(m[1]) + '</li>'); }
     else if ((m = ln.match(/^\d+\.\s+(.*)/))) { if (para.length) flush(); if (list !== 'ol') { flush(); out.push('<ol>'); list = 'ol'; } out.push('<li>' + inline(m[1]) + '</li>'); }
     else if (/^\s{2,}\S/.test(ln) && list) { out[out.length - 1] = out[out.length - 1].replace(/<\/li>$/, '<br><span class="small muted">' + inline(ln.trim()) + '</span></li>'); }
@@ -1248,6 +1293,7 @@ async function dclick(act, b) {
   if (act === 'd-deadreplace') return dreview(lid, b.dataset.kind, b.dataset.key, 'replace', 'The link no longer works', b.dataset.title);
   if (act === 'd-deaddismiss') { await post(dapi('/health/dismiss'), { url: b.dataset.url }); return loadDelivery(false); }
   if (act === 'd-report') { if (PUI.report) { PUI.report = null; render(); return; } const r = await api(dapi('/report')); PUI.report = r.ok ? r.data.html : '<p class="muted">No course report yet: it is written after the first search.</p>'; render(); return; }
+  if (act === 'd-copynlm') { const t = document.getElementById('nlm' + b.dataset.i).innerText; try { await navigator.clipboard.writeText(t); toast('Copied. Paste it into NotebookLM.'); } catch (e) { toast('Select the text and copy it'); } return; }
   if (act === 'd-copyinv') { const t = document.getElementById('invtext').innerText; try { await navigator.clipboard.writeText(t); toast('Invitation copied. Paste it into your email.'); } catch (e) { toast('Select the text and copy it'); } return; }
   if (act === 'd-rate') { const r = await post(dapi('/rate'), { lid: b.dataset.lid, key: b.dataset.key, title: b.dataset.title, rating: +b.dataset.n }); toast(r.ok ? 'Rating saved. Thank you.' : ((r.data && r.data.problem) || 'Could not save')); return loadDelivery(false); }
 }
@@ -1276,7 +1322,7 @@ function render() {
   const y = window.scrollY;
   dPendingRender = false;
   app.innerHTML = PAGE === 'form' ? form() : PAGE === 'run' ? runPage() : PAGE === 'dhome' ? dhome() : PAGE === 'dlist' ? dlist() :
-    PAGE === 'dlec' ? dlec() : PAGE === 'dkit' ? dkit() : PAGE === 'dstudent' ? dstudent() : home();
+    PAGE === 'dlec' ? dlec() : PAGE === 'dkit' ? dkit() : PAGE === 'dnlm' ? dnlm() : PAGE === 'dstudent' ? dstudent() : home();
   window.scrollTo(0, y);
   if (PAGE === 'form' || (PAGE === 'run' && FORM)) lookupBackground();
   if (PAGE === 'run') startCountdown();
@@ -1328,9 +1374,10 @@ async function route() {
     const parts = h.slice(10).split('/').map(decodeURIComponent);
     if (DRID !== parts[0]) { DV = null; PUI.draft = {}; PUI.tab = {}; PUI.show = {}; PUI.report = null; }
     DRID = parts[0]; DLID = parts[1] && parts[1] !== 'student' ? parts[1] : null;
-    PAGE = parts[1] === 'student' ? 'dstudent' : parts[2] === 'kit' ? 'dkit' : DLID ? 'dlec' : 'dlist';
-    PUI.errs = {}; PUI.openReason = null; PUI.ownForm = null; PUI.kit = null;
+    PAGE = parts[1] === 'student' ? 'dstudent' : parts[2] === 'kit' ? 'dkit' : parts[2] === 'notebooklm' ? 'dnlm' : DLID ? 'dlec' : 'dlist';
+    PUI.errs = {}; PUI.openReason = null; PUI.ownForm = null; PUI.kit = null; PUI.nlm = null;
     if (PAGE === 'dkit') { const k = await api(dapi('/kit/' + encodeURIComponent(DLID))); PUI.kit = k.ok ? k.data.md : ''; }
+    if (PAGE === 'dnlm') { const k = await api(dapi('/notebooklm/' + encodeURIComponent(DLID))); PUI.nlm = k.ok ? k.data.md : ''; }
     if (me !== routeId) return;
     if (!DV) app.innerHTML = header() + '<div class="wrap"><p class="muted">Loading the lectures…</p></div>';
     await loadDelivery(true); window.scrollTo(0, 0);

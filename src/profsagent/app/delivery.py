@@ -120,7 +120,8 @@ def _resource(c: dict, topic_id: str | None) -> dict:
     cov = []
     for tgt, v in ((c.get("coverage") or {}).get("per_target") or {}).items():
         if v.get("covered"):
-            cov.append({"label": "the topic" if tgt == topic_id else "outcome " + tgt,
+            # targets: the topic, its outcomes, or (since 2026-11-01) the lecture's components, e.g. W03.L1.C2
+            cov.append({"label": "the topic" if tgt == topic_id else ("part: " + v["text"][:60]) if v.get("text") else "outcome " + tgt,
                         "segs": [[round(s["start"]), round(s["end"])] for s in v.get("segments", [])]})
     rv = c.get("review") or {}
     return {
@@ -154,7 +155,10 @@ def _result(lec: dict, topic_id: str | None) -> dict:
            "items": {k: [_resource(c, topic_id) for c in v] for k, v in (r.get("items") or {}).items()},
            "reserve": {k: [_resource(c, topic_id) for c in v] for k, v in (r.get("reserve") or {}).items()},
            "rejected": [{"title": x.get("title"), "url": x.get("url"), "why": x.get("why", [])} for x in r.get("rejected", [])],
-           "clips": r.get("clips", []), "experts": None}
+           "clips": r.get("clips", []), "experts": None,
+           # C since 2026-11-01: the lecture's components, how each is delivered, and the NotebookLM pack
+           "components": lec.get("components") or r.get("components") or [], "timeline": r.get("timeline") or [],
+           "notebooklm": r.get("notebooklm")}
     if e and e.get("same_as"):
         out["experts"] = {"same_as": e["same_as"]}
     elif e:
@@ -189,6 +193,7 @@ def view(rid: str, runs: Path | None = None) -> dict:
         survey[b["lecture_id"]] = ({k: a.get(k) for k in KEEP} if decided else None)
     results = {p.stem: _result(_rj(p, {}), topic_of.get(p.stem)) for p in sorted((d / "lectures").glob("*.json"))} if (d / "lectures").exists() else {}
     kits = sorted(p.stem for p in (d / "guest_kits").glob("*.md")) if (d / "guest_kits").exists() else []
+    nlm = sorted(p.stem for p in (d / "notebooklm").glob("*.md")) if (d / "notebooklm").exists() else []
     logs: dict[str, list[str]] = {}
     if (d / "delivery.log").exists():
         for line in (d / "delivery.log").read_text(encoding="utf-8", errors="replace").splitlines()[-400:]:
@@ -203,7 +208,7 @@ def view(rid: str, runs: Path | None = None) -> dict:
         "run": {"id": rid, "course": (st.get("cco_compact") or {}).get("course_name") or meta.get("title"), "title": meta.get("title"),
                 "code": (runs / rid / "course_code.txt").read_text().strip() if (runs / rid / "course_code.txt").exists() else None,
                 "example_of": meta.get("example_of")},
-        "lectures": [_lecture(b) for b in briefs], "survey": survey, "results": results, "kits": kits,
+        "lectures": [_lecture(b) for b in briefs], "survey": survey, "results": results, "kits": kits, "notebooklm": nlm,
         "log": {k: v[-8:] for k, v in logs.items()}, "jobs": _rj(d / "app_jobs.json", {"lectures": {}}),
         "own": _rj(d / "app_own_links.json", {}), "actions": _rj(d / "app_actions.json", {}),
         "ratings": _ratings(d), "health": {"checked_at": health.get("checked_at"),

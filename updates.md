@@ -4,6 +4,94 @@ Short status note for teammates and their coding agents, so nobody has to re-rea
 Newest entry on top. Owners: Phase 2 deliverable A (UI, simulations) Amit, B (lecture content) Parth, C (resources,
 experts) Vihan.
 
+## 2026-11-01 (Vihan): deliverable C rebuilt around lecture components; guest-speaker fixes; Gemini 3.8/3.6 only
+
+**Why.** The 28 Oct run matched one 45 s transcript window against the topic title: 18 of 33 clips started in a video's
+first minute (the intro that announces the topic), 20 of 33 were 1.5 min long, a lecture got 0–6.6 min of clips, the
+coverage score saturated (27 of 58 videos ≥ 0.85), and three continuation lectures came out empty. Guests: Google
+Scholar was never searched, OpenAlex affiliations were often wrong, 15 of 49 academics shown had h-index 0–1, co-authors
+of one paper filled several slots, and "pipeline evaluation" pulled in civil engineers who study oil pipelines.
+
+**What C does now (per topic, over all its lectures):**
+1. **Component plan (D5, `delivery/components.py`):** the topic's lecture time is split into components (title, what it
+   `teaches`, key terms, kind, Bloom, LOs, minutes) in teaching order. A program checks the minutes (add up exactly per
+   lecture, 5–30 min, multiples of 5) and repairs small misses; one retry with the problems listed; a plan from the
+   LOs without AI as the last resort. Saved in `runs/<id>/delivery/components.json` and in each
+   `lectures/<id>.json → components`. A later lecture on the same topic gets the topic's later components, so there are no
+   empty continuations any more (`continuation()` is gone; `lectures/<id>.json` has `continues` instead of
+   `continuation_of`).
+2. **Video segments (`delivery/videos.py`, `delivery/segments.py`):** one YouTube search set per topic (the D1 queries,
+   cached), no Shorts (< 3 min); transcripts for the videos closest to the components. Per component the transcript
+   (30 s windows, smoothed over 3) is compared with the component's description, the stretch snaps to the creator's
+   chapter when one contains it, and is 5–25 min. The AI check **D6** reads each stretch's transcript and says
+   teaches_fully / teaches_partly / mentions / off_topic, with exact start and end markers (intros, plugs, outros cut).
+   Per component the best checked segment is chosen (fully > partly, clarity, level, length close to the component's
+   minutes, source; a video already used in the lecture is preferred). A component only partly taught gets a `gap`
+   (what the video leaves out); components without any segment go to NotebookLM; activities and discussions are in class.
+3. **NotebookLM pack (`delivery/notebooklm.py`, no AI):** `runs/<id>/delivery/notebooklm/<lecture>.md` — the sources
+   to add (course context text written from the design, the chosen videos, readings, practice), a Video Overview prompt
+   per component no video teaches fully (gap prompts say what to add), and quiz and flashcard prompts.
+4. **Readings and practice** are matched against the lecture's components; a later lecture of the topic searches for
+   its own first component and never repeats a link given to an earlier one. D2 now reviews readings/practice only.
+
+**Lecture file additions** (`lectures/<id>.json → resources`): `components`, `timeline` (component → delivery
+video / notebooklm / in_class, with segments and `gap`), `clips` (one entry per chosen segment, now with `component`,
+`verdict`, `covered`, `missing`), `notebooklm` ({pack, components}). Video items carry `components` (which parts they
+teach, where) and `scores.teaches`; `items/reserve` keep their old shape.
+
+**For Parth (B uses C's plan; wired in, please review):**
+- `content/sessions.py`: each session part also records `brief_from_min` and `brief_minutes` (where the part sits in its
+  brief's own time).
+- `content/generate.py`: `lecture_input(brief, note, run_id)` adds `outline` when C has a plan. That's the
+  components of the lecture or class, from `delivery.components.for_window`, with `minutes` scaled to class time,
+  `delivered_by` (video / notebooklm / in_class / slides) and the `clip` to show. There's no outline (and no change) when
+  C has not run.
+- `prompts/content/B1_lecture_deck.md` v0.4.0: one rule — follow the outline's order and minutes, give each
+  component a slide, introduce the clip for video parts, use an activity slide for in-class parts.
+- Tests in `tests/test_components.py`; `tests/test_content.py` passes unchanged.
+
+**For Amit (app):** the lecture page has a **Lecture plan** tab (first when a plan exists; the old Clip playlist tab
+only for lectures without one) and a **NotebookLM pack** page (`#/delivery/<id>/<lecture>/notebooklm`, copy buttons
+per prompt); API: `_result` returns `components`, `timeline`, `notebooklm`; `view` lists `notebooklm`;
+`GET /api/delivery/{rid}/notebooklm/{lid}`. Coverage labels for components read "part: …". The empty
+`research_queries` crash is fixed in `experts.iiitd_faculty`, so the stopgap in `app/delivery_step.py` can go.
+
+**Guest speakers (`delivery/experts.py`, `delivery/sources.py`, `config/experts.yaml`):**
+- **Google Scholar through SerpApi** (`SERPAPI_API_KEY`, free plan 250 searches/month; its author-search API is
+  discontinued, so people are found through a paper search and read with `google_scholar_author`): one Scholar search
+  per lecture adds academics, and up to 8 profiles per lecture (outside academics; IIIT-D faculty are known) fix affiliation, h-index, citations, interests and
+  country. Semantic Scholar (keyless, often rate-limited) is the fallback. All cached 90 days.
+- Academics need h-index ≥ 5 (`record.min_h_index`); teaching / practical scores come from evidence only; one person
+  per institution and per paper; IIIT-D faculty the AI check calls a strong fit are listed first; D4 v0.4.0 returns `same_field`
+  (false → removed, e.g. oil pipelines); document-sharing sites (Scribd …) no longer confirm identity; people with no
+  shared working hours with IST get "recorded talk" instead of a live slot.
+
+**LLM (`config/models.yaml`, `llm/client.py`):** Gemini is **only gemini-3.8-flash and gemini-3.6-flash** (user's
+rule: older and lite models are too weak); the first 2 keys of `GEMINI_API_KEYS` (new projects) take turns first, then
+the rest (`limits.gemini_lead_keys`). Google-Search grounding has no free quota on 3.6/3.8, so `roles.search` is empty
+and every caller falls back to Tavily → DuckDuckGo. judge_a/b are now 3.6/3.8 and judge_d an NVIDIA model
+(`tests/test_judges.py` updated). The response cache no longer reuses answers from models that are not in the role's
+list any more. Thanks for the `iter_raw` fix to `_post_deadline`.
+
+**Fixes after the first full run (2 Nov):**
+- Transcripts: at most 40 new requests an hour (`transcripts.max_per_hour`), 4–7 s apart, 10 per topic and 2 per
+  component search. A block marks the lecture partial; a plain re-run (no `--refresh`) redoes only the partial ones.
+- Segments: a stretch whose minutes are already used for another part of the same lecture loses 0.15, so two parts
+  don't get the same minutes.
+- Guests: the Scholar profile match also reads the paper that found the person, and accepts a long title prefix (Scholar
+  shortens titles). "Assistant Professor at X" is split into role and institution. IIIT-D faculty go first only on a
+  strong fit. Short lists are filled up to `top_n.min` from people who passed every check but share an institution or
+  paper (listed after the varied picks). Semantic Scholar stops for the run after a rate limit.
+
+**Results (CS-601, scratch run, not committed):** 27 lectures, 142 components (10–25 min), 57 checked video stretches
+(13 start in the first minute, against 18 of 33 before; median 3 min). Only 5 components are taught fully by a video,
+so most parts go to NotebookLM, which is too much work for a professor. 53 guests, no academic below h-index 5;
+Parameswaran now shows UC Berkeley. YouTube blocked transcripts twice, so 16 lectures are still partial. A design for
+choosing slides / clip / NotebookLM / in class per part, with a closing review quiz and the professor approving the mix,
+is in the "Lecture delivery mix — design proposal" doc (Vihan will share it).
+
+**Tests:** `tests/test_components.py` (new, offline, 17 tests). The continuation test in `tests/test_delivery.py` is removed.
+
 ## 2026-10-29 (Vihan): deliverable C full run, architecture PDF, AI reply deadline
 
 - **Full run done** (28–29 Oct, all 27 lectures, transcripts worked, nothing partial): 58 videos, 31 readings,

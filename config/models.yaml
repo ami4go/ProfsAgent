@@ -3,6 +3,8 @@
 #
 # FREE-TIER FACTS (measured 2026-09-30):
 #   Gemini: 20 requests / day / PROJECT / model (GenerateRequestsPerDayPerProjectPerModel-FreeTier = 20).
+#           ONLY gemini-3.8-flash and gemini-3.6-flash are used (user, 2026-11-01: older/lite models are too weak).
+#           The first `limits.gemini_lead_keys` keys of GEMINI_API_KEYS (separate projects) take turns first, then the rest.
 #           Keys from the SAME Google Cloud project share that quota — use keys from different projects.
 #           3.x flash models return frequent 503 "high demand"; overload is model-wide, so a 503 cools the model on all keys.
 #           Google-Search grounding works on 2.5-flash only (3.x grounding quota = 0).
@@ -27,15 +29,10 @@ providers:             # OpenAI-compatible chat endpoints besides Groq; several 
 roles:
   generate:            # G1–G11, R1, X1, D2, D4: Gemini -> NVIDIA -> Groq gpt-oss -> the rest (user's order, 2026-10-28)
     - {provider: gemini, model: gemini-3.8-flash}
-    - {provider: gemini, model: gemini-3.7-flash}
-    - {provider: gemini, model: gemini-3.5-flash}
-    - {provider: gemini, model: gemini-2.5-flash}
+    - {provider: gemini, model: gemini-3.6-flash}
     - {provider: nvidia, model: nvidia/nemotron-3-ultra-550b-a55b}
     - {provider: nvidia, model: minimaxai/minimax-m3.1-flash}
     - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 5500}
-    - {provider: gemini, model: gemini-3.5-flash-lite}
-    - {provider: gemini, model: gemini-3.1-flash-lite}
-    - {provider: gemini, model: gemini-flash-lite-latest}
     - {provider: groq,   model: qwen/qwen3.8-27b, max_prompt_tokens: 5500}
     - {provider: mistral, model: mistral-large-latest}
     - {provider: openrouter, model: "nvidia/nemotron-3.5-super-vl:free"}
@@ -43,10 +40,8 @@ roles:
     - {provider: ollama, model: "gemma4:latest"}      # LOCAL last resort (CPU, ~10 tok/s): minutes per call, no quota
     - {provider: ollama, model: "qwen3.5:9b"}
   extract:             # X2 page reading, X3/D1 queries: Gemini -> NVIDIA -> Groq gpt-oss -> the rest
-    - {provider: gemini, model: gemini-3.7-flash}
-    - {provider: gemini, model: gemini-3.5-flash}       # second strong model, so PROFSAGENT_STRONG_ONLY runs are not left with one
-    - {provider: gemini, model: gemini-3.5-flash-lite}
-    - {provider: gemini, model: gemini-3.1-flash-lite}
+    - {provider: gemini, model: gemini-3.6-flash}
+    - {provider: gemini, model: gemini-3.8-flash}
     - {provider: nvidia, model: minimaxai/minimax-m3.1-flash}
     - {provider: nvidia, model: nvidia/nemotron-3.5-lightning-30b-a3b}
     - {provider: nvidia, model: nvidia/nemotron-3-ultra-550b-a55b}
@@ -57,34 +52,33 @@ roles:
     - {provider: openrouter, model: "nvidia/nemotron-3.5-super-vl:free"}
     - {provider: ollama, model: "gemma4:latest"}
     - {provider: ollama, model: "qwen3.5:9b"}
-  search:              # Google-Search grounding: free tier only works on 2.5-flash (3.x grounding quota = 0)
-    - {provider: gemini, model: gemini-2.5-flash}
+  search: []          # Google-Search grounding: free tier only works on 2.5-flash (3.6/3.8 grounding quota = 0, checked
+                       # 2026-11-01), and only 3.6/3.8 flash may be used (user, 2026-11-01). Every caller falls back to
+                       # Tavily -> DuckDuckGo (delivery) or skips search (research X1).
   check:               # the LLM check of the llm validation profile (config/llm_check.yaml): a different model
                        # order from `generate`, so the generator's first-choice model is not the first checker.
                        # gemini-2.5-flash removed: "404 model unsupported" on every key (21 Oct 2026)
-    - {provider: gemini, model: gemini-3.7-flash}
-    - {provider: gemini, model: gemini-3.5-flash}
+    - {provider: gemini, model: gemini-3.6-flash}
     - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 6500}
     - {provider: gemini, model: gemini-3.8-flash}
-    - {provider: gemini, model: gemini-3.1-flash-lite}
+    - {provider: nvidia, model: nvidia/nemotron-3-ultra-550b-a55b}
   review:              # B2 AI review of a lecture deck (content/ai_review.py). The deck's own generator model is excluded
                        # per call, so the reviewer is always a different model; this order only says which one comes first
-    - {provider: gemini, model: gemini-3.7-flash}
-    - {provider: gemini, model: gemini-3.5-flash}
+    - {provider: gemini, model: gemini-3.6-flash}
     - {provider: gemini, model: gemini-3.8-flash}
     - {provider: nvidia, model: nvidia/nemotron-3-ultra-550b-a55b}
     - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 6500}
     - {provider: nvidia, model: minimaxai/minimax-m3.1-flash}
   # Stage 5 judge panel (config/judging.yaml): ONE model per judge, so a judge never silently becomes another model;
   # a judge with no key or no quota is reported missing. judge_c needs a Groq key (GROQ_API_KEYS); none is set now.
-  judge_a:             # was gemini-2.5-flash ("404 model unsupported" on every key, 21 Oct 2026)
-    - {provider: gemini, model: gemini-3.5-flash}
-  judge_b:
-    - {provider: gemini, model: gemini-3.7-flash}
+  judge_a:             # was gemini-2.5-flash, then 3.5-flash; only 3.6/3.8 flash allowed since 2026-11-01
+    - {provider: gemini, model: gemini-3.6-flash}
+  judge_b:             # was gemini-3.7-flash
+    - {provider: gemini, model: gemini-3.8-flash}
   judge_c:             # a J1 prompt is ~6K tokens (rubrics + design) + ~1.5K output: inside Groq's 8K tokens/minute
     - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 6500}
-  judge_d:
-    - {provider: gemini, model: gemini-3.5-flash-lite}
+  judge_d:             # was gemini-3.5-flash-lite (below 3.6, not allowed since 2026-11-01): a fourth model family instead
+    - {provider: nvidia, model: nvidia/nemotron-3-ultra-550b-a55b}
 embedding:
   model: gemini-embedding-001
   dim: 768
@@ -92,6 +86,7 @@ cache:
   enabled: true        # DEV ONLY: identical (prompt, inputs, role) → cached output. Disable for repeated-sampling experiments.
 limits:
   min_interval_s: 4.0        # per (key, model) client-side spacing
+  gemini_lead_keys: 2        # the first N Gemini keys (each its own project) are tried first, taking turns call by call
   timeout_s: 180
   cooldown_503_s: 120        # applied to the MODEL on all keys
   cooldown_timeout_s: 60

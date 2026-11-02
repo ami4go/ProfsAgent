@@ -1,7 +1,7 @@
 """External comparable-course research across whitelisted top institutions.
 
 Pipeline (docs/01 §7, S2):
-  X1 plan  →  (a) Google-Search grounding per query (gemini-2.5-flash, free tier)
+  X1 plan  →  (a) Google-Search grounding per query (none since 2026-11-01: 3.6/3.8-flash have no free grounding quota)
               (b) deterministic catalogue adapters (Stanford ExploreCourses XML, NUSMods JSON)
            →  candidate URLs filtered by whitelist + blocklist, de-duplicated, ranked by embedding similarity
            →  fetch → X2 page classification/extraction → evidence-quote check → ExternalCourse records

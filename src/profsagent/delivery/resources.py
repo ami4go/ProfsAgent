@@ -1,7 +1,9 @@
 """Learning-resource aid (architecture aids A3 + A4): videos, recorded lectures, readings, books, papers and practice.
 
 Per lecture that asked for help:  discover → filter → cover (transcripts / page text) → AI review (D2) → score
-→ hard checks → diversify → cap (+ reserve for replacements) → explain → clip playlists.
+→ hard checks → diversify → cap (+ reserve for replacements) → explain.
+Since 2026-11-01 videos are chosen per component of the lecture (videos.py, segments.py); this module finds the
+readings, practice and recorded lectures, matched against the lecture's components when it has a component plan.
 Retrieval only: nothing here is generated except search queries and review text; every link comes from a real record.
 """
 from __future__ import annotations
@@ -112,7 +114,8 @@ def blocked(url: str, title: str = "") -> str | None:
 
 
 # ------------------------------------------------------------------ discovery per lecture
-def discover(llm, b: dict, want: dict, q: dict, log) -> list[dict]:
+def discover(llm, b: dict, want: dict, q: dict, log, videos: list[dict] | None = None) -> list[dict]:
+    """`videos`: the topic's videos already found (their descriptions link docs and repos)."""
     yt = YouTube()
     cands: list[dict] = []
     # videos and recorded lectures
@@ -159,7 +162,8 @@ def discover(llm, b: dict, want: dict, q: dict, log) -> list[dict]:
                                   "source": "GitHub", "tier": 3, "stars": r["stars"], "updated": r["updated"], "licence": r["licence"]})
     if want.get("want_readings") or want.get("want_practice"):
         # links the video creators give in their descriptions: docs, posts, repos (no search quota needed)
-        best = sorted((c for c in cands if c["kind"] in ("video", "recorded_lecture")), key=lambda c: -(c.get("views") or 0))[:8]
+        best = sorted((c for c in cands + list(videos or []) if c["kind"] in ("video", "recorded_lecture")),
+                      key=lambda c: -(c.get("views") or 0))[:8]
         for c in best:
             for u in links_in(c.get("description", ""))[:4]:
                 kind = "practice" if ("github.com" in u or "colab.research" in u) and want.get("want_practice") else "reading"
@@ -423,8 +427,24 @@ def clip_playlist(items: list[dict], b: dict) -> list[dict]:
     return out
 
 
-def recommend_lecture(llm, st: dict, b: dict, want: dict, q: dict, run_id: str, log) -> dict:
-    cands = discover(llm, b, want, q, log)
+def with_components(b: dict, comps: list[dict] | None) -> dict:
+    """The brief with its components as coverage targets (the topic stays the main target)."""
+    if not comps:
+        return b
+    from profsagent.delivery.segments import component_text
+    topic = [t for t in b["targets"] if t["kind"] == "topic"]
+    return {**b, "targets": topic + [{"id": c["id"], "kind": "component", "text": component_text(c)} for c in comps]}
+
+
+def recommend_lecture(llm, st: dict, b: dict, want: dict, q: dict, run_id: str, log, components: list[dict] | None = None,
+                      videos: list[dict] | None = None, exclude: set[str] | frozenset = frozenset()) -> dict:
+    """Readings, practice and recorded lectures for one lecture. With a component plan, videos come from videos.py
+    (pass them as `videos` for their description links); `exclude`: links already shown for an earlier lecture."""
+    b = with_components(b, components)
+    if components is not None:
+        want = {**want, "want_videos": False, "want_clips": False}
+    cands = discover(llm, b, want, q, log, videos=videos)
+    cands = [c for c in cands if c.get("url", "").split("#")[0].rstrip("/") not in exclude]
     cands = enrich(cands, b, log)
     review(llm, b, want, cands, st, run_id, log)
     for c in cands:
@@ -469,7 +489,7 @@ def recommend_lecture(llm, st: dict, b: dict, want: dict, q: dict, run_id: str, 
         out["items"][kind] = [slim(c) for c in ranked[: caps[capkey]]]
         out["reserve"][kind] = [slim(c) for c in ranked[caps[capkey]:]]
     vids = [c for c in ok if c["kind"] in ("video", "recorded_lecture")]
-    if want.get("want_clips"):
+    if want.get("want_clips") and components is None:
         out["clips"] = clip_playlist(vids, b)
     out["counts"] = {"candidates": len(cands), "passed_checks": len(ok), "rejected": len(rejected)}
     missing = [c["id"] for c in cands if c.get("_tx_missing") and not c.get("transcript")]
@@ -490,6 +510,8 @@ def slim(c: dict) -> dict:
         out["review"] = {k: c["review"][k] for k in ("review", "issues", "use_as", "explains", "clarity", "correctness", "depth", "examples", "level_fit")}
     cov = c.get("coverage") or {}
     out["coverage"] = {"score": cov.get("score"), "evidence": cov.get("evidence"),
-                       "per_target": {k: {"covered": v["covered"], "sim": v["sim"], "segments": v["segments"]} for k, v in cov.get("per_target", {}).items()}}
+                       "per_target": {k: {"covered": v["covered"], "sim": v["sim"], "segments": v["segments"],
+                                          **({"text": v["text"][:120]} if ".C" in k and v.get("text") else {})}
+                                      for k, v in cov.get("per_target", {}).items()}}
     out["title"] = norm(out.get("title", ""))
     return out

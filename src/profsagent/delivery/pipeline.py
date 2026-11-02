@@ -37,8 +37,13 @@ def make_briefs(run_id: str) -> list[dict]:
 
 
 def recommend(run_id: str, lectures: list[str] | None = None, refresh: bool = False, limit: int | None = None) -> dict:
+    """Per topic: plan its components over all its lectures (D5), find the video segments that teach them (D6), then
+    per lecture the readings and practice, the NotebookLM pack for what no video teaches, and guest speakers."""
+    from profsagent.delivery.components import plan_topic, topic_groups
     from profsagent.delivery.experts import guest_kit, recommend_experts
+    from profsagent.delivery.notebooklm import pack
     from profsagent.delivery.resources import plan_queries, recommend_lecture
+    from profsagent.delivery.videos import deliver_topic
     from profsagent.llm.client import LLMClient
 
     log = Log(run_id)
@@ -54,9 +59,9 @@ def recommend(run_id: str, lectures: list[str] | None = None, refresh: bool = Fa
         reqs = {k: v for k, v in reqs.items() if k in lectures}
     if limit:
         reqs = dict(list(reqs.items())[:limit])
-    def done(k):   # a lecture saved as partial (transcripts were blocked) is redone by a plain re-run
-        f = d / "lectures" / f"{k}.json"
-        return f.exists() and not (read_json(f) or {}).get("partial")
+    def done(k):   # a lecture saved as partial (transcripts were blocked) or before component plans is redone
+        lec = read_json(d / "lectures" / f"{k}.json") or {}
+        return bool(lec) and not lec.get("partial") and "components" in lec
     todo = {k: v for k, v in reqs.items() if refresh or not done(k)}
     log(f"delivery for {run_id}: {len(reqs)} lectures asked for help, {len(todo)} to do · YouTube units used today: {YouTube().quota.used()}")
     if not todo:
@@ -68,49 +73,83 @@ def recommend(run_id: str, lectures: list[str] | None = None, refresh: bool = Fa
     if missing:
         queries.update(plan_queries(llm, st, briefs, missing, run_id, log))
         write_json(qpath, queries)
-    # a topic split over several lectures: later parts get the next-best, different items (not repeats)
-    by_topic = {}
-    for lid in sorted(reqs):
-        f = d / "lectures" / f"{lid}.json"
-        if f.exists() and lid not in todo:
-            prev = read_json(f)
-            if not prev.get("continuation_of"):
-                by_topic.setdefault(briefs[lid]["topic_id"], (lid, prev, reqs[lid]))
+    ppath = d / "components.json"
+    plans = read_json(ppath, {})
+    groups = topic_groups(briefs)
     warned = False
-    for lid, want in sorted(todo.items()):
-        b = briefs[lid]
-        log(f"{lid} · {b['topic']} · wants: {', '.join(k[5:] for k, v in want.items() if k.startswith('want_') and v)}")
-        first = by_topic.get(b["topic_id"])
-        if first and first[0] < lid and all(first[2].get(k) for k, v in want.items() if k.startswith("want_") and v):
-            res = continuation(first[1], first[0], b, want)
-            if first[1].get("partial"):
-                res["partial"] = {"reason": f"continues {first[0]}, which is partial"}
+    for tid in dict.fromkeys(briefs[lid]["topic_id"] for lid in sorted(todo)):
+        group = groups[tid]
+        lids = [b["lecture_id"] for b in group if b["lecture_id"] in todo]
+        log(f"topic {tid} · {group[0]['topic']} · lectures {', '.join(b['lecture_id'] for b in group)} (doing {', '.join(lids)})")
+        plan = plans.get(tid)
+        if refresh or not plan or [x["lecture_id"] for x in plan["lectures"]] != [b["lecture_id"] for b in group]:
+            plan = plan_topic(llm, st, group, run_id, log)
+            plans[tid] = plan
+            write_json(ppath, plans)
+        vlids = [lid for lid in lids if todo[lid].get("want_videos") or todo[lid].get("want_clips")]
+        vres = deliver_topic(llm, st, plan, briefs, vlids, queries, run_id, log) if vlids else {}
+        shown: set[str] = set()                   # readings / practice already given to an earlier lecture of the topic
+        guests = None                             # the lecture whose guest list this topic uses
+        for b in group:
+            lid = b["lecture_id"]
+            if lid not in lids:
+                prev = read_json(d / "lectures" / f"{lid}.json") or {}
+                shown |= _links(prev)
+                if (prev.get("experts") or {}).get("experts") and guests is None:
+                    guests = lid
+                continue
+            want = todo[lid]
+            log(f"{lid} · {b['topic']} · wants: {', '.join(k[5:] for k, v in want.items() if k.startswith('want_') and v)}")
+            comps = [c for c in plan["components"] if c["lecture_id"] == lid]
+            earlier = [c for c in plan["components"] if c["lecture_id"] < lid]
+            v = vres.get(lid) or {}
+            res = {"lecture_id": lid, "topic": b["topic"], "generated_at": now(), "components": comps}
+            if earlier:
+                res["continues"] = earlier[-1]["lecture_id"]
+            if any(val for k, val in want.items() if k.startswith("want_") and k != "want_guest"):
+                q = dict(queries[lid])
+                if earlier and comps:             # a later lecture on the topic searches for its own parts
+                    q["reading_queries"] = [f"{comps[0]['title']} {b['topic']}"]
+                    q["practice_queries"] = [f"{comps[0]['title']} hands-on tutorial"]
+                r = recommend_lecture(llm, st, b, want, q, run_id, log, components=comps, videos=v.get("videos", []), exclude=shown)
+                if v:
+                    if v["videos"]:
+                        r["items"] = {"video": v["videos"], **{k: x for k, x in r["items"].items() if k != "video"}}
+                    r["reserve"]["video"] = v["reserve"]
+                    r["clips"], r["timeline"] = v["clips"], v["timeline"]
+                    r["rejected"] = (r.get("rejected") or []) + v["rejected"]
+                    r["counts"]["videos_used"] = len(v["videos"])
+                    if v.get("partial"):
+                        r["partial"] = v["partial"]
+                r["components"] = comps
+                srcs = {k: r["items"].get(k, []) for k in ("video", "reading", "practice")}
+                md, summary = pack(st, b, comps, earlier, v.get("timeline") or [], srcs)
+                (d / "notebooklm").mkdir(exist_ok=True)
+                (d / "notebooklm" / f"{lid}.md").write_text(md, encoding="utf-8")
+                r["notebooklm"] = summary
+                res["resources"] = r
+                shown |= _links(res)
+            if want.get("want_guest"):
+                if guests is None:
+                    talk_titles = [c["title"] for blk in ("items", "reserve") for kind in ((res.get("resources") or {}).get(blk) or {}).values() for c in kind]
+                    vids = [c for k in ("video", "recorded_lecture") for blk in ("items", "reserve")
+                            for c in ((res.get("resources") or {}).get(blk) or {}).get(k, [])]
+                    res["experts"] = recommend_experts(llm, st, b, queries[lid], talk_titles, run_id, log, videos=vids)
+                    kit = guest_kit(st, b, res["experts"]["experts"])
+                    (d / "guest_kits").mkdir(exist_ok=True)
+                    (d / "guest_kits" / f"{lid}.md").write_text(kit, encoding="utf-8")
+                    guests = lid
+                else:                             # same topic: one guest list, kept with its first lecture
+                    res["experts"] = {"same_as": guests, "experts": [], "reserve": [], "rejected": [], "counts": {}}
+            if (res.get("resources") or {}).get("partial"):
+                res["partial"] = res["resources"]["partial"]
             write_json(d / "lectures" / f"{lid}.json", res)
-            log(f"  {lid} continues {first[0]} (same topic): next-best items, no repeats")
-            continue
-        res = {"lecture_id": lid, "topic": b["topic"], "generated_at": now()}
-        talk_titles = []
-        if any(v for k, v in want.items() if k.startswith("want_") and k != "want_guest"):
-            res["resources"] = recommend_lecture(llm, st, b, want, queries[lid], run_id, log)
-            talk_titles = [c["title"] for kind in res["resources"]["items"].values() for c in kind] + \
-                          [c["title"] for kind in res["resources"]["reserve"].values() for c in kind]
-        if want.get("want_guest"):
-            vids = [c for k in ("video", "recorded_lecture") for blk in ("items", "reserve")
-                    for c in ((res.get("resources") or {}).get(blk) or {}).get(k, [])]
-            res["experts"] = recommend_experts(llm, st, b, queries[lid], talk_titles, run_id, log, videos=vids)
-            kit = guest_kit(st, b, res["experts"]["experts"])
-            (d / "guest_kits").mkdir(exist_ok=True)
-            (d / "guest_kits" / f"{lid}.md").write_text(kit, encoding="utf-8")
-        if (res.get("resources") or {}).get("partial"):
-            res["partial"] = res["resources"]["partial"]
-        write_json(d / "lectures" / f"{lid}.json", res)
-        by_topic.setdefault(b["topic_id"], (lid, res, want))
-        if transcripts_blocked() and not warned:
-            warned = True
-            log(f"  ! YouTube is blocking transcript requests from this IP (since {transcripts_blocked()}). No more are sent "
-                "this run; videos are judged from title and description, and those lectures are saved as partial. "
-                "Run the same recommend command later (no --refresh needed) to redo only the partial lectures.")
-        log(f"  saved {lid} · YouTube units used today: {YouTube().quota.used()}")
+            if transcripts_blocked() and not warned:
+                warned = True
+                log(f"  ! YouTube is blocking transcript requests from this IP (since {transcripts_blocked()}). No more are sent "
+                    "this run; components of the affected lectures go to the NotebookLM pack, and those lectures are saved "
+                    "as partial. Run the same recommend command later (no --refresh needed) to redo only the partial lectures.")
+            log(f"  saved {lid} · YouTube units used today: {YouTube().quota.used()}")
     part = [k for k in sorted(todo) if (read_json(d / "lectures" / f"{k}.json") or {}).get("partial")]
     if part:
         log(f"partial lectures ({len(part)}), redone by the next run: {', '.join(part)}")
@@ -118,45 +157,10 @@ def recommend(run_id: str, lectures: list[str] | None = None, refresh: bool = Fa
     return render(run_id)
 
 
-def continuation(prev: dict, prev_lid: str, b: dict, want: dict) -> dict:
-    """Recommendations for a later lecture on the same topic: the next-best items of the first lecture's ranking
-    (its reserve), so students get new material; the guest list stays with the first lecture."""
-    import copy
-
-    from profsagent.delivery.common import rcfg
-    from profsagent.delivery.resources import KIND_CAP, clip_playlist, site
-    out = {"lecture_id": b["lecture_id"], "topic": b["topic"], "generated_at": now(), "continuation_of": prev_lid}
-    pr = prev.get("resources")
-    if pr:
-        r = copy.deepcopy(pr)
-        items, reserve = {}, {}
-        caps = rcfg()["caps"]
-        bar = caps.get("min_continuation_score", caps.get("min_show_score", 0))
-        for kind in pr["items"]:
-            cap = caps[KIND_CAP[kind]]
-            # a second lecture on the topic needs items about the topic itself, above a higher bar, not from a site
-            # already shown for it (a mirror of the spec), and not ones the AI review says only mention it
-            seen = {site(c) for c in pr["items"][kind]} if kind in ("reading", "practice") else set()
-            fresh = []
-            for c in copy.deepcopy(pr["reserve"].get(kind, [])):
-                topic_ok = ((c.get("coverage") or {}).get("per_target", {}).get(b["topic_id"]) or {}).get("covered")
-                teaches = (c.get("review") or {}).get("explains") == "explains"     # unreviewed items are not carried over
-                if c.get("total", 0) < bar or not topic_ok or not teaches or (seen and site(c) in seen):
-                    continue
-                fresh.append(c)
-                if kind in ("reading", "practice"):
-                    seen.add(site(c))
-            for i, c in enumerate(fresh[:cap], 1):
-                c["rank"], c["status"] = i, "proposed"
-            items[kind], reserve[kind] = fresh[:cap], fresh[cap:]
-        r.update(items=items, reserve=reserve, lecture_id=b["lecture_id"],
-                 note=f"Same topic as {prev_lid}: its recommendations still apply. These are the next-best, different items.")
-        if want.get("want_clips"):
-            r["clips"] = clip_playlist([c for k in ("video", "recorded_lecture") for c in items.get(k, [])], b)
-        out["resources"] = r
-    if want.get("want_guest") and prev.get("experts"):
-        out["experts"] = {"same_as": prev_lid, "experts": [], "reserve": [], "rejected": [], "counts": {}}
-    return out
+def _links(lec: dict) -> set[str]:
+    r = lec.get("resources") or {}
+    return {c["url"].split("#")[0].rstrip("/") for blk in ("items", "reserve") for k in ("reading", "practice")
+            for c in (r.get(blk) or {}).get(k, []) if c.get("url")}
 
 
 # ------------------------------------------------------------------ report + review file
@@ -186,6 +190,27 @@ def render(run_id: str) -> dict:
         res = r.get("resources") or {}
         if res.get("note"):
             L.append(f"> {res['note']}\n")
+        if r.get("components"):
+            tl = {x["component"]: x for x in res.get("timeline") or []}
+            L.append("**Lecture plan** (what each part teaches, for how long, and how it is delivered)\n")
+            L.append("| # | Part | Min | Delivered by |")
+            L.append("|---|---|---|---|")
+            for c in r["components"]:
+                row = tl.get(c["id"]) or {}
+                how = row.get("delivery") or ("in class" if c.get("in_class") else "—")
+                if how == "video":
+                    how = " + ".join(f"[{s['video'][:45]}]({s['url']}) {s['start']}–{s['end']} "
+                                     f"({'fully' if s['verdict'] == 'teaches_fully' else 'partly'})" for s in row["segments"])
+                    if row.get("gap"):
+                        how += " + NotebookLM" + (f" for: {'; '.join(row['gap']['missing'][:3])}" if row["gap"].get("missing") else "")
+                elif how == "notebooklm":
+                    how = f"NotebookLM video (`notebooklm/{lid}.md`)"
+                elif how == "in_class":
+                    how = f"in class ({c.get('kind', '').replace('_', ' ')})"
+                L.append(f"| {c['id'].split('.')[-1]} | **{c['title']}** — {c['teaches'][:160]} | {c['minutes']} | {how} |")
+            L.append("")
+            if res.get("notebooklm"):
+                L.append(f"NotebookLM pack (sources, prompts for the missing videos, quiz, flashcards): `{res['notebooklm']['pack']}`\n")
         for kind, items in (res.get("items") or {}).items():
             L.append(f"**{KIND_TITLE.get(kind, kind)}**\n")
             for c in items:
@@ -199,7 +224,7 @@ def render(run_id: str) -> dict:
                 if warns:
                     L.append(f"   ⚠ {'; '.join(warns)}")
             L.append("")
-        if res.get("clips"):
+        if res.get("clips") and not r.get("components"):    # with a plan, the clips are in the lecture plan above
             L.append("**Clip playlist** (only the minutes that teach each part)\n")
             for k in res["clips"]:
                 L.append(f"- {k['target'][:90]} → [{k['video'][:60]}]({k['url']}) {k['start']}–{k['end']} ({k['minutes']} min)")

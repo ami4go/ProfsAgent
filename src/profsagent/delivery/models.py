@@ -45,6 +45,42 @@ class ResourceReviews(M):
     reviews: list[ResourceReview]
 
 
+# ------------------------------------------------------------------ D5 component plan for a topic
+ComponentKind = Literal["concept", "mechanism", "demo", "worked_example", "comparison", "case_study", "activity", "discussion"]
+
+
+class Component(M):
+    lecture_id: str
+    title: str
+    teaches: str                                   # what students must take away, concretely (2–3 sentences)
+    key_terms: list[str] = Field(default_factory=list)
+    kind: ComponentKind = "concept"
+    bloom: int = Field(default=2, ge=1, le=6)
+    lo_ids: list[str] = Field(default_factory=list)
+    minutes: int = Field(ge=1, le=180)
+
+
+class ComponentPlan(M):
+    components: list[Component]
+
+
+# ------------------------------------------------------------------ D6 does this video stretch teach the component?
+class SegmentCheck(M):
+    id: str                                        # the stretch id given in the prompt (s1, s2, ...)
+    verdict: Literal["teaches_fully", "teaches_partly", "mentions", "off_topic"]
+    start: str = ""                                # m:ss (or h:mm:ss) of the first marker that teaches it
+    end: str = ""                                  # m:ss of the marker where the teaching of it ends
+    covered: list[str] = Field(default_factory=list)   # points of the component this stretch teaches
+    missing: list[str] = Field(default_factory=list)   # points it leaves out
+    clarity: int = Field(default=3, ge=1, le=5)
+    level_fit: int = Field(default=3, ge=1, le=5)
+    note: str = ""                                 # ≤ 25 words for the professor
+
+
+class SegmentChecks(M):
+    checks: list[SegmentCheck]
+
+
 # ------------------------------------------------------------------ D3 practitioners from web search
 class Practitioner(M):
     name: str
@@ -64,6 +100,7 @@ class Practitioners(M):
 class ExpertNote(M):
     id: str
     fit: Literal["strong", "moderate", "weak"]
+    same_field: bool = True          # False when the evidence is from another field that only shares words with the topic
     why: str
     evidence_ids: list[str] = Field(default_factory=list)
     suggested_format: Literal["live_remote_60", "live_in_person", "recorded_talk", "panel", "qa_after_recorded"] = "live_remote_60"

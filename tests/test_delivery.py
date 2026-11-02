@@ -155,26 +155,6 @@ def test_guest_kit_has_brief_and_draft_and_no_contact_data():
     assert "Brief for the speaker" in kit and "Invitation draft" in kit and "Dear A Person" in kit and "@" not in kit
 
 
-def test_continuation_gives_next_best_items_not_repeats():
-    from profsagent.delivery.pipeline import continuation
-    cov = {"per_target": {"T1": {"covered": True, "sim": 0.6, "segments": []}}}
-    it = lambda n, t=0.8, c=cov: {"id": f"v{n}", "url": f"https://youtu.be/{n}", "title": f"v{n}", "rank": n, "total": t, "coverage": c,  # noqa: E731
-                                  "review": {"explains": "explains"}}
-    rd = lambda n, src, t=0.8: {**it(n, t), "kind": "reading", "source": src}  # noqa: E731
-    prev = {"resources": {"items": {"video": [it(1), it(2), it(3)], "reading": [rd(10, "modelcontextprotocol.io")]},
-                          "reserve": {"video": [it(4), it(5, 0.3), it(6, 0.8, {"per_target": {}}), it(7), it(8),
-                                                {**it(9), "review": {"explains": "mentions"}}, {**it(13), "review": None}],
-                                      "reading": [rd(11, "modelcontextprotocol.info"), rd(12, "example.org")]}},
-            "experts": {"experts": [{"name": "A"}]}}
-    b = {"lecture_id": "W02.L1", "topic": "T", "topic_id": "T1", "targets": []}
-    out = continuation(prev, "W01.L2", b, {"want_videos": True, "want_readings": True, "want_guest": True})
-    shown = [c["title"] for c in out["resources"]["items"]["video"]]
-    # v5 is below the bar, v6 does not cover the topic, v9 only mentions it, v13 was never reviewed
-    assert shown == ["v4", "v7", "v8"] and [c["rank"] for c in out["resources"]["items"]["video"]] == [1, 2, 3]
-    assert [c["title"] for c in out["resources"]["items"]["reading"]] == ["v12"]          # the .info mirror is skipped
-    assert out["continuation_of"] == "W01.L2" and out["experts"]["same_as"] == "W01.L2"
-
-
 def test_mentions_only_items_follow_teaching_items():
     from profsagent.delivery.resources import diversify, mentions_only
     a = {"title": "alpha intro", "total": 0.85, "kind": "video", "source": "A", "review": {"explains": "mentions"}}

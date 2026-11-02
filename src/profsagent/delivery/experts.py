@@ -1,12 +1,16 @@
 """Expert-speaker aid (new aid A9): who could deliver this lecture — researchers or industry practitioners, worldwide.
 
-Candidates:  academics  — OpenAlex works on the lecture's research phrases, aggregated by author (+ DBLP, ORCID,
-                          and a Google Scholar search link for the professor; Scholar itself has no API)
+Candidates:  academics  — OpenAlex works on the lecture's research phrases, aggregated by author, plus the authors of
+                          the Google Scholar results for the same phrase (through SerpApi) (+ DBLP, ORCID)
              IIIT-D     — faculty teaching the related IIIT-D courses (course directory)
-             industry   — grounded web search (names extracted by D3, then confirmed on their own pages) and
+             industry   — web search (names extracted by D3, then confirmed on their own pages) and
                           maintainers of widely used GitHub repositories on the topic
+Verification (2026-11-01): the best academics are looked up on Google Scholar (affiliation, citations, h-index,
+interests); Semantic Scholar is the fallback. OpenAlex's "last known institution" was wrong for several people in the
+28 Oct run (e.g. a researcher at SMU listed at Heidelberg with h-index 0), so Scholar's profile wins when both exist.
 Ranking (plan §4.3): topical fit · teaching evidence · practical relevance · standing · recency · feasibility,
-then an AI check of fit against the evidence (D4), hard checks, diversity rules, and 5–7 per lecture.
+then an AI check of fit and field against the evidence (D4), hard checks (incl. a minimum h-index for academics),
+diversity rules (IIIT-D faculty first, one per institution, one per paper), and 5–7 per lecture.
 The system never contacts anyone; it drafts an invitation for the professor to send.
 """
 from __future__ import annotations
@@ -22,7 +26,9 @@ from profsagent.delivery import checks
 from profsagent.delivery.common import embed, xcfg
 from profsagent.delivery.models import ExpertNotes, Practitioners
 from profsagent.delivery.resources import llm_call
-from profsagent.delivery.sources import OpenAlex, dblp_author, github_repos, github_user, grounded_text, page, scholar_search_url, web_search
+from profsagent.delivery.sources import (OpenAlex, dblp_author, github_repos, github_user, grounded_text, page, s2_author,
+                                        scholar_find, scholar_papers, scholar_profile, scholar_search_url, serpapi_left,
+                                        short_name, web_search)
 
 YEAR = dt.date.today().year
 
@@ -119,6 +125,7 @@ def academics(b: dict, q: dict, log) -> list[dict]:
         d["works"] = [w for w in d["works"] if rel.get(w["title"], 0) >= 0.35]
         d["_rel"] = sum(rel.get(w["title"], 0) * (1 + 0.15 * math.log1p(w["cited_by"])) for w in d["works"])
     ranked = sorted((d for d in agg.values() if d["works"]), key=lambda d: -d["_rel"])[: cfg["authors_to_profile"]]
+    scholar = scholar_authors(b, (q.get("research_queries") or [b["topic"]])[0])
     out = []
     for d in ranked:
         prof = oa.author(d["id"]) or {}
@@ -137,9 +144,37 @@ def academics(b: dict, q: dict, log) -> list[dict]:
                     "metrics": {"cited_by": prof.get("cited_by"), "h_index": prof.get("h_index"), "works_count": prof.get("works_count"),
                                 "matching_works": len(d["works"])},
                     "topics": prof.get("topics", []), "verified_identity": "OpenAlex author record" + (" + ORCID" if links["orcid"] else ""),
-                    "latest_year": max((w["year"] or 0) for w in d["works"]) or None})
-    log(f"  experts {b['lecture_id']}: {len(out)} academics from OpenAlex")
+                    "latest_year": max((w["year"] or 0) for w in d["works"]) or None,
+                    "_scholar_id": (scholar.pop(short_name(d["name"]), None) or {}).get("author_id")})
+    for sn, s in list(scholar.items())[:6]:          # authors only Google Scholar found: named in full once their profile is read
+        out.append({"name": s["name"], "kind": "academic", "inst_type": None, "affiliation": None, "country": None,
+                    "evidence": [{"kind": "paper", "title": w["title"], "year": w["year"], "url": w["link"], "cited_by": w["cited_by"]}
+                                 for w in s["works"][:5]],
+                    "links": {}, "metrics": {}, "topics": [], "verified_identity": None, "_scholar_id": s["author_id"],
+                    "_scholar_only": True, "latest_year": max((w["year"] or 0) for w in s["works"]) or None})
+    log(f"  experts {b['lecture_id']}: {len(out)} academics (OpenAlex{' + Google Scholar' if scholar or any(e.get('_scholar_id') for e in out) else ''})")
     return out
+
+
+def scholar_authors(b: dict, phrase: str) -> dict[str, dict]:
+    """Authors (with Scholar profile ids) of the Google Scholar results for the lecture's research phrase whose paper
+    titles are about the lecture: {short name: {name, author_id, works}}. One SerpApi search per lecture."""
+    cfg = xcfg()["scholar"]
+    if not (cfg.get("enabled") and cfg.get("search_per_lecture")):
+        return {}
+    papers = [p for p in scholar_papers(phrase, 20) if p["title"]]
+    if not papers:
+        return {}
+    sims = embed([p["title"] for p in papers]) @ embed([t["text"] for t in b["targets"]]).T
+    out: dict[str, dict] = {}
+    for p, s in zip(papers, sims.max(axis=1)):
+        if float(s) < 0.35:
+            continue
+        for a in p["authors"]:
+            if a.get("author_id"):
+                d = out.setdefault(short_name(a["name"]), {"name": a["name"], "author_id": a["author_id"], "works": []})
+                d["works"].append(p)
+    return dict(sorted(out.items(), key=lambda kv: -len(kv[1]["works"])))
 
 
 def iiitd_faculty(b: dict, st: dict, q: dict | None = None) -> list[dict]:
@@ -161,7 +196,7 @@ def iiitd_faculty(b: dict, st: dict, q: dict | None = None) -> list[dict]:
                 people[name]["courses"].append({"code": code, "name": r["name"], "url": r.get("catalogue_url")})
     out = []
     oa = OpenAlex()
-    phrase = (q or {}).get("research_queries", [b["topic"]])[0] if q else b["topic"]
+    phrase = ((q or {}).get("research_queries") or [b["topic"]])[0]
     for name, d in people.items():
         ev = [{"kind": "course", "title": f"Teaches {c['code']} {c['name']} at IIIT-D", "year": YEAR, "url": c["url"]} for c in d["courses"]]
         links, metrics, latest = {"scholar_search": scholar_search_url(name, "IIIT Delhi")}, {}, YEAR
@@ -235,7 +270,8 @@ def practitioners(llm, b: dict, q: dict, run_id: str, log, videos: list[dict] | 
                     real = pg.get("final_url") or u
                     if "grounding-api-redirect" in real:
                         continue
-                    named = surname in (pg.get("text") or "").lower()
+                    weak = any(x in real for x in xcfg().get("weak_identity_domains", []))   # e.g. a Scribd upload
+                    named = surname in (pg.get("text") or "").lower() and not weak
                     pages.append({"url": real, "title": (pg.get("title") or "").strip()[:120], "named": named})
                     if named and not verified:
                         verified = f"named on {real}"
@@ -292,6 +328,100 @@ def practitioners(llm, b: dict, q: dict, run_id: str, log, videos: list[dict] | 
     return out
 
 
+# ------------------------------------------------------------------ verification (Google Scholar, Semantic Scholar)
+TLD_COUNTRY = {"in": "IN", "sg": "SG", "uk": "GB", "de": "DE", "fr": "FR", "ch": "CH", "nl": "NL", "se": "SE", "no": "NO",
+               "dk": "DK", "fi": "FI", "it": "IT", "es": "ES", "at": "AT", "ie": "IE", "au": "AU", "nz": "NZ", "ca": "CA",
+               "cn": "CN", "hk": "HK", "jp": "JP", "kr": "KR", "il": "IL", "br": "BR", "edu": "US", "ae": "AE"}
+
+
+def _tkey(s: str | None) -> str:
+    return re.sub(r"\W", "", (s or "").lower())[:60]
+
+
+def _same_titles(a: list[str], b: list[str]) -> bool:
+    """Same paper in both lists; Scholar shortens long titles, so a long enough prefix counts."""
+    ka, kb = {_tkey(x) for x in a if x}, {_tkey(x) for x in b if x}
+    return any(x == y or (min(len(x), len(y)) >= 25 and (x.startswith(y) or y.startswith(x))) for x in ka for y in kb)
+
+
+def _split_affiliation(s: str | None) -> tuple[str | None, str | None]:
+    """'Associate Professor of Computer Science, Singapore Management University' -> (role, institution)."""
+    m = re.match(r"(.{3,80}?)\s+at\s+(.+)$", s or "")       # 'Assistant Professor at Harokopio University of Athens'
+    if m and re.search(r"professor|lecturer|researcher|scientist|engineer|student|fellow|associate|director|head", m.group(1), re.I):
+        return m.group(1).strip(), m.group(2).strip()
+    parts = [p.strip() for p in (s or "").split(",") if p.strip()]
+    if len(parts) >= 2 and re.search(r"professor|lecturer|researcher|scientist|engineer|student|fellow|director|head|dean|"
+                                     r"founder|lead|architect|manager|postdoc", parts[0], re.I):
+        return parts[0], ", ".join(parts[1:])
+    return None, s or None
+
+
+def verify(cands: list[dict], b: dict, log) -> None:
+    """Google Scholar profile (affiliation, citations, h-index, interests) for the best academics, by the profile id
+    found in a Scholar result or by a name search; Semantic Scholar when Scholar has nothing. A profile is used only
+    when it is the same person: the id came from one of their own papers, or the profile lists one of their papers."""
+    cfg = xcfg()["scholar"]
+    if not cfg.get("enabled"):
+        return
+    left0, n = serpapi_left(), 0
+    for e in cands:
+        if e["kind"] == "iiitd" or not (e["kind"] == "academic" or e.get("links", {}).get("openalex") or e.get("_scholar_id")):
+            continue                                       # IIIT-D faculty: affiliation known from the course directory
+        titles = [x["title"] for x in e["evidence"] if x.get("kind") == "paper"]
+        prof, how = None, None
+        budget_ok = n < cfg["profiles_per_lecture"] and left0 - serpapi_left() < cfg["max_searches_per_lecture"]
+        if budget_ok and e.get("_scholar_id"):
+            prof, how = scholar_profile(e["_scholar_id"]), "id from their paper"
+            n += 1
+        elif budget_ok and not e.get("_scholar_only"):
+            prof, how = scholar_find(e["name"], b["topic"]), "name search, papers matched"
+            if prof and not _same_titles(titles, [prof.get("found_via")] + [a["title"] for a in prof["articles"]]):
+                prof = None                               # a namesake: none of their papers is on the profile
+            n += 1
+        if prof:
+            role, inst = _split_affiliation(prof["affiliation"])
+            if e.get("affiliation") and inst and e["affiliation"].lower() not in inst.lower():
+                e["affiliation_openalex"] = e["affiliation"]
+            if e.get("_scholar_only"):
+                e["name"] = prof["name"]
+                e["verified_identity"] = f"Google Scholar profile ({how})"
+            else:
+                e["verified_identity"] = (e.get("verified_identity") or "") + " + Google Scholar profile"
+            e["affiliation"] = inst or e.get("affiliation")
+            if role and not e.get("role"):
+                e["role"] = role[:90]
+            tld = (prof.get("email_domain") or "").rsplit(".", 1)[-1]
+            if TLD_COUNTRY.get(tld) and (e.get("affiliation_openalex") or not e.get("country")):
+                e["country"] = TLD_COUNTRY[tld]
+            m = e.setdefault("metrics", {})
+            m.update(h_index=prof.get("h_index"), cited_by=prof.get("cited_by"), i10_index=prof.get("i10_index"), source="Google Scholar")
+            e["interests"] = prof.get("interests", [])
+            e["topics"] = list(dict.fromkeys((e.get("topics") or []) + e["interests"]))[:8]
+            e["links"]["scholar"] = prof["url"]
+            e["links"].pop("scholar_search", None)
+            if e["kind"] == "academic" and re.search(r"\b(inc|ltd|llc|corp|corporation|technologies)\b", inst or "", re.I) and \
+                    not re.search(r"universit|institut|college|school", inst or "", re.I):
+                e["kind"] = "industry"
+            continue
+        if e.get("_scholar_only"):
+            continue                                       # never confirmed: X-IDENTITY removes it
+        if cfg.get("semantic_scholar_fallback"):
+            s2 = s2_author(e["name"], titles)
+            if s2 and s2.get("matched_paper"):
+                m = e.setdefault("metrics", {})
+                if (s2.get("h_index") or 0) > (m.get("h_index") or 0):   # OpenAlex splits some people into several records
+                    m.update(h_index=s2["h_index"], cited_by=s2.get("cited_by"), source="Semantic Scholar")
+                if s2.get("affiliation"):
+                    if e.get("affiliation") and s2["affiliation"].lower() not in e["affiliation"].lower():
+                        e["affiliation_openalex"] = e["affiliation"]
+                    e["affiliation"] = s2["affiliation"]
+                if s2.get("url"):
+                    e["links"]["semantic_scholar"] = s2["url"]
+                e["verified_identity"] = (e.get("verified_identity") or "") + " + Semantic Scholar"
+    if n:
+        log(f"  experts {b['lecture_id']}: {n} Google Scholar profile look-ups ({serpapi_left()} SerpApi searches left this month)")
+
+
 # ------------------------------------------------------------------ ranking
 def score(e: dict, b: dict, talk_titles: list[str]) -> None:
     cfg = xcfg()
@@ -305,9 +435,12 @@ def score(e: dict, b: dict, talk_titles: list[str]) -> None:
     if talks:
         e["evidence"].append({"kind": "talk", "title": talks[0], "year": None, "url": None})
     kinds = {x["kind"] for x in e["evidence"]}
-    teaching = 1.0 if kinds & {"talk", "course", "book"} or e["kind"] == "iiitd" else \
-        0.6 if ("repo" in kinds or e.get("inst_type") == "education") else 0.4    # university researchers teach
-    practical = 1.0 if e["kind"] == "industry" else 0.6 if "repo" in kinds else 0.3
+    # from evidence only (28 Oct run: 45 of 49 academics had the same 0.6 / 0.3, so these weights added only noise)
+    university = e.get("inst_type") == "education" or bool(re.search(r"universit|institut|college|school|professor|lecturer",
+                                                                     f"{e.get('affiliation') or ''} {e.get('role') or ''}", re.I))
+    teaching = 1.0 if ("course" in kinds or e["kind"] == "iiitd") else 0.9 if "talk" in kinds else 0.8 if "book" in kinds else \
+        0.5 if university else 0.2
+    practical = 1.0 if e["kind"] == "industry" else 0.8 if "repo" in kinds else 0.2
     m = e.get("metrics", {})
     if m.get("cited_by") is not None:
         cites = 0.5 * min(math.log10((m.get("cited_by") or 0) + 1) / 4, 1) + 0.5 * min((m.get("h_index") or 0) / 40, 1)
@@ -336,22 +469,43 @@ def select(cands: list[dict]) -> list[dict]:
     d = cfg["diversity"]
     pool = sorted(cands, key=lambda e: -e["total"])
     picked: list[dict] = []
+
+    def papers(e: dict) -> set[str]:
+        return {_tkey(x["title"]) for x in e["evidence"] if x.get("kind") == "paper" and x.get("title")}
+
+    def clash(e: dict) -> bool:
+        aff = _inst_key(e.get("affiliation"))
+        if aff and sum(1 for p in picked if _inst_key(p.get("affiliation")) == aff) >= d.get("max_same_affiliation", 99):
+            return True                                   # one person per university / company
+        if d.get("one_per_paper") and any(papers(e) & papers(p) for p in picked):
+            return True                                   # co-authors of one paper share one slot
+        return sum(1 for p in picked if (p.get("country") or "?") == (e.get("country") or "!")) >= d["max_same_country"]
+
+    # the institute's own faculty first, when the AI check judged them a strong fit (a moderate one is ranked like anyone)
+    for e in [e for e in pool if e["kind"] == "iiitd" and (e.get("note") or {}).get("fit") == "strong"][: d.get("iiitd_first", 0)]:
+        picked.append(e)
     for need_kind, n in (("industry", d["min_industry"]), ("academic", d["min_academic"])):
         for e in pool:
             if sum(1 for p in picked if p["kind"] == need_kind) >= n:
                 break
-            if e["kind"] == need_kind and e not in picked:
+            if e["kind"] == need_kind and e not in picked and not clash(e):
                 picked.append(e)
     for e in pool:
         if len(picked) >= hi:
             break
-        if e in picked:
-            continue
-        same = sum(1 for p in picked if (p.get("country") or "?") == (e.get("country") or "!"))
-        if same >= d["max_same_country"]:
-            continue
-        picked.append(e)
-    return sorted(picked, key=lambda e: -e["total"])
+        if e not in picked and not clash(e):
+            picked.append(e)
+    for e in pool:              # still short of the minimum: people who passed every check but share an institution or paper
+        if len(picked) >= lo:
+            break
+        if e not in picked:
+            picked.append(e)
+    first = [e for e in picked if e["kind"] == "iiitd" and (e.get("note") or {}).get("fit") == "strong"]
+    return first + sorted((e for e in picked if e not in first), key=lambda e: -e["total"])
+
+
+def _inst_key(a: str | None) -> str:
+    return re.sub(r"\W", "", re.sub(r"\s*\(.*?\)", "", a or "").lower())
 
 
 def recommend_experts(llm, st: dict, b: dict, q: dict, talk_titles: list[str], run_id: str, log, videos: list[dict] | None = None) -> dict:
@@ -369,6 +523,15 @@ def recommend_experts(llm, st: dict, b: dict, q: dict, talk_titles: list[str], r
     for kind, n in per_kind.items():           # researchers must reach the AI check even when presenters score higher
         top += sorted((e for e in uniq if e["kind"] == kind), key=lambda e: -e["total"])[:n]
     top = sorted(top, key=lambda e: -e["total"])
+    verify(top, b, log)                             # Google Scholar / Semantic Scholar: affiliation, h-index, interests
+    seen, kept = set(), []
+    for e in top:                                   # a Scholar-only author may turn out to be someone already listed
+        k = re.sub(r"[^a-z]", "", e["name"].lower())
+        if k not in seen:
+            seen.add(k)
+            kept.append(e)
+            score(e, b, [])                         # standing, teaching and country may have changed
+    top = sorted(kept, key=lambda e: -e["total"])
     for i, e in enumerate(top):
         e["_id"] = f"x{i + 1}"
         for j, ev in enumerate(e["evidence"]):
@@ -377,6 +540,7 @@ def recommend_experts(llm, st: dict, b: dict, q: dict, talk_titles: list[str], r
         ctx = {"lecture": {"lecture_id": b["lecture_id"], "topic": b["topic"], "learning_outcomes": [x["statement"] for x in b["learning_outcomes"]],
                            "hands_on": b["hands_on"], "course_level": st.get("level"), "today": dt.date.today().isoformat()},
                "candidates": [{"id": e["_id"], "name": e["name"], "affiliation": e.get("affiliation"), "role": e.get("role"), "kind": e["kind"],
+                               "research_interests": e.get("interests") or None, "h_index": (e.get("metrics") or {}).get("h_index"),
                                "evidence": [{k: ev.get(k) for k in ("id", "kind", "title", "year", "venue_quality") if ev.get(k) is not None}
                                             for ev in e["evidence"][:5]]} for e in top]}
         rank_of = {"weak": 0, "moderate": 1, "strong": 2}
@@ -399,6 +563,18 @@ def recommend_experts(llm, st: dict, b: dict, q: dict, talk_titles: list[str], r
             if dd:
                 e["links"]["dblp"] = dd["url"]
         e["findings"] = checks.expert(e)
+        note = e.get("note") or {}
+        if note and not note.get("same_field", True):
+            e["findings"].append(checks.f("X-FIELD", "error", "AI check: the evidence is from another field that only shares words with this topic"))
+        h, min_h = (e.get("metrics") or {}).get("h_index"), xcfg()["record"]["min_h_index"]
+        if e["kind"] == "academic" and h is not None and h < min_h:
+            e["findings"].append(checks.f("X-RECORD", "error", f"too little research record yet (h-index {h} on "
+                                                              f"{(e.get('metrics') or {}).get('source', 'OpenAlex')}, below {min_h})"))
+        elif e["kind"] == "academic" and h is None:
+            e["findings"].append(checks.f("X-RECORD", "warning", "no citation record found; check their profile before inviting"))
+        if e["scores"]["feasibility"] == 0 and note.get("suggested_format", "").startswith("live"):
+            note["suggested_format"] = "recorded_talk"     # no shared working hours with IST: a live slot is unlikely
+            note.setdefault("concerns", []).append("no shared working hours with India: a recorded talk or an evening (IST) session")
     for e in top:
         fit = (e.get("note") or {}).get("fit")
         if fit in ("strong", "moderate"):
@@ -433,8 +609,8 @@ def clean_why(why: str) -> str:
 
 
 def slim(e: dict) -> dict:
-    keep = ("name", "kind", "role", "affiliation", "country", "links", "metrics", "scores", "total", "rank", "verified_identity",
-            "latest_year", "findings")
+    keep = ("name", "kind", "role", "affiliation", "affiliation_openalex", "country", "links", "metrics", "scores", "total", "rank",
+            "verified_identity", "latest_year", "findings", "interests")
     out = {k: e[k] for k in keep if e.get(k) is not None}
     if out.get("affiliation"):
         out["affiliation"] = re.sub(r"\s*\((United States|United Kingdom|India|Germany|China|Canada|Australia)\)", "", out["affiliation"]).strip()

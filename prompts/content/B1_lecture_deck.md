@@ -1,6 +1,6 @@
 ---
 id: B1
-version: 0.3.0
+version: 0.4.0
 stage: Phase 2 · B · lecture slides
 model_class: generate
 temperature: 0.3
@@ -8,7 +8,8 @@ output_model: LectureDeck (src/profsagent/content/models.py)
 inputs:
   course: {course_name, level}
   lecture: {lecture_id, topic, module, hours, learning_outcomes, course_outcomes, builds_on, prerequisites, leads_to,
-            assessed_in, hands_on, labs, professor_note, parts: [{topic, minutes}]}
+            assessed_in, hands_on, labs, professor_note, parts: [{topic, minutes}],
+            outline: [{id, title, teaches, key_terms, kind, minutes, delivered_by, clip}] (deliverable C's plan, when made)}
   sources: [{id, kind, title, year, url}]
   slides: {min, max}
   problems: findings of the checks on a previous attempt (repair only)
@@ -24,6 +25,10 @@ What to write:
 - `lecture.parts`, when given: this is one class that covers these topics in this order, with about these minutes each
   (a topic may have started in the previous class or continue in the next one). Give each topic slides in proportion
   to its minutes; when a topic continues from the previous class, open it with one short recap slide.
+- `lecture.outline`, when given: the lecture's components, planned by deliverable C in teaching order with their
+  minutes. Follow that order and roughly those minutes, give every component at least one slide, and teach what its
+  `teaches` says using its `key_terms`. When `delivered_by` is "video", add one short slide that introduces the `clip`
+  students watch (what to look for) and teach the rest around it; "in_class" components get an `activity` slide.
 - Every learning outcome must be served by at least one slide (list its id in `los`). An outcome at Bloom level 3 or
   above needs an `example` or `worked_problem` slide that shows the skill being used, step by step.
 - Include at least one `check` slide per lecture hour: a multiple-choice question students answer in class, given in

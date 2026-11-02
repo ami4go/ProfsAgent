@@ -20,7 +20,18 @@ openalex:
   min_year: 2012
   authors_to_profile: 18    # top authors fetched in full (singleton lookups are free)
 dblp: {enabled: true}
-semantic_scholar: {enabled: false}   # optional; set S2_API_KEY in .env and enable for extra evidence
+scholar:                    # Google Scholar through SerpApi (SERPAPI_API_KEY, free plan 250 searches/month; 2026-11-01)
+  enabled: true
+  search_per_lecture: true  # one Scholar paper search per lecture: more academics, each with a profile id
+  profiles_per_lecture: 8   # Scholar profiles read (1 search each) for the best-scoring academics (not IIIT-D faculty)
+  max_searches_per_lecture: 10   # all SerpApi searches of one lecture (search + profiles + name look-ups)
+  keep_searches: 10         # stop using SerpApi when fewer than this are left this month (Semantic Scholar instead)
+  semantic_scholar_fallback: true   # keyless Semantic Scholar for affiliation / h-index when Scholar has no profile
+record:
+  min_h_index: 5            # academics (not IIIT-D faculty) whose best h-index on any source is lower are not shown
+                            # (28 Oct run: 15 of 49 academics shown had h-index 0–1, mostly one-paper authors)
+weak_identity_domains: [scribd.com, slideshare.net, pdfcoffee.com, dokumen.pub, studocu.com, coursehero.com, issuu.com]
+                            # document-sharing sites: a name on them does not confirm who someone is
 github:
   enabled: true
   repos_per_query: 8
@@ -39,6 +50,9 @@ diversity:
   min_industry: 1           # at least one practitioner when any is found
   min_academic: 1
   max_same_country: 3
+  max_same_affiliation: 1   # one person per university / company (28 Oct run: 3 from Kalyani, 3 from Télécom Paris)
+  one_per_paper: true       # co-authors of the same paper are one slot, not several
+  iiitd_first: 2            # IIIT-D faculty the AI check (D4) calls a strong fit are listed first (at most this many)
 
 feasibility:                # time-zone overlap with IST working hours (UTC+5:30)
   country_utc_offset:       # rough offsets; unknown countries are treated as neutral

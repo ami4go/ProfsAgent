@@ -8,6 +8,47 @@ Mark anything still waiting for someone as **Open**.
 
 ---
 
+## 2026-11-03: reply to Vihan's "Lecture delivery mix" proposal (2 Nov)
+
+### 30. The app can hold the mix in the Lecture plan tab; simulations should be a fifth way to deliver a part; what the app needs from `mix.py`
+- **Context:**
+  - Amit read Vihan's proposal "Lecture delivery mix — design proposal" (2 Nov): each lecture delivered part by part as slides, a YouTube stretch, a NotebookLM video or an in-class activity, closed by a review quiz. The AI proposes the mix, the professor changes it, and only then are slides, clips and prompts made.
+  - On 3 Nov `main` had nothing new from Vihan or Parth after 0914269. Amit's simulation work is pushed as **1739acb**; it changes only the app's files and adds `simulations/` and `src/profsagent/sims/`. Entries 24–29 describe it.
+- **Answer to "Amit: can the Lecture plan tab hold dropdowns per part and a minutes bar?": yes, no separate Mix step.** The tab already lists each part with its minutes and how it is delivered. We add:
+  - a **minutes bar** at the top: the lecture's minutes split by way (live slides / video in class / video before class / NotebookLM / in class / simulation / recap / quiz), plus the professor's preparation time;
+  - a **dropdown per part**, a **lock** per row and the **preset** for the lecture;
+  - **Accept all** and **Approve the mix**;
+  - a **note** box ("I'll teach MCP schemas myself") that asks again and keeps the locked rows.
+  - **Course style** (mostly slides / a mix / flipped) is asked once, on the course's page in Lecture delivery, and sets the default preset.
+- **Proposal: simulations as a fifth way.** The four ways leave out the app's simulations (A): our 10 checked or machine-built simulations, 377 saved trusted-site links (PhET, VisuAlgo, Falstad…) and the request flow (search the web, then build).
+  - **Rule,** placed after rule 1 (in class): a part that is a process, mechanism or algorithm (Bloom 2–4), for which a simulation matches, is delivered as **Simulation**.
+    - "Matches" means our catalogue at similarity ≥ 0.60 or a saved link at ≥ 0.65, judged on the part's title, what it teaches and its key terms.
+    - In class, students operate it with a task from the slide, starting from the professor's class example. In a flipped class it goes on the pre-class list.
+    - It counts as **active time, not video**, for the 40% cap.
+  - **Evidence** shown in the mix: the simulation (ours, built by the machine, or a link with its site), its match, and the class example if one is saved.
+  - **`PartMix.way`** gains `simulation`, with `simulation: {id | url, title, source, class_example}`.
+  - **For Parth (B1):** a simulation slide: title, link or QR, what to try (2 focus questions) and a debrief line, like the watch and debrief slides for videos.
+  - **Our side (A):** matching **per part** instead of per lecture: `app/simulations.match_parts(run, lecture, components)` → candidates per component, with the same local model and no AI calls. "Ask for a simulation" can also start from a part.
+- **What the app will do, by Vihan's phases:**
+  - **Phase 1, now** (nothing needed from Vihan): the read-only minutes bar and a "way" column worked out from today's `timeline` (video / NotebookLM / in class), plus simulation candidates per part.
+  - **Phase 2, once `mix.py` exists:**
+    - endpoints `GET /api/delivery/<run>/mix/<lecture>`, `PUT …/mix/<lecture>` (the professor's ways, locks, preset and approval) and `POST …/mix/<lecture>/again` (with the note);
+    - "Generate the lecture material" waits for an approved mix when one exists;
+    - the student view in lecture order (recap, parts, quiz) with a pre-class list;
+    - every change the professor makes is logged (with the part's signals) in `delivery/app_mix_changes.jsonl`, for the per-professor rules.
+- **Asked of Vihan:**
+  - **(a)** The exact shape of `delivery/mix/<lecture>.json` (`LectureMix` / `PartMix`): field names, the `way` values (with `simulation`), `locked`, `set_by`, and `status: proposed | approved`. The app will read and write it.
+  - **(b)** A function the app can call to **propose again with locked rows and a note** (`mix.propose(run, lecture, locked, note)`), run in the app's background worker like `recommend`.
+  - **(c)** Adding the simulation rule to `mix.py`. The app gives the candidates per part: `app/simulations.match_parts`, or a small function in `sims/` if `delivery/` should not import `app/`.
+  - **(d)** For information: the app still has its stopgap for the empty `research_queries` crash (`app/delivery_step.guard_empty_research_queries`). Vihan fixed the cause, so we remove it in the next app change.
+  - **(e)** For information: `SERPAPI_API_KEY` (Google Scholar) is not in Amit's `.env`, so guest search on his laptop falls back to the other sources.
+- **Still open (team; Amit has not decided yet):**
+  - videos in class or before class (whether the 40% cap is a hard limit or becomes a pre-class list);
+  - where the quiz runs: slides, a Google Form, or the app with scores saved (only the app keeps the scores for the semester feedback);
+  - whether professors will spend 10–15 min per NotebookLM video, or it is capped at 1–2 per lecture;
+  - Parth: can B1 take the mix as input (one deck that follows it)?
+- **Agreed by:** Amit (the answer and the simulation proposal, 3 Nov). Waiting for Vihan on (a)–(c), and for Parth on the simulation slide.
+
 ## 2026-11-03: look for existing simulations before building one
 
 ### 29. A request first searches our catalogue, the saved links and the web, opens the top pages, and the professor reviews what it found; the machine builds only when nothing fits

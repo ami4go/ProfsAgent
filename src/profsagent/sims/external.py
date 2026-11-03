@@ -101,8 +101,14 @@ def parse_falstad_circuits(page: str) -> list[dict]:
 
 
 # ------------------------------------------------------------------ the index
+_src = {"mtime": None, "data": None}
+
+
 def sources() -> dict:
-    return yaml.safe_load(SOURCES.read_text(encoding="utf-8"))
+    mt = SOURCES.stat().st_mtime
+    if _src["mtime"] != mt:
+        _src.update(mtime=mt, data=yaml.safe_load(SOURCES.read_text(encoding="utf-8")))
+    return _src["data"]
 
 
 def build(fetch=_get) -> dict:
@@ -164,6 +170,13 @@ def add_found(url: str, title: str, summary: str, site_name: str, topic: str, re
 
 def get(ext_id: str) -> dict | None:
     return next((e for e in entries() if e["id"] == ext_id), None)
+
+
+def shows_code(e: dict) -> bool:
+    """The simulation shows the algorithm's code beside it (its own flag, or its site's in sources.yaml)."""
+    if "shows_code" in e:
+        return bool(e["shows_code"])
+    return bool(((sources().get("sites") or {}).get(e.get("site")) or {}).get("shows_code"))
 
 
 def text_for_matching(e: dict) -> list[str]:

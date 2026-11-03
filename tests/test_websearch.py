@@ -78,10 +78,17 @@ def test_review_approve_reject_and_build(runs, rid, monkeypatch, tmp_path):
     # approve: the request is done, the page joins the saved links, and the lecture gets it approved
     out = S.review_found(a["id"], 1, "approve", runs)
     assert out["request"]["status"] == "chosen" and not out["start_build"]
-    ext_id = out["request"]["chosen"]["ext_id"]
+    ext_id = out["request"]["chosen"][0]["ext_id"]
     assert ext_id.startswith("ext:web:") and X.get(ext_id)["url"] == found[0]["url"]
     item = next(i for i in S.course_view(rid, runs)["lectures"][lid]["items"] if i["id"] == ext_id)
     assert item["decision"]["decision"] == "approve" and item["external"]
+    # a second one may be approved too (2 at most); a third is refused
+    out = S.review_found(a["id"], 2, "approve", runs)
+    assert out["request"]["status"] == "chosen" and len(out["request"]["chosen"]) == 2
+    AB.update_requests(runs, lambda rows: next(r for r in rows if r["id"] == a["id"])["found"].append({**found[1], "n": 3, "url": "https://x.org/3"}))
+    assert "at most 2" in S.review_found(a["id"], 3, "approve", runs)["problem"]
+    assert S.review_found(a["id"], 2, "undo", runs)["request"]["status"] == "chosen"       # one still approved
+    assert S.review_found(a["id"], 1, "undo", runs)["request"]["status"] == "review"       # none left: back to review
     # reject them all: the machine builds one
     assert S.review_found(b["id"], 1, "reject", runs)["start_build"] is False
     out = S.review_found(b["id"], 2, "reject", runs)
@@ -109,3 +116,20 @@ def test_worker_searches_first_and_builds_only_when_nothing_fits(tmp_path, monke
     rows = {r["id"]: r for r in AB.read_requests(runs)}
     assert rows[a["id"]]["status"] == "review" and rows[a["id"]]["found"][0]["title"] == "Hanoi"      # found: waits for the professor
     assert rows[b["id"]]["status"] == "ready" and built == [b["id"]]                                  # nothing found: built at once
+
+
+def test_at_most_two_per_lecture_and_one_with_code(runs, rid):
+    S.suggestions(rid, runs, wait=True)
+    for sid in ("os.memory.page_replacement", "ml.clustering.dbscan"):
+        assert S.decide(rid, "W01.L1", sid, "approve", runs=runs) == {"ok": True}
+    assert "at most 2" in S.decide(rid, "W01.L1", "algorithms.graph.dijkstra", "approve", runs=runs)["problem"]
+    assert S.decide(rid, "W01.L1", "ml.clustering.dbscan", "approve", runs=runs) == {"ok": True}      # approving again (a new version) is fine
+    S.decide(rid, "W01.L1", "ml.clustering.dbscan", "undo", runs=runs)
+    assert S.decide(rid, "W01.L1", "algorithms.graph.dijkstra", "approve", runs=runs) == {"ok": True}
+    code = lambda m: m.get("code")  # noqa: E731
+    ms = [{"id": "a", "code": False}, {"id": "b", "code": False}, {"id": "c", "code": False}, {"id": "d", "code": True}]
+    assert [m["id"] for m in S.with_code(ms, 3, code)] == ["a", "b", "d"]        # the best with code takes the last place
+    assert [m["id"] for m in S.with_code(ms[:2] + ms[3:], 3, code)] == ["a", "b", "d"]
+    assert [m["id"] for m in S.with_code(ms[:3], 3, code)] == ["a", "b", "c"]     # none with code: unchanged
+    assert X.shows_code({"site": "visualgo"}) and not X.shows_code({"site": "phet"}) and X.shows_code({"site": "phet", "shows_code": True})
+    assert next(e for e in S.catalogue_view(runs)["entries"] if e["id"] == "os.memory.page_replacement")["shows_code"]

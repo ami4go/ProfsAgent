@@ -35,6 +35,7 @@ from profsagent.sims import external as X
 MATCH = 0.60        # topic similarity for a suggestion; on IIIT-D's 9,784 weekly topics (3 Nov) matches below it were mostly unrelated
 STRONG = 0.75       # shown as a close match
 TOP = 4             # suggestions kept per lecture
+MAX_APPROVED = 2    # simulations a professor may approve for one lecture (and from one request); Amit: "2 will be good enough"
 EXT_MATCH = 0.65    # links to other sites: on the same 9,784 topics, matches below it were often wrong (e.g. "TCP/IP networks" -> network flow)
 EXT_TOP = 3         # links kept per lecture
 SID = re.compile(r"^[a-z0-9][a-z0-9_.-]{2,80}$")
@@ -115,7 +116,7 @@ def card(e: dict, qa: dict | None = None) -> dict:
             "level": {"id": e["interactivity"], "text": ty["levels"].get(e["interactivity"], "")},
             "courses": [{"code": str(c).upper(), "name": _course_names().get(str(c).upper(), "")} for c in e["courses"]],
             "topics": list(e["topics"]), "engine": (e.get("engine") or {}).get("name"), "class_example": bool(e.get("class_example")),
-            "built_by": e.get("built_by"), "request": e.get("request"),
+            "built_by": e.get("built_by"), "request": e.get("request"), "shows_code": bool(e.get("shows_code")),
             "independent": (e.get("checks") or {}).get("independent"),
             "checked": ({"ok": bool(q.get("ok")), "at": q.get("at"), "version": q.get("version"),
                          "current": str(q.get("version")) == str(e["version"])} if q else None)}
@@ -171,6 +172,17 @@ def _short_title(e: dict) -> str:
     return re.split(r"\s+·\s+|,\s+step by step$", e["title"])[0].strip()
 
 
+def with_code(ms: list[dict], top: int, has_code) -> list[dict]:
+    """The top results, and one that shows its code beside the simulation when one matches (Amit: the simulation with its
+    code builds a solid understanding): when none of the top ones does, the best that does takes the last place."""
+    shown = ms[:top]
+    if shown and not any(has_code(m) for m in shown):
+        extra = next((m for m in ms[top:] if has_code(m)), None)
+        if extra is not None:
+            shown = shown[:-1] + [extra] if len(shown) >= top else shown + [extra]
+    return shown
+
+
 def compute(briefs: list[dict], course: str, es: list[dict]) -> dict:
     """Per lecture: catalogue entries whose title or topics are close to the lecture topic (or its summary), and the kind
     of simulation the topic suits. Only the local model; no AI calls."""
@@ -212,7 +224,7 @@ def compute(briefs: list[dict], course: str, es: list[dict]) -> dict:
             score = max(s_topic, s_full)
             if score >= MATCH:
                 matches.append({"id": e["id"], "score": round(score, 3), "close": score >= STRONG, "matched": texts[j] if s_topic >= s_full else None,
-                                "via": "topic" if s_topic >= s_full else "summary"})
+                                "via": "topic" if s_topic >= s_full else "summary", "code": bool(e.get("shows_code"))})
         matches.sort(key=lambda m: -m["score"])
         links: dict[str, dict] = {}
         if XS is not None:
@@ -222,9 +234,10 @@ def compute(briefs: list[dict], course: str, es: list[dict]) -> dict:
                     break
                 x = xs[xowner[j]]
                 if x["id"] not in links:
-                    links[x["id"]] = {"id": x["id"], "score": round(sc, 3), "matched": xtexts[j].split(": ")[0]}
+                    links[x["id"]] = {"id": x["id"], "score": round(sc, 3), "matched": xtexts[j].split(": ")[0], "code": X.shows_code(x)}
         kind, _score, also = kinds[k]
-        out[b["lecture_id"]] = {"topic": b.get("topic"), "matches": matches[:TOP], "external": list(links.values())[:EXT_TOP],
+        code = lambda m: m.get("code")  # noqa: E731
+        out[b["lecture_id"]] = {"topic": b.get("topic"), "matches": with_code(matches, TOP, code), "external": with_code(list(links.values()), EXT_TOP, code),
                                 "kind": {"type": kind, "also": also if kind != K.NONE else None}}
     return out
 
@@ -270,7 +283,8 @@ def _decisions(rid: str, runs: Path | None) -> dict:
 def ext_card(x: dict) -> dict:
     """What the screens show about a link to another site (not ours, not checked by us)."""
     return {"id": x["id"], "external": True, "title": x["title"], "summary": x["summary"], "url": x["url"], "site": x["site"],
-            "site_name": x["site_name"], "topics": x["topics"][:8], "class_example": False, "version": None, "checked": None}
+            "site_name": x["site_name"], "topics": x["topics"][:8], "class_example": False, "version": None, "checked": None,
+            "shows_code": X.shows_code(x)}
 
 
 def _lecture_items(lid: str, sug: dict, dec: dict, qa: dict) -> list[dict]:
@@ -351,6 +365,8 @@ def decide(rid: str, lid: str, sim_id: str, decision: str, reason: str = "", by:
         return {"problem": "Write a short reason first"}
     data = _decisions(rid, runs)
     d = data["lectures"].setdefault(lid, {"added": [], "decisions": {}, "class_example": {}})
+    if decision == "approve" and sum(1 for k, x in d["decisions"].items() if x.get("decision") == "approve" and k != sim_id) >= MAX_APPROVED:
+        return {"problem": f"You can approve at most {MAX_APPROVED} simulations for a lecture. Undo one first."}
     if decision == "add":
         d["added"] = [s for s in d["added"] if s != sim_id] + [sim_id]
         d.setdefault("added_by", {})[sim_id] = by
@@ -421,6 +437,7 @@ def catalogue_view(runs: Path | None = None) -> dict:
             "levels": ty["levels"], "requests": requests(runs),
             "external": {"sites": sorted({x["site_name"] for x in xs}, key=lambda n: -sum(1 for y in xs if y["site_name"] == n)),
                          "entries": [{"id": x["id"], "site_name": x["site_name"], "title": x["title"], "url": x["url"], "summary": x["summary"][:200],
+                                      "shows_code": X.shows_code(x),
                                       "text": " ".join([x["title"], x["site_name"], x["summary"], " ".join(x["topics"])]).lower()} for x in xs]}}
 
 
@@ -479,8 +496,9 @@ def build_again(req_id: str, runs: Path | None = None, note: str = "") -> dict:
 
 
 def review_found(req_id: str, n: int, decision: str, runs: Path | None = None, by: str = "Professor") -> dict:
-    """The professor's decision on one simulation the search found: approve (the request is done; a lecture request puts it
-    on the lecture, approved) or reject (when every one is rejected, the machine builds one). Returns start_build."""
+    """The professor's decision on one simulation the search found. Approve: the request is done (chosen); up to 2 may be
+    approved, and a request from a lecture puts them on the lecture, approved. Reject: when every one is rejected and none
+    approved, the machine builds one. Undo. Returns start_build."""
     runs = runs or RUNS
     if decision not in ("approve", "reject", "undo"):
         return {"problem": "Unknown decision"}
@@ -494,10 +512,12 @@ def review_found(req_id: str, n: int, decision: str, runs: Path | None = None, b
         if c is None:
             return
         if decision == "approve":
+            if sum(1 for x in r["found"] if x.get("decision") == "approve" and x is not c) >= MAX_APPROVED:
+                out["problem"] = f"You can approve at most {MAX_APPROVED}. Undo one first."
+                return
             if c["kind"] == "link":
                 c["ext_id"] = c.get("ext_id") or X.add_found(c["url"], c["title"], c.get("summary") or "", c.get("site") or "", r.get("topic") or "", req_id, by)
             c["decision"] = "approve"
-            r.update(status="chosen", chosen={k: c.get(k) for k in ("n", "kind", "id", "ext_id", "url", "title", "site")}, chosen_at=_now())
         elif decision == "reject":
             c["decision"] = "reject"
             if all(x.get("decision") == "reject" for x in r["found"]):
@@ -505,14 +525,22 @@ def review_found(req_id: str, n: int, decision: str, runs: Path | None = None, b
                 out["start_build"] = True
         else:
             c["decision"] = None
-            if r.get("status") == "chosen" and (r.get("chosen") or {}).get("n") == n:
-                r.update(status="review", chosen=None)
+        if not out.get("start_build"):
+            ok = [x for x in r["found"] if x.get("decision") == "approve"]
+            r.update(status="chosen" if ok else "review", chosen=[{k: x.get(k) for k in ("n", "kind", "id", "ext_id", "url", "title", "site")} for x in ok] or None,
+                     chosen_at=_now() if ok else None)
         out["request"] = dict(r)
+        out["item"] = dict(c)
     AB.update_requests(runs, fn)
+    if out.get("problem"):
+        return {"problem": out["problem"]}
     if not out:
         return {"problem": "This request is not waiting for a review"}
-    req = out["request"]
-    if decision == "approve" and req.get("run_id") and req.get("lecture"):        # a request from a lecture page: it lands there, approved
-        ch = req["chosen"]
-        decide(req["run_id"], req["lecture"], ch.get("ext_id") or ch.get("id"), "approve", by=by, runs=runs)
-    return {"ok": True, "request": req, "start_build": bool(out.get("start_build"))}
+    req, c = out["request"], out["item"]
+    if req.get("run_id") and req.get("lecture") and decision in ("approve", "undo") and c["kind"] in ("link", "ours"):
+        sid = c.get("ext_id") or c.get("id")                       # a request from a lecture page: it lands there, approved
+        if sid:
+            res = decide(req["run_id"], req["lecture"], sid, "approve" if decision == "approve" else "undo", by=by, runs=runs)
+            if res.get("problem"):
+                out["lecture_note"] = res["problem"]
+    return {"ok": True, "request": req, "start_build": bool(out.get("start_build")), "lecture_note": out.get("lecture_note")}

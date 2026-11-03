@@ -1427,7 +1427,7 @@ function simsPage() {
 function simEntryCard(c) {
   const text = [c.title, c.summary, c.topics.join(' '), c.courses.map(x => x.code + ' ' + x.name).join(' ')].join(' ').toLowerCase();
   return '<div class="rcard" data-simcard data-text="' + esc(text) + '">' +
-    '<div class="rhead"><div class="rtitle" style="min-width:0">' + esc(c.title) + '</div><span style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">' + simMade(c) + simChecked(c) + '</span></div>' +
+    '<div class="rhead"><div class="rtitle" style="min-width:0">' + esc(c.title) + '</div><span style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">' + simMade(c) + simCode(c) + simChecked(c) + '</span></div>' +
     '<p class="why">' + esc(c.summary) + '</p>' +
     '<p class="small muted" style="margin-top:4px">Covers: ' + esc(c.topics.join(', ')) + '</p>' +
     (c.used.length ? '<p class="small" style="margin-top:4px"><b style="font-weight:600">In your lectures:</b> ' + c.used.map(u => '<a href="#/delivery/' + encodeURIComponent(u.run_id) + '/' + encodeURIComponent(u.lecture) + '">' + esc(u.course) + ', ' + esc(u.lecture) + '</a>').join('; ') + '</p>' : '') +
@@ -1439,7 +1439,7 @@ function sfilter() {
   const xs = words.length ? (((SCAT || {}).external || {}).entries || []).filter(x => words.every(w => x.text.includes(w))) : [];
   const box = document.getElementById('extlist');
   if (box) box.innerHTML = xs.length ? '<h3 style="margin-top:18px">On other trusted sites</h3><p class="small muted">Links only; we have not checked these. To use one in a lecture, approve it when it is suggested on the lecture\'s page.</p>' +
-    xs.slice(0, 15).map(x => '<div class="rcard"><div class="rhead"><div class="rtitle" style="min-width:0">' + esc(x.title) + '</div><span class="chip navy">' + esc(x.site_name) + '</span></div>' +
+    xs.slice(0, 15).map(x => '<div class="rcard"><div class="rhead"><div class="rtitle" style="min-width:0">' + esc(x.title) + '</div><span style="display:flex;gap:6px">' + simCode(x) + '<span class="chip navy">' + esc(x.site_name) + '</span></span></div>' +
       (x.summary ? '<p class="why">' + esc(x.summary) + '</p>' : '') + '<div class="acts"><a class="btn sm" href="' + esc(x.url) + '" target="_blank" rel="noopener">Open ' + ICON.link + '</a></div></div>').join('') +
     (xs.length > 15 ? '<p class="small muted" style="margin-top:8px">' + (xs.length - 15) + ' more; add a word to narrow the search.</p>' : '') : '';
   const none = document.getElementById('simnone'); if (none) none.hidden = n > 0 || xs.length > 0;
@@ -1465,17 +1465,18 @@ function simRequestList() {
     rows.map(simRequestRow).join('') + '</div>';
 }
 function simFoundCard(q, c) {
-  const id = esc(q.id), rej = c.decision === 'reject', ok = c.decision === 'approve', open = q.status === 'review';
+  const id = esc(q.id), rej = c.decision === 'reject', ok = c.decision === 'approve', open = ['review', 'chosen'].includes(q.status);
+  const full = (q.found || []).filter(x => x.decision === 'approve').length >= SIM_MAX;
   const shot = c.shot ? '<img class="fshot" alt="" loading="lazy" src="/api/simulations/requests/' + id + '/shot/' + esc(c.shot) + '">'
     : '<div class="fshot fnone">' + (c.kind === 'ours' ? 'In our catalogue' : 'No picture') + '</div>';
   const site = c.kind === 'ours' ? '<span class="chip green">Ours, checked</span>' : '<span class="chip navy">' + esc(c.site) + '</span>' + (c.trusted ? '<span class="chip teal">Trusted site</span>' : '<span class="chip grey">Found on the web</span>');
   const look = c.kind === 'ours' ? '<button class="btn sm' + (open && !rej ? ' primary' : '') + '" data-act="s-open" data-sim="' + esc(c.id) + '">Try it</button>'
     : '<a class="btn sm' + (open && !rej ? ' primary' : '') + '" href="' + esc(c.url) + '" target="_blank" rel="noopener">Open ' + ICON.link + '</a>';
-  const acts = open && !c.decision ? '<button class="btn sm ok" data-act="s-found" data-req="' + id + '" data-n="' + c.n + '" data-d="approve">' + ICON.check + ' Approve</button>' +
+  const acts = open && !c.decision ? (full ? '' : '<button class="btn sm ok" data-act="s-found" data-req="' + id + '" data-n="' + c.n + '" data-d="approve">' + ICON.check + (q.status === 'chosen' ? ' Also approve' : ' Approve') + '</button>') +
       '<button class="btn sm bad" data-act="s-found" data-req="' + id + '" data-n="' + c.n + '" data-d="reject">Not this</button>'
     : (c.decision ? '<span class="chip ' + (ok ? 'green' : 'grey') + '">' + (ok ? 'Approved' : 'Rejected') + '</span>' + (open || ok ? '<button class="btn sm" data-act="s-found" data-req="' + id + '" data-n="' + c.n + '" data-d="undo">Undo</button>' : '') : '');
   return '<div class="fcard' + (rej ? ' rej' : '') + (ok ? ' ok' : '') + '">' + shot + '<div style="min-width:0"><b style="font-weight:600">' + esc(c.title) + '</b>' +
-    '<div class="rmeta">' + site + '</div>' + (c.summary ? '<p class="small" style="margin-top:4px">' + esc(c.summary) + '</p>' : '') +
+    '<div class="rmeta">' + site + simCode(c) + '</div>' + (c.summary ? '<p class="small" style="margin-top:4px">' + esc(c.summary) + '</p>' : '') +
     '<p class="tiny muted" style="margin-top:2px">' + esc(c.why || '') + '</p><div class="acts">' + look + acts + '</div></div></div>';
 }
 function simRequestRow(q) {
@@ -1485,13 +1486,14 @@ function simRequestRow(q) {
   if (q.status === 'queued') line = 'Starts in a moment. First it looks for existing simulations.';
   else if (q.status === 'searching') line = spin + 'Looking in our catalogue, the saved links and the web, and opening the top pages to check them (about a minute).';
   else if (q.status === 'review') {
-    line = 'These already exist. Open each one; approve the one that fits, or press Not this. If you reject them all, the machine builds a new one.';
+    line = 'These already exist. Open each one and approve up to ' + SIM_MAX + ' that fit (one that shows its code alongside helps students connect the steps with the algorithm), or press Not this. If you reject them all, the machine builds a new one.';
     more = found.map(c => simFoundCard(q, c)).join('') + '<div class="acts" style="margin-top:10px"><input type="text" data-note="' + id + '" value="' + esc((SUI.notes || {})[q.id] || '') + '" placeholder="What is missing? (optional; the machine reads it)" aria-label="What is missing" style="flex:1;min-width:220px">' +
       '<button class="btn sm" data-act="s-none" data-req="' + id + '">None of these fit: build a new one</button></div>';
   } else if (q.status === 'chosen') {
-    const ch = q.chosen || {};
-    line = 'You chose an existing simulation' + (q.lecture ? '; it is approved on ' + esc(q.lecture) : '') + '.';
-    more = found.filter(c => c.decision === 'approve').map(c => simFoundCard(q, c)).join('');
+    const nOk = found.filter(c => c.decision === 'approve').length;
+    line = 'You chose ' + nOk + ' existing simulation' + (nOk === 1 ? '' : 's') + (q.lecture ? '; approved on ' + esc(q.lecture) : '') + '.' +
+      (nOk < SIM_MAX && found.some(c => !c.decision) ? ' You can approve one more.' : '');
+    more = found.filter(c => c.decision !== 'reject').map(c => simFoundCard(q, c)).join('');
   } else if (q.status === 'build_queued') line = 'Starts in a moment.' + (found.length ? ' You rejected the ones found, so the machine builds a new one.' : '');
   else if (q.status === 'building') line = spin + 'Attempt ' + (b.attempt || 1) + ' of ' + (b.of || 3) + ': the AI writes it, then the automatic checks run it.' + (found.length ? ' (You rejected the ones found.)' : ' (Nothing existing fitted.)');
   else if (q.status === 'ready') { line = 'Built by the machine and checked automatically' + (b.attempts ? ' (attempt ' + b.attempts + ')' : '') + '. It is in the list above' + (q.lecture ? ', and on ' + esc(q.lecture) + ' waiting for your decision' : '') + '.';
@@ -1521,6 +1523,8 @@ function simPoll() {                        // while a request is being built, r
     simPoll();
   }, 5000);
 }
+const SIM_MAX = 2;      // simulations a professor may approve for one lecture or one request
+const simCode = c => c.shows_code ? '<span class="chip navy" title="The algorithm\'s code is shown beside the simulation, so students connect each step with the line that does it">Shows the code alongside</span>' : '';
 const simMade = c => c.built_by === 'machine' ? '<span class="chip teal" title="Built by the machine from a request and checked automatically; not yet reviewed by the team">Built by the machine</span>' : '';
 async function sclick(act, b) {
   if (act === 's-open') { const c = SCAT && SCAT.entries.find(x => x.id === b.dataset.sim); if (c) simOpen({ id: c.id, title: c.title, version: c.version, state: '' }); return; }
@@ -1540,7 +1544,7 @@ async function sclick(act, b) {
   if (act === 's-found') {
     b.disabled = true;
     const d = b.dataset.d, r = await post('/api/simulations/requests/' + encodeURIComponent(b.dataset.req) + '/found/' + encodeURIComponent(b.dataset.n), { decision: d });
-    toast(!r.ok ? ((r.data && (r.data.problem || r.data.detail)) || 'Could not save') : d === 'approve' ? 'Chosen. Nothing needs to be built.' + (r.data.request.lecture ? ' It is approved on ' + r.data.request.lecture + '.' : '')
+    toast(!r.ok ? ((r.data && (r.data.problem || r.data.detail)) || 'Could not save') : d === 'approve' ? 'Chosen. Nothing needs to be built.' + (r.data.lecture_note ? ' ' + r.data.lecture_note : r.data.request.lecture ? ' It is approved on ' + r.data.request.lecture + '.' : '')
       : d === 'reject' ? (r.data.start_build ? 'You rejected them all: the machine builds a new one now (about 2–5 minutes).' : 'Rejected') : 'Undone');
     await loadSimCatalogue(); render(); return;
   }
@@ -1575,7 +1579,9 @@ function dsimCard(l) {
   const approved = ours.filter(isApproved), pending = ours.filter(i => !i.decision && !i.retired);
   const linksShown = links.filter(i => !i.decision || isApproved(i)), aside = items.filter(i => i.decision && !isApproved(i));
   const cur = pending[0], waiting = ['preparing', 'not started'].includes(S.state), nApproved = items.filter(isApproved).length;
-  let body = approved.map(i => dsimItem(l, i, pending.length)).join('') + (cur ? dsimItem(l, cur, pending.length) : '');
+  const withCode = cur && !cur.shows_code ? pending.find(i => i.shows_code) : null;      // a simulation with its code beside it, when one matches
+  let body = approved.map(i => dsimItem(l, i, pending.length)).join('') + (cur ? dsimItem(l, cur, pending.length) : '') + (withCode ? dsimItem(l, withCode, pending.length) : '');
+  if (nApproved >= SIM_MAX) body += '<p class="small" style="margin-top:8px"><span class="chip green">' + SIM_MAX + ' of ' + SIM_MAX + ' approved</span> To approve another one, undo one of these first.</p>';
   if (waiting) body += '<p class="small muted" style="margin-top:8px;display:flex;gap:8px;align-items:center"><span class="spin"></span> Looking for simulations that fit this course\'s lectures. The first time takes about half a minute.</p>';
   else if (S.state === 'error') body += '<div class="banner red">' + ICON.alert + '<div>Could not look for simulations: ' + esc(S.error || 'unknown problem') + '. The rest of lecture delivery is not affected.</div></div>';
   else if (!approved.length && !cur && !linksShown.length) body += dsimNone(x.kind);
@@ -1591,8 +1597,9 @@ function dsimCard(l) {
     '<button class="btn sm' + (askFirst ? ' primary' : '') + '" data-act="d-simrequest">Ask for a new simulation</button>' +
     (others.length ? '<select id="simadd" aria-label="Add a simulation from the catalogue" style="width:auto;max-width:100%"><option value="">Add one of ours…</option>' + others.map(e => '<option value="' + esc(e.id) + '">' + esc(e.title) + '</option>').join('') + '</select><button class="btn sm" data-act="d-simadd">Add</button>' : '') +
     '<a class="btn sm" href="#/simulations">Browse all simulations</a></div>';
-  const chip = nApproved ? '<span class="chip green">' + nApproved + ' approved</span>' : (cur || linksShown.length) ? '<span class="chip amber">Waiting for your decision</span>' : '<span class="chip grey">None chosen</span>';
-  return '<div class="card" id="simcard"><div class="card-h"><h2>Simulation</h2>' + chip + '</div><p class="small muted">An interactive simulation students can use in class or on their own. Suggestions come from matching this lecture\'s topic with our catalogue and with trusted sites; no AI calls.</p>' + body + '</div>';
+  const chip = nApproved ? '<span class="chip green">' + nApproved + ' of ' + SIM_MAX + ' approved</span>' : (cur || linksShown.length) ? '<span class="chip amber">Waiting for your decision</span>' : '<span class="chip grey">None chosen</span>';
+  return '<div class="card" id="simcard"><div class="card-h"><h2>Simulation</h2>' + chip + '</div><p class="small muted">An interactive simulation students can use in class or on their own. Suggestions come from matching this lecture\'s topic with our catalogue and with trusted sites; no AI calls. ' +
+    'You can approve up to ' + SIM_MAX + '; one that shows its code alongside helps students connect each step with the algorithm.</p>' + body + '</div>';
 }
 function dsimReason(l, i) {
   const o = PUI.simReason && PUI.simReason.sim === i.id && PUI.simReason.lid === l.id ? PUI.simReason : null;
@@ -1600,15 +1607,15 @@ function dsimReason(l, i) {
     '<div class="acts"><button class="btn sm bad" data-act="d-simreject" data-sim="' + esc(i.id) + '">Reject</button><button class="btn sm" data-act="d-simcancel">Cancel</button></div></div>' : '';
 }
 function dsimExtItem(l, i) {
-  const ap = isApproved(i), sid = esc(i.id);
+  const ap = isApproved(i), sid = esc(i.id), full = (dsims(l.id).items || []).filter(isApproved).length >= SIM_MAX;
   return '<div class="rcard' + (ap ? ' approved' : '') + '"><div class="rhead"><div style="min-width:0"><div class="rtitle">' + esc(i.title) + '</div>' +
-    '<div class="rmeta"><span class="chip navy">' + esc(i.site_name) + '</span><span class="chip grey">External, not checked by us</span>' +
+    '<div class="rmeta"><span class="chip navy">' + esc(i.site_name) + '</span><span class="chip grey">External, not checked by us</span>' + simCode(i) +
     (i.score ? '<span>Matches “' + esc(i.matched) + '” (' + Math.round(i.score * 100) + '% similar)</span>' : '') + '</div></div>' +
     (ap ? '<span class="chip green">' + ICON.check + ' Approved</span>' : '') + '</div>' +
     (i.summary ? '<p class="why">' + esc(i.summary) + '</p>' : '') +
     '<div class="acts"><a class="btn sm' + (ap ? '' : ' primary') + '" href="' + esc(i.url) + '" target="_blank" rel="noopener">Open ' + ICON.link + '</a>' +
     (ap ? '<button class="btn sm" data-act="d-simdec" data-decision="undo" data-sim="' + sid + '">Undo approval</button>'
-      : '<button class="btn sm ok" data-act="d-simdec" data-decision="approve" data-sim="' + sid + '">' + ICON.check + ' Approve</button><button class="btn sm bad" data-act="d-simask" data-sim="' + sid + '">Reject</button>') +
+      : (full ? '' : '<button class="btn sm ok" data-act="d-simdec" data-decision="approve" data-sim="' + sid + '">' + ICON.check + ' Approve</button>') + '<button class="btn sm bad" data-act="d-simask" data-sim="' + sid + '">Reject</button>') +
     '</div>' + dsimReason(l, i) + '</div>';
 }
 function dsimNone(kind) {
@@ -1618,7 +1625,7 @@ function dsimNone(kind) {
     '<p class="small muted" style="margin-top:4px">That second part is a guess (right about 3 times in 4). If you want one anyway, add it from the catalogue or ask for a new one.</p></div>';
 }
 function dsimItem(l, i, nPending) {
-  const ap = isApproved(i), d = i.decision, sid = esc(i.id);
+  const ap = isApproved(i), d = i.decision, sid = esc(i.id), full = (dsims(l.id).items || []).filter(isApproved).length >= SIM_MAX;
   const match = i.source === 'added' ? (i.added_by === 'machine' ? 'Built by the machine from your request' : 'Added by you from the catalogue') : i.source === 'suggested' ? (i.close ? 'Close match' : 'Possible match') + ': ' +
     (i.via === 'summary' ? 'the lecture summary' : '“' + esc(i.matched) + '”') + ' (' + Math.round(i.score * 100) + '% similar)' : '';
   const ex = !i.class_example ? '<p class="small muted" style="margin-top:6px">Students start from its default example (this simulation cannot keep a class example yet).</p>'
@@ -1628,11 +1635,11 @@ function dsimItem(l, i, nPending) {
   const open = '<button class="btn sm' + (ap ? '' : ' primary') + '" data-act="d-simopen" data-sim="' + sid + '" data-lid="' + esc(l.id) + '">Try it</button>';
   const acts = ap ? open + (d.outdated ? '<button class="btn sm ok" data-act="d-simdec" data-decision="approve" data-sim="' + sid + '">' + ICON.check + ' Approve v' + esc(i.version) + '</button>' : '') +
       '<button class="btn sm" data-act="d-simdec" data-decision="undo" data-sim="' + sid + '">Undo approval</button>'
-    : open + '<button class="btn sm ok" data-act="d-simdec" data-decision="approve" data-sim="' + sid + '">' + ICON.check + ' Approve</button>' +
+    : open + (full ? '' : '<button class="btn sm ok" data-act="d-simdec" data-decision="approve" data-sim="' + sid + '">' + ICON.check + ' Approve</button>') +
       (nPending > 1 ? '<button class="btn sm" data-act="d-simdec" data-decision="replace" data-sim="' + sid + '" title="Set it aside and show the next suggestion">Replace</button>' : '') +
       '<button class="btn sm bad" data-act="d-simask" data-sim="' + sid + '">Reject</button>';
   return '<div class="rcard' + (ap ? ' approved' : '') + '"><div class="rhead"><div style="min-width:0"><div class="rtitle">' + esc(i.title) + '</div>' +
-    '<div class="rmeta">' + simMade(i) + simChecked(i) + (match ? '<span>' + match + '</span>' : '') + '</div></div>' +
+    '<div class="rmeta">' + simMade(i) + simCode(i) + simChecked(i) + (match ? '<span>' + match + '</span>' : '') + '</div></div>' +
     (ap ? '<span class="chip green">' + ICON.check + ' Approved (v' + esc(d.version) + ')</span>' : '') + '</div>' +
     '<p class="why">' + esc(i.summary) + '</p>' +
     (i.retired ? '<div class="warn">This simulation was retired from the catalogue. Students can still open it; consider another one.</div>' : '') +

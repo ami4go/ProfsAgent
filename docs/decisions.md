@@ -8,6 +8,37 @@ Mark anything still waiting for someone as **Open**.
 
 ---
 
+## 2026-11-03: up to 2 simulations per lecture; always show one with its code
+
+### 31. A professor may approve up to 2 simulations for a lecture (and from one request); the shown results always include one that shows the algorithm's code beside it, when one matches
+- **Decision (Amit, 3 Nov):** "let the professor approve more than 1 link, 2 will be good enough, and always show the top results and one with the sideways code: the simulation along with the code develops a solid understanding."
+- **Changed:**
+  - **The code flag.** `sim.yaml` gains `shows_code`:
+    - true for the 8 step-by-step entries, both machine-built drafts included (the stepper engine always shows the code with the current line lit);
+    - false for DBSCAN and convolution.
+    - Sites in `simulations/external/sources.yaml` can set it too: VisuAlgo and Python Tutor do (27 saved links).
+    - Pages found on the web are checked when the search opens them: a code or pseudocode panel of 3 or more code-like lines, inside frames too (W3Schools' DSA pages pass).
+  - **One with code among the shown results:** `app/simulations.with_code()`. When none of the top results shows its code, the best one that does takes the last shown place.
+    - It applies to the lecture suggestions (ours and links) and to a request's finds.
+    - On the lecture card, when the top suggestion has no code, the best one with code is shown beside it.
+    - The label is "Shows the code alongside".
+  - **At most 2 approved:**
+    - `decide()` refuses a third approval on a lecture ("Undo one first"), and the card shows "n of 2 approved" with no Approve buttons once full.
+    - In a request's review, a second find can be approved ("Also approve") while it is chosen; `chosen` is now a list, and undoing the last one returns the request to review.
+    - A request made from a lecture puts both on the lecture.
+  - **The search, tightened from real runs:**
+    - results that end on the same page (two Virtual Labs pages leading to one demo) are shown once;
+    - our own simulations must also name the topic's key words, so Selection Sort is no longer offered for "Merge Sort".
+- **Measured (real searches, 3 Nov):**
+  - Merge Sort: Virtual Labs demo, VisuAlgo (code), W3Schools (code).
+  - Selection Sort: ours (code), Virtual Labs demo, VisuAlgo (code), W3Schools (code).
+- **Checked:**
+  - tests: `test_websearch.py` (the limit of 2 per lecture and per request, undo, `with_code`, site flags);
+  - full suite: 424 passed, 1 skipped; 1 failure, the known Python 3.10 problem in `test_llm_check.py`;
+  - Chrome click-through: 0 problems, including "Also approve", no third Approve, and the code label.
+- **Agreed by:** Amit (3 Nov).
+- **For Vihan:** the mix (entry 30) should allow up to 2 simulations per part, and prefer one that shows its code.
+
 ## 2026-11-03: reply to Vihan's "Lecture delivery mix" proposal (2 Nov)
 
 ### 30. The app can hold the mix in the Lecture plan tab; simulations should be a fifth way to deliver a part; what the app needs from `mix.py`

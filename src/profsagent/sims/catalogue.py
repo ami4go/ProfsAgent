@@ -114,6 +114,8 @@ def problems(e: dict) -> list[str]:
         p.append("summary must be one plain line of 20-240 characters (what students do)")
     if not isinstance(e.get("class_example", False), bool):
         p.append("class_example must be true or false")
+    if not isinstance(e.get("shows_code", False), bool):
+        p.append("shows_code must be true or false")
     if e.get("class_example") and files.get("page_src") and (d / files["page_src"]).exists() and             "_engines/share/share.js" not in (d / files["page_src"]).read_text(encoding="utf-8"):
         p.append("class_example: true needs the page to load ../_engines/share/share.js")
     log = e["changelog"]

@@ -46,6 +46,16 @@ def site_name(url: str) -> str:
     return host
 
 
+def site_shows_code(url: str) -> bool:
+    """A trusted site whose simulations show their code (sources.yaml sites: shows_code), e.g. VisuAlgo, Python Tutor."""
+    host = urlparse(url).netloc.lower().removeprefix("www.")
+    for site in (X.sources().get("sites") or {}).values():
+        h = urlparse(site.get("home") or "").netloc.lower().removeprefix("www.")
+        if site.get("shows_code") and h and (host == h or host.endswith("." + h)):
+            return True
+    return False
+
+
 def trusted(url: str) -> bool:
     host = urlparse(url).netloc.lower().removeprefix("www.")
     return any(host == d or host.endswith("." + d) for d in _search_cfg().get("domains") or [])
@@ -101,7 +111,11 @@ VISIT_JS = r"""
   const text = (document.body.innerText || '').replace(/\s+/g, ' ').trim();
   const meta = (document.querySelector('meta[name="description"]') || {}).content || '';
   const heads = [...document.querySelectorAll('h1, h2')].map(h => (h.innerText || '').trim()).filter(Boolean).slice(0, 6).join(' | ');
-  return { title: document.title || '', meta, heads, text: text.slice(0, 2500),
+  // a code or pseudocode panel (3+ lines that read like code), as VisuAlgo, Python Tutor and our step-by-step pages have
+  const codeLike = /\b(for|while|if|else|return|def|function|int|void|let|var|end|do|then|repeat|until)\b|==|<=|>=|:=|\+=/;
+  const code = [...document.querySelectorAll('pre, code, ol.code, .code, [class*="pseudo" i], [class*="codetrace" i], [id*="code" i]')]
+    .filter(e => { const r = e.getBoundingClientRect(); const t = (e.innerText || '').trim(); return r.width > 80 && r.height > 30 && t.split('\n').length >= 3 && codeLike.test(t); }).length;
+  return { title: document.title || '', meta, heads, code, text: text.slice(0, 2500),
            canvas: big('canvas'), svg: big('svg'), iframe: big('iframe'),
            ranges: [...main.querySelectorAll('input[type=range]')].filter(vis).length,
            buttons: [...main.querySelectorAll('button, input[type=button], input[type=submit], [role=button]')].filter(vis).length,
@@ -133,7 +147,7 @@ def measure(pg) -> dict:
             sub = fr.evaluate(VISIT_JS)
         except Exception:  # noqa: BLE001 - a frame that went away or cannot be read
             continue
-        for k in ("canvas", "svg", "ranges", "buttons", "inputs", "words"):
+        for k in ("canvas", "svg", "ranges", "buttons", "inputs", "words", "code"):
             rec[k] = rec.get(k, 0) + sub.get(k, 0)
         if len(rec.get("text", "")) < 400:
             rec["text"] = (rec.get("text", "") + " " + sub.get("text", ""))[:2500]
@@ -227,22 +241,25 @@ def find(req: dict, work: Path, log=print) -> list[dict]:
     local = S.compute([{"lecture_id": "REQ", "topic": topic, "summary": what}], "", S.entries()).get("REQ") or {}
     for m in local.get("matches", [])[:2]:
         e = S.entry(m["id"])
-        if e and e.get("status") != "retired":
-            cands.append({"kind": "ours", "id": e["id"], "title": e["title"], "summary": e["summary"], "site": "ProfsAgent (ours)",
+        # ours must also name the topic, as web pages must (the model alone offered Selection Sort for "Merge Sort")
+        if e and e.get("status") != "retired" and names_topic({"title": e["title"], "heads": " ".join(e.get("topics") or [])}, "", topic):
+            cands.append({"kind": "ours", "id": e["id"], "title": e["title"], "summary": e["summary"], "site": "ProfsAgent (ours)", "shows_code": bool(e.get("shows_code")),
                           "score": m["score"], "why": f"in our catalogue ({round(100 * m['score'])}% match)"})
             seen.add(e["id"])
     saved = []
     for m in local.get("external", [])[:2]:
         x = X.get(m["id"])
         if x:
-            saved.append({"url": x["url"], "title": x["title"], "content": x["summary"], "score": m["score"], "via": "saved", "ext_id": x["id"]})
+            saved.append({"url": x["url"], "title": x["title"], "content": x["summary"], "score": m["score"], "via": "saved", "ext_id": x["id"],
+                          "shows_code": X.shows_code(x)})
     if os.environ.get("PROFSAGENT_SIMS_SEARCH") == "local":   # QA servers and demos: no web search, no page visits
-        cands += [{"kind": "link", "url": r["url"], "title": r["title"], "summary": r["content"], "site": site_name(r["url"]), "trusted": True,
+        cands += [{"kind": "link", "url": r["url"], "title": r["title"], "summary": r["content"], "site": site_name(r["url"]), "trusted": True, "shows_code": r["shows_code"],
                    "ext_id": r["ext_id"], "shot": None, "score": r["score"], "why": f"a saved link to a trusted site ({round(100 * r['score'])}% match)"}
                   for r in saved]
-        for i, c in enumerate(cands[:SHOW]):
+        cands = S.with_code(cands, SHOW, lambda c: c.get("shows_code"))
+        for i, c in enumerate(cands):
             c["n"] = i + 1
-        return cands[:SHOW]
+        return cands
     # 2. the web: trusted sites first, then anywhere
     q = f"{topic} interactive simulation"
     found = saved + web(q, _search_cfg().get("domains")) + web(q)
@@ -261,21 +278,27 @@ def find(req: dict, work: Path, log=print) -> list[dict]:
     visited = visit([u for u, _ in order], work / "found")
     texts = [f"{topic}. {what}"] + [f"{v.get('title', '')}. {v.get('meta', '')} {v.get('text', '')[:600]}" for v in visited]
     E = K.embed(texts)
+    finals = set()
     for (u, r), v, sim in zip(order, visited, (E[1:] @ E[0]).tolist()):
+        final = (v.get("final_url") or u).split("#")[0].split("?")[0].rstrip("/")
+        if final in finals:                              # two results that lead to the same page (e.g. after a Demo link)
+            continue
         act = interactive(v) if v.get("ok") else 0
         named = names_topic(v, u, topic)
         keep = v.get("ok") and act >= 3 and sim >= REL_MIN and named
-        log(f"  {'keep' if keep else 'skip'} {u} (loads {bool(v.get('ok'))}, controls {act}, topic {sim:.2f}, named {named}"
+        log(f"  {'keep' if keep else 'skip'} {u} (loads {bool(v.get('ok'))}, controls {act}, code {v.get('code', 0)}, topic {sim:.2f}, named {named}"
             + (f", followed {v['followed']}" if v.get("followed") else "") + ")")
         if not keep:
             continue
+        finals.add(final)
         cands.append({"kind": "link", "url": v.get("final_url") or u, "title": page_title(v, r, u),
+                      "shows_code": bool(v.get("code")) or site_shows_code(u) or bool(r.get("shows_code")),
                       "summary": (v.get("meta") or r.get("content") or "")[:240], "site": site_name(u), "trusted": trusted(u),
                       "ext_id": r.get("ext_id"), "shot": v.get("shot"), "score": round(0.6 * sim + 0.05 * min(act, 8) + (0.1 if trusted(u) else 0), 3),
                       "why": ("on a trusted site" if trusted(u) else "found on the web (not a trusted site)") +
                              f"; opened by the machine: it loads, has controls or a drawing area, and matches the topic ({round(100 * sim)}%)"})
     links = sorted((c for c in cands if c["kind"] == "link"), key=lambda c: (not c["trusted"], -c["score"]))
-    out = [c for c in cands if c["kind"] == "ours"] + links
-    for i, c in enumerate(out[:SHOW]):
+    out = S.with_code([c for c in cands if c["kind"] == "ours"] + links, SHOW, lambda c: c.get("shows_code"))   # one with its code, when any
+    for i, c in enumerate(out):
         c["n"] = i + 1
-    return out[:SHOW]
+    return out

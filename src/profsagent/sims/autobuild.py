@@ -250,6 +250,7 @@ def publish(req: dict, code: str, meta: dict, report: dict, build: dict) -> str:
     entry = {
         "id": sid, "type": ["1-step-through"], "title": title,
         "summary": (meta.get("summary") or req.get("what") or title).strip()[:240],
+        "shows_code": True,                     # the stepper engine always shows the code beside the simulation
         "version": "1.0.0", "status": "draft", "built_by": "machine", "request": req.get("id"),
         "courses": [], "topics": [str(t) for t in (meta.get("topics") or [req.get("topic")])][:8],
         "interactivity": "L3", "engine": {"name": "stepper", "path": "_engines/stepper"},

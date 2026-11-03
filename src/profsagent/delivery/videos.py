@@ -156,7 +156,7 @@ def build(lid: str, comps: list[dict], timeline: list[dict], alts: list[dict], b
            "segments": [{"video": by_vid[s["vid"]]["title"], "video_id": s["vid"],
                          "url": f"https://www.youtube.com/watch?v={s['vid']}&t={int(s['start'])}s",
                          "start": hms(s["start"]), "end": hms(s["end"]), "minutes": round((s["end"] - s["start"]) / 60, 1),
-                         "verdict": s["verdict"], "score": s.get("score")}
+                         "verdict": s["verdict"], "score": s.get("score"), "clarity": s.get("clarity"), "level_fit": s.get("level_fit")}
                         for s in r["segments"]]} for r in timeline]
     return {"timeline": tl, "videos": videos, "reserve": reserve[:4], "clips": clips, "rejected": rejected[:15]}
 

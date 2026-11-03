@@ -1,6 +1,6 @@
 ---
 id: D6
-version: 0.1.0
+version: 0.2.0
 stage: Phase 2 · C · does this video stretch teach the component? (AI check on the transcript)
 model_class: generate
 temperature: 0.1
@@ -31,7 +31,9 @@ For each stretch:
 - note: ≤ 25 words for the professor (e.g. "clear walkthrough with a live demo; assumes Python").
 
 Judge only from the transcript text given; never assume what the rest of the video says. Be strict: an
-introduction that lists what the video will cover is "mentions". Output one JSON object only:
+introduction that lists what the video will cover is "mentions". Check the sense of the words too: a stretch that
+uses the component's terms for something else (e.g. "execution traces" of a mobile app's performance monitor when the
+component is about traces of a coding agent's steps) is "off_topic", however many words it shares. Output one JSON object only:
 {"checks": [{"id": "s1", "verdict": "teaches_fully", "start": "4:30", "end": "11:00", "covered": ["..."],
 "missing": [], "clarity": 4, "level_fit": 4, "note": "..."}]}
 

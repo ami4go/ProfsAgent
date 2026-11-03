@@ -77,6 +77,104 @@ class SegmentCheck(M):
     note: str = ""                                 # ≤ 25 words for the professor
 
 
+# ------------------------------------------------------------------ the delivery mix (delivery/mix.py; file delivery/mix/<lecture>.json)
+Way = Literal["slides", "youtube", "youtube_bridge", "notebooklm", "in_class", "simulation"]
+When = Literal["in_class", "pre_class"]
+
+
+class MixSegment(M):
+    video: str
+    video_id: str
+    url: str
+    start: str
+    end: str
+    minutes: float
+    verdict: str
+
+
+class MixSimulation(M):
+    id: Optional[str] = None                       # catalogue entry (simulations/<id>) ...
+    url: Optional[str] = None                      # ... or a link to a trusted site (ext:<site>:<slug>)
+    title: str
+    source: str = ""                               # "catalogue", "built", or the site's name
+    score: float = 0.0
+    class_example: Optional[dict] = None           # the setup students start from, when the professor saved one
+
+
+class PartMix(M):
+    component: str                                 # W03.L2.C1
+    title: str
+    minutes: int                                   # class minutes for this part
+    kind: str = "concept"
+    bloom: int = 2
+    way: Way
+    when: When = "in_class"                        # pre_class: watched before class; the part's minutes are a debrief
+    rule: str                                      # R1 in class, R1b simulation, R2 YouTube, R3 YouTube + bridge, R4 NotebookLM,
+                                                   # R5 slides, P preference, L lecture check, D7 AI, professor
+    reason: str                                    # one line for the professor
+    alternative: Optional[dict] = None             # {"way", "reason"}: the next best way
+    allowed: list[Way] = Field(default_factory=list)   # ways the evidence supports (slides and in_class always)
+    locked: bool = False
+    set_by: Literal["ai", "professor"] = "ai"
+    prep_minutes: int = 0
+    segments: list[MixSegment] = Field(default_factory=list)   # youtube / youtube_bridge
+    video_minutes: float = 0.0
+    bridge: list[str] = Field(default_factory=list)            # youtube_bridge: points the professor's slides add
+    coverage: Optional[float] = None               # share of key terms found in the NotebookLM sources
+    uncovered: list[str] = Field(default_factory=list)         # key terms no source has
+    simulation: Optional[MixSimulation] = None     # the best matching simulation (evidence; used when way is simulation)
+
+
+class LectureMix(M):
+    lecture_id: str
+    topic: str
+    minutes: int                                   # the lecture's minutes (parts + recap + quiz)
+    status: Literal["proposed", "approved"] = "proposed"
+    preset: Literal["slides_only", "slides_clips", "slides_notebooklm", "flipped", "full_mix"]
+    preset_by: Literal["ai", "professor"] = "ai"
+    course_style: Literal["slides", "mix", "flipped"] = "mix"
+    parts: list[PartMix]
+    recap_minutes: int = 0
+    quiz_minutes: int = 0
+    totals: dict = Field(default_factory=dict)     # minutes per way: slides, video_in_class, video_pre_class, notebooklm, in_class,
+                                                   # simulation, recap, quiz; and video_share (in class)
+    prep_minutes: int = 0
+    checks: list[dict] = Field(default_factory=list)   # [{code, message}] lecture-level notes
+    note: str = ""                                 # the professor's note for "propose again"
+    proposed_by: str = "rules"                     # rules | rules + D7
+    proposed_at: str = ""
+    approved_at: str = ""
+    approved_by: str = ""
+    materials: dict = Field(default_factory=dict)  # after approval: {"notebooklm": path, "quiz": path}
+
+
+# ------------------------------------------------------------------ D7 reasons for the mix (may swap within the rules)
+class MixChoice(M):
+    id: str                                        # component id
+    way: Way
+    reason: str                                    # ≤ 25 words
+    because: Literal["keep", "note", "fit", "balance"] = "keep"
+
+
+class MixChoices(M):
+    parts: list[MixChoice]
+
+
+# ------------------------------------------------------------------ D8 closing review quiz
+class QuizQuestion(M):
+    component: str
+    lo_ids: list[str] = Field(default_factory=list)
+    bloom: int = Field(default=2, ge=1, le=6)
+    question: str
+    options: list[str] = Field(default_factory=list)   # 4 for a multiple-choice question, empty for a short answer
+    answer: str                                    # the correct option's letter (A–D), or the model answer
+    explanation: str = ""
+
+
+class Quiz(M):
+    questions: list[QuizQuestion]
+
+
 class SegmentChecks(M):
     checks: list[SegmentCheck]
 

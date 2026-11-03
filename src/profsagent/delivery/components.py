@@ -6,6 +6,9 @@ Each component says what students must learn (`teaches`, `key_terms`), its kind,
 then delivered by verified video segments (segments.py), a NotebookLM video the professor makes (notebooklm.py), or
 in class (activities, discussions). Deliverable B builds its slides on the same plan.
 
+Each lecture keeps a few minutes free for the opening recap and the closing review quiz (mix.reserve_for; recorded as
+`reserved` and `lecture_minutes` in the plan's lectures), so the components add up to the rest.
+
 The AI proposes; the program enforces the time rules (minutes add up per lecture, within bounds, multiples of
 `round_to`) and repairs small misses itself. A plan it cannot repair is asked for again once with the problems
 listed; failing that, a plan is built from the learning outcomes without AI.
@@ -89,13 +92,14 @@ def check_plan(comps: list[dict], lectures: list[dict], lo_ids: list[str]) -> tu
     return comps, problems
 
 
-def fallback_plan(group: list[dict]) -> list[dict]:
-    """No AI: one component per learning outcome (cycled), minutes split evenly — honest, but generic."""
+def fallback_plan(group: list[dict], minutes: dict[str, int] | None = None) -> list[dict]:
+    """No AI: one component per learning outcome (cycled), minutes split evenly — honest, but generic. `minutes`: the
+    component minutes per lecture (the lecture less its recap and quiz); default the whole lecture."""
     c = rcfg()["components"]
     los = [lo for lo in group[0]["learning_outcomes"]] or [{"id": None, "statement": group[0]["topic"], "bloom_level": 2}]
     out, k = [], 0
     for b in group:
-        total = minutes_of(b)
+        total = (minutes or {}).get(b["lecture_id"]) or minutes_of(b)
         n = max(1, min(len(los), round(total / c["target_minutes"]))) if total >= 2 * c["min_minutes"] else 1
         while n > 1 and _fit_minutes([1] * n, total) is None:
             n -= 1
@@ -117,6 +121,16 @@ def for_window(run_id: str, lecture_id: str, start_min: float = 0, minutes: floa
     from profsagent.delivery.common import out_dir, read_json
     plans = read_json(out_dir(run_id) / "components.json", {}) or {}
     comps = [c for p in plans.values() for c in p["components"] if c["lecture_id"] == lecture_id]
+    lec = next((x for p in plans.values() for x in p.get("lectures", []) if x["lecture_id"] == lecture_id), {})
+    res = lec.get("reserved") or {}
+    if comps and res.get("recap"):              # the recap opens the lecture and the quiz closes it
+        comps = [{"id": f"{lecture_id}.RECAP", "lecture_id": lecture_id, "title": "Recap of the previous lecture", "kind": "recap",
+                  "teaches": "Two or three questions on the previous lecture, answered and discussed.", "key_terms": [],
+                  "bloom": 2, "lo_ids": [], "minutes": res["recap"], "in_class": False}] + comps
+    if comps and res.get("quiz"):
+        comps = comps + [{"id": f"{lecture_id}.QUIZ", "lecture_id": lecture_id, "title": "Review quiz", "kind": "quiz",
+                          "teaches": "One question per part of this lecture, then the answers.", "key_terms": [],
+                          "bloom": 2, "lo_ids": [], "minutes": res["quiz"], "in_class": False}]
     end = float("inf") if minutes is None else start_min + minutes
     out, t = [], 0.0
     for c in comps:
@@ -131,9 +145,15 @@ def for_window(run_id: str, lecture_id: str, start_min: float = 0, minutes: floa
 
 def plan_topic(llm, st: dict, group: list[dict], run_id: str, log) -> dict:
     """Component plan for one topic over its lectures: {topic_id, lectures, components, via, problems}."""
+    from profsagent.delivery.mix import _first_lecture, reserve_for
     from profsagent.delivery.resources import llm_call
     first = group[0]
-    lectures = [{"lecture_id": b["lecture_id"], "minutes": minutes_of(b)} for b in group]
+    course_first = _first_lecture(run_id)
+    lectures = []
+    for b in group:                                   # minutes for the components: the lecture less its recap and quiz
+        recap, quiz = reserve_for(minutes_of(b), b["lecture_id"] == course_first)
+        lectures.append({"lecture_id": b["lecture_id"], "minutes": minutes_of(b) - recap - quiz, "lecture_minutes": minutes_of(b),
+                         "reserved": {"recap": recap, "quiz": quiz}})
     lo_ids = [x["id"] for x in first["learning_outcomes"]]
     c = rcfg()["components"]
     ctx = {"course": {"course_name": st["cco_compact"]["course_name"], "level": st.get("level"),
@@ -144,7 +164,7 @@ def plan_topic(llm, st: dict, group: list[dict], run_id: str, log) -> dict:
                      "builds_on": [x["topic"] for x in first.get("builds_on", [])],
                      "leads_to": [x["topic"] for x in first.get("leads_to", [])],
                      "hands_on": any(b.get("hands_on") for b in group), "novel": first.get("novel")},
-           "lectures": lectures,
+           "lectures": [{"lecture_id": x["lecture_id"], "minutes": x["minutes"]} for x in lectures],
            "limits": {k: c[k] for k in ("min_minutes", "max_minutes", "target_minutes", "round_to")}, "problems": []}
     comps, problems, via = None, [], "fallback (no AI)"
     for attempt in range(2):
@@ -160,7 +180,7 @@ def plan_topic(llm, st: dict, group: list[dict], run_id: str, log) -> dict:
         log(f"  [D5] plan for {first['topic_id']} rejected: {'; '.join(problems)[:200]}")
         ctx["problems"] = problems
     if comps is None:
-        comps, problems = fallback_plan(group), []
+        comps, problems = fallback_plan(group, {x["lecture_id"]: x["minutes"] for x in lectures}), []
     n = {}
     for x in comps:                                   # ids: W03.L1.C1, W03.L1.C2, ...
         n[x["lecture_id"]] = n.get(x["lecture_id"], 0) + 1

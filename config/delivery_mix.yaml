@@ -1,0 +1,64 @@
+# Phase 2 · Deliverable C — the delivery mix (doc "Lecture delivery mix — design proposal", 2 Nov; docs/decisions.md 30).
+# Each part (component) of a lecture is delivered one way; delivery/mix.py applies the rules below in order, checks the
+# lecture as a whole, and D7 writes the reasons. The professor changes what they want and approves; only then are the
+# NotebookLM prompts and the quiz made (and B's deck follows the approved mix).
+
+ways: [slides, youtube, youtube_bridge, notebooklm, in_class, simulation]
+
+rules:
+  in_class_kinds: [activity, discussion]            # rule 1: always in class
+  in_class_hard_kinds: [worked_example, case_study] #         ... and these from Bloom 4 up
+  in_class_hard_bloom: 4
+  simulation_kinds: [mechanism, demo, worked_example, concept]   # rule 1b (Amit): a process, mechanism or algorithm ...
+  simulation_always: [mechanism, demo]              #   (these kinds always count; the others only when their text says so)
+  simulation_words: "algorithm|process|protocol|mechanism|lifecycle|pipeline|scheduling|loop|state machine"
+  simulation_bloom: [2, 4]                          # ... at Bloom 2–4, with a matching simulation
+  simulation_catalogue_min: 0.60                    # same thresholds as the app (app/simulations.py MATCH, EXT_MATCH)
+  simulation_link_min: 0.65
+  youtube_min_clarity: 4                            # rule 2: a stretch that teaches the part fully, clear, right level
+  youtube_min_level_fit: 4
+  youtube_length: [0.6, 1.3]                        #         and its length 0.6–1.3 x the part's minutes
+  bridge_min_share: 0.6                             # rule 3: partial stretches covering >= 60% of the part's minutes
+  notebooklm_kinds: [concept, mechanism, comparison]   # rule 4
+  notebooklm_min_coverage: 0.6                      #         share of the part's key terms found in the notebook's sources
+  notebooklm_max_confidence: 3                      #         professor's confidence (survey, 1–5) at most this, or a new topic
+
+lecture:
+  video_share_max: 0.40          # video in class at most this share of the lecture's minutes; the rest goes before class
+  clip_in_class_max_min: 8       # a single clip longer than this is watched before class
+  first_part_live: true          # the professor frames the lecture: the first part is not a video
+  max_switches: 4                # changes of way between neighbouring parts
+  notebooklm_max: 2              # NotebookLM videos a professor makes for one lecture (open question; the rest -> slides)
+
+reserve:                         # minutes D5 keeps free in each lecture (components.py) for the opening recap and closing quiz
+  quiz: [[90, 10], [45, 5]]      # [lecture minutes from, quiz minutes]: >= 90 min -> 10, >= 45 -> 5, shorter -> none
+  recap: [[45, 5]]               # not for the course's first lecture
+  quiz_questions: [4, 8]         # one per part, at least 4 and at most 8
+  recap_questions: 3             # taken from the previous lecture's quiz
+
+presets:                         # ways each preset allows (slides is always allowed)
+  slides_only: [slides, in_class]
+  slides_clips: [slides, youtube, youtube_bridge, in_class, simulation]
+  slides_notebooklm: [slides, notebooklm, in_class, simulation]
+  flipped: [slides, youtube, youtube_bridge, notebooklm, in_class, simulation]
+  full_mix: [slides, youtube, youtube_bridge, notebooklm, in_class, simulation]
+course_styles:                   # asked once per course; sets the starting preset (decided per lecture for "mix")
+  slides: slides_only
+  mix: null
+  flipped: flipped
+
+prep_minutes:                    # professor's preparation per part, shown beside the minutes bar (rough, per way)
+  slides: 1.0                    # x the part's minutes (read and adjust B's slides)
+  youtube: 5                     # + the video minutes (watch once)
+  youtube_bridge: 10             # + the video minutes
+  notebooklm: 15                 # paste, generate, watch, check
+  in_class: 10
+  simulation: 10
+
+preferences:                     # learning from the professor's changes (delivery/app_mix_changes.jsonl)
+  min_changes: 20                # no per-professor rule before this many changes in the course
+  min_count: 3                   # a kind -> way preference needs this many changes ...
+  min_share: 0.6                 # ... and this share of that kind's changes
+
+ai_reasons: true                 # D7 writes the reasons (and may swap within the rules); false = rule reasons only
+ai_quiz: true                    # D8 writes the quiz; false = no quiz questions (the minutes stay reserved)

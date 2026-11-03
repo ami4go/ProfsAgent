@@ -2,7 +2,8 @@
 
   briefs   → runs/<id>/delivery/briefs.json + briefs.md
   survey   → runs/<id>/delivery/survey.yaml (professor's answers; nothing is searched without them)
-  recommend→ per lecture runs/<id>/delivery/lectures/<lecture>.json (resources, clips, experts), guest_kits/<lecture>.md
+  recommend→ per lecture runs/<id>/delivery/lectures/<lecture>.json (resources, clips, experts), guest_kits/<lecture>.md,
+             and the proposed delivery mix mix/<lecture>.json (mix.py) with the NotebookLM pack for its NotebookLM parts
   report   → runs/<id>/delivery/report.md (what the professor reads) + review.yaml (what the professor decides)
 Each lecture is saved as soon as it is done, so a run that stops (quota, network) continues where it left off.
 """
@@ -144,6 +145,12 @@ def recommend(run_id: str, lectures: list[str] | None = None, refresh: bool = Fa
             if (res.get("resources") or {}).get("partial"):
                 res["partial"] = res["resources"]["partial"]
             write_json(d / "lectures" / f"{lid}.json", res)
+            if res.get("resources") and comps:
+                try:                              # the proposed mix; an approved one with the same parts is kept
+                    from profsagent.delivery import mix
+                    mix.propose(run_id, lid, log=log, keep_approved=True)
+                except Exception as e:  # noqa: BLE001 — the lecture's results stay; the mix can be made later (run_delivery.py mix)
+                    log(f"  mix {lid}: not made ({type(e).__name__}: {str(e)[:120]})")
             if transcripts_blocked() and not warned:
                 warned = True
                 log(f"  ! YouTube is blocking transcript requests from this IP (since {transcripts_blocked()}). No more are sent "

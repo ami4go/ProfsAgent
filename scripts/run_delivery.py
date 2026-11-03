@@ -5,13 +5,17 @@
   python scripts/run_delivery.py survey    --run-id cs601-02 --ask         # answer them in the terminal
   python scripts/run_delivery.py survey    --run-id cs601-02 --defaults    # test defaults for unanswered questions
   python scripts/run_delivery.py recommend --run-id cs601-02 [--lectures W02.L1,W03.L1] [--limit 3] [--refresh]
+  python scripts/run_delivery.py mix       --run-id cs601-02 [--lectures W03.L2] [--note "..."] [--no-ai] [--approve]
+                                                                            # delivery mix per lecture (+ quiz when approved)
+  python scripts/run_delivery.py mix       --run-id cs601-02 --style flipped   # course style: slides | mix | flipped
   python scripts/run_delivery.py review    --run-id cs601-02 --apply       # apply decisions from review.yaml
   python scripts/run_delivery.py feedback  --run-id cs601-02               # create / record feedback.yaml ratings
   python scripts/run_delivery.py health    --run-id cs601-02               # re-check approved links
   python scripts/run_delivery.py graph     --run-id cs601-02               # write delivery records to Neo4j
   python scripts/run_delivery.py all       --run-id cs601-02 --defaults --limit 3   # briefs → survey → recommend → graph
 
-Outputs: runs/<id>/delivery/ (briefs.md, survey.yaml, report.md, review.yaml, guest_kits/, lectures/*.json).
+Outputs: runs/<id>/delivery/ (briefs.md, survey.yaml, report.md, review.yaml, guest_kits/, lectures/*.json, mix/*.json,
+notebooklm/*.md, quiz/*.json|md).
 Needs YOUTUBE_API_KEY and OPENALEX_API_KEY in .env; Gemini/Groq keys as in Phase 1.
 """
 from __future__ import annotations
@@ -32,7 +36,7 @@ from profsagent.delivery import survey as sv  # noqa: E402
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["briefs", "survey", "recommend", "review", "feedback", "health", "graph", "all"])
+    ap.add_argument("cmd", choices=["briefs", "survey", "recommend", "mix", "review", "feedback", "health", "graph", "all"])
     ap.add_argument("--run-id", required=True)
     ap.add_argument("--init", action="store_true")
     ap.add_argument("--ask", action="store_true")
@@ -43,6 +47,10 @@ def main() -> None:
     ap.add_argument("--refresh", action="store_true", help="redo lectures that already have results")
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--no-graph", action="store_true")
+    ap.add_argument("--approve", action="store_true", help="mix: approve the proposal and make the NotebookLM pack and quiz")
+    ap.add_argument("--note", default="", help="mix: the professor's note for the AI (e.g. \"I'll teach MCP schemas myself\")")
+    ap.add_argument("--no-ai", action="store_true", help="mix: rule reasons only (no D7)")
+    ap.add_argument("--style", choices=["slides", "mix", "flipped"], help="mix: set the course's delivery style")
     a = ap.parse_args()
     lect = a.lectures.split(",") if a.lectures else None
 
@@ -61,6 +69,16 @@ def main() -> None:
     if a.cmd in ("recommend", "all"):
         r = pipeline.recommend(a.run_id, lectures=lect, refresh=a.refresh, limit=a.limit)
         print(f"report: {r['report']} ({r['lectures']} lectures)")
+    if a.cmd == "mix":
+        from profsagent.delivery import mix
+        if a.style:
+            print(f"course style: {mix.course_style(a.run_id, a.style)}")
+        ms = mix.run_for(a.run_id, lect, approve_all=a.approve, note=a.note, use_ai=False if a.no_ai else None)
+        for m in ms:
+            t = m["totals"]
+            print(f"{m['lecture_id']} {m['status']:8} {m['preset']:17} " + " ".join(f"{p['way']}" for p in m["parts"]) +
+                  f" | video in class {round(100 * t['video_share'])}% · prep {m['prep_minutes']} min" +
+                  (f" | {len(m['checks'])} note(s)" if m["checks"] else ""))
     if a.cmd == "review":
         if a.apply:
             print(json.dumps(review.apply(a.run_id), indent=1))

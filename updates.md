@@ -4,6 +4,30 @@ Short status note for teammates and their coding agents, so nobody has to re-rea
 Newest entry on top. Owners: Phase 2 deliverable A (UI, simulations) Amit, B (lecture content) Parth, C (resources,
 experts) Vihan.
 
+## 2026-11-03 (Vihan): the delivery mix — each part of a lecture delivered one way, proposed by rules, decided by the professor
+
+**What.** The proposal "Lecture delivery mix" (2 Nov) and Amit's reply (`docs/decisions.md` 30) are built on C's side;
+the details, file shape and functions for the app are in `docs/decisions.md` 32.
+- `delivery/mix.py` (new) + `config/delivery_mix.yaml` (new): for each part the rules pick slides, a YouTube stretch,
+  YouTube + bridge slides, a NotebookLM video, in class, or a simulation (Amit's rule); then the lecture checks (first part
+  live, at most 2 NotebookLM videos, at most 4 switches, video in class ≤ 40%, clips over 8 min before class); then **D7**
+  (new prompt) writes one reason per part and may change a way only within what the evidence allows (a professor's
+  note, a better fit, balance). The professor changes, locks, picks a preset and approves (`save`); each change is logged
+  and, after 20, becomes a per-professor rule. Approval makes the NotebookLM pack for the NotebookLM parts only and the
+  closing quiz (**D8**, new prompt; 4–8 questions, one per part, checked by code) with a recap from the previous lecture.
+- `components.py`: D5 keeps 5–15 min free per lecture for the recap and quiz; `for_window` puts them first and last.
+  Plans made before this give the minutes up from their longest slide parts (`L-RESERVE` note).
+- `notebooklm.py`: with a mix, only its NotebookLM parts get a video prompt, and a part whose sources lack key terms
+  says which source to add. `pipeline.recommend` proposes the mix for every lecture it saves; CLI `run_delivery.py mix`.
+- `content/generate.outline` (for Parth): parts of an approved mix carry `way`, `when`, `bridge`, `simulation`; recap
+  and quiz entries come first and last. D6 v0.2.0: a stretch using the words in another sense is off_topic.
+- Tests: `tests/test_mix.py` (13, offline).
+
+**On CS-601 (scratch run, 27 lectures, 142 parts):** slides 81, in class 43, NotebookLM 13 (was 122 prompts, at most 2 a
+lecture now), YouTube + bridge 5, simulations 0 (nothing in the catalogue fits this course); minutes add up in every
+lecture. YouTube stays rare because only 5 parts have a stretch that teaches them fully: the 16 lectures still partial
+from the transcript block will add more when they are redone.
+
 ## 2026-11-01 (Vihan): deliverable C rebuilt around lecture components; guest-speaker fixes; Gemini 3.8/3.6 only
 
 **Why.** The 28 Oct run matched one 45 s transcript window against the topic title: 18 of 33 clips started in a video's

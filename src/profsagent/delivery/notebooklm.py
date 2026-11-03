@@ -4,6 +4,8 @@ NotebookLM has no official API for its Video Overviews, quizzes or flashcards, s
 the professor does the clicks: the sources to add (course context written from the approved design, the verified
 videos, the readings and practice), one Video Overview prompt per component no video teaches, and quiz and flashcard
 prompts for the whole lecture. No AI call: every prompt is filled from the component plan, so it cannot invent.
+With a delivery mix (mix.py), only the parts the mix gives to NotebookLM get a video prompt; a part whose sources lack
+some of its key terms says which source to add first.
 """
 from __future__ import annotations
 
@@ -78,15 +80,29 @@ def flashcard_prompt(b: dict, comps: list[dict]) -> str:
             "answer in plain words. Use only the sources.")
 
 
-def pack(st: dict, b: dict, comps: list[dict], earlier: list[dict], timeline: list[dict], sources: dict) -> tuple[str, dict]:
-    """(markdown for the professor, summary for the lecture file)."""
+def pack(st: dict, b: dict, comps: list[dict], earlier: list[dict], timeline: list[dict], sources: dict,
+         mix: dict | None = None) -> tuple[str, dict]:
+    """(markdown for the professor, summary for the lecture file). `mix`: the lecture's delivery mix; then only its
+    NotebookLM parts get a video prompt."""
     rows = {r["component"]: r for r in timeline}
-    need = {r["component"] for r in timeline if r["delivery"] == "notebooklm" or r.get("gap")} if timeline else         {c["id"] for c in comps if not c.get("in_class")}
+    parts = {p["component"]: p for p in (mix or {}).get("parts", [])}
+    if mix:
+        need = {cid for cid, p in parts.items() if p["way"] == "notebooklm"}
+    elif timeline:
+        need = {r["component"] for r in timeline if r["delivery"] == "notebooklm" or r.get("gap")}
+    else:
+        need = {c["id"] for c in comps if not c.get("in_class")}
     todo = [c for c in comps if c["id"] in need]
     name = f"{st['cco_compact']['course_name']} · {b['lecture_id']} · {b['topic']}"
+    status = ""
+    if mix:
+        status = (f"Follows the delivery mix ({mix['status']}" + (f" by {mix['approved_by']}" if mix.get("approved_by") else "") +
+                  "): only the parts it gives to NotebookLM get a video prompt. ")
     L = [f"# NotebookLM pack · {b['lecture_id']} · {b['topic']}", "",
-         f"Use this to make what no YouTube video teaches well enough for this lecture"
-         f"{' — ' + str(len(todo)) + ' of ' + str(len(comps)) + ' parts' if todo else ' (every part already has a video or is taught in class: the quiz and flashcards below still help)'}, "
+         status + "Use this to make what no YouTube video teaches well enough for this lecture"
+         + (f" — {len(todo)} of {len(comps)} parts" if todo else
+            " (the delivery mix gives no part of it to NotebookLM: the quiz and flashcards below still help)" if mix else
+            " (every part already has a video or is taught in class: the quiz and flashcards below still help)") + ", "
          "plus a quiz and flashcards for revision. NotebookLM is free at https://notebooklm.google.com with a Google account. "
          + STEPS_NOTE, ""]
     L += ["## 1 · Make the notebook", "", f"1. Open https://notebooklm.google.com → **Create new** → name it “{name}”.",
@@ -98,15 +114,22 @@ def pack(st: dict, b: dict, comps: list[dict], earlier: list[dict], timeline: li
             L.append(f"- {label}: [{x['title'][:90]}]({x['url'].split('&t=')[0]})")
     L += ["", "## 2 · Course context (paste as a text source)", "", "```text", course_context(st, b, comps, earlier), "```", ""]
     if todo:
-        L += ["## 3 · A video for each part no YouTube video teaches fully", "",
+        L += ["## 3 · A video for each part " + ("the delivery mix gives to NotebookLM" if mix else "no YouTube video teaches fully"), "",
               "For each part: **Studio → Video Overview → Customize** (the pencil icon), format **Explainer**, language "
               "English, then paste the prompt and **Generate**. Watch it before class and check it against the sources.", ""]
         order = [c["id"] for c in comps]
         for c in todo:
             i = order.index(c["id"])
-            gap = (rows.get(c["id"]) or {}).get("gap")
-            L += [f"### {c['id']} · {c['title']} ({c['minutes']} min in class)" + (" · fills what the YouTube minutes leave out" if gap else ""),
-                  "", "```text", video_prompt(st, b, c, earlier + comps[:i], comps[i + 1:], rows.get(c["id"])), "```", ""]
+            row = None if mix else rows.get(c["id"])          # with a mix, a NotebookLM part has no YouTube minutes
+            gap = (row or {}).get("gap")
+            p = parts.get(c["id"]) or {}
+            L += [f"### {c['id']} · {c['title']} ({p.get('minutes', c['minutes'])} min in class)"
+                  + (" · fills what the YouTube minutes leave out" if gap else "")
+                  + (" · watched before class" if p.get("when") == "pre_class" else ""), ""]
+            if p.get("uncovered"):
+                L += [f"> ⚠ The sources above do not explain: {', '.join(p['uncovered'])}. Add a source that does "
+                      "(**+ Add → Website**) before generating, or NotebookLM will leave it out.", ""]
+            L += ["```text", video_prompt(st, b, c, earlier + comps[:i], comps[i + 1:], row), "```", ""]
     n = 4 if todo else 3
     L += [f"## {n} · Quiz", "", "**Studio → Quiz → Customize**: number of questions **Standard**, difficulty **Medium**, then paste:", "",
           "```text", quiz_prompt(b, comps), "```", "",

@@ -58,22 +58,36 @@ def units(st: dict, c: dict | None = None) -> dict[str, dict]:
 # ------------------------------------------------------------------ inputs
 def outline(run_id: str, brief: dict) -> list[dict]:
     """C's component plan for this lecture or class (deliverable C, delivery/components.py): what each part teaches, its
-    minutes and how it is delivered (a video clip, a NotebookLM video, or in class). [] when C has no plan yet."""
+    minutes and how it is delivered (a video clip, a NotebookLM video, or in class). [] when C has no plan yet.
+    With an approved delivery mix (delivery/mix.py) each part also carries `way` (slides, youtube, youtube_bridge,
+    notebooklm, in_class, simulation), `when` (in_class / pre_class), the `bridge` points the slides add and the
+    `simulation`; the recap and the quiz come first and last when C kept minutes for them."""
     from profsagent.delivery.components import for_window
+    from profsagent.delivery.mix import outline_rows
     parts = brief.get("parts") or [{"lecture_id": brief["lecture_id"], "brief_from_min": 0, "brief_minutes": None, "minutes": None}]
     out = []
     for p in parts:
         lec = read_json(out_dir(run_id) / "lectures" / f"{p['lecture_id']}.json", {}) or {}
         how = {x["component"]: x for x in (lec.get("resources") or {}).get("timeline") or []}
+        mixed = outline_rows(run_id, p["lecture_id"])
         comps = for_window(run_id, p["lecture_id"], p.get("brief_from_min", 0), p.get("brief_minutes"))
         scale = (p["minutes"] / p["brief_minutes"]) if p.get("minutes") and p.get("brief_minutes") else 1.0
         for c in comps:
             row = how.get(c["id"]) or {}
-            clip = "; ".join(f"{s['start']}–{s['end']} of \"{s['video']}\"" for s in row.get("segments") or [])
+            mx = mixed.get(c["id"])
+            segs = row.get("segments") or []
+            if mx and mx["way"] not in ("youtube", "youtube_bridge"):
+                segs = []
+            clip = "; ".join(f"{s['start']}–{s['end']} of \"{s['video']}\"" for s in segs)
+            how_by = row.get("delivery") or ("in_class" if c.get("in_class") else "slides")
+            if mx:
+                how_by = {"youtube": "video", "youtube_bridge": "video", "simulation": "in_class"}.get(mx["way"], mx["way"])
             out.append({"id": c["id"], "title": c["title"], "teaches": c["teaches"], "key_terms": c.get("key_terms", []),
                         "kind": c.get("kind"), "minutes": round(c.get("minutes_here", c["minutes"]) * scale),
-                        "delivered_by": row.get("delivery") or ("in_class" if c.get("in_class") else "slides"),
-                        **({"clip": clip} if clip else {})})
+                        "delivered_by": how_by, **({"clip": clip} if clip else {}),
+                        **({"way": mx["way"], "when": mx["when"]} if mx else {}),
+                        **({"bridge": mx["bridge"]} if mx and mx.get("bridge") else {}),
+                        **({"simulation": mx["simulation"]} if mx and mx["way"] == "simulation" and mx.get("simulation") else {})})
     return out
 
 

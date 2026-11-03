@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DBSCAN · try it yourself</title>
+<style>
+  :root { --bg:#0B0E14; --card:#121722; --line:#232A38; --ink:#E8EBF2; --ink2:#9AA3B2; --blue:#58C4DD; --yellow:#FFFF00; --green:#83C167; --red:#FC6255; --amber:#F5A623; --grey:#8B93A1; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.45 "Segoe UI", system-ui, sans-serif; }
+  header { padding: 14px 22px 6px; }
+  h1 { margin: 0; font-size: 22px; font-weight: 600; }
+  header p { margin: 2px 0 0; color: var(--ink2); }
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 16px; padding: 10px 22px 22px; align-items: start; }
+  .stage { background: #000; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  #scene { width: 100%; aspect-ratio: 16 / 9; cursor: crosshair; touch-action: none; }
+  .readout { padding: 10px 16px; border-top: 1px solid var(--line); background: var(--card); }
+  .big { font-size: 18px; font-weight: 600; }
+  .check { font-size: 13.5px; color: var(--ink2); margin-top: 2px; }
+  .check.ok b { color: var(--green); } .check.bad b { color: var(--amber); }
+  .caption { margin-top: 6px; font-size: 14px; color: #FFF7A8; min-height: 20px; }
+  aside { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  aside h2 { font-size: 15px; margin: 14px 0 6px; font-weight: 600; } aside h2:first-child { margin-top: 0; }
+  label { display: block; font-size: 13.5px; color: var(--ink2); margin: 8px 0 3px; }
+  select { width: 100%; background: #0B0E14; color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; font: inherit; }
+  select:focus, input[type=range]:focus-visible, button:focus-visible, input[type=checkbox]:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+  .row { display: flex; align-items: center; gap: 10px; }
+  .row input[type=range] { flex: 1; accent-color: var(--blue); }
+  .row output { min-width: 46px; text-align: right; font-variant-numeric: tabular-nums; }
+  .check-row { display: flex; gap: 8px; align-items: center; margin-top: 8px; font-size: 13.5px; }
+  button { background: #1B2333; color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 7px 11px; font: inherit; cursor: pointer; }
+  button:hover { background: #222C40; } button:disabled { opacity: .45; cursor: default; }
+  button.primary { background: #1E3A6E; border-color: #2B4F92; }
+  .btns { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .hint { font-size: 13px; color: var(--ink2); margin-top: 6px; }
+  .legend div { font-size: 13.5px; margin: 4px 0; display: flex; align-items: center; gap: 8px; }
+  .mk { width: 14px; height: 14px; display: inline-block; flex: none; }
+  @media (max-width: 1000px) { .layout { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>DBSCAN · try it yourself</h1>
+  <p>Density-based clustering: points with at least <b>minPts</b> neighbours within <b>ε</b> are <b>core</b>; clusters grow from core points; the rest is <b>border</b> or <b>noise</b>. Change the data and the settings, or step through the algorithm.</p>
+</header>
+<div class="layout">
+  <section class="stage">
+    <div id="scene" role="img" aria-label="Points coloured by cluster: filled dots are core points, rings are border points, crosses are noise."></div>
+    <div class="readout" aria-live="polite">
+      <div class="big" id="summary"></div>
+      <div class="check" id="check"></div>
+      <div class="caption" id="caption"></div>
+    </div>
+  </section>
+  <aside>
+    <h2>Data</h2>
+    <label for="preset">Example</label>
+    <select id="preset"></select>
+    <p class="hint"><b>Click</b> empty space to add a point · <b>drag</b> a point to move it · <b>Shift+click</b> or right-click a point to remove it.</p>
+    <div class="btns"><button id="clear">Clear all points</button><button id="noise">Add 10 random points</button></div>
+
+    <h2>Settings</h2>
+    <label for="eps">ε (radius of the neighbourhood)</label>
+    <div class="row"><input type="range" id="eps" min="0.1" max="1.5" step="0.01" value="0.62"><output id="epso">0.62</output></div>
+    <label for="minpts">minPts (points needed within ε, the point itself included)</label>
+    <div class="row"><input type="range" id="minpts" min="2" max="10" step="1" value="4"><output id="minptso">4</output></div>
+    <div class="check-row"><input type="checkbox" id="circles"><label for="circles" style="margin:0">Show the ε-circles of core points</label></div>
+
+    <h2>Step through the algorithm</h2>
+    <div class="btns">
+      <button id="back" aria-label="Previous step">◀ Back</button>
+      <button id="step" class="primary" aria-label="Next step">Step ▶</button>
+      <button id="play">▶ Play</button>
+      <button id="done">Show the result</button>
+    </div>
+    <p class="hint" id="stepinfo">Points are visited one by one in a fixed random order, as in the video.</p>
+
+    <h2>Labels</h2>
+    <div class="legend">
+      <div><svg class="mk" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="#58C4DD"/></svg>core point: at least minPts within ε</div>
+      <div><svg class="mk" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5" fill="none" stroke="#58C4DD" stroke-width="2.5"/></svg>border point: within ε of a core point</div>
+      <div><svg class="mk" viewBox="0 0 14 14"><path d="M3 3L11 11M3 11L11 3" stroke="#8B93A1" stroke-width="2.5"/></svg>noise: neither (an outlier)</div>
+      <div><svg class="mk" viewBox="0 0 14 14"><circle cx="7" cy="7" r="3" fill="#fff"/></svg>not visited yet (step mode)</div>
+    </div>
+  </aside>
+</div>
+<script src="../_engines/share/share.js"></script>
+<script src="../_lib/manim-web-0.40.1.js"></script>
+<script>
+(() => {
+'use strict';
+const { Scene, Dot, Circle, Line, Rectangle, Polygon } = MW;
+const COLORS = ['#58C4DD', '#F5A623', '#83C167', '#FF6F91', '#9A72AC', '#5CD0B3', '#E2B55A', '#FC6255', '#C9A0DC', '#76D7EA'];
+const GREY = '#8B93A1', HL = '#FFFF00';
+const XR = [-4.4, 4.4], YR = [-2.5, 2.5], S = 1.55;                     // data window, screen units per data unit
+const NOISE = -1, UNSEEN = -2;
+
+// ======================================================================== data (deterministic examples)
+function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+function gauss(r) { let u = 0, v = 0; while (u === 0) u = r(); v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+const VIDEO = [[-1.816, 1.576], [-2.559, 0.729], [-2.791, 1.327], [-2.651, 1.008], [-2.581, 1.405], [-3.152, 1.718], [-2.23, 2.015], [-2.526, 1.19], [-2.829, 0.843], [-2.187, 1.004], [-3.102, 1.339], [-2.009, 1.466], [-3.025, 1.131], [2.65, -0.664], [2.336, -0.419], [2.296, 0.04], [1.833, -0.073], [1.608, -0.148], [1.329, 0.036], [1.205, 0.22], [0.632, 0.222], [0.491, -0.144], [0.208, -0.172], [-0.044, -0.305], [-0.374, -0.578], [-0.144, -0.724], [-0.209, -0.984], [-2.778, -1.489], [-2.134, -1.587], [-2.852, -1.258], [-2.34, -1.877], [-2.84, -1.876], [-2.621, -1.825], [-3.465, -2.016], [-2.999, -1.723], [-1.462, -1.726], [-3.203, -1.633], [-2.075, -1.373], [-1.921, 2.219], [2.394, 1.177], [-0.298, 1.779], [1.686, 0.834], [2.955, 0.695], [-1.155, 0.275], [-2.427, -1.601]];                 // the 45 points of the Manim video (dbscan_core.dataset(3))
+const VIDEO_ORDER = [38, 15, 11, 10, 6, 43, 28, 40, 20, 19, 9, 30, 17, 2, 8, 22, 27, 31, 21, 4, 1, 34, 42, 7, 26, 41, 37, 32, 0, 13, 3, 24, 14, 36, 23, 25, 35, 33, 39, 18, 12, 16, 5, 44, 29];            // and its visiting order
+const PRESETS = [
+  { name: 'The video’s data: blob, strip, arc + noise', eps: 0.62, minPts: 4, make: () => VIDEO.map(p => p.slice()), order: VIDEO_ORDER },
+  { name: 'Two moons', eps: 0.5, minPts: 4, make: () => { const r = rng(11), P = [];      // 2 clusters for eps 0.32-0.88
+      for (let i = 0; i < 50; i++) { const a = Math.PI * i / 49; P.push([-0.9 + 1.6 * Math.cos(a) + 0.05 * gauss(r), -0.35 + 1.6 * Math.sin(a) + 0.05 * gauss(r)]); }
+      for (let i = 0; i < 50; i++) { const a = Math.PI * i / 49; P.push([0.7 + 1.6 * Math.cos(a) + 0.05 * gauss(r), 0.25 - 1.6 * Math.sin(a) + 0.05 * gauss(r)]); }
+      for (let i = 0; i < 6; i++) P.push([XR[0] + 0.4 + r() * (XR[1] - XR[0] - 0.8), YR[0] + 0.3 + r() * (YR[1] - YR[0] - 0.6)]); return P; } },
+  { name: 'Rings (k-means can’t do this)', eps: 0.65, minPts: 4,      // 2 clusters for eps 0.52-0.88
+    make: () => { const r = rng(5), P = [];
+      for (let i = 0; i < 26; i++) { const a = 2 * Math.PI * i / 26; P.push([0.75 * Math.cos(a) + 0.06 * gauss(r), 0.75 * Math.sin(a) + 0.06 * gauss(r)]); }
+      for (let i = 0; i < 52; i++) { const a = 2 * Math.PI * i / 52; P.push([2.0 * Math.cos(a) + 0.07 * gauss(r), 2.0 * Math.sin(a) + 0.07 * gauss(r)]); }
+      for (let i = 0; i < 5; i++) P.push([XR[0] + 0.4 + r() * 1.2, YR[0] + 0.3 + r() * (YR[1] - YR[0] - 0.6)]); return P; } },
+  { name: 'Different densities (one ε can’t fit both)', eps: 0.4, minPts: 4, make: () => { const r = rng(21), P = [];
+      for (let i = 0; i < 40; i++) P.push([-2.0 + 0.32 * gauss(r), 0.3 + 0.32 * gauss(r)]);
+      for (let i = 0; i < 22; i++) P.push([1.9 + 0.85 * gauss(r), -0.1 + 0.75 * gauss(r)]); return P; } },
+  { name: 'Empty: click to add your own points', eps: 0.62, minPts: 4, make: () => [] },
+];
+
+// ======================================================================== DBSCAN, visiting points in a given order (what the video shows)
+function dbscan(P, eps, minPts, order) {
+  const n = P.length, e2 = eps * eps, nb = [];
+  for (let i = 0; i < n; i++) { const a = []; for (let j = 0; j < n; j++) { const dx = P[i][0] - P[j][0], dy = P[i][1] - P[j][1]; if (dx * dx + dy * dy <= e2 + 1e-12) a.push(j); } nb.push(a); }
+  const core = nb.map(a => a.length >= minPts), lab = new Array(n).fill(UNSEEN), events = [];
+  let c = -1;
+  for (const i of order) {
+    if (lab[i] !== UNSEEN) continue;
+    if (!core[i]) { lab[i] = NOISE; events.push({ k: 'noise', i }); continue; }
+    lab[i] = ++c; events.push({ k: 'seed', i, c });
+    let frontier = [i];
+    while (frontier.length) {
+      const wave = [], next = [];
+      for (const p of frontier) for (const j of nb[p]) {
+        if (lab[j] === NOISE) { lab[j] = c; wave.push({ j, core: false, fromNoise: true }); }
+        else if (lab[j] === UNSEEN) { lab[j] = c; wave.push({ j, core: core[j], fromNoise: false }); if (core[j]) next.push(j); }
+      }
+      if (wave.length) events.push({ k: 'wave', c, wave, frontier });
+      frontier = next;
+    }
+  }
+  return { lab, core, nb, events, clusters: c + 1 };
+}
+
+// ======================================================================== independent check: labels straight from the definition
+// core: |N_eps(p)| >= minPts. Clusters: connected groups of core points (union-find, no visiting order). Border: not core, but
+// within eps of a core point, and in that point's cluster. Noise: the rest.
+function checkByDefinition(P, eps, minPts, R) {
+  const n = P.length, e2 = eps * eps, parent = [...Array(n).keys()];
+  const find = x => (parent[x] === x ? x : (parent[x] = find(parent[x])));
+  const near = (i, j) => { const dx = P[i][0] - P[j][0], dy = P[i][1] - P[j][1]; return dx * dx + dy * dy <= e2 + 1e-12; };
+  const core = []; for (let i = 0; i < n; i++) { let k = 0; for (let j = 0; j < n; j++) if (near(i, j)) k++; core.push(k >= minPts); }
+  for (let i = 0; i < n; i++) if (core[i]) for (let j = i + 1; j < n; j++) if (core[j] && near(i, j)) parent[find(i)] = find(j);
+  let wrong = 0; const map = new Map(), back = new Map();
+  for (let i = 0; i < n; i++) {
+    let ok = core[i] === R.core[i];
+    if (core[i]) {                                            // the same grouping of core points, up to renaming
+      const a = find(i), b = R.lab[i];
+      if (map.has(a) && map.get(a) !== b) ok = false; if (back.has(b) && back.get(b) !== a) ok = false;
+      map.set(a, b); back.set(b, a);
+    } else {
+      const reach = []; for (let j = 0; j < n; j++) if (core[j] && near(i, j)) reach.push(j);
+      if (!reach.length) ok = ok && R.lab[i] === NOISE;
+      else ok = ok && R.lab[i] >= 0 && reach.some(j => R.lab[j] === R.lab[i]);
+    }
+    if (!ok) wrong++;
+  }
+  return { checked: n, wrong };
+}
+
+// ======================================================================== state, drawing
+const host = document.getElementById('scene');
+const scene = new Scene(host, { width: host.clientWidth, height: Math.round(host.clientWidth * 9 / 16), backgroundColor: '#000000', frameWidth: 128 / 9, frameHeight: 8 });
+const W = { P: [], order: [], eps: 0.62, minPts: 4, preset: 0, step: null, R: null, circles: false, edited: false };
+const toS = p => [p[0] * S, p[1] * S, 0];
+let drawn = [];
+
+function orderFor(n, fixed) {
+  if (fixed && fixed.length === n) return fixed.slice();
+  const r = rng(1000 + n), o = [...Array(n).keys()];
+  for (let i = n - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [o[i], o[j]] = [o[j], o[i]]; }
+  return o;
+}
+function recompute() { W.R = dbscan(W.P, W.eps, W.minPts, W.order); }
+function labelsAt(k) {                       // labels after the first k events (step mode)
+  const lab = new Array(W.P.length).fill(UNSEEN);
+  for (const e of W.R.events.slice(0, k)) {
+    if (e.k === 'noise') lab[e.i] = NOISE; else if (e.k === 'seed') lab[e.i] = e.c; else for (const w of e.wave) lab[w.j] = e.c;
+  }
+  return lab;
+}
+const colourOf = c => COLORS[c % COLORS.length];
+function marker(i, lab, isCore) {
+  const p = toS(W.P[i]);
+  if (lab === UNSEEN) return [new Dot({ point: p, radius: 0.05, color: '#FFFFFF' })];
+  if (lab === NOISE) { const d = 0.1; return [new Line({ start: [p[0] - d, p[1] - d, 0], end: [p[0] + d, p[1] + d, 0], color: GREY, strokeWidth: 3 }),
+                                             new Line({ start: [p[0] - d, p[1] + d, 0], end: [p[0] + d, p[1] - d, 0], color: GREY, strokeWidth: 3 })]; }
+  return isCore ? [new Dot({ point: p, radius: 0.085, color: colourOf(lab) })]
+                : [new Circle({ radius: 0.075, color: colourOf(lab), strokeWidth: 3, fillOpacity: 0, center: p })];
+}
+function epsCircle(i, color, fill) { return new Circle({ radius: W.eps * S, color, strokeWidth: 1.5, fillOpacity: fill, center: toS(W.P[i]) }); }
+
+function draw() {
+  scene.remove(...drawn);
+  const g = [new Rectangle({ width: (XR[1] - XR[0]) * S, height: (YR[1] - YR[0]) * S, color: '#232A38', strokeWidth: 2, fillOpacity: 0 })];
+  const R = W.R, stepping = W.step !== null;
+  const lab = stepping ? labelsAt(W.step) : R.lab;
+  if (!stepping && W.circles) for (let i = 0; i < W.P.length; i++) if (R.core[i]) g.push(epsCircle(i, colourOf(R.lab[i]), 0.04));
+  if (stepping && W.step > 0) {                // what the last step did
+    const e = R.events[W.step - 1];
+    if (e.k === 'wave') for (const f of e.frontier) g.push(epsCircle(f, colourOf(e.c), 0.08));
+    else { g.push(epsCircle(e.i, HL, 0.07)); g.push(new Circle({ radius: 0.17, color: HL, strokeWidth: 3, fillOpacity: 0, center: toS(W.P[e.i]) })); }
+  }
+  for (let i = 0; i < W.P.length; i++) g.push(...marker(i, lab[i], R.core[i] && lab[i] >= 0));
+  drawn = g; scene.add(...g); scene.render();
+}
+
+// ======================================================================== readouts
+const $ = id => document.getElementById(id);
+function summarise() {
+  const R = W.R, n = W.P.length;
+  const noise = R.lab.filter(x => x === NOISE).length, border = R.lab.filter((x, i) => x >= 0 && !R.core[i]).length;
+  $('summary').textContent = n ? `${R.clusters} cluster${R.clusters === 1 ? '' : 's'} · ${n - noise - border} core · ${border} border · ${noise} noise (${n} points)` : 'No points yet: click to add some';
+  const ck = checkByDefinition(W.P, W.eps, W.minPts, R);
+  $('check').className = 'check ' + (ck.wrong ? 'bad' : 'ok');
+  $('check').innerHTML = ck.wrong ? `<b>⚠ ${ck.wrong} point${ck.wrong === 1 ? '' : 's'} disagree with the definition</b>` :
+    `<b>✓ Checked:</b> every label matches the definition of core, border and noise (${ck.checked}/${ck.checked} points, worked out without the visiting order)`;
+  return ck;
+}
+function stepCaption() {
+  const R = W.R, k = W.step, total = R.events.length;
+  $('stepinfo').textContent = W.step === null ? 'Points are visited one by one in a fixed random order, as in the video.' : `Step ${k} of ${total}`;
+  if (W.step === null || k === 0) { $('caption').textContent = W.step === null ? '' : 'Press Step ▶ to visit the first point.'; return; }
+  const e = R.events[k - 1], nb = R.nb;
+  if (e.k === 'noise') $('caption').textContent = `Visit a point: ${nb[e.i].length} within ε, fewer than minPts = ${W.minPts}, and no cluster has reached it → noise (for now).`;
+  else if (e.k === 'seed') $('caption').textContent = `Visit a point: ${nb[e.i].length} within ε ≥ ${W.minPts} → a core point. It starts cluster ${e.c + 1}.`;
+  else {
+    const back = e.wave.filter(w => w.fromNoise).length, cores = e.wave.filter(w => w.core).length;
+    $('caption').textContent = `Cluster ${e.c + 1} grows: ${e.wave.length} point${e.wave.length === 1 ? '' : 's'} inside the circles of its core points join it (${cores} of them are core and grow it further)` +
+      (back ? `; ${back} point${back === 1 ? ' was' : 's were'} marked noise earlier and become${back === 1 ? 's' : ''} a border point.` : '.');
+  }
+  $('back').disabled = k === 0; $('step').disabled = k >= total;
+}
+function update(redrawOnly) { if (!redrawOnly) { recompute(); shareState(); } summarise(); stepCaption(); draw(); }
+// the setup goes into the link and, inside the ProfsAgent app, to the app (it can keep it as the class example)
+let shareTimer = null;
+function shareState() {
+  clearTimeout(shareTimer);
+  shareTimer = setTimeout(() => {
+    if (!window.SimShare) return;
+    const v = { p: String(W.preset), eps: W.eps.toFixed(2), min: String(W.minPts) };
+    if (W.edited) v.pts = W.P.map(q => q[0].toFixed(2) + ',' + q[1].toFixed(2)).join(';');
+    SimShare.write(v, `Example "${PRESETS[W.preset].name}"${W.edited ? `, changed by you (${W.P.length} point${W.P.length === 1 ? '' : 's'})` : ''}; ε = ${v.eps}, minPts = ${v.min}`);
+  }, 300);
+}
+
+// ======================================================================== controls
+PRESETS.forEach((p, i) => $('preset').add(new Option(p.name, String(i))));
+function usePreset(i) {
+  const p = PRESETS[i]; W.preset = i; W.P = p.make(); W.order = orderFor(W.P.length, p.order); W.edited = false;
+  setParams(p.eps, p.minPts); W.step = null; stopPlay(); update();
+}
+function setParams(eps, minPts) { W.eps = eps; W.minPts = minPts; $('eps').value = eps; $('epso').textContent = eps.toFixed(2); $('minpts').value = minPts; $('minptso').textContent = minPts; }
+$('preset').addEventListener('change', () => usePreset(+$('preset').value));
+$('eps').addEventListener('input', () => { W.eps = +$('eps').value; $('epso').textContent = W.eps.toFixed(2); W.step = null; stopPlay(); update(); });
+$('minpts').addEventListener('input', () => { W.minPts = +$('minpts').value; $('minptso').textContent = W.minPts; W.step = null; stopPlay(); update(); });
+$('circles').addEventListener('change', () => { W.circles = $('circles').checked; update(true); });
+function changedData() { W.order = orderFor(W.P.length, PRESETS[W.preset].order); W.edited = true; W.step = null; stopPlay(); update(); }
+$('clear').addEventListener('click', () => { W.P = []; changedData(); });
+$('noise').addEventListener('click', () => { const r = rng(Date.now() & 0xffff); for (let i = 0; i < 10; i++) W.P.push([XR[0] + 0.2 + r() * (XR[1] - XR[0] - 0.4), YR[0] + 0.2 + r() * (YR[1] - YR[0] - 0.4)]); changedData(); });
+$('step').addEventListener('click', () => { if (W.step === null) W.step = 0; if (W.step < W.R.events.length) W.step++; update(true); });
+$('back').addEventListener('click', () => { if (W.step === null) W.step = W.R.events.length; if (W.step > 0) W.step--; update(true); });
+$('done').addEventListener('click', () => { W.step = null; stopPlay(); update(true); });
+let timer = null;
+function stopPlay() { clearInterval(timer); timer = null; $('play').textContent = '▶ Play'; }
+$('play').addEventListener('click', () => {
+  if (timer) return stopPlay();
+  if (W.step === null || W.step >= W.R.events.length) W.step = 0;
+  $('play').textContent = '❚❚ Pause';
+  timer = setInterval(() => { if (W.step >= W.R.events.length) return stopPlay(); W.step++; update(true); }, 900);
+  update(true);
+});
+
+// pointer: add, drag, remove (screen → data coordinates through the canvas size and the scene frame)
+const canvas = scene.getCanvas();
+function toData(ev) {
+  const r = canvas.getBoundingClientRect();
+  const x = ((ev.clientX - r.left) / r.width - 0.5) * (128 / 9), y = (0.5 - (ev.clientY - r.top) / r.height) * 8;
+  return [x / S, y / S];
+}
+function nearest(p) { let best = -1, bd = 0.2 * 0.2; W.P.forEach((q, i) => { const d = (q[0] - p[0]) ** 2 + (q[1] - p[1]) ** 2; if (d < bd) { bd = d; best = i; } }); return best; }
+let dragging = -1;
+canvas.addEventListener('contextmenu', ev => ev.preventDefault());
+canvas.addEventListener('pointerdown', ev => {
+  const p = toData(ev), i = nearest(p);
+  if (i >= 0 && (ev.shiftKey || ev.button === 2)) { W.P.splice(i, 1); changedData(); return; }
+  if (i >= 0) { dragging = i; canvas.setPointerCapture(ev.pointerId); return; }
+  if (ev.button !== 0) return;
+  if (p[0] < XR[0] || p[0] > XR[1] || p[1] < YR[0] || p[1] > YR[1]) return;
+  W.P.push(p); changedData();
+});
+canvas.addEventListener('pointermove', ev => {
+  if (dragging < 0) return;
+  const p = toData(ev);
+  W.P[dragging] = [Math.max(XR[0], Math.min(XR[1], p[0])), Math.max(YR[0], Math.min(YR[1], p[1]))];
+  W.edited = true; W.step = null; update();
+});
+canvas.addEventListener('pointerup', () => { if (dragging >= 0) { dragging = -1; changedData(); } });
+
+window.addEventListener('resize', () => { const w = host.clientWidth; scene.resize(w, Math.round(w * 9 / 16)); scene.render(); });
+function restore() {                                   // a link (or the app's class example) opens that setup
+  const v = window.SimShare && SimShare.read();
+  const i = v ? parseInt(v.p, 10) : 0;
+  usePreset(Number.isInteger(i) && i >= 0 && i < PRESETS.length ? i : 0);
+  $('preset').value = String(W.preset);
+  if (!v) return;
+  if (v.pts != null) {
+    W.P = String(v.pts).split(';').filter(Boolean).map(q => q.split(',').map(Number)).filter(q => q.length === 2 && q.every(Number.isFinite))
+      .map(([x, y]) => [Math.max(XR[0], Math.min(XR[1], x)), Math.max(YR[0], Math.min(YR[1], y))]).slice(0, 400);
+    W.order = orderFor(W.P.length, PRESETS[W.preset].order); W.edited = true;
+  }
+  const eps = parseFloat(v.eps), mp = parseInt(v.min, 10);
+  setParams(Number.isFinite(eps) ? Math.min(1.5, Math.max(0.1, eps)) : W.eps, Number.isInteger(mp) ? Math.min(10, Math.max(2, mp)) : W.minPts);
+  W.step = null; update();
+}
+restore();
+window.__dbscan = { W, dbscan, checkByDefinition, usePreset, setParams, update, PRESETS, toS, S, restore };    // for the automatic checks
+})();
+</script>
+</body>
+</html>

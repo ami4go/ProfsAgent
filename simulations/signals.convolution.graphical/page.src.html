@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Graphical convolution · try it yourself</title>
+<style>
+  :root { --bg:#0B0E14; --card:#121722; --line:#232A38; --ink:#E8EBF2; --ink2:#9AA3B2; --blue:#58C4DD; --yellow:#FFFF00; --green:#83C167; --red:#FC6255; --amber:#F5A623; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.45 "Segoe UI", system-ui, sans-serif; }
+  header { padding: 14px 22px 6px; }
+  h1 { margin: 0; font-size: 22px; font-weight: 600; }
+  header p { margin: 2px 0 0; color: var(--ink2); }
+  .formula { color: var(--yellow); font-weight: 500; }
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 16px; padding: 10px 22px 22px; align-items: start; }
+  .stage { background: #000; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  #scene { width: 100%; aspect-ratio: 16 / 9; }
+  .readout { display: flex; gap: 18px; flex-wrap: wrap; align-items: baseline; padding: 10px 16px; border-top: 1px solid var(--line); background: var(--card); }
+  .big { font-size: 20px; font-weight: 600; }
+  .big .g { color: var(--green); }
+  .check { font-size: 13.5px; color: var(--ink2); }
+  .check.ok b { color: var(--green); } .check.bad b { color: var(--amber); }
+  aside { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  aside h2 { font-size: 15px; margin: 14px 0 6px; font-weight: 600; } aside h2:first-child { margin-top: 0; }
+  label { display: block; font-size: 13.5px; color: var(--ink2); margin: 8px 0 3px; }
+  select, input[type=text] { width: 100%; background: #0B0E14; color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; font: 14px "Cascadia Mono", Consolas, monospace; }
+  select { font-family: "Segoe UI", system-ui, sans-serif; }
+  input[type=text]:focus, select:focus, input[type=range]:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+  input.bad { border-color: var(--red); }
+  .err { color: var(--red); font-size: 13px; margin-top: 3px; min-height: 0; }
+  .warn { color: var(--amber); font-size: 13px; margin-top: 6px; }
+  .row { display: flex; align-items: center; gap: 10px; }
+  .row input[type=range] { flex: 1; accent-color: var(--blue); }
+  .row output { min-width: 52px; text-align: right; font-variant-numeric: tabular-nums; }
+  .param.unused { opacity: .45; }
+  .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 7px; vertical-align: -1px; }
+  .legend div { font-size: 13.5px; margin: 3px 0; }
+  button { background: #1B2333; color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 7px 12px; font: inherit; cursor: pointer; }
+  button:hover { background: #222C40; } button:disabled { opacity: .5; cursor: default; }
+  button.primary { background: #1E3A6E; border-color: #2B4F92; }
+  details { margin-top: 10px; font-size: 13.5px; color: var(--ink2); }
+  details code { color: var(--ink); background: #0B0E14; padding: 0 4px; border-radius: 4px; }
+  .steps { font-size: 13.5px; color: var(--ink2); margin: 0; padding-left: 18px; }
+  @media (max-width: 1000px) { .layout { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Graphical convolution · try it yourself</h1>
+  <p><span class="formula">y(t) = ∫ x(τ) h(t − τ) dτ</span> &nbsp;·&nbsp; flip h, slide it to t, multiply by x, and the shaded area is y(t). Change the functions and the values on the right.</p>
+</header>
+<div class="layout">
+  <section class="stage">
+    <div id="scene" role="img" aria-label="Top: x(τ), the flipped and shifted h(t − τ), and their product shaded. Bottom: the output y(t)."></div>
+    <div class="readout" aria-live="polite">
+      <span class="big">t = <span id="tval">0.00</span> &nbsp; y(t) = <span class="g" id="yval">0</span></span>
+      <span class="check" id="check"></span>
+    </div>
+  </section>
+  <aside>
+    <h2>Signals</h2>
+    <label for="preset">Example</label>
+    <select id="preset"></select>
+    <label for="xin">x(t)</label>
+    <input type="text" id="xin" spellcheck="false" autocomplete="off">
+    <div class="err" id="xerr"></div>
+    <label for="hin">h(t)</label>
+    <input type="text" id="hin" spellcheck="false" autocomplete="off">
+    <div class="err" id="herr"></div>
+    <div class="warn" id="warn"></div>
+    <details>
+      <summary>How to write a function</summary>
+      <p>Use <code>t</code> for time. Steps and pulses: <code>u(t)</code> (u(0) = ½), <code>u(t) - u(t - 2)</code>, <code>rect(t)</code> (1 for |t| &lt; ½), <code>tri(t)</code>, <code>ramp(t)</code>. Also <code>exp sin cos abs sqrt log sinc sgn</code>, powers <code>t^2</code>, <code>pi</code>, <code>e</code>. Write <code>2t</code> or <code>2*t</code>. <code>W</code> and <code>a</code> are the sliders below.</p>
+      <p>Example: <code>exp(-a*t)*u(t)</code> or <code>sin(2*pi*t)*(u(t) - u(t - W))</code></p>
+    </details>
+
+    <h2>Values</h2>
+    <div class="param" id="pW"><label for="W">W</label><div class="row"><input type="range" id="W" min="0.5" max="4" step="0.1" value="2"><output id="Wo">2.0</output></div></div>
+    <div class="param" id="pa"><label for="a">a</label><div class="row"><input type="range" id="a" min="0.2" max="3" step="0.1" value="1"><output id="ao">1.0</output></div></div>
+    <label for="t">t (where h is slid to)</label>
+    <div class="row"><input type="range" id="t" min="-4" max="10" step="0.01" value="1"><output id="to">1.00</output></div>
+    <div class="row" style="margin-top:10px;gap:8px;flex-wrap:wrap">
+      <button class="primary" id="play">▶ Play</button>
+      <button id="flip">Show the flip</button>
+    </div>
+
+    <h2>What you see</h2>
+    <div class="legend">
+      <div><span class="swatch" style="background:var(--blue)"></span>x(τ)</div>
+      <div><span class="swatch" style="background:var(--yellow)"></span>h(t − τ): h flipped, its origin moved to τ = t</div>
+      <div><span class="swatch" style="background:var(--green)"></span>x(τ)·h(t − τ) above 0 &nbsp;<span class="swatch" style="background:var(--red)"></span>below 0</div>
+      <div><span class="swatch" style="background:var(--green);opacity:.55"></span>y(t): net shaded area for every t</div>
+    </div>
+    <ol class="steps" style="margin-top:10px">
+      <li>Flip: h(τ) → h(−τ)</li><li>Slide by t: h(t − τ)</li><li>Multiply by x(τ)</li><li>Net area (green − red) = y(t)</li>
+    </ol>
+  </aside>
+</div>
+<script src="../_engines/share/share.js"></script>
+<script src="../_lib/manim-web-0.40.1.js"></script>
+<script>
+(() => {
+'use strict';
+const { Scene, Axes, Polygon, Dot, DashedLine, Text, Transform } = MW;
+const C = { blue: '#58C4DD', yellow: '#FFFF00', green: '#83C167', red: '#FC6255', axis: '#6F7890', label: '#8B93A1' };
+const FONT = 'Segoe UI';
+
+// ======================================================================== a small, safe formula parser (no eval)
+const FUNCS = {
+  // steps take the value ½ at the jump (u(0) = ½), the usual convention in signals: integrals are the same, and sums of
+  // samples then integrate a jump exactly when it falls on a sample
+  // (within 1e-9 of the jump counts as the jump: 1.3 − 1.3 can come out as 2e-16 in floating point)
+  u: x => (x > 1e-9 ? 1 : x < -1e-9 ? 0 : 0.5), step: x => (x > 1e-9 ? 1 : x < -1e-9 ? 0 : 0.5),
+  rect: x => { const a = Math.abs(x); return a < 0.5 - 1e-9 ? 1 : a > 0.5 + 1e-9 ? 0 : 0.5; }, tri: x => Math.max(0, 1 - Math.abs(x)),
+  ramp: x => (x > 0 ? x : 0), exp: Math.exp, sin: Math.sin, cos: Math.cos, tan: Math.tan, abs: Math.abs, sqrt: Math.sqrt,
+  log: Math.log, ln: Math.log, sgn: Math.sign, sign: Math.sign, sinc: x => (Math.abs(x) < 1e-12 ? 1 : Math.sin(Math.PI * x) / (Math.PI * x)),
+  min: Math.min, max: Math.max, pow: Math.pow,
+};
+const ARITY = { min: 2, max: 2, pow: 2 };
+const CONSTS = { pi: Math.PI, e: Math.E };
+const VARS = ['t', 'W', 'a'];
+class FormulaError extends Error { constructor(msg, pos) { super(msg); this.pos = pos; } }
+
+function tokenize(src) {
+  const s = src.replace(/[−–]/g, '-').replace(/[×·∙]/g, '*'), out = [];
+  let i = 0;
+  while (i < s.length) {
+    const c = s[i];
+    if (/\s/.test(c)) { i++; continue; }
+    const num = /^(\d+\.?\d*|\.\d+)(e[+-]?\d+)?/i.exec(s.slice(i));
+    if (num && !/^e[a-z]/i.test(s.slice(i))) { out.push({ k: 'num', v: parseFloat(num[0]), p: i }); i += num[0].length; continue; }
+    const id = /^[A-Za-z_][A-Za-z0-9_]*/.exec(s.slice(i));
+    if (id) { out.push({ k: 'id', v: id[0], p: i }); i += id[0].length; continue; }
+    if ('+-*/^(),'.includes(c)) { out.push({ k: c, p: i }); i++; continue; }
+    throw new FormulaError(`“${c}” is not allowed`, i);
+  }
+  out.push({ k: 'end', p: s.length });
+  return out;
+}
+
+function compile(src) {
+  if (!src.trim()) throw new FormulaError('Write a function of t', 0);
+  const tk = tokenize(src), used = new Set();
+  let i = 0;
+  const peek = () => tk[i], next = () => tk[i++];
+  const expect = (k, what) => { if (peek().k !== k) throw new FormulaError(`Expected ${what}`, peek().p); return next(); };
+  const startsPrimary = t => t.k === 'num' || t.k === 'id' || t.k === '(';
+  function expr() {
+    let f = term();
+    while (peek().k === '+' || peek().k === '-') {
+      const op = next().k, g = term(), a = f;
+      f = op === '+' ? (env => a(env) + g(env)) : (env => a(env) - g(env));
+    }
+    return f;
+  }
+  function term() {
+    let f = unary();
+    for (;;) {
+      const t = peek();
+      if (t.k === '*' || t.k === '/') { next(); const g = unary(), a = f; f = t.k === '*' ? (env => a(env) * g(env)) : (env => a(env) / g(env)); }
+      else if (startsPrimary(t)) { const g = power(), a = f; f = env => a(env) * g(env); }      // 2t, 3(t - 1), (t)(t)
+      else return f;
+    }
+  }
+  function unary() {
+    if (peek().k === '-') { next(); const g = unary(); return env => -g(env); }
+    if (peek().k === '+') { next(); return unary(); }
+    return power();
+  }
+  function power() {
+    const b = primary();
+    if (peek().k === '^') { next(); const ex = unary(); return env => Math.pow(b(env), ex(env)); }
+    return b;
+  }
+  function primary() {
+    const t = next();
+    if (t.k === 'num') { const v = t.v; return () => v; }
+    if (t.k === '(') { const f = expr(); expect(')', '“)”'); return f; }
+    if (t.k === 'id') {
+      const name = t.v;
+      if (name in FUNCS) {
+        if (peek().k !== '(') throw new FormulaError(`${name} needs brackets, like ${name}(t)`, t.p);
+        next();
+        const args = [expr()];
+        while (peek().k === ',') { next(); args.push(expr()); }
+        expect(')', '“)”');
+        const n = ARITY[name] || 1;
+        if (args.length !== n) throw new FormulaError(`${name} takes ${n} value${n > 1 ? 's' : ''}`, t.p);
+        const fn = FUNCS[name];
+        return n === 1 ? (env => fn(args[0](env))) : (env => fn(args[0](env), args[1](env)));
+      }
+      if (name in CONSTS) { const v = CONSTS[name]; return () => v; }
+      if (VARS.includes(name)) { used.add(name); return env => env[name]; }
+      throw new FormulaError(`Unknown name “${name}”. Use t for time; W and a are the sliders`, t.p);
+    }
+    if (t.k === 'end') throw new FormulaError('The formula ends too early', t.p);
+    throw new FormulaError(`Unexpected “${t.k}”`, t.p);
+  }
+  const f = expr();
+  if (peek().k !== 'end') throw new FormulaError(`Unexpected “${peek().v ?? peek().k}”`, peek().p);
+  return { f, used };
+}
+
+// ======================================================================== examples (three have an exact answer to check against)
+const PRESETS = [
+  { name: 'Pulse ∗ decaying exponential', x: 'u(t) - u(t - W)', h: 'exp(-a*t)*u(t)',
+    exact: (t, W, a) => (t < 0 ? 0 : t < W ? (1 - Math.exp(-a * t)) / a : (Math.exp(-a * (t - W)) - Math.exp(-a * t)) / a) },
+  { name: 'Pulse ∗ pulse (gives a trapezoid)', x: 'u(t) - u(t - W)', h: 'u(t) - u(t - a)',
+    exact: (t, W, a) => Math.max(0, Math.min(W, t) - Math.max(0, t - a)) },
+  { name: 'Exponential ∗ exponential', x: 'exp(-t)*u(t)', h: 'exp(-a*t)*u(t)',
+    exact: (t, W, a) => (t < 0 ? 0 : Math.abs(a - 1) < 1e-9 ? t * Math.exp(-t) : (Math.exp(-t) - Math.exp(-a * t)) / (a - 1)) },
+  { name: 'Triangle ∗ pulse', x: 'tri(t - 1)', h: 'u(t) - u(t - W)', exact: null },
+  { name: 'Sine burst ∗ moving average', x: 'sin(2*pi*t)*(u(t) - u(t - 4))', h: '(u(t) - u(t - W))/W', exact: null },
+];
+
+// ======================================================================== numerics
+const G0 = -8, G1 = 14, DT = 0.01, N = Math.round((G1 - G0) / DT) + 1;   // where the signals are sampled
+const TA = -4, TB = 10;                                                     // what is shown, on both axes
+const NY = Math.round((TB - TA) / DT) + 1;
+const S = { xs: null, hs: null, y: null, fx: null, fh: null, exact: null, W: 2, a: 1, t: 1, bad: false };
+
+function sample(f, W, a) {
+  const out = new Float64Array(N); let nan = 0;
+  for (let i = 0; i < N; i++) { let v = f({ t: G0 + i * DT, W, a }); if (!Number.isFinite(v)) { v = 0; nan++; } out[i] = v; }
+  return { v: out, nan };
+}
+function convolveAll(xs, hs) {           // method 2: the discrete convolution sum of the samples, for every t
+  const y = new Float64Array(NY);
+  for (let k = 0; k < NY; k++) {
+    const m = Math.round((TA + k * DT - 2 * G0) / DT);
+    let s = 0;
+    for (let i = Math.max(0, m - N + 1), hi = Math.min(N - 1, m); i <= hi; i++) s += xs[i] * hs[m - i];
+    y[k] = s * DT;
+  }
+  return y;
+}
+function directArea(t) {                  // method 1: the product at this t, integrated on its own finer grid
+  const n = 8800, h = (G1 - G0) / n, env1 = { t: 0, W: S.W, a: S.a }, env2 = { t: 0, W: S.W, a: S.a };
+  let s = 0;
+  for (let i = 0; i <= n; i++) {
+    const tau = G0 + i * h; env1.t = tau; env2.t = t - tau;
+    let p = S.fx(env1) * S.fh(env2); if (!Number.isFinite(p)) p = 0;
+    s += (i === 0 || i === n) ? p / 2 : p;
+  }
+  return s * h;
+}
+const yAt = t => { const k = (t - TA) / DT, i = Math.floor(k), f = k - i; if (i < 0) return S.y[0]; if (i >= NY - 1) return S.y[NY - 1]; return S.y[i] * (1 - f) + S.y[i + 1] * f; };
+
+// ======================================================================== drawing (manim-web)
+const host = document.getElementById('scene');
+const scene = new Scene(host, { width: host.clientWidth, height: Math.round(host.clientWidth * 9 / 16), backgroundColor: '#000000' });
+const XL = 12.6, TOPC = 1.45, BOTC = -2.35;
+let topAx, botAx, staticGroup = [], dynamicGroup = [];
+
+function niceStep(span) { const raw = span / 3, p = Math.pow(10, Math.floor(Math.log10(raw))), m = raw / p; return (m < 1.5 ? 1 : m < 3.5 ? 2 : m < 7.5 ? 5 : 10) * p; }
+function range(lo, hi) {
+  lo = Math.min(0, lo); hi = Math.max(0, hi);
+  if (hi - lo < 1e-9) hi = lo + 1;
+  const pad = (hi - lo) * 0.12; lo = lo < 0 ? lo - pad : 0; hi = hi + pad;
+  return [lo, hi, niceStep(hi - lo)];
+}
+const fmt = v => (Math.abs(v) < 1e-9 ? '0' : Math.abs(v) >= 100 ? v.toFixed(0) : Math.abs(v) >= 10 ? v.toFixed(1) : v.toFixed(2)).replace('-', '−');
+function label(text, pos, size = 20, color = C.label) { const m = new Text({ text, fontSize: size, color, fontFamily: FONT }); m.moveTo(pos); return m; }
+function polyline(ax, pts, color, width = 4) {
+  return new Polygon({ vertices: pts.map(([u, v]) => ax.coordsToPoint(u, v)), color, strokeWidth: width, fillOpacity: 0, closed: false });
+}
+function axesFor(yr, yLen, center) {
+  const ax = new Axes({ xRange: [TA, TB, 1], yRange: yr, xLength: XL, yLength: yLen, tips: false, axisConfig: { color: C.axis, strokeWidth: 2 } });
+  ax.moveTo([0, center, 0]);
+  return ax;
+}
+function ticks(ax, yr, name) {
+  const out = [];
+  for (let v = TA; v <= TB; v += 2) { const p = ax.coordsToPoint(v, 0); out.push(label(v === 0 ? '0' : String(v).replace('-', '−'), [p[0], p[1] - 0.3, 0])); }
+  const top = ax.coordsToPoint(0, yr[1] - (yr[1] - yr[0]) * 0.1);
+  const yv = Math.floor((yr[1] / 1.12) / yr[2]) * yr[2];
+  if (yv > 0) { const q = ax.coordsToPoint(0, yv); out.push(label(fmt(yv), [q[0] - 0.5, q[1], 0])); }
+  if (yr[0] < 0) { const yn = Math.ceil((yr[0] / 1.12) / yr[2]) * yr[2]; if (yn < 0) { const q = ax.coordsToPoint(0, yn); out.push(label(fmt(yn), [q[0] - 0.55, q[1], 0])); } }
+  const e = ax.coordsToPoint(TB, 0); out.push(label(name, [e[0] + 0.3, e[1], 0], 22, '#C9CED8'));
+  return out;
+}
+
+function rebuildStatic() {                      // signals or W / a changed: axes, x(τ), and the full y(t)
+  scene.remove(...staticGroup);
+  let mx = 0, mn = 0, hx = 0, hn = 0;
+  const i0 = Math.round((TA - G0) / DT), i1 = Math.round((TB - G0) / DT);
+  for (let i = 0; i < N; i++) { const h = S.hs[i]; hx = Math.max(hx, h); hn = Math.min(hn, h); }
+  for (let i = i0; i <= i1; i++) { const x = S.xs[i]; mx = Math.max(mx, x); mn = Math.min(mn, x); }
+  const big = Math.max(Math.abs(mx), Math.abs(mn)) * Math.max(Math.abs(hx), Math.abs(hn));
+  const topR = range(Math.min(mn, hn, -big * (mn < 0 || hn < 0 ? 1 : 0)), Math.max(mx, hx, big));
+  let ymx = 0, ymn = 0; for (let k = 0; k < NY; k++) { ymx = Math.max(ymx, S.y[k]); ymn = Math.min(ymn, S.y[k]); }
+  const botR = range(ymn, ymx);
+  topAx = axesFor(topR, 2.55, TOPC); botAx = axesFor(botR, 2.15, BOTC);
+  const xpts = []; for (let i = i0; i <= i1; i += 2) xpts.push([G0 + i * DT, S.xs[i]]);
+  const ypts = []; for (let k = 0; k < NY; k += 2) ypts.push([TA + k * DT, S.y[k]]);
+  const yfaint = polyline(botAx, ypts, '#3B5733', 3);          // the part of y(t) not reached yet, dimmed
+  staticGroup = [topAx, botAx, ...ticks(topAx, topR, 'τ'), ...ticks(botAx, botR, 't'), yfaint, polyline(topAx, xpts, C.blue, 4)];
+  staticGroup.push(label('y(t)', [botAx.coordsToPoint(TA, 0)[0] + 0.25, botAx.coordsToPoint(0, botR[1])[1] + 0.05, 0], 18, C.green));
+  scene.add(...staticGroup);
+}
+
+function rebuildDynamic() {                     // t changed: h(t − τ), the shaded product, the traced y(t) and the dot
+  scene.remove(...dynamicGroup);
+  const t = S.t, env = { t: 0, W: S.W, a: S.a }, ex = { t: 0, W: S.W, a: S.a };
+  const step = 0.02, n = Math.round((TB - TA) / step);
+  const hp = [], prod = [];
+  for (let k = 0; k <= n; k++) {
+    const tau = TA + k * step; env.t = t - tau; ex.t = tau;
+    let hv = S.fh(env); if (!Number.isFinite(hv)) hv = 0;
+    let xv = S.fx(ex); if (!Number.isFinite(xv)) xv = 0;
+    hp.push([tau, hv]); prod.push([tau, xv * hv]);
+  }
+  const g = [];
+  let run = [], sign = 0;                       // shade the product: green above 0, red below
+  const flush = () => { if (run.length > 1) {
+    const verts = [[run[0][0], 0], ...run, [run[run.length - 1][0], 0]].map(([u, v]) => topAx.coordsToPoint(u, v));
+    g.push(new Polygon({ vertices: verts, color: sign > 0 ? C.green : C.red, fillOpacity: 0.55, strokeWidth: 0 })); } run = []; };
+  for (const p of prod) { const s = Math.abs(p[1]) < 1e-9 ? 0 : Math.sign(p[1]); if (s !== sign) { flush(); sign = s; } if (s !== 0) run.push(p); }
+  flush();
+  g.push(polyline(topAx, hp, C.yellow, 4));
+  const k1 = Math.max(0, Math.min(NY - 1, Math.round((t - TA) / DT)));
+  const tr = []; for (let k = 0; k <= k1; k += 2) tr.push([TA + k * DT, S.y[k]]);
+  tr.push([t, yAt(t)]);
+  if (tr.length > 1) g.push(polyline(botAx, tr, C.green, 5));
+  const yd = S.yDirect;
+  if (t >= TA && t <= TB) {
+    const top = topAx.coordsToPoint(t, 0), bot = botAx.coordsToPoint(t, yd);
+    g.push(new DashedLine({ start: [top[0], top[1] + 0.15, 0], end: bot, color: '#5A6275', strokeWidth: 2, dashLength: 0.08 }));
+    g.push(new Dot({ point: bot, radius: 0.08, color: C.green }));
+  }
+  dynamicGroup = g;
+  scene.add(...g);
+}
+
+// ======================================================================== controls
+const $ = id => document.getElementById(id);
+const presetSel = $('preset');
+PRESETS.forEach((p, i) => presetSel.add(new Option(p.name, String(i))));
+presetSel.add(new Option('Your own functions', 'own'));
+
+function readSignals() {
+  let ok = true, fx = null, fh = null;
+  for (const [id, err, set] of [['xin', 'xerr', f => (fx = f)], ['hin', 'herr', f => (fh = f)]]) {
+    try { set(compile($(id).value)); $(id).classList.remove('bad'); $(err).textContent = ''; }
+    catch (e) { ok = false; $(id).classList.add('bad'); $(err).textContent = e.message + (e.pos != null ? ` (at character ${e.pos + 1})` : ''); }
+  }
+  if (!ok) return false;
+  S.fx = fx.f; S.fh = fh.f;
+  const used = new Set([...fx.used, ...fh.used]);
+  $('pW').classList.toggle('unused', !used.has('W')); $('pa').classList.toggle('unused', !used.has('a'));
+  return true;
+}
+function recompute() {
+  const sx = sample(S.fx, S.W, S.a), sh = sample(S.fh, S.W, S.a);
+  S.xs = sx.v; S.hs = sh.v;
+  S.y = convolveAll(S.xs, S.hs);
+  const edge = (v) => { let m = 0; for (const q of v) m = Math.max(m, Math.abs(q)); const e = Math.max(Math.abs(v[0]), Math.abs(v[N - 1])); return m > 0 && e > 1e-3 * m; };
+  const w = [];
+  if (sx.nan || sh.nan) w.push('Some values are undefined (for example sqrt of a negative number); they are taken as 0.');
+  if (edge(S.xs) || edge(S.hs)) w.push(`A signal is not zero at the edge of the window (t = ${G0} … ${G1}); beyond it, it is taken as 0.`);
+  $('warn').textContent = w.join(' ');
+}
+function updateReadout() {
+  const t = S.t, yd = S.yDirect, yc = yAt(t);
+  $('tval').textContent = t.toFixed(2).replace('-', '−');
+  $('yval').textContent = (Math.abs(yd) < 5e-5 ? 0 : yd).toFixed(4).replace('-', '−');
+  let ymax = 0; for (let k = 0; k < NY; k++) ymax = Math.max(ymax, Math.abs(S.y[k]));
+  const tol = 0.005 * ymax + 0.002;
+  let txt = `direct area ${yd.toFixed(4)} · convolution sum ${yc.toFixed(4)}`, ok = Math.abs(yd - yc) <= tol;
+  if (S.exact) { const ye = S.exact(t, S.W, S.a); txt += ` · exact ${ye.toFixed(4)}`; ok = ok && Math.abs(yd - ye) <= tol; }
+  $('check').className = 'check ' + (ok ? 'ok' : 'bad');
+  $('check').innerHTML = (ok ? '<b>✓ Checked:</b> ' : '<b>⚠ The methods disagree:</b> ') + txt.replace(/-/g, '−');
+}
+function frame() { S.yDirect = directArea(S.t); rebuildDynamic(); updateReadout(); scene.render(); }
+function full() { if (!readSignals()) return; recompute(); rebuildStatic(); frame(); shareState(); }
+// the setup goes into the link and, inside the ProfsAgent app, to the app (it can keep it as the class example)
+let shareTimer = null;
+function shareState() {
+  clearTimeout(shareTimer);
+  shareTimer = setTimeout(() => {
+    if (!window.SimShare) return;
+    const own = presetSel.value === 'own';
+    const v = own ? { p: 'own', x: $('xin').value, h: $('hin').value } : { p: presetSel.value };
+    Object.assign(v, { W: S.W.toFixed(1), a: S.a.toFixed(1), t: S.t.toFixed(2) });
+    SimShare.write(v, (own ? `x(t) = ${v.x}, h(t) = ${v.h}` : `Example "${PRESETS[+v.p].name}"`) + `; W = ${v.W}, a = ${v.a}, t = ${v.t}`);
+  }, 300);
+}
+function restore() {                                   // a link (or the app's class example) opens that setup
+  const v = window.SimShare && SimShare.read();
+  if (!v) return usePreset(0);
+  const num = (k, lo, hi, d) => { const x = parseFloat(v[k]); return Number.isFinite(x) ? Math.min(hi, Math.max(lo, x)) : d; };
+  S.W = num('W', 0.5, 4, 2); S.a = num('a', 0.2, 3, 1); S.t = num('t', TA, TB, 1);
+  for (const id of ['W', 'a']) { $(id).value = S[id]; $(id + 'o').textContent = S[id].toFixed(1); }
+  $('t').value = S.t; $('to').textContent = S.t.toFixed(2).replace('-', '−');
+  const i = parseInt(v.p, 10);
+  if (String(i) === v.p && i >= 0 && i < PRESETS.length) return usePreset(i);
+  $('xin').value = v.x || PRESETS[0].x; $('hin').value = v.h || PRESETS[0].h; S.exact = null; presetSel.value = 'own'; full();
+}
+
+function usePreset(i) {
+  const p = PRESETS[i]; $('xin').value = p.x; $('hin').value = p.h; S.exact = p.exact; presetSel.value = String(i); full();
+}
+presetSel.addEventListener('change', () => { if (presetSel.value !== 'own') usePreset(+presetSel.value); else { S.exact = null; full(); } });
+let typing = null;
+for (const id of ['xin', 'hin']) $(id).addEventListener('input', () => {
+  presetSel.value = 'own'; S.exact = null; clearTimeout(typing); typing = setTimeout(full, 250);
+});
+for (const id of ['W', 'a']) $(id).addEventListener('input', () => { S[id] = parseFloat($(id).value); $(id + 'o').textContent = S[id].toFixed(1); full(); });
+$('t').addEventListener('input', () => { S.t = parseFloat($('t').value); $('to').textContent = S.t.toFixed(2).replace('-', '−'); frame(); shareState(); });
+
+let playing = false, last = 0;
+function tick(now) {
+  if (!playing) return;
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  S.t += dt * 1.6; if (S.t > TB) S.t = TA;
+  $('t').value = S.t; $('to').textContent = S.t.toFixed(2).replace('-', '−');
+  frame(); requestAnimationFrame(tick);
+}
+$('play').addEventListener('click', () => { playing = !playing; $('play').textContent = playing ? '❚❚ Pause' : '▶ Play'; if (playing) { last = performance.now(); requestAnimationFrame(tick); } else shareState(); });
+
+$('flip').addEventListener('click', async () => {          // h(τ) → h(−τ) → h(t − τ), with manim-web animations
+  if (playing) $('play').click();
+  const btns = [$('flip'), $('play')]; btns.forEach(b => (b.disabled = true));
+  scene.remove(...dynamicGroup); dynamicGroup = [];
+  const env = { t: 0, W: S.W, a: S.a }, taus = [];
+  for (let k = 0; k <= 700; k++) taus.push(TA + k * 0.02);
+  const hv = taus.map(u => { env.t = u; const v = S.fh(env); return Number.isFinite(v) ? v : 0; });
+  const shape = map => polyline(topAx, taus.map((u, i) => [map(u), hv[i]]), C.yellow, 4);
+  const h0 = shape(u => u), cap = label('1  h(τ)', [0, 3.55, 0], 24, C.yellow);
+  scene.add(h0, cap); scene.render();
+  await new Promise(r => setTimeout(r, 700));
+  scene.remove(cap); const cap2 = label('2  flip: h(−τ)', [0, 3.55, 0], 24, C.yellow); scene.add(cap2);
+  await scene.play(new Transform(h0, shape(u => -u), { duration: 1.4 }));
+  await new Promise(r => setTimeout(r, 500));
+  scene.remove(cap2); const cap3 = label(`3  slide to t = ${S.t.toFixed(2)}: h(t − τ)`, [0, 3.55, 0], 24, C.yellow); scene.add(cap3);
+  await scene.play(new Transform(h0, shape(u => S.t - u), { duration: 1.4 }));
+  await new Promise(r => setTimeout(r, 600));
+  scene.remove(h0, cap3);
+  btns.forEach(b => (b.disabled = false));
+  frame();
+});
+
+window.addEventListener('resize', () => { const w = host.clientWidth; scene.resize(w, Math.round(w * 9 / 16)); scene.render(); });
+restore();
+window.__convolution = { S, compile, directArea, yAt, PRESETS, usePreset, full, frame, restore };   // for the automatic checks
+})();
+</script>
+</body>
+</html>

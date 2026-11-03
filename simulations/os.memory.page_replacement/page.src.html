@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page replacement: FIFO, LRU and Optimal · step by step</title>
+<link rel="stylesheet" href="../_engines/stepper/stepper.css">
+<style>
+  .grid { border-collapse: collapse; font: 14px "Cascadia Mono", Consolas, monospace; }
+  .grid td, .grid th { border: 1px solid #2A3140; width: 34px; height: 30px; text-align: center; }
+  .grid th { color: #9AA3B2; font-weight: 500; }
+  .grid th.now { color: #FFFF00; border-bottom: 2px solid #FFFF00; }
+  .grid th.rowh { width: 74px; text-align: left; padding-left: 6px; }
+  .grid td.new { color: #FFFF00; font-weight: 700; }
+  .grid td.fault { background: #3A1F22; } .grid td.hit { color: #83C167; }
+  .grid td.future { color: #3A4152; }
+  .grid tr.res td { font-family: "Segoe UI", sans-serif; font-size: 12.5px; }
+  .side { margin-top: 12px; font-size: 14px; color: #C9CED8; }
+  .side b { color: #fff; } .tag { color: #9AA3B2; }
+  .anomaly { color: #F5A623; }
+</style>
+</head>
+<body>
+<script src="../_engines/share/share.js"></script>
+<script src="../_engines/stepper/stepper.js"></script>
+<script>
+(() => {
+'use strict';
+const { h } = Stepper;
+const NAME = { fifo: 'FIFO', lru: 'LRU', opt: 'Optimal' };
+
+// ---------------------------------------------------------------- the simulation (timestamps: when each page was loaded / last used)
+function simulate(refs, F, algo) {
+  const frames = new Array(F).fill(null), loaded = new Array(F).fill(-1), used = new Array(F).fill(-1);
+  const cols = [], events = [];
+  for (let t = 0; t < refs.length; t++) {
+    const p = refs[t];
+    let slot = frames.indexOf(p), hit = slot >= 0, victim = null, why = '';
+    if (hit) used[slot] = t;
+    else {
+      slot = frames.indexOf(null);
+      if (slot < 0) {
+        const score = frames.map((q, i) => {
+          if (algo === 'fifo') return -loaded[i];                         // oldest load first
+          if (algo === 'lru') return -used[i];                            // least recently used first
+          const nxt = refs.indexOf(q, t + 1); return nxt < 0 ? Infinity : nxt;   // farthest next use (never = farthest)
+        });
+        slot = score.indexOf(Math.max(...score));                       // ties (Optimal, several never used again): lowest frame
+        victim = frames[slot];
+        if (algo === 'fifo') why = `it was loaded first (at step ${loaded[slot] + 1})`;
+        else if (algo === 'lru') why = `it was used least recently (at step ${used[slot] + 1})`;
+        else { const nxt = refs.indexOf(victim, t + 1); why = nxt < 0 ? 'it is never used again' : `it is needed again farthest away (at step ${nxt + 1})`; }
+      }
+      frames[slot] = p; loaded[slot] = t; used[slot] = t;
+    }
+    cols.push({ frames: frames.slice(), hit, slot, victim });
+    events.push({ t, p, hit, slot, victim, why, frames: frames.slice(), loaded: loaded.slice(), used: used.slice() });
+  }
+  return { cols, events, faults: events.filter(e => !e.hit).length };
+}
+// ---------------------------------------------------------------- independent check: a queue, a recency list, a look-ahead (no timestamps)
+function check2(refs, F, algo) {
+  let mem = [], faults = 0; const victims = [];
+  refs.forEach((p, t) => {
+    const at = mem.indexOf(p);
+    if (at >= 0) { if (algo === 'lru') { mem.splice(at, 1); mem.push(p); } return; }
+    faults++;
+    if (mem.length === F) {
+      let out;
+      if (algo === 'fifo' || algo === 'lru') out = mem.shift();          // queue head = oldest load (FIFO) / least recent (LRU)
+      else { let best = -1, far = -1; mem.forEach((q, i) => { const n = refs.slice(t + 1).indexOf(q); const d = n < 0 ? 1e9 : n; if (d > far) { far = d; best = i; } }); out = mem.splice(best, 1)[0]; }
+      victims.push(out);
+    }
+    mem.push(p);
+  });
+  return { faults, victims };
+}
+
+function parseRefs(s) {
+  const toks = s.trim().split(/[\s,]+/).filter(Boolean);
+  if (!toks.length) return { error: 'Type a reference string, e.g. 7 0 1 2 0 3' };
+  if (toks.length > 40) return { error: 'At most 40 references, so the grid fits' };
+  const bad = toks.find(x => !/^\d{1,2}$/.test(x));
+  if (bad) return { error: `“${bad}” is not a page number (use 0–99, separated by spaces)` };
+  return { refs: toks.map(Number) };
+}
+
+const api = Stepper.mount({
+  title: 'Page replacement: FIFO, LRU and Optimal · step by step',
+  intro: 'A process asks for pages in the order of the reference string. When the page is not in memory (a page fault) and every frame is full, the algorithm decides which page to throw out. Predict its choice, then check.',
+  inputs: [
+    { id: 'refs', label: 'Reference string (the pages asked for, in order)', kind: 'text', mono: true, help: 'Page numbers 0–99, separated by spaces; up to 40.' },
+    { id: 'frames', label: 'Number of frames in memory', kind: 'number', min: 1, max: 8, step: 1 },
+    { id: 'algo', label: 'Algorithm', kind: 'select', options: [['fifo', 'FIFO: replace the page loaded first'], ['lru', 'LRU: replace the page used least recently'], ['opt', 'Optimal: replace the page needed farthest in the future']] },
+  ],
+  describe: v => `${NAME[v.algo] || v.algo}, ${v.frames} frame${+v.frames === 1 ? '' : 's'}, reference string ${String(v.refs).trim().split(/\s+/).slice(0, 14).join(' ')}${String(v.refs).trim().split(/\s+/).length > 14 ? ' …' : ''}`,
+  presets: [
+    { name: 'Textbook example · FIFO, 3 frames', values: { refs: '7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1', frames: 3, algo: 'fifo' } },
+    { name: 'Textbook example · LRU, 3 frames', values: { refs: '7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1', frames: 3, algo: 'lru' } },
+    { name: 'Textbook example · Optimal, 3 frames', values: { refs: '7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1', frames: 3, algo: 'opt' } },
+    { name: 'Belady’s anomaly · FIFO, 3 frames', values: { refs: '1 2 3 4 1 2 5 1 2 3 4 5', frames: 3, algo: 'fifo' } },
+    { name: 'Belady’s anomaly · FIFO, 4 frames (more faults!)', values: { refs: '1 2 3 4 1 2 5 1 2 3 4 5', frames: 4, algo: 'fifo' } },
+    { name: 'A loop over 4 pages with 3 frames · LRU', values: { refs: '1 2 3 4 1 2 3 4 1 2 3 4', frames: 3, algo: 'lru' } },
+  ],
+  code: v => [
+    'for each page p in the reference string:',
+    v.algo === 'lru' ? '    if p is in a frame: hit; mark p most recently used' : '    if p is in a frame: hit; next page',
+    '    page fault',
+    '    if a frame is free: load p into it',
+    v.algo === 'fifo' ? '    else: replace the page loaded first' : v.algo === 'lru' ? '    else: replace the page used least recently' : '    else: replace the page needed farthest ahead (or never)',
+    '          and load p in its place',
+  ],
+  run(v) {
+    const pr = parseRefs(v.refs); if (pr.error) return { error: { field: 'refs', message: pr.error } };
+    const F = Number(v.frames); if (!Number.isInteger(F) || F < 1 || F > 8) return { error: { field: 'frames', message: 'Between 1 and 8 frames' } };
+    const refs = pr.refs, sim = simulate(refs, F, v.algo);
+    const steps = [{ line: 0, note: `Memory has ${F} empty frame${F > 1 ? 's' : ''}. ${refs.length} pages will be asked for. Press Next ▶ (or →).`, k: -1 }];
+    sim.events.forEach((e, i) => {
+      const full = !e.hit && e.victim !== null;
+      const st = { line: e.hit ? 2 : full ? 5 : 4, k: i, note: e.hit ? `Step ${i + 1}: page ${e.p} is already in memory → hit.`
+        : full ? `Step ${i + 1}: page ${e.p} is not in memory → page fault. All frames are full, so ${NAME[v.algo]} replaces page ${e.victim}: ${e.why}.`
+        : `Step ${i + 1}: page ${e.p} is not in memory → page fault. A frame is free, so it is loaded there.` };
+      if (full) st.ask = { q: `Page ${e.p} is needed and every frame is full. Which page will ${NAME[v.algo]} replace?`,
+                           options: sim.events[i - 1].frames.filter(x => x !== null), answer: e.victim, why: `${NAME[v.algo]} replaces page ${e.victim}: ${e.why}.` };
+      steps.push(st);
+    });
+    // summary: faults for 1-7 frames, all three algorithms (Belady's anomaly shows up for FIFO only)
+    const table = {}; for (const a of ['fifo', 'lru', 'opt']) table[a] = [1, 2, 3, 4, 5, 6, 7].map(f => simulate(refs, f, a).faults);
+    const anomaly = table.fifo.findIndex((x, i) => i > 0 && x > table.fifo[i - 1]);
+    const summary = `<p><b>${sim.faults}</b> page faults and <b>${refs.length - sim.faults}</b> hits with ${F} frames (${NAME[v.algo]}), a fault rate of ${Math.round(100 * sim.faults / refs.length)}%.</p>` +
+      `<table><tr><th>Frames</th>${[1, 2, 3, 4, 5, 6, 7].map(f => `<th>${f}</th>`).join('')}</tr>` +
+      ['fifo', 'lru', 'opt'].map(a => `<tr><th>${NAME[a]}</th>${table[a].map((x, i) => `<td${a === 'fifo' && i === anomaly ? ' class="anomaly"' : ''}>${x}</td>`).join('')}</tr>`).join('') + '</table>' +
+      (anomaly > 0 ? `<p class="anomaly">Belady’s anomaly: FIFO has more faults with ${anomaly + 1} frames (${table.fifo[anomaly]}) than with ${anomaly} (${table.fifo[anomaly - 1]}). LRU and Optimal never do this.</p>`
+                   : '<p class="tag">More frames never means more faults here.</p>');
+    return { steps, refs, F, sim, table, summary };
+  },
+  render(view, st, k, tr, v) {
+    const { refs, F, sim } = tr, now = st.k;
+    const head = h('tr', {}, h('th', { class: 'rowh' }, 'Asks for'), ...refs.map((p, t) => h('th', { class: t === now ? 'now' : '' }, p)));
+    const rows = [];
+    for (let f = 0; f < F; f++) rows.push(h('tr', {}, h('th', { class: 'rowh' }, `Frame ${f + 1}`), ...refs.map((p, t) => {
+      if (t > now) return h('td', { class: 'future' }, '');
+      const c = sim.cols[t], val = c.frames[f];
+      const cls = [!c.hit && c.slot === f ? 'new' : '', !c.hit ? 'fault' : ''].join(' ').trim();
+      return h('td', { class: cls }, val === null ? '' : val);
+    })));
+    const res = h('tr', { class: 'res' }, h('th', { class: 'rowh' }, 'Result'), ...refs.map((p, t) => t > now ? h('td', { class: 'future' }, '') :
+      h('td', { class: sim.cols[t].hit ? 'hit' : 'fault' }, sim.cols[t].hit ? 'hit' : 'fault')));
+    const faults = now < 0 ? 0 : sim.events.slice(0, now + 1).filter(e => !e.hit).length;
+    let side = '';
+    if (now >= 0) {
+      const e = sim.events[now], inMem = e.frames.map((q, i) => ({ q, i })).filter(x => x.q !== null);
+      if (v.algo === 'fifo') side = 'Queue, loaded first → last: <b>' + inMem.sort((a, b) => e.loaded[a.i] - e.loaded[b.i]).map(x => x.q).join(' → ') + '</b>';
+      else if (v.algo === 'lru') side = 'Least → most recently used: <b>' + inMem.sort((a, b) => e.used[a.i] - e.used[b.i]).map(x => x.q).join(' → ') + '</b>';
+      else side = 'Next needed: ' + inMem.map(x => { const n = refs.indexOf(x.q, now + 1); return `<b>${x.q}</b> ${n < 0 ? 'never' : 'at step ' + (n + 1)}`; }).join(' · ');
+    }
+    view.replaceChildren(h('table', { class: 'grid' }, head, ...rows, res));
+    const s = h('div', { class: 'side' }); s.innerHTML = `<span class="tag">Faults so far:</span> <b>${faults}</b>${side ? ' &nbsp; <span class="tag">|</span> &nbsp;' + side : ''}`;
+    view.append(s);
+  },
+  check(v, tr) {
+    let worst = 0;
+    for (const a of ['fifo', 'lru', 'opt']) for (let f = 1; f <= 7; f++) {
+      const b = check2(tr.refs, f, a); if (b.faults !== tr.table[a][f - 1]) worst++;
+      if (a !== 'opt' && f === tr.F && a === v.algo) {
+        const mine = tr.sim.events.filter(e => e.victim !== null).map(e => e.victim);
+        if (JSON.stringify(mine) !== JSON.stringify(b.victims)) worst++;
+      }
+    }
+    return worst ? { ok: false, text: `${worst} result${worst > 1 ? 's' : ''} differ between the two implementations` }
+      : { ok: true, text: 'a second implementation (a queue, a recency list and a look-ahead, no timestamps) gives the same faults for 1–7 frames with all three algorithms' + (v.algo !== 'opt' ? ', and the same replaced pages' : '') };
+  },
+});
+window.__pagerep = { api, simulate, check2 };     // for the automatic checks
+})();
+</script>
+</body>
+</html>

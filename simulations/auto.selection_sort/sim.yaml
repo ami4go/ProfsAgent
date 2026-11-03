@@ -1,0 +1,43 @@
+# Built by the machine (auto-build, decisions.md 28). Checked automatically; not yet reviewed by the team.
+id: auto.selection_sort
+type:
+- 1-step-through
+title: Selection Sort
+summary: Step through Selection Sort, finding the minimum element in each pass and swapping it into place.
+version: 1.0.0
+status: draft
+built_by: machine
+request: R002
+courses: []
+topics:
+- selection sort
+- sorting algorithms
+- in-place sorting
+- quadratic time complexity
+interactivity: L3
+engine:
+  name: stepper
+  path: _engines/stepper
+files:
+  page_src: page.src.html
+  qa: ../_engines/stepper/qa_recipe.py
+checks:
+  independent: an independent sort, exact comparison formula n(n-1)/2, and simulated swap count
+  qa: 'automatic (qa_recipe.py): presets, textbook examples and 40 random inputs against the independent check; a corrupted result must be rejected;
+    widgets, code lines and questions valid; every example to its end; phone; offline'
+sensitive: false
+offline: true
+class_example: true
+build:
+  attempts: 1
+  calls: 1
+  models:
+  - gemini:gemini-3.6-flash
+  seconds: 43
+  at: 2026-11-03 10:02
+  prompt_version: 0.1.0
+changelog:
+- version: 1.0.0
+  date: '2026-11-03'
+  by: machine
+  change: built from request R002 (Selection Sort); passed the automatic checks on attempt 1

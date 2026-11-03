@@ -1,0 +1,25 @@
+id: ml.clustering.dbscan
+type: [1-step-through, 8-data-explorer]
+title: "DBSCAN · try it yourself"
+summary: "Add, drag or remove points and change eps and minPts; points turn core, border or noise live, and step mode replays how DBSCAN visits them."
+version: 1.2.0
+status: team-checked              # draft | team-checked | retired  (professor approval is per course, in the app)
+courses: [CSE343, AI201]
+topics: [DBSCAN, density-based clustering, core border and noise points, epsilon neighbourhood, clustering]
+interactivity: L3                 # change the data (add, drag, remove points) and the settings; step mode
+engine: {name: manim-web, version: 0.40.1, licence: MIT}
+files: {page_src: page.src.html, qa: qa.py, video_src: video/dbscan_scene.py, video_core: video/dbscan_core.py}
+config:
+  parameters: [{name: eps, min: 0.1, max: 1.5, default: 0.62}, {name: minPts, min: 2, max: 10, default: 4}]
+  examples: [the video's data (blob, strip, arc + noise), two moons, rings, different densities, empty]
+checks:
+  independent: "live: every label recomputed from the definition (core by count, clusters as connected core points, no visiting order)"
+  qa: "every label vs scikit-learn's DBSCAN over 4 datasets x 4 eps x 3 minPts; step mode replays to the same labels; add/drag/remove; speed; phone; offline"
+  video: "the Manim scene refuses to render unless it matches scikit-learn exactly"
+sensitive: false
+offline: true
+class_example: true                # the app can save a professor's setup as the class example (page reports its state)
+changelog:
+  - {version: 1.2.0, date: 2026-11-03, by: Amit, change: "the setup (example, eps, minPts and any points the professor changed) is kept in the link and sent to the app as a class example; a link opens that setup"}
+  - {version: 1.1.0, date: 2026-11-02, by: Amit, change: "interactive version (manim-web): add/drag/remove points, eps and minPts, step mode, live check"}
+  - {version: 1.0.0, date: 2026-10-29, by: Amit, change: "Manim video, checked against scikit-learn"}

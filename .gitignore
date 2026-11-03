@@ -49,3 +49,12 @@ runs/*/delivery/material/batch_*.log
 # Office lock files (a deck open in PowerPoint)
 ~$*
 runs/*/delivery/material/*/*.zip
+
+# Simulation builds, QA screenshots and reports (made by scripts/sims.py; not committed)
+simulations/_build/
+# simulations professors asked for in the app (their course ideas stay off GitHub)
+runs/_simulation_requests.json
+# the simulation auto-build: each request's attempts and AI calls, the worker's heartbeat, the requests file's lock
+runs/_simulation_builds/
+runs/_simulation_autobuild.json
+runs/_simulation_requests.json.lock

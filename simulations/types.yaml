@@ -1,0 +1,123 @@
+# The 12 simulation types (docs/09_phase2_A_simulation_catalogue.md §3-4). Read by src/profsagent/sims (catalogue checks,
+# the topic -> type classifier) and, later, by the app. `examples` are short topic phrases the classifier compares
+# lecture topics with; keep them concrete and spread across departments.
+levels:
+  L0: watch
+  L1: step, play, pause
+  L2: change values
+  L3: change the data or input
+  L4: change the functions, rules or code
+  L5: make choices that change what happens next
+
+types:
+  - id: 1-step-through
+    name: Step-through process
+    does: Step forwards and backwards through a procedure; see the state and the code line; predict the next step
+    engine: own HTML/JS + SVG stepper (simulations/_engines/stepper)
+    check: a second implementation or a reference library, and invariants after every step
+    examples: [Dijkstra shortest path algorithm, process scheduling round robin, page replacement LRU FIFO, TCP three-way handshake,
+               sliding window protocol, B+ tree insertion and split, query processing and evaluation plan, normalization to BCNF,
+               LR parsing table, register allocation, AES encryption rounds, RSA key generation steps, sorting algorithm,
+               depth first search traversal, deadlock detection bankers algorithm, DNA replication steps, two phase locking]
+  - id: 2-parameter-explorer
+    name: Parameter explorer
+    does: Turn knobs and type formulas; curves, areas and points update live
+    engine: manim-web (simulations/_lib)
+    check: two numerical methods, plus the exact answer where known, live
+    examples: [convolution of signals, Fourier series coefficients, sampling and aliasing, probability distribution shape,
+               supply and demand curves, utility function and indifference curves, compound interest and net present value,
+               antenna radiation pattern, transfer function frequency response, gradient descent learning rate,
+               eigenvalues and eigenvectors, Taylor series approximation, psychometric function]
+  - id: 3-systems-over-time
+    name: Systems over time
+    does: Set starting conditions and watch the system evolve; compare runs
+    engine: manim-web + a Runge-Kutta solver with step halving
+    check: conservation laws, exact solutions in special cases, half-step agreement
+    examples: [RC circuit transient response, RLC oscillation, control system step response, pendulum and spring motion,
+               wave propagation, heat diffusion, enzyme kinetics Michaelis Menten, protein folding kinetics,
+               predator prey population dynamics, SIR epidemic model, economic growth Solow model, drug concentration over time]
+  - id: 4-chance-and-crowds
+    name: Chance and crowds
+    does: Run many random trials or agents; see averages emerge; change the rules
+    engine: own Canvas 2D + seeded random generator + charts
+    check: seeded reproducibility; averages against theory with confidence intervals
+    examples: [queueing delay at a router, packet loss and throughput vs load, Monte Carlo estimation, random walk,
+               genetic drift and natural selection, opinion dynamics and social influence, Schelling segregation model,
+               agent based market, traffic flow, central limit theorem, birthday paradox, epidemic spread on a population]
+  - id: 5-networks
+    name: Networks and graphs
+    does: Build or edit a network; run algorithms and measures on it
+    engine: own SVG (small), Cytoscape.js (large)
+    check: results compared with networkx computed beforehand
+    examples: [routing algorithms distance vector link state, social network centrality, community detection,
+               minimum spanning tree, network flow, supply chain network, biological pathway network, PageRank,
+               small world networks, graph colouring]
+  - id: 6-machines-inside
+    name: Machines inside
+    does: Watch a component work at bit, cycle or packet level and change its settings
+    engine: own JS models; reuse CircuitVerse, Falstad, Wokwi after a licence check
+    check: truth tables or a reference simulator; timing invariants
+    examples: [logic gates and boolean algebra, combinational circuits multiplexer adder, flip flops and counters,
+               CPU datapath, instruction pipeline hazards, cache memory hit and miss, virtual memory paging and TLB,
+               IEEE 754 floating point representation, packet encapsulation through protocol layers, interrupts and DMA,
+               finite state machine of a controller]
+  - id: 7-code-sandbox
+    name: Live code and query sandbox
+    does: Write and run real code or queries in the browser, with hidden tests
+    engine: Pyodide, sql.js, assembly emulator in a Web Worker (no network, time and memory limits)
+    check: hidden test cases against a reference run; sandbox limits tested
+    examples: [SQL queries joins and aggregation, Python programming loops and functions, recursion exercises,
+               regular expressions, assembly language programming, SQL injection on a test database, data cleaning with pandas,
+               writing a lexer, shell commands]
+  - id: 8-data-explorer
+    name: Data explorer
+    does: Load a dataset, filter and transform it, fit models, see the statistics change
+    engine: Vega-Lite or Plotly.js + own statistics
+    check: the same statistics from a second library, computed beforehand
+    examples: [linear regression and residuals, hypothesis testing and p-values, causal inference and confounding,
+               clustering a dataset, survey data analysis, biostatistics of a clinical dataset, correlation vs causation,
+               principal component analysis, time series trend, A/B testing]
+  - id: 9-3d-models
+    name: 3D and spatial models
+    does: Rotate, cut and measure 3D structures; place things in space
+    engine: three.js (inside manim-web); 3Dmol.js for molecules
+    check: geometry from authoritative data (e.g. PDB); measurements recomputed
+    examples: [protein structure and folding, molecular geometry and bonds, crystal lattice, Ramachandran plot angles,
+               anatomy of an organ, 3D transformations and projection, electromagnetic field lines, robot arm kinematics,
+               3D modelling for extended reality, camera and perspective in drawing]
+  - id: 10-decisions-and-games
+    name: Decisions, games and role-play
+    does: Make choices in a scenario and see consequences; play against strategies; talk to an AI partner with a role
+    engine: own scenario engine (branching story, state, rules and payoffs in YAML); optional AI role-play partner
+    check: payoffs and equilibria computed by code; every branch reachable; professor review; AI partner follows a script and a rubric
+    examples: [prisoner's dilemma and Nash equilibrium, ultimatum game and fairness, moral dilemma trolley problem,
+               euthanasia and assisted suicide debate, startup cash flow and runway decisions, supply chain beer game,
+               newsvendor inventory decision, negotiation role play, job interview practice, clinical case decisions,
+               public goods game, auction bidding strategy, policy trade-offs]
+  - id: 11-experiments-on-yourself
+    name: Experiments on yourself
+    does: Take part in a classic experiment and analyse your own data
+    engine: own JS with accurate timing (performance.now) + analysis
+    check: timing accuracy tested; results within published effect ranges; analysis code tested
+    examples: [Stroop effect, change blindness, attentional blink, visual illusions Muller-Lyer, reaction time,
+               signal detection theory, working memory span, Fitts' law pointing, colour contrast and accessibility,
+               Gestalt principles of perception, typography readability, prospect theory choices, framing effect]
+  - id: 12-maps-timelines-arguments
+    name: Maps, timelines and arguments
+    does: Explore events in time and space, map an argument and test it, annotate a text
+    engine: own SVG timelines, offline vector maps, argument-map editor with a logic check
+    check: every fact sourced and checked; argument validity by a logic engine; professor review
+    examples: [timeline of a social movement, history of a political conflict, map of colonial trade routes,
+               argument for and against a moral position, close reading of a text, legal precedent chain,
+               spread of a religion across regions, comparative politics across countries, ethnographic field site map]
+
+composites:
+  - {id: virtual-lab, built_from: [1-step-through, 3-systems-over-time, 4-chance-and-crowds], note: procedure + model + instrument noise}
+  - {id: classroom-game, built_from: [10-decisions-and-games], note: multi-player through the app}
+  - {id: studio, built_from: [11-experiments-on-yourself, 9-3d-models], note: design canvas with measured feedback}
+
+# Topics better taught another way: the classifier answers "none" for these, and the app suggests a better format.
+none_examples: [course introduction and overview, guest lecture, revision and doubt clearing session, mid semester exam,
+                project presentations, history and evolution of the field, reading discussion, ethnographic fieldwork methods,
+                literature review, introduction to the course logistics, research paper presentations, course summary and wrap up,
+                definitions and terminology, case study discussion in class, report writing]

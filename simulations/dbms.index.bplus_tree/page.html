@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Self-balancing B+ tree · cascading page splits and merges</title>
+<style>
+:root{--navy:#002357;--navy2:#1E3A6E;--navy-bg:#DCE3F0;--canvas:#F8F8F6;--band:#F5F3ED;--card:#fff;--line:#E8E5DC;--ink:#1F1E1D;--ink2:#5E5D59;
+  --green:#15803D;--green-bg:#DCFCE7;--red:#B91C1C;--red-bg:#FEE2E2;--amber:#B45309;--amber-bg:#FEF3C7;--teal:#006970;--teal-bg:#E5F3F3}
+*{box-sizing:border-box}
+body{margin:0;background:var(--canvas);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+button,select,input{font:inherit;color:inherit}
+h1{font-size:20px;font-weight:650;margin:0;letter-spacing:-.01em}
+h2{font-size:13px;font-weight:650;margin:0 0 8px;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em}
+p{margin:0}.muted{color:var(--ink2)}.small{font-size:13px}
+.top{background:var(--card);border-bottom:1px solid var(--line);padding:12px 20px}
+.wrap{max-width:1280px;margin:0 auto}
+main{max-width:1280px;margin:0 auto;padding:16px 20px 28px;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(300px,1fr);gap:16px;align-items:start}
+.full{grid-column:1/-1}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+select,.btn,.inp{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 11px;min-height:40px}
+.btn{cursor:pointer;font-weight:550;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
+.btn:hover:not(:disabled){background:var(--band)}
+.btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}.btn.primary:hover:not(:disabled){background:var(--navy2)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn:focus-visible,select:focus-visible,.inp:focus-visible,.chipbtn:focus-visible{outline:2px solid var(--navy2);outline-offset:2px}
+.ops{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.grp{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.grp label{font-size:13px;color:var(--ink2)}
+.inp{width:78px;font-variant-numeric:tabular-nums}
+.inp.wide{width:230px}
+.inp.bad{border-color:var(--red);background:#FEF2F2}
+.sep{width:1px;height:28px;background:var(--line)}
+.err{color:var(--red);font-size:13px;margin-top:8px}
+.stage-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 8px}
+.chip{font-size:12.5px;font-weight:600;padding:4px 11px;border-radius:999px;white-space:nowrap;background:var(--navy-bg);color:var(--navy)}
+.chip.ok{background:var(--green-bg);color:var(--green)}
+.stats{font-size:13px;color:var(--ink2);font-variant-numeric:tabular-nums}
+.treebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:#fff;text-align:center;min-height:200px}
+.treebox svg{display:inline-block;vertical-align:top}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.controls .grow{flex:1;min-width:160px;display:flex;align-items:center;gap:8px}
+input[type=range]{width:100%;accent-color:var(--navy2);min-height:28px}
+.stepno{font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--ink2);white-space:nowrap}
+.speed{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)}.speed input{width:90px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--ink2);margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.lg{width:16px;height:12px;border-radius:3px;border:2px solid;display:inline-block}
+#explain{font-size:15px;line-height:1.55;min-height:72px}#explain b{font-weight:650}
+.quiz{margin-top:10px;border-top:1px solid var(--line);padding-top:10px}
+.qrow{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
+.chipbtn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;min-height:36px;cursor:pointer;font-weight:600}
+.chipbtn:hover{background:var(--band)}.chipbtn.sel{background:var(--navy-bg);border-color:var(--navy2)}
+.fb{margin-top:6px;font-size:13px}
+.code{list-style:none;margin:0;padding:0;font:12.5px/1.5 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}
+.code li{padding:3px 8px;border-left:3px solid transparent;border-radius:0 6px 6px 0;white-space:pre-wrap}
+.code li.grp{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:11.5px;font-weight:650;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em;padding-top:8px}
+.code li.on{background:var(--navy-bg);border-left-color:var(--navy);color:var(--navy);font-weight:600}
+.rules{font-size:13.5px;margin:0;padding-left:18px}.rules li{margin:3px 0}
+.okc{color:var(--green);font-weight:600}.badc{color:var(--red);font-weight:600}
+.foot{max-width:1280px;margin:0 auto;padding:0 20px 26px;font-size:12.5px;color:var(--ink2);display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between}
+@media (max-width:900px){main{grid-template-columns:minmax(0,1fr);padding:12px 12px 24px}.top{padding:10px 12px}.foot{padding:0 12px 22px}.sep{display:none}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><h1>Self-balancing B+ tree: cascading page splits and merges</h1>
+  <p class="muted small">Index pages hold signposts; leaf pages hold the keys and are linked left to right. Pages split when too full and merge when too empty, so every leaf stays at the same depth.</p></div></header>
+
+<main>
+  <section class="card full" aria-label="Operations, tree and controls">
+    <h2>1 · Start a tree</h2>
+    <div class="ops">
+      <div class="grp"><label for="M">Page size</label><input class="inp" id="M" inputmode="numeric" value="3" aria-describedby="setupHint" style="width:64px">
+        <select id="sizeMode" aria-label="What the page size means"><option value="children">= order m (max children per page)</option><option value="keys">= max keys per page</option></select>
+        <span class="small muted" id="sizeNote"></span></div>
+      <div class="grp"><label for="list">Initial keys</label><input class="inp wide" id="list" value="10 20 5 6 12 30 7 17" aria-describedby="setupHint" aria-label="Initial keys, in insert order"></div>
+      <div class="grp"><button class="btn primary" id="buildBtn">Create tree</button><button class="btn" id="useBtn" title="Copy the keys in the current tree into the box, e.g. to rebuild them with another page size">Use current keys</button>
+        <label class="small muted" style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" id="stepsChk" checked> show every insert step</label></div>
+      <span class="sep"></span>
+      <div class="grp"><label for="ex">or an example</label><select id="ex"></select></div>
+    </div>
+    <div class="ops" style="margin-top:8px">
+      <div class="grp"><label for="leafBias">Leaf split, odd number of keys: the extra key goes to the</label><select id="leafBias"><option value="right">right page (middle key copied up)</option><option value="left">left page</option></select></div>
+      <div class="grp"><label for="midBias">Index split, two middle keys: move up the</label><select id="midBias"><option value="left">left one</option><option value="right" selected>right one</option></select></div>
+    </div>
+    <p class="small muted" id="setupHint" style="margin-top:6px">Textbooks differ, so match these to your notes. Page size: an order from 3 to 11, or max keys from 2 to 10. Settings apply when you press Create tree. Initial keys: up to 60 whole numbers from 1 to 999, separated by spaces or commas, in the order they should be inserted. Leave it empty for an empty tree.</p>
+    <h2 style="margin-top:14px">2 · Change it</h2>
+    <div class="ops">
+      <div class="grp"><label for="key">Key</label><input class="inp" id="key" inputmode="numeric" value="25" aria-label="Key">
+        <button class="btn primary" id="insBtn">Insert</button><button class="btn" id="delBtn">Delete</button><button class="btn" id="findBtn">Find</button><button class="btn" id="randBtn" title="Insert a random new key">Random insert</button></div>
+      <span class="sep"></span>
+      <div class="grp"><label for="ra">Range</label><input class="inp" id="ra" inputmode="numeric" value="12" aria-label="Range from"><span class="muted">to</span><input class="inp" id="rb" inputmode="numeric" value="30" aria-label="Range to"><button class="btn" id="rangeBtn">Scan</button></div>
+    </div>
+    <div id="ferr"></div>
+
+    <div class="stage-head"><span id="opchip" class="chip">Start</span><span id="stats" class="stats"></span></div>
+    <div class="treebox" id="treebox"><svg id="svg" role="img" aria-label="B+ tree"></svg></div>
+    <div class="legend">
+      <span><i class="lg" style="background:#EEF1F8;border-color:#8D9AB5"></i>index page (signposts)</span>
+      <span><i class="lg" style="background:#fff;border-color:#A19E94"></i>leaf page (keys)</span>
+      <span><i class="lg" style="border-color:#002357"></i>current page</span>
+      <span><i class="lg" style="border-color:#B91C1C;background:#FEE2E2"></i>overflow (too full)</span>
+      <span><i class="lg" style="border-color:#B45309;background:#FEF3C7"></i>underflow (too empty)</span>
+      <span><i class="lg" style="border-color:#006970;background:#E5F3F3"></i>just split / merged / borrowed</span>
+      <span>⇢ leaf chain (next pointers)</span>
+    </div>
+    <div class="controls">
+      <button class="btn" id="resetBtn" title="First step (R)">⟲ First</button>
+      <button class="btn" id="prevBtn" title="Previous step (←)">◀ Back</button>
+      <button class="btn primary" id="playBtn" title="Play / pause (Space)">▶ Play</button>
+      <button class="btn" id="nextBtn" title="Next step (→)">Next ▶</button>
+      <div class="grow"><input type="range" id="scrub" min="0" max="0" value="0" aria-label="Jump to step"><span class="stepno" id="stepno"></span></div>
+      <label class="speed">Speed <input type="range" id="speed" min="1" max="5" value="3" aria-label="Playback speed"></label>
+    </div>
+  </section>
+
+  <div class="card"><h2>What is happening</h2><p id="explain" aria-live="polite"></p><div id="quiz"></div></div>
+  <div class="card"><h2>Algorithm</h2><ol class="code" id="code"></ol></div>
+  <div class="card full"><h2>The rules this tree keeps: <span class="mval"></span></h2><ul class="rules" id="rules"></ul></div>
+</main>
+<div class="foot"><span id="check"></span><span>Every step comes from a real B+ tree implementation; the rules are re-checked after every operation.</span></div>
+
+<script>
+(function () {
+// ======================= the B+ tree engine =======================
+const leafMin = M => Math.ceil(M / 2), intMin = M => Math.floor(M / 2);
+const clone = o => JSON.parse(JSON.stringify(o));
+const DEFAULT_CFG = { mode: 'keys', leafBias: 'left', midBias: 'right' };
+function emptyTree(M, cfg) { return { M, cfg: Object.assign({}, DEFAULT_CFG, cfg || {}), nid: 2, root: 1, nodes: { 1: { id: 1, leaf: true, keys: [], ch: [], next: null } } }; }
+const sizeLabel = T => T.cfg.mode === 'children' ? 'order ' + (T.M + 1) + ' (up to ' + (T.M + 1) + ' children, so ' + T.M + ' keys per page)' : 'up to ' + T.M + ' keys per page';
+function newNode(T, leaf) { const n = { id: T.nid++, leaf, keys: [], ch: [], next: null }; T.nodes[n.id] = n; return n; }
+const L = a => '[' + a.join(', ') + ']';
+function height(T) { let h = 1, n = T.nodes[T.root]; while (!n.leaf) { n = T.nodes[n.ch[0]]; h++; } return h; }
+function leavesOf(T) { let n = T.nodes[T.root]; while (!n.leaf) n = T.nodes[n.ch[0]]; const out = []; while (n) { out.push(n); n = n.next ? T.nodes[n.next] : null; } return out; }
+function allKeys(T) { return leavesOf(T).flatMap(l => l.keys); }
+function summary(T) { const lv = leavesOf(T); return 'Height ' + height(T) + ', ' + lv.reduce((a, l) => a + l.keys.length, 0) + ' keys in ' + lv.length + ' leaf page' + (lv.length === 1 ? '' : 's') + '.'; }
+
+function descend(T, k, rec, label) {
+  const path = [T.root]; let n = T.nodes[T.root];
+  rec({ hl: { [n.id]: 'active' }, line: [1, 11], text: label + ': start at the root' + (n.leaf ? ', which is also the only leaf page.' : '.') });
+  while (!n.leaf) {
+    let i = 0; while (i < n.keys.length && k >= n.keys[i]) i++;
+    const why = i === 0 ? k + ' < ' + n.keys[0] : i === n.keys.length ? k + ' ≥ ' + n.keys[i - 1] : n.keys[i - 1] + ' ≤ ' + k + ' < ' + n.keys[i];
+    const c = T.nodes[n.ch[i]]; path.push(c.id);
+    rec({ hl: Object.fromEntries(path.slice(0, -1).map(id => [id, 'path']).concat([[c.id, 'active']])), edge: [n.id, c.id], line: [1, 11],
+          text: 'At index page ' + L(n.keys) + ': <b>' + why + '</b>, so follow pointer ' + (i + 1) + ' down to ' + (c.leaf ? 'a leaf page.' : 'the next index page.') });
+    n = c;
+  }
+  return path;
+}
+
+function opInsert(T, k, rec) {
+  if (allKeys(T).includes(k)) { rec({ line: [1], done: true, dup: true, text: '<b>' + k + '</b> is already in the tree. Keys here are unique, so nothing changes.' }); return { splits: 0 }; }
+  const path = descend(T, k, rec, 'Insert ' + k);
+  const leaf = T.nodes[path[path.length - 1]];
+  let p = 0; while (p < leaf.keys.length && leaf.keys[p] < k) p++;
+  leaf.keys.splice(p, 0, k);
+  rec({ hl: { [leaf.id]: 'active' }, cells: { [leaf.id]: { [k]: 'new' } }, line: [2], text: 'Put <b>' + k + '</b> into the leaf in sorted order: ' + L(leaf.keys) + '.' });
+  let node = leaf, level = path.length - 1, splits = 0;
+  while (node.keys.length > T.M) {
+    const kind = node.leaf ? 'leaf page' : 'index page';
+    rec({ hl: { [node.id]: 'over' }, line: [3], text: 'This ' + kind + ' now has <b>' + node.keys.length + ' keys</b>, more than the maximum ' + T.M + '. It <b>overflows</b>, so it must split' + (splits ? ': the split has cascaded up.' : '.') });
+    const right = newNode(T, node.leaf); let up, txt;
+    if (node.leaf) {
+      const n = node.keys.length, all = L(node.keys);
+      const cut = n % 2 === 0 ? n / 2 : (T.cfg.leafBias === 'left' ? (n + 1) / 2 : (n - 1) / 2);
+      right.keys = node.keys.slice(cut); node.keys = node.keys.slice(0, cut);
+      right.next = node.next; node.next = right.id; up = right.keys[0];
+      txt = 'The leaf has ' + n + ' keys ' + all + '. ' + (n % 2 ? 'Rule: the extra key goes to the <b>' + T.cfg.leafBias + ' page</b>, so split' : 'Split evenly') + ' into ' + L(node.keys) + ' and ' + L(right.keys) +
+            '. Then <b>copy</b> the first key of the right page, <b>' + up + '</b>, up as a signpost; ' + up + ' also stays in the leaf, because leaves hold all the keys.';
+    } else {
+      const n = node.keys.length, all = L(node.keys);
+      const mid = n % 2 ? (n - 1) / 2 : (T.cfg.midBias === 'left' ? n / 2 - 1 : n / 2);
+      up = node.keys[mid];
+      right.keys = node.keys.slice(mid + 1); right.ch = node.ch.slice(mid + 1);
+      node.keys = node.keys.slice(0, mid); node.ch = node.ch.slice(0, mid + 1);
+      txt = 'The index page has ' + n + ' keys ' + all + '. Its middle key <b>' + up + '</b>' + (n % 2 ? '' : ' (two keys are in the middle; the rule picks the <b>' + T.cfg.midBias + '</b> one)') +
+            ' <b>moves</b> up, and the rest split into ' + L(node.keys) + ' and ' + L(right.keys) + '. In an index page split the middle key moves up; it is not kept below.';
+    }
+    splits++;
+    if (level === 0) {
+      const r = newNode(T, false); r.keys = [up]; r.ch = [node.id, right.id]; T.root = r.id;
+      rec({ hl: { [node.id]: 'split', [right.id]: 'split', [r.id]: 'newroot' }, cells: { [r.id]: { [up]: 'up' } }, line: [4, 5], rootSplit: true,
+            text: txt + ' There is no parent, because this was the root: a <b>new root ' + L(r.keys) + '</b> is created and the tree grows one level taller. Every leaf is still at the same depth.' });
+      break;
+    }
+    const parent = T.nodes[path[level - 1]], idx = parent.ch.indexOf(node.id);
+    parent.keys.splice(idx, 0, up); parent.ch.splice(idx + 1, 0, right.id);
+    rec({ hl: { [node.id]: 'split', [right.id]: 'split', [parent.id]: 'active' }, cells: { [parent.id]: { [up]: 'up' } }, line: [4],
+          text: txt + ' The parent index page is now ' + L(parent.keys) + '.' });
+    node = parent; level--;
+  }
+  rec({ done: true, line: [], text: 'Insert ' + k + ' done' + (splits ? ' after <b>' + splits + ' split' + (splits === 1 ? '' : 's') + '</b>' : ', with no split') + '. ' + summary(T) });
+  return { splits };
+}
+
+function opDelete(T, k, rec) {
+  const path = descend(T, k, rec, 'Delete ' + k);
+  const leaf = T.nodes[path[path.length - 1]];
+  const j = leaf.keys.indexOf(k);
+  if (j < 0) { rec({ hl: { [leaf.id]: 'active' }, done: true, line: [6], text: '<b>' + k + '</b> is not in this leaf, so it is not in the tree. Nothing to delete.' }); return { merges: 0, borrows: 0 }; }
+  leaf.keys.splice(j, 1);
+  const stale = Object.values(T.nodes).some(n => !n.leaf && n.keys.includes(k));
+  rec({ hl: { [leaf.id]: 'active' }, line: [6], text: 'Remove <b>' + k + '</b> from the leaf: ' + L(leaf.keys) + '.' + (stale ? ' A signpost above still says ' + k + '; that is fine, because it still sends every search the right way.' : '') });
+  let node = leaf, level = path.length - 1, merges = 0, borrows = 0;
+  while (level > 0) {
+    const min = node.leaf ? leafMin(T.M) : intMin(T.M), kind = node.leaf ? 'leaf page' : 'index page';
+    if (node.keys.length >= min) break;
+    const parent = T.nodes[path[level - 1]], idx = parent.ch.indexOf(node.id);
+    const Ls = idx > 0 ? T.nodes[parent.ch[idx - 1]] : null, Rs = idx < parent.ch.length - 1 ? T.nodes[parent.ch[idx + 1]] : null;
+    rec({ hl: { [node.id]: 'under' }, line: [7], text: 'This ' + kind + ' has <b>' + node.keys.length + ' key' + (node.keys.length === 1 ? '' : 's') + '</b>, fewer than the minimum ' + min + '. It <b>underflows</b>' + (merges ? ': the merge has cascaded up.' : '.') });
+    if (Ls && Ls.keys.length > min) {
+      let moved;
+      if (node.leaf) { moved = Ls.keys.pop(); node.keys.unshift(moved); parent.keys[idx - 1] = node.keys[0]; }
+      else { node.keys.unshift(parent.keys[idx - 1]); node.ch.unshift(Ls.ch.pop()); moved = Ls.keys.pop(); parent.keys[idx - 1] = moved; }
+      borrows++;
+      rec({ hl: { [node.id]: 'borrow', [Ls.id]: 'lend', [parent.id]: 'active' }, cells: { [node.id]: node.leaf ? { [moved]: 'moved' } : {}, [parent.id]: { [parent.keys[idx - 1]]: 'up' } }, line: [8],
+            text: node.leaf ? 'The left sibling can spare a key, so <b>borrow</b> its largest key <b>' + moved + '</b>: this leaf becomes ' + L(node.keys) + ', and the signpost between them becomes ' + parent.keys[idx - 1] + '. Done, no merge needed.'
+                            : 'The left sibling can spare a key, so <b>rotate through the parent</b>: the signpost comes down into this page, the sibling\'s largest signpost <b>' + moved + '</b> goes up to replace it, and its last pointer moves across. Done.' });
+      break;
+    }
+    if (Rs && Rs.keys.length > min) {
+      let moved;
+      if (node.leaf) { moved = Rs.keys.shift(); node.keys.push(moved); parent.keys[idx] = Rs.keys[0]; }
+      else { node.keys.push(parent.keys[idx]); node.ch.push(Rs.ch.shift()); moved = Rs.keys.shift(); parent.keys[idx] = moved; }
+      borrows++;
+      rec({ hl: { [node.id]: 'borrow', [Rs.id]: 'lend', [parent.id]: 'active' }, cells: { [node.id]: node.leaf ? { [moved]: 'moved' } : {}, [parent.id]: { [parent.keys[idx]]: 'up' } }, line: [8],
+            text: node.leaf ? 'The right sibling can spare a key, so <b>borrow</b> its smallest key <b>' + moved + '</b>: this leaf becomes ' + L(node.keys) + ', and the signpost between them becomes ' + parent.keys[idx] + '. Done, no merge needed.'
+                            : 'The right sibling can spare a key, so <b>rotate through the parent</b>: the signpost comes down into this page, the sibling\'s smallest signpost <b>' + moved + '</b> goes up to replace it, and its first pointer moves across. Done.' });
+      break;
+    }
+    // merge (left sibling if there is one, else right)
+    const left = Ls || node, right = Ls ? node : Rs, sepIdx = Ls ? idx - 1 : idx, sep = parent.keys[sepIdx];
+    const before = L(left.keys) + ' and ' + L(right.keys);
+    if (node.leaf) { left.keys = left.keys.concat(right.keys); left.next = right.next; }
+    else { left.keys = left.keys.concat([sep], right.keys); left.ch = left.ch.concat(right.ch); }
+    parent.keys.splice(sepIdx, 1); parent.ch.splice(sepIdx + 1, 1); delete T.nodes[right.id];
+    merges++;
+    rec({ hl: { [left.id]: 'merged', [parent.id]: 'active' }, line: [9],
+          text: 'No sibling can spare a key, so <b>merge</b> ' + before + (node.leaf ? '' : ' with the signpost ' + sep + ' pulled down from the parent') + ' into ' + L(left.keys) + '. ' +
+                (node.leaf ? 'The signpost ' + sep + ' and one pointer leave the parent, and the leaf chain is relinked. ' : 'One pointer leaves the parent. ') + 'The parent is now ' + L(parent.keys) + '.' });
+    node = parent; level--;
+  }
+  const root = T.nodes[T.root];
+  let shrank = false;
+  if (!root.leaf && root.keys.length === 0) {
+    T.root = root.ch[0]; delete T.nodes[root.id]; shrank = true;
+    rec({ hl: { [T.root]: 'newroot' }, line: [10], rootCollapse: true, text: 'The root has no signposts left and only one child, so that child becomes the <b>new root</b>. The tree shrinks one level, and every leaf is still at the same depth.' });
+  }
+  rec({ done: true, line: [], text: 'Delete ' + k + ' done' + (merges ? ' after <b>' + merges + ' merge' + (merges === 1 ? '' : 's') + '</b>' : '') + (borrows ? (merges ? ' and' : ' after') + ' <b>1 borrow</b>' : '') + (shrank ? ', and the tree got shorter' : '') + '. ' + summary(T) });
+  return { merges, borrows, shrank };
+}
+
+function opFind(T, k, rec) {
+  const path = descend(T, k, rec, 'Find ' + k), leaf = T.nodes[path[path.length - 1]];
+  const ok = leaf.keys.includes(k);
+  rec({ hl: { [leaf.id]: ok ? 'found' : 'active' }, cells: ok ? { [leaf.id]: { [k]: 'new' } } : {}, done: true, line: [11],
+        text: ok ? 'Found <b>' + k + '</b> in this leaf after visiting ' + path.length + ' page' + (path.length === 1 ? '' : 's') + ', one per level of the tree.' : '<b>' + k + '</b> is not in this leaf, so it is not in the tree (' + path.length + ' page' + (path.length === 1 ? '' : 's') + ' visited).' });
+}
+
+function opRange(T, a, b, rec) {
+  const path = descend(T, a, rec, 'Range ' + a + ' to ' + b);
+  let leaf = T.nodes[path[path.length - 1]];
+  const found = [], seen = [];
+  while (leaf) {
+    seen.push(leaf.id);
+    const here = leaf.keys.filter(x => x >= a && x <= b); found.push(...here);
+    const beyond = leaf.keys.some(x => x > b);
+    rec({ hl: Object.fromEntries(seen.map(id => [id, 'scan'])), cells: { [leaf.id]: Object.fromEntries(here.map(x => [x, 'new'])) }, line: [11],
+          text: 'Leaf ' + L(leaf.keys) + ': ' + (here.length ? 'keys in the range: <b>' + here.join(', ') + '</b>. ' : 'no keys in the range here. ') +
+                (beyond || !leaf.next ? (beyond ? 'A key larger than ' + b + ' appears, so stop.' : 'This is the last leaf, so stop.') : 'Follow the <b>next</b> pointer to the neighbouring leaf, without going back up the tree.') });
+    if (beyond || !leaf.next) break;
+    leaf = T.nodes[leaf.next];
+  }
+  rec({ hl: Object.fromEntries(seen.map(id => [id, 'scan'])), done: true, line: [],
+        text: 'Range ' + a + ' to ' + b + ': <b>' + (found.length ? found.join(', ') : 'no keys') + '</b> (' + found.length + ' key' + (found.length === 1 ? '' : 's') + '), read from ' + seen.length + ' leaf page' + (seen.length === 1 ? '' : 's') + ' through the leaf chain.' });
+}
+
+// ---------- independent check: every B+ tree rule, after every operation ----------
+function checkTree(T, model) {
+  const errs = [], leaves = []; let depth0 = null;
+  (function walk(id, d, lo, hi) {
+    const n = T.nodes[id]; if (!n) { errs.push('a pointer leads to a missing page'); return; }
+    for (let i = 1; i < n.keys.length; i++) if (!(n.keys[i - 1] < n.keys[i])) errs.push('keys out of order in a page');
+    if (n.keys.length > T.M) errs.push('a page has more than ' + T.M + ' keys');
+    if (n.leaf) {
+      if (id !== T.root && n.keys.length < leafMin(T.M)) errs.push('a leaf has fewer than ' + leafMin(T.M) + ' keys');
+      n.keys.forEach(k => { if ((lo !== null && k < lo) || (hi !== null && k >= hi)) errs.push('key ' + k + ' is under the wrong signpost'); });
+      if (depth0 === null) depth0 = d; else if (d !== depth0) errs.push('leaves at different depths');
+      leaves.push(n.id);
+    } else {
+      if (n.ch.length !== n.keys.length + 1) errs.push('an index page has the wrong number of pointers');
+      if (id === T.root ? n.keys.length < 1 : n.keys.length < intMin(T.M)) errs.push('an index page has too few signposts');
+      n.ch.forEach((c, i) => walk(c, d + 1, i === 0 ? lo : n.keys[i - 1], i === n.keys.length ? hi : n.keys[i]));
+    }
+  })(T.root, 0, null, null);
+  const chain = leavesOf(T).map(l => l.id);
+  if (chain.join() !== leaves.join()) errs.push('the leaf chain does not visit the leaves in order');
+  const keys = allKeys(T);
+  for (let i = 1; i < keys.length; i++) if (!(keys[i - 1] < keys[i])) errs.push('leaf chain keys not increasing');
+  const want = [...model].sort((x, y) => x - y);
+  if (keys.join() !== want.join()) errs.push('the tree does not hold exactly the inserted keys');
+  return errs;
+}
+
+// ======================= page state =======================
+const S = { T: emptyTree(3), model: new Set(), ops: [], steps: [], i: 0, playing: false, timer: null, checks: 0, failures: [], pred: {}, playFrom: -1, qn: 0 };
+const DELAY = [1900, 1400, 1000, 700, 450];
+const MAXKEYS = 60;
+const $ = id => document.getElementById(id);
+
+function apply(op, record) {
+  const out = [], rec = record ? o => out.push(Object.assign({ tree: clone(S.T), op: op.label }, o)) : () => {};
+  let res = {};
+  if (op.t === 'i') { res = opInsert(S.T, op.k, rec); S.model.add(op.k); }
+  else if (op.t === 'd') { res = opDelete(S.T, op.k, rec); S.model.delete(op.k); }
+  else if (op.t === 'f') opFind(S.T, op.k, rec);
+  else if (op.t === 'r') opRange(S.T, op.a, op.b, rec);
+  if (op.t === 'i' || op.t === 'd') S.ops.push(op);
+  const errs = checkTree(S.T, S.model); S.checks++;
+  if (errs.length) S.failures.push(op.label + ': ' + errs[0]);
+  if (record && out.length) {
+    if (op.t === 'i' && !out[0].done) Object.assign(out[0], { quiz: 'split', ans: res.splits > 0, qid: ++S.qn });
+    if (op.t === 'd' && !out[out.length - 1].text.includes('not in this leaf')) Object.assign(out[0], { quiz: 'merge', ans: res.merges > 0, qid: ++S.qn });
+  }
+  return { out, res };
+}
+function record(op) { const first = S.steps.length; S.steps.push(...apply(op, true).out); return first; }
+const mkop = (t, k, b) => t === 'r' ? { t, a: k, b, label: 'Range ' + k + '–' + b } : { t, k, label: ({ i: 'Insert ', d: 'Delete ', f: 'Find ' })[t] + k };
+
+function resetTree(M, cfg) { stop(); S.T = emptyTree(M, cfg || uiSplit()); S.model = new Set(); S.ops = []; S.steps = []; S.i = 0; S.checks = 0; S.failures = []; S.pred = {}; }
+function snapshotStep(text) { S.steps.push({ tree: clone(S.T), op: 'Ready', text, line: [], done: true }); }
+function finish(first) { S.i = Math.min(first, S.steps.length - 1); trim(); updateBadge(); render(); }
+function trim() { const over = S.steps.length - 600; if (over > 0) { S.steps.splice(0, over); S.i = Math.max(0, S.i - over); } }
+function updateBadge() {
+  $('check').innerHTML = S.failures.length ? '<span class="badc">✗ A rule check failed:</span> ' + S.failures[0]
+    : '<span class="okc">✓ All B+ tree rules hold</span> after every operation (' + S.checks + ' checks: page sizes, sorted keys, signposts, equal leaf depth, leaf chain, same keys as inserted).';
+}
+
+// ---------- examples (found automatically, so the demo always shows the effect) ----------
+function quietInsert(k) { apply(mkop('i', k), false); }
+function tryOn(op) { const T0 = clone(S.T), m0 = new Set(S.model), o0 = S.ops.slice(), c0 = S.checks, f0 = S.failures.slice(); const { res } = apply(op, false);
+  S.T = T0; S.model = m0; S.ops = o0; S.checks = c0; S.failures = f0; return res; }
+const EXAMPLES = {
+  order3: ['Order 3: insert 2, 6, 10, 20, 78, 5, 90 (textbook example)', () => {
+    $('sizeMode').value = 'children'; $('leafBias').value = 'right';
+    resetTree(2, uiSplit()); const f = S.steps.length;
+    snapshotStep('A B+ tree of order 3: up to 3 children, so 2 keys per page. Inserting 2, 6, 10, 20, 78, 5, 90. When a leaf overflows, the middle key is copied up.');
+    [2, 6, 10, 20, 78, 5, 90].forEach(k => record(mkop('i', k))); return f; }],
+  build: ['Build step by step: 10 20 5 6 12 30 7 17 (max 3)', () => { resetTree(3); const f = S.steps.length; [10, 20, 5, 6, 12, 30, 7, 17].forEach(k => record(mkop('i', k))); return f; }],
+  splits: ['Cascading splits up to a new root (max 3)', () => {
+    resetTree(3);
+    for (let k = 1; k <= 60; k++) { const r = tryOn(mkop('i', k)); if (r.splits >= 3) { snapshotStep('Keys 1 to ' + (k - 1) + ' are already in the tree. The next insert will overflow a leaf, and the split will cascade all the way to the root.'); return record(mkop('i', k)) - 1; } quietInsert(k); }
+    snapshotStep('Keys 1 to 60 inserted.'); return S.steps.length - 1; }],
+  merges: ['Cascading merges and the root shrinking (max 3)', () => {
+    resetTree(3); for (let k = 1; k <= 21; k++) quietInsert(k);
+    for (let g = 0; g < 40; g++) {
+      const keys = allKeys(S.T); let pick = null, quiet = null;
+      for (const k of keys) { const r = tryOn(mkop('d', k)); if (r.merges >= 2 && r.shrank) { pick = k; break; } if (quiet === null && !r.merges) quiet = k; }
+      if (pick !== null) { snapshotStep('A tree of height ' + height(S.T) + '. The next delete will underflow a leaf, and the merges will cascade up until the root disappears.'); return record(mkop('d', pick)) - 1; }
+      if (!keys.length) break;
+      apply(mkop('d', quiet !== null ? quiet : keys[0]), false);
+    }
+    snapshotStep('No cascading merge found for this tree; try deleting keys yourself.'); return S.steps.length - 1; }],
+  borrow: ['Borrowing a key from a sibling (max 3)', () => {
+    resetTree(3); [5, 10, 15, 20, 25, 30, 35, 40, 45].forEach(quietInsert);
+    for (const k of allKeys(S.T)) { const r = tryOn(mkop('d', k)); if (r.borrows && !r.merges) { snapshotStep('The next delete will leave a leaf too empty, but a neighbouring leaf can spare a key.'); return record(mkop('d', k)) - 1; } }
+    snapshotStep('No borrow case found for this tree; try deleting keys yourself.'); return S.steps.length - 1; }],
+  range: ['Range scan along the leaf chain (max 4)', () => { resetTree(4); for (let k = 5; k <= 60; k += 5) quietInsert(k); snapshotStep('A tree of 12 keys. Watch the range query walk along the linked leaves.'); return record(mkop('r', 12, 37)) - 1; }],
+  big: ['Bigger tree: 40 random keys (max 5)', () => { resetTree(5); const ks = []; while (ks.length < 40) { const k = 1 + Math.floor(Math.random() * 99); if (!ks.includes(k)) ks.push(k); } ks.forEach(quietInsert);
+    snapshotStep('40 random keys with up to 5 keys per page. Try inserting or deleting to trigger splits and merges.'); return S.steps.length - 1; }]
+};
+function loadExample(key) {
+  const first = EXAMPLES[key][1]();
+  $('M').value = String($('sizeMode').value === 'children' ? S.T.M + 1 : S.T.M); sizeNote(); $('M').classList.remove('bad'); $('list').classList.remove('bad');
+  const seen = new Set(); $('list').value = S.ops.filter(op => op.t === 'i' && S.model.has(op.k) && !seen.has(op.k) && seen.add(op.k)).map(op => op.k).join(' ');
+  finish(Math.max(0, first));
+}
+
+// ======================= drawing =======================
+const CW = 34, NH = 30, LGAP = 30, IGAP = 18, LH = 92, TOP = 34;
+function layout(T) {
+  const pos = {}, sw = {};
+  const nodeW = n => Math.max(1, n.keys.length) * CW;
+  (function measure(id) { const n = T.nodes[id];
+    if (n.leaf) { sw[id] = nodeW(n); return; }
+    n.ch.forEach(measure);
+    const kids = n.ch.reduce((a, c) => a + sw[c], 0) + (n.ch.length - 1) * (T.nodes[n.ch[0]].leaf ? LGAP : IGAP);
+    sw[id] = Math.max(nodeW(n), kids); })(T.root);
+  (function place(id, left, d) { const n = T.nodes[id], w = nodeW(n);
+    pos[id] = { x: left + (sw[id] - w) / 2, y: TOP + d * LH, w };
+    if (n.leaf) return;
+    const gap = T.nodes[n.ch[0]].leaf ? LGAP : IGAP;
+    const kids = n.ch.reduce((a, c) => a + sw[c], 0) + (n.ch.length - 1) * gap;
+    let x = left + (sw[id] - kids) / 2;
+    n.ch.forEach(c => { place(c, x, d + 1); x += sw[c] + gap; });
+    pos[id].x = (pos[n.ch[0]].x + pos[n.ch[0]].w / 2 + pos[n.ch[n.ch.length - 1]].x + pos[n.ch[n.ch.length - 1]].w / 2) / 2 - w / 2;
+  })(T.root, 30, 0);
+  return { pos, W: sw[T.root] + 60, H: TOP + (height(T) - 1) * LH + NH + 40 };
+}
+const STYLE = { active: ['#002357', 3, null, ''], path: ['#1E3A6E', 2, null, ''], over: ['#B91C1C', 3, '#FEE2E2', 'overflow'], under: ['#B45309', 3, '#FEF3C7', 'underflow'],
+  split: ['#006970', 3, '#E5F3F3', 'split'], merged: ['#006970', 3, '#E5F3F3', 'merged'], borrow: ['#006970', 3, '#E5F3F3', 'borrowed'], lend: ['#006970', 2, null, 'lent a key'],
+  newroot: ['#006970', 3, '#E5F3F3', 'new root'], found: ['#15803D', 3, '#DCFCE7', 'found'], scan: ['#006970', 2.5, '#E5F3F3', ''] };
+const CELL = { new: '#DCFCE7', up: '#FEF3C7', moved: '#FEF3C7' };
+function draw(st) {
+  const T = st.tree, { pos, W, H } = layout(T), hl = st.hl || {}, cells = st.cells || {};
+  let o = '<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L9 5L1 9z" fill="#006970"/></marker></defs>';
+  Object.values(T.nodes).forEach(n => { if (n.leaf) return; const p = pos[n.id];
+    n.ch.forEach((c, i) => { const q = pos[c], m = n.keys.length, x1 = m ? p.x + i * CW + (i === 0 ? 5 : i === m ? -5 : 0) : p.x + CW / 2;
+      const on = st.edge && st.edge[0] === n.id && st.edge[1] === c;
+      o += '<line x1="' + x1 + '" y1="' + (p.y + NH) + '" x2="' + (q.x + q.w / 2) + '" y2="' + q.y + '" stroke="' + (on ? '#002357' : '#B4B0A5') + '" stroke-width="' + (on ? 3 : 1.4) + '"/>'; }); });
+  const lv = leavesOf(T);
+  lv.forEach((l, i) => { if (i === lv.length - 1) return; const a = pos[l.id], b = pos[lv[i + 1].id];
+    o += '<line x1="' + (a.x + a.w + 3) + '" y1="' + (a.y + NH / 2) + '" x2="' + (b.x - 4) + '" y2="' + (b.y + NH / 2) + '" stroke="#006970" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ar)"/>'; });
+  Object.values(T.nodes).forEach(n => {
+    const p = pos[n.id], s = STYLE[hl[n.id]], base = n.leaf ? ['#A19E94', '#fff'] : ['#8D9AB5', '#EEF1F8'];
+    const stroke = s ? s[0] : base[0], sw = s ? s[1] : 1.4, fill = s && s[2] ? s[2] : base[1];
+    o += '<rect x="' + p.x + '" y="' + p.y + '" width="' + p.w + '" height="' + NH + '" rx="6" fill="' + fill + '" stroke="' + stroke + '" stroke-width="' + sw + '"/>';
+    if (!n.keys.length) o += '<text x="' + (p.x + p.w / 2) + '" y="' + (p.y + 19) + '" text-anchor="middle" font-size="11" fill="#77756F">empty</text>';
+    n.keys.forEach((k, i) => {
+      const cx = p.x + i * CW, c = cells[n.id] && cells[n.id][k];
+      if (c) o += '<rect x="' + (cx + 2) + '" y="' + (p.y + 2) + '" width="' + (CW - 4) + '" height="' + (NH - 4) + '" rx="4" fill="' + CELL[c] + '"/>';
+      if (i) o += '<line x1="' + cx + '" y1="' + (p.y + 4) + '" x2="' + cx + '" y2="' + (p.y + NH - 4) + '" stroke="' + (n.leaf ? '#D9D5CB' : '#C2CADB') + '"/>';
+      o += '<text x="' + (cx + CW / 2) + '" y="' + (p.y + 20) + '" text-anchor="middle" font-size="13.5" font-weight="' + (c ? 750 : 600) + '" fill="#1F1E1D">' + k + '</text>';
+    });
+    if (s && s[3]) { const tw = s[3].length * 6.6 + 14; o += '<rect x="' + (p.x + p.w / 2 - tw / 2) + '" y="' + (p.y - 19) + '" width="' + tw + '" height="16" rx="8" fill="' + stroke + '"/><text x="' + (p.x + p.w / 2) + '" y="' + (p.y - 7.5) + '" text-anchor="middle" font-size="11" font-weight="650" fill="#fff">' + s[3] + '</text>'; }
+  });
+  // shrink to fit the box (but not below 60%, so text stays readable), then keep the busy page in view
+  const box = $('treebox'), bw = box.clientWidth - 2, sc = Math.min(1, Math.max(0.6, bw / W));
+  const svg = $('svg'); svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('width', Math.round(W * sc)); svg.setAttribute('height', Math.round(H * sc));
+  svg.innerHTML = o;
+  const focus = Object.keys(hl).find(id => ['active', 'over', 'under', 'split', 'merged', 'borrow', 'newroot', 'found'].includes(hl[id])) || Object.keys(hl).pop();
+  if (W * sc > bw && focus && pos[focus]) box.scrollLeft = Math.max(0, (pos[focus].x + pos[focus].w / 2) * sc - bw / 2);
+  svg.setAttribute('aria-label', 'B+ tree of height ' + height(T) + '. ' + (st.text || '').replace(/<[^>]+>/g, ''));
+}
+
+// ======================= panels =======================
+const CODE = [
+  ['g', 'Insert k'], [1, 'leaf = find_leaf(k)      # follow signposts down from the root'], [2, 'put k into leaf, keeping keys sorted'],
+  [3, 'while the page has more than MAX keys:'], [4, '    split it in half (leaf: copy first right key up · index page: move middle key up)'], [5, '    if it was the root: add a new root on top   # tree grows'],
+  ['g', 'Delete k'], [6, 'leaf = find_leaf(k); remove k'], [7, 'while the page (not the root) has fewer than MIN keys:'],
+  [8, '    if a sibling can spare a key: borrow it, fix the signpost, stop'], [9, '    else merge with a sibling, remove a signpost from the parent, go up'], [10, 'if the root has no keys: its only child becomes the root   # tree shrinks'],
+  ['g', 'Find and range'], [11, 'follow signposts to a leaf; for a range, walk the leaf chain →']
+];
+function render() {
+  const st = S.steps[S.i]; if (!st) return;
+  draw(st);
+  $('opchip').textContent = st.op; $('opchip').className = 'chip' + (st.done ? ' ok' : '');
+  $('stats').textContent = summary(st.tree) + ' ' + sizeLabel(st.tree).replace(/^./, c => c.toUpperCase()) + '.';
+  let ex = st.text;
+  const q = qOf(S.i);
+  if (st.done && q && S.pred[q.qid] !== undefined) ex += ' You predicted <b>' + (S.pred[q.qid] ? 'yes' : 'no') + '</b>' + (S.pred[q.qid] === q.ans ? ': correct!' : '.');
+  $('explain').innerHTML = ex;
+  $('quiz').innerHTML = st.quiz ? '<div class="quiz"><p><b>Predict first:</b> ' + (st.quiz === 'split' ? 'will this insert split a page?' : 'will this delete merge pages?') + '</p><div class="qrow">' +
+    '<button class="chipbtn' + (S.pred[st.qid] === true ? ' sel' : '') + '" data-p="1">Yes</button><button class="chipbtn' + (S.pred[st.qid] === false ? ' sel' : '') + '" data-p="0">No</button></div>' +
+    (S.pred[st.qid] !== undefined ? '<p class="fb muted">Saved. Play the steps to find out.</p>' : '') + '</div>' : '';
+  $('code').innerHTML = CODE.map(([n, t]) => n === 'g' ? '<li class="grp">' + t + '</li>' : '<li class="' + ((st.line || []).includes(n) ? 'on' : '') + '">' + t + '</li>').join('');
+  const M = st.tree.M, cfg = st.tree.cfg;
+  document.querySelectorAll('.mval').forEach(e => e.textContent = sizeLabel(st.tree));
+  $('rules').innerHTML = '<li>Every page holds at most <b>' + M + '</b> keys' + (cfg.mode === 'children' ? ' (order ' + (M + 1) + ' means at most ' + (M + 1) + ' children, and a page has one key fewer than children)' : '') + '; one more and it <b>splits</b>.</li>' +
+    '<li><b>Leaf split:</b> when a leaf overflows with an odd number of keys, the extra key goes to the <b>' + cfg.leafBias + ' page</b>' + (cfg.leafBias === 'right' ? ', so the middle key is the one copied up' : '') + '. The first key of the right page is <b>copied</b> up and stays in the leaf.</li>' +
+    '<li><b>Index split:</b> the middle key <b>moves</b> up' + (M % 2 ? ' (with two middle keys, the <b>' + cfg.midBias + '</b> one)' : '') + ' and is not kept below. Some notes say "copy" here, but in an index page it moves.</li>' +
+    '<li>Every leaf page except the root holds at least <b>' + leafMin(M) + '</b> key' + (leafMin(M) === 1 ? '' : 's') + ', and every index page except the root at least <b>' + intMin(M) + '</b>. One fewer, and the page first tries to <b>borrow</b> from a sibling, else <b>merges</b>.</li>' +
+    '<li>All leaves are on the <b>same level</b>, because the tree only grows or shrinks at the root.</li>' +
+    '<li>Leaf pages are linked left to right, so a range query walks sideways instead of going back up.</li>';
+  $('scrub').max = S.steps.length - 1; $('scrub').value = S.i; $('stepno').textContent = 'Step ' + (S.i + 1) + ' / ' + S.steps.length;
+  $('prevBtn').disabled = S.i === 0; $('nextBtn').disabled = S.i === S.steps.length - 1;
+  $('playBtn').innerHTML = S.playing ? '❚❚ Pause' : '▶ Play'; $('playBtn').disabled = !S.playing && S.i === S.steps.length - 1;
+}
+function qOf(i) { for (let j = i; j >= 0; j--) { if (S.steps[j].quiz) return S.steps[j]; if (j < i && S.steps[j].done) return null; } return null; }
+
+// ======================= playback =======================
+function go(i) { S.i = Math.max(0, Math.min(S.steps.length - 1, i)); render(); }
+function stop() { S.playing = false; clearTimeout(S.timer); render(); }
+function tick() {
+  if (!S.playing) return;
+  const st = S.steps[S.i];
+  if (S.i >= S.steps.length - 1 || (st.quiz && S.pred[st.qid] === undefined && S.i !== S.playFrom)) { stop(); return; }
+  go(S.i + 1); S.timer = setTimeout(tick, DELAY[$('speed').value - 1]);
+}
+function play() { if (S.playing) { stop(); return; } if (S.i >= S.steps.length - 1) return; S.playFrom = S.i; S.playing = true; render(); S.timer = setTimeout(tick, Math.min(500, DELAY[$('speed').value - 1])); }
+
+// ======================= input =======================
+function num(id) { const el = $(id), v = el.value.trim(); if (!/^\d+$/.test(v) || +v < 1 || +v > 999) { el.classList.add('bad'); return null; } el.classList.remove('bad'); return +v; }
+function fail(msg) { $('ferr').innerHTML = '<p class="err">' + msg + '</p>'; }
+function run(op) { $('ferr').innerHTML = ''; stop(); S.i = S.steps.length - 1; const first = record(op); finish(first); }
+$('insBtn').addEventListener('click', () => { const k = num('key'); if (k === null) return fail('Enter a whole number from 1 to 999.'); if (S.model.size >= MAXKEYS && !S.model.has(k)) return fail('This demo holds up to ' + MAXKEYS + ' keys. Delete some first.'); run(mkop('i', k)); });
+$('delBtn').addEventListener('click', () => { const k = num('key'); if (k === null) return fail('Enter a whole number from 1 to 999.'); run(mkop('d', k)); });
+$('findBtn').addEventListener('click', () => { const k = num('key'); if (k === null) return fail('Enter a whole number from 1 to 999.'); run(mkop('f', k)); });
+$('randBtn').addEventListener('click', () => { if (S.model.size >= MAXKEYS) return fail('This demo holds up to ' + MAXKEYS + ' keys. Delete some first.'); let k; do { k = 1 + Math.floor(Math.random() * 99); } while (S.model.has(k) && S.model.size < 99); $('key').value = k; run(mkop('i', k)); });
+$('rangeBtn').addEventListener('click', () => { const a = num('ra'), b = num('rb'); if (a === null || b === null) return fail('Enter whole numbers from 1 to 999.'); if (a > b) { $('rb').classList.add('bad'); return fail('The range must go from the smaller number to the larger one.'); } run(mkop('r', a, b)); });
+function createTree() {
+  const mv = $('M').value.trim(), byOrder = $('sizeMode').value === 'children', lo = byOrder ? 3 : 2, hi = byOrder ? 11 : 10;
+  if (!/^\d+$/.test(mv) || +mv < lo || +mv > hi) { $('M').classList.add('bad'); return fail((byOrder ? 'The order' : 'Max keys per page') + ' must be a whole number from ' + lo + ' to ' + hi + '.'); }
+  const parts = $('list').value.split(/[\s,]+/).filter(Boolean);
+  if (parts.some(x => !/^\d+$/.test(x) || +x < 1 || +x > 999)) { $('list').classList.add('bad'); return fail('Initial keys must be whole numbers from 1 to 999, separated by spaces or commas.'); }
+  const ks = [...new Set(parts.map(Number))];
+  if (ks.length > MAXKEYS) { $('list').classList.add('bad'); return fail('Use at most ' + MAXKEYS + ' different keys (this list has ' + ks.length + ').'); }
+  $('M').classList.remove('bad'); $('list').classList.remove('bad'); $('ferr').innerHTML = '';
+  const M = byOrder ? +mv - 1 : +mv, dups = parts.length - ks.length;
+  resetTree(M); $('ex').value = '';
+  const note = (dups ? ' ' + dups + ' repeated key' + (dups === 1 ? ' was' : 's were') + ' skipped, because keys are unique.' : '');
+  if (!ks.length) { snapshotStep('An empty tree, ' + sizeLabel(S.T) + ': the root is a single empty leaf page. Insert keys to watch it grow.' + note); return finish(0); }
+  if ($('stepsChk').checked) {
+    snapshotStep('A new tree, ' + sizeLabel(S.T) + '. It will insert ' + ks.length + ' key' + (ks.length === 1 ? '' : 's') + ' in this order: ' + ks.join(', ') + '.' + note);
+    ks.forEach(k => record(mkop('i', k))); return finish(0);
+  }
+  ks.forEach(k => apply(mkop('i', k), false));
+  snapshotStep('Built a tree from ' + ks.length + ' key' + (ks.length === 1 ? '' : 's') + ', ' + sizeLabel(S.T) + '. ' + summary(S.T) + note);
+  finish(0);
+}
+$('buildBtn').addEventListener('click', createTree);
+$('useBtn').addEventListener('click', () => {        // keys still in the tree, in the order they were inserted
+  const seen = new Set(), order = [];
+  S.ops.forEach(op => { if (op.t === 'i' && S.model.has(op.k) && !seen.has(op.k)) { seen.add(op.k); order.push(op.k); } });
+  $('list').value = order.join(' '); $('list').classList.remove('bad');
+  $('ferr').innerHTML = '<p class="small muted" style="margin-top:8px">Copied ' + order.length + ' key' + (order.length === 1 ? '' : 's') + '. Change the max keys per page and press Create tree to rebuild them.</p>';
+});
+['M', 'list'].forEach(id => $(id).addEventListener('keydown', e => { if (e.key === 'Enter') createTree(); }));
+$('ex').innerHTML = '<option value="">Choose…</option>' + Object.entries(EXAMPLES).map(([k, v]) => '<option value="' + k + '">' + v[0] + '</option>').join('');
+$('ex').addEventListener('change', e => { if (e.target.value) { $('ferr').innerHTML = ''; loadExample(e.target.value); } });
+['key', 'ra', 'rb', 'list', 'M'].forEach(id => $(id).addEventListener('input', () => { $(id).classList.remove('bad'); }));
+$('key').addEventListener('keydown', e => { if (e.key === 'Enter') $('insBtn').click(); });
+$('quiz').addEventListener('click', e => { const b = e.target.closest('[data-p]'); if (b) { S.pred[S.steps[S.i].qid] = b.dataset.p === '1'; render(); } });
+$('resetBtn').addEventListener('click', () => { stop(); go(0); });
+$('prevBtn').addEventListener('click', () => { stop(); go(S.i - 1); });
+$('nextBtn').addEventListener('click', () => { stop(); go(S.i + 1); });
+$('playBtn').addEventListener('click', play);
+$('scrub').addEventListener('input', e => { const v = +e.target.value; stop(); go(v); });
+document.addEventListener('keydown', e => {
+  if (/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); stop(); go(S.i + 1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); stop(); go(S.i - 1); }
+  else if (e.key === ' ' && e.target.tagName !== 'BUTTON') { e.preventDefault(); play(); }
+  else if (e.key === 'r' || e.key === 'R') { stop(); go(0); }
+});
+
+// test hook: run a list of operations on a fresh tree, return the final tree and any rule violations
+let rz = null;
+window.addEventListener('resize', () => { cancelAnimationFrame(rz); rz = requestAnimationFrame(() => { if (S.steps[S.i]) draw(S.steps[S.i]); }); });
+window.bptSim = {
+  run(M, ops, cfg) { const T = emptyTree(M, cfg), model = new Set(), errs = [], none = () => {};
+    let maxSplits = 0, maxMerges = 0, grew = 0, shrank = 0;
+    for (const [t, k] of ops) {
+      if (t === 'i') { const r = opInsert(T, k, none); model.add(k); maxSplits = Math.max(maxSplits, r.splits); }
+      else { const h0 = height(T), r = opDelete(T, k, none); model.delete(k); maxMerges = Math.max(maxMerges, r.merges); if (height(T) < h0) shrank++; }
+      const e = checkTree(T, model); if (e.length) errs.push(t + k + ': ' + e[0]);
+    }
+    return { keys: allKeys(T), height: height(T), errs, maxSplits, maxMerges, shrank, tree: T };
+  },
+  examples: Object.keys(EXAMPLES)
+};
+function uiSplit() { return { mode: $('sizeMode').value, leafBias: $('leafBias').value, midBias: $('midBias').value }; }
+function sizeNote() { const v = $('M').value.trim(); $('sizeNote').textContent = /^\d+$/.test(v) && $('sizeMode').value === 'children' && +v >= 3 ? '→ up to ' + (+v - 1) + ' keys per page' : ''; }
+$('M').addEventListener('input', sizeNote);
+$('sizeMode').addEventListener('change', e => {           // keep the same page size when switching what the number means
+  const v = $('M').value.trim(); if (/^\d+$/.test(v)) $('M').value = e.target.value === 'children' ? +v + 1 : Math.max(2, +v - 1); sizeNote(); });
+loadExample('order3');
+})();
+</script>
+</body>
+</html>

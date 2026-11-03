@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Valid parentheses with a stack · step-by-step simulation</title>
+<style>
+:root{--navy:#002357;--navy2:#1E3A6E;--navy-bg:#DCE3F0;--canvas:#F8F8F6;--band:#F5F3ED;--card:#fff;--line:#E8E5DC;--ink:#1F1E1D;--ink2:#5E5D59;
+  --green:#15803D;--green-bg:#DCFCE7;--red:#B91C1C;--red-bg:#FEE2E2;--amber:#B45309;--amber-bg:#FEF3C7;
+  --f0:#2a78d6;--t0:#D4E4F7;--f1:#eb6834;--t1:#FBDCCF;--f2:#1baf7a;--t2:#CDEFE3}
+*{box-sizing:border-box}
+body{margin:0;background:var(--canvas);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+button,select,input{font:inherit;color:inherit}
+h1{font-size:20px;font-weight:650;margin:0;letter-spacing:-.01em}
+h2{font-size:13px;font-weight:650;margin:0 0 8px;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em}
+p{margin:0}.muted{color:var(--ink2)}.small{font-size:13px}
+.top{background:var(--card);border-bottom:1px solid var(--line);padding:12px 20px}
+.top-in{max-width:1180px;margin:0 auto}
+.grid{max-width:1180px;margin:0 auto;padding:16px 20px 28px;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(300px,1fr);gap:16px;align-items:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.panel{display:flex;flex-direction:column;gap:12px}
+select,.btn,.inp{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 12px;min-height:40px}
+.btn{cursor:pointer;font-weight:550;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
+.btn:hover:not(:disabled){background:var(--band)}
+.btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}.btn.primary:hover:not(:disabled){background:var(--navy2)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn:focus-visible,select:focus-visible,.inp:focus-visible,.chipbtn:focus-visible{outline:2px solid var(--navy2);outline-offset:2px}
+.form{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.inp{flex:1;min-width:200px;font:600 17px/1.2 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.04em}
+.inp.bad{border-color:var(--red);background:#FEF2F2}
+.err{color:var(--red);font-size:13px;margin-top:6px}
+.hint{font-size:12.5px;color:var(--ink2);margin-top:6px}
+.sec{margin-top:16px}
+.tiles{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;min-height:64px}
+.tile{width:40px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.tile .ch{width:40px;height:44px;border-radius:8px;border:2px solid #C9C6BC;background:#fff;display:flex;align-items:center;justify-content:center;font:700 20px ui-monospace,SFMono-Regular,Consolas,monospace;position:relative}
+.tile .ix{font-size:11px;color:var(--ink2);font-variant-numeric:tabular-nums}
+.tile.f0 .ch{border-color:var(--f0)}.tile.f1 .ch{border-color:var(--f1)}.tile.f2 .ch{border-color:var(--f2)}
+.tile.other .ch{color:#8A877E;border-style:dashed}
+.tile.done .ch{opacity:.55}
+.tile.cur .ch{box-shadow:0 0 0 3px var(--navy);opacity:1}
+.tile.cur .ix{color:var(--navy);font-weight:700}
+.tile.bad .ch{box-shadow:0 0 0 3px var(--red);background:var(--red-bg);opacity:1}
+.tile.ok .ch::after{content:'✓';position:absolute;top:-8px;right:-7px;width:17px;height:17px;border-radius:50%;background:var(--green);color:#fff;font:700 10px/17px system-ui;text-align:center}
+.tile.unread .ch{opacity:.35}
+.mid{display:grid;grid-template-columns:180px minmax(0,1fr);gap:16px;align-items:start}
+.stackbox{border:1px solid var(--line);border-radius:10px;padding:10px;background:#FAFAF8}
+.stack{display:flex;flex-direction:column-reverse;gap:5px;min-height:250px;justify-content:flex-start;border:2px solid #A19E94;border-top:0;border-radius:0 0 10px 10px;padding:6px;background:#fff}
+.sitem{height:36px;border-radius:7px;border:2px solid;display:flex;align-items:center;justify-content:space-between;padding:0 10px;font:700 18px ui-monospace,SFMono-Regular,Consolas,monospace}
+.sitem small{font:500 11px system-ui;color:var(--ink2)}
+.sitem.topi{box-shadow:0 0 0 2px var(--navy)}
+.sitem.new{animation:drop .35s ease-out}
+.sitem.badi{box-shadow:0 0 0 3px var(--red)}
+.more{font-size:12px;color:var(--ink2);text-align:center}
+.empty{color:var(--ink2);font-size:13px;text-align:center;padding:8px 0}
+@media (prefers-reduced-motion:no-preference){@keyframes drop{from{transform:translateY(-14px);opacity:.2}to{transform:none;opacity:1}}}
+.cmp{border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-height:120px}
+.cmp .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:15px}
+.glyph{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:8px;border:2px solid;font:700 19px ui-monospace,SFMono-Regular,Consolas,monospace;background:#fff}
+.verdict{font-weight:700;padding:3px 10px;border-radius:999px;font-size:13px}
+.v-ok{background:var(--green-bg);color:#14532D}.v-bad{background:var(--red-bg);color:#7F1D1D}.v-n{background:var(--band);color:var(--ink2)}
+.result{margin-top:14px;border-radius:12px;padding:14px 16px;display:none}
+.result.show{display:block}
+.result.ok{background:var(--green-bg);border:1.5px solid var(--green)}.result.bad{background:var(--red-bg);border:1.5px solid var(--red)}
+.result b.big{font-size:22px;display:block;line-height:1.2}
+.result.ok b.big{color:#14532D}.result.bad b.big{color:#7F1D1D}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px}
+.controls .grow{flex:1;min-width:160px;display:flex;align-items:center;gap:8px}
+input[type=range]{width:100%;accent-color:var(--navy2);min-height:28px}
+.stepno{font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--ink2);white-space:nowrap}
+.speed{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)}.speed input{width:90px}
+#explain{font-size:15px;line-height:1.55;min-height:70px}#explain b{font-weight:650}
+.quiz{margin-top:10px;border-top:1px solid var(--line);padding-top:10px}
+.qrow{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
+.chipbtn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;min-height:36px;cursor:pointer;font-weight:600}
+.chipbtn:hover{background:var(--band)}.chipbtn.sel{background:var(--navy-bg);border-color:var(--navy2)}
+.code{list-style:none;margin:0;padding:0;font:12.5px/1.5 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;counter-reset:ln}
+.code li{padding:2px 8px 2px 34px;border-left:3px solid transparent;border-radius:0 6px 6px 0;white-space:pre;position:relative;overflow-x:auto}
+.code li::before{counter-increment:ln;content:counter(ln);position:absolute;left:6px;color:#A19E94;width:20px;text-align:right}
+.code li.on{background:var(--navy-bg);border-left-color:var(--navy);color:var(--navy);font-weight:600}
+.code li.onbad{background:var(--red-bg);border-left-color:var(--red);color:#7F1D1D;font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--ink2);margin-top:12px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:14px;height:14px;border-radius:4px;border:2px solid;display:inline-block}
+.ok{color:var(--green);font-weight:600}.badtxt{color:var(--red);font-weight:600}
+.foot{max-width:1180px;margin:0 auto;padding:0 20px 26px;font-size:12.5px;color:var(--ink2);display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr);padding:12px 12px 24px}.top{padding:10px 12px}.foot{padding:0 12px 22px}}
+@media (max-width:560px){.mid{grid-template-columns:minmax(0,1fr)}.stack{min-height:120px}.tile,.tile .ch{width:34px}.tile .ch{height:40px;font-size:18px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in"><h1>Valid parentheses, checked with a stack</h1>
+  <p class="muted small">Type any string. Every opening bracket must be closed by the same type of bracket, in the right order.</p></div></header>
+
+<main class="grid">
+  <section class="card" aria-label="Input, stack and controls">
+    <form class="form" id="form" autocomplete="off">
+      <label class="small muted" for="s">Your string</label>
+      <input class="inp" id="s" value="{[()()]}" aria-describedby="hint" spellcheck="false">
+      <button class="btn primary" type="submit">Check</button>
+      <button class="btn" type="button" id="randBtn" title="Make a random bracket string">Random</button>
+      <select id="ex" aria-label="Examples"></select>
+    </form>
+    <div id="ferr"></div>
+    <p class="hint" id="hint">Up to 30 characters. Brackets are ( ) [ ] { }. Any other character (letters, + − *, spaces) is skipped, so expressions like a*(b+c) work too.</p>
+
+    <div class="sec"><h2>The string, read left to right</h2><div class="tiles" id="tiles"></div></div>
+    <div class="sec mid">
+      <div class="stackbox"><h2>Stack (top at the top)</h2><div class="stack" id="stack"></div></div>
+      <div><h2>This step</h2><div class="cmp" id="cmp"></div></div>
+    </div>
+    <div class="result" id="result" aria-live="polite"></div>
+
+    <div class="controls">
+      <button class="btn" id="resetBtn" title="Back to the start (R)">⟲ Start</button>
+      <button class="btn" id="prevBtn" title="Previous step (←)">◀ Back</button>
+      <button class="btn primary" id="playBtn" title="Play / pause (Space)">▶ Play</button>
+      <button class="btn" id="nextBtn" title="Next step (→)">Next ▶</button>
+      <div class="grow"><input type="range" id="scrub" min="0" max="0" value="0" aria-label="Jump to step"><span class="stepno" id="stepno"></span></div>
+      <label class="speed">Speed <input type="range" id="speed" min="1" max="5" value="3" aria-label="Playback speed"></label>
+    </div>
+    <div class="legend">
+      <span><i class="sw" style="border-color:var(--f0);background:var(--t0)"></i>( ) round</span>
+      <span><i class="sw" style="border-color:var(--f1);background:var(--t1)"></i>[ ] square</span>
+      <span><i class="sw" style="border-color:var(--f2);background:var(--t2)"></i>{ } curly</span>
+      <span>✓ matched pair</span><span><i class="sw" style="border-color:var(--red);background:var(--red-bg)"></i>where it fails</span>
+    </div>
+  </section>
+
+  <aside class="panel">
+    <div class="card"><h2>What is happening</h2><p id="explain" aria-live="polite"></p><div id="quiz"></div></div>
+    <div class="card"><h2>Python code (same steps as the simulation)</h2><ol class="code" id="code"></ol></div>
+  </aside>
+</main>
+<div class="foot"><span id="check"></span><span>Every step is computed by a real stack algorithm, not written by hand.</span></div>
+
+<script>
+(function () {
+const OPEN = '([{', CLOSE = ')]}', PAIR = { ')': '(', ']': '[', '}': '{' }, CLOSER = { '(': ')', '[': ']', '{': '}' };
+const FAM = { '(': 0, ')': 0, '[': 1, ']': 1, '{': 2, '}': 2 };
+const NAME = { '(': 'round', ')': 'round', '[': 'square', ']': 'square', '{': 'curly', '}': 'curly' };
+const MAXLEN = 30;
+const EXAMPLES = [['{[()()]}', 'Nested and valid'], ['()[]{}', 'Side by side'], ['a*(b+c)-{d/[e]}', 'An expression'], ['(]', 'Wrong type'],
+  ['([)]', 'Crossed brackets'], ['((()', 'Never closed'], ['())', 'One closing too many'], ['', 'Empty string']];
+
+// ---------- the algorithm: produces every step ----------
+function buildTrace(s) {
+  const steps = [], stack = [], matched = [];
+  const q = c => '‘' + c + '’', B = x => '<b>' + x + '</b>';
+  const snap = o => steps.push(Object.assign({ stack: stack.map(x => Object.assign({}, x)), matched: matched.slice() }, o));
+  snap({ i: -1, action: 'start', line: [1, 2], quiz: 'predict',
+         text: s.length ? 'Read the string from left to right. An opening bracket goes onto the stack. A closing bracket must match the bracket on <b>top</b> of the stack.'
+                        : 'The string is empty. There is nothing to read.' });
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i];
+    if (OPEN.includes(ch)) {
+      stack.push({ ch, i });
+      snap({ i, ch, action: 'push', line: [4, 5], text: 'Index ' + i + ' is ' + B(q(ch)) + ', an opening bracket, so ' + B('push') + ' it. The stack now has ' + stack.length + ' item' + (stack.length === 1 ? '' : 's') + '.' });
+    } else if (CLOSE.includes(ch)) {
+      if (!stack.length) {
+        snap({ i, ch, action: 'fail-empty', line: [6, 7, 8], done: true, valid: false,
+               reason: 'The closing bracket ' + q(ch) + ' at index ' + i + ' has no opening bracket to match.',
+               text: 'Index ' + i + ' is ' + B(q(ch)) + ', but the stack is ' + B('empty') + ': no opening bracket is waiting to be closed. ' + B('Not valid') + '.' });
+        return steps;
+      }
+      const top = stack[stack.length - 1];
+      if (top.ch !== PAIR[ch]) {
+        snap({ i, ch, top, action: 'fail-mismatch', line: [6, 7, 8], done: true, valid: false,
+               reason: q(ch) + ' at index ' + i + ' tries to close ' + q(top.ch) + ' from index ' + top.i + ', which needs ' + q(CLOSER[top.ch]) + '.',
+               text: 'Index ' + i + ' is ' + B(q(ch)) + ', but the top of the stack is ' + B(q(top.ch)) + ' (from index ' + top.i + '). ' + q(top.ch) + ' must be closed by ' + q(CLOSER[top.ch]) + ' first. ' + B('Not valid') + '.' });
+        return steps;
+      }
+      stack.pop(); matched.push(top.i, i);
+      snap({ i, ch, top, action: 'pop', line: [6, 7, 9], text: 'Index ' + i + ' is ' + B(q(ch)) + '. The top of the stack is ' + B(q(top.ch)) + ', its partner, so ' + B('pop') + ' it. The stack now has ' + stack.length + ' item' + (stack.length === 1 ? '' : 's') + '.' });
+    } else {
+      snap({ i, ch, action: 'skip', line: [10], text: 'Index ' + i + ' is ' + q(ch === ' ' ? 'space' : ch) + ', not a bracket, so skip it.' });
+    }
+  }
+  if (!stack.length) snap({ i: s.length, action: 'end-valid', line: [11], done: true, valid: true,
+    reason: s.length ? 'Every bracket was closed by the same type, in the right order.' : 'An empty string has no unmatched brackets, so it counts as valid.',
+    text: 'End of the string, and the stack is ' + B('empty') + ': every opening bracket was closed in the right order. ' + B('Valid') + '.' });
+  else snap({ i: s.length, action: 'end-unclosed', line: [11], done: true, valid: false,
+    reason: stack.map(x => q(x.ch) + ' at index ' + x.i).join(', ') + (stack.length === 1 ? ' was' : ' were') + ' never closed.',
+    text: 'End of the string, but the stack still holds ' + stack.map(x => B(q(x.ch))).join(', ') + '. ' + (stack.length === 1 ? 'It was' : 'They were') + ' never closed. ' + B('Not valid') + '.' });
+  return steps;
+}
+
+// ---------- independent check: keep deleting (), [] and {} until nothing changes ----------
+function pairRemoval(s) {
+  let t = [...s].filter(c => '()[]{}'.includes(c)).join(''), prev;
+  do { prev = t; t = t.replace(/\(\)|\[\]|\{\}/g, ''); } while (t !== prev);
+  return t.length === 0;
+}
+
+// a random string: build a valid one, then sometimes break it
+function randomString() {
+  const r = n => Math.floor(Math.random() * n), pick = a => a[r(a.length)];
+  let s = '', stack = [];
+  const len = 4 + 2 * r(5);
+  while (s.length < len) {
+    if (stack.length && (r(2) || s.length + stack.length >= len)) s += CLOSER[stack.pop()];
+    else { const o = pick(OPEN); stack.push(o); s += o; }
+  }
+  while (stack.length) s += CLOSER[stack.pop()];
+  if (r(2)) {
+    const a = [...s], k = r(a.length), m = r(4);
+    if (m === 0) a[k] = pick([...OPEN, ...CLOSE]);
+    else if (m === 1) a.splice(k, 1);
+    else if (m === 2) a.splice(k, 0, pick([...CLOSE]));
+    else if (a.length > 1) { const j = (k + 1) % a.length; [a[k], a[j]] = [a[j], a[k]]; }
+    s = a.join('');
+  }
+  return s.slice(0, MAXLEN);
+}
+
+// ---------- state ----------
+const S = { s: '', steps: [], i: 0, playing: false, timer: null, predict: null };
+const DELAY = [1600, 1150, 800, 550, 350];
+const $ = id => document.getElementById(id);
+const esc = c => c.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const famVars = c => FAM[c] !== undefined ? ['var(--f' + FAM[c] + ')', 'var(--t' + FAM[c] + ')'] : ['#A19E94', '#F5F3ED'];
+
+function load(s) {
+  stop(); S.s = s; S.steps = buildTrace(s); S.i = 0; S.predict = null;
+  const last = S.steps[S.steps.length - 1], other = pairRemoval(s);
+  $('check').innerHTML = other === last.valid
+    ? '<span class="ok">✓ Answer checked</span> with a different method (keep deleting (), [] and {} until nothing changes): both say ' + (last.valid ? 'valid' : 'not valid') + '.'
+    : '<span class="badtxt">✗ Mismatch with the independent check.</span>';
+  $('scrub').max = S.steps.length - 1;
+  const ex = EXAMPLES.findIndex(e => e[0] === s); $('ex').value = ex >= 0 ? String(ex) : '';
+  render();
+}
+
+// ---------- drawing ----------
+function render() {
+  const st = S.steps[S.i], last = S.steps[S.steps.length - 1], s = S.s;
+  const matched = new Set(st.matched), onStack = new Set(st.stack.map(x => x.i));
+  const failIdx = st.action === 'fail-empty' || st.action === 'fail-mismatch' ? st.i : -1;
+  const unclosed = st.action === 'end-unclosed' ? onStack : new Set();
+  $('tiles').innerHTML = s.length ? [...s].map((c, k) => {
+    const cls = ['tile', FAM[c] !== undefined ? 'f' + FAM[c] : 'other'];
+    if (k < st.i) cls.push('done');
+    if (k === st.i && !st.done) cls.push('cur');
+    if (k === failIdx || (st.top && failIdx >= 0 && k === st.top.i) || unclosed.has(k)) cls.push('bad');
+    if (matched.has(k)) cls.push('ok');
+    if (last.done && last.action.startsWith('fail') && k > last.i) cls.push('unread');
+    const [b, t] = famVars(c);
+    const bg = k === st.i || onStack.has(k) ? t : '#fff';
+    return '<div class="' + cls.join(' ') + '"><div class="ch" style="background:' + bg + '">' + (c === ' ' ? '␣' : esc(c)) + '</div><div class="ix">' + k + '</div></div>';
+  }).join('') : '<span class="muted small">(empty string)</span>';
+
+  const items = st.stack, show = items.slice(-10);
+  $('stack').innerHTML = items.length ? show.map((x, k) => {
+    const [b, t] = famVars(x.ch), isTop = k === show.length - 1;
+    const cls = 'sitem' + (isTop ? ' topi' : '') + (isTop && st.action === 'push' ? ' new' : '') + ((st.action === 'fail-mismatch' && isTop) || st.action === 'end-unclosed' ? ' badi' : '');
+    return '<div class="' + cls + '" style="border-color:' + b + ';background:' + t + '">' + esc(x.ch) + '<small>' + (isTop ? 'top · ' : '') + 'index ' + x.i + '</small></div>';
+  }).join('') + (items.length > 10 ? '<div class="more">… ' + (items.length - 10) + ' more below</div>' : '') : '<div class="empty">empty</div>';
+
+  const g = c => { const [b, t] = famVars(c); return '<span class="glyph" style="border-color:' + b + ';background:' + t + '">' + esc(c) + '</span>'; };
+  let cmp = '';
+  if (st.action === 'start') cmp = '<p class="muted">The stack starts empty. Press Next or Play.</p>';
+  else if (st.action === 'push') cmp = '<div class="row">' + g(st.ch) + ' opening bracket <span class="verdict v-n">push</span></div><p class="small muted" style="margin-top:8px">It waits on the stack until its ' + NAME[st.ch] + ' partner ' + esc(CLOSER[st.ch]) + ' arrives.</p>';
+  else if (st.action === 'skip') cmp = '<div class="row"><span class="glyph" style="border-color:#A19E94">' + (st.ch === ' ' ? '␣' : esc(st.ch)) + '</span> not a bracket <span class="verdict v-n">skip</span></div>';
+  else if (st.action === 'pop') cmp = '<div class="row">top ' + g(st.top.ch) + ' vs ' + g(st.ch) + '<span class="verdict v-ok">✓ partners → pop</span></div>';
+  else if (st.action === 'fail-mismatch') cmp = '<div class="row">top ' + g(st.top.ch) + ' vs ' + g(st.ch) + '<span class="verdict v-bad">✗ different types</span></div><p class="small" style="margin-top:8px">' + esc(st.top.ch) + ' needs ' + esc(CLOSER[st.top.ch]) + ' to close it.</p>';
+  else if (st.action === 'fail-empty') cmp = '<div class="row">top <span class="glyph" style="border-color:#A19E94;border-style:dashed">–</span> vs ' + g(st.ch) + '<span class="verdict v-bad">✗ stack is empty</span></div>';
+  else if (st.action === 'end-valid') cmp = '<div class="row">end of string · stack <span class="verdict v-ok">empty</span></div>';
+  else cmp = '<div class="row">end of string · stack <span class="verdict v-bad">' + st.stack.length + ' left over</span></div>';
+  $('cmp').innerHTML = cmp;
+
+  const r = $('result');
+  if (st.done) {
+    r.className = 'result show ' + (st.valid ? 'ok' : 'bad');
+    r.innerHTML = '<b class="big">' + (st.valid ? '✓ Valid' : '✗ Not valid') + '</b><span>' + st.reason + '</span>' +
+      (S.predict !== null ? '<p class="small" style="margin-top:6px">You predicted <b>' + (S.predict ? 'valid' : 'not valid') + '</b>' + (S.predict === st.valid ? ': correct!' : '.') + '</p>' : '');
+  } else { r.className = 'result'; r.innerHTML = ''; }
+
+  $('explain').innerHTML = st.text;
+  $('quiz').innerHTML = st.quiz === 'predict' && S.s.length ? '<div class="quiz"><p><b>Predict first:</b> is this string valid?</p><div class="qrow">' +
+    '<button class="chipbtn' + (S.predict === true ? ' sel' : '') + '" data-p="1">Valid</button><button class="chipbtn' + (S.predict === false ? ' sel' : '') + '" data-p="0">Not valid</button></div>' +
+    (S.predict !== null ? '<p class="small muted" style="margin-top:6px">Saved. Play the steps to find out.</p>' : '') + '</div>' : '';
+  const bad = st.action.startsWith('fail') || st.action === 'end-unclosed';
+  $('code').innerHTML = CODE.map((c, j) => '<li class="' + (st.line.includes(j + 1) ? (bad && (j + 1 === 8 || j + 1 === 11) ? 'onbad' : 'on') : '') + '">' + esc(c) + '</li>').join('');
+  $('scrub').value = S.i; $('stepno').textContent = 'Step ' + (S.i + 1) + ' / ' + S.steps.length;
+  $('prevBtn').disabled = S.i === 0; $('nextBtn').disabled = S.i === S.steps.length - 1;
+  $('playBtn').innerHTML = S.playing ? '❚❚ Pause' : (S.i === S.steps.length - 1 ? '⟲ Replay' : '▶ Play');
+}
+const CODE = [
+  "pairs = {')': '(', ']': '[', '}': '{'}",
+  'stack = []',
+  'for i, ch in enumerate(s):',
+  "    if ch in '([{':",
+  '        stack.append(ch)          # push',
+  "    elif ch in ')]}':",
+  '        if not stack or stack[-1] != pairs[ch]:',
+  '            return False          # nothing to match, or wrong type',
+  '        stack.pop()               # partners: pop',
+  '    # any other character is skipped',
+  'return len(stack) == 0            # leftovers were never closed'
+];
+
+// ---------- playback ----------
+function go(i) { S.i = Math.max(0, Math.min(S.steps.length - 1, i)); render(); }
+function stop() { S.playing = false; clearTimeout(S.timer); if (S.steps.length) render(); }
+function tick() { if (!S.playing) return; if (S.i >= S.steps.length - 1) { stop(); return; } go(S.i + 1); S.timer = setTimeout(tick, DELAY[$('speed').value - 1]); }
+function play() { if (S.playing) { stop(); return; } if (S.i >= S.steps.length - 1) S.i = 0; S.playing = true; render(); S.timer = setTimeout(tick, Math.min(450, DELAY[$('speed').value - 1])); }
+
+// ---------- wiring ----------
+$('ex').innerHTML = '<option value="">Examples…</option>' + EXAMPLES.map((e, k) => '<option value="' + k + '">' + (e[0] ? esc(e[0]) : '(empty)') + ' · ' + e[1] + '</option>').join('');
+function submit(v) {
+  if (v.length > MAXLEN) { $('s').classList.add('bad'); $('ferr').innerHTML = '<p class="err">Use at most ' + MAXLEN + ' characters (this has ' + v.length + ').</p>'; return; }
+  $('s').classList.remove('bad'); $('ferr').innerHTML = ''; load(v);
+}
+$('form').addEventListener('submit', e => { e.preventDefault(); submit($('s').value); });
+$('s').addEventListener('input', () => { if ($('s').classList.contains('bad') && $('s').value.length <= MAXLEN) { $('s').classList.remove('bad'); $('ferr').innerHTML = ''; } });
+$('randBtn').addEventListener('click', () => { const v = randomString(); $('s').value = v; submit(v); });
+$('ex').addEventListener('change', e => { if (e.target.value === '') return; const v = EXAMPLES[+e.target.value][0]; $('s').value = v; submit(v); });
+$('quiz').addEventListener('click', e => { const b = e.target.closest('[data-p]'); if (b) { S.predict = b.dataset.p === '1'; render(); } });
+$('resetBtn').addEventListener('click', () => { stop(); go(0); });
+$('prevBtn').addEventListener('click', () => { stop(); go(S.i - 1); });
+$('nextBtn').addEventListener('click', () => { stop(); go(S.i + 1); });
+$('playBtn').addEventListener('click', play);
+$('scrub').addEventListener('input', e => { const v = +e.target.value; stop(); go(v); });
+document.addEventListener('keydown', e => {
+  if (/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); stop(); go(S.i + 1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); stop(); go(S.i - 1); }
+  else if (e.key === ' ' && e.target.tagName !== 'BUTTON') { e.preventDefault(); play(); }
+  else if (e.key === 'r' || e.key === 'R') { stop(); go(0); }
+});
+window.parenSim = { run: s => { const st = buildTrace(s), l = st[st.length - 1]; return { valid: l.valid, action: l.action, i: l.i, steps: st.length }; }, pairRemoval, randomString };
+load($('s').value);
+})();
+</script>
+</body>
+</html>

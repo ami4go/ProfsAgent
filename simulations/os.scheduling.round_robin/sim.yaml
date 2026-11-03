@@ -1,0 +1,19 @@
+id: os.scheduling.round_robin
+type: [1-step-through]
+title: "Round Robin CPU scheduling, step by step"
+summary: "Edit the processes (arrival and burst times) and the time quantum; step through the ready queue and the Gantt chart, with waiting and turnaround times."
+version: 1.0.0
+status: team-checked              # draft | team-checked | retired  (professor approval is per course, in the app)
+courses: [CSE231]
+topics: [CPU scheduling, round robin, time quantum, waiting time and turnaround time, Gantt chart]
+interactivity: L2
+engine: {name: own HTML/JS + SVG}
+files: {page: page.html, qa: qa.py}
+checks:
+  independent: "a separate unit-by-unit scheduler, 808 random cases"
+  qa: "browser click-through at laptop and phone width, fuzz tests against a Python reference"
+sensitive: false
+offline: true
+class_example: false               # the page does not report its setup yet
+changelog:
+  - {version: 1.0.0, date: 2026-10-27, by: Amit, change: "first version (with Claude); moved into the catalogue on 2026-11-02"}

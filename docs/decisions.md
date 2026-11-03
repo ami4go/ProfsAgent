@@ -8,6 +8,239 @@ Mark anything still waiting for someone as **Open**.
 
 ---
 
+## 2026-11-03: look for existing simulations before building one
+
+### 29. A request first searches our catalogue, the saved links and the web, opens the top pages, and the professor reviews what it found; the machine builds only when nothing fits
+- **Decision (Amit, 3 Nov):**
+  - The auto-build made a Selection Sort simulation even though VisuAlgo already has one. Amit then found a Virtual Labs (IIIT Hyderabad) Tower of Hanoi simulation himself.
+  - His rule: "make your searches more robust, at least visit the top 3–4 pages with the similar search, then only fall back to auto-creation". Existing pages go to the professor to approve or reject first.
+- **How it works** (`src/profsagent/sims/websearch.py`), cheapest first:
+  1. **Saved lists (free):** our catalogue and the saved links, matched with the local model.
+  2. **Two web searches**, Tavily (cached 21 days; DuckDuckGo when Tavily has no key or credit):
+     - trusted sites only: Virtual Labs (`vlabs.ac.in`, new), PhET, VisuAlgo, Falstad, Python Tutor, CircuitVerse, Seeing Theory, USF visualizations, GeoGebra, TensorFlow Playground, Polo Club (`simulations/external/sources.yaml`, `search:`);
+     - then the open web.
+     - Wikipedia, YouTube, PDFs, social sites and course sites are skipped.
+  3. **Visits:** the top 3 pages of each search (plus the saved links) are opened in Chrome. A page is kept only if:
+     - it loads;
+     - it has controls or a drawing area (canvas, sliders, buttons; controls inside embedded frames count, video frames do not);
+     - it matches the topic (local model);
+     - its title, headings or address name the topic: 2 of 2 key words, 2 of 3, 3 of 4. This stops a merge-sort page being offered for Selection Sort.
+     - An overview page follows its own "Simulation", "Demo" or "Practice" link within the same part of the site. Virtual Labs works this way: its Selection Sort overview leads to `selection_demo.html`.
+     - Each kept page gets a screenshot.
+- **Request flow** (statuses in `runs/_simulation_requests.json`):
+  - queued → searching → **review** when something was found; nothing found → building.
+  - In review, the professor sees up to 4 finds (ours first, then trusted sites, then the web), each with a screenshot, **Try it / Open ↗**, **Approve** and **Not this**, plus "None of these fit: build a new one" with an optional "what is missing".
+  - **Approve:** the request is **chosen** and nothing is built.
+    - The page joins the saved links (`simulations/external/found.json`), so it is suggested for other lectures too.
+    - A request made from a lecture puts it on that lecture, approved.
+  - **Rejecting all, or "None of these fit":** build_queued, and the builder's prompt lists what was rejected and the professor's note.
+  - "Try again" after a failed build builds straight away (the search was already done).
+- **Measured on 3 Nov** (real searches): about 1 minute and 2 Tavily searches per request.
+  - **Tower of Hanoi:** Virtual Labs `dm1-iiith…/exp/recursion/simulation/`, Math Playground, towersofhanoi.info (plus ours).
+  - **Selection Sort:** Virtual Labs' Selection Sort demo, VisuAlgo Sorting, W3Schools' DSA demo (plus ours).
+  - **TCP congestion control:** nothing that is an interactive simulation, so it is built.
+- **Also changed:**
+  - `external.add_found()`;
+  - endpoints `POST /api/simulations/requests/<id>/found/<n>` (approve / reject / undo) and `GET …/shot/<n>.jpg`, and `…/build` takes a note;
+  - `PROFSAGENT_SIMS_SEARCH=local` (QA and demos: saved lists only, no web).
+- **Checked:**
+  - `tests/test_websearch.py` (4): the judging rules, a search with fixed results, the review flow including a lecture request and the builder's prompt, and the worker searching first;
+  - full suite: 423 passed, 1 skipped; 1 failure, the known Python 3.10 problem in `test_llm_check.py`;
+  - Chrome click-through: 0 problems, including approve (Chosen, nothing built) and reject all (then built).
+- **Agreed by:** Amit (3 Nov).
+- **Open:**
+  - the local model can offer a near-miss from our catalogue (for "Binary search tree" it offered our "Binary search"); the professor rejects it;
+  - Tavily's free tier is 1,000 searches a month (2 per request).
+
+## 2026-11-03: the machine builds requested simulations itself
+
+### 28. Auto-build: a simulation request becomes a recipe for our step-by-step engine, accepted only when automatic checks pass
+- **Decision (Amit, 3 Nov):**
+  - When a professor asks for a simulation, the machine first tries to build it itself. The team only gets what it cannot build.
+  - The AI never writes a whole page. It writes a short **recipe** for an existing, tested engine; the engine draws it, and automatic checks decide.
+  - This keeps the cost at 1–3 calls on the keys we already have.
+- **How it works:**
+  - **Engine:** the stepper engine gained ready-made views: `array` (marks, pointers, bars), `stacks` (pegs and disks), `callstack`, `vars`, `table` and `text`. A recipe's steps just list what is on screen.
+  - **The recipe** has: the algorithm (`run`), an independent second method (`check`), textbook answers (`examples`) and a random-input maker (`random`). The format is in `simulations/_engines/stepper/README.md`, "Recipes", with a hand-written example in `example_recipe.js` (binary search).
+  - **The checks** (`_engines/stepper/qa_recipe.py`, in Chrome with the network blocked):
+    - `run` works on every preset, every example and 40 random inputs;
+    - `check` agrees with `run` on all of them, does not call `run`, and rejects a deliberately corrupted result;
+    - `run` matches every textbook answer;
+    - widgets, code lines and questions are valid;
+    - every example plays to its end;
+    - no sideways scrolling on a phone; no network.
+    - Before running, a scan refuses network, page, storage and timer use.
+  - **The builder** (`src/profsagent/sims/autobuild.py`):
+    - one AI call (`generate` role) writes the recipe;
+    - if the checks find problems, they go back to the AI, at most 3 attempts in all;
+    - the AI may decline when a step-by-step simulation cannot teach the topic;
+    - a recipe that passes becomes `simulations/auto.<topic>/` (`status: draft`, `built_by: machine`, the request id and the build record), so it appears in the catalogue and in lecture suggestions;
+    - otherwise the request becomes "Sent to the team", with the reason.
+  - **The worker** runs in its own process, one request at a time, with a heartbeat file. The app starts it after a request, on "Build it now / Try again", and at start-up for requests left half-built.
+- **In the app:**
+  - a new request is built straight away;
+  - "Your requests" shows: waiting / being built (attempt n of 3) / **Ready to try** (Try it) / sent to the team (reason, Try again) / paused (AI quota);
+  - the page refreshes itself while something is building;
+  - machine-built simulations carry a "Built by the machine" label;
+  - a request made from a lecture page puts the new simulation on that lecture, waiting for the professor's decision.
+- **First real builds (3 Nov), Amit's two requests:**
+  - **Tower of Hanoi** (`auto.tower_of_hanoi`): 2 AI calls, 86 s. The first attempt was refused by the scan: a variable named `top`.
+  - **Selection Sort** (`auto.selection_sort`): 1 call, 43 s.
+  - Both used Gemini 3.6 Flash.
+  - Their textbook answers were checked by hand: Hanoi 7/3/1 moves (2ⁿ−1); selection sort 10 comparisons and 3 swaps for `29 10 14 37 13`, 2 swaps for `5 4 3 2 1`.
+- **Also changed:**
+  - `catalogue.inline()` (a page from its text);
+  - `PROFSAGENT_SIMS_DIR` (point the catalogue at a copy) and `PROFSAGENT_AUTOBUILD_REPLY` (a stand-in AI that answers from a file), both for QA servers and demos;
+  - `create_app(sims_autobuild=…)`;
+  - `.gitignore`: `runs/_simulation_builds/`, `runs/_simulation_autobuild.json`, `runs/_simulation_requests.json.lock`.
+- **Checked:**
+  - `tests/test_autobuild.py` (5): the example passes; a recipe whose check accepts anything, whose textbook answer is wrong, or that uses an unknown widget is refused; a check that calls `run` is refused; one retry then success; decline; the requests file and the worker.
+  - Full suite: 419 passed, 1 skipped; 1 failure, the known Python 3.10 problem in `test_llm_check.py`.
+  - Chrome click-through: 0 problems, including a request built in the app (stand-in AI), Try it, and the lecture page.
+- **Agreed by:** Amit (3 Nov).
+- **Open:**
+  - machine-built simulations need a team review (`draft` → `team-checked`);
+  - only the step-by-step kind can be machine-built today; each other kind needs its engine, recipe format and checker first;
+  - a stronger model might pass harder topics.
+
+## 2026-11-03: simulations on trusted sites, as links
+
+### 27. Lectures also get links to simulations on trusted sites; the professor opens, approves or rejects them, and can ask for a new one
+- **Decision (Amit, 3 Nov):**
+  - We give the professor **only the link** to simulations on other sites. We never copy or embed them, so their licences are never a problem, and we do not check them.
+  - The professor opens the link and approves or rejects it.
+  - If nothing fits, he asks us for a simulation in a line or two. His rejection reason becomes the starting text of the request.
+  - Later, the machine should try to build requested simulations itself (engine + recipe + check); the team only gets what it cannot build.
+- **The sites:** PhET, Falstad (circuits and maths/physics applets), VisuAlgo, Python Tutor, CircuitVerse, TensorFlow Playground, CNN Explainer, Seeing Theory.
+- **Changed:**
+  - **Where the list of links comes from:**
+    - `simulations/external/sources.yaml` lists the sites, plus hand-written entries for the six sites with short, stable lists;
+    - `src/profsagent/sims/external.py` downloads PhET's metadata (82 university-level simulations) and Falstad's lists (59 applets, 200 circuit examples);
+    - `python scripts/sims.py external` rebuilds `simulations/external/index.json` (377 links, committed, so nobody has to download anything).
+  - **`app/simulations.py`:**
+    - each lecture also gets up to 3 links whose title or topics are close to its topic (MiniLM, similarity ≥ 0.65, no AI calls);
+    - the cut-off was chosen on IIIT-D's 9,784 weekly topics: below it, wrong matches appeared, such as "TCP/IP networks" → network flow;
+    - links can be approved, rejected (reason required) or undone; an approved link stays on the lecture even when it is no longer suggested;
+    - the stored suggestions are remade when the links index changes.
+  - **`index.html`:**
+    - on the lecture card, an **On other trusted sites** section: site name, "External, not checked by us", **Open ↗**, Approve, Reject;
+    - after a rejection, the app points to **Ask for a new simulation**, whose text starts from the latest rejection reason; that button is highlighted when nothing is left to judge;
+    - the student view shows approved links;
+    - the Simulations page search also lists matching links.
+- **Checked:**
+  - tests: `tests/test_app_simulations.py` (6) and `tests/test_sims.py` (14, including the parsers on saved snippets). Full suite: 412 passed, 1 skipped; 1 failure in `test_llm_check.py`, the known Python 3.10 problem;
+  - Chrome click-through (`Temporary/qa_sims_ui.py`): 0 problems, including an AVL-tree lecture → VisuAlgo BST, a Dijkstra lecture → ours + VisuAlgo (rejected, then a request prefilled from the reason), and "fourier" → Falstad and PhET.
+- **Agreed by:** Amit (3 Nov).
+- **Open:**
+  - the "Check approved links" job (Vihan's health check) does not cover approved simulation links yet;
+  - the optional Tavily search restricted to these sites, when nothing in the index matches;
+  - rebuild the index now and then (`scripts/sims.py external`).
+
+## 2026-11-03: simulations inside the app
+
+### 26. Simulations in the professor app: a Simulation card on each lecture page, a Simulations page, class examples, and the student view
+- **Decision:** Amit asked for the simulations to be part of the existing website, not separate tooling ("yes go ahead", 3 Nov).
+  - We built the app part of stage A2 of doc 09.
+  - Two changes from the doc's proposal:
+    - the simulation is **its own card** on the lecture page, not a sixth delivery choice;
+    - its data stays in the **app's own files**.
+  - So Vihan's survey, review and pipeline code are **unchanged**.
+- **What the professor sees:**
+  - **Lecture page:** a **Simulation** card, above Results.
+    - It lists catalogue entries whose title or topics match the lecture topic, as a "close" or "possible" match with the % similarity. The match uses the local MiniLM model, with no AI calls.
+    - **Try it** opens a large preview window.
+    - **Approve / Replace / Reject** work as for resources: a reason is required to reject, and everything can be undone.
+    - **Add one from the catalogue** and **Ask for a new simulation** are always there.
+    - When nothing matches, the card names the kind of simulation the topic suits (the A1 classifier), or says there is no clear fit.
+  - **Class example:** in the preview, the professor sets the simulation up as for class and presses **Use this setup as the class example**. Students then open it at exactly that setup.
+  - **Versions:** an approval belongs to a version. If the entry changes, the card says "Updated since you approved it" and offers to approve the new version.
+  - **Student view:** approved simulations come first in each lecture.
+  - **Lecture list:** "Simulation" and "Simulation suggested" chips.
+  - **Simulations page** (top menu):
+    - kept simple at Amit's request: a search box and the list (title, one line on what students do, what it covers, ✓ checked, **Try it**, and the lectures where it is approved);
+    - **Ask for a new simulation** sits at the top;
+    - the professor's requests are listed at the bottom;
+    - there are no kind or course filters and no list of the 12 kinds, and the lecture card has no kind or level chips: Amit found them of no use to a professor.
+- **Changed:**
+  - **New `src/profsagent/app/simulations.py`:**
+    - suggestions run in the background, about 30 s the first time per course, and are cached in `runs/<id>/delivery/simulations/suggestions.json`, which is remade when the lectures or the catalogue change;
+    - decisions, class examples and history go in `decisions.json`;
+    - requests go in `runs/_simulation_requests.json`, which is git-ignored because it holds professors' ideas.
+  - **`server.py`:**
+    - `GET /api/simulations`;
+    - `GET /api/simulations/<id>/page`: the built page, rebuilt when its source changes, served with `Content-Security-Policy: sandbox allow-scripts …; connect-src 'none'`, so it gets its own origin and no network;
+    - `POST /api/simulations/requests`;
+    - `POST /api/delivery/<run>/simulations/<lecture>` and `…/class-example`;
+    - `GET /api/delivery/<run>` starts the suggestions.
+  - **`delivery.view()`:** has one new key, `simulations`. A failure there never breaks delivery.
+  - **`static/index.html`:** the card, the preview window (outside the page's re-rendering, so polling never reloads a simulation), the Simulations page and the student rows.
+  - **Catalogue:**
+    - `sim.yaml` gains `summary` (required) and `class_example`;
+    - new `simulations/_engines/share/share.js`: a page puts its setup in its link and tells the app;
+    - the stepper engine uses it;
+    - convolution 1.2.0, DBSCAN 1.2.0 and page replacement 1.1.0 report and restore their setup.
+- **Checked:**
+  - `tests/test_app_simulations.py` (5 tests). Full suite: 395 passed, 16 skipped; 1 failure in `test_llm_check.py`, the known Python 3.10 f-string problem.
+  - `scripts/sims.py qa`: 8 of 8, including new checks that each framed page reports its setup and that a link restores it.
+  - A Chrome click-through on copies of the courses (`Temporary/qa_sims_ui.py`): 30 checks, 0 problems; laptop and phone; offline.
+  - On Amit's Web Development and the CS-601 example, no lecture matches the 8 simulations we have (best match 35%). Their cards say so, and offer the catalogue or a request.
+- **Agreed by:** Amit (3 Nov).
+- **Open:**
+  - **Vihan (optional):** if delivery should know about simulations, a survey key `simulation` and a review kind `simulation` in his files; the app would then write there too.
+  - **Parth:** a slide that links the approved simulation, with its class example.
+  - **Later:**
+    - stars and "did it help?" for simulations;
+    - Neo4j nodes;
+    - class examples for the five older pages;
+    - A6, suggestions from the slides.
+
+## 2026-11-03: simulation catalogue, stage A1 built
+
+### 25. A `simulations/` catalogue with one command to check everything; the stepper engine; DBSCAN interactive; the topic → type classifier
+- **Decision:** build stage A1 of doc 09 (Amit approved the plan on 2 Nov). He also proposed, for later (stage **A6**), AI suggestions of simulations from a lecture's slide material.
+- **Changed (all new, ours):**
+  - **The catalogue:**
+    - `simulations/` holds `types.yaml` (the 12 types), `_lib/manim-web-0.40.1.js` with its MIT notices, `_engines/stepper/`, `classifier/labels.tsv` + `params.json`, the generated `coverage.md`, and 8 entries, each with `sim.yaml`, its page and `qa.py`;
+    - `src/profsagent/sims/catalogue.py` loads and checks entries (types, levels, IIIT-D course codes, files, nothing loaded from the internet, change log) and builds one offline HTML file per entry, with libraries, engines and licence notices inlined;
+    - `scripts/sims.py` provides `list | check | build | qa | coverage`;
+    - `.gitignore` adds `simulations/_build/` (builds, screenshots, reports).
+  - **Entries:** the 5 earlier simulations moved in unchanged (their QA scripts now take the page as an argument). Convolution now uses the shared library. Two are new:
+    - **`ml.clustering.dbscan`** (CSE343/AI201, manim-web): add, drag or remove points; ε and minPts; four examples (the video's data, two moons, rings, mixed densities); step mode as in the video. A live check recomputes every label from the definition, without the visiting order.
+    - **`os.memory.page_replacement`** (CSE231): FIFO, LRU and Optimal on the reusable **stepper engine** (`_engines/stepper/`: controls, code line, predict questions, keyboard, shareable link). A second implementation checks it live, and Belady's anomaly is shown.
+  - **The classifier:** `src/profsagent/sims/classify.py` labels each of the 9,784 weekly topics from `data/enriched` with a type or "none". It uses the local MiniLM model (no AI calls), calibrated on 165 topics hand-labelled by Claude for Amit's review.
+- **Checked:**
+  - **Browser QA:** `scripts/sims.py qa` passes 8 of 8.
+  - **DBSCAN:** all 3,312 labels agree with scikit-learn (4 datasets × 4 ε × 3 minPts); 22 steps, as in the video.
+  - **Page replacement:** textbook answers (FIFO 15, LRU 12, Optimal 9; Belady 9 → 10), and 5,400 runs agree with a Python implementation.
+  - **Unit tests:** `tests/test_sims.py` has 12.
+  - **Classifier:** 73% cross-validated, against 51% for always answering "none". 51% of all topics get a type; Psychology is mostly "experiments on yourself" and Economics "decisions and games".
+- **Agreed by:** Amit (the plan); built by Amit with Claude.
+- **Open:**
+  - **Amit:** review `simulations/classifier/labels.tsv`. The classifier over-assigns "networks" in CSE and under-assigns Environmental Science and Communication; better examples in `types.yaml` are the next step.
+  - **Next (A2):** the decisions-and-games and experiments-on-yourself engines, and the app integration (S2 suggestions, Simulation (A) tab).
+
+## 2026-11-02: simulation catalogue and build plan for every kind of course (proposal)
+
+### 24. Simulations for every kind of course: 12 simulation types, one engine each, a catalogue, and a Simulation (A) tab
+- **Proposal:** `docs/09_phase2_A_simulation_catalogue.md` v0.2 (+ PDF, 9 pages). v0.1 covered only maths, signals and ML; Amit asked for a plan that handles every kind of course.
+  - **Topics are classified by what students do,** not by subject. There are **12 types**: step-through process, parameter explorer, systems over time, chance and crowds, networks, machines inside, code sandbox, data explorer, 3D models, decisions/games/role-play, experiments on yourself, and maps/timelines/arguments. Virtual labs, classroom games and studios are built from these.
+  - **Each type has** one engine, its own independent check, and a configuration format. "No simulation recommended" (with a better format suggested) is a valid outcome.
+  - **Coverage:** every IIIT-D department is mapped with real weekly topics from the knowledge graph (CSE, ECE, Maths, Design, SSH, Biology, Sociology, Entrepreneurship, Economics, Psychology, AI, Communication, Environmental Science, Management), and so are other disciplines for later.
+  - **Special situations:** sensitive topics, AI role-play partners, running student code, security labs, lab courses, heavy computation, datasets, multi-player games, assessment, language and accessibility.
+  - **Tracking:** catalogue entries (`sim.yaml`) carry versions and change logs, the professor's class example is saved, and a student's state lives in the page's link.
+  - **In the app:** a Simulation (A) tab on the lecture page (mock-up in the doc).
+- **Why:** to plan engines in the order that opens the most departments, rather than one-off simulations per subject.
+- **Changed:** docs only (`docs/09_*`, `docs/img/09_simulation_tab_mockup.png`). No code yet.
+- **Agreed by:** Amit (proposal).
+- **Open:**
+  - **Vihan:** survey keys `simulation` / `sim_note`, review kind `simulation`, graph labels (doc 09 §9).
+  - **Parth:** the simulation slide.
+  - **Team:**
+    - the 12 types and the engine order;
+    - which department follows CSE/ECE;
+    - the rules for sensitive topics and the AI role-play partner;
+    - the `simulations/` repo layout.
+
 ## 2026-10-29: the professor can change everything at the checks, in place
 
 ### 23. Fix in Vihan's `_post_deadline`: every gzipped Gemini reply failed (for Vihan)

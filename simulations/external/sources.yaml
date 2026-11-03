@@ -1,0 +1,80 @@
+# Trusted sites whose simulations ProfsAgent suggests as LINKS ONLY (decisions.md 27).
+# We never copy or embed them, so their licences allow it; we do not check their answers ("External, not checked by us"),
+# the professor opens the link and approves or rejects it.
+#
+# PhET and Falstad publish their lists, so `python scripts/sims.py external` downloads them; the rest are written here by
+# hand (their lists are short and rarely change). The result is simulations/external/index.json.
+#
+# Entry fields: id (short, unique within the site), title, url, summary (one line), topics.
+
+sites:
+  phet:     {name: PhET, home: "https://phet.colorado.edu", note: "University of Colorado Boulder; physics, chemistry, maths, biology", fetched: true}
+  falstad:  {name: Falstad, home: "https://www.falstad.com", note: "Paul Falstad's circuit simulator and maths/physics applets", fetched: true}
+  visualgo: {name: VisuAlgo, home: "https://visualgo.net", note: "National University of Singapore; data structures and algorithms (link only: its terms forbid copies)"}
+  pythontutor: {name: Python Tutor, home: "https://pythontutor.com", note: "code running step by step (Python, Java, C, C++, JavaScript)"}
+  circuitverse: {name: CircuitVerse, home: "https://circuitverse.org", note: "digital logic simulator"}
+  tfplayground: {name: TensorFlow Playground, home: "https://playground.tensorflow.org", note: "Google; a small neural network in the browser"}
+  cnnexplainer: {name: CNN Explainer, home: "https://poloclub.github.io/cnn-explainer/", note: "Georgia Tech Polo Club; convolutional networks"}
+  seeingtheory: {name: Seeing Theory, home: "https://seeing-theory.brown.edu", note: "Brown University; probability and statistics"}
+
+curated:
+  visualgo:
+    - {id: sorting, title: "Sorting", url: "https://visualgo.net/en/sorting", summary: "Bubble, selection, insertion, merge, quick, counting and radix sort, step by step on your own array.", topics: [sorting algorithms, bubble sort, insertion sort, merge sort, quick sort, radix sort, counting sort]}
+    - {id: array, title: "Array", url: "https://visualgo.net/en/array", summary: "Static and dynamic (resizable) arrays: search, insert, remove.", topics: [arrays, dynamic array, array operations]}
+    - {id: list, title: "Linked List, Stack, Queue, Deque", url: "https://visualgo.net/en/list", summary: "Singly and doubly linked lists, stacks, queues and deques: every pointer change shown.", topics: [linked list, doubly linked list, stack, queue, deque]}
+    - {id: hashtable, title: "Hash Table", url: "https://visualgo.net/en/hashtable", summary: "Hashing with linear probing, quadratic probing, double hashing and separate chaining.", topics: [hash table, hashing, collision resolution, open addressing, separate chaining]}
+    - {id: bst, title: "Binary Search Tree and AVL Tree", url: "https://visualgo.net/en/bst", summary: "Search, insert and delete in a BST; AVL rotations that keep it balanced.", topics: [binary search tree, AVL tree, tree rotations, balanced trees]}
+    - {id: heap, title: "Binary Heap (Priority Queue)", url: "https://visualgo.net/en/heap", summary: "Insert, extract-max, build-heap and heap sort on a binary heap.", topics: [binary heap, priority queue, heapify, heap sort]}
+    - {id: ufds, title: "Union-Find Disjoint Sets", url: "https://visualgo.net/en/ufds", summary: "Union by rank and path compression, step by step.", topics: [union-find, disjoint sets, path compression]}
+    - {id: segmenttree, title: "Segment Tree", url: "https://visualgo.net/en/segmenttree", summary: "Range minimum, maximum and sum queries with updates.", topics: [segment tree, range queries]}
+    - {id: fenwicktree, title: "Fenwick Tree (Binary Indexed Tree)", url: "https://visualgo.net/en/fenwicktree", summary: "Prefix sums and range updates with a Fenwick tree.", topics: [Fenwick tree, binary indexed tree, prefix sums]}
+    - {id: graphds, title: "Graph Data Structures", url: "https://visualgo.net/en/graphds", summary: "The same graph as an adjacency matrix, an adjacency list and an edge list.", topics: [graph representation, adjacency matrix, adjacency list, edge list]}
+    - {id: dfsbfs, title: "Graph Traversal (DFS and BFS)", url: "https://visualgo.net/en/dfsbfs", summary: "Depth-first and breadth-first search, topological sort, bipartite check, bridges and strongly connected components.", topics: [graph traversal, depth first search, breadth first search, topological sort, strongly connected components, articulation points and bridges]}
+    - {id: mst, title: "Minimum Spanning Tree", url: "https://visualgo.net/en/mst", summary: "Kruskal's and Prim's algorithms on your own graph.", topics: [minimum spanning tree, Kruskal's algorithm, Prim's algorithm]}
+    - {id: sssp, title: "Single-Source Shortest Paths", url: "https://visualgo.net/en/sssp", summary: "Bellman-Ford, Dijkstra, BFS and dynamic programming on DAGs.", topics: [shortest paths, Dijkstra's algorithm, Bellman-Ford algorithm, single source shortest paths]}
+    - {id: maxflow, title: "Network Flow", url: "https://visualgo.net/en/maxflow", summary: "Ford-Fulkerson, Edmonds-Karp and Dinic; max flow and min cut.", topics: [maximum flow, min cut, Ford-Fulkerson, Edmonds-Karp, Dinic's algorithm]}
+    - {id: matching, title: "Graph Matching", url: "https://visualgo.net/en/matching", summary: "Bipartite and general matching with augmenting paths.", topics: [graph matching, bipartite matching, augmenting paths, Hopcroft-Karp]}
+    - {id: mvc, title: "Minimum Vertex Cover", url: "https://visualgo.net/en/mvc", summary: "Exact and approximate vertex cover on small graphs.", topics: [vertex cover, NP-hard problems, approximation algorithms]}
+    - {id: steinertree, title: "Steiner Tree", url: "https://visualgo.net/en/steinertree", summary: "Steiner tree problem variants on small graphs.", topics: [Steiner tree, NP-hard problems]}
+    - {id: tsp, title: "Travelling Salesperson Problem", url: "https://visualgo.net/en/tsp", summary: "Brute force and dynamic programming for TSP on small graphs.", topics: [travelling salesman problem, dynamic programming, NP-hard problems]}
+    - {id: recursion, title: "Recursion Tree and DAG", url: "https://visualgo.net/en/recursion", summary: "Draw the recursion tree of your own function; see overlapping subproblems and memoisation.", topics: [recursion, recursion tree, dynamic programming, memoization]}
+    - {id: suffixtree, title: "Suffix Tree", url: "https://visualgo.net/en/suffixtree", summary: "Build a suffix tree; pattern search and longest repeated substring.", topics: [suffix tree, string matching]}
+    - {id: suffixarray, title: "Suffix Array", url: "https://visualgo.net/en/suffixarray", summary: "Suffix array and LCP array; string matching.", topics: [suffix array, LCP array, string matching]}
+    - {id: polygon, title: "Polygon", url: "https://visualgo.net/en/polygon", summary: "Perimeter, area, convexity and point-in-polygon tests on your own polygon.", topics: [computational geometry, polygon area, point in polygon]}
+    - {id: convexhull, title: "Convex Hull", url: "https://visualgo.net/en/convexhull", summary: "Graham scan, Andrew's monotone chain and Jarvis march.", topics: [convex hull, Graham scan, computational geometry]}
+    - {id: cyclefinding, title: "Cycle-Finding", url: "https://visualgo.net/en/cyclefinding", summary: "Floyd's tortoise and hare and Brent's algorithm.", topics: [cycle detection, Floyd's cycle finding]}
+    - {id: bitmask, title: "Bitmask", url: "https://visualgo.net/en/bitmask", summary: "Set operations with bits: set, clear, toggle, lowest bit.", topics: [bit manipulation, bitmask]}
+    - {id: reductions, title: "NP-hard reductions", url: "https://visualgo.net/en/reductions", summary: "Reductions between NP-hard problems, shown on examples.", topics: [NP-completeness, reductions, computational complexity]}
+  pythontutor:
+    - {id: visualize, title: "Python Tutor: code running step by step", url: "https://pythontutor.com/visualize.html", summary: "Paste a short program (Python, Java, C, C++ or JavaScript) and step through it: variables, the call stack and objects in memory.", topics: [program execution, variables and references, function calls and the call stack, recursion, pointers, lists and objects in memory, introductory programming]}
+  circuitverse:
+    - {id: simulator, title: "CircuitVerse digital logic simulator", url: "https://circuitverse.org/simulator", summary: "Build and run logic circuits: gates, adders, multiplexers, flip-flops, counters.", topics: [digital logic, logic gates, combinational circuits, sequential circuits, flip-flops, counters, multiplexer]}
+  tfplayground:
+    - {id: playground, title: "TensorFlow Playground", url: "https://playground.tensorflow.org", summary: "Train a small neural network in the browser: layers, neurons, activation, learning rate, regularisation.", topics: [neural networks, multilayer perceptron, activation functions, learning rate, regularization, classification, overfitting]}
+  cnnexplainer:
+    - {id: cnn, title: "CNN Explainer", url: "https://poloclub.github.io/cnn-explainer/", summary: "Inside a convolutional neural network: convolution, ReLU, pooling and softmax on a real image.", topics: [convolutional neural networks, convolution layer, pooling, ReLU, softmax, image classification]}
+  seeingtheory:
+    - {id: basic-probability, title: "Seeing Theory: basic probability", url: "https://seeing-theory.brown.edu/basic-probability/index.html", summary: "Chance events, expectation and variance with coins and dice.", topics: [probability, expectation, variance, random events]}
+    - {id: compound-probability, title: "Seeing Theory: compound probability", url: "https://seeing-theory.brown.edu/compound-probability/index.html", summary: "Set theory, counting and conditional probability.", topics: [set theory, counting, combinatorics, conditional probability]}
+    - {id: probability-distributions, title: "Seeing Theory: probability distributions", url: "https://seeing-theory.brown.edu/probability-distributions/index.html", summary: "Random variables, discrete and continuous distributions, the central limit theorem.", topics: [random variables, probability distributions, central limit theorem]}
+    - {id: frequentist-inference, title: "Seeing Theory: frequentist inference", url: "https://seeing-theory.brown.edu/frequentist-inference/index.html", summary: "Point estimates, confidence intervals and the bootstrap.", topics: [statistical inference, confidence intervals, bootstrapping, estimation]}
+    - {id: bayesian-inference, title: "Seeing Theory: Bayesian inference", url: "https://seeing-theory.brown.edu/bayesian-inference/index.html", summary: "Bayes' theorem, likelihood, and prior to posterior.", topics: [Bayes theorem, Bayesian inference, prior and posterior, likelihood]}
+    - {id: regression-analysis, title: "Seeing Theory: regression analysis", url: "https://seeing-theory.brown.edu/regression-analysis/index.html", summary: "Least squares, correlation and ANOVA.", topics: [linear regression, least squares, correlation, ANOVA]}
+
+# Web search for a professor's request (src/profsagent/sims/websearch.py): first only these sites, then the open web.
+# The top pages are opened in Chrome and must load, have controls or a drawing area, and match the topic.
+search:
+  domains: [vlabs.ac.in, phet.colorado.edu, visualgo.net, falstad.com, pythontutor.com, circuitverse.org, seeing-theory.brown.edu,
+            cs.usfca.edu, geogebra.org, playground.tensorflow.org, poloclub.github.io]
+  names:
+    vlabs.ac.in: Virtual Labs (IITs/IIITs, MoE)
+    phet.colorado.edu: PhET
+    visualgo.net: VisuAlgo
+    falstad.com: Falstad
+    pythontutor.com: Python Tutor
+    circuitverse.org: CircuitVerse
+    seeing-theory.brown.edu: Seeing Theory
+    cs.usfca.edu: USF data structure visualizations
+    geogebra.org: GeoGebra
+    playground.tensorflow.org: TensorFlow Playground
+    poloclub.github.io: Polo Club (Georgia Tech)

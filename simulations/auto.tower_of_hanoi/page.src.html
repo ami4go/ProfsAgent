@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tower of Hanoi: Recursion Visualized</title>
+<link rel="stylesheet" href="../_engines/stepper/stepper.css">
+</head>
+<body>
+<script src="../_engines/share/share.js"></script>
+<script src="../_engines/stepper/stepper.js"></script>
+<script>
+'use strict';
+// recipe: written by the machine (auto-build), accepted by _engines/stepper/qa_recipe.py
+const recipe = {
+  title: 'Tower of Hanoi: Recursion Visualized',
+  summary: 'Select number of disks and step through the recursive call stack to see how subproblems solve the puzzle.',
+  topics: ['recursion', 'call stack', 'divide and conquer', 'tower of hanoi', 'exponential time complexity'],
+  checked_by: 'formula 2^n - 1 for total moves and checking the final contents of peg C',
+  intro: 'The Tower of Hanoi moves n disks from a source peg to a destination peg using an auxiliary peg. It relies on a classic recursive divide-and-conquer strategy: move n-1 disks out of the way, move the largest disk, then move the n-1 disks onto the destination peg.',
+  inputs: [
+    { id: 'disks', label: 'Number of disks (1 to 5)', kind: 'number', min: 1, max: 5, step: 1, help: 'Choose between 1 and 5 disks.' },
+  ],
+  presets: [
+    { name: '3 Disks (Standard)', values: { disks: '3' } },
+    { name: '2 Disks (Simple)', values: { disks: '2' } },
+    { name: '4 Disks (Challenging)', values: { disks: '4' } },
+  ],
+  code: [
+    'def hanoi(n, src, dst, aux):',
+    '    if n == 1:',
+    '        move disk 1 from src to dst',
+    '    else:',
+    '        hanoi(n - 1, src, aux, dst)',
+    '        move disk n from src to dst',
+    '        hanoi(n - 1, aux, dst, src)',
+  ],
+  parse(values) {
+    const n = Number(values.disks);
+    if (!Number.isInteger(n) || n < 1 || n > 5) {
+      return { error: { field: 'disks', message: 'Please select between 1 and 5 disks.' } };
+    }
+    return { n };
+  },
+  run(values) {
+    const p = recipe.parse(values);
+    if (p.error) return p;
+    const { n } = p;
+
+    const pegs = {
+      A: Array.from({ length: n }, (_, i) => n - i),
+      B: [],
+      C: [],
+    };
+
+    const steps = [];
+    const frames = [];
+    let moveCount = 0;
+
+    const makeView = () => [
+      {
+        type: 'stacks',
+        label: 'Pegs (disks stacked bottom to smallest)',
+        disks: true,
+        stacks: [
+          { name: 'Peg A', items: [...pegs.A] },
+          { name: 'Peg B', items: [...pegs.B] },
+          { name: 'Peg C', items: [...pegs.C] },
+        ],
+      },
+      {
+        type: 'callstack',
+        label: 'Call Stack',
+        frames: frames.map(f => `hanoi(n=${f.n}, src=${f.src}, dst=${f.dst}, aux=${f.aux})`),
+      },
+      {
+        type: 'vars',
+        label: 'Active Call Variables',
+        values: frames.length > 0 ? {
+          n: frames[frames.length - 1].n,
+          src: frames[frames.length - 1].src,
+          dst: frames[frames.length - 1].dst,
+          aux: frames[frames.length - 1].aux,
+          moves: moveCount,
+        } : { moves: moveCount },
+      },
+    ];
+
+    function solveHanoi(diskN, src, dst, aux) {
+      frames.push({ n: diskN, src, dst, aux });
+      steps.push({
+        line: 1,
+        note: `Enter hanoi(n=${diskN}, src=${src}, dst=${dst}, aux=${aux}).`,
+        view: makeView(),
+      });
+
+      steps.push({
+        line: 2,
+        note: `Check base case: is n == 1? (${diskN} == 1 is ${diskN === 1 ? 'True' : 'False'}).`,
+        view: makeView(),
+      });
+
+      if (diskN === 1) {
+        const disk = pegs[src].pop();
+        pegs[dst].push(disk);
+        moveCount++;
+        steps.push({
+          line: 3,
+          note: `Base case: move disk 1 directly from ${src} to ${dst}. (Move #${moveCount})`,
+          view: makeView(),
+        });
+      } else {
+        let askSubproblem;
+        if (diskN === n && moveCount === 0) {
+          askSubproblem = {
+            q: `To move disk ${diskN} from ${src} to ${dst}, what is the first recursive step?`,
+            options: [
+              `Move upper ${diskN - 1} disks from ${src} to ${aux}`,
+              `Move disk ${diskN} directly to ${dst}`,
+              `Move upper ${diskN - 1} disks from ${src} to ${dst}`,
+            ],
+            answer: `Move upper ${diskN - 1} disks from ${src} to ${aux}`,
+            why: `To free disk ${diskN}, we must first move the ${diskN - 1} disks above it out of the way to ${aux}.`,
+          };
+        }
+
+        steps.push({
+          line: 5,
+          note: `Recursive step 1: solve hanoi(n=${diskN - 1}, src=${src}, dst=${aux}, aux=${dst}) to unblock disk ${diskN}.`,
+          view: makeView(),
+          ...(askSubproblem ? { ask: askSubproblem } : {}),
+        });
+
+        solveHanoi(diskN - 1, src, aux, dst);
+
+        const disk = pegs[src].pop();
+        pegs[dst].push(disk);
+        moveCount++;
+
+        let askMainMove;
+        if (diskN === n) {
+          askMainMove = {
+            q: `Now that upper ${diskN - 1} disks are on peg ${aux}, what happens next?`,
+            options: [
+              `Move disk ${diskN} from ${src} to ${dst}`,
+              `Move upper disk from ${aux} to ${dst}`,
+              `Move disk ${diskN} to ${aux}`,
+            ],
+            answer: `Move disk ${diskN} from ${src} to ${dst}`,
+            why: `Disk ${diskN} is exposed on ${src} and destination ${dst} is empty, so we move disk ${diskN} to ${dst}.`,
+          };
+        }
+
+        steps.push({
+          line: 6,
+          note: `Move disk ${diskN} from ${src} to ${dst}. (Move #${moveCount})`,
+          view: makeView(),
+          ...(askMainMove ? { ask: askMainMove } : {}),
+        });
+
+        steps.push({
+          line: 7,
+          note: `Recursive step 2: solve hanoi(n=${diskN - 1}, src=${aux}, dst=${dst}, aux=${src}) to stack disks onto ${dst}.`,
+          view: makeView(),
+        });
+
+        solveHanoi(diskN - 1, aux, dst, src);
+      }
+
+      frames.pop();
+    }
+
+    solveHanoi(n, 'A', 'C', 'B');
+
+    steps.push({
+      line: 1,
+      note: `Tower of Hanoi complete for ${n} disk${n > 1 ? 's' : ''} in ${moveCount} total moves.`,
+      view: makeView(),
+    });
+
+    return {
+      steps,
+      summary: `Solved Tower of Hanoi for <b>${n} disk${n > 1 ? 's' : ''}</b> in <b>${moveCount} moves</b> (2<sup>${n}</sup> - 1 = ${moveCount}).`,
+      result: { moves: moveCount, pegC: [...pegs.C] },
+    };
+  },
+  check(values, trace) {
+    const p = recipe.parse(values);
+    if (p.error) return { ok: false, text: p.error.message };
+    const { n } = p;
+    const expectedMoves = Math.pow(2, n) - 1;
+    const expectedPegC = Array.from({ length: n }, (_, i) => n - i);
+    const r = trace.result || {};
+    const okMoves = r.moves === expectedMoves;
+    const okPegC = Array.isArray(r.pegC) &&
+                   r.pegC.length === expectedPegC.length &&
+                   r.pegC.every((v, i) => v === expectedPegC[i]);
+    const ok = okMoves && okPegC;
+    return {
+      ok,
+      text: ok
+        ? `Formula 2^${n} - 1 = ${expectedMoves} moves verified; peg C ends with disks [${expectedPegC.join(', ')}].`
+        : `Expected ${expectedMoves} moves and peg C [${expectedPegC.join(', ')}], but got ${r.moves} moves.`,
+    };
+  },
+  examples: [
+    { values: { disks: '3' }, result: { moves: 7, pegC: [3, 2, 1] } },
+    { values: { disks: '2' }, result: { moves: 3, pegC: [2, 1] } },
+    { values: { disks: '1' }, result: { moves: 1, pegC: [1] } },
+  ],
+  random(rng) {
+    const d = 1 + Math.floor(rng() * 4);
+    return { disks: String(d) };
+  },
+};
+window.__recipe = recipe;
+window.__sim = Stepper.mount(recipe);
+</script>
+</body>
+</html>

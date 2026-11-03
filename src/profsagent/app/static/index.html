@@ -167,6 +167,19 @@ input[type=number]{width:96px;border:1px solid var(--line);border-radius:8px;bac
 .flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px;font-size:12.5px}.flow .box{border:1px solid var(--teal);background:var(--teal-bg);color:#0B3D40;border-radius:6px;padding:4px 8px}
 pre.code{background:#111827;color:#E5E7EB;border-radius:8px;padding:10px 12px;font-size:12px;overflow:auto;margin:8px 0 0;white-space:pre}
 .quiz{margin-top:8px;background:var(--band);border-radius:8px;padding:8px 12px;font-size:13.5px}.quiz ol{margin:6px 0 0;padding-left:20px}.quiz li.ans{color:var(--green);font-weight:600}
+/* simulations (A) */
+body.noscroll{overflow:hidden}
+.simov{position:fixed;inset:0;z-index:40;background:rgba(15,23,42,.6);display:flex;justify-content:center;padding:14px}
+.simov-box{background:var(--card);border-radius:12px;display:flex;flex-direction:column;width:100%;max-width:1440px;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,.3)}
+.simov-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.simov-state{padding:7px 14px;font-size:13px;color:var(--ink2);background:var(--band);border-bottom:1px solid var(--line);overflow-wrap:anywhere}
+.simov iframe{flex:1;width:100%;min-height:0;border:0;background:#0F1117}
+@media (max-width:720px){.simov{padding:0}.simov-box{border-radius:0}}
+.fcard{display:grid;grid-template-columns:168px minmax(0,1fr);gap:12px;border:1px solid var(--line);border-radius:10px;padding:10px;margin-top:8px;background:#fff}
+.fcard.rej{opacity:.55}.fcard.ok{border-color:#86EFAC;background:#FBFFFC}
+.fshot{width:168px;height:105px;object-fit:cover;object-position:top;border-radius:6px;border:1px solid var(--line);background:var(--band)}
+.fnone{display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink2)}
+@media (max-width:720px){.fcard{grid-template-columns:minmax(0,1fr)}.fshot{width:100%;height:150px}}
 table.ftable{border-collapse:collapse;margin-top:8px;font-size:12.5px}table.ftable td{border:1px solid var(--line);padding:3px 7px}table.ftable tr:first-child td{background:var(--band);font-weight:600}
 </style>
 </head>
@@ -211,9 +224,10 @@ function header() {
     const keys = HEALTH.keys.gemini + HEALTH.keys.groq;
     sys = kg + (keys ? '' : ' <span class="chip red">No AI keys in .env</span>') + (HEALTH.working_on ? ' <span class="chip navy"><span class="spin"></span> Working</span>' : '');
   }
-  const inD = PAGE.startsWith('d');
+  const inD = PAGE.startsWith('d'), inS = PAGE === 'sims';
   return '<div class="top"><div style="display:flex;align-items:center;flex-wrap:wrap"><button class="brand" data-act="home"><span class="logo">IIIT</span>ProfsAgent</button>' +
-    '<nav class="nav"><a href="#/"' + (inD ? '' : ' class="on"') + '>Course design</a><a href="#/delivery"' + (inD ? ' class="on"' : '') + '>Lecture delivery</a></nav></div><div class="sys">' + sys + '</div></div>';
+    '<nav class="nav"><a href="#/"' + (inD || inS ? '' : ' class="on"') + '>Course design</a><a href="#/delivery"' + (inD ? ' class="on"' : '') + '>Lecture delivery</a>' +
+    '<a href="#/simulations"' + (inS ? ' class="on"' : '') + '>Simulations</a></nav></div><div class="sys">' + sys + '</div></div>';
 }
 const foot = (left, right) => '<div class="foot"><div class="foot-in"><div style="display:flex;gap:8px;flex-wrap:wrap">' + left + '</div><div style="display:flex;gap:8px;flex-wrap:wrap">' + right + '</div></div></div>';
 const STATUS = {
@@ -731,14 +745,14 @@ const dblank = () => ({ own_material: null, attach_material: null, generate_mate
 let DV = null, DRID = null, DLID = null, DCOURSES = null, dpoll = null, dPendingRender = false;
 const dmatJob = lid => ((((DV || {}).jobs || {}).material) || {})[lid] || null;
 const MSTATUS = { draft: ['Draft: not reviewed yet', 'amber'], 'ai-reviewed': ['Checked by a second AI, not by you', 'teal'], approved: ['Approved by you', 'green'], redo: ['Being redone', 'navy'], rejected: ['Rejected', 'grey'] };
-let PUI = { filter: { week: 'all', module: 'all', novel: false, status: 'all' }, draft: {}, errs: {}, tab: {}, show: {}, openReason: null, ownForm: null, kit: null, report: null, logOpen: {}, mat: {}, matLoading: {}, mAi: {}, mReason: null };
+let PUI = { filter: { week: 'all', module: 'all', novel: false, status: 'all' }, draft: {}, errs: {}, tab: {}, show: {}, openReason: null, ownForm: null, kit: null, report: null, logOpen: {}, mat: {}, matLoading: {}, mAi: {}, mReason: null, simReason: null };
 const dapi = p => '/api/delivery/' + encodeURIComponent(DRID) + p;
 const dhref = (...parts) => '#/delivery/' + [DRID].concat(parts).map(encodeURIComponent).join('/');
 function crumbs(parts) { return '<div class="crumbs">' + parts.map((p, i) => (i ? '<span>›</span>' : '') + (p[1] ? '<a href="' + esc(p[1]) + '">' + esc(p[0]) + '</a>' : '<span>' + esc(p[0]) + '</span>')).join('') + '</div>'; }
 const LECS = () => (DV ? DV.lectures : []);
 const lecOf = id => LECS().find(l => l.id === id);
 const djob = lid => (((DV || {}).jobs || {}).lectures || {})[lid] || null;
-const dbusy = () => DV && (Object.values((DV.jobs || {}).lectures || {}).some(j => ['queued', 'running'].includes(j.state)) || Object.values((DV.jobs || {}).material || {}).some(j => ['queued', 'running'].includes(j.state)) || ['queued', 'running'].includes(((DV.jobs || {}).health || {}).state));
+const dbusy = () => DV && (['preparing', 'not started'].includes((DV.simulations || {}).state) || Object.values((DV.jobs || {}).lectures || {}).some(j => ['queued', 'running'].includes(j.state)) || Object.values((DV.jobs || {}).material || {}).some(j => ['queued', 'running'].includes(j.state)) || ['queued', 'running'].includes(((DV.jobs || {}).health || {}).state));
 
 function dcounts(lid) {
   const r = DV.results[lid]; if (!r) return null;
@@ -827,7 +841,7 @@ function dlectureRow(l) {
   const chips = a ? D_CHOICES.filter(([k]) => yes(a, k)).map(([k]) => '<span class="chip navy">' + D_SHORT[k] + '</span>').join('') : '';
   return '<a class="lec" href="' + dhref(l.id) + '"><span class="lid">' + esc(l.id) + '</span><span style="min-width:0"><b style="font-weight:600">' + esc(l.topic) + '</b>' +
     '<span class="meta"><span class="small muted">' + esc(l.module) + ' · ' + l.hours + ' h</span>' + (l.novel ? '<span class="chip star">★ New topic</span>' : '') + (l.continues ? '<span class="chip grey">Continues next lecture</span>' : '') + '</span></span>' +
-    '<span class="right"><span class="chips">' + chips + '</span><span class="chips"><span class="chip ' + st[1] + '">' + esc(st[0]) + '</span>' + (yes(a, 'assistance') || yes(a, 'guest_lecture') ? dslidesChip(l.id) : '') + '</span></span></a>';
+    '<span class="right"><span class="chips">' + chips + '</span><span class="chips"><span class="chip ' + st[1] + '">' + esc(st[0]) + '</span>' + (yes(a, 'assistance') || yes(a, 'guest_lecture') ? dslidesChip(l.id) : '') + dsimChip(l.id) + '</span></span></a>';
 }
 function dhealthSummary() {
   const dead = (DV.health || {}).dead || [], hj = (DV.jobs || {}).health || {};
@@ -852,7 +866,7 @@ function dlec() {
     (next ? '<a class="btn sm" href="' + dhref(next.id) + '">Next ' + ICON.arrow + '</a>' : '<button class="btn sm" disabled>Next ' + ICON.arrow + '</button>') + '</div></div>' +
     dhealthAlert(l.id) +
     '<div class="card"><h2>What this lecture covers</h2><p class="summary">' + esc(l.summary) + '</p></div>' +
-    ddetails(l) + dchoicesCard(l, d, !!a) + (a ? dprogressCard(l) + dresultsCard(l) : '') + '</div>';
+    ddetails(l) + dchoicesCard(l, d, !!a) + (a ? dprogressCard(l) : '') + dsimCard(l) + (a ? dresultsCard(l) : '') + '</div>';
 }
 function ddetails(l) {
   const li = (arr, f) => arr && arr.length ? '<ul>' + arr.map(x => '<li>' + f(x) + '</li>').join('') + '</ul>' : '<p class="small muted">None</p>';
@@ -1196,12 +1210,13 @@ function dapproved(lid) {
   return out;
 }
 function dstudent() {
-  const rows = LECS().map(l => ({ l, items: dapproved(l.id) })), any = rows.some(r => r.items.length || ((DV.material || {})[r.l.id] || {}).status === 'approved');
+  const shown = r => r.items.length || r.sims.length || ((DV.material || {})[r.l.id] || {}).status === 'approved';
+  const rows = LECS().map(l => ({ l, items: dapproved(l.id), sims: dsimApproved(l.id) })), any = rows.some(shown);
   return header() + '<div class="wrap">' + crumbs([['Your courses', '#/'], ['Lecture delivery', '#/delivery'], [DV.run.course, dhref()], ['Student view']]) +
-    '<div class="banner navy">' + ICON.check + '<div>This is what students see: approved items only, in rank order, with when to use them. No scores, warnings or speaker candidates.</div></div>' +
+    '<div class="banner navy">' + ICON.check + '<div>This is what students see: approved items only (simulations first, opened at your class example), in rank order, with when to use them. No scores, warnings or speaker candidates.</div></div>' +
     '<h1 style="margin-top:16px">' + esc(DV.run.course) + '</h1><p class="muted">Learning resources by lecture</p>' +
     (any ? '' : '<div class="card"><p class="muted">Nothing has been released yet. Approve resources on a lecture page and they appear here.</p></div>') +
-    rows.filter(r => r.items.length || ((DV.material || {})[r.l.id] || {}).status === 'approved').map(({ l, items }) => '<div class="card"><p class="small muted">Week ' + l.week + ' · ' + esc(l.id) + '</p><h2>' + esc(l.topic) + '</h2>' +
+    rows.filter(shown).map(({ l, items }) => '<div class="card"><p class="small muted">Week ' + l.week + ' · ' + esc(l.id) + '</p><h2>' + esc(l.topic) + '</h2>' + dsimStudentRows(l) +
       (((DV.material || {})[l.id] || {}).status === 'approved' ? '<div class="row"><div><a href="' + dapi('/material/' + encodeURIComponent(l.id) + '/file/slides.pptx') + '" style="font-weight:600">Lecture slides (.pptx)</a><div class="rmeta"><span class="chip teal">For class</span></div></div></div>' : '') +
       items.map(x => { const seg = x.cover && x.cover.find(c => c.segs.length); const rt = ((DV.ratings || {})[l.id] || {})[x.key] || {};
         return '<div class="row"><div style="min-width:0"><a href="' + esc(x.url) + '" target="_blank" rel="noopener" style="font-weight:600">' + esc(x.title) + '</a>' +
@@ -1219,6 +1234,7 @@ async function loadDelivery(first) {
   if (!PAGE.startsWith('d') || asked !== DRID) return;
   if (!r.ok) { app.innerHTML = header() + '<div class="wrap"><h1>Lecture delivery is not available</h1><p class="muted">' + esc((r.data && (r.data.detail || r.data.problem)) || '') + '</p><a class="btn" href="#/delivery" style="margin-top:12px">Lecture delivery</a></div>'; return; }
   DV = r.data;
+  if (!SCAT && PAGE === 'dlec') { await loadSimCatalogue(); if (!PAGE.startsWith('d') || asked !== DRID) return; }
   if (first) { try { Object.assign(PUI.filter, JSON.parse(store.get('profsagent-dfilter-' + DRID) || '{}')); } catch (e) {} }
   const typing = document.activeElement && ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName) && app.contains(document.activeElement);
   if (typing && !first) dPendingRender = true; else render();
@@ -1254,6 +1270,7 @@ async function dupload(files) {
 }
 async function dclick(act, b) {
   const lid = DLID;
+  if (act.startsWith('d-sim')) return dsimclick(act, b, lid);
   if (act === 'd-example') { b.disabled = true; const r = await post('/api/delivery/example'); if (r.ok) location.hash = '#/delivery/' + r.data.run_id; else { b.disabled = false; toast((r.data && r.data.detail) || 'Could not copy the example'); } return; }
   if (act === 'd-save') return dsave();
   if (act === 'd-mgen') {
@@ -1301,6 +1318,7 @@ function dinput(t) {
   if (t.id === 'dnote' && DLID) { ddraft(DLID).note = t.value; return true; }
   if (t.id === 'rs' && PUI.openReason) { PUI.openReason.text = t.value; PUI.openReason.err = null; return true; }
   if (t.id === 'mrs' && PUI.mReason) { PUI.mReason.text = t.value; PUI.mReason.err = null; return true; }
+  if (t.id === 'simrs' && PUI.simReason) { PUI.simReason.text = t.value; PUI.simReason.err = null; return true; }
   if (PUI.ownForm && ['ownt', 'ownu', 'ownk'].includes(t.id)) { PUI.ownForm[{ ownt: 'title', ownu: 'url', ownk: 'kind' }[t.id]] = t.value; return true; }
   return false;
 }
@@ -1317,13 +1335,367 @@ function dchange(t) {
   return false;
 }
 
+// ============================== simulations (A: docs/09_phase2_A_simulation_catalogue.md §7) ==============================
+// The catalogue page (#/simulations), the Simulation card on each lecture page, the student view's simulations, and the
+// preview window. A simulation runs in a sandboxed frame; it reports its setup (profsagent-sim-state messages), which the
+// professor can keep as the class example that students start from.
+let SCAT = null, SREQ = null, SIMOV = null;
+const SUI = { q: '', req: null, reqErr: {}, sending: false, notes: {} };
+const simPage = (id, state, fresh) => '/api/simulations/' + encodeURIComponent(id) + '/page' + (fresh ? '?r=' + Date.now() : '') + (state ? '#' + state : '');
+async function loadSimCatalogue() { const r = await api('/api/simulations'); if (r.ok) SCAT = r.data; return r.ok; }
+function simChecked(c) {
+  if (!c.checked) return '<span class="chip grey">No check report yet</span>';
+  if (!c.checked.ok) return '<span class="chip red">Its last check failed</span>';
+  if (!c.checked.current) return '<span class="chip amber">Changed since its last check</span>';
+  return '<span class="chip green" title="' + esc(c.independent || '') + '">' + ICON.check + ' Checked ' + esc(String(c.checked.at || '').slice(0, 10)) + '</span>';
+}
+
+// ---------------------------------- the preview window (outside #app, so page updates never reload the simulation)
+function simOpen(o) {
+  simClose();
+  SIMOV = Object.assign({ cur: null, curSummary: '', prevFocus: document.activeElement }, o);
+  const el = document.createElement('div');
+  el.id = 'simov'; el.className = 'simov'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', 'Simulation: ' + o.title);
+  el.innerHTML = '<div class="simov-box"><div id="simov-bar"></div><iframe id="simov-frame" title="' + esc(o.title) + '" sandbox="allow-scripts allow-downloads" src="' + esc(simPage(o.id, o.state, true)) + '"></iframe></div>';
+  el.addEventListener('click', simClick);
+  el.addEventListener('keydown', ev => { if (ev.key === 'Escape') simClose(); });
+  document.body.appendChild(el); document.body.classList.add('noscroll');
+  simBar();
+  const c = el.querySelector('[data-sim="close"]'); if (c) c.focus();
+}
+function simClose() {
+  const el = document.getElementById('simov'); if (el) el.remove();
+  document.body.classList.remove('noscroll');
+  const back = SIMOV && SIMOV.prevFocus;
+  SIMOV = null;
+  if (back && document.body.contains(back)) back.focus();
+}
+function simBar() {
+  const bar = document.getElementById('simov-bar'); if (!bar || !SIMOV) return;
+  const o = SIMOV, ctx = o.ctx, same = ctx && ctx.example && o.cur === ctx.example.state;
+  let line = '';
+  if (o.student) line = o.example ? 'Starts at the class example: ' + esc(o.example.summary || 'set by your professor') : '';
+  else if (ctx && ctx.canSave) line = '<b style="font-weight:600">Class example:</b> ' + (ctx.example ? esc(ctx.example.summary || 'saved') : 'none yet, so students start from the default') +
+    '<br><b style="font-weight:600">On screen now:</b> ' + (o.cur == null ? 'waiting for the simulation…' : esc(o.curSummary || 'your setup')) + (same ? ' <span class="chip green">this is the class example</span>' : '');
+  else if (ctx) line = 'This simulation cannot keep a class example yet, so students start from its default.';
+  bar.innerHTML = '<div class="simov-bar"><div style="min-width:0"><b style="font-weight:600;font-size:15px">' + esc(o.title) + '</b> <span class="chip grey">v' + esc(o.version) + '</span>' +
+    (o.lecture ? ' <span class="muted small">' + esc(o.lecture) + '</span>' : '') + '</div><div style="display:flex;gap:8px;flex-wrap:wrap">' +
+    (ctx && ctx.canSave ? '<button class="btn sm primary" data-sim="save"' + (o.cur == null || same || o.saving ? ' disabled' : '') + '>Use this setup as the class example</button>' : '') +
+    '<button class="btn sm" data-sim="reset" title="Reload it as it was when you opened it">Start over</button>' +
+    '<a class="btn sm" href="' + esc(simPage(o.id, o.cur != null ? o.cur : o.state)) + '" target="_blank" rel="noopener">New tab ' + ICON.link + '</a>' +
+    '<button class="btn sm" data-sim="close" aria-label="Close the simulation">Close ✕</button></div></div>' +
+    (line ? '<div class="simov-state">' + line + '</div>' : '');
+}
+async function simClick(ev) {
+  const b = ev.target.closest('[data-sim]'); if (!b || !SIMOV) return;
+  const a = b.dataset.sim, o = SIMOV;
+  if (a === 'close') return simClose();
+  if (a === 'reset') { o.cur = null; const f = document.getElementById('simov-frame'); if (f) f.src = simPage(o.id, o.state, true); simBar(); return; }
+  if (a === 'save' && o.ctx && o.cur != null) {
+    o.saving = true; simBar();
+    const r = await post('/api/delivery/' + encodeURIComponent(o.ctx.rid) + '/simulations/' + encodeURIComponent(o.ctx.lid) + '/class-example', { sim: o.id, state: o.cur, summary: o.curSummary });
+    if (SIMOV !== o) return;
+    o.saving = false;
+    if (!r.ok) { toast((r.data && (r.data.problem || r.data.detail)) || 'Could not save'); simBar(); return; }
+    o.ctx.example = { state: o.cur, summary: o.curSummary }; o.state = o.cur; simBar(); toast('Saved. Students start from this setup.');
+    if (PAGE.startsWith('d')) loadDelivery(false);
+  }
+}
+window.addEventListener('message', ev => {
+  const f = document.getElementById('simov-frame');
+  if (!SIMOV || !f || ev.source !== f.contentWindow) return;
+  const d = ev.data;
+  if (!d || d.type !== 'profsagent-sim-state' || typeof d.state !== 'string' || d.state.length > 6000) return;
+  SIMOV.cur = d.state; SIMOV.curSummary = String(d.summary || '').slice(0, 300); simBar();
+});
+
+// ---------------------------------- the Simulations page
+function simsPage() {
+  if (!SCAT) return header() + '<div class="wrap wide">' + crumbs([['Your courses', '#/'], ['Simulations']]) + '<p class="muted" style="margin-top:12px">Loading the simulations…</p></div>';
+  const E = SCAT.entries, X = (SCAT.external || {}).entries || [];
+  return header() + '<div class="wrap wide">' + crumbs([['Your courses', '#/'], ['Simulations']]) +
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-top:8px"><div style="min-width:0;flex:1"><h1>Simulations</h1>' +
+    '<p class="muted">Interactive simulations for your class. Try any of them here. To use one in a lecture, approve it on that lecture\'s page in Lecture delivery.</p></div>' +
+    (SUI.req ? '' : '<button class="btn primary" data-act="s-reqopen">Ask for a new simulation</button>') + '</div>' +
+    (SUI.req ? simRequestForm() : '') +
+    '<div class="card"><input type="text" data-sf="q" value="' + esc(SUI.q) + '" placeholder="Search by topic, for example: scheduling, clustering, convolution" aria-label="Search the simulations">' +
+    (X.length ? '<p class="tiny muted" style="margin-top:6px">The search also covers ' + X.length + ' simulations on ' + esc(SCAT.external.sites.slice(0, 3).join(', ')) + ' and other trusted sites, shown as links.</p>' : '') + '</div>' +
+    '<div id="simlist">' + E.map(simEntryCard).join('') + '<div id="extlist"></div>' +
+    '<div class="card" id="simnone" hidden><p class="muted">No simulation matches your search yet.</p><div style="margin-top:10px"><button class="btn" data-act="s-reqopen" data-fromsearch="1">Ask for a new simulation</button></div></div></div>' +
+    simRequestList() + '</div>';
+}
+function simEntryCard(c) {
+  const text = [c.title, c.summary, c.topics.join(' '), c.courses.map(x => x.code + ' ' + x.name).join(' ')].join(' ').toLowerCase();
+  return '<div class="rcard" data-simcard data-text="' + esc(text) + '">' +
+    '<div class="rhead"><div class="rtitle" style="min-width:0">' + esc(c.title) + '</div><span style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">' + simMade(c) + simChecked(c) + '</span></div>' +
+    '<p class="why">' + esc(c.summary) + '</p>' +
+    '<p class="small muted" style="margin-top:4px">Covers: ' + esc(c.topics.join(', ')) + '</p>' +
+    (c.used.length ? '<p class="small" style="margin-top:4px"><b style="font-weight:600">In your lectures:</b> ' + c.used.map(u => '<a href="#/delivery/' + encodeURIComponent(u.run_id) + '/' + encodeURIComponent(u.lecture) + '">' + esc(u.course) + ', ' + esc(u.lecture) + '</a>').join('; ') + '</p>' : '') +
+    '<div class="acts"><button class="btn sm primary" data-act="s-open" data-sim="' + esc(c.id) + '">Try it</button></div></div>';
+}
+function sfilter() {
+  const words = SUI.q.trim().toLowerCase().split(/\s+/).filter(Boolean); let n = 0;
+  app.querySelectorAll('[data-simcard]').forEach(el => { const ok = words.every(w => el.dataset.text.includes(w)); el.hidden = !ok; n += ok ? 1 : 0; });
+  const xs = words.length ? (((SCAT || {}).external || {}).entries || []).filter(x => words.every(w => x.text.includes(w))) : [];
+  const box = document.getElementById('extlist');
+  if (box) box.innerHTML = xs.length ? '<h3 style="margin-top:18px">On other trusted sites</h3><p class="small muted">Links only; we have not checked these. To use one in a lecture, approve it when it is suggested on the lecture\'s page.</p>' +
+    xs.slice(0, 15).map(x => '<div class="rcard"><div class="rhead"><div class="rtitle" style="min-width:0">' + esc(x.title) + '</div><span class="chip navy">' + esc(x.site_name) + '</span></div>' +
+      (x.summary ? '<p class="why">' + esc(x.summary) + '</p>' : '') + '<div class="acts"><a class="btn sm" href="' + esc(x.url) + '" target="_blank" rel="noopener">Open ' + ICON.link + '</a></div></div>').join('') +
+    (xs.length > 15 ? '<p class="small muted" style="margin-top:8px">' + (xs.length - 15) + ' more; add a word to narrow the search.</p>' : '') : '';
+  const none = document.getElementById('simnone'); if (none) none.hidden = n > 0 || xs.length > 0;
+}
+function simRequestForm() {
+  const r = SUI.req, e = SUI.reqErr || {}, err = k => e[k] ? '<p class="err">' + esc(e[k]) + '</p>' : '';
+  return '<div class="card" id="simreq"><h2>Ask for a new simulation</h2>' +
+    (r.lecture ? '<p class="small">For <b style="font-weight:600">' + esc(r.course || '') + ', ' + esc(r.lecture) + '</b></p>' : '<p class="small muted">Describe what you need. The team builds and checks it; it then appears in this list and in your lecture suggestions.</p>') +
+    '<label class="f" for="sq-topic">Topic</label><input type="text" id="sq-topic" data-sq="topic" value="' + esc(r.topic) + '" placeholder="For example: TCP congestion control">' + err('topic') +
+    '<label class="f" for="sq-what">What should students see or try?</label><textarea id="sq-what" data-sq="what" rows="3" placeholder="For example: change the window size and the loss rate, and watch the sending rate rise and fall">' + esc(r.what) + '</textarea>' + err('what') +
+    (r.run_id ? '' : '<label class="f" for="sq-course">Course <span class="opt">(optional)</span></label><input type="text" id="sq-course" data-sq="course" value="' + esc(r.course || '') + '">') +
+    '<div class="edfoot"><span class="small muted">Kept on this laptop for the simulation team.</span><span style="display:flex;gap:8px"><button class="btn sm" data-act="s-reqcancel">Cancel</button>' +
+    '<button class="btn sm primary" data-act="s-reqsend"' + (SUI.sending ? ' disabled' : '') + '>Send the request</button></span></div></div>';
+}
+const RSTATUS = { requested: ['grey', 'Not started'], queued: ['navy', 'Waiting'], searching: ['navy', 'Looking for existing ones'],
+  review: ['amber', 'Found some: your review'], chosen: ['green', 'Chosen'], build_queued: ['navy', 'Waiting to be built'], building: ['navy', 'Being built'],
+  ready: ['green', 'Ready to try'], needs_team: ['amber', 'Sent to the team'], paused: ['amber', 'Paused: AI quota used up'] };
+const RBUSY = ['queued', 'searching', 'build_queued', 'building'];
+function simRequestList() {
+  const rows = SCAT.requests; if (!rows.length) return '';
+  return '<div class="card" id="simrequests"><h2>Your requests</h2><p class="small muted">For each request the machine first looks for an existing simulation: our catalogue, trusted sites such as Virtual Labs, PhET and VisuAlgo, and the web. ' +
+    'It opens the top pages to check them and shows you what it found. Only if nothing fits, or you reject them all, does it build a new one (about 2–5 minutes).</p>' +
+    rows.map(simRequestRow).join('') + '</div>';
+}
+function simFoundCard(q, c) {
+  const id = esc(q.id), rej = c.decision === 'reject', ok = c.decision === 'approve', open = q.status === 'review';
+  const shot = c.shot ? '<img class="fshot" alt="" loading="lazy" src="/api/simulations/requests/' + id + '/shot/' + esc(c.shot) + '">'
+    : '<div class="fshot fnone">' + (c.kind === 'ours' ? 'In our catalogue' : 'No picture') + '</div>';
+  const site = c.kind === 'ours' ? '<span class="chip green">Ours, checked</span>' : '<span class="chip navy">' + esc(c.site) + '</span>' + (c.trusted ? '<span class="chip teal">Trusted site</span>' : '<span class="chip grey">Found on the web</span>');
+  const look = c.kind === 'ours' ? '<button class="btn sm' + (open && !rej ? ' primary' : '') + '" data-act="s-open" data-sim="' + esc(c.id) + '">Try it</button>'
+    : '<a class="btn sm' + (open && !rej ? ' primary' : '') + '" href="' + esc(c.url) + '" target="_blank" rel="noopener">Open ' + ICON.link + '</a>';
+  const acts = open && !c.decision ? '<button class="btn sm ok" data-act="s-found" data-req="' + id + '" data-n="' + c.n + '" data-d="approve">' + ICON.check + ' Approve</button>' +
+      '<button class="btn sm bad" data-act="s-found" data-req="' + id + '" data-n="' + c.n + '" data-d="reject">Not this</button>'
+    : (c.decision ? '<span class="chip ' + (ok ? 'green' : 'grey') + '">' + (ok ? 'Approved' : 'Rejected') + '</span>' + (open || ok ? '<button class="btn sm" data-act="s-found" data-req="' + id + '" data-n="' + c.n + '" data-d="undo">Undo</button>' : '') : '');
+  return '<div class="fcard' + (rej ? ' rej' : '') + (ok ? ' ok' : '') + '">' + shot + '<div style="min-width:0"><b style="font-weight:600">' + esc(c.title) + '</b>' +
+    '<div class="rmeta">' + site + '</div>' + (c.summary ? '<p class="small" style="margin-top:4px">' + esc(c.summary) + '</p>' : '') +
+    '<p class="tiny muted" style="margin-top:2px">' + esc(c.why || '') + '</p><div class="acts">' + look + acts + '</div></div></div>';
+}
+function simRequestRow(q) {
+  const st = RSTATUS[q.status] || ['grey', q.status], b = q.build || {}, sim = q.sim_id && SCAT.entries.find(e => e.id === q.sim_id), id = esc(q.id);
+  const spin = '<span class="spin"></span> ', found = q.found || [];
+  let line = '', act = '', more = '';
+  if (q.status === 'queued') line = 'Starts in a moment. First it looks for existing simulations.';
+  else if (q.status === 'searching') line = spin + 'Looking in our catalogue, the saved links and the web, and opening the top pages to check them (about a minute).';
+  else if (q.status === 'review') {
+    line = 'These already exist. Open each one; approve the one that fits, or press Not this. If you reject them all, the machine builds a new one.';
+    more = found.map(c => simFoundCard(q, c)).join('') + '<div class="acts" style="margin-top:10px"><input type="text" data-note="' + id + '" value="' + esc((SUI.notes || {})[q.id] || '') + '" placeholder="What is missing? (optional; the machine reads it)" aria-label="What is missing" style="flex:1;min-width:220px">' +
+      '<button class="btn sm" data-act="s-none" data-req="' + id + '">None of these fit: build a new one</button></div>';
+  } else if (q.status === 'chosen') {
+    const ch = q.chosen || {};
+    line = 'You chose an existing simulation' + (q.lecture ? '; it is approved on ' + esc(q.lecture) : '') + '.';
+    more = found.filter(c => c.decision === 'approve').map(c => simFoundCard(q, c)).join('');
+  } else if (q.status === 'build_queued') line = 'Starts in a moment.' + (found.length ? ' You rejected the ones found, so the machine builds a new one.' : '');
+  else if (q.status === 'building') line = spin + 'Attempt ' + (b.attempt || 1) + ' of ' + (b.of || 3) + ': the AI writes it, then the automatic checks run it.' + (found.length ? ' (You rejected the ones found.)' : ' (Nothing existing fitted.)');
+  else if (q.status === 'ready') { line = 'Built by the machine and checked automatically' + (b.attempts ? ' (attempt ' + b.attempts + ')' : '') + '. It is in the list above' + (q.lecture ? ', and on ' + esc(q.lecture) + ' waiting for your decision' : '') + '.';
+    act = sim ? '<button class="btn sm primary" data-act="s-open" data-sim="' + esc(sim.id) + '">Try it</button>' : ''; }
+  else if (q.status === 'needs_team' || q.status === 'paused') { line = esc(q.reason || ''); act = '<button class="btn sm" data-act="s-build" data-req="' + id + '">Try again</button>'; }
+  else if (q.status === 'requested') { line = 'Sent before the machine could look or build.'; act = '<button class="btn sm primary" data-act="s-build" data-req="' + id + '">Find or build it now</button>'; }
+  return '<div class="row" style="display:block"><div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div style="min-width:0"><b style="font-weight:600">' + esc(q.topic) + '</b>' +
+    (q.course ? ' <span class="muted small">' + esc(q.course) + (q.lecture ? ', ' + esc(q.lecture) : '') + '</span>' : '') + '<p class="small muted">' + esc(q.what) + '</p>' +
+    (line ? '<p class="small" style="margin-top:4px;display:flex;gap:6px;align-items:center;flex-wrap:wrap">' + line + '</p>' : '') + '<p class="tiny muted">' + esc(String(q.at).slice(0, 16)) + '</p></div>' +
+    '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex:none"><span class="chip ' + st[0] + '">' + st[1] + '</span>' + act + '</div></div>' + more + '</div>';
+}
+let spoll = null;
+function simPoll() {                        // while a request is being built, refresh the page every 5 s
+  clearTimeout(spoll);
+  if (PAGE !== 'sims' || !SCAT || !SCAT.requests.some(r => RBUSY.includes(r.status))) return;
+  spoll = setTimeout(async () => {
+    if (PAGE !== 'sims') return;
+    const sig = () => JSON.stringify(SCAT.requests.map(r => [r.id, r.status, (r.build || {}).attempt]));
+    const before = sig();
+    await loadSimCatalogue();
+    if (PAGE !== 'sims') return;
+    if (before !== sig()) {
+      const typing = document.activeElement && ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName) && app.contains(document.activeElement);
+      const el = document.getElementById('simrequests');
+      if (typing && el) el.outerHTML = simRequestList(); else render();
+    }
+    simPoll();
+  }, 5000);
+}
+const simMade = c => c.built_by === 'machine' ? '<span class="chip teal" title="Built by the machine from a request and checked automatically; not yet reviewed by the team">Built by the machine</span>' : '';
+async function sclick(act, b) {
+  if (act === 's-open') { const c = SCAT && SCAT.entries.find(x => x.id === b.dataset.sim); if (c) simOpen({ id: c.id, title: c.title, version: c.version, state: '' }); return; }
+  if (act === 's-reqopen') {
+    SUI.req = { topic: b.dataset.fromsearch ? SUI.q.trim() : '', what: '', kind: '', course: '' }; SUI.reqErr = {}; render(); window.scrollTo(0, 0);
+    const t = document.getElementById(SUI.req.topic ? 'sq-what' : 'sq-topic'); if (t) t.focus(); return;
+  }
+  if (act === 's-reqcancel') { SUI.req = null; SUI.reqErr = {}; render(); return; }
+  if (act === 's-build' || act === 's-none') {
+    b.disabled = true;
+    const q = SCAT.requests.find(x => x.id === b.dataset.req) || {};
+    const r = await post('/api/simulations/requests/' + encodeURIComponent(b.dataset.req) + '/build', { note: act === 's-none' ? ((SUI.notes || {})[b.dataset.req] || '') : '' });
+    toast(!r.ok ? ((r.data && (r.data.problem || r.data.detail)) || 'Could not start')
+      : q.status === 'requested' ? 'First it looks for existing simulations (about a minute).' : 'The machine is building a new one now (about 2–5 minutes).');
+    await loadSimCatalogue(); render(); return;
+  }
+  if (act === 's-found') {
+    b.disabled = true;
+    const d = b.dataset.d, r = await post('/api/simulations/requests/' + encodeURIComponent(b.dataset.req) + '/found/' + encodeURIComponent(b.dataset.n), { decision: d });
+    toast(!r.ok ? ((r.data && (r.data.problem || r.data.detail)) || 'Could not save') : d === 'approve' ? 'Chosen. Nothing needs to be built.' + (r.data.request.lecture ? ' It is approved on ' + r.data.request.lecture + '.' : '')
+      : d === 'reject' ? (r.data.start_build ? 'You rejected them all: the machine builds a new one now (about 2–5 minutes).' : 'Rejected') : 'Undone');
+    await loadSimCatalogue(); render(); return;
+  }
+  if (act === 's-reqsend') {
+    SUI.sending = true; render();
+    const r = await post('/api/simulations/requests', SUI.req);
+    SUI.sending = false;
+    if (r.status === 422) { SUI.reqErr = (r.data && r.data.errors) || {}; render(); return; }
+    if (!r.ok) { toast((r.data && r.data.problem) || 'Could not send'); render(); return; }
+    SUI.req = null; SUI.reqErr = {}; await loadSimCatalogue(); render(); toast('Request sent. First the machine looks for existing simulations (about a minute).'); return;
+  }
+}
+function sinput(t) {
+  if (t.dataset.sf) { SUI[t.dataset.sf] = t.value; sfilter(); return true; }
+  if (t.dataset.sq && SUI.req) { SUI.req[t.dataset.sq] = t.value; return true; }
+  if (t.dataset.note) { SUI.notes[t.dataset.note] = t.value; return true; }
+  return false;
+}
+
+// ---------------------------------- Lecture delivery: the Simulation card, the lecture-list chip, the student view
+const dsims = lid => ((((DV || {}).simulations || {}).lectures || {})[lid]) || { items: [], kind: null };
+const isApproved = i => !!i.decision && i.decision.decision === 'approve';
+function dsimChip(lid) {
+  const it = dsims(lid).items || [];
+  if (it.some(isApproved)) return '<span class="chip green">Simulation</span>';
+  if (it.some(i => !i.decision && !i.retired)) return '<span class="chip teal">Simulation suggested</span>';
+  return '';
+}
+function dsimCard(l) {
+  const S = DV.simulations || { state: 'error', lectures: {} }, x = dsims(l.id), items = x.items || [];
+  const ours = items.filter(i => !i.external), links = items.filter(i => i.external);
+  const approved = ours.filter(isApproved), pending = ours.filter(i => !i.decision && !i.retired);
+  const linksShown = links.filter(i => !i.decision || isApproved(i)), aside = items.filter(i => i.decision && !isApproved(i));
+  const cur = pending[0], waiting = ['preparing', 'not started'].includes(S.state), nApproved = items.filter(isApproved).length;
+  let body = approved.map(i => dsimItem(l, i, pending.length)).join('') + (cur ? dsimItem(l, cur, pending.length) : '');
+  if (waiting) body += '<p class="small muted" style="margin-top:8px;display:flex;gap:8px;align-items:center"><span class="spin"></span> Looking for simulations that fit this course\'s lectures. The first time takes about half a minute.</p>';
+  else if (S.state === 'error') body += '<div class="banner red">' + ICON.alert + '<div>Could not look for simulations: ' + esc(S.error || 'unknown problem') + '. The rest of lecture delivery is not affected.</div></div>';
+  else if (!approved.length && !cur && !linksShown.length) body += dsimNone(x.kind);
+  else if (!approved.length && !cur) body += '<p class="small muted">None of our own simulations fits this lecture yet.</p>';
+  if (linksShown.length) body += '<h3 style="margin-top:16px">On other trusted sites</h3><p class="small muted">Links only. We have not checked these: open one, and approve it if it suits your class.</p>' +
+    linksShown.map(i => dsimExtItem(l, i)).join('');
+  if (aside.length) body += '<details style="margin-top:10px"><summary>Set aside (' + aside.length + ')</summary>' + aside.map(i => '<div class="fbrow"><span><b style="font-weight:600">' + esc(i.title) + '</b>' +
+    (i.external ? ' <span class="chip grey">' + esc(i.site_name) + '</span>' : '') + ' <span class="muted small">' +
+    (i.decision.decision === 'reject' ? 'rejected: ' + esc(i.decision.reason) : 'replaced') + '</span></span><button class="btn sm" data-act="d-simdec" data-decision="undo" data-sim="' + esc(i.id) + '">Undo</button></div>').join('') + '</details>';
+  const others = SCAT ? SCAT.entries.filter(e => !items.some(i => i.id === e.id)) : [];
+  const askFirst = !waiting && !nApproved && !cur && !linksShown.length;          // nothing left to judge: asking is the next step
+  body += '<div class="acts" style="margin-top:14px;border-top:1px solid var(--line);padding-top:12px">' +
+    '<button class="btn sm' + (askFirst ? ' primary' : '') + '" data-act="d-simrequest">Ask for a new simulation</button>' +
+    (others.length ? '<select id="simadd" aria-label="Add a simulation from the catalogue" style="width:auto;max-width:100%"><option value="">Add one of ours…</option>' + others.map(e => '<option value="' + esc(e.id) + '">' + esc(e.title) + '</option>').join('') + '</select><button class="btn sm" data-act="d-simadd">Add</button>' : '') +
+    '<a class="btn sm" href="#/simulations">Browse all simulations</a></div>';
+  const chip = nApproved ? '<span class="chip green">' + nApproved + ' approved</span>' : (cur || linksShown.length) ? '<span class="chip amber">Waiting for your decision</span>' : '<span class="chip grey">None chosen</span>';
+  return '<div class="card" id="simcard"><div class="card-h"><h2>Simulation</h2>' + chip + '</div><p class="small muted">An interactive simulation students can use in class or on their own. Suggestions come from matching this lecture\'s topic with our catalogue and with trusted sites; no AI calls.</p>' + body + '</div>';
+}
+function dsimReason(l, i) {
+  const o = PUI.simReason && PUI.simReason.sim === i.id && PUI.simReason.lid === l.id ? PUI.simReason : null;
+  return o ? '<div class="reason"><label class="f" for="simrs" style="margin-top:4px">Why is it not right for this lecture?</label><textarea id="simrs" rows="2">' + esc(o.text) + '</textarea>' + (o.err ? '<p class="err">' + esc(o.err) + '</p>' : '') +
+    '<div class="acts"><button class="btn sm bad" data-act="d-simreject" data-sim="' + esc(i.id) + '">Reject</button><button class="btn sm" data-act="d-simcancel">Cancel</button></div></div>' : '';
+}
+function dsimExtItem(l, i) {
+  const ap = isApproved(i), sid = esc(i.id);
+  return '<div class="rcard' + (ap ? ' approved' : '') + '"><div class="rhead"><div style="min-width:0"><div class="rtitle">' + esc(i.title) + '</div>' +
+    '<div class="rmeta"><span class="chip navy">' + esc(i.site_name) + '</span><span class="chip grey">External, not checked by us</span>' +
+    (i.score ? '<span>Matches “' + esc(i.matched) + '” (' + Math.round(i.score * 100) + '% similar)</span>' : '') + '</div></div>' +
+    (ap ? '<span class="chip green">' + ICON.check + ' Approved</span>' : '') + '</div>' +
+    (i.summary ? '<p class="why">' + esc(i.summary) + '</p>' : '') +
+    '<div class="acts"><a class="btn sm' + (ap ? '' : ' primary') + '" href="' + esc(i.url) + '" target="_blank" rel="noopener">Open ' + ICON.link + '</a>' +
+    (ap ? '<button class="btn sm" data-act="d-simdec" data-decision="undo" data-sim="' + sid + '">Undo approval</button>'
+      : '<button class="btn sm ok" data-act="d-simdec" data-decision="approve" data-sim="' + sid + '">' + ICON.check + ' Approve</button><button class="btn sm bad" data-act="d-simask" data-sim="' + sid + '">Reject</button>') +
+    '</div>' + dsimReason(l, i) + '</div>';
+}
+function dsimNone(kind) {
+  if (kind && kind.id !== 'none') return '<div class="notice"><p><b style="font-weight:600">No simulation in the catalogue fits this lecture yet.</b> The kind that would suit this topic: <b style="font-weight:600">' + esc(kind.name) + '</b> (' + esc(kind.does.charAt(0).toLowerCase() + kind.does.slice(1)) + ')' +
+    (kind.also ? ', or ' + esc(kind.also.name) : '') + '.</p><p class="small muted" style="margin-top:4px">Ask for one, and the team can build it.</p></div>';
+  return '<div class="notice"><p><b style="font-weight:600">No simulation in the catalogue fits this lecture.</b> The topic does not clearly suit one either; it may be better taught with worked examples or discussion.</p>' +
+    '<p class="small muted" style="margin-top:4px">That second part is a guess (right about 3 times in 4). If you want one anyway, add it from the catalogue or ask for a new one.</p></div>';
+}
+function dsimItem(l, i, nPending) {
+  const ap = isApproved(i), d = i.decision, sid = esc(i.id);
+  const match = i.source === 'added' ? (i.added_by === 'machine' ? 'Built by the machine from your request' : 'Added by you from the catalogue') : i.source === 'suggested' ? (i.close ? 'Close match' : 'Possible match') + ': ' +
+    (i.via === 'summary' ? 'the lecture summary' : '“' + esc(i.matched) + '”') + ' (' + Math.round(i.score * 100) + '% similar)' : '';
+  const ex = !i.class_example ? '<p class="small muted" style="margin-top:6px">Students start from its default example (this simulation cannot keep a class example yet).</p>'
+    : i.example ? '<p class="small" style="margin-top:6px"><b style="font-weight:600">Class example:</b> ' + esc(i.example.summary || 'saved') + ' <span class="muted">(saved ' + esc(String(i.example.at || '').slice(0, 16)) + ')</span> ' +
+      '<button class="link small" data-act="d-simclear" data-sim="' + sid + '">Remove</button></p>'
+    : '<p class="small muted" style="margin-top:6px"><b style="font-weight:600;color:var(--ink)">Class example:</b> none yet. Press Try it, set it up as you would in class, then press “Use this setup as the class example”.</p>';
+  const open = '<button class="btn sm' + (ap ? '' : ' primary') + '" data-act="d-simopen" data-sim="' + sid + '" data-lid="' + esc(l.id) + '">Try it</button>';
+  const acts = ap ? open + (d.outdated ? '<button class="btn sm ok" data-act="d-simdec" data-decision="approve" data-sim="' + sid + '">' + ICON.check + ' Approve v' + esc(i.version) + '</button>' : '') +
+      '<button class="btn sm" data-act="d-simdec" data-decision="undo" data-sim="' + sid + '">Undo approval</button>'
+    : open + '<button class="btn sm ok" data-act="d-simdec" data-decision="approve" data-sim="' + sid + '">' + ICON.check + ' Approve</button>' +
+      (nPending > 1 ? '<button class="btn sm" data-act="d-simdec" data-decision="replace" data-sim="' + sid + '" title="Set it aside and show the next suggestion">Replace</button>' : '') +
+      '<button class="btn sm bad" data-act="d-simask" data-sim="' + sid + '">Reject</button>';
+  return '<div class="rcard' + (ap ? ' approved' : '') + '"><div class="rhead"><div style="min-width:0"><div class="rtitle">' + esc(i.title) + '</div>' +
+    '<div class="rmeta">' + simMade(i) + simChecked(i) + (match ? '<span>' + match + '</span>' : '') + '</div></div>' +
+    (ap ? '<span class="chip green">' + ICON.check + ' Approved (v' + esc(d.version) + ')</span>' : '') + '</div>' +
+    '<p class="why">' + esc(i.summary) + '</p>' +
+    (i.retired ? '<div class="warn">This simulation was retired from the catalogue. Students can still open it; consider another one.</div>' : '') +
+    (ap && d.outdated ? '<div class="warn">Updated since you approved it (you approved v' + esc(d.version) + '; it is now v' + esc(i.version) + '). Try it again, then approve the new version.</div>' : '') +
+    ex + '<div class="acts">' + acts + '</div>' + dsimReason(l, i) + '</div>';
+}
+const dsimApproved = lid => (dsims(lid).items || []).filter(isApproved);
+function dsimStudentRows(l) {
+  return dsimApproved(l.id).map(i => '<div class="row"><div style="min-width:0">' + (i.external
+      ? '<a href="' + esc(i.url) + '" target="_blank" rel="noopener" style="font-weight:600">' + esc(i.title) + ' ' + ICON.link + '</a>'
+      : '<button class="link" style="font-weight:600;text-align:left" data-act="d-simopen" data-student="1" data-lid="' + esc(l.id) + '" data-sim="' + esc(i.id) + '">' + esc(i.title) + '</button>') +
+    '<div class="rmeta"><span class="chip teal">Simulation</span>' + (i.external ? '<span class="chip grey">' + esc(i.site_name) + '</span>' : '') + '<span>' + esc(i.summary) + '</span></div></div></div>').join('');
+}
+async function dsimclick(act, b, lid) {
+  const url = dapi('/simulations/' + encodeURIComponent(lid));
+  if (act === 'd-simopen') {
+    const lid2 = b.dataset.lid || lid, i = (dsims(lid2).items || []).find(y => y.id === b.dataset.sim); if (!i) return;
+    const student = b.dataset.student === '1';
+    simOpen({ id: i.id, title: i.title, version: i.version, state: i.example ? i.example.state : '', lecture: lid2, student, example: i.example,
+              ctx: student ? null : { rid: DRID, lid: lid2, canSave: i.class_example, example: i.example } });
+    return;
+  }
+  if (act === 'd-simdec') {
+    const dec = b.dataset.decision; PUI.busy = true;
+    const r = await post(url, { sim: b.dataset.sim, decision: dec }); PUI.busy = false;
+    if (!r.ok) { toast((r.data && (r.data.problem || r.data.detail)) || 'Could not save'); return; }
+    toast(dec === 'approve' ? 'Approved. Students see it in the student view.' : dec === 'replace' ? 'Set aside; here is the next suggestion.' : 'Undone'); return loadDelivery(false);
+  }
+  if (act === 'd-simask') { PUI.simReason = { sim: b.dataset.sim, lid, text: '', err: null }; render(); const t = document.getElementById('simrs'); if (t) t.focus(); return; }
+  if (act === 'd-simcancel') { PUI.simReason = null; render(); return; }
+  if (act === 'd-simreject') {
+    const o = PUI.simReason; if (!o || !o.text.trim()) { if (o) o.err = 'Write a short reason first'; render(); return; }
+    const r = await post(url, { sim: o.sim, decision: 'reject', reason: o.text });
+    if (!r.ok) { o.err = (r.data && (r.data.problem || r.data.detail)) || 'Could not save'; render(); return; }
+    PUI.simReason = null; toast('Rejected. If nothing here fits, press “Ask for a new simulation” and say what you need.'); return loadDelivery(false);
+  }
+  if (act === 'd-simadd') {
+    const el = document.getElementById('simadd'), v = el && el.value; if (!v) { toast('Choose a simulation from the list first'); return; }
+    const r = await post(url, { sim: v, decision: 'add' });
+    if (!r.ok) { toast((r.data && (r.data.problem || r.data.detail)) || 'Could not add'); return; }
+    toast('Added. Try it, then approve or reject it.'); return loadDelivery(false);
+  }
+  if (act === 'd-simclear') {
+    if (!window.confirm('Remove the class example? Students then start from the default example.')) return;
+    const r = await post(url + '/class-example', { sim: b.dataset.sim, clear: true });
+    toast(r.ok ? 'Class example removed' : ((r.data && r.data.problem) || 'Could not remove')); return loadDelivery(false);
+  }
+  if (act === 'd-simrequest') {
+    const l = lecOf(lid), k = dsims(lid).kind;
+    const rej = (dsims(lid).items || []).filter(i => i.decision && i.decision.decision === 'reject' && i.decision.reason).sort((a, b) => String(b.decision.at).localeCompare(String(a.decision.at)))[0];
+    SREQ = { topic: l ? l.topic : '', what: rej ? rej.decision.reason : '', kind: k && k.id !== 'none' ? k.id : '', course: DV.run.course || '', run_id: DRID, lecture: lid };
+    location.hash = '#/simulations'; return;
+  }
+}
+
 // ============================== routing and loading ==============================
 function render() {
   const y = window.scrollY;
   dPendingRender = false;
   app.innerHTML = PAGE === 'form' ? form() : PAGE === 'run' ? runPage() : PAGE === 'dhome' ? dhome() : PAGE === 'dlist' ? dlist() :
-    PAGE === 'dlec' ? dlec() : PAGE === 'dkit' ? dkit() : PAGE === 'dnlm' ? dnlm() : PAGE === 'dstudent' ? dstudent() : home();
+    PAGE === 'dlec' ? dlec() : PAGE === 'dkit' ? dkit() : PAGE === 'dnlm' ? dnlm() : PAGE === 'dstudent' ? dstudent() : PAGE === 'sims' ? simsPage() : home();
   window.scrollTo(0, y);
+  if (PAGE === 'sims') { sfilter(); simPoll(); }
   if (PAGE === 'form' || (PAGE === 'run' && FORM)) lookupBackground();
   if (PAGE === 'run') startCountdown();
 }
@@ -1357,7 +1729,7 @@ async function loadRun(first) {
 }
 let routeId = 0;
 async function route() {
-  clearTimeout(poll); clearInterval(tick); clearTimeout(dpoll);
+  clearTimeout(poll); clearInterval(tick); clearTimeout(dpoll); clearTimeout(spoll);
   const me = ++routeId;
   const h = location.hash.replace(/^#/, '') || '/';
   if (!OPT) { const o = await api('/api/options'); OPT = o.data; }
@@ -1368,6 +1740,11 @@ async function route() {
     let d = null; try { d = JSON.parse(store.get('profsagent-draft') || 'null'); } catch (e) {}
     FORM = Object.assign(BLANK(), d || {});
     render(); window.scrollTo(0, 0);
+  } else if (h === '/simulations') {
+    PAGE = 'sims'; render(); window.scrollTo(0, 0);
+    if (SREQ) { SUI.req = Object.assign({ topic: '', what: '', kind: '', course: '' }, SREQ); SUI.reqErr = {}; SREQ = null; }
+    await loadSimCatalogue(); if (me !== routeId) return; render();
+    if (SUI.req && SUI.req.lecture) { const f = document.getElementById('simreq'); if (f) f.scrollIntoView({ block: 'center' }); const t = document.getElementById('sq-what'); if (t) t.focus(); }
   } else if (h === '/delivery') {
     PAGE = 'dhome'; DCOURSES = null; const r = await api('/api/delivery'); if (me !== routeId) return; DCOURSES = r.ok ? r.data : { courses: [] }; render(); window.scrollTo(0, 0);
   } else if (h.startsWith('/delivery/')) {
@@ -1375,7 +1752,7 @@ async function route() {
     if (DRID !== parts[0]) { DV = null; PUI.draft = {}; PUI.tab = {}; PUI.show = {}; PUI.report = null; }
     DRID = parts[0]; DLID = parts[1] && parts[1] !== 'student' ? parts[1] : null;
     PAGE = parts[1] === 'student' ? 'dstudent' : parts[2] === 'kit' ? 'dkit' : parts[2] === 'notebooklm' ? 'dnlm' : DLID ? 'dlec' : 'dlist';
-    PUI.errs = {}; PUI.openReason = null; PUI.ownForm = null; PUI.kit = null; PUI.nlm = null;
+    PUI.errs = {}; PUI.openReason = null; PUI.ownForm = null; PUI.kit = null; PUI.nlm = null; PUI.simReason = null;
     if (PAGE === 'dkit') { const k = await api(dapi('/kit/' + encodeURIComponent(DLID))); PUI.kit = k.ok ? k.data.md : ''; }
     if (PAGE === 'dnlm') { const k = await api(dapi('/notebooklm/' + encodeURIComponent(DLID))); PUI.nlm = k.ok ? k.data.md : ''; }
     if (me !== routeId) return;
@@ -1388,12 +1765,13 @@ async function route() {
     if (RUNS.some(x => ['queued', 'running'].includes(x.status))) poll = setTimeout(route, 10000);
   }
 }
-window.addEventListener('hashchange', route);
+window.addEventListener('hashchange', () => { simClose(); route(); });
 
 // ============================== events ==============================
 app.addEventListener('input', ev => {
   const t = ev.target;
   if (PAGE.startsWith('d') && dinput(t)) return;
+  if (PAGE === 'sims' && sinput(t)) return;
   if (UI.edit && t.dataset.ed != null) { edSet(t.dataset.ed, t.type === 'checkbox' ? t.checked : t.value); return; }
   if (UI.edit && t.dataset.edLines != null) { edSet(t.dataset.edLines, t.value.split('\n')); return; }
   if (t.dataset.f && FORM) { FORM[t.dataset.f] = t.type === 'checkbox' ? t.checked : t.value; if (ERRS[t.dataset.f]) { delete ERRS[t.dataset.f]; const e = app.querySelector('[data-err="' + t.dataset.f + '"]'); if (e) e.remove(); }
@@ -1404,6 +1782,7 @@ app.addEventListener('input', ev => {
 app.addEventListener('change', ev => {
   const t = ev.target;
   if (PAGE.startsWith('d') && dchange(t)) return;
+  if (PAGE === 'sims' && sinput(t)) return;
   if (UI.edit && t.dataset.ed != null) { edSet(t.dataset.ed, t.type === 'checkbox' ? t.checked : t.value); if (t.tagName === 'SELECT' || t.type === 'number' || t.type === 'checkbox') render(); return; }
   if (t.dataset.f && FORM) { FORM[t.dataset.f] = t.type === 'checkbox' ? t.checked : t.value; delete ERRS[t.dataset.f]; saveDraft(); }
   if (t.dataset.fb) UI.fb[t.dataset.fb] = t.value;
@@ -1418,6 +1797,7 @@ app.addEventListener('click', async ev => {
   }
   const b = ev.target.closest('[data-act],[data-tog],[data-ed-tog]'); if (!b) return;
   if (b.dataset.act && b.dataset.act.startsWith('d-')) { await dclick(b.dataset.act, b); return; }
+  if (b.dataset.act && b.dataset.act.startsWith('s-')) { await sclick(b.dataset.act, b); return; }
   if (b.dataset.edTog != null && UI.edit) { const arr = edGet(b.dataset.edTog) || []; const i = arr.indexOf(b.dataset.v); i >= 0 ? arr.splice(i, 1) : arr.push(b.dataset.v); edSet(b.dataset.edTog, arr); render(); return; }
   if (b.dataset.act && b.dataset.act.startsWith('ed-')) {
     const a = b.dataset.act;

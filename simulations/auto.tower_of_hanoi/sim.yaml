@@ -1,0 +1,45 @@
+# Built by the machine (auto-build, decisions.md 28). Checked automatically; not yet reviewed by the team.
+id: auto.tower_of_hanoi
+type:
+- 1-step-through
+title: 'Tower of Hanoi: Recursion Visualized'
+summary: Select number of disks and step through the recursive call stack to see how subproblems solve the puzzle.
+version: 1.0.0
+status: draft
+built_by: machine
+request: R001
+courses: []
+topics:
+- recursion
+- call stack
+- divide and conquer
+- tower of hanoi
+- exponential time complexity
+interactivity: L3
+engine:
+  name: stepper
+  path: _engines/stepper
+files:
+  page_src: page.src.html
+  qa: ../_engines/stepper/qa_recipe.py
+checks:
+  independent: formula 2^n - 1 for total moves and checking the final contents of peg C
+  qa: 'automatic (qa_recipe.py): presets, textbook examples and 40 random inputs against the independent check; a corrupted result must be rejected;
+    widgets, code lines and questions valid; every example to its end; phone; offline'
+sensitive: false
+offline: true
+class_example: true
+build:
+  attempts: 2
+  calls: 2
+  models:
+  - gemini:gemini-3.6-flash
+  - gemini:gemini-3.6-flash
+  seconds: 86
+  at: 2026-11-03 10:01
+  prompt_version: 0.1.0
+changelog:
+- version: 1.0.0
+  date: '2026-11-03'
+  by: machine
+  change: built from request R001 (Tower of Hanoi); passed the automatic checks on attempt 2

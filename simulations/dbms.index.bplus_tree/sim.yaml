@@ -1,0 +1,19 @@
+id: dbms.index.bplus_tree
+type: [1-step-through]
+title: "Self-balancing B+ tree: cascading page splits and merges"
+summary: "Choose a page size and keys, then insert, delete, find and scan; every page split and merge is shown step by step, up to the root."
+version: 1.0.0
+status: team-checked              # draft | team-checked | retired  (professor approval is per course, in the app)
+courses: [CSE202]
+topics: [B+ tree, indexing, node split and merge, page size and order]
+interactivity: L3
+engine: {name: own HTML/JS + SVG}
+files: {page: page.html, qa: qa.py}
+checks:
+  independent: "full B+ tree rule check after every operation, 630 random runs; matches a textbook figure at all 5 stages"
+  qa: "browser click-through at laptop and phone width, fuzz tests against a Python reference"
+sensitive: false
+offline: true
+class_example: false               # the page does not report its setup yet
+changelog:
+  - {version: 1.0.0, date: 2026-10-27, by: Amit, change: "first version (with Claude); moved into the catalogue on 2026-11-02"}

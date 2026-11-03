@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Round Robin CPU scheduling · step-by-step simulation</title>
+<style>
+:root{--navy:#002357;--navy2:#1E3A6E;--navy-bg:#DCE3F0;--canvas:#F8F8F6;--band:#F5F3ED;--card:#fff;--line:#E8E5DC;--ink:#1F1E1D;--ink2:#5E5D59;
+  --amber:#B45309;--amber-bg:#FEF3C7;--green:#15803D;--green-bg:#DCFCE7;--red:#B91C1C;--teal:#006970;--teal-bg:#E5F3F3}
+*{box-sizing:border-box}
+body{margin:0;background:var(--canvas);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+button,select,input{font:inherit;color:inherit}
+h1{font-size:20px;font-weight:650;margin:0;letter-spacing:-.01em}
+h2{font-size:13px;font-weight:650;margin:0 0 8px;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em}
+p{margin:0}
+.muted{color:var(--ink2)}.small{font-size:13px}
+.top{background:var(--card);border-bottom:1px solid var(--line);padding:12px 20px}
+.top-in{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+select,.btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 12px;min-height:40px}
+.btn{cursor:pointer;font-weight:550;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
+.btn:hover:not(:disabled){background:var(--band)}
+.btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}
+.btn.primary:hover:not(:disabled){background:var(--navy2)}
+.btn.sm{min-height:34px;padding:4px 10px;font-size:13px}
+.btn:disabled{opacity:.45;cursor:default}
+.btn:focus-visible,select:focus-visible,.chipbtn:focus-visible,input:focus-visible{outline:2px solid var(--navy2);outline-offset:2px}
+.grid{max-width:1180px;margin:0 auto;padding:16px 20px 28px;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(300px,1fr);gap:16px;align-items:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.panel{display:flex;flex-direction:column;gap:12px}
+.stage-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.chip{font-size:12.5px;font-weight:600;padding:4px 11px;border-radius:999px;white-space:nowrap}
+.ph-run{background:#E8E4F6;color:#3B2F8A}.ph-done{background:var(--green-bg);color:var(--green)}.ph-init{background:var(--navy-bg);color:var(--navy)}
+svg{width:100%;height:auto;display:block;background:#fff;border:1px solid var(--line);border-radius:10px}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.controls .grow{flex:1;min-width:160px;display:flex;align-items:center;gap:8px}
+input[type=range]{width:100%;accent-color:var(--navy2);min-height:28px}
+.stepno{font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--ink2);white-space:nowrap}
+.speed{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)}
+.speed input{width:90px}
+#explain{font-size:15px;line-height:1.55;min-height:70px}
+#explain b{font-weight:650}
+.quiz{margin-top:10px;border-top:1px solid var(--line);padding-top:10px}
+.quiz p{font-size:13.5px}
+.qrow{display:flex;gap:8px;align-items:center;margin-top:6px;flex-wrap:wrap}
+.chipbtn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 13px;min-width:44px;min-height:36px;cursor:pointer;font-weight:600}
+.chipbtn:hover{background:var(--band)}
+.chipbtn.right{background:var(--green-bg);border-color:var(--green);color:#14532D}
+.chipbtn.wrong{background:var(--amber-bg);border-color:var(--amber);color:#78350F}
+.fb{margin-top:6px;font-size:13px}
+.code{list-style:none;margin:0;padding:0;font:12.5px/1.5 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}
+.code li{padding:3px 8px;border-left:3px solid transparent;border-radius:0 6px 6px 0;white-space:pre-wrap}
+.code li.on{background:var(--navy-bg);border-left-color:var(--navy);color:var(--navy);font-weight:600}
+table.pt{width:100%;border-collapse:collapse;font-size:13.5px;font-variant-numeric:tabular-nums}
+.pt th{text-align:left;font-size:12px;color:var(--ink2);font-weight:600;border-bottom:1px solid var(--line);padding:4px 5px}
+.pt td{padding:4px 5px;border-bottom:1px solid var(--line)}
+.pt input{width:58px;border:1px solid var(--line);border-radius:7px;padding:5px 7px;min-height:34px}
+.pt input.bad{border-color:var(--red);background:#FEF2F2}
+.pt tfoot td{font-weight:650;border-bottom:0}
+.sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px;border:2px solid}
+.row2{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px;font-size:13px}
+.row2 input[type=range]{width:120px}
+.err{color:var(--red);font-size:13px;margin-top:6px}
+.ok{color:var(--green);font-weight:600}.bad{color:var(--red);font-weight:600}
+.foot{max-width:1180px;margin:0 auto;padding:0 20px 26px;font-size:12.5px;color:var(--ink2);display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr);padding:12px 12px 24px}.top{padding:10px 12px}.foot{padding:0 12px 22px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div><h1>Round Robin CPU scheduling</h1><p class="muted small">Each process gets the CPU for at most one time quantum, then waits at the back of the ready queue.</p></div>
+  <div class="tools"><label class="small muted" for="preset">Example</label><select id="preset"></select></div>
+</div></header>
+
+<main class="grid">
+  <section class="card" aria-label="CPU, ready queue and Gantt chart">
+    <div class="stage-head"><span id="phase" class="chip ph-init">Start</span><span id="tnow" class="muted small"></span></div>
+    <svg id="svg" viewBox="0 0 640 360" role="img" aria-label="Round Robin schedule"></svg>
+    <div class="controls">
+      <button class="btn" id="resetBtn" title="Back to the start (R)">⟲ Start</button>
+      <button class="btn" id="prevBtn" title="Previous step (←)">◀ Back</button>
+      <button class="btn primary" id="playBtn" title="Play / pause (Space)">▶ Play</button>
+      <button class="btn" id="nextBtn" title="Next step (→)">Next ▶</button>
+      <div class="grow"><input type="range" id="scrub" min="0" max="0" value="0" aria-label="Jump to step"><span class="stepno" id="stepno"></span></div>
+      <label class="speed">Speed <input type="range" id="speed" min="1" max="5" value="3" aria-label="Playback speed"></label>
+    </div>
+  </section>
+
+  <aside class="panel">
+    <div class="card"><h2>What is happening</h2><p id="explain" aria-live="polite"></p><div id="quiz"></div></div>
+    <div class="card"><h2>Pseudocode</h2><ol class="code" id="code"></ol></div>
+    <div class="card">
+      <h2>Processes (you can edit these)</h2>
+      <table class="pt"><thead><tr><th>Process</th><th>Arrives</th><th>Burst</th><th>Finish</th><th>Turnaround</th><th>Waiting</th><th></th></tr></thead><tbody id="ptab"></tbody><tfoot id="pfoot"></tfoot></table>
+      <div id="perr"></div>
+      <div class="row2">
+        <button class="btn sm" id="addBtn">+ Add process</button>
+        <label for="qIn">Time quantum <b id="qVal"></b></label><input type="range" id="qIn" min="1" max="6" value="2">
+      </div>
+      <div class="row2"><label for="rule">If a process arrives exactly when another's quantum ends:</label>
+        <select id="rule"><option value="arrivalFirst">the new arrival joins the queue first</option><option value="preemptedFirst">the stopped process joins first</option></select></div>
+    </div>
+  </aside>
+</main>
+<div class="foot"><span id="check"></span><span>Every step is computed by a real implementation of the algorithm, not written by hand.</span></div>
+
+<script>
+(function () {
+const PRESETS = {
+  textbook: { name: 'Textbook example (5 processes)', q: 2, procs: [['P1', 0, 5], ['P2', 1, 3], ['P3', 2, 1], ['P4', 3, 2], ['P5', 4, 3]] },
+  openmaic: { name: 'Same input as the OpenMAIC test (3 processes)', q: 2, procs: [['P1', 0, 5], ['P2', 1, 3], ['P3', 2, 1]] },
+  together: { name: 'All arrive at time 0', q: 3, procs: [['P1', 0, 10], ['P2', 0, 4], ['P3', 0, 6]] },
+  idle:     { name: 'The CPU goes idle', q: 2, procs: [['P1', 0, 2], ['P2', 6, 3], ['P3', 7, 2]] },
+  tie:      { name: 'Arrival exactly at a quantum end', q: 2, procs: [['P1', 0, 4], ['P2', 2, 2], ['P3', 2, 3]] }
+};
+const COL = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#6250d6'];
+const TINT = ['#D4E4F7', '#FBDCCF', '#CDEFE3', '#FBE9BF', '#F9DCE7', '#DCD8F6'];
+
+// ---------- the algorithm: produces every step ----------
+function buildTrace(procs, q, rule) {
+  const P = procs.map((p, i) => ({ id: p.id, at: p.at, bt: p.bt, idx: i }));
+  const order = P.slice().sort((a, b) => a.at - b.at || a.idx - b.idx);
+  const byId = Object.fromEntries(P.map(p => [p.id, p]));
+  const rem = {}, ct = {}, queue = [], gantt = [], steps = [];
+  P.forEach(p => rem[p.id] = p.bt);
+  let t = 0, k = 0, running = null;
+  const B = x => '<b>' + x + '</b>', list = a => a.map(p => B(p.id)).join(', ');
+  const snap = (line, text, extra) => steps.push(Object.assign({ t, queue: queue.slice(), gantt: gantt.map(g => Object.assign({}, g)), rem: Object.assign({}, rem),
+    ct: Object.assign({}, ct), running: running ? Object.assign({}, running) : null, arrived: order.slice(0, k).map(p => p.id), line, text }, extra || {}));
+  const admit = ok => { const a = []; while (k < order.length && ok(order[k].at)) { queue.push(order[k].id); a.push(order[k]); k++; } return a; };
+
+  snap(1, 'Each process gets the CPU for at most ' + B(q) + ' time unit' + (q === 1 ? '' : 's') + ' (the quantum), then goes to the back of the ready queue if it still needs time.', { quiz: 'predict' });
+  let a = admit(at => at <= t);
+  if (a.length) snap(1, 't = 0: ' + list(a) + (a.length === 1 ? ' arrives' : ' arrive') + ' and ' + (a.length === 1 ? 'joins' : 'join') + ' the ready queue.', { arrivals: a.map(p => p.id) });
+  while (Object.keys(ct).length < P.length) {
+    if (!queue.length) {
+      const nt = order[k].at;
+      gantt.push({ id: null, start: t, end: nt });
+      snap(3, 't = ' + t + ': the ready queue is empty, so the CPU sits ' + B('idle') + ' until ' + order[k].id + ' arrives at t = ' + nt + '.', { idle: true });
+      t = nt; a = admit(at => at <= t);
+      snap(1, 't = ' + t + ': ' + list(a) + (a.length === 1 ? ' arrives and joins' : ' arrive and join') + ' the ready queue.', { arrivals: a.map(p => p.id) });
+      continue;
+    }
+    const id = queue.shift(), run = Math.min(q, rem[id]);
+    running = { id, start: t, end: t + run };
+    gantt.push({ id, start: t, end: t + run });
+    snap(4, 't = ' + t + ': the CPU takes ' + B(id) + ' from the front of the queue. It needs ' + rem[id] + ' more, so it runs for ' + B(run) +
+            (run === q ? ' (one full quantum).' : ', less than a full quantum, because that is all it needs.'), { dispatch: id });
+    t += run; rem[id] -= run; running = null;
+    const during = admit(at => at < t);
+    let atT = [], text = '';
+    const done = rem[id] === 0;
+    if (!done && rule === 'preemptedFirst') { queue.push(id); atT = admit(at => at <= t); }
+    else { atT = admit(at => at <= t); if (!done) queue.push(id); }
+    if (during.length) text += list(during) + (during.length === 1 ? ' arrived' : ' arrived') + ' while ' + id + ' was running, so ' + (during.length === 1 ? 'it is' : 'they are') + ' already in the queue. ';
+    if (atT.length) text += list(atT) + (atT.length === 1 ? ' arrives' : ' arrive') + ' exactly at t = ' + t + (done ? '. ' : (rule === 'arrivalFirst' ? ' and, by the rule chosen below, ' + (atT.length === 1 ? 'joins' : 'join') + ' the queue before ' + id + '. ' : ' and, by the rule chosen below, ' + (atT.length === 1 ? 'joins' : 'join') + ' the queue after ' + id + '. '));
+    if (done) {
+      ct[id] = t; const tat = t - byId[id].at, wt = tat - byId[id].bt;
+      snap(8, 't = ' + t + ': ' + B(id + ' finishes') + '. ' + text + 'Turnaround = finish − arrival = ' + t + ' − ' + byId[id].at + ' = ' + B(tat) + '; waiting = turnaround − burst = ' + tat + ' − ' + byId[id].bt + ' = ' + B(wt) + '.', { ended: id, finished: true });
+    } else {
+      snap(during.length || atT.length ? 6 : 7, 't = ' + t + ': ' + id + '\'s quantum is over and it still needs ' + rem[id] + '. ' + text + B(id) + ' goes to the back of the queue.', { ended: id, quiz: queue.length > 1 ? 'next' : undefined, nextAns: queue[0] });
+    }
+  }
+  const tats = P.map(p => ct[p.id] - p.at), wts = P.map(p => ct[p.id] - p.at - p.bt);
+  const avg = a => Math.round(a.reduce((x, y) => x + y, 0) / a.length * 100) / 100;
+  snap(0, 'All processes are done at t = ' + t + '. Average turnaround time = ' + B(avg(tats)) + ', average waiting time = ' + B(avg(wts)) + '.', { done: true });
+  // keep only the first "which runs next" question
+  let asked = false; steps.forEach(s => { if (s.quiz === 'next') { if (asked) s.quiz = undefined; asked = true; } });
+  return steps;
+}
+
+// ---------- independent check: a separate, unit-by-unit simulation ----------
+function tickSim(procs, q, rule) {
+  const rem = {}, ct = {}, queue = []; procs.forEach(p => rem[p.id] = p.bt);
+  let t = 0, cur = null, used = 0, left = procs.length;
+  while (left > 0 && t < 10000) {
+    const arr = procs.map((p, i) => [p, i]).filter(([p]) => p.at === t).sort((a, b) => a[1] - b[1]).map(([p]) => p.id);
+    let stopped = null;
+    if (cur !== null && rem[cur] === 0) { ct[cur] = t; left--; cur = null; }
+    else if (cur !== null && used === q) { stopped = cur; cur = null; }
+    if (stopped !== null && rule === 'preemptedFirst') queue.push(stopped, ...arr);
+    else { queue.push(...arr); if (stopped !== null) queue.push(stopped); }
+    if (left === 0) break;
+    if (cur === null && queue.length) { cur = queue.shift(); used = 0; }
+    if (cur !== null) { rem[cur]--; used++; }
+    t++;
+  }
+  return ct;
+}
+
+// ---------- state ----------
+const S = { key: 'textbook', procs: [], q: 2, rule: 'arrivalFirst', steps: [], i: 0, playing: false, timer: null, predict: null, nextPick: null, invalid: false };
+const DELAY = [1700, 1250, 900, 650, 420];
+const $ = id => document.getElementById(id);
+function loadPreset(key) { const p = PRESETS[key]; S.key = key; S.q = p.q; S.procs = p.procs.map(([id, at, bt]) => ({ id, at, bt })); }
+function colorOf(id) { const i = S.procs.findIndex(p => p.id === id); return [COL[i % 6], TINT[i % 6]]; }
+function rebuild() {
+  S.steps = buildTrace(S.procs, S.q, S.rule); S.i = 0; S.predict = null; S.nextPick = null;
+  const last = S.steps[S.steps.length - 1], ref = tickSim(S.procs, S.q, S.rule);
+  const ok = S.procs.every(p => ref[p.id] === last.ct[p.id]);
+  $('check').innerHTML = ok ? '<span class="ok">✓ Answer checked</span> against a separate unit-by-unit simulation: all ' + S.procs.length + ' finish times match.'
+                            : '<span class="bad">✗ Mismatch with the independent check.</span>';
+  $('scrub').max = S.steps.length - 1;
+  renderTable(); render();
+}
+
+// ---------- drawing ----------
+function draw(s) {
+  const last = S.steps[S.steps.length - 1], T = Math.max(1, last.t), n = S.procs.length;
+  const X0 = 30, X1 = 610, sx = v => X0 + (X1 - X0) * v / T;
+  const H = 238 + n * 34;
+  $('svg').setAttribute('viewBox', '0 0 640 ' + H);
+  let o = '';
+  // CPU
+  const run = s.running || (s.dispatch ? { id: s.dispatch } : null);
+  const [rc, rt] = run ? colorOf(run.id) : ['#9C998F', '#F5F3ED'];
+  o += '<text x="30" y="26" font-size="12" font-weight="650" fill="#5E5D59">CPU</text>';
+  o += '<rect x="30" y="34" width="110" height="52" rx="10" fill="' + (run ? rt : '#F5F3ED') + '" stroke="' + rc + '" stroke-width="' + (run ? 2.5 : 1.2) + '"/>';
+  o += '<text x="85" y="66" text-anchor="middle" font-size="17" font-weight="650" fill="#1F1E1D">' + (run ? run.id : (s.idle ? 'idle' : '–')) + '</text>';
+  // ready queue
+  o += '<text x="180" y="26" font-size="12" font-weight="650" fill="#5E5D59">Ready queue (front first)</text>';
+  if (!s.queue.length) o += '<text x="180" y="66" font-size="13" fill="#77756F">empty</text>';
+  s.queue.forEach((id, j) => {
+    const [c, tn] = colorOf(id), x = 180 + j * 64;
+    if (x > 600) return;
+    o += '<rect x="' + x + '" y="38" width="54" height="44" rx="8" fill="' + tn + '" stroke="' + c + '" stroke-width="' + (j === 0 ? 2.5 : 1.5) + '"/>' +
+         '<text x="' + (x + 27) + '" y="65" text-anchor="middle" font-size="14" font-weight="650" fill="#1F1E1D">' + id + '</text>';
+  });
+  if (s.queue.length) o += '<path d="M176 60 L150 60" stroke="#77756F" stroke-width="1.5"/><polygon points="144,60 152,55 152,65" fill="#77756F"/>';
+  // Gantt
+  o += '<text x="30" y="124" font-size="12" font-weight="650" fill="#5E5D59">Gantt chart</text>';
+  o += '<rect x="' + X0 + '" y="134" width="' + (X1 - X0) + '" height="40" rx="6" fill="#FAFAF8" stroke="#E8E5DC"/>';
+  const marks = new Set([0]);
+  s.gantt.forEach(g => {
+    const x = sx(g.start), w = sx(g.end) - x, cur = s.dispatch && g === s.gantt[s.gantt.length - 1];
+    marks.add(g.start); marks.add(g.end);
+    if (g.id === null) { o += '<rect x="' + x + '" y="134" width="' + w + '" height="40" fill="url(#hatch)" stroke="#C9C6BC"/>' + (w > 30 ? '<text x="' + (x + w / 2) + '" y="158" text-anchor="middle" font-size="12" fill="#5E5D59">idle</text>' : ''); return; }
+    const [c, tn] = colorOf(g.id);
+    o += '<rect x="' + (x + 1) + '" y="135" width="' + Math.max(1, w - 2) + '" height="38" rx="4" fill="' + (cur ? '#fff' : tn) + '" stroke="' + c + '" stroke-width="' + (cur ? 2 : 1.5) + '"' + (cur ? ' stroke-dasharray="5 3"' : '') + '/>' +
+         (w > 22 ? '<text x="' + (x + w / 2) + '" y="159" text-anchor="middle" font-size="12.5" font-weight="650" fill="#1F1E1D">' + g.id + '</text>' : '');
+  });
+  [...marks].sort((a, b) => a - b).forEach(m => { o += '<line x1="' + sx(m) + '" y1="174" x2="' + sx(m) + '" y2="180" stroke="#77756F"/><text x="' + sx(m) + '" y="193" text-anchor="middle" font-size="11.5" fill="#5E5D59">' + m + '</text>'; });
+  // processes
+  o += '<text x="30" y="222" font-size="12" font-weight="650" fill="#5E5D59">Processes (bar = burst time, filled = work done)</text>';
+  S.procs.forEach((p, j) => {
+    const y = 236 + j * 34, [c, tn] = colorOf(p.id), done = p.bt - s.rem[p.id], arrived = s.arrived.includes(p.id);
+    const fin = s.ct[p.id] !== undefined, isRun = run && run.id === p.id;
+    const status = fin ? 'done at t = ' + s.ct[p.id] : isRun ? 'running' : s.queue.includes(p.id) ? 'waiting' : arrived ? '' : 'arrives at t = ' + p.at;
+    o += '<text x="30" y="' + (y + 17) + '" font-size="13" font-weight="650" fill="#1F1E1D">' + p.id + '</text>';
+    const bx = 70, bw = 300, unit = bw / Math.max(...S.procs.map(r => r.bt));
+    for (let u = 0; u < p.bt; u++) o += '<rect x="' + (bx + u * unit + 1) + '" y="' + (y + 4) + '" width="' + Math.max(2, unit - 2) + '" height="18" rx="3" fill="' + (u < done ? c : '#fff') + '" stroke="' + c + '" stroke-width="1.2" opacity="' + (arrived || u < done ? 1 : .45) + '"/>';
+    o += '<text x="' + (bx + p.bt * unit + 10) + '" y="' + (y + 17) + '" font-size="12" fill="#5E5D59">' + (fin ? '' : s.rem[p.id] + ' left · ') + status + '</text>';
+  });
+  $('svg').innerHTML = '<defs><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#D9D5CB" stroke-width="3"/></pattern></defs>' + o;
+  $('svg').setAttribute('aria-label', 'Time ' + s.t + '. ' + s.text.replace(/<[^>]+>/g, ''));
+}
+
+// ---------- panels ----------
+const CODE = [
+  [1, 'put processes that have arrived in the ready queue'],
+  [2, 'while some process is not finished:'],
+  [3, '  if the queue is empty: CPU idles until the next arrival'],
+  [4, '  p = front of queue; run p for min(quantum, remaining)'],
+  [5, '  processes that arrived meanwhile join the back'],
+  [6, '  arrivals at this exact moment: apply the tie rule'],
+  [7, '  if p still needs time: p joins the back of the queue'],
+  [8, '  else: turnaround = finish - arrival, waiting = turnaround - burst']
+];
+const LINEMAP = { 1: [1], 3: [3], 4: [4], 6: [5, 6, 7], 7: [7], 8: [8] };
+function render() {
+  const s = S.steps[S.i], last = S.steps[S.steps.length - 1];
+  draw(s);
+  $('phase').textContent = s.done ? 'Done' : S.i === 0 ? 'Start' : 'Running'; $('phase').className = 'chip ' + (s.done ? 'ph-done' : S.i === 0 ? 'ph-init' : 'ph-run');
+  $('tnow').textContent = 'time t = ' + s.t + ' · quantum = ' + S.q;
+  let ex = s.text;
+  if (s.done && S.predict !== null) { const first = Object.entries(last.ct).sort((a, b) => a[1] - b[1])[0][0]; ex += ' You predicted ' + S.predict + ' would finish first' + (S.predict === first ? ': correct!' : '; it was <b>' + first + '</b>.'); }
+  $('explain').innerHTML = ex;
+  $('quiz').innerHTML = quizHtml(s);
+  const hl = LINEMAP[s.line] || [];
+  $('code').innerHTML = CODE.map(([n, c]) => '<li class="' + (hl.includes(n) ? 'on' : '') + '">' + c + '</li>').join('');
+  // live results in the table
+  S.procs.forEach((p, j) => {
+    const f = s.ct[p.id], cells = document.querySelectorAll('#ptab tr')[j]?.querySelectorAll('td.r');
+    if (!cells) return;
+    cells[0].textContent = f !== undefined ? f : ''; cells[1].textContent = f !== undefined ? f - p.at : ''; cells[2].textContent = f !== undefined ? f - p.at - p.bt : '';
+  });
+  if (s.done) {
+    const tat = S.procs.map(p => s.ct[p.id] - p.at), wt = S.procs.map(p => s.ct[p.id] - p.at - p.bt), avg = a => Math.round(a.reduce((x, y) => x + y, 0) / a.length * 100) / 100;
+    $('pfoot').innerHTML = '<tr><td colspan="4">Average</td><td>' + avg(tat) + '</td><td>' + avg(wt) + '</td><td></td></tr>';
+  } else $('pfoot').innerHTML = '';
+  $('scrub').value = S.i; $('stepno').textContent = 'Step ' + (S.i + 1) + ' / ' + S.steps.length;
+  $('prevBtn').disabled = S.i === 0; $('nextBtn').disabled = S.i === S.steps.length - 1;
+  $('playBtn').innerHTML = S.playing ? '❚❚ Pause' : (S.i === S.steps.length - 1 ? '⟲ Replay' : '▶ Play');
+  $('qVal').textContent = S.q; $('qIn').value = S.q; $('rule').value = S.rule;
+}
+function quizHtml(s) {
+  if (s.quiz === 'predict') {
+    return '<div class="quiz"><p><b>Predict first:</b> which process will finish first?</p><div class="qrow">' +
+      S.procs.map(p => '<button class="chipbtn' + (S.predict === p.id ? ' right' : '') + '" data-predict="' + p.id + '">' + p.id + '</button>').join('') + '</div>' +
+      (S.predict !== null ? '<p class="fb muted">Saved. Play the steps to see if you are right.</p>' : '') + '</div>';
+  }
+  if (s.quiz === 'next') {
+    const ans = s.nextAns;
+    let fb = '';
+    if (S.nextPick !== null) fb = S.nextPick === ans ? '<p class="fb" style="color:var(--green)">Right: ' + ans + ' is at the front of the ready queue.</p>' : '<p class="fb" style="color:var(--amber)">Not quite: the CPU always takes the process at the front of the queue.</p>';
+    return '<div class="quiz"><p><b>Quick check:</b> which process gets the CPU next?</p><div class="qrow">' +
+      [...new Set(s.queue)].sort().map(id => '<button class="chipbtn' + (S.nextPick === id ? (id === ans ? ' right' : ' wrong') : '') + '" data-pick="' + id + '">' + id + '</button>').join('') + '</div>' + fb + '</div>';
+  }
+  return '';
+}
+function renderTable() {
+  $('ptab').innerHTML = S.procs.map((p, j) => { const [c, tn] = colorOf(p.id); return '<tr><td><span class="sw" style="background:' + tn + ';border-color:' + c + '"></span><b>' + p.id + '</b></td>' +
+    '<td><input type="number" min="0" max="30" step="1" data-j="' + j + '" data-k="at" value="' + p.at + '" aria-label="' + p.id + ' arrival time"></td>' +
+    '<td><input type="number" min="1" max="20" step="1" data-j="' + j + '" data-k="bt" value="' + p.bt + '" aria-label="' + p.id + ' burst time"></td>' +
+    '<td class="r"></td><td class="r"></td><td class="r"></td><td>' + (S.procs.length > 1 ? '<button class="btn sm" data-del="' + j + '" aria-label="Remove ' + p.id + '">×</button>' : '') + '</td></tr>'; }).join('');
+  $('addBtn').disabled = S.procs.length >= 6;
+}
+
+// ---------- playback ----------
+function go(i) { S.i = Math.max(0, Math.min(S.steps.length - 1, i)); render(); }
+function stop() { S.playing = false; clearTimeout(S.timer); render(); }
+function tick() {
+  if (!S.playing) return;
+  const s = S.steps[S.i];
+  if (S.i >= S.steps.length - 1 || (s.quiz === 'next' && S.nextPick === null && S.i !== S.playFrom)) { stop(); return; }
+  go(S.i + 1); S.timer = setTimeout(tick, DELAY[$('speed').value - 1]);
+}
+function play() {
+  if (S.playing) { stop(); return; }
+  if (S.i >= S.steps.length - 1) S.i = 0;
+  S.playFrom = S.i; S.playing = true; render(); S.timer = setTimeout(tick, Math.min(500, DELAY[$('speed').value - 1]));
+}
+function markCustom() {
+  if (!$('preset').querySelector('option[value="custom"]')) $('preset').insertAdjacentHTML('beforeend', '<option value="custom">Custom (edited)</option>');
+  $('preset').value = 'custom'; S.key = 'custom';
+}
+
+// ---------- wiring ----------
+$('preset').innerHTML = Object.entries(PRESETS).map(([k, p]) => '<option value="' + k + '">' + p.name + '</option>').join('');
+$('preset').addEventListener('change', e => { if (e.target.value === 'custom') return; stop(); loadPreset(e.target.value); const c = $('preset').querySelector('option[value="custom"]'); if (c) c.remove(); $('perr').innerHTML = ''; rebuild(); });
+$('qIn').addEventListener('input', e => { stop(); S.q = +e.target.value; markCustom(); rebuild(); });
+$('rule').addEventListener('change', e => { stop(); S.rule = e.target.value; rebuild(); });
+$('ptab').addEventListener('change', e => {
+  const el = e.target; if (!el.dataset.k) return;
+  const v = el.value.trim(), lim = el.dataset.k === 'at' ? [0, 30] : [1, 20];
+  if (!/^\d+$/.test(v) || +v < lim[0] || +v > lim[1]) { el.classList.add('bad'); $('perr').innerHTML = '<p class="err">' + (el.dataset.k === 'at' ? 'Arrival' : 'Burst') + ' time must be a whole number from ' + lim[0] + ' to ' + lim[1] + '.</p>'; return; }
+  el.classList.remove('bad'); $('perr').innerHTML = '';
+  stop(); S.procs[+el.dataset.j][el.dataset.k] = +v; markCustom(); rebuild();
+});
+$('ptab').addEventListener('click', e => { const d = e.target.closest('[data-del]'); if (!d) return; stop(); S.procs.splice(+d.dataset.del, 1); markCustom(); rebuild(); });
+$('addBtn').addEventListener('click', () => {
+  if (S.procs.length >= 6) return;
+  let n = 1; while (S.procs.some(p => p.id === 'P' + n)) n++;
+  stop(); S.procs.push({ id: 'P' + n, at: Math.max(...S.procs.map(p => p.at)) + 1, bt: 3 }); markCustom(); rebuild();
+});
+$('quiz').addEventListener('click', e => {
+  const p = e.target.closest('[data-predict]'), k = e.target.closest('[data-pick]');
+  if (p) { S.predict = p.dataset.predict; render(); }
+  if (k) { S.nextPick = k.dataset.pick; render(); }
+});
+$('resetBtn').addEventListener('click', () => { stop(); go(0); });
+$('prevBtn').addEventListener('click', () => { stop(); go(S.i - 1); });
+$('nextBtn').addEventListener('click', () => { stop(); go(S.i + 1); });
+$('playBtn').addEventListener('click', play);
+$('scrub').addEventListener('input', e => { const v = +e.target.value; stop(); go(v); });
+document.addEventListener('keydown', e => {
+  if (/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); stop(); go(S.i + 1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); stop(); go(S.i - 1); }
+  else if (e.key === ' ' && e.target.tagName !== 'BUTTON') { e.preventDefault(); play(); }
+  else if (e.key === 'r' || e.key === 'R') { stop(); go(0); }
+});
+window.rrSim = { presets: PRESETS, run: (procs, q, rule) => { const st = buildTrace(procs, q, rule); return { steps: st.length, ct: st[st.length - 1].ct, gantt: st[st.length - 1].gantt }; } };
+loadPreset('textbook'); $('preset').value = 'textbook'; rebuild();
+})();
+</script>
+</body>
+</html>

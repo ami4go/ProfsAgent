@@ -217,7 +217,17 @@ def view(rid: str, runs: Path | None = None) -> dict:
                  "tavily": bool(os.environ.get("TAVILY_API_KEY"))},
         "material": material_summary(rid, runs),
         "material_connected": {"generate": True, "attach": False},   # B (Parth): generate is built; attach is not yet
+        "simulations": _simulations(rid, runs),
     }
+
+
+def _simulations(rid: str, runs: Path) -> dict:
+    """A (simulations, app/simulations.py): suggested and approved simulations per lecture. Never breaks delivery."""
+    try:
+        from profsagent.app import simulations
+        return simulations.course_view(rid, runs)
+    except Exception as ex:  # noqa: BLE001
+        return {"state": "error", "error": f"{type(ex).__name__}: {ex}"[:300], "lectures": {}}
 
 
 # ------------------------------------------------------------------ S2: choices

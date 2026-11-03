@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dijkstra's shortest paths · step-by-step simulation</title>
+<style>
+:root{--navy:#002357;--navy2:#1E3A6E;--navy-bg:#DCE3F0;--canvas:#F8F8F6;--band:#F5F3ED;--card:#fff;--line:#E8E5DC;--ink:#1F1E1D;--ink2:#5E5D59;
+  --amber:#B45309;--amber-bg:#FEF3C7;--green:#15803D;--green-bg:#DCFCE7;--red:#B91C1C;--teal:#006970;--teal-bg:#E5F3F3;--orange:#EA580C}
+*{box-sizing:border-box}
+body{margin:0;background:var(--canvas);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+button,select,input{font:inherit;color:inherit}
+h1{font-size:20px;font-weight:650;margin:0;letter-spacing:-.01em}
+h2{font-size:13px;font-weight:650;margin:0 0 8px;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em}
+p{margin:0}
+.muted{color:var(--ink2)}.small{font-size:13px}
+.top{background:var(--card);border-bottom:1px solid var(--line);padding:12px 20px}
+.top-in{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+select,.btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 12px;min-height:40px}
+.btn{cursor:pointer;font-weight:550;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
+.btn:hover:not(:disabled){background:var(--band)}
+.btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}
+.btn.primary:hover:not(:disabled){background:var(--navy2)}
+.btn.on{background:#FFF7F2;border:1.5px dashed var(--orange);color:#9A3412}
+.btn:disabled{opacity:.45;cursor:default}
+.btn:focus-visible,select:focus-visible,.chipbtn:focus-visible,input:focus-visible{outline:2px solid var(--navy2);outline-offset:2px}
+.grid{max-width:1180px;margin:0 auto;padding:16px 20px 28px;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(300px,1fr);gap:16px;align-items:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.panel{display:flex;flex-direction:column;gap:12px}
+.stage-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.chip{font-size:12.5px;font-weight:600;padding:4px 11px;border-radius:999px;white-space:nowrap}
+.ph-init{background:var(--navy-bg);color:var(--navy)}.ph-run{background:#E8E4F6;color:#3B2F8A}.ph-done{background:var(--green-bg);color:var(--green)}
+svg{width:100%;height:auto;display:block;background:#fff;border:1px solid var(--line);border-radius:10px;touch-action:manipulation}
+.editing .node,.editing .wl,.done .node{cursor:pointer}
+.hint{margin-top:8px;font-size:13px;color:#9A3412;background:#FFF7F2;border:1px dashed var(--orange);border-radius:8px;padding:7px 10px}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.controls .grow{flex:1;min-width:160px;display:flex;align-items:center;gap:8px}
+input[type=range]{width:100%;accent-color:var(--navy2);min-height:28px}
+.stepno{font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--ink2);white-space:nowrap}
+.speed{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)}
+.speed input{width:90px}
+#explain{font-size:15px;line-height:1.55;min-height:70px}
+#explain b{font-weight:650}
+.quiz{margin-top:10px;border-top:1px solid var(--line);padding-top:10px}
+.quiz p{font-size:13.5px}
+.qrow{display:flex;gap:8px;align-items:center;margin-top:6px;flex-wrap:wrap}
+.qrow input{width:90px;border:1px solid var(--line);border-radius:8px;padding:7px 10px;min-height:40px}
+.chipbtn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 13px;min-width:44px;min-height:36px;cursor:pointer;font-weight:600}
+.chipbtn:hover{background:var(--band)}
+.chipbtn.right{background:var(--green-bg);border-color:var(--green);color:#14532D}
+.chipbtn.wrong{background:var(--amber-bg);border-color:var(--amber);color:#78350F}
+.fb{margin-top:6px;font-size:13px}.err{color:var(--red);font-size:13px;margin-top:4px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:30px}
+.tok{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);background:#fff;border-radius:7px;padding:3px 8px;font-weight:600;font-size:13px;font-variant-numeric:tabular-nums}
+.tok.stale{text-decoration:line-through;color:var(--ink2);opacity:.7}
+.tok.min{border-color:var(--navy);box-shadow:0 0 0 1px var(--navy)}
+.empty{color:var(--ink2);font-size:13px}
+.code{list-style:none;margin:0;padding:0;font:12.5px/1.5 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;counter-reset:ln}
+.code li{padding:2px 8px 2px 34px;border-left:3px solid transparent;border-radius:0 6px 6px 0;white-space:pre;position:relative;overflow-x:auto}
+.code li::before{counter-increment:ln;content:counter(ln);position:absolute;left:6px;color:#A19E94;width:20px;text-align:right}
+.code li.on{background:var(--navy-bg);border-left-color:var(--navy);color:var(--navy);font-weight:600}
+table.dt{width:100%;border-collapse:collapse;font-size:13.5px;font-variant-numeric:tabular-nums}
+.dt th{text-align:left;font-size:12px;color:var(--ink2);font-weight:600;border-bottom:1px solid var(--line);padding:4px 6px}
+.dt td{padding:5px 6px;border-bottom:1px solid var(--line)}
+.dt tr.cur td{background:var(--navy-bg)}
+.dt tr.chg td{background:var(--teal-bg)}
+.ok{color:var(--green);font-weight:600}.bad{color:var(--red);font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--ink2);margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.lg-node{width:14px;height:14px;border-radius:50%;display:inline-block;border:1.5px solid}
+.lg-edge{width:22px;height:0;display:inline-block;border-top:3px solid}
+.pathbox{margin-top:8px;font-size:14px}
+.foot{max-width:1180px;margin:0 auto;padding:0 20px 26px;font-size:12.5px;color:var(--ink2);display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr);padding:12px 12px 24px}.top{padding:10px 12px}.foot{padding:0 12px 22px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div><h1>Dijkstra's shortest paths</h1><p class="muted small">Find the shortest distance from one node to every other node in a graph with non-negative edge weights.</p></div>
+  <div class="tools">
+    <label class="small muted" for="preset">Graph</label><select id="preset"></select>
+    <label class="small muted" for="source">Start from</label><select id="source"></select>
+    <button class="btn" id="editBtn" aria-pressed="false">Edit graph</button>
+  </div>
+</div></header>
+
+<main class="grid">
+  <section class="card" aria-label="Graph and controls">
+    <div class="stage-head"><span id="phase" class="chip ph-init">Start</span><span id="gname" class="muted small">Numbers on edges are weights (lengths)</span></div>
+    <div id="stage"><svg id="svg" viewBox="0 0 640 400" role="img" aria-label="Weighted directed graph"></svg></div>
+    <div id="hint" class="hint" hidden>Click a node, then another node, to add that edge (weight 5) or remove it. Click a weight to change it (1–9). Click <b>Done editing</b> when finished.</div>
+    <div class="controls">
+      <button class="btn" id="resetBtn" title="Back to the start (R)">⟲ Start</button>
+      <button class="btn" id="prevBtn" title="Previous step (←)">◀ Back</button>
+      <button class="btn primary" id="playBtn" title="Play / pause (Space)">▶ Play</button>
+      <button class="btn" id="nextBtn" title="Next step (→)">Next ▶</button>
+      <div class="grow"><input type="range" id="scrub" min="0" max="0" value="0" aria-label="Jump to step"><span class="stepno" id="stepno"></span></div>
+      <label class="speed">Speed <input type="range" id="speed" min="1" max="5" value="3" aria-label="Playback speed"></label>
+    </div>
+    <div class="legend" aria-label="Legend">
+      <span><i class="lg-node" style="background:#fff;border-color:#9C998F"></i>Not reached (∞)</span>
+      <span><i class="lg-node" style="background:#DCE3F0;border-color:#1E3A6E"></i>Tentative distance</span>
+      <span><i class="lg-node" style="background:#002357;border-color:#002357"></i>Being finalised</span>
+      <span><i class="lg-node" style="background:#DCFCE7;border-color:#15803D"></i>Final (shortest known)</span>
+      <span><i class="lg-edge" style="border-color:#006970"></i>Edge improves a distance</span>
+      <span><i class="lg-edge" style="border-top-style:dashed;border-color:#B45309"></i>No improvement</span>
+      <span><i class="lg-edge" style="border-top-width:2px;border-color:#1E3A6E"></i>Current best route</span>
+    </div>
+  </section>
+
+  <aside class="panel">
+    <div class="card"><h2>What is happening</h2><p id="explain" aria-live="polite"></p><div id="quiz"></div><div id="pathbox" class="pathbox"></div></div>
+    <div class="card"><h2>Python code (same steps as the simulation)</h2><ol class="code" id="code"></ol></div>
+    <div class="card">
+      <h2>Priority queue (smallest first)</h2><div class="chips" id="pq"></div>
+      <h2 style="margin-top:12px">Distances</h2>
+      <table class="dt"><thead><tr><th>Node</th><th>Distance</th><th>Comes from</th><th>Final?</th></tr></thead><tbody id="dist"></tbody></table>
+    </div>
+  </aside>
+</main>
+<div class="foot"><span id="check"></span><span>Every step is computed by a real implementation of the algorithm, not written by hand.</span></div>
+
+<script>
+(function () {
+const PRESETS = {
+  openmaic: { name: "OpenMAIC's example graph (4 nodes)", source: 'A', nodes: { A: [100, 200], B: [300, 80], C: [300, 320], D: [500, 200] },
+              edges: 'A>B:4 A>C:2 B>C:1 B>D:3 C>D:1' },
+  textbook: { name: 'Textbook example (6 nodes)', source: 'A', nodes: { A: [90, 200], B: [250, 90], C: [250, 310], D: [420, 90], E: [420, 310], F: [580, 200] },
+              edges: 'A>B:4 A>C:2 C>B:1 B>D:5 C>D:8 C>E:10 D>E:2 D>F:6 E>F:2' },
+  trap:     { name: 'The direct road is not the shortest', source: 'A', nodes: { A: [100, 230], B: [250, 90], C: [410, 90], D: [560, 230] },
+              edges: 'A>D:10 A>B:1 B>C:1 C>D:1' },
+  network:  { name: 'Bigger network (8 nodes)', source: 'A', nodes: { A: [80, 110], B: [230, 60], C: [380, 60], D: [540, 110], E: [80, 300], F: [230, 340], G: [380, 340], H: [540, 300] },
+              edges: 'A>B:2 A>E:6 B>C:3 B>F:2 F>B:1 E>F:1 F>G:4 C>G:1 C>D:6 G>D:2 G>H:5 D>H:1' },
+  unreach:  { name: 'Some nodes cannot be reached', source: 'A', nodes: { A: [100, 150], B: [280, 80], C: [280, 260], D: [460, 150], E: [580, 300] },
+              edges: 'A>B:3 A>C:1 C>B:1 B>D:2 E>D:1' }
+};
+const parse = p => ({ nodes: p.nodes, edges: p.edges.split(' ').map(e => { const [ab, w] = e.split(':'); const [a, b] = ab.split('>'); return [a, b, +w]; }) });
+const INF = Infinity, fmt = d => d === INF ? '∞' : String(d);
+
+// ---------- the algorithm (same as the Python shown on the page): produces every step ----------
+function buildTrace(g, s) {
+  const ids = Object.keys(g.nodes).sort(), adj = {};
+  ids.forEach(n => adj[n] = []);
+  g.edges.forEach(([a, b, w]) => adj[a].push([b, w]));
+  ids.forEach(n => adj[n].sort((x, y) => x[0] < y[0] ? -1 : 1));
+  const st = { phase: 'init', cur: null, edge: null, kind: null, dist: {}, prev: {}, fin: [], pq: [] };
+  ids.forEach(n => st.dist[n] = INF); st.dist[s] = 0; st.pq = [[0, s]];
+  const steps = [], B = x => '<b>' + x + '</b>';
+  const snap = (line, text, extra) => steps.push(Object.assign({ phase: st.phase, cur: st.cur, edge: st.edge ? st.edge.slice() : null, kind: st.kind,
+    dist: Object.assign({}, st.dist), prev: Object.assign({}, st.prev), fin: st.fin.slice(), pq: st.pq.map(e => e.slice()), line, text }, extra || {}));
+  snap(1, 'Start at ' + B(s) + ': its distance is 0. Every other node starts at ∞, meaning no path is known yet. Put (0, ' + s + ') in the priority queue.', { quiz: 'predict' });
+  st.phase = 'run';
+  const order = (x, y) => x[0] - y[0] || (x[1] < y[1] ? -1 : x[1] > y[1] ? 1 : 0);
+  while (st.pq.length) {
+    st.pq.sort(order);
+    const [d, u] = st.pq.shift();
+    st.cur = u; st.edge = null; st.kind = null;
+    if (st.fin.includes(u)) {
+      snap(5, 'Take (' + d + ', ' + u + ') from the queue. But ' + B(u) + ' is already final with distance ' + fmt(st.dist[u]) + ', so this is an old, out-of-date entry: skip it.', { popped: [d, u], stale: true });
+      continue;
+    }
+    st.fin.push(u);
+    snap(6, 'Take the smallest entry, ' + B('(' + d + ', ' + u + ')') + ', from the queue. ' + B(u) + ' is now ' + B('final') +
+            ': no shorter path to it can appear later, because every other route already costs at least ' + d + ' and weights are never negative.', { popped: [d, u] });
+    if (!adj[u].length) snap(7, B(u) + ' has no outgoing edges, so there is nothing to update.');
+    for (const [v, w] of adj[u]) {
+      st.edge = [u, v];
+      const cand = st.dist[u] + w;
+      if (st.fin.includes(v)) { st.kind = 'same'; snap(8, 'Edge ' + B(u + '→' + v) + ' (weight ' + w + '): ' + v + ' is already final, so nothing changes.'); continue; }
+      if (cand < st.dist[v]) {
+        const old = st.dist[v]; st.dist[v] = cand; st.prev[v] = u; st.pq.push([cand, v]); st.kind = 'improve';
+        snap(10, 'Edge ' + B(u + '→' + v) + ' (weight ' + w + '): ' + st.dist[u] + ' + ' + w + ' = ' + B(cand) + ', better than ' + fmt(old) +
+                 '. So dist[' + v + '] becomes ' + cand + ' (coming from ' + u + '), and (' + cand + ', ' + v + ') goes into the queue.', { changed: v });
+      } else {
+        st.kind = 'same'; snap(8, 'Edge ' + B(u + '→' + v) + ' (weight ' + w + '): ' + st.dist[u] + ' + ' + w + ' = ' + cand + ', which is not better than ' + fmt(st.dist[v]) + '. Keep ' + fmt(st.dist[v]) + '.');
+      }
+    }
+    st.edge = null; st.kind = null;
+  }
+  st.phase = 'done'; st.cur = null;
+  const unreached = ids.filter(n => st.dist[n] === INF);
+  snap(3, 'The queue is empty, so every reachable node is final. The dark edges form the ' + B('shortest-path tree') + '.' +
+          (unreached.length ? ' ' + unreached.map(B).join(', ') + (unreached.length === 1 ? ' cannot' : ' cannot') + ' be reached from ' + s + ', so ' + (unreached.length === 1 ? 'its' : 'their') + ' distance stays ∞.' : '') +
+          ' Click any node to see its shortest path.');
+  // quick check: on the step before the second pop, ask which entry comes out next
+  const pops = steps.map((x, i) => x.popped ? i : -1).filter(i => i >= 0);
+  if (pops.length > 1) { const i = pops[1]; steps[i - 1].quiz = 'next'; steps[i - 1].nextAns = steps[i].popped[1]; }
+  return steps;
+}
+
+// ---------- independent check: Bellman-Ford must give the same distances ----------
+function bellmanFord(g, s) {
+  const d = {}; Object.keys(g.nodes).forEach(n => d[n] = INF); d[s] = 0;
+  for (let i = 0; i < Object.keys(g.nodes).length - 1; i++) g.edges.forEach(([a, b, w]) => { if (d[a] + w < d[b]) d[b] = d[a] + w; });
+  return d;
+}
+
+// ---------- state ----------
+const S = { key: 'textbook', g: parse(PRESETS.textbook), src: 'A', steps: [], i: 0, playing: false, timer: null, edit: false, sel: null, predict: null, predictErr: false, nextAns: null, pathTo: null };
+const DELAY = [1700, 1250, 900, 650, 420];
+let R = 22, K = 1;
+const $ = id => document.getElementById(id), r1 = n => Math.round(n * 10) / 10;
+
+function target() { // the reachable node that ends up farthest away (used for the prediction question)
+  const last = S.steps[S.steps.length - 1], ids = Object.keys(S.g.nodes).sort();
+  return ids.filter(n => last.dist[n] !== INF && n !== S.src).sort((a, b) => last.dist[b] - last.dist[a] || (a < b ? -1 : 1))[0] || null;
+}
+function rebuild(keepSrc) {
+  const ids = Object.keys(S.g.nodes).sort();
+  if (!keepSrc || !ids.includes(S.src)) S.src = (PRESETS[S.key] && PRESETS[S.key].source) || ids[0];
+  $('source').innerHTML = ids.map(n => '<option' + (n === S.src ? ' selected' : '') + '>' + n + '</option>').join('');
+  S.steps = buildTrace(S.g, S.src); S.i = 0; S.predict = null; S.predictErr = false; S.nextAns = null; S.pathTo = null;
+  const last = S.steps[S.steps.length - 1], bf = bellmanFord(S.g, S.src);
+  const ok = ids.every(n => bf[n] === last.dist[n]);
+  $('check').innerHTML = ok ? '<span class="ok">✓ Answer checked</span> against an independent method (Bellman–Ford): all ' + ids.length + ' distances match.'
+                            : '<span class="bad">✗ Mismatch with the independent check.</span>';
+  $('scrub').max = S.steps.length - 1;
+  render();
+}
+
+// ---------- drawing (shared graph template) ----------
+function unit(a, b) { const x = b[0] - a[0], y = b[1] - a[1], l = Math.hypot(x, y) || 1; return [x / l, y / l]; }
+function edgeGeom(p, q, curved) {
+  const [ux, uy] = unit(p, q), off = curved ? 26 * K : 0;
+  const c = [(p[0] + q[0]) / 2 - uy * off, (p[1] + q[1]) / 2 + ux * off];
+  const d0 = unit(p, c), d1 = unit(q, c);
+  const s = [p[0] + d0[0] * R, p[1] + d0[1] * R], tip = [q[0] + d1[0] * (R + 1), q[1] + d1[1] * (R + 1)];
+  const t = unit(c, tip), al = 11 * K, aw = 5.5 * K, base = [tip[0] - t[0] * al, tip[1] - t[1] * al], n = [-t[1], t[0]];
+  const mid = [0.25 * s[0] + 0.5 * c[0] + 0.25 * base[0], 0.25 * s[1] + 0.5 * c[1] + 0.25 * base[1]];
+  return { mid, d: 'M' + r1(s[0]) + ',' + r1(s[1]) + ' Q' + r1(c[0]) + ',' + r1(c[1]) + ' ' + r1(base[0]) + ',' + r1(base[1]),
+           head: [tip, [base[0] + n[0] * aw, base[1] + n[1] * aw], [base[0] - n[0] * aw, base[1] - n[1] * aw]].map(p2 => r1(p2[0]) + ',' + r1(p2[1])).join(' ') };
+}
+function fit() {
+  const pts = Object.values(S.g.nodes), xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+  const box = k => { const px = 82 * k, py = 62 * k; let x = Math.min(...xs) - px, y = Math.min(...ys) - py, w = Math.max(...xs) - Math.min(...xs) + 2 * px, h = Math.max(...ys) - Math.min(...ys) + 2 * py;
+    if (h < w * 0.5) { y -= (w * 0.5 - h) / 2; h = w * 0.5; } if (h > w * 0.8) { x -= (h / 0.8 - w) / 2; w = h / 0.8; } return [x, y, w, h]; };
+  const cw = $('svg').clientWidth || 640;
+  K = Math.max(1, Math.min(1.6, box(1)[2] / cw * 0.95)); R = 22 * K;
+  $('svg').setAttribute('viewBox', box(K).map(r1).join(' '));
+}
+function pillSpot(id, hw, hh) {
+  const p = S.g.nodes[id], dirs = [];
+  S.g.edges.forEach(([a, b]) => { if (a === id) dirs.push(unit(p, S.g.nodes[b])); if (b === id) dirs.push(unit(p, S.g.nodes[a])); });
+  const cands = [[0, R + hh + 5], [0, -(R + hh + 5)], [-(R + hw + 5), 0], [R + hw + 5, 0], [-(hw + 6), R + hh + 1], [hw + 6, R + hh + 1], [-(hw + 6), -(R + hh + 1)], [hw + 6, -(R + hh + 1)]];
+  let best = cands[0], bestScore = Infinity;
+  cands.forEach(c => { const u = unit([0, 0], c), sc = dirs.length ? Math.max(...dirs.map(d => d[0] * u[0] + d[1] * u[1])) : -1; if (sc < bestScore - 1e-6) { bestScore = sc; best = c; } });
+  return [p[0] + best[0], p[1] + best[1]];
+}
+function pathEdges(s, v) { const set = new Set(); if (s.dist[v] === INF) return set; let x = v; while (s.prev[x] !== undefined) { set.add(s.prev[x] + '>' + x); x = s.prev[x]; } return set; }
+function draw(s) {
+  fit();
+  const has = new Set(S.g.edges.map(([a, b]) => a + '>' + b));
+  const onPath = S.pathTo && s.phase === 'done' ? pathEdges(s, S.pathTo) : new Set();
+  const f = n => r1(n * K);
+  let out = '', labels = '';
+  S.g.edges.forEach(([u, v, w], j) => {
+    const geo = edgeGeom(S.g.nodes[u], S.g.nodes[v], has.has(v + '>' + u));
+    const isCur = s.edge && s.edge[0] === u && s.edge[1] === v, inTree = s.prev[v] === u;
+    let col = '#B4B0A5', wd = 1.6, dash = '';
+    if (inTree) { col = '#1E3A6E'; wd = 2.6; }
+    if (onPath.size) { col = onPath.has(u + '>' + v) ? '#006970' : (inTree ? '#8D9AB5' : '#CFCBC1'); wd = onPath.has(u + '>' + v) ? 4 : wd; }
+    if (isCur && s.kind === 'improve') { col = '#006970'; wd = 3.6; }
+    if (isCur && s.kind === 'same') { col = '#B45309'; wd = 3; dash = ' stroke-dasharray="' + f(6) + ' ' + f(4) + '"'; }
+    out += '<path d="' + geo.d + '" fill="none" stroke="' + col + '" stroke-width="' + r1(wd * K) + '"' + dash + ' stroke-linecap="round"/><polygon points="' + geo.head + '" fill="' + col + '"/>';
+    const [mx, my] = geo.mid, hot = isCur || onPath.has(u + '>' + v);
+    labels += '<g class="wl" data-e="' + j + '"><rect x="' + r1(mx - 11 * K) + '" y="' + r1(my - 10 * K) + '" width="' + f(22) + '" height="' + f(20) + '" rx="' + f(6) + '" fill="#fff" stroke="' + (hot ? col : '#D9D5CB') + '" stroke-width="' + f(hot ? 1.6 : 1) + '"/>' +
+              '<text x="' + r1(mx) + '" y="' + r1(my + 4.5 * K) + '" text-anchor="middle" font-size="' + f(12.5) + '" font-weight="650" fill="#1F1E1D">' + w + '</text></g>';
+  });
+  out += labels;
+  Object.keys(S.g.nodes).sort().forEach(id => {
+    const [x, y] = S.g.nodes[id], d = s.dist[id], fin = s.fin.includes(id);
+    let fill = '#fff', stroke = '#9C998F', sw = 1.6, txt = '#1F1E1D';
+    if (d !== INF) { fill = '#DCE3F0'; stroke = '#1E3A6E'; sw = 2; }
+    if (fin) { fill = '#DCFCE7'; stroke = '#15803D'; sw = 2.4; }
+    if (s.cur === id && s.phase === 'run' && !s.stale) { fill = '#002357'; stroke = '#002357'; txt = '#fff'; }
+    if (s.cur === id && s.stale) out += '<circle cx="' + x + '" cy="' + y + '" r="' + r1(R + 6 * K) + '" fill="none" stroke="#B45309" stroke-width="' + f(2) + '" stroke-dasharray="' + f(5) + ' ' + f(4) + '"/>';
+    if (S.pathTo === id && s.phase === 'done') { stroke = '#006970'; sw = 3.6; }
+    out += '<g class="node" data-id="' + id + '">';
+    if (S.edit && S.sel === id) out += '<circle cx="' + x + '" cy="' + y + '" r="' + r1(R + 7 * K) + '" fill="none" stroke="#EA580C" stroke-width="' + f(2) + '" stroke-dasharray="' + f(5) + ' ' + f(4) + '"/>';
+    out += '<circle cx="' + x + '" cy="' + y + '" r="' + r1(R + 9 * K) + '" fill="transparent"/>' +
+           '<circle cx="' + x + '" cy="' + y + '" r="' + r1(R) + '" fill="' + fill + '" stroke="' + stroke + '" stroke-width="' + f(sw) + '"/>' +
+           '<text x="' + x + '" y="' + r1(y + 5.5 * K) + '" text-anchor="middle" font-size="' + f(16) + '" font-weight="650" fill="' + txt + '">' + id + '</text>';
+    const [px, py] = pillSpot(id, 21 * K, 9 * K), changed = s.changed === id;
+    out += '<rect x="' + r1(px - 21 * K) + '" y="' + r1(py - 9 * K) + '" width="' + f(42) + '" height="' + f(18) + '" rx="' + f(9) + '" fill="' + (changed ? '#E5F3F3' : fin ? '#F0FAF3' : '#fff') + '" stroke="' + (changed ? '#006970' : fin ? '#15803D' : '#A19E94') + '" stroke-width="' + f(changed ? 1.8 : 1) + '"/>' +
+           '<text x="' + r1(px) + '" y="' + r1(py + 4 * K) + '" text-anchor="middle" font-size="' + f(11.5) + '" font-weight="650" fill="#1F1E1D">d=' + fmt(d) + '</text>';
+    out += '</g>';
+  });
+  $('svg').innerHTML = out;
+  $('svg').setAttribute('aria-label', 'Weighted directed graph. ' + s.text.replace(/<[^>]+>/g, ''));
+}
+
+// ---------- panels ----------
+const CODE = [
+  'dist = {v: inf for v in G}; dist[s] = 0',
+  'pq = [(0, s)]                     # min-heap',
+  'while pq:',
+  '    d, u = heappop(pq)            # smallest first',
+  '    if u in final: continue       # old entry',
+  '    final.add(u)',
+  '    for v, w in G[u]:',
+  '        if dist[u] + w < dist[v]:',
+  '            dist[v] = dist[u] + w; prev[v] = u',
+  '            heappush(pq, (dist[v], v))'
+];
+const LINEMAP = { 1: [1, 2], 3: [3], 5: [4, 5], 6: [4, 6], 7: [7], 8: [7, 8], 10: [9, 10] };
+const PHASE = { init: ['Start', 'ph-init'], run: ['Running', 'ph-run'], done: ['Done', 'ph-done'] };
+function render() {
+  const s = S.steps[S.i];
+  draw(s);
+  $('phase').textContent = S.edit ? 'Editing' : PHASE[s.phase][0]; $('phase').className = 'chip ' + PHASE[s.phase][1];
+  let ex = s.text;
+  if (s.phase === 'done' && S.predict !== null) { const t = target(), ans = s.dist[t]; ex += ' You predicted dist[' + t + '] = <b>' + S.predict + '</b>' + (S.predict === ans ? ': correct!' : '; the answer is <b>' + ans + '</b>.'); }
+  $('explain').innerHTML = S.edit ? 'Edit mode: click a node, then another node, to add or remove that edge. Click a weight to change it.' : ex;
+  $('quiz').innerHTML = S.edit ? '' : quizHtml(s);
+  const t = S.pathTo && s.phase === 'done' ? S.pathTo : null;
+  if (t) {
+    const nodes = []; let x = t; if (s.dist[t] !== INF) { nodes.unshift(x); while (s.prev[x] !== undefined) { x = s.prev[x]; nodes.unshift(x); } }
+    $('pathbox').innerHTML = s.dist[t] === INF ? 'No path from ' + S.src + ' to <b>' + t + '</b>.' : 'Shortest path to <b>' + t + '</b>: ' + nodes.join(' → ') + ' (length <b>' + s.dist[t] + '</b>)';
+  } else $('pathbox').innerHTML = '';
+  const hl = LINEMAP[s.line] || [];
+  $('code').innerHTML = CODE.map((c, j) => '<li class="' + (hl.includes(j + 1) ? 'on' : '') + '">' + c.replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</li>').join('');
+  const pq = s.pq.slice().sort((a, b) => a[0] - b[0] || (a[1] < b[1] ? -1 : 1));
+  $('pq').innerHTML = (s.popped ? '<span class="small muted">just taken:</span> <span class="tok' + (s.stale ? ' stale' : ' min') + '">(' + s.popped[0] + ', ' + s.popped[1] + ')</span> <span class="small muted">· in queue:</span> ' : '') +
+    (pq.length ? pq.map((e, j) => '<span class="tok' + (s.fin.includes(e[1]) || e[0] > s.dist[e[1]] ? ' stale' : (j === 0 && !s.popped ? ' min' : '')) + '">(' + e[0] + ', ' + e[1] + ')</span>').join('') : '<span class="empty">empty</span>');
+  $('dist').innerHTML = Object.keys(S.g.nodes).sort().map(n => '<tr class="' + (s.cur === n && s.phase === 'run' ? 'cur' : s.changed === n ? 'chg' : '') + '"><td><b>' + n + '</b></td><td>' + fmt(s.dist[n]) + '</td><td>' + (s.prev[n] || (n === S.src ? 'start' : '–')) + '</td><td>' + (s.fin.includes(n) ? '✓' : '') + '</td></tr>').join('');
+  $('scrub').value = S.i; $('stepno').textContent = 'Step ' + (S.i + 1) + ' / ' + S.steps.length;
+  const lock = S.edit;
+  ['resetBtn', 'prevBtn', 'playBtn', 'nextBtn', 'scrub', 'source'].forEach(id => $(id).disabled = lock);
+  $('prevBtn').disabled = lock || S.i === 0; $('nextBtn').disabled = lock || S.i === S.steps.length - 1;
+  $('playBtn').innerHTML = S.playing ? '❚❚ Pause' : (S.i === S.steps.length - 1 ? '⟲ Replay' : '▶ Play');
+  $('stage').classList.toggle('editing', S.edit); $('stage').classList.toggle('done', s.phase === 'done' && !S.edit);
+  $('hint').hidden = !S.edit;
+  $('editBtn').textContent = S.edit ? 'Done editing' : 'Edit graph'; $('editBtn').classList.toggle('on', S.edit); $('editBtn').setAttribute('aria-pressed', S.edit);
+}
+function quizHtml(s) {
+  if (s.quiz === 'predict') {
+    const t = target(); if (!t) return '';
+    return '<div class="quiz"><p><b>Predict first:</b> what is the shortest distance from ' + S.src + ' to ' + t + '?</p><div class="qrow"><input type="number" id="predIn" min="0" step="1" inputmode="numeric" aria-label="Your prediction" value="' + (S.predict !== null ? S.predict : '') + '">' +
+      '<button class="btn" id="predBtn">Save</button></div>' + (S.predictErr ? '<p class="err">Enter a whole number first</p>' : '') + (S.predict !== null ? '<p class="fb muted">Saved. Play the steps to see if you are right.</p>' : '') + '</div>';
+  }
+  if (s.quiz === 'next') {
+    const cands = [...new Set(s.pq.map(e => e[1]))].sort(), ans = s.nextAns;
+    let fb = '';
+    if (S.nextAns2 !== undefined && S.nextAns2 !== null) fb = S.nextAns2 === ans ? '<p class="fb" style="color:var(--green)">Right: ' + ans + ' has the smallest distance in the queue, so it comes out next.</p>'
+                                                                               : '<p class="fb" style="color:var(--amber)">Not quite: look for the smallest number in the queue.</p>';
+    return '<div class="quiz"><p><b>Quick check:</b> which node comes out of the priority queue next?</p><div class="qrow">' +
+      cands.map(n => '<button class="chipbtn' + (S.nextAns2 === n ? (n === ans ? ' right' : ' wrong') : '') + '" data-next="' + n + '">' + n + '</button>').join('') + '</div>' + fb + '</div>';
+  }
+  return '';
+}
+
+// ---------- playback ----------
+function go(i) { S.i = Math.max(0, Math.min(S.steps.length - 1, i)); render(); }
+function stop() { S.playing = false; clearTimeout(S.timer); render(); }
+function tick() {
+  if (!S.playing) return;
+  const s = S.steps[S.i];
+  // pause at an unanswered question, unless the student pressed Play on that very step
+  if (S.i >= S.steps.length - 1 || (s.quiz === 'next' && (S.nextAns2 === undefined || S.nextAns2 === null) && S.i !== S.playFrom)) { stop(); return; }
+  go(S.i + 1); S.timer = setTimeout(tick, DELAY[$('speed').value - 1]);
+}
+function play() {
+  if (S.playing) { stop(); return; }
+  if (S.i >= S.steps.length - 1) S.i = 0;
+  S.playFrom = S.i; S.playing = true; render(); S.timer = setTimeout(tick, Math.min(500, DELAY[$('speed').value - 1]));
+}
+function markCustom() {
+  if (!$('preset').querySelector('option[value="custom"]')) $('preset').insertAdjacentHTML('beforeend', '<option value="custom">Custom (edited)</option>');
+  $('preset').value = 'custom'; S.key = 'custom';
+}
+
+// ---------- wiring ----------
+$('preset').innerHTML = Object.entries(PRESETS).map(([k, p]) => '<option value="' + k + '">' + p.name + '</option>').join('');
+$('preset').value = S.key;
+$('preset').addEventListener('change', e => {
+  if (e.target.value === 'custom') return;
+  stop(); S.key = e.target.value; S.g = parse(PRESETS[S.key]); S.edit = false; S.sel = null; S.nextAns2 = null;
+  const c = $('preset').querySelector('option[value="custom"]'); if (c) c.remove();
+  rebuild(false);
+});
+$('source').addEventListener('change', e => { stop(); S.src = e.target.value; S.nextAns2 = null; rebuild(true); });
+$('editBtn').addEventListener('click', () => { stop(); S.edit = !S.edit; S.sel = null; if (S.edit) { S.i = 0; render(); } else { S.nextAns2 = null; rebuild(true); } });
+$('resetBtn').addEventListener('click', () => { stop(); go(0); });
+$('prevBtn').addEventListener('click', () => { stop(); go(S.i - 1); });
+$('nextBtn').addEventListener('click', () => { stop(); go(S.i + 1); });
+$('playBtn').addEventListener('click', play);
+$('scrub').addEventListener('input', e => { const v = +e.target.value; stop(); go(v); });
+$('quiz').addEventListener('click', e => {
+  if (e.target.id === 'predBtn') { const v = $('predIn').value.trim(); if (!/^\d+$/.test(v)) { S.predictErr = true; render(); return; } S.predict = +v; S.predictErr = false; render(); }
+  const n = e.target.closest('[data-next]'); if (n) { S.nextAns2 = n.dataset.next; render(); }
+});
+$('quiz').addEventListener('input', e => { if (e.target.id === 'predIn' && S.predictErr) { S.predictErr = false; const er = $('quiz').querySelector('.err'); if (er) er.remove(); } });
+$('svg').addEventListener('click', e => {
+  const s = S.steps[S.i];
+  if (!S.edit) { const n = e.target.closest('.node'); if (s.phase === 'done' && n) { S.pathTo = S.pathTo === n.dataset.id ? null : n.dataset.id; render(); } return; }
+  const wl = e.target.closest('.wl');
+  if (wl) { const ed = S.g.edges[+wl.dataset.e]; ed[2] = ed[2] >= 9 ? 1 : ed[2] + 1; markCustom(); S.steps = buildTrace(S.g, S.src); S.i = 0; render(); return; }
+  const n = e.target.closest('.node');
+  if (!n) { S.sel = null; render(); return; }
+  const id = n.dataset.id;
+  if (S.sel === null) S.sel = id;
+  else if (S.sel === id) S.sel = null;
+  else { const j = S.g.edges.findIndex(([a, b]) => a === S.sel && b === id); if (j >= 0) S.g.edges.splice(j, 1); else S.g.edges.push([S.sel, id, 5]); markCustom(); S.sel = null; S.steps = buildTrace(S.g, S.src); S.i = 0; }
+  render();
+});
+document.addEventListener('keydown', e => {
+  if (S.edit || /INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); stop(); go(S.i + 1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); stop(); go(S.i - 1); }
+  else if (e.key === ' ' && e.target.tagName !== 'BUTTON') { e.preventDefault(); play(); }
+  else if (e.key === 'r' || e.key === 'R') { stop(); go(0); }
+});
+let rz = null;
+window.addEventListener('resize', () => { cancelAnimationFrame(rz); rz = requestAnimationFrame(() => draw(S.steps[S.i])); });
+window.dijkstraSim = { presets: PRESETS, run: (key, src) => { const g = parse(PRESETS[key]), st = buildTrace(g, src || PRESETS[key].source); return { steps: st.length, dist: st[st.length - 1].dist }; } };
+rebuild(false);
+})();
+</script>
+</body>
+</html>

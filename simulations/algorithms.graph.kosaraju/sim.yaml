@@ -1,0 +1,19 @@
+id: algorithms.graph.kosaraju
+type: [1-step-through, 5-networks]
+title: "Kosaraju's algorithm: strongly connected components, step by step"
+summary: "Pick or edit a directed graph, then step through both passes of Kosaraju: the finishing order, the reversed graph and each strongly connected component."
+version: 1.0.0
+status: team-checked              # draft | team-checked | retired  (professor approval is per course, in the app)
+courses: [CSE222]
+topics: [strongly connected components, Kosaraju's algorithm, depth first search, graph transpose]
+interactivity: L3
+engine: {name: own HTML/JS + SVG}
+files: {page: page.html, qa: qa.py}
+checks:
+  independent: "every pair of nodes tested for mutual reachability, independently of Kosaraju"
+  qa: "browser click-through at laptop and phone width, fuzz tests against a Python reference"
+sensitive: false
+offline: true
+class_example: false               # the page does not report its setup yet
+changelog:
+  - {version: 1.0.0, date: 2026-10-27, by: Amit, change: "first version (with Claude); moved into the catalogue on 2026-11-02"}

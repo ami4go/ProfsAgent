@@ -1,0 +1,19 @@
+id: algorithms.graph.dijkstra
+type: [1-step-through, 5-networks]
+title: "Dijkstra's shortest paths, step by step"
+summary: "Pick or edit a weighted graph and a start node, then step through Dijkstra: the priority queue, each relaxed edge and the final shortest paths."
+version: 1.0.0
+status: team-checked              # draft | team-checked | retired  (professor approval is per course, in the app)
+courses: [CSE222, CSE102]
+topics: [single source shortest paths, Dijkstra's algorithm, priority queue, negative edge weights]
+interactivity: L3
+engine: {name: own HTML/JS + SVG}
+files: {page: page.html, qa: qa.py}
+checks:
+  independent: "Bellman-Ford on the same graph; presets include a negative-edge trap and an unreachable node"
+  qa: "browser click-through at laptop and phone width, fuzz tests against a Python reference"
+sensitive: false
+offline: true
+class_example: false               # the page does not report its setup yet
+changelog:
+  - {version: 1.0.0, date: 2026-10-27, by: Amit, change: "first version (with Claude); moved into the catalogue on 2026-11-02"}

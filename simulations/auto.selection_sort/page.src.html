@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Selection Sort</title>
+<link rel="stylesheet" href="../_engines/stepper/stepper.css">
+</head>
+<body>
+<script src="../_engines/share/share.js"></script>
+<script src="../_engines/stepper/stepper.js"></script>
+<script>
+'use strict';
+// recipe: written by the machine (auto-build), accepted by _engines/stepper/qa_recipe.py
+const recipe = {
+  title: 'Selection Sort',
+  summary: 'Step through Selection Sort, finding the minimum element in each pass and swapping it into place.',
+  topics: ['selection sort', 'sorting algorithms', 'in-place sorting', 'quadratic time complexity'],
+  checked_by: 'an independent sort, exact comparison formula n(n-1)/2, and simulated swap count',
+  intro: 'Selection Sort divides the array into sorted and unsorted regions. In each pass, it finds the smallest element in the unsorted region and swaps it to the end of the sorted region.',
+  inputs: [
+    {
+      id: 'list',
+      label: 'Array elements (space-separated integers)',
+      kind: 'text',
+      mono: true,
+      help: 'Type 2 to 15 whole numbers separated by spaces.'
+    }
+  ],
+  presets: [
+    { name: 'Unsorted sample', values: { list: '29 10 14 37 13' } },
+    { name: 'Reverse sorted', values: { list: '50 40 30 20 10' } },
+    { name: 'Already sorted', values: { list: '5 12 18 25 31' } }
+  ],
+  code: [
+    'for i = 0 to n - 2:',
+    '    min_idx = i',
+    '    for j = i + 1 to n - 1:',
+    '        if a[j] < a[min_idx]: min_idx = j',
+    '    swap a[i] and a[min_idx]',
+    'array is sorted'
+  ],
+  parse(values) {
+    const str = String(values.list || '').trim();
+    if (!str) return { error: { field: 'list', message: 'Type numbers separated by spaces.' } };
+    const parts = str.split(/\s+/);
+    const a = parts.map(Number);
+    if (a.some(x => isNaN(x) || !Number.isInteger(x))) {
+      return { error: { field: 'list', message: 'Type whole numbers separated by spaces.' } };
+    }
+    if (a.length < 2) {
+      return { error: { field: 'list', message: 'Enter at least 2 numbers.' } };
+    }
+    if (a.length > 15) {
+      return { error: { field: 'list', message: 'Enter at most 15 numbers for step-by-step tracing.' } };
+    }
+    return { a };
+  },
+  run(values) {
+    const p = recipe.parse(values);
+    if (p.error) return p;
+
+    const a = [...p.a];
+    const n = a.length;
+    const steps = [];
+    let comparisons = 0;
+    let swaps = 0;
+
+    const makeView = (i, j, minIdx, swapA, swapB) => {
+      const marks = {};
+      for (let k = 0; k < i; k++) marks[k] = 'done';
+      if (minIdx !== null && minIdx !== undefined && minIdx >= 0) marks[minIdx] = 'min';
+      if (j !== null && j !== undefined) marks[j] = 'compare';
+      if (swapA !== undefined && swapB !== undefined) {
+        marks[swapA] = 'swap';
+        marks[swapB] = 'swap';
+      }
+      const pointers = {};
+      if (i !== null && i !== undefined && i < n) pointers.i = i;
+      if (j !== null && j !== undefined && j < n) pointers.j = j;
+      if (minIdx !== null && minIdx !== undefined && minIdx < n) pointers.min = minIdx;
+
+      return [
+        { type: 'array', label: 'Array', items: [...a], marks, pointers, bars: true },
+        { type: 'vars', label: 'Variables', values: { i: i ?? '-', j: j ?? '-', min_idx: minIdx ?? '-', comparisons, swaps } }
+      ];
+    };
+
+    for (let i = 0; i < n - 1; i++) {
+      steps.push({
+        line: 1,
+        note: `Pass ${i + 1}: Find the minimum element in unsorted range a[${i}..${n - 1}].`,
+        view: makeView(i, null, null)
+      });
+
+      let minIdx = i;
+      steps.push({
+        line: 2,
+        note: `Initialize min_idx = ${i} (value ${a[i]}).`,
+        view: makeView(i, null, minIdx)
+      });
+
+      for (let j = i + 1; j < n; j++) {
+        comparisons++;
+        const isSmaller = a[j] < a[minIdx];
+        const prevMin = minIdx;
+
+        steps.push({
+          line: 4,
+          note: `Compare a[${j}] (${a[j]}) with current min a[${prevMin}] (${a[prevMin]}). ${isSmaller ? `${a[j]} < ${a[prevMin]}, update min_idx to ${j}.` : `${a[j]} >= ${a[prevMin]}, min_idx remains ${prevMin}.`}`,
+          view: makeView(i, j, minIdx),
+          ask: {
+            q: `Is a[${j}] (${a[j]}) smaller than current minimum a[${prevMin}] (${a[prevMin]})?`,
+            options: ['Yes', 'No'],
+            answer: isSmaller ? 'Yes' : 'No',
+            why: isSmaller
+              ? `${a[j]} is smaller than ${a[prevMin]}, so min_idx updates to ${j}.`
+              : `${a[j]} is not smaller than ${a[prevMin]}, so min_idx stays ${prevMin}.`
+          }
+        });
+
+        if (isSmaller) {
+          minIdx = j;
+        }
+      }
+
+      if (minIdx !== i) {
+        swaps++;
+        steps.push({
+          line: 5,
+          note: `Swap a[${i}] (${a[i]}) with minimum element a[${minIdx}] (${a[minIdx]}).`,
+          view: makeView(i, null, minIdx, i, minIdx)
+        });
+        const temp = a[i];
+        a[i] = a[minIdx];
+        a[minIdx] = temp;
+      } else {
+        steps.push({
+          line: 5,
+          note: `Minimum element is already at position ${i} (${a[i]}), no swap required.`,
+          view: makeView(i, null, minIdx)
+        });
+      }
+    }
+
+    const finalMarks = {};
+    for (let k = 0; k < n; k++) finalMarks[k] = 'done';
+    steps.push({
+      line: 6,
+      note: `Array is fully sorted after ${n - 1} passes with ${comparisons} comparisons and ${swaps} swaps.`,
+      view: [
+        { type: 'array', label: 'Array', items: [...a], marks: finalMarks, pointers: {}, bars: true },
+        { type: 'vars', label: 'Variables', values: { i: '-', j: '-', min_idx: '-', comparisons, swaps } }
+      ]
+    });
+
+    return {
+      steps,
+      summary: `<b>Selection Sort complete:</b> Array sorted to <code>[${a.join(', ')}]</code> using <b>${comparisons}</b> comparisons and <b>${swaps}</b> swaps.`,
+      result: { sorted: a, comparisons, swaps }
+    };
+  },
+  check(values, trace) {
+    const p = recipe.parse(values);
+    if (p.error) return { ok: false, text: p.error.message };
+
+    const { a } = p;
+    const r = trace.result || {};
+
+    const expectedSorted = [...a].sort((x, y) => x - y);
+    const okSorted = Array.isArray(r.sorted) &&
+      r.sorted.length === expectedSorted.length &&
+      r.sorted.every((val, idx) => val === expectedSorted[idx]);
+
+    const expectedComps = (a.length * (a.length - 1)) / 2;
+    const okComps = r.comparisons === expectedComps;
+
+    let expectedSwaps = 0;
+    const copy = [...a];
+    for (let i = 0; i < copy.length - 1; i++) {
+      let minIdx = i;
+      for (let j = i + 1; j < copy.length; j++) {
+        if (copy[j] < copy[minIdx]) minIdx = j;
+      }
+      if (minIdx !== i) {
+        expectedSwaps++;
+        const tmp = copy[i];
+        copy[i] = copy[minIdx];
+        copy[minIdx] = tmp;
+      }
+    }
+    const okSwaps = r.swaps === expectedSwaps;
+
+    const ok = okSorted && okComps && okSwaps;
+    return {
+      ok,
+      text: ok
+        ? `Independent sort agrees (${r.sorted.join(', ')}), total comparisons equal n(n-1)/2 (${r.comparisons}), and swap count (${r.swaps}) matches.`
+        : `Selection sort check failed: sorted array, comparison count, or swap count mismatch.`
+    };
+  },
+  examples: [
+    { values: { list: '29 10 14 37 13' }, result: { sorted: [10, 13, 14, 29, 37], comparisons: 10, swaps: 3 } },
+    { values: { list: '5 4 3 2 1' }, result: { sorted: [1, 2, 3, 4, 5], comparisons: 10, swaps: 2 } },
+    { values: { list: '3 1 2' }, result: { sorted: [1, 2, 3], comparisons: 3, swaps: 2 } }
+  ],
+  random(rng) {
+    const n = 3 + Math.floor(rng() * 6);
+    const a = [];
+    for (let i = 0; i < n; i++) {
+      a.push(Math.floor(rng() * 90) + 5);
+    }
+    return { list: a.join(' ') };
+  }
+};
+window.__recipe = recipe;
+window.__sim = Stepper.mount(recipe);
+</script>
+</body>
+</html>

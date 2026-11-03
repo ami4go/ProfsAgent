@@ -1,0 +1,23 @@
+id: os.memory.page_replacement
+type: [1-step-through, 6-machines-inside]
+title: "Page replacement: FIFO, LRU and Optimal · step by step"
+summary: "Type a reference string, choose 1-8 frames and FIFO, LRU or Optimal; step through every hit and fault and predict which page leaves."
+version: 1.1.0
+status: team-checked              # draft | team-checked | retired  (professor approval is per course, in the app)
+courses: [CSE231]
+topics: [page replacement, virtual memory, page fault, FIFO, LRU, optimal page replacement, Belady's anomaly]
+interactivity: L3                 # own reference string, frames, algorithm; predict-the-victim questions
+engine: {name: stepper, path: _engines/stepper}
+files: {page_src: page.src.html, qa: qa.py}
+config:
+  inputs: [reference string, frames 1-8, algorithm]
+  examples: [textbook FIFO/LRU/Optimal with 3 frames, Belady's anomaly with 3 and 4 frames, a loop over 4 pages]
+checks:
+  independent: "live: a second implementation (queue, recency list, look-ahead; no timestamps) for 1-7 frames and all three algorithms"
+  qa: "textbook answers (FIFO 15, LRU 12, Optimal 9; Belady 9 -> 10); a Python implementation on 300 random strings x 1-6 frames x 3 algorithms; predict questions; link state; keyboard; phone; offline"
+sensitive: false
+offline: true
+class_example: true                # the app can save a professor's setup as the class example (page reports its state)
+changelog:
+  - {version: 1.1.0, date: 2026-11-03, by: Amit, change: "the setup is sent to the app as a class example (share.js); a link that matches an example now selects it"}
+  - {version: 1.0.0, date: 2026-11-02, by: Amit, change: "first version, the first simulation on the stepper engine"}

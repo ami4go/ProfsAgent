@@ -22,12 +22,15 @@ from fastapi.responses import FileResponse, JSONResponse
 
 from profsagent.app import delivery as dv
 from profsagent.app import formmap, views
+from profsagent.app import simulations as sims
 from profsagent.app.runner import PREFIX, RunManager, read_meta
 from profsagent.config import ROOT, RUNS, keys
 
 STATIC = Path(__file__).resolve().parent / "static"
 RUN_ID = re.compile(rf"^{PREFIX}[a-z0-9-]+$")
 NO_CACHE = {"Cache-Control": "no-store"}
+# simulation pages run sandboxed: their own origin (no access to this app's API), no network, no forms or frames
+SIM_CSP = "sandbox allow-scripts allow-downloads; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
 
 # "Fill with an example": only the required fields and a few others, so ProfsAgent fills in the rest
 EXAMPLE = {
@@ -74,7 +77,9 @@ def _export_pdf(run_dir: Path) -> Path:
 LID = re.compile(r"^W\d\d\.L\d+$")
 
 
-def create_app(manager: RunManager | None = None, start_worker: bool = True, delivery: dv.DeliveryManager | None = None) -> FastAPI:
+def create_app(manager: RunManager | None = None, start_worker: bool = True, delivery: dv.DeliveryManager | None = None,
+               sims_autobuild: bool | None = None) -> FastAPI:
+    autobuild = start_worker if sims_autobuild is None else sims_autobuild     # the simulation auto-build (its own process)
     mgr = manager or RunManager()
     dmgr = delivery or dv.DeliveryManager(runs=mgr.runs)
 
@@ -83,6 +88,11 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True, del
         if start_worker:
             mgr.start()
             dmgr.start()
+        if autobuild:
+            try:
+                sims.AB.start_worker(mgr.runs)       # simulation requests left waiting or half-built when the app stopped
+            except Exception:  # noqa: BLE001, S110 - never block the app's start
+                pass
         yield
         mgr.stop()
         dmgr.stop()
@@ -274,6 +284,7 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True, del
     @app.get("/api/delivery/{rid}")
     def delivery_view(rid: str):
         course_dir(rid)
+        sims.suggestions(rid, mgr.runs)          # simulation suggestions: made in the background the first time (~30 s)
         return nocache(dv.view(rid, mgr.runs))
 
     @app.put("/api/delivery/{rid}/survey/{lid}")
@@ -433,6 +444,78 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True, del
         if not p.exists():
             raise HTTPException(404, "No report yet")
         return {"html": markdown.markdown(p.read_text(encoding="utf-8"), extensions=["sane_lists"])}
+
+    # ================================================================ simulations (docs/09_phase2_A_simulation_catalogue.md §7)
+    @app.get("/api/simulations")
+    def simulations_list():
+        return nocache(sims.catalogue_view(mgr.runs))
+
+    @app.get("/api/simulations/{sid}/page")
+    def simulation_page(sid: str):
+        """The offline page. Served sandboxed (its own origin, no access to this app) and with no network access."""
+        try:
+            p = sims.page(sid)
+        except KeyError:
+            raise HTTPException(404, "No such simulation") from None
+        return FileResponse(p, media_type="text/html", headers={**NO_CACHE, "Content-Security-Policy": SIM_CSP, "X-Content-Type-Options": "nosniff"})
+
+    @app.post("/api/simulations/requests")
+    def simulation_request(body: dict = Body(...)):
+        """A professor asks for a simulation; the machine tries to build it (sims/autobuild.py) and the team gets what it cannot."""
+        out = sims.add_request(body, mgr.runs)
+        if out.get("errors"):
+            return JSONResponse(out, status_code=422)
+        if autobuild:
+            sims.AB.start_worker(mgr.runs)
+        return out
+
+    @app.post("/api/simulations/requests/{req_id}/found/{n}")
+    def simulation_request_found(req_id: str, n: int, body: dict = Body(...)):
+        """approve | reject | undo one simulation the search found for a request (the professor's review)."""
+        if not re.fullmatch(r"R\d{1,5}", req_id):
+            raise HTTPException(404, "No such request")
+        out = sims.review_found(req_id, n, str(body.get("decision") or ""), mgr.runs)
+        if out.get("problem"):
+            return JSONResponse(out, status_code=409)
+        if out.get("start_build") and autobuild:
+            sims.AB.start_worker(mgr.runs)
+        return out
+
+    @app.get("/api/simulations/requests/{req_id}/shot/{name}")
+    def simulation_request_shot(req_id: str, name: str):
+        """The screenshot the search took of a page it found."""
+        if not re.fullmatch(r"R\d{1,5}", req_id) or not re.fullmatch(r"\d{1,2}\.jpg", name):
+            raise HTTPException(404, "No such picture")
+        p = mgr.runs / sims.AB.BUILDS / req_id / "found" / name
+        if not p.exists():
+            raise HTTPException(404, "No such picture")
+        return FileResponse(p, media_type="image/jpeg", headers=NO_CACHE)
+
+    @app.post("/api/simulations/requests/{req_id}/build")
+    def simulation_request_build(req_id: str, body: dict | None = Body(None)):
+        if not re.fullmatch(r"R\d{1,5}", req_id):
+            raise HTTPException(404, "No such request")
+        out = sims.build_again(req_id, mgr.runs, str((body or {}).get("note") or ""))
+        if out.get("problem"):
+            return JSONResponse(out, status_code=409)
+        if autobuild:
+            sims.AB.start_worker(mgr.runs)
+        return out
+
+    @app.post("/api/delivery/{rid}/simulations/{lid}")
+    def delivery_simulation(rid: str, lid: str, body: dict = Body(...)):
+        """add (from the catalogue) | approve | replace | reject (with a reason) | undo, for one simulation of one lecture."""
+        course_dir(rid)
+        out = sims.decide(rid, lecture_id(lid), str(body.get("sim") or ""), str(body.get("decision") or ""), str(body.get("reason") or ""),
+                          runs=mgr.runs)
+        return JSONResponse(out, status_code=422) if out.get("problem") else out
+
+    @app.post("/api/delivery/{rid}/simulations/{lid}/class-example")
+    def delivery_simulation_example(rid: str, lid: str, body: dict = Body(...)):
+        course_dir(rid)
+        out = sims.class_example(rid, lecture_id(lid), str(body.get("sim") or ""), str(body.get("state") or ""), str(body.get("summary") or ""),
+                                 clear=bool(body.get("clear")), runs=mgr.runs)
+        return JSONResponse(out, status_code=422) if out.get("problem") else out
 
     return app
 

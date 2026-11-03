@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kosaraju's algorithm · step-by-step simulation</title>
+<style>
+:root{--navy:#002357;--navy2:#1E3A6E;--navy-bg:#DCE3F0;--canvas:#F8F8F6;--band:#F5F3ED;--card:#fff;--line:#E8E5DC;--ink:#1F1E1D;--ink2:#5E5D59;
+  --amber:#B45309;--amber-bg:#FEF3C7;--green:#15803D;--green-bg:#DCFCE7;--red:#B91C1C;--teal:#006970;--teal-bg:#E5F3F3;--orange:#EA580C}
+*{box-sizing:border-box}
+body{margin:0;background:var(--canvas);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+button,select,input{font:inherit;color:inherit}
+h1{font-size:20px;font-weight:650;margin:0;letter-spacing:-.01em}
+h2{font-size:13px;font-weight:650;margin:0 0 8px;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em}
+p{margin:0}
+.muted{color:var(--ink2)}.small{font-size:13px}.tiny{font-size:12px}
+.top{background:var(--card);border-bottom:1px solid var(--line);padding:12px 20px}
+.top-in{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+select,.btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 12px;min-height:40px}
+.btn{cursor:pointer;font-weight:550;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
+.btn:hover:not(:disabled){background:var(--band)}
+.btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}
+.btn.primary:hover:not(:disabled){background:var(--navy2)}
+.btn.on{background:#FFF7F2;border:1.5px dashed var(--orange);color:#9A3412}
+.btn:disabled{opacity:.45;cursor:default}
+.btn:focus-visible,select:focus-visible,.chipbtn:focus-visible,input:focus-visible{outline:2px solid var(--navy2);outline-offset:2px}
+.grid{max-width:1180px;margin:0 auto;padding:16px 20px 28px;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(300px,1fr);gap:16px;align-items:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.panel{display:flex;flex-direction:column;gap:12px}
+.stage-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.chip{font-size:12.5px;font-weight:600;padding:4px 11px;border-radius:999px;white-space:nowrap}
+.ph-p1{background:var(--navy-bg);color:var(--navy)}.ph-rev{background:var(--teal-bg);color:var(--teal)}
+.ph-p2{background:#E8E4F6;color:#3B2F8A}.ph-done{background:var(--green-bg);color:var(--green)}
+svg{width:100%;height:auto;display:block;background:#fff;border:1px solid var(--line);border-radius:10px;touch-action:manipulation}
+.node{cursor:default}.editing .node{cursor:pointer}
+.hint{margin-top:8px;font-size:13px;color:#9A3412;background:#FFF7F2;border:1px dashed var(--orange);border-radius:8px;padding:7px 10px}
+.timeline{display:flex;gap:4px;margin-top:12px}
+.seg{flex:1;min-width:58px;border:0;background:none;padding:0;cursor:pointer;text-align:left}
+.seg .bar{height:8px;border-radius:999px;background:var(--band);border:1px solid var(--line);overflow:hidden}
+.seg .bar>div{height:100%;background:var(--navy2);width:0}
+.seg .lbl{font-size:11.5px;color:var(--ink2);margin-top:3px;display:block}
+.seg.cur .lbl{color:var(--navy);font-weight:650}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.controls .grow{flex:1;min-width:160px;display:flex;align-items:center;gap:8px}
+input[type=range]{width:100%;accent-color:var(--navy2);min-height:28px}
+.stepno{font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--ink2);white-space:nowrap}
+.speed{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2)}
+.speed input{width:90px}
+#explain{font-size:15px;line-height:1.55;min-height:70px}
+#explain b{font-weight:650}
+.quiz{margin-top:10px;border-top:1px solid var(--line);padding-top:10px}
+.quiz p{font-size:13.5px}
+.chipbtn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 13px;min-width:44px;min-height:36px;cursor:pointer;font-weight:600}
+.chipbtn:hover{background:var(--band)}
+.chipbtn.right{background:var(--green-bg);border-color:var(--green);color:#14532D}
+.chipbtn.wrong{background:var(--amber-bg);border-color:var(--amber);color:#78350F}
+.fb{margin-top:6px;font-size:13px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:30px}
+.tok{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);background:#fff;border-radius:7px;padding:3px 8px;font-weight:600;font-size:13px;font-variant-numeric:tabular-nums}
+.tok small{font-weight:500;color:var(--ink2);font-size:11px}
+.tok.cur{border-color:var(--navy);box-shadow:0 0 0 1px var(--navy)}
+.tok.dim{opacity:.5}
+.arrow{color:var(--ink2);font-size:12px}
+.empty{color:var(--ink2);font-size:13px}
+.code{list-style:none;margin:0;padding:0;font:12.5px/1.5 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}
+.code li{padding:3px 8px;border-left:3px solid transparent;border-radius:0 6px 6px 0;white-space:pre-wrap}
+.code li.grp{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:11.5px;font-weight:650;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em;padding-top:8px}
+.code li.on{background:var(--navy-bg);border-left-color:var(--navy);color:var(--navy);font-weight:600}
+.scc-row{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:13.5px}
+.sw{width:14px;height:14px;border-radius:50%;flex:none;border:3px solid}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--ink2);margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.lg-node{width:14px;height:14px;border-radius:50%;display:inline-block;border:1.5px solid}
+.lg-edge{width:22px;height:0;display:inline-block;border-top:3px solid}
+.foot{max-width:1180px;margin:0 auto;padding:0 20px 26px;font-size:12.5px;color:var(--ink2);display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.ok{color:var(--green);font-weight:600}.bad{color:var(--red);font-weight:600}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr);padding:12px 12px 24px}.top{padding:10px 12px}.foot{padding:0 12px 22px}}
+@media (prefers-reduced-motion:reduce){.seg .bar>div{transition:none}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div><h1>Kosaraju's algorithm</h1><p class="muted small">Find the strongly connected components (SCCs) of a directed graph with two DFS passes.</p></div>
+  <div class="tools">
+    <label class="small muted" for="preset">Graph</label>
+    <select id="preset"></select>
+    <button class="btn" id="editBtn" aria-pressed="false">Edit edges</button>
+  </div>
+</div></header>
+
+<main class="grid">
+  <section class="card" aria-label="Graph and controls">
+    <div class="stage-head"><span id="phase" class="chip ph-p1">Pass 1 · DFS on G</span><span id="gname" class="muted small"></span></div>
+    <div id="stage"><svg id="svg" viewBox="0 0 640 400" role="img" aria-label="Directed graph"></svg></div>
+    <div id="hint" class="hint" hidden>Click a node, then another node, to add that edge (or remove it if it is there). Click <b>Done editing</b> when finished.</div>
+    <div class="timeline" id="timeline"></div>
+    <div class="controls">
+      <button class="btn" id="resetBtn" aria-label="Back to the start (R)" title="Back to the start (R)">⟲ Start</button>
+      <button class="btn" id="prevBtn" aria-label="Previous step (Left arrow)" title="Previous step (←)">◀ Back</button>
+      <button class="btn primary" id="playBtn" aria-label="Play or pause (Space)" title="Play / pause (Space)">▶ Play</button>
+      <button class="btn" id="nextBtn" aria-label="Next step (Right arrow)" title="Next step (→)">Next ▶</button>
+      <div class="grow"><input type="range" id="scrub" min="0" max="0" value="0" aria-label="Jump to step"><span class="stepno" id="stepno"></span></div>
+      <label class="speed">Speed <input type="range" id="speed" min="1" max="5" value="3" aria-label="Playback speed"></label>
+    </div>
+    <div class="legend" aria-label="Legend">
+      <span><i class="lg-node" style="background:#fff;border-color:#9C998F"></i>Not visited</span>
+      <span><i class="lg-node" style="background:#DCE3F0;border-color:#1E3A6E"></i>On the DFS path</span>
+      <span><i class="lg-node" style="background:#002357;border-color:#002357"></i>Current node</span>
+      <span><i class="lg-node" style="background:#EFEDE6;border-color:#8A877E"></i>Finished (f = finish number)</span>
+      <span><i class="lg-edge" style="border-color:#002357"></i>Edge being followed</span>
+      <span><i class="lg-edge" style="border-top-style:dashed;border-color:#B45309"></i>Skipped: already visited</span>
+      <span><i class="lg-edge" style="border-top-width:2px;border-color:#5B6B8C"></i>DFS tree edge</span>
+    </div>
+  </section>
+
+  <aside class="panel">
+    <div class="card"><h2>What is happening</h2><p id="explain" aria-live="polite"></p><div id="quiz"></div></div>
+    <div class="card"><h2>Pseudocode</h2><ol class="code" id="code"></ol></div>
+    <div class="card">
+      <h2>DFS path (stack)</h2><div class="chips" id="path"></div>
+      <h2 style="margin-top:12px" id="orderTitle">Finish order</h2><div class="chips" id="order"></div>
+      <h2 style="margin-top:12px">SCCs found</h2><div id="sccs"></div>
+    </div>
+  </aside>
+</main>
+<div class="foot"><span id="check"></span><span>Every step is computed by a real implementation of the algorithm, not written by hand.</span></div>
+
+<script>
+(function () {
+// ---------- graphs ----------
+const PRESETS = {
+  textbook: { name: 'Textbook example (8 nodes)', nodes: { A: [110, 110], B: [250, 110], C: [390, 110], D: [530, 110], E: [110, 290], F: [250, 290], G: [390, 290], H: [530, 290] },
+              edges: 'A>B B>C B>E B>F C>D C>G D>C D>H E>A E>F F>G G>F G>H' },
+  twoLoops: { name: 'Two loops joined', nodes: { A: [120, 110], B: [270, 110], C: [195, 290], D: [400, 110], E: [550, 110], F: [475, 290] },
+              edges: 'A>B B>C C>A C>D D>E E>F F>D' },
+  oneLoop:  { name: 'One big loop', nodes: { A: [320, 65], B: [453, 162], C: [402, 318], D: [238, 318], E: [187, 162] },
+              edges: 'A>B B>C C>D D>E E>A' },
+  noLoops:  { name: 'No loops (every node alone)', nodes: { A: [140, 205], B: [320, 95], C: [320, 315], D: [500, 205] },
+              edges: 'A>B A>C B>D C>D' },
+  tricky:   { name: 'Tricky: an edge leads back', nodes: { A: [150, 120], B: [340, 120], C: [245, 295], D: [485, 270] },
+              edges: 'A>B B>C C>A C>D D>B' }
+};
+const parse = p => ({ nodes: p.nodes, edges: p.edges.split(' ').map(e => e.split('>')) });
+
+// ---------- the algorithm: produces every step ----------
+function buildTrace(g) {
+  const ids = Object.keys(g.nodes).sort();
+  const adj = {}, radj = {};
+  ids.forEach(n => { adj[n] = []; radj[n] = []; });
+  g.edges.forEach(([a, b]) => { adj[a].push(b); radj[b].push(a); });
+  ids.forEach(n => { adj[n].sort(); radj[n].sort(); });
+  const steps = [];
+  const st = { phase: 'p1', cur: null, edge: null, kind: null, path: [], visited: new Set(), finish: [], tree: new Set(), comp: {}, comps: [], order: [] };
+  const snap = (line, text, extra) => steps.push(Object.assign({
+    phase: st.phase, cur: st.cur, edge: st.edge ? st.edge.slice() : null, kind: st.kind, path: st.path.slice(), visited: [...st.visited],
+    finish: st.finish.slice(), tree: [...st.tree], comp: Object.assign({}, st.comp), comps: st.comps.map(c => c.slice()), order: st.order.slice(), line, text }, extra || {}));
+  const B = x => '<b>' + x + '</b>';
+  const set = c => '{' + c.slice().sort().join(', ') + '}';
+  const clear = () => { st.edge = null; st.kind = null; };
+
+  snap(1, 'Pass 1 runs a normal depth-first search (DFS) on the original graph and records the order in which nodes ' + B('finish') + '.', { quiz: 'predict' });
+  function dfs1(u) {
+    st.visited.add(u); st.path.push(u); st.cur = u; clear();
+    snap(2, 'Visit ' + B(u) + ': mark it visited. It is now on the DFS path.');
+    for (const v of adj[u]) {
+      st.cur = u; st.edge = [u, v];
+      if (!st.visited.has(v)) { st.kind = 'go'; snap(3, 'Edge ' + B(u + '→' + v) + ': ' + v + ' is not visited yet, so go deeper to ' + B(v) + '.'); st.tree.add(u + '>' + v); dfs1(v); }
+      else { st.kind = 'skip'; snap(3, 'Edge ' + B(u + '→' + v) + ': ' + v + ' is already visited, so skip it.'); }
+    }
+    st.cur = u; clear(); st.path.pop(); st.finish.push(u);
+    snap(4, (adj[u].length ? 'Every edge out of ' + B(u) + ' has been handled' : B(u) + ' has no outgoing edges') + ', so ' + B(u) + ' finishes. It is number ' + B(st.finish.length) + ' in the finish order.');
+  }
+  for (const u of ids) {
+    if (st.visited.has(u)) continue;
+    st.cur = null; clear();
+    snap(1, st.finish.length ? 'That DFS is over. ' + B(u) + ' is still not visited, so start a new DFS from ' + B(u) + '.'
+                             : 'Take the nodes in alphabetical order. ' + B(u) + ' is not visited, so start a DFS from ' + B(u) + '.');
+    dfs1(u);
+  }
+  st.phase = 'rev'; st.cur = null; clear(); st.order = st.finish.slice().reverse();
+  snap(5, 'Pass 1 is done. Finish order: ' + st.finish.map(B).join(', ') + '. Now reverse every edge to get ' + B('Gᵀ') +
+          '. Reversing keeps every SCC together: a loop is still a loop, it just runs the other way.', { quiz: 'start' });
+  st.phase = 'p2';
+  snap(6, 'Pass 2 takes nodes from the ' + B('latest') + ' finish to the earliest: ' + st.order.map(B).join(', ') + '. Each DFS in Gᵀ will collect exactly one SCC.');
+  function dfs2(u, k) {
+    st.comp[u] = k; st.comps[k].push(u); st.path.push(u); st.cur = u; clear();
+    snap(8, 'Put ' + B(u) + ' in ' + B('SCC ' + (k + 1)) + '.');
+    for (const v of radj[u]) {
+      st.cur = u; st.edge = [u, v];
+      if (st.comp[v] === undefined) { st.kind = 'go'; snap(9, 'Reversed edge ' + B(u + '→' + v) + ': ' + v + ' has no SCC yet, so it joins SCC ' + (k + 1) + '.'); st.tree.add('r' + u + '>' + v); dfs2(v, k); }
+      else if (st.comp[v] === k) { st.kind = 'skip'; snap(9, 'Reversed edge ' + B(u + '→' + v) + ': ' + v + ' is already in this SCC, so skip it.'); }
+      else { st.kind = 'skip'; snap(9, 'Reversed edge ' + B(u + '→' + v) + ': ' + v + ' already belongs to ' + B('SCC ' + (st.comp[v] + 1)) +
+                                       ', so skip it. This is why the order matters: the search cannot leak into an SCC that is already finished.'); }
+    }
+    st.path.pop(); clear();
+  }
+  for (const u of st.order) {
+    st.cur = u; clear();
+    if (st.comp[u] !== undefined) { snap(6, 'Next in the order is ' + B(u) + ', but it is already in SCC ' + (st.comp[u] + 1) + '. Skip it.'); continue; }
+    const k = st.comps.length; st.comps.push([]);
+    snap(7, 'Next in the order is ' + B(u) + '. It has no SCC yet, so start ' + B('SCC ' + (k + 1)) + ' from ' + B(u) + '.');
+    dfs2(u, k);
+    st.cur = null;
+    snap(7, 'Nothing new can be reached in Gᵀ, so ' + B('SCC ' + (k + 1) + ' = ' + set(st.comps[k])) + ' is complete.');
+  }
+  st.phase = 'done'; st.cur = null; clear();
+  snap(0, 'Done. This graph has ' + B(st.comps.length) + ' strongly connected component' + (st.comps.length === 1 ? '' : 's') + ': ' + st.comps.map(c => B(set(c))).join(', ') + '.');
+  return steps;
+}
+
+// ---------- independent check: u and v share an SCC exactly when each can reach the other ----------
+function checkSCCs(g, comps) {
+  const ids = Object.keys(g.nodes), adj = {};
+  ids.forEach(n => adj[n] = []);
+  g.edges.forEach(([a, b]) => adj[a].push(b));
+  const reach = {};
+  ids.forEach(s => { const seen = new Set([s]), q = [s]; while (q.length) { const x = q.shift(); adj[x].forEach(y => { if (!seen.has(y)) { seen.add(y); q.push(y); } }); } reach[s] = seen; });
+  const key = c => c.slice().sort().join(',');
+  const truth = new Set(ids.map(u => key(ids.filter(v => reach[u].has(v) && reach[v].has(u)))));
+  const got = new Set(comps.map(key));
+  return truth.size === got.size && [...truth].every(k => got.has(k));
+}
+
+// ---------- state ----------
+const S = { key: 'textbook', g: parse(PRESETS.textbook), steps: [], i: 0, playing: false, timer: null, edit: false, sel: null, predict: null, startAns: null };
+const COL = ['#2a78d6', '#eb6834', '#1baf7a'], TINT = ['#E3EEFB', '#FDE8DF', '#DDF4EA'];
+const sccCol = k => k < 3 ? COL[k] : '#8A877E', sccTint = k => k < 3 ? TINT[k] : '#EFEDE6';
+const DELAY = [1700, 1250, 900, 650, 420];
+let R = 22, K = 1;   // node radius and size factor (bigger on narrow screens)
+const $ = id => document.getElementById(id);
+const r1 = n => Math.round(n * 10) / 10;
+
+function rebuild() {
+  S.steps = buildTrace(S.g); S.i = 0; S.predict = null; S.startAns = null;
+  const last = S.steps[S.steps.length - 1];
+  const ok = checkSCCs(S.g, last.comps);
+  $('check').innerHTML = ok ? '<span class="ok">✓ Answer checked</span> against an independent test (mutual reachability): ' + last.comps.length + ' SCC' + (last.comps.length === 1 ? '' : 's') + '.'
+                            : '<span class="bad">✗ Mismatch with the independent check.</span>';
+  $('scrub').max = S.steps.length - 1;
+  buildTimeline();
+  render();
+}
+
+// ---------- drawing ----------
+function unit(a, b) { const x = b[0] - a[0], y = b[1] - a[1], l = Math.hypot(x, y) || 1; return [x / l, y / l]; }
+function edgeGeom(p, q, curved) {
+  const [ux, uy] = unit(p, q), off = curved ? 26 * K : 0;
+  const c = [(p[0] + q[0]) / 2 - uy * off, (p[1] + q[1]) / 2 + ux * off];
+  const d0 = unit(p, c), d1 = unit(q, c);
+  const s = [p[0] + d0[0] * R, p[1] + d0[1] * R], tip = [q[0] + d1[0] * (R + 1), q[1] + d1[1] * (R + 1)];
+  const t = unit(c, tip), al = 11 * K, aw = 5.5 * K, base = [tip[0] - t[0] * al, tip[1] - t[1] * al], n = [-t[1], t[0]];
+  return { d: 'M' + r1(s[0]) + ',' + r1(s[1]) + ' Q' + r1(c[0]) + ',' + r1(c[1]) + ' ' + r1(base[0]) + ',' + r1(base[1]),
+           head: [tip, [base[0] + n[0] * aw, base[1] + n[1] * aw], [base[0] - n[0] * aw, base[1] - n[1] * aw]].map(p2 => r1(p2[0]) + ',' + r1(p2[1])).join(' ') };
+}
+// fit the drawing to the graph; on narrow screens draw nodes and text bigger
+function fit() {
+  const pts = Object.values(S.g.nodes), xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+  const box = k => { const px = 82 * k, py = 62 * k; let x = Math.min(...xs) - px, y = Math.min(...ys) - py, w = Math.max(...xs) - Math.min(...xs) + 2 * px, h = Math.max(...ys) - Math.min(...ys) + 2 * py;
+    if (h < w * 0.5) { y -= (w * 0.5 - h) / 2; h = w * 0.5; } if (h > w * 0.8) { x -= (h / 0.8 - w) / 2; w = h / 0.8; } return [x, y, w, h]; };
+  const cw = $('svg').clientWidth || 640;
+  K = Math.max(1, Math.min(1.6, box(1)[2] / cw * 0.95));
+  R = 22 * K;
+  $('svg').setAttribute('viewBox', box(K).map(r1).join(' '));
+}
+// put the "SCC n" label on the side of the node that has no edges, so it never hides an arrowhead
+function pillSpot(id, hw, hh) {
+  const p = S.g.nodes[id], dirs = [];
+  S.g.edges.forEach(([a, b]) => { if (a === id) dirs.push(unit(p, S.g.nodes[b])); if (b === id) dirs.push(unit(p, S.g.nodes[a])); });
+  const cands = [[0, R + hh + 5], [-(R + hw + 5), 0], [R + hw + 5, 0], [-(hw + 6), R + hh + 1], [hw + 6, R + hh + 1], [-(hw + 6), -(R + hh + 1)]];
+  let best = cands[0], bestScore = Infinity;
+  cands.forEach(c => { const u = unit([0, 0], c), sc = dirs.length ? Math.max(...dirs.map(d => d[0] * u[0] + d[1] * u[1])) : -1; if (sc < bestScore - 1e-6) { bestScore = sc; best = c; } });
+  return [p[0] + best[0], p[1] + best[1]];
+}
+function draw(s) {
+  fit();
+  const reversed = s.phase !== 'p1';
+  const E = S.g.edges.map(([a, b]) => reversed ? [b, a] : [a, b]);
+  const has = new Set(E.map(([a, b]) => a + '>' + b));
+  const tree = new Set(s.tree);
+  let out = '';
+  E.forEach(([u, v]) => {
+    const geo = edgeGeom(S.g.nodes[u], S.g.nodes[v], has.has(v + '>' + u));
+    const isCur = s.edge && s.edge[0] === u && s.edge[1] === v;
+    let col = '#B4B0A5', w = 1.6, dash = '';
+    if (s.phase === 'rev') { col = '#006970'; w = 2; }
+    if (reversed && s.comp[u] !== undefined && s.comp[u] === s.comp[v]) { col = sccCol(s.comp[u]); w = 2.6; }
+    if ((!reversed && tree.has(u + '>' + v)) || (reversed && tree.has('r' + u + '>' + v))) { if (s.phase === 'p1') { col = '#5B6B8C'; w = 2.4; } }
+    if (isCur && s.kind === 'go') { col = '#002357'; w = 3.4; }
+    if (isCur && s.kind === 'skip') { col = '#B45309'; w = 3; dash = ' stroke-dasharray="6 4"'; }
+    out += '<path d="' + geo.d + '" fill="none" stroke="' + col + '" stroke-width="' + r1(w * K) + '"' + dash + ' stroke-linecap="round"/>' +
+           '<polygon points="' + geo.head + '" fill="' + col + '"/>';
+  });
+  Object.keys(S.g.nodes).sort().forEach(id => {
+    const [x, y] = S.g.nodes[id];
+    const fi = s.finish.indexOf(id), k = s.comp[id], onPath = s.path.includes(id);
+    let fill = '#fff', stroke = '#9C998F', sw = 1.6, txt = '#1F1E1D';
+    if (s.visited.includes(id)) { fill = '#EFEDE6'; stroke = '#8A877E'; }
+    if (onPath && s.phase === 'p1') { fill = '#DCE3F0'; stroke = '#1E3A6E'; sw = 2; }
+    if (k !== undefined) { fill = sccTint(k); stroke = sccCol(k); sw = 3; }
+    if (s.cur === id && s.phase !== 'done') { fill = '#002357'; stroke = k !== undefined ? sccCol(k) : '#002357'; sw = k !== undefined ? 3.5 : 2; txt = '#fff'; }
+    const f = n => r1(n * K);
+    out += '<g class="node" data-id="' + id + '">';
+    if (S.edit && S.sel === id) out += '<circle cx="' + x + '" cy="' + y + '" r="' + r1(R + 7 * K) + '" fill="none" stroke="#EA580C" stroke-width="' + f(2) + '" stroke-dasharray="' + f(5) + ' ' + f(4) + '"/>';
+    out += '<circle cx="' + x + '" cy="' + y + '" r="' + r1(R + 9 * K) + '" fill="transparent"/>' +
+           '<circle cx="' + x + '" cy="' + y + '" r="' + r1(R) + '" fill="' + fill + '" stroke="' + stroke + '" stroke-width="' + f(sw) + '"/>' +
+           '<text x="' + x + '" y="' + r1(y + 5.5 * K) + '" text-anchor="middle" font-size="' + f(16) + '" font-weight="650" fill="' + txt + '">' + id + '</text>';
+    if (fi >= 0) out += '<rect x="' + r1(x + 6 * K) + '" y="' + r1(y - 33 * K) + '" width="' + f(26) + '" height="' + f(17) + '" rx="' + f(8.5) + '" fill="#fff" stroke="#8A877E" stroke-width="' + f(1) + '"/>' +
+                        '<text x="' + r1(x + 19 * K) + '" y="' + r1(y - 20.5 * K) + '" text-anchor="middle" font-size="' + f(11) + '" font-weight="600" fill="#5E5D59">f' + (fi + 1) + '</text>';
+    if (k !== undefined) {
+      const [px, py] = pillSpot(id, 24 * K, 9 * K);
+      out += '<rect x="' + r1(px - 24 * K) + '" y="' + r1(py - 9 * K) + '" width="' + f(48) + '" height="' + f(18) + '" rx="' + f(9) + '" fill="' + sccTint(k) + '" stroke="' + sccCol(k) + '" stroke-width="' + f(1.5) + '"/>' +
+             '<text x="' + r1(px) + '" y="' + r1(py + 4 * K) + '" text-anchor="middle" font-size="' + f(11) + '" font-weight="650" fill="#1F1E1D">SCC ' + (k + 1) + '</text>';
+    }
+    out += '</g>';
+  });
+  $('svg').innerHTML = out;
+  $('svg').setAttribute('aria-label', (reversed ? 'Reversed graph G transpose. ' : 'Directed graph G. ') + s.text.replace(/<[^>]+>/g, ''));
+}
+
+// ---------- panels ----------
+const CODE = [
+  ['g', 'Pass 1 · DFS on G'],
+  [1, 'for each node u (A, B, C, …):\n  if u not visited: DFS1(u)'],
+  [2, 'DFS1(u): mark u visited'],
+  [3, '  for each edge u→v:\n    if v not visited: DFS1(v)'],
+  [4, '  u finishes → add u to finish order'],
+  ['g', 'Reverse'],
+  [5, 'Gᵀ = G with every edge reversed'],
+  ['g', 'Pass 2 · DFS on Gᵀ'],
+  [6, 'for each u, latest finish first:'],
+  [7, '  if u has no SCC:\n    start a new SCC; DFS2(u)'],
+  [8, 'DFS2(u): put u in the current SCC'],
+  [9, '  for each edge u→v in Gᵀ:\n    if v has no SCC: DFS2(v)']
+];
+const PHASE = { p1: ['Pass 1 · DFS on G', 'ph-p1'], rev: ['Reverse the edges', 'ph-rev'], p2: ['Pass 2 · DFS on Gᵀ', 'ph-p2'], done: ['Done', 'ph-done'] };
+const tok = (id, small, cls) => '<span class="tok' + (cls ? ' ' + cls : '') + '">' + id + (small ? ' <small>' + small + '</small>' : '') + '</span>';
+
+function buildTimeline() {
+  const first = ph => S.steps.findIndex(s => s.phase === ph);
+  const a = first('rev'), b = first('p2'), n = S.steps.length;
+  S.segs = [['Pass 1', 0, a], ['Reverse', a, b], ['Pass 2', b, n]];
+  $('timeline').innerHTML = S.segs.map((sg, j) => '<button class="seg" data-seg="' + j + '" style="flex-grow:' + Math.max(sg[2] - sg[1], n * 0.12) + '"><div class="bar"><div></div></div><span class="lbl">' + sg[0] + '</span></button>').join('');
+}
+function render() {
+  const s = S.steps[S.i];
+  draw(s);
+  $('phase').textContent = PHASE[s.phase][0]; $('phase').className = 'chip ' + PHASE[s.phase][1];
+  $('gname').textContent = S.edit ? 'Editing the original graph' : s.phase === 'p1' ? 'Showing G (original edges)' : 'Showing Gᵀ (every edge reversed)';
+  let ex = s.text;
+  if (s.phase === 'done' && S.predict !== null) ex += ' You predicted <b>' + S.predict + '</b>' + (S.predict === s.comps.length ? ': correct!' : '.');
+  $('explain').innerHTML = S.edit ? 'Edit mode: click a node, then another node, to add or remove that edge.' : ex;
+  $('quiz').innerHTML = S.edit ? '' : quizHtml(s);
+  $('code').innerHTML = CODE.map(([n, t]) => n === 'g' ? '<li class="grp">' + t + '</li>' : '<li class="' + (n === s.line ? 'on' : '') + '">' + t + '</li>').join('');
+  $('path').innerHTML = s.path.length ? s.path.map((id, j) => (j ? '<span class="arrow">→</span>' : '') + tok(id, '', id === s.cur ? 'cur' : '')).join('') : '<span class="empty">empty</span>';
+  if (s.phase === 'p1') {
+    $('orderTitle').textContent = 'Finish order';
+    $('order').innerHTML = s.finish.length ? s.finish.map((id, j) => tok(id, 'f' + (j + 1))).join('') : '<span class="empty">no node has finished yet</span>';
+  } else {
+    $('orderTitle').textContent = 'Pass 2 order (latest finish first)';
+    const pos = s.phase === 'p2' && s.cur ? s.order.indexOf(s.cur) : -1;
+    $('order').innerHTML = s.order.map(id => tok(id, 'f' + (s.finish.indexOf(id) + 1), id === s.cur && s.phase === 'p2' ? 'cur' : s.comp[id] !== undefined && s.order.indexOf(id) < pos ? 'dim' : '')).join('');
+  }
+  $('sccs').innerHTML = s.comps.length ? s.comps.map((c, k) => '<div class="scc-row"><span class="sw" style="background:' + sccTint(k) + ';border-color:' + sccCol(k) + '"></span><b>SCC ' + (k + 1) + '</b> ' + (c.length ? c.slice().sort().join(', ') : '') + '</div>').join('')
+                                       : '<span class="empty">none yet (they appear in Pass 2)</span>';
+  $('scrub').value = S.i; $('stepno').textContent = 'Step ' + (S.i + 1) + ' / ' + S.steps.length;
+  document.querySelectorAll('.seg').forEach((el, j) => {
+    const [, a, b] = S.segs[j], frac = S.i >= b ? 1 : S.i < a ? 0 : (S.i - a + 1) / (b - a);
+    el.querySelector('.bar>div').style.width = (frac * 100) + '%';
+    el.classList.toggle('cur', S.i >= a && S.i < b);
+  });
+  const lock = S.edit;
+  ['resetBtn', 'prevBtn', 'playBtn', 'nextBtn', 'scrub'].forEach(id => $(id).disabled = lock);
+  $('prevBtn').disabled = lock || S.i === 0; $('nextBtn').disabled = lock || S.i === S.steps.length - 1;
+  $('playBtn').innerHTML = S.playing ? '❚❚ Pause' : (S.i === S.steps.length - 1 ? '⟲ Replay' : '▶ Play');
+  $('stage').classList.toggle('editing', S.edit);
+  $('hint').hidden = !S.edit;
+  $('editBtn').textContent = S.edit ? 'Done editing' : 'Edit edges'; $('editBtn').classList.toggle('on', S.edit); $('editBtn').setAttribute('aria-pressed', S.edit);
+}
+function quizHtml(s) {
+  const n = Object.keys(S.g.nodes).length, last = S.steps[S.steps.length - 1];
+  if (s.quiz === 'predict') {
+    const opts = Array.from({ length: n }, (_, j) => j + 1);
+    return '<div class="quiz"><p><b>Predict first:</b> how many SCCs does this graph have?</p><div class="chips" style="margin-top:6px">' +
+      opts.map(v => '<button class="chipbtn' + (S.predict === v ? ' right' : '') + '" data-predict="' + v + '">' + v + '</button>').join('') + '</div>' +
+      (S.predict !== null ? '<p class="fb muted">Saved. Play the steps to see if you are right.</p>' : '') + '</div>';
+  }
+  if (s.quiz === 'start') {
+    const ans = s.order[0];
+    let fb = '';
+    if (S.startAns !== null) fb = S.startAns === ans ? '<p class="fb" style="color:var(--green)">Right: <b>' + ans + '</b> finished last (f' + s.finish.length + '), so Pass 2 starts there.</p>'
+                                                     : '<p class="fb" style="color:var(--amber)">Not quite: <b>' + S.startAns + '</b> is f' + (s.finish.indexOf(S.startAns) + 1) + '. Look for the highest f number.</p>';
+    return '<div class="quiz"><p><b>Quick check:</b> Pass 2 starts from the node that finished last in Pass 1. Which node is it?</p><div class="chips" style="margin-top:6px">' +
+      Object.keys(S.g.nodes).sort().map(id => '<button class="chipbtn' + (S.startAns === id ? (id === ans ? ' right' : ' wrong') : '') + '" data-start="' + id + '">' + id + '</button>').join('') + '</div>' + fb + '</div>';
+  }
+  return '';
+}
+
+// ---------- playback ----------
+function go(i) { S.i = Math.max(0, Math.min(S.steps.length - 1, i)); render(); }
+function stop() { S.playing = false; clearTimeout(S.timer); render(); }
+function tick() {
+  if (!S.playing) return;
+  const s = S.steps[S.i];
+  // pause at an unanswered question, unless the student pressed Play on that very step
+  if (S.i >= S.steps.length - 1 || (s.quiz === 'start' && S.startAns === null && S.i !== S.playFrom)) { stop(); return; }
+  go(S.i + 1);
+  S.timer = setTimeout(tick, DELAY[$('speed').value - 1]);
+}
+function play() {
+  if (S.playing) { stop(); return; }
+  if (S.i >= S.steps.length - 1) S.i = 0;
+  S.playFrom = S.i; S.playing = true; render(); S.timer = setTimeout(tick, Math.min(500, DELAY[$('speed').value - 1]));
+}
+
+// ---------- editing ----------
+function toggleEdge(a, b) {
+  const j = S.g.edges.findIndex(([x, y]) => x === a && y === b);
+  if (j >= 0) S.g.edges.splice(j, 1); else S.g.edges.push([a, b]);
+  if (!$('preset').querySelector('option[value="custom"]')) $('preset').insertAdjacentHTML('beforeend', '<option value="custom">Custom (edited)</option>');
+  $('preset').value = 'custom'; S.key = 'custom';
+}
+
+// ---------- wiring ----------
+$('preset').innerHTML = Object.entries(PRESETS).map(([k, p]) => '<option value="' + k + '">' + p.name + '</option>').join('');
+$('preset').addEventListener('change', e => {
+  if (e.target.value === 'custom') return;
+  stop(); S.key = e.target.value; S.g = parse(PRESETS[S.key]); S.edit = false; S.sel = null;
+  const c = $('preset').querySelector('option[value="custom"]'); if (c) c.remove();
+  rebuild();
+});
+$('editBtn').addEventListener('click', () => { stop(); S.edit = !S.edit; S.sel = null; if (S.edit) { S.i = 0; render(); } else rebuild(); });
+$('resetBtn').addEventListener('click', () => { stop(); go(0); });
+$('prevBtn').addEventListener('click', () => { stop(); go(S.i - 1); });
+$('nextBtn').addEventListener('click', () => { stop(); go(S.i + 1); });
+$('playBtn').addEventListener('click', play);
+$('scrub').addEventListener('input', e => { const v = +e.target.value; stop(); go(v); });
+$('timeline').addEventListener('click', e => { const b = e.target.closest('[data-seg]'); if (b) { stop(); go(S.segs[+b.dataset.seg][1]); } });
+$('quiz').addEventListener('click', e => {
+  const p = e.target.closest('[data-predict]'), q = e.target.closest('[data-start]');
+  if (p) { S.predict = +p.dataset.predict; render(); }
+  if (q) { S.startAns = q.dataset.start; render(); }
+});
+$('svg').addEventListener('click', e => {
+  if (!S.edit) return;
+  const n = e.target.closest('.node');
+  if (!n) { S.sel = null; render(); return; }
+  const id = n.dataset.id;
+  if (S.sel === null) S.sel = id;
+  else if (S.sel === id) S.sel = null;
+  else { toggleEdge(S.sel, id); S.sel = null; S.steps = buildTrace(S.g); S.i = 0; }
+  render();
+});
+document.addEventListener('keydown', e => {
+  if (S.edit || /INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); stop(); go(S.i + 1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); stop(); go(S.i - 1); }
+  else if (e.key === ' ' && e.target.tagName !== 'BUTTON') { e.preventDefault(); play(); }
+  else if (e.key === 'r' || e.key === 'R') { stop(); go(0); }
+});
+
+let rz = null;
+window.addEventListener('resize', () => { cancelAnimationFrame(rz); rz = requestAnimationFrame(() => draw(S.steps[S.i])); });
+window.kosarajuSim = { presets: PRESETS, run: key => { const st = buildTrace(parse(PRESETS[key])); return { steps: st.length, comps: st[st.length - 1].comps }; } };
+rebuild();
+})();
+</script>
+</body>
+</html>

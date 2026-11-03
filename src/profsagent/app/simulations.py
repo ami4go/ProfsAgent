@@ -38,6 +38,7 @@ TOP = 4             # suggestions kept per lecture
 MAX_APPROVED = 2    # simulations a professor may approve for one lecture (and from one request); Amit: "2 will be good enough"
 EXT_MATCH = 0.65    # links to other sites: on the same 9,784 topics, matches below it were often wrong (e.g. "TCP/IP networks" -> network flow)
 EXT_TOP = 3         # links kept per lecture
+PER_TOPIC = 3       # simulations kept for one topic on the Simulations page (Amit, 3 Nov: "for a single topic we can keep three")
 SID = re.compile(r"^[a-z0-9][a-z0-9_.-]{2,80}$")
 EXT = re.compile(r"^ext:[a-z0-9]+:[a-z0-9_.-]{1,80}$")
 LID = re.compile(r"^W\d\d\.L\d+$")
@@ -84,6 +85,73 @@ def entries() -> list[dict]:
 
 def entry(sim_id: str) -> dict | None:
     return next((e for e in entries() if e["id"] == sim_id), None)
+
+
+def awaiting(e: dict) -> bool:
+    """Built by the machine and not yet approved by a professor: kept out of the list and the suggestions."""
+    return e.get("built_by") == "machine" and not e.get("approved_by")
+
+
+def _yaml_fields(path: Path, fields: dict) -> None:
+    """Set top-level scalar fields in a sim.yaml, keeping its comments."""
+    lines = path.read_text(encoding="utf-8").splitlines()
+    for k, v in fields.items():
+        row = f"{k}: {json.dumps(v, ensure_ascii=False)}"
+        i = next((n for n, ln in enumerate(lines) if ln.startswith(k + ":")), None)
+        if i is None:
+            j = next((n for n, ln in enumerate(lines) if ln.startswith("built_by:")), len(lines) - 1)
+            lines.insert(j + 1, row)
+        else:
+            lines[i] = row
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def approve_build(sim_id: str, by: str = "Professor", runs: Path | None = None) -> dict:
+    """The professor approves a simulation the machine built: it joins the list, and its request is finished."""
+    e = entry(sim_id)
+    if e is None or e.get("built_by") != "machine":
+        return {"problem": "No such simulation built by the machine"}
+    if not e.get("approved_by"):
+        _yaml_fields(Path(e["_dir"]) / "sim.yaml", {"approved_by": by, "approved_at": _now()})
+
+    def fn(rows):
+        for r in rows:
+            if r.get("sim_id") == sim_id and r.get("status") == "ready":
+                r.update(status="approved", approved_at=_now(), approved_by=by)
+    AB.update_requests(runs, fn)
+    return {"ok": True}
+
+
+def review_build(req_id: str, decision: str, reason: str = "", runs: Path | None = None, by: str = "Professor") -> dict:
+    """approve | reject a simulation the machine built for a request. Reject needs a reason; the simulation is moved out
+    of the catalogue (to runs/_simulation_builds/rejected/) and the request is built again with the reason."""
+    r = next((x for x in AB.read_requests(runs) if x.get("id") == req_id), None)
+    if r is None or r.get("status") != "ready" or not r.get("sim_id"):
+        return {"problem": "This request has nothing waiting for your review"}
+    if decision == "approve":
+        return approve_build(r["sim_id"], by, runs)
+    if decision != "reject":
+        return {"problem": "Unknown decision"}
+    reason = (reason or "").strip()
+    if len(reason) < 3:
+        return {"problem": "Write a short reason first"}
+    e = entry(r["sim_id"])
+    stamp = time.strftime("%Y%m%d-%H%M%S")
+    if e is not None and e.get("built_by") == "machine":
+        dest = (runs or RUNS) / AB.BUILDS / "rejected" / f"{e['id']}-{stamp}"
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        Path(e["_dir"]).rename(dest)
+        page_ = C.BUILD / f"{e['id']}.html"
+        if page_.exists():
+            page_.rename(dest / "page.html")
+
+    def fn(rows):
+        for x in rows:
+            if x.get("id") == req_id:
+                x.setdefault("rejected_builds", []).append({"sim_id": x.get("sim_id"), "reason": reason[:600], "by": by, "at": _now()})
+                x.update(status="build_queued", sim_id=None, note=reason[:600], reason=None, detail=None)
+    AB.update_requests(runs, fn)
+    return {"ok": True, "start_build": True}
 
 
 @lru_cache(maxsize=1)
@@ -162,7 +230,7 @@ def _lecture_full(b: dict) -> str:
 
 def _key(briefs: list[dict], es: list[dict]) -> str:
     raw = json.dumps([[(b["lecture_id"], b.get("topic"), _lecture_full(b)) for b in briefs],
-                      [(e["id"], str(e["version"]), e["title"], list(e["topics"]), e.get("status")) for e in es],
+                      [(e["id"], str(e["version"]), e["title"], list(e["topics"]), e.get("status"), bool(e.get("approved_by"))) for e in es],
                       _rj(C.SIMS / "classifier" / "params.json", {}), MATCH, TOP,
                       [e["id"] for e in X.entries()], EXT_MATCH, EXT_TOP], ensure_ascii=False)
     return hashlib.sha1(raw.encode("utf-8")).hexdigest()[:16]
@@ -188,7 +256,7 @@ def compute(briefs: list[dict], course: str, es: list[dict]) -> dict:
     of simulation the topic suits. Only the local model; no AI calls."""
     import numpy as np
     from profsagent.sims import classify as K
-    live = [e for e in es if e.get("status") != "retired"]
+    live = [e for e in es if e.get("status") != "retired" and not awaiting(e)]
     out: dict[str, dict] = {}
     if not briefs:
         return out
@@ -360,6 +428,8 @@ def decide(rid: str, lid: str, sim_id: str, decision: str, reason: str = "", by:
         return {"problem": "No such simulation in the catalogue"}
     if decision in ("add", "approve") and e.get("status") == "retired":
         return {"problem": "This simulation was retired from the catalogue"}
+    if decision == "approve" and awaiting(e):            # approving a machine-built one on its lecture approves it for the list too
+        approve_build(sim_id, by, runs)
     reason = (reason or "").strip()
     if decision == "reject" and len(reason) < 3:
         return {"problem": "Write a short reason first"}
@@ -425,7 +495,7 @@ def _used(runs: Path | None) -> dict[str, list[dict]]:
 
 def catalogue_view(runs: Path | None = None) -> dict:
     qa, used = _qa(), _used(runs)
-    es = [e for e in entries() if e.get("status") != "retired"]
+    es = [e for e in entries() if e.get("status") != "retired" and not awaiting(e)]
     cards = [{**card(e, qa), "used": used.get(e["id"], [])} for e in es]
     count: dict[str, int] = {}
     for c in cards:
@@ -433,12 +503,61 @@ def catalogue_view(runs: Path | None = None) -> dict:
             count[t["id"]] = count.get(t["id"], 0) + 1
     ty = C.types()
     xs = X.entries()
-    return {"entries": cards, "types": [{"id": t["id"], "name": t["name"], "does": t["does"], "count": count.get(t["id"], 0)} for t in ty["types"]],
+    pending = [card(e, qa) for e in entries() if e.get("status") != "retired" and awaiting(e)]     # built, waiting for the professor
+    return {"entries": cards, "pending": pending, "topics": topic_groups(cards, requests(runs)), "types": [{"id": t["id"], "name": t["name"], "does": t["does"], "count": count.get(t["id"], 0)} for t in ty["types"]],
             "levels": ty["levels"], "requests": requests(runs),
             "external": {"sites": sorted({x["site_name"] for x in xs}, key=lambda n: -sum(1 for y in xs if y["site_name"] == n)),
                          "entries": [{"id": x["id"], "site_name": x["site_name"], "title": x["title"], "url": x["url"], "summary": x["summary"][:200],
                                       "shows_code": X.shows_code(x),
                                       "text": " ".join([x["title"], x["site_name"], x["summary"], " ".join(x["topics"])]).lower()} for x in xs]}}
+
+
+def _norm(t: str) -> str:
+    return re.sub(r"[^a-z0-9+#]+", " ", (t or "").lower()).strip()
+
+
+def topic_groups(cards: list[dict], reqs: list[dict]) -> list[dict]:
+    """One group per finished request topic (newest first), at most PER_TOPIC options: the pages the professor approved,
+    what the machine built (once approved), then the best pages the search found by score. Pages the professor rejected
+    never come back; a request answered by approving found pages keeps just those. When none of the kept ones shows its
+    code but a candidate does, it takes the last place (Amit: one with the code alongside is always good)."""
+    vis = {c["id"]: c for c in cards}
+    groups: dict[str, dict] = {}
+    for q in reqs:
+        if q.get("status") not in ("approved", "chosen") or not (q.get("topic") or "").strip():
+            continue
+        found = [f for f in q.get("found") or [] if f.get("decision") != "reject" and (q["status"] != "chosen" or f.get("decision") == "approve")]
+        order = [f for f in found if f.get("decision") == "approve"]
+        if q.get("sim_id"):
+            order.append({"kind": "ours", "id": q["sim_id"], "built": True})
+        order += sorted((f for f in found if f.get("decision") != "approve"), key=lambda f: -(f.get("score") or 0))
+        g = groups.setdefault(_norm(q["topic"]), {"key": q["id"], "title": q["topic"].strip(), "items": [], "_seen": set(), "_rest": []})
+        for f in order:
+            if f.get("kind") == "ours":
+                c = vis.get(f.get("id"))
+                if not c or c["id"] in g["_seen"]:
+                    continue
+                it = {"kind": "ours", "id": c["id"], "built": bool(f.get("built")), "approved": f.get("decision") == "approve", "shows_code": c["shows_code"]}
+                key = c["id"]
+            else:
+                if not f.get("url") or f["url"] in g["_seen"]:
+                    continue
+                it = {"kind": "link", "url": f["url"], "title": f.get("title") or f["url"], "site_name": f.get("site") or "", "shows_code": bool(f.get("shows_code")),
+                      "summary": (f.get("summary") or "")[:200], "approved": f.get("decision") == "approve"}
+                key = f["url"]
+            g["_seen"].add(key)
+            (g["items"] if len(g["items"]) < PER_TOPIC else g["_rest"]).append(it)
+    out = []
+    for g in groups.values():
+        items = g["items"]
+        if items and not any(i["shows_code"] for i in items):
+            alt = next((i for i in g["_rest"] if i["shows_code"]), None)
+            last = next((n for n in range(len(items) - 1, -1, -1) if not items[n]["approved"] and not items[n].get("built")), None)
+            if alt and last is not None:
+                items[last] = alt
+        if items:
+            out.append({"key": g["key"], "title": g["title"], "items": items})
+    return out
 
 
 def requests(runs: Path | None = None) -> list[dict]:

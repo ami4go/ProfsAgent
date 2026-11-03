@@ -111,6 +111,14 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True, del
     def index():
         return FileResponse(STATIC / "index.html", headers=NO_CACHE)
 
+    @app.get("/fonts/{name}")
+    def font(name: str):
+        """The bundled OFL fonts (static/fonts), so the app looks the same offline."""
+        p = STATIC / "fonts" / name
+        if not re.fullmatch(r"[a-z0-9-]+\.woff2", name) or not p.is_file():
+            raise HTTPException(404, "No such font")
+        return FileResponse(p, media_type="font/woff2", headers={"Cache-Control": "public, max-age=31536000, immutable"})
+
     @app.get("/api/health")
     def health():
         backend = (os.environ.get("KG_BACKEND") or "neo4j").lower()
@@ -490,6 +498,18 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True, del
         if not p.exists():
             raise HTTPException(404, "No such picture")
         return FileResponse(p, media_type="image/jpeg", headers=NO_CACHE)
+
+    @app.post("/api/simulations/requests/{req_id}/review")
+    def simulation_request_review(req_id: str, body: dict = Body(...)):
+        """approve | reject (with a reason: it is built again) the simulation the machine built for a request."""
+        if not re.fullmatch(r"R\d{1,5}", req_id):
+            raise HTTPException(404, "No such request")
+        out = sims.review_build(req_id, str(body.get("decision") or ""), str(body.get("reason") or ""), mgr.runs)
+        if out.get("problem"):
+            return JSONResponse(out, status_code=409)
+        if out.get("start_build") and autobuild:
+            sims.AB.start_worker(mgr.runs)
+        return out
 
     @app.post("/api/simulations/requests/{req_id}/build")
     def simulation_request_build(req_id: str, body: dict | None = Body(None)):

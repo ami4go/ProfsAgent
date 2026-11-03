@@ -5,182 +5,243 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ProfsAgent</title>
 <style>
-:root{--navy:#002357;--navy2:#1E3A6E;--navy-bg:#EEF1F8;--canvas:#F8F8F6;--band:#F5F3ED;--card:#FFFFFF;--line:#E8E5DC;--ink:#1F1E1D;--ink2:#5E5D59;--muted:#6B6B6B;
-  --teal:#006970;--teal-bg:#E5F3F3;--amber:#B45309;--amber-bg:#FEF3C7;--green:#15803D;--green-bg:#DCFCE7;--red:#B91C1C;--red-bg:#FEE2E2}
+/* ProfsAgent design system (docs/10_ui_improvement_plan.md §5): calm minimalism; tokens first, then components.
+   Fonts are bundled (static/fonts, OFL), so the app looks the same offline. */
+@font-face{font-family:'Atkinson Hyperlegible Next';src:url(/fonts/atkinson-hyperlegible-next-latin.woff2) format('woff2');font-weight:200 800;font-style:normal;font-display:swap}
+@font-face{font-family:'Bricolage Grotesque';src:url(/fonts/bricolage-grotesque-latin.woff2) format('woff2');font-weight:200 800;font-stretch:75% 100%;font-style:normal;font-display:swap}
+@font-face{font-family:'JetBrains Mono';src:url(/fonts/jetbrains-mono-latin.woff2) format('woff2');font-weight:100 800;font-style:normal;font-display:swap}
+:root{
+  /* neutrals: cool paper, white cards */
+  --paper:#F3F5F7;--card:#FFFFFF;--sunken:#EEF1F4;--line:#E2E6EB;--line-strong:#C9D0D8;--ink:#16202C;--ink2:#4B5665;--ink3:#5F6B79;--field:#808A97;
+  /* action: IIIT-D navy */
+  --navy:#0A2F5C;--navy2:#123F78;--navy-bg:#E8EEF7;--focus:#5B8DEF;
+  /* status: one meaning each */
+  --ok:#16803C;--ok-ink:#14532D;--ok-bg:#E3F4E8;--ok-line:#9ED9B0;
+  --warn:#9A5205;--warn-ink:#7A3E04;--warn-bg:#FDF1DC;--warn-line:#EFCB8E;
+  --err:#B42318;--err-ink:#7F1D1D;--err-bg:#FDE7E4;--err-line:#F2B1A9;
+  --info:#0A6F7E;--info-ink:#0B3D40;--info-bg:#E2F3F5;--info-line:#8FCDD5;
+  /* ways of teaching a part (the class-time bar); always shown with a text label */
+  --w-slides:#2F6FEB;--w-video:#B35F00;--w-nlm:#6B48F0;--w-inclass:#137A55;--w-sim:#087C8C;--w-quiz:#677281;
+  /* type */
+  --f-body:'Atkinson Hyperlegible Next','Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --f-display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+  --f-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Consolas,monospace;
+  --t-xs:12px;--t-sm:13px;--t-md:14px;--t-base:15px;--t-lg:17px;--t-xl:22px;--t-2xl:30px;
+  /* shape, depth, motion */
+  --r-sm:6px;--r-md:9px;--r-lg:14px;--r-pill:999px;
+  --shadow-1:0 1px 2px rgba(16,24,40,.05);--shadow-2:0 10px 30px rgba(16,24,40,.14);
+  --ease-out:cubic-bezier(.22,1,.36,1);--dur-1:140ms;--dur-2:220ms;
+  /* older names, kept so every screen keeps working */
+  --canvas:var(--paper);--band:var(--sunken);--muted:var(--ink3);
+  --teal:var(--info);--teal-bg:var(--info-bg);--amber:var(--warn);--amber-bg:var(--warn-bg);--green:var(--ok);--green-bg:var(--ok-bg);--red:var(--err);--red-bg:var(--err-bg)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--canvas);color:var(--ink);font:14px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+body{margin:0;background:var(--paper);color:var(--ink);font:var(--t-base)/1.55 var(--f-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 button,input,textarea,select{font:inherit;color:inherit}
-h1{font-size:24px;line-height:1.3;font-weight:600;margin:0 0 4px;letter-spacing:-.01em}
-h2{font-size:16px;font-weight:600;margin:0 0 10px}
-h3{font-size:14px;font-weight:600;margin:0 0 6px}
+h1{font:600 var(--t-2xl)/1.15 var(--f-display);margin:0 0 6px;letter-spacing:-.015em}
+h2{font-size:var(--t-lg);font-weight:600;margin:0 0 10px;letter-spacing:-.005em}
+h3{font-size:var(--t-md);font-weight:600;margin:0 0 6px}
 p{margin:0}
-a{color:var(--navy2)}
-.muted{color:var(--ink2)}.small{font-size:13px}.tiny{font-size:12px}
-.top{background:var(--card);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px;cursor:pointer;background:none;border:0;padding:0}
-.logo{width:28px;height:28px;border-radius:7px;background:var(--navy);color:#fff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center}
-.pill{font-size:11px;font-weight:500;padding:2px 8px;border-radius:999px;border:1px solid var(--line);background:var(--band);color:var(--ink2);white-space:nowrap}
+a{color:var(--navy2);text-underline-offset:2px}
+.muted{color:var(--ink2)}.small{font-size:var(--t-sm)}.tiny{font-size:var(--t-xs)}
+.mono,.lid,.ref,.rank,code{font-family:var(--f-mono)}
+.top{background:var(--card);border-bottom:1px solid var(--line);padding:10px 28px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;position:sticky;top:0;z-index:20}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;cursor:pointer;background:none;border:0;padding:0}
+.logo{width:30px;height:30px;border-radius:8px;background:var(--navy);color:#fff;font:600 11px var(--f-mono);display:flex;align-items:center;justify-content:center}
+.pill{font-size:11px;font-weight:500;padding:2px 8px;border-radius:var(--r-pill);border:1px solid var(--line);background:var(--sunken);color:var(--ink2);white-space:nowrap}
 .sys{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.band{background:var(--band);border-bottom:1px solid var(--line);padding:10px 24px}
-.band-in{max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.wrap{max-width:860px;margin:0 auto;padding:28px 24px 130px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-top:14px}
-.row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.band{background:var(--card);border-bottom:1px solid var(--line);padding:10px 28px}
+.band-in{max-width:880px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.wrap{max-width:880px;margin:0 auto;padding:32px 28px 140px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px 20px;margin-top:16px;box-shadow:var(--shadow-1)}
+.card.flat{border:0;box-shadow:none;padding:0;background:transparent}
+.row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
 .card h2+.row,.row:first-child{border-top:0}
-.btn{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:500;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;min-height:38px;text-decoration:none;color:var(--ink)}
-.btn:hover{background:var(--band)}
-.btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}.btn.primary:hover{background:var(--navy2)}
-.btn.sm{min-height:32px;padding:5px 11px;font-size:13px}
-.btn.bad{border-color:#FCA5A5;color:#7F1D1D}.btn.bad:hover{background:var(--red-bg)}
-.btn.big{padding:13px 20px;font-size:15px;border-radius:10px}
-.btn:disabled{opacity:.5;cursor:default}
-.link{background:none;border:0;padding:0;color:var(--navy2);text-decoration:underline;cursor:pointer;font-weight:500}
-.chip{font-size:12px;font-weight:500;padding:3px 10px;border-radius:999px;white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
-.chip.amber{background:var(--amber-bg);color:var(--amber)}.chip.green{background:var(--green-bg);color:var(--green)}
-.chip.grey{background:var(--band);color:var(--ink2);border:1px solid var(--line)}.chip.teal{background:var(--teal-bg);color:var(--teal)}
-.chip.navy{background:var(--navy-bg);color:var(--navy2)}.chip.red{background:var(--red-bg);color:var(--red)}
-.banner{border-radius:10px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;margin-top:14px}
-.banner.green{background:var(--green-bg);color:#14532D}.banner.amber{background:var(--amber-bg);color:#78350F}.banner.navy{background:var(--navy-bg);color:var(--navy)}.banner.red{background:var(--red-bg);color:#7F1D1D}
-label.f{display:block;font-weight:500;margin:14px 0 4px}
+/* buttons: primary (one per screen) · secondary (default) · quiet · good/bad */
+.btn{border:1px solid var(--line-strong);background:var(--card);border-radius:var(--r-md);padding:8px 15px;cursor:pointer;font-weight:600;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;min-height:38px;text-decoration:none;color:var(--ink);
+  transition:background-color var(--dur-1) var(--ease-out),border-color var(--dur-1) var(--ease-out),transform var(--dur-1) var(--ease-out)}
+.btn:hover{background:var(--sunken)}
+.btn:active:not(:disabled){transform:scale(.98)}
+.btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}.btn.primary:hover{background:var(--navy2);border-color:var(--navy2)}
+.btn.quiet{border-color:transparent;background:transparent;color:var(--navy2);padding-left:8px;padding-right:8px}.btn.quiet:hover{background:var(--navy-bg)}
+.btn.sm{min-height:32px;padding:5px 11px;font-size:var(--t-sm)}
+.btn.bad{border-color:var(--err-line);color:var(--err-ink)}.btn.bad:hover{background:var(--err-bg)}
+.btn.ok{border-color:var(--ok-line);color:var(--ok-ink)}.btn.ok:hover{background:var(--ok-bg)}
+.btn.big{padding:13px 22px;font-size:var(--t-base);border-radius:11px}
+.btn:disabled{opacity:.45;cursor:default}
+.link{background:none;border:0;padding:3px 0;min-height:24px;color:var(--navy2);text-decoration:underline;text-underline-offset:2px;cursor:pointer;font-weight:600}
+/* chips: at most two per item; colour = meaning (green done, amber needs you, navy working/info, grey neutral, red stopped) */
+.chip{font-size:var(--t-xs);font-weight:600;padding:3px 10px;border-radius:var(--r-pill);white-space:nowrap;display:inline-flex;align-items:center;gap:5px;line-height:1.5}
+.chip .ico{width:13px;height:13px;vertical-align:0}
+.chip.amber{background:var(--warn-bg);color:var(--warn-ink)}.chip.green{background:var(--ok-bg);color:var(--ok-ink)}
+.chip.grey{background:var(--sunken);color:var(--ink2)}.chip.teal{background:var(--info-bg);color:var(--info-ink)}
+.chip.navy{background:var(--navy-bg);color:var(--navy2)}.chip.red{background:var(--err-bg);color:var(--err-ink)}
+.chip.star{background:var(--warn-bg);color:var(--warn-ink)}
+.banner{border-radius:var(--r-lg);padding:13px 16px;display:flex;gap:10px;align-items:flex-start;margin-top:16px;border:1px solid transparent}
+.banner + h1,.banner + h2{margin-top:22px}
+.banner.green{background:var(--ok-bg);color:var(--ok-ink);border-color:var(--ok-line)}.banner.amber{background:var(--warn-bg);color:var(--warn-ink);border-color:var(--warn-line)}
+.banner.navy{background:var(--navy-bg);color:var(--navy)}.banner.red{background:var(--err-bg);color:var(--err-ink);border-color:var(--err-line)}
+label.f{display:block;font-weight:600;margin:16px 0 5px;font-size:var(--t-md)}
 label.f .opt{font-weight:400;color:var(--ink2)}
-input[type=text],textarea,select{width:100%;border:1px solid var(--line);border-radius:8px;background:#fff;padding:8px 10px}
-input:focus,textarea:focus,select:focus{outline:2px solid #C9D4EA;border-color:var(--navy2)}
-.btn:focus-visible,.link:focus-visible,.tog:focus-visible,.stars button:focus-visible{outline:2px solid var(--navy2);outline-offset:2px}
-.err{color:var(--red);font-size:13px;margin-top:4px}
+input[type=text],input[type=url],textarea,select{width:100%;border:1px solid var(--field);border-radius:var(--r-md);background:#fff;padding:9px 11px;transition:border-color var(--dur-1) var(--ease-out),box-shadow var(--dur-1) var(--ease-out)}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--navy2);box-shadow:0 0 0 3px var(--navy-bg)}
+.btn:focus-visible,.link:focus-visible,.tog:focus-visible,.stars button:focus-visible,.tab:focus-visible,.nav a:focus-visible,a.lec:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.err{color:var(--err);font-size:var(--t-sm);margin-top:4px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
-.tog{font-size:13px;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;cursor:pointer}
-.tog.on{background:var(--navy2);border-color:var(--navy2);color:#fff}
-.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.g2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
-.check{display:flex;gap:8px;align-items:flex-start;margin-top:10px}
-.check input{width:17px;height:17px;margin-top:2px;flex:none;accent-color:var(--navy)}
-.steps{display:flex;gap:8px;align-items:center;margin:0 auto;max-width:860px;padding:14px 24px 0}
-.step{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
-.step .dot{width:22px;height:22px;border-radius:50%;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600}
-.step.done{color:var(--green)}.step.done .dot{background:var(--green-bg);border-color:var(--green-bg);color:var(--green)}
-.step.cur{color:var(--navy);font-weight:600}.step.cur .dot{background:var(--navy);border-color:var(--navy);color:#fff}
-.sep{flex:1;height:1px;background:var(--line);max-width:80px}
-.foot{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:12px 24px;z-index:5}
-.foot-in{max-width:860px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.bar{height:8px;border-radius:999px;background:var(--band);border:1px solid var(--line);overflow:hidden}
-.bar>div{height:100%;background:var(--navy);transition:width .6s ease}
-.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
-.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
-.tile b{display:block;font-size:20px;font-weight:600}
+.tog{font-size:var(--t-sm);padding:6px 13px;border-radius:var(--r-pill);border:1px solid var(--line-strong);background:#fff;cursor:pointer;transition:background-color var(--dur-1) var(--ease-out)}
+.tog.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.g2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.check{display:flex;gap:9px;align-items:flex-start;margin-top:10px}
+.check input{width:18px;height:18px;margin-top:2px;flex:none;accent-color:var(--navy)}
+.steps{display:flex;gap:10px;align-items:center;margin:0 auto;max-width:880px;padding:16px 28px 0}
+.step{display:flex;align-items:center;gap:7px;font-size:var(--t-md);font-weight:600;color:var(--ink3)}
+.step .dot{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line-strong);background:#fff;display:flex;align-items:center;justify-content:center;font-size:var(--t-xs);font-weight:700}
+.step.done{color:var(--ok)}.step.done .dot{background:var(--ok);border-color:var(--ok);color:#fff}
+.step.cur{color:var(--navy)}.step.cur .dot{background:var(--navy);border-color:var(--navy);color:#fff}
+.sep{flex:1;height:1.5px;background:var(--line);max-width:72px}
+.foot{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);border-top:1px solid var(--line);padding:12px 28px;z-index:5}
+.foot-in{max-width:880px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.bar{height:8px;border-radius:var(--r-pill);background:var(--sunken);border:1px solid var(--line);overflow:hidden}
+.bar>div{height:100%;background:var(--navy);transition:width .6s var(--ease-out)}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:12px 14px}
+.tile b{display:block;font:600 22px var(--f-display)}
 .ico{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px}
 .center{text-align:center}
 .slist{list-style:none;padding:0;margin:12px 0 0}
-.slist li{display:flex;gap:8px;align-items:center;padding:3px 0;font-size:13.5px;color:var(--muted)}
-.slist li.done{color:var(--green)}.slist li.cur{color:var(--navy);font-weight:600}
+.slist li{display:flex;gap:8px;align-items:center;padding:4px 0;font-size:var(--t-md);color:var(--ink3)}
+.slist li.done{color:var(--ok)}.slist li.cur{color:var(--navy);font-weight:600}
 .slist .mk{width:18px;text-align:center;flex:none}
-.spin{width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--navy);border-radius:50%;animation:sp 1s linear infinite;flex:none;display:inline-block}
+.spin{width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--navy);border-radius:50%;animation:sp .9s linear infinite;flex:none;display:inline-block}
 @keyframes sp{to{transform:rotate(360deg)}}
-@media (prefers-reduced-motion:reduce){.spin{animation:none}}
-pre.log{background:#1F1E1D;color:#E8E5DC;border-radius:8px;padding:10px 12px;overflow:auto;font-size:12px;white-space:pre-wrap;margin:8px 0 0}
-details summary{cursor:pointer;color:var(--ink2);font-size:13px}
-.co{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-top:10px;background:#fff}
+pre.log{background:#16202C;color:#E6E9EE;border-radius:var(--r-md);padding:10px 12px;overflow:auto;font:12px/1.5 var(--f-mono);white-space:pre-wrap;margin:8px 0 0}
+details summary{cursor:pointer;color:var(--ink2);font-size:var(--t-sm);font-weight:600}
+.co{border:1px solid var(--line);border-radius:var(--r-lg);padding:13px 15px;margin-top:10px;background:#fff}
 .co ul{margin:8px 0 0;padding-left:18px}.co li{margin:3px 0}
 .pos{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
 .str{letter-spacing:1px;color:var(--navy2)}
-.iss{margin-top:6px;font-size:13px;border-radius:8px;padding:6px 10px}
-.iss.warning{background:var(--amber-bg);color:#78350F}.iss.error{background:var(--red-bg);color:#7F1D1D}
-table.t{width:100%;border-collapse:collapse;font-size:13.5px}
-table.t th,table.t td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:top}
-table.t th{font-size:12px;color:var(--ink2);font-weight:600;white-space:nowrap;overflow-wrap:normal}
-.ref{font:500 11.5px ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--ink2);background:var(--band);border-radius:5px;padding:1px 6px;overflow-wrap:anywhere}
+.iss{margin-top:6px;font-size:var(--t-sm);border-radius:var(--r-md);padding:7px 11px}
+.iss.warning{background:var(--warn-bg);color:var(--warn-ink)}.iss.error{background:var(--err-bg);color:var(--err-ink)}
+table.t{width:100%;border-collapse:collapse;font-size:var(--t-md)}
+table.t th,table.t td{border-bottom:1px solid var(--line);padding:9px 8px;text-align:left;vertical-align:top}
+table.t th{font-size:var(--t-xs);color:var(--ink3);font-weight:600;white-space:nowrap;overflow-wrap:normal;letter-spacing:.02em}
+.ref{font-size:11.5px;font-weight:500;color:var(--ink2);background:var(--sunken);border-radius:var(--r-sm);padding:1px 6px;overflow-wrap:anywhere}
 .card,.co,.banner{overflow-wrap:anywhere}
-.stars{display:inline-flex;gap:2px}.stars button{border:0;background:none;font-size:20px;cursor:pointer;color:#C9C6BC;padding:0 2px}.stars button.on{color:#D97706}
-.fbrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+.stars{display:inline-flex;gap:2px}.stars button{border:0;background:none;font-size:20px;cursor:pointer;color:var(--field);padding:0 4px;min-width:28px;min-height:32px}.stars button.on{color:#D97706}
+.fbrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line);flex-wrap:wrap}
 .fbrow:first-of-type{border-top:0}
-.proposal{font-size:13.5px;overflow-x:auto}.proposal table{border-collapse:collapse;margin:8px 0}.proposal td,.proposal th{border:1px solid var(--line);padding:4px 6px;vertical-align:top}
-.proposal h1{font-size:20px}.proposal h2{margin-top:18px}
-.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 16px;border-radius:8px;font-size:13px;z-index:30;max-width:90vw}
-.notice{border:1px solid #F5D78E;background:#FFFDF5;border-radius:10px;padding:12px 14px;margin-top:10px}
-.ainote{margin-top:6px;font-size:13px;background:var(--teal-bg);color:#0B3D40;border-radius:8px;padding:7px 10px}
-input.aifield,textarea.aifield,select.aifield{border-color:#7FC4C7;background:#F7FCFC}
+.proposal{font-size:var(--t-md);overflow-x:auto}.proposal table{border-collapse:collapse;margin:8px 0}.proposal td,.proposal th{border:1px solid var(--line);padding:4px 6px;vertical-align:top}
+.proposal h1{font-size:var(--t-xl)}.proposal h2{margin-top:18px}
+.toast{position:fixed;left:50%;bottom:88px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:var(--r-md);font-size:var(--t-sm);font-weight:500;z-index:30;max-width:90vw;box-shadow:var(--shadow-2);animation:toast-in var(--dur-2) var(--ease-out)}
+@keyframes toast-in{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+.notice{border:1px solid var(--warn-line);background:#FFFBF3;border-radius:var(--r-lg);padding:13px 15px;margin-top:10px}
+.ainote{margin-top:6px;font-size:var(--t-sm);background:var(--info-bg);color:var(--info-ink);border-radius:var(--r-md);padding:7px 11px}
+input.aifield,textarea.aifield,select.aifield{border-color:var(--info-line);background:#F7FCFC}
 @media (max-width:720px){.g3,.g2{grid-template-columns:minmax(0,1fr)}.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .top{padding:10px 14px}.wrap{padding:22px 16px 140px}.band,.foot{padding-left:16px;padding-right:16px}.steps{padding:14px 16px 0}}
-/* lecture delivery (phase 2) */
-.wrap.wide{max-width:1120px}
+  .top{padding:10px 14px}.wrap{padding:22px 16px 150px}.band,.foot{padding-left:16px;padding-right:16px}.steps{padding:14px 16px 0;flex-wrap:wrap;gap:6px 10px}.step{font-size:var(--t-sm)}h1{font-size:24px}}
+/* lecture delivery */
+.wrap.wide{max-width:1180px}
 .card-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}.card-h h2{margin:0}
-.edbox{border:1px solid var(--navy2);border-radius:10px;padding:12px 14px;background:#FAFBFE;margin-top:8px}
+.edbox{border:1px solid var(--navy2);border-radius:var(--r-lg);padding:13px 15px;background:#FAFBFE;margin-top:8px}
 .edrow{display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-top:1px dashed var(--line)}.edbox>.edrow:first-child{border-top:0}
 .edrow>.grow{flex:1;min-width:0}
-input[type=number]{width:96px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:8px 10px}
+input[type=number]{width:96px;border:1px solid var(--field);border-radius:var(--r-md);background:#fff;padding:8px 10px}
 .edbtns{display:flex;gap:4px;flex:none}
-.icon-btn{border:1px solid var(--line);background:#fff;border-radius:7px;min-width:32px;height:32px;cursor:pointer;color:var(--ink2);font-size:14px}
-.icon-btn:hover{background:var(--band)}.icon-btn.bad{color:var(--red)}
-.icon-btn:focus-visible{outline:2px solid var(--navy2);outline-offset:2px}
+.icon-btn{border:1px solid var(--line-strong);background:#fff;border-radius:var(--r-sm);min-width:32px;height:32px;cursor:pointer;color:var(--ink2);font-size:14px}
+.icon-btn:hover{background:var(--sunken)}.icon-btn.bad{color:var(--err)}
+.icon-btn:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .edfoot{display:flex;justify-content:space-between;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}
-.nav{display:flex;gap:4px;margin-left:14px}.nav a{font-size:13.5px;color:var(--ink2);text-decoration:none;padding:6px 10px;border-radius:8px}.nav a:hover{background:var(--band)}.nav a.on{color:var(--navy);font-weight:600;background:var(--navy-bg)}
-.crumbs{font-size:13px;color:var(--ink2);display:flex;gap:6px;flex-wrap:wrap;align-items:center}.crumbs a{color:var(--navy2)}
-.chip.star{background:#FFF4D6;color:#8A5300;border:1px solid #F5D78E}
-.btn.ok{border-color:#86EFAC;color:#14532D}.btn.ok:hover{background:var(--green-bg)}
+.nav{display:flex;gap:4px;margin-left:18px}.nav a{font-size:var(--t-md);font-weight:500;color:var(--ink2);text-decoration:none;padding:7px 12px;border-radius:var(--r-md);transition:background-color var(--dur-1) var(--ease-out)}
+.nav a:hover{background:var(--sunken)}.nav a.on{color:var(--navy);font-weight:600;background:var(--navy-bg)}
+.crumbs{font-size:var(--t-sm);color:var(--ink2);display:flex;gap:6px;flex-wrap:wrap;align-items:center}.crumbs a{color:var(--navy2);display:inline-block;padding:3px 0}
 .filters{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
-.filters label{font-size:12px;color:var(--ink2);display:flex;flex-direction:column;gap:3px}
+.filters label{font-size:var(--t-xs);color:var(--ink2);display:flex;flex-direction:column;gap:3px}
 .filters select{width:auto;min-width:150px;padding:6px 8px}
-.week{margin-top:18px}.week h3{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink2)}
-.lec{display:grid;grid-template-columns:70px minmax(0,1fr) auto;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:8px;text-decoration:none;color:var(--ink)}
-.lec:hover{border-color:#C9C6BC;background:#FDFDFC}
-.lec .lid{font:600 13px ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--navy2)}
-.lec .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;align-items:center}
-.lec .right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
-.stats{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink2);margin-top:6px}.stats b{color:var(--ink);font-weight:600}
-.grid2x{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 26px}
-.kv h3{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink2);margin:0 0 4px}.kv ul{margin:0;padding-left:18px}.kv li{margin:2px 0}
-.summary{font-size:15px;line-height:1.65}
-.choice{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-top:10px}.choice.on{border-color:var(--navy2);background:#FAFBFE}
+details.card > summary.reqsum{cursor:pointer;list-style-position:inside}details.card > summary.reqsum h2{display:inline;margin:0}
+details.card[open] > summary.reqsum{margin-bottom:10px}details[open] > summary .needs{display:none}
+.simopts{margin-top:10px;border-top:1px solid var(--line)}.simopt{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px 0;border-bottom:1px solid var(--line)}.simopt:last-child{border-bottom:0}
+.pager{display:flex;gap:6px;justify-content:center;align-items:center;flex-wrap:wrap;margin:14px 0}.pager .btn.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.week{margin-top:22px}.week h2{font-size:var(--t-xs);font-weight:600;margin:0;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3)}
+.lec{display:grid;grid-template-columns:64px minmax(0,1fr) 60px minmax(100px,220px) 310px;gap:16px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:12px 16px;margin-top:8px;text-decoration:none;color:var(--ink);
+  transition:border-color var(--dur-1) var(--ease-out),box-shadow var(--dur-1) var(--ease-out)}
+.lec:hover{border-color:var(--line-strong);box-shadow:var(--shadow-1)}
+.lec .lid{font-weight:600;font-size:12.5px;color:var(--navy2)}
+.lec .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:3px;align-items:center}
+.lec .mins{font-size:var(--t-sm);color:var(--ink2);white-space:nowrap}
+.lec.nobar{grid-template-columns:64px minmax(0,1fr) 60px 310px}
+.lec .right{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:6px}
+.stats{display:flex;gap:18px;flex-wrap:wrap;font-size:var(--t-sm);color:var(--ink2);margin-top:8px}.stats b{color:var(--ink);font-weight:600}
+.grid2x{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px 28px}
+.kv h3{font-size:var(--t-xs);text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);margin:0 0 4px}.kv ul{margin:0;padding-left:18px}.kv li{margin:3px 0}
+.summary{font-size:var(--t-base);line-height:1.65;color:var(--ink2);max-width:760px}
+.choice{border:1px solid var(--line);border-radius:var(--r-lg);padding:13px 15px;margin-top:10px;transition:border-color var(--dur-1) var(--ease-out),background-color var(--dur-1) var(--ease-out)}.choice.on{border-color:var(--navy2);background:#FAFBFE}
 .choice>label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}.choice>label input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:var(--navy)}
-.choice .sub{margin:10px 0 0 28px;padding-top:10px;border-top:1px dashed var(--line)}.choice .sub.off{opacity:.45;pointer-events:none}
+.choice .sub{margin:10px 0 0 28px;padding-top:10px;border-top:1px dashed var(--line)}.choice .sub.off{display:none}
 .subrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px}
-.subrow label{display:inline-flex;gap:6px;align-items:center;font-size:13px;border:1px solid var(--line);border-radius:999px;padding:4px 10px;background:#fff;cursor:pointer}
+.subrow label{display:inline-flex;gap:6px;align-items:center;font-size:var(--t-sm);border:1px solid var(--line-strong);border-radius:var(--r-pill);padding:5px 11px;background:#fff;cursor:pointer}
 .subrow input[type=checkbox]{accent-color:var(--navy)}
 .subrow input[type=url],.subrow input[type=text]{width:auto}
-.who-owns{font-size:11.5px;color:var(--ink2);margin-left:auto;white-space:nowrap}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.seg button{border:0;border-right:1px solid var(--line);background:#fff;padding:7px 13px;cursor:pointer;min-width:40px}.seg button:last-child{border-right:0}.seg button.on{background:var(--navy);color:#fff}
-.prog{display:flex;align-items:center;gap:12px;padding:9px 0;border-top:1px solid var(--line);flex-wrap:wrap}.prog:first-of-type{border-top:0}
-.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-top:6px;flex-wrap:wrap}
-.tab{border:0;background:none;padding:9px 14px;cursor:pointer;font-weight:500;color:var(--ink2);border-bottom:2px solid transparent;margin-bottom:-1px}.tab.on{color:var(--navy);border-bottom-color:var(--navy)}
-.rcard{border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:10px;background:#fff}.rcard.approved{border-color:#86EFAC;background:#FBFFFC}
+.who-owns{display:none}
+.seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:var(--r-md);overflow:hidden;background:#fff}
+.seg button{border:0;border-right:1px solid var(--line);background:#fff;padding:7px 14px;cursor:pointer;min-width:40px;font-weight:600;transition:background-color var(--dur-1) var(--ease-out)}.seg button:last-child{border-right:0}.seg button.on{background:var(--navy);color:#fff}
+.prog{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line);flex-wrap:wrap}.prog:first-of-type{border-top:0}
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin-top:6px;flex-wrap:wrap}
+.tab{border:0;background:none;padding:10px 12px;cursor:pointer;font-weight:600;color:var(--ink2);border-bottom:2.5px solid transparent;margin-bottom:-1px;transition:color var(--dur-1) var(--ease-out)}.tab:hover{color:var(--ink)}.tab.on{color:var(--navy);border-bottom-color:var(--navy)}
+.rcard{border:1px solid var(--line);border-radius:var(--r-lg);padding:15px 16px;margin-top:10px;background:#fff}.rcard.approved{border-color:var(--ok-line);background:#FBFEFC}
 .rhead{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
-.rank{font:600 12px ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--ink2);background:var(--band);border-radius:6px;padding:2px 7px;flex:none}
-.rtitle{font-weight:600;font-size:15px;line-height:1.35}
-.rmeta{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12.5px;color:var(--ink2);margin-top:4px;align-items:center}
-.score{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink2);cursor:help}
-.score .sb{width:70px;height:6px;border-radius:99px;background:var(--band);overflow:hidden;display:inline-block}.score .sb i{display:block;height:100%;background:var(--teal)}
-.why{margin-top:8px;font-size:13.5px}
-.revbox{margin-top:8px;background:var(--band);border-radius:8px;padding:8px 10px;font-size:13.5px}
-.cover{margin-top:8px;font-size:13px}
-.warn{margin-top:8px;background:var(--amber-bg);color:#78350F;border-radius:8px;padding:7px 10px;font-size:13px}
-.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.rank{font-size:12px;font-weight:600;color:var(--ink2);background:var(--sunken);border-radius:var(--r-sm);padding:2px 7px;flex:none}
+.rtitle{font-weight:600;font-size:var(--t-base);line-height:1.35}
+.rmeta{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:var(--t-sm);color:var(--ink2);margin-top:5px;align-items:center}
+.why{margin-top:8px;font-size:var(--t-md)}
+.revbox{margin-top:8px;background:var(--sunken);border-radius:var(--r-md);padding:9px 11px;font-size:var(--t-md)}
+.cover{margin-top:8px;font-size:var(--t-sm)}
+.warn{margin-top:8px;background:var(--warn-bg);color:var(--warn-ink);border-radius:var(--r-md);padding:8px 11px;font-size:var(--t-sm)}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
 .reason{margin-top:8px}
-.groupt{display:flex;justify-content:space-between;align-items:baseline;margin-top:18px;gap:10px;flex-wrap:wrap}.groupt h3{margin:0}
-.reviewbar{background:var(--band);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.kit h1{font-size:20px}.kit h2{margin-top:18px}.kit ul,.kit ol{padding-left:20px}.kit li{margin:3px 0}
-.inv{white-space:pre-wrap;background:var(--band);border-radius:8px;padding:14px;font-size:13.5px;border:1px solid var(--line)}
-.yt{margin-top:10px;aspect-ratio:16/9;width:100%;max-width:520px;border:0;border-radius:8px}
-@media (max-width:820px){.grid2x{grid-template-columns:minmax(0,1fr)}.lec{grid-template-columns:minmax(0,1fr)}.lec .right{align-items:flex-start;flex-direction:row;flex-wrap:wrap}.choice .sub{margin-left:0}.nav{margin-left:4px}}
-.slide{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-top:10px;background:#fff}
-.slide .sh{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--ink2)}
-.slide h4{margin:4px 0 6px;font-size:15px;font-weight:600}.slide ul{margin:4px 0 0;padding-left:18px}.slide li{margin:2px 0;font-size:13.5px}
-.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px;font-size:12.5px}.flow .box{border:1px solid var(--teal);background:var(--teal-bg);color:#0B3D40;border-radius:6px;padding:4px 8px}
-pre.code{background:#111827;color:#E5E7EB;border-radius:8px;padding:10px 12px;font-size:12px;overflow:auto;margin:8px 0 0;white-space:pre}
-.quiz{margin-top:8px;background:var(--band);border-radius:8px;padding:8px 12px;font-size:13.5px}.quiz ol{margin:6px 0 0;padding-left:20px}.quiz li.ans{color:var(--green);font-weight:600}
-/* simulations (A) */
+.groupt{display:flex;justify-content:space-between;align-items:baseline;margin-top:20px;gap:10px;flex-wrap:wrap}.groupt h3{margin:0}
+.reviewbar{background:var(--sunken);border:1px solid var(--line);border-radius:var(--r-lg);padding:11px 15px;margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.kit h1{font-size:var(--t-xl)}.kit h2{margin-top:18px}.kit ul,.kit ol{padding-left:20px}.kit li{margin:3px 0}
+.inv{white-space:pre-wrap;background:var(--sunken);border-radius:var(--r-md);padding:14px;font-size:var(--t-md);border:1px solid var(--line)}
+.yt{margin-top:10px;aspect-ratio:16/9;width:100%;max-width:520px;border:0;border-radius:var(--r-md)}
+.slide{border:1px solid var(--line);border-radius:var(--r-lg);padding:13px 15px;margin-top:10px;background:#fff}
+.slide .sh{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:var(--t-xs);color:var(--ink2)}
+.slide h4{margin:4px 0 6px;font-size:var(--t-base);font-weight:600}.slide ul{margin:4px 0 0;padding-left:18px}.slide li{margin:2px 0;font-size:var(--t-md)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px;font-size:var(--t-sm)}.flow .box{border:1px solid var(--info);background:var(--info-bg);color:var(--info-ink);border-radius:var(--r-sm);padding:4px 8px}
+pre.code{background:#111827;color:#E5E7EB;border-radius:var(--r-md);padding:10px 12px;font:12px/1.5 var(--f-mono);overflow:auto;margin:8px 0 0;white-space:pre}
+.quiz{margin-top:8px;background:var(--sunken);border-radius:var(--r-md);padding:9px 13px;font-size:var(--t-md)}.quiz ol{margin:6px 0 0;padding-left:20px}.quiz li.ans{color:var(--ok);font-weight:600}
+/* the lecture page: a working column and an "about this lecture" side panel */
+.lp{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}
+.lp-aside{position:sticky;top:76px}
+.lp-aside .card{margin-top:0}
+.lp-aside .kv{padding:12px 0;border-top:1px solid var(--line)}.lp-aside .kv:first-of-type{border-top:0;padding-top:0}
+.howcard{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+@media (max-width:1100px){.lp{grid-template-columns:minmax(0,1fr)}.lp-aside{position:static}}
+/* the class-time bar: how a lecture's minutes are spent (docs/10 §5) */
+.ctb{display:flex;height:10px;border-radius:var(--r-pill);overflow:hidden;gap:2px;min-width:80px}
+.ctb span{display:block;height:100%;min-width:3px}
+.ctb.big{height:32px;border-radius:10px;gap:3px;margin-top:8px}
+.ctb.big span{border-radius:6px;color:#fff;font-size:var(--t-xs);font-weight:600;display:flex;align-items:center;padding:0 8px;white-space:nowrap;overflow:hidden}
+.ctb.empty{border:1.5px dashed var(--line-strong);background:repeating-linear-gradient(-45deg,transparent 0 6px,var(--sunken) 6px 8px)}
+.w-slides{background:var(--w-slides)}.w-video{background:var(--w-video)}.w-nlm{background:var(--w-nlm)}.w-inclass{background:var(--w-inclass)}.w-sim{background:var(--w-sim)}.w-quiz{background:var(--w-quiz)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:var(--t-xs);color:var(--ink2)}.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+@media (max-width:820px){.grid2x{grid-template-columns:minmax(0,1fr)}.lec,.lec.nobar{grid-template-columns:minmax(0,1fr) auto}.lec .lid,.lec .mins{display:none}.lec .ctb{grid-column:1/-1;grid-row:2}.choice .sub{margin-left:0}.nav{margin-left:4px}.ctb.big span{font-size:0;padding:0}table.t{display:block;overflow-x:auto}}
+/* simulations */
 body.noscroll{overflow:hidden}
-.simov{position:fixed;inset:0;z-index:40;background:rgba(15,23,42,.6);display:flex;justify-content:center;padding:14px}
-.simov-box{background:var(--card);border-radius:12px;display:flex;flex-direction:column;width:100%;max-width:1440px;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,.3)}
+.simov{position:fixed;inset:0;z-index:40;background:rgba(16,24,40,.62);display:flex;justify-content:center;padding:14px;animation:fade-in var(--dur-2) var(--ease-out)}
+@keyframes fade-in{from{opacity:0}to{opacity:1}}
+.simov-box{background:var(--card);border-radius:var(--r-lg);display:flex;flex-direction:column;width:100%;max-width:1440px;overflow:hidden;box-shadow:var(--shadow-2)}
 .simov-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
-.simov-state{padding:7px 14px;font-size:13px;color:var(--ink2);background:var(--band);border-bottom:1px solid var(--line);overflow-wrap:anywhere}
+.simov-state{padding:8px 14px;font-size:var(--t-sm);color:var(--ink2);background:var(--sunken);border-bottom:1px solid var(--line);overflow-wrap:anywhere}
 .simov iframe{flex:1;width:100%;min-height:0;border:0;background:#0F1117}
 @media (max-width:720px){.simov{padding:0}.simov-box{border-radius:0}}
-.fcard{display:grid;grid-template-columns:168px minmax(0,1fr);gap:12px;border:1px solid var(--line);border-radius:10px;padding:10px;margin-top:8px;background:#fff}
-.fcard.rej{opacity:.55}.fcard.ok{border-color:#86EFAC;background:#FBFFFC}
-.fshot{width:168px;height:105px;object-fit:cover;object-position:top;border-radius:6px;border:1px solid var(--line);background:var(--band)}
-.fnone{display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink2)}
+.fcard{display:grid;grid-template-columns:168px minmax(0,1fr);gap:14px;border:1px solid var(--line);border-radius:var(--r-lg);padding:11px;margin-top:8px;background:#fff}
+.fcard.rej{opacity:.55}.fcard.ok{border-color:var(--ok-line);background:#FBFEFC}
+.fshot{width:168px;height:105px;object-fit:cover;object-position:top;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--sunken)}
+.fnone{display:flex;align-items:center;justify-content:center;font-size:var(--t-xs);color:var(--ink2)}
 @media (max-width:720px){.fcard{grid-template-columns:minmax(0,1fr)}.fshot{width:100%;height:150px}}
-table.ftable{border-collapse:collapse;margin-top:8px;font-size:12.5px}table.ftable td{border:1px solid var(--line);padding:3px 7px}table.ftable tr:first-child td{background:var(--band);font-weight:600}
+table.ftable{border-collapse:collapse;margin-top:8px;font-size:var(--t-sm)}table.ftable td{border:1px solid var(--line);padding:3px 7px}table.ftable tr:first-child td{background:var(--sunken);font-weight:600}
+/* motion: fewer and gentler for people who ask for it (fades stay, movement goes) */
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:0s!important}.spin{animation:none}.toast{animation:fade-in var(--dur-2) linear}.btn:active:not(:disabled){transform:none}}
 </style>
 </head>
 <body>
@@ -219,15 +280,15 @@ let OPT = null, HEALTH = null, PAGE = 'home', RUNS = [], RUN = null, RID = null,
 function header() {
   let sys = '';
   if (HEALTH) {
-    const kg = HEALTH.kg_backend === 'neo4j' ? (HEALTH.neo4j ? '<span class="chip green">Course database connected</span>' : '<span class="chip red">Course database not running</span>')
+    const kg = HEALTH.kg_backend === 'neo4j' ? (HEALTH.neo4j ? '' : '<span class="chip red">Course database not running</span>')
                                               : '<span class="chip amber">Sample course data (stub)</span>';
     const keys = HEALTH.keys.gemini + HEALTH.keys.groq;
     sys = kg + (keys ? '' : ' <span class="chip red">No AI keys in .env</span>') + (HEALTH.working_on ? ' <span class="chip navy"><span class="spin"></span> Working</span>' : '');
   }
   const inD = PAGE.startsWith('d'), inS = PAGE === 'sims';
-  return '<div class="top"><div style="display:flex;align-items:center;flex-wrap:wrap"><button class="brand" data-act="home"><span class="logo">IIIT</span>ProfsAgent</button>' +
-    '<nav class="nav"><a href="#/"' + (inD || inS ? '' : ' class="on"') + '>Course design</a><a href="#/delivery"' + (inD ? ' class="on"' : '') + '>Lecture delivery</a>' +
-    '<a href="#/simulations"' + (inS ? ' class="on"' : '') + '>Simulations</a></nav></div><div class="sys">' + sys + '</div></div>';
+  return '<header class="top"><div style="display:flex;align-items:center;flex-wrap:wrap"><button class="brand" data-act="home"><span class="logo">IIIT</span>ProfsAgent</button>' +
+    '<nav class="nav" aria-label="Sections"><a href="#/"' + (inD || inS ? '' : ' class="on" aria-current="page"') + '>Course design</a><a href="#/delivery"' + (inD ? ' class="on" aria-current="page"' : '') + '>Lecture delivery</a>' +
+    '<a href="#/simulations"' + (inS ? ' class="on" aria-current="page"' : '') + '>Simulations</a></nav></div><div class="sys">' + sys + '</div></header>';
 }
 const foot = (left, right) => '<div class="foot"><div class="foot-in"><div style="display:flex;gap:8px;flex-wrap:wrap">' + left + '</div><div style="display:flex;gap:8px;flex-wrap:wrap">' + right + '</div></div></div>';
 const STATUS = {
@@ -239,15 +300,15 @@ const statusChip = r => { const s = STATUS[r.status] || ['grey', r.status]; retu
 
 // ============================== home ==============================
 function home() {
+  const firstWait = (RUNS.find(x => x.status === 'waiting') || {}).run_id;          // one primary per screen: the oldest thing waiting on you
   const list = RUNS.length ? RUNS.map(r => '<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><b style="font-size:16px;font-weight:600">' + esc(r.title) + '</b>' + statusChip(r) + '</div>' +
       '<p class="muted small" style="margin-top:2px">Started ' + day(r.created_at) + (r.status === 'paused' && r.resume_at ? ' · continues by itself at ' + hhmm(r.resume_at) : '') + '</p>' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;gap:8px"><button class="link small" style="color:var(--red)" data-act="delete" data-rid="' + esc(r.run_id) + '" data-title="' + esc(r.title) + '">Delete</button>' +
-      '<span style="display:flex;gap:8px;flex-wrap:wrap">' + (r.status === 'done' ? '<a class="btn" href="#/delivery/' + esc(r.run_id) + '">Plan lecture delivery</a>' : '') +
-      '<a class="btn' + (r.status === 'waiting' ? ' primary' : '') + '" href="#/run/' + esc(r.run_id) + '">' + (r.status === 'waiting' ? 'Review now' : 'Open') + ' ' + ICON.arrow + '</a></span></div></div>').join('')
-    : '<div class="card center" style="padding:32px"><p class="muted">No courses yet. Start with the course form; it takes about 5 minutes to fill in.</p></div>';
-  return header() + '<div class="wrap"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap"><div><h1>Your courses</h1>' +
-    '<p class="muted">Describe a course; ProfsAgent drafts a regulation-compliant proposal, and you check it in four steps.</p></div>' +
-    '<a class="btn primary" href="#/new">New course</a></div>' + healthBanner() + list + '</div>';
+      '<span style="display:flex;gap:8px;flex-wrap:wrap">' + (r.status === 'done' ? '<a class="btn" href="#/delivery/' + esc(r.run_id) + '">Plan the lectures</a>' : '') +
+      '<a class="btn' + (r.run_id === firstWait ? ' primary' : '') + '" href="#/run/' + esc(r.run_id) + '">' + (r.status === 'waiting' ? 'Review now' : 'Open') + ' ' + ICON.arrow + '</a></span></div></div>').join('')
+    : '<div class="card center" style="padding:32px"><p class="muted">No courses yet.</p></div>';
+  return header() + '<div class="wrap"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap"><div><h1>Your courses</h1></div>' +
+    '<a class="btn' + (firstWait ? '' : ' primary') + '" href="#/new">New course</a></div>' + healthBanner() + list + '</div>';
 }
 function healthBanner() {
   if (!HEALTH) return '';
@@ -290,8 +351,7 @@ function formCards(f, e, o, mode, filled) {
     '<label class="f" for="name" style="margin-top:0">Course name *</label>' + txt('name', 'Software Development using AI') + err('name') +
     '<label class="f" for="description">Short description *</label>' + area('description', 3, 'What the course is about and what students can do at the end (3–6 sentences)') + err('description') +
     '<label class="f" for="topics">Topics' + opt + '</label>' + area('topics', review ? 7 : 5, ph('A. AI-native development: AI-assisted coding, coding agents\nB. Engineering practice: automated testing, deployment')) + err('topics') + ai('topics') +
-    (review ? '' : '<p class="tiny muted" style="margin-top:4px">One group per line. A rough list is fine. Leave it empty and ProfsAgent proposes the topics from your description.</p>') +
-    '<label class="check small"><input type="checkbox" data-f="topics_flexible"' + (f.topics_flexible ? ' checked' : '') + '> ProfsAgent may add, drop or reorder topics during the design, and must say why</label></div>' +
+    '<label class="check small"><input type="checkbox" data-f="topics_flexible"' + (f.topics_flexible ? ' checked' : '') + '> ProfsAgent may change these topics</label></div>' +
     '<div class="card"><h2>Course intent</h2>' +
     '<label class="f" for="intent_question" style="margin-top:0">The central question the course answers' + opt + '</label>' + txt('intent_question', ph('How do you design, build and test a multi-component program?')) + ai('intent_question') +
     '<label class="f" for="intent_emphasis">Teaching emphasis' + opt + '</label>' + txt('intent_emphasis', ph('Design thinking before coding; learning by building')) + ai('intent_emphasis') +
@@ -303,7 +363,7 @@ function formCards(f, e, o, mode, filled) {
     '<label class="f">Hours per week: lecture – tutorial – lab</label><div style="display:flex;gap:6px;max-width:260px">' +
     ['l', 't', 'p'].map((k, i) => '<input type="text" aria-label="' + ['Lecture', 'Tutorial', 'Lab'][i] + ' hours" data-f="' + k + '"' + cls(k) + ' value="' + esc(f[k]) + '" placeholder="' + (review ? '' : ['L, e.g. 3', 'T, e.g. 1', 'P, e.g. 0'][i]) + '">').join('') + '</div>' + err('ltp') + ai('l', 't', 'p') +
     '<label class="f" for="weekly_effort">Student work outside lectures, hours a week' + opt + '</label>' + txt('weekly_effort', ph('e.g. 10-12'), ' style="max-width:260px"') + ai('weekly_effort') +
-    (review ? '' : '<p class="tiny muted" style="margin-top:4px">Leave any of these blank and ProfsAgent fills them in from the UG Regulations 2025 and the course template (for example 13 weeks; 3 lecture hours and 1 tutorial hour for 4 credits).</p>') + '</div>' +
+    '</div>' +
     '<div class="card"><h2>Students</h2>' +
     '<label class="f" style="margin-top:0">Programmes' + opt + '</label><div class="chips">' + o.programmes.map(v => tog('programmes', v)).join('') + '</div>' + err('programmes') + ai('programmes') +
     '<div class="g2"><div><label class="f" for="year">Year</label>' + sel('year', o.years) + err('year') + ai('year') + '</div>' +
@@ -315,15 +375,15 @@ function formCards(f, e, o, mode, filled) {
     '<label class="f">Assessment to avoid' + opt + '</label><div class="chips">' + o.assessments.map(v => tog('assess_avoid', v)).join('') + '</div>' + ai('assess_avoid') +
     '<label class="f" for="assess_why">Why this assessment' + opt + '</label>' + txt('assess_why', ph('Most of the grade should come from programming work')) + ai('assess_why') +
     '<label class="f" for="special">Anything else ProfsAgent should know' + opt + '</label>' + area('special', 2, ph('Project in pairs; must produce a working application')) + ai('special') +
-    '<label class="check small"><input type="checkbox" data-f="external_research"' + (f.external_research ? ' checked' : '') + '> Also look at similar courses at other universities (takes a few more minutes)</label></div>';
+    '<label class="check small"><input type="checkbox" data-f="external_research"' + (f.external_research ? ' checked' : '') + '> Also compare with other universities (slower)</label></div>';
 }
 function form() {
   const f = FORM, e = ERRS, o = OPT;
   const err = k => e[k] ? '<p class="err" data-err="' + k + '">' + esc(e[k]) + '</p>' : '';
   return header() + '<div class="wrap"><div style="display:flex;justify-content:space-between;gap:12px"><a class="link small" href="#/">← Your courses</a><button class="link small" data-act="example">Fill with an example</button></div>' +
-    '<h1 style="margin-top:10px">Describe your course</h1><p class="muted">Only the course name and a short description are required. Leave anything else blank: ProfsAgent fills it in from your description, similar IIIT-D courses and the regulations, and you check every filled-in value before the design starts.</p>' +
+    '<h1 style="margin-top:10px">Describe your course</h1><p class="muted">Only the name and description are required.</p>' +
     formCards(f, e, o, 'new') +
-    '<p class="muted small" style="margin-top:14px">First ProfsAgent fills in what you left blank (a few minutes) and asks you to check it. Then the design takes about 20–40 minutes on the free AI service, with three more checks. You can close the page while it works; the course keeps going on this laptop.</p></div>' +
+    '<p class="muted small" style="margin-top:14px">About 30–45 minutes in all. You can close this page meanwhile.</p></div>' +
     foot('<a class="btn" href="#/">Cancel</a>', '<button class="btn primary" data-act="start"' + (UI.sending ? ' disabled' : '') + '>Continue ' + ICON.arrow + '</button>');
 }
 // The "Details" step: the complete form, with ProfsAgent's suggestions marked, editable, then confirmed.
@@ -382,17 +442,17 @@ function progressCard(r) {
     (p.log.length ? '<details style="margin-top:10px"' + (UI.logOpen ? ' open' : '') + ' data-log><summary>What the system is doing (technical log)</summary><pre class="log">' + esc(p.log.join('\n')) + '</pre></details>' : '') + '</div>';
 }
 function problemsCard(pr) {
-  if (!pr || (!pr.items.length && !pr.problem)) return '<div class="banner green">' + ICON.check + '<div><b style="font-weight:600">No open problems.</b> Check the details below, then continue.</div></div>';
-  return '<div class="banner ' + (pr.blocked ? 'red' : 'amber') + '">' + ICON.alert + '<div><b style="font-weight:600">' + (pr.blocked ? pr.errors + ' open problem' + (pr.errors === 1 ? '' : 's') + ' the checks could not fix.' : 'Things to look at.') + '</b> ' +
-    (pr.blocked ? (canEdit() ? 'Change the parts below with Edit and they are checked again; or stop here, or continue anyway with a reason (recorded on the course sheet).' : 'You can stop here, or continue anyway with a reason; the reason is recorded on the course sheet.') : '') +
+  if (!pr || (!pr.items.length && !pr.problem)) return '<div class="banner green">' + ICON.check + '<div><b style="font-weight:600">No open problems.</b></div></div>';
+  return '<div class="banner ' + (pr.blocked ? 'red' : 'amber') + '">' + ICON.alert + '<div><b style="font-weight:600">' + (pr.blocked ? pr.errors + ' open problem' + (pr.errors === 1 ? '' : 's') + '.' : 'Things to look at.') + '</b> ' +
+    (pr.blocked ? (canEdit() ? 'Fix with Edit, or continue with a reason.' : 'Continue with a reason, or stop.') : '') +
     '<ul style="margin:8px 0 0;padding-left:18px">' + (pr.groups || []).map(problemGroup).join('') + '</ul>' +
     (pr.problem ? '<p style="margin-top:8px">' + esc(pr.problem) + '</p>' : '') + '</div></div>';
 }
 // One line per kind of problem; when a kind repeats (12 × V23), its individual messages fold away under that line.
 function problemGroup(g) {
-  const line = x => esc(x.message) + ' <span class="ref">' + esc(x.code) + '</span>';
+  const line = x => '<span title="' + esc(x.code) + '">' + esc(x.message) + '</span>';
   if (g.items.length === 1 && !g.plain) return '<li>' + line(g.items[0]) + '</li>';
-  return '<li>' + esc(g.plain || g.items[0].message) + (g.items.length > 1 ? ' <b style="font-weight:600">(' + g.items.length + ')</b>' : '') + ' <span class="ref">' + esc(g.code) + '</span>' +
+  return '<li title="' + esc(g.code) + '">' + esc(g.plain || g.items[0].message) + (g.items.length > 1 ? ' <b style="font-weight:600">(' + g.items.length + ')</b>' : '') +
     '<details style="margin-top:4px"><summary style="color:inherit">Show ' + (g.items.length === 1 ? 'the detail' : 'all ' + g.items.length) + '</summary><ul style="margin:4px 0 0;padding-left:18px">' +
     g.items.map(x => '<li class="small">' + line(x) + '</li>').join('') + '</ul></details></li>';
 }
@@ -402,7 +462,7 @@ function decisionArea(r) {
   return '<div class="card"><h2>Your decision</h2>' +
     (UI.stopOpen ? '<label class="f" for="stopwhy" style="margin-top:0">Why are you stopping? *</label><textarea id="stopwhy" data-ui="stopWhy" rows="2" placeholder="The outcomes don\'t match what I teach; I\'ll change the topics and start again">' + esc(UI.stopWhy || '') + '</textarea>' +
                    '<p class="tiny muted" style="margin-top:4px">The run ends here. You can start again with the same form and change it.</p>'
-                 : '<label class="f" for="comment" style="margin-top:0">' + (needReason ? 'Reason for continuing despite the open problems *' : 'Note for the record <span class="opt">(optional)</span>') + '</label>' +
+                 : '<label class="f" for="comment" style="margin-top:0">' + (needReason ? 'Reason for continuing *' : 'Note for the record <span class="opt">(optional)</span>') + '</label>' +
                    '<textarea id="comment" data-ui="comment" rows="2" placeholder="' + (needReason ? 'The research project covers PO3; the assessment will be added later' : 'Anything you want recorded with this step') + '">' + esc(UI.comment || '') + '</textarea>') +
     (UI.err ? '<p class="err">' + esc(UI.err) + '</p>' : '') + (UI.edit ? '<p class="small muted" style="margin-top:6px">Save or cancel your change first.</p>' : '') + '</div>' +
     foot(UI.stopOpen ? '<button class="btn" data-act="stopcancel">Back</button>' : '<button class="btn bad" data-act="stopopen">Stop this run</button>',
@@ -413,9 +473,8 @@ function decisionArea(r) {
 // strengths (VCOPO-*, V23 provisional vs computed) are grouped into one collapsed line.
 const isMapping = i => /^VCOPO/.test(i.code) || (i.code === 'V23' && i.severity !== 'error');
 function issuesHtml(list) {
-  const one = i => '<div class="iss ' + (i.severity === 'error' ? 'error' : 'warning') + '">' + esc(i.message) + ' <span class="ref">' + esc(i.code) + '</span></div>';
-  const main = list.filter(i => !isMapping(i)), map = list.filter(isMapping);
-  return main.map(one).join('') + (map.length ? '<details style="margin-top:6px"><summary>' + map.length + ' technical note' + (map.length === 1 ? '' : 's') + ' on programme-outcome strengths</summary>' + map.map(one).join('') + '</details>' : '');
+  const one = i => '<div class="iss ' + (i.severity === 'error' ? 'error' : 'warning') + '" title="' + esc(i.code) + '">' + esc(i.message) + '</div>';
+  return list.filter(i => !isMapping(i)).map(one).join('');          // the technical notes on programme-outcome strengths are for the team
 }
 // ============================== editing at a check (app/edits.py) ==============================
 // Everything ProfsAgent wrote can be changed on the three check screens. "Save and check again" applies the change to the
@@ -578,12 +637,11 @@ function gate1View(v) {
   const asmChip = a => a.status === 'confirmed' ? '<span class="chip green">' + ICON.check + 'Confirmed by you</span>' : a.status === 'set by professor' ? '<span class="chip green">' + ICON.check + 'Set by you</span>'
     : '<span style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end"><span class="chip amber">Assumption: please confirm</span>' +
       (canEdit() && !ed ? '<button class="btn sm" data-act="ed-confirm" data-id="' + esc(a.id) + '">Confirm</button>' : '') + '</span>';
-  return '<h1>Check the course context</h1><p class="muted">What ProfsAgent assumed, the rules it will follow, and how the course fits with what IIIT-D already teaches. The outcomes are written after this step.' +
-    (canEdit() ? ' You can change anything here with <b style="font-weight:600">Edit</b>; your version is checked again straight away.' : '') + '</p>' +
+  return '<h1>Check the course context</h1>' +
     '<div class="card">' + cardHead('Your topics', 'topics', v.edited.topics) + (ed === 'topics' ? edBox(edTopics()) :
       (v.topics.length ? v.topics.map(g => '<div class="row"><div><p><b style="font-weight:600">' + esc(g.title) + '</b></p><p class="small muted">' + esc(g.topics.join(' · ')) + '</p></div></div>').join('') +
-      '<p class="tiny muted" style="margin-top:6px">' + (v.topics_treatment === 'fixed' ? 'Kept exactly as you listed them.' : 'A starting list: ProfsAgent may propose changes, with reasons, at the next step.') + '</p>'
-      : '<p class="muted">You didn\'t list topics. ProfsAgent proposes them from your description and intent while writing the outcomes and the weekly plan; you check them at the next two steps.</p>')) + '</div>' +
+      ''
+      : '<p class="muted">None listed; ProfsAgent proposes them in the next steps.</p>')) + '</div>' +
     '<div class="card">' + cardHead('Filled in for you', 'assumptions', v.edited.assumptions) + (ed === 'assumptions' ? edBox(edAssumptions()) :
       (v.assumptions.length ? v.assumptions.map(a => '<div class="row"><div><p class="tiny muted">' + esc(a.what) + '</p><p><b style="font-weight:600">' + esc(a.value) + '</b></p>' +
       '<p class="small muted" style="margin-top:2px">' + esc(a.basis) + '</p></div>' + asmChip(a) + '</div>').join('') : '<p class="muted">Nothing: you gave every value.</p>')) + '</div>' +
@@ -593,7 +651,7 @@ function gate1View(v) {
       v.constraint_conflicts.map(x => '<div class="iss error">Conflict: ' + esc(typeof x === 'string' ? x : (x.message || x.detail || JSON.stringify(x))) + '</div>').join('')) + '</div>' +
     '<div class="card"><h2>Rules from the regulations and the course template</h2>' + v.rules.map(x => '<div class="row"><p>' + esc(x.text) + (x.hard ? '' : ' <span class="muted small">(preferred)</span>') + '</p>' +
       (x.source ? '<span class="small" style="text-align:right">' + (x.source.url ? ext(x.source.url, x.source.text) : '<span class="muted">' + esc(x.source.text) + '</span>') + '</span>' : '') + '</div>').join('') +
-      '<p class="tiny muted" style="margin-top:6px">Set by IIIT-D. Course level and the mid-sem week can be changed under “Filled in for you”.</p></div>' +
+      '</div>' +
     (v.form_conflicts.length ? '<div class="card"><h2>Things in the form that contradict each other</h2>' + v.form_conflicts.map(x => '<div class="iss warning">' + esc(typeof x === 'string' ? x : (x.description || x.message || JSON.stringify(x))) + '</div>').join('') + '</div>' : '') +
     '<div class="card">' + cardHead('How it fits with IIIT-D courses', 'prerequisites', v.edited.prerequisites, '', 'Edit prerequisites') +
     (ed === 'prerequisites' ? edBox(edPrereqs()) : '') +
@@ -605,7 +663,7 @@ function gate1View(v) {
       (o.shared.length ? '<p class="small muted">Shared: ' + esc(o.shared.slice(0, 6).join('; ')) + '</p>' : '') + (o.difference ? '<p class="small muted">' + esc(o.difference) + '</p>' : '') + '</div>' + (o.verdict ? '<span class="chip grey">' + esc(o.verdict) + '</span>' : '') + '</div>').join('') +
     (v.anti_requisites.length ? '<div class="row"><p>Can\'t be taken together with ' + v.anti_requisites.map(a => ext(a.url, a.code)).join(', ') + '</p></div>' : '') +
     (!v.prerequisites.length && !v.overlaps.length ? '<p class="muted">No related IIIT-D course found.</p>' : '') +
-    '<p class="tiny muted" style="margin-top:8px">Course codes link to their TechTree catalogue page.</p></div>' +
+    '</div>' +
     (v.comparable.length ? '<div class="card"><h2>Courses to learn from</h2>' + v.comparable.map(x => '<div class="row"><div><p>' + ext(x.url, x.title) + ' <span class="muted small">· ' + esc(x.where || '') + '</span></p>' +
       (x.take ? '<p class="small" style="margin-top:2px"><span style="color:var(--green)">Take:</span> ' + esc(x.take) + '</p>' : '') + (x.avoid ? '<p class="small"><span style="color:var(--amber)">Avoid:</span> ' + esc(x.avoid) + '</p>' : '') + '</div></div>').join('') + '</div>' : '') +
     (v.concerns.length ? '<div class="card"><h2>Notes from the system</h2>' + v.concerns.map(x => '<div class="iss warning">' + esc(x) + '</div>').join('') + '</div>' : '');
@@ -616,28 +674,26 @@ function gate2View(v) {
       (c.edited ? ' <span class="chip green">' + ICON.check + 'Changed by you</span>' : '') + '</p>' + (canEdit() && !ed ? '<button class="btn sm" data-act="ed-open" data-sec="co:' + esc(c.id) + '">Edit</button>' : '') + '</div>' +
     '<p style="margin-top:6px">' + esc(c.statement) + '</p>' + issuesHtml(c.issues) +
     (c.los.length ? '<p class="small muted" style="margin-top:10px">Learning outcomes</p><ul>' + c.los.map(l => '<li class="small"><b style="font-weight:600">' + esc(l.id) + '</b> <span class="muted">(' + esc(l.level) + ')</span> ' + esc(l.statement) + '</li>').join('') + '</ul>' : '') +
-    (c.pos.length ? '<p class="small muted" style="margin-top:10px">Programme outcomes it supports (strength 1–3)</p><div class="pos">' + c.pos.map(p => '<span class="chip grey" title="' + esc(p.text) + '">' + esc(p.programme) + ' ' + esc(p.short) + ' <span class="str">' + strength(p.strength) + '</span></span>').join('') + '</div>' : '') + '</div>';
-  return '<h1>Check the course outcomes</h1><p class="muted">' + v.cos.length + ' course outcomes and ' + nlo + ' learning outcomes. The weekly plan, labs and assessment are built from these after this step.' +
-    (canEdit() ? ' You can change, add or remove any of them; your version is checked again straight away.' : '') + '</p>' +
+    (c.pos.length ? '<p class="small muted" style="margin-top:10px">Programme outcomes</p><div class="pos">' + c.pos.map(p => '<span class="chip grey" title="' + esc(p.text) + '">' + esc(p.programme) + ' ' + esc(p.short) + ' <span class="str">' + strength(p.strength) + '</span></span>').join('') + '</div>' : '') + '</div>';
+  return '<h1>Check the course outcomes</h1><p class="muted">' + v.cos.length + ' course outcomes, ' + nlo + ' learning outcomes</p>' +
     (v.proposals.length || v.no_topics_given ? '<div class="card">' + cardHead('Changes to the topics ProfsAgent proposes', '', v.edited.proposals) +
       (v.proposals.length ? v.proposals.map(p => '<div class="row"><div><p><span class="chip navy">' + esc(ACTION[p.action] || p.action) + '</span> ' + esc(p.proposal || p.targets.join(', ')) + '</p>' +
         (p.reason ? '<p class="small muted" style="margin-top:2px">' + esc(p.reason) + '</p>' : '') + '</div>' + (canEdit() && !ed ? '<button class="btn sm" data-act="ed-reject" data-i="' + p.i + '">Reject</button>' : '') + '</div>').join('')
         : '<p class="muted">None. You didn\'t list topics, so the topics are planned from these outcomes in the next step; you see them in the weekly plan.</p>') + '</div>' : '') +
     v.cos.map(c => ed === 'co:' + c.id ? edCo(c.id) : coCard(c)).join('') +
-    (ed === 'co:new' ? edCo(null) : canEdit() && !ed ? '<button class="btn" data-act="ed-open" data-sec="co:new" style="margin-top:12px">+ Add a course outcome</button>' : '') +
-    '<p class="tiny muted" style="margin-top:10px">Programme outcomes are quoted from the IIIT-D course template. Hover a chip to see its wording.</p>';
+    (ed === 'co:new' ? edCo(null) : canEdit() && !ed ? '<button class="btn" data-act="ed-open" data-sec="co:new" style="margin-top:12px">+ Add a course outcome</button>' : '');
 }
 function gate3View(v, final) {
   const verified = v.books.filter(b => b.verified).length, ev = v.evaluation;
-  const evText = ev ? { PASS: ['green', 'All checks pass'], REVIEW: ['amber', 'Mostly fine; some items need a person to confirm'], FAIL: ['red', 'Open problems remain'] }[ev.verdict] || ['grey', ev.verdict] : null;
-  return (final ? '' : '<h1>Check the final course sheet</h1><p class="muted">The weekly plan, assessment and books. Approving finishes the course and saves it.</p>') +
+  const evText = ev ? { PASS: ['green', 'All checks pass'], REVIEW: ['amber', 'Mostly fine; some items need a person to confirm'],
+                         FAIL: final ? ['amber', 'Approved with items left open'] : ['red', 'Open problems remain'] }[ev.verdict] || ['grey', ev.verdict] : null;
+  return (final ? '' : '<h1>Check the final course sheet</h1>') +
     '<div class="tiles"><div class="tile"><span class="tiny muted">Weeks</span><b>' + v.weeks.length + '</b></div>' +
     '<div class="tile"><span class="tiny muted">Lecture hours planned</span><b>' + (v.hours.planned != null ? v.hours.planned : '–') + (v.hours.available ? ' / ' + v.hours.available : '') + '</b></div>' +
     '<div class="tile"><span class="tiny muted">Assessment total</span><b>' + v.assessment_total + '%</b></div>' +
     '<div class="tile"><span class="tiny muted">Books checked online</span><b>' + v.books.filter(b => b.verified && ((v.recheck || {})[b.title] || {}).status !== 'mismatch').length + ' / ' + v.books.length + '</b></div></div>' +
-    (evText ? '<div class="banner ' + evText[0] + '">' + (ev.verdict === 'PASS' ? ICON.check : ICON.alert) + '<div><b style="font-weight:600">Quality check: ' + esc(evText[1]) + '.</b> ' +
-      esc([].concat(ev.errors ? [ev.errors + ' open error' + (ev.errors === 1 ? '' : 's')] : [], ev.regulation_ok === false ? ['a regulation check fails'] : [],
-               (ev.review_reasons || []).map(x => x.replace(/^(\d+) warnings ask/, (m, n) => n + (n === '1' ? ' warning asks' : ' warnings ask')))).join('; ')) + '.</div></div>' : '') +
+    (evText ? '<div class="banner ' + evText[0] + '">' + (ev.verdict === 'PASS' ? ICON.check : ICON.alert) + '<div><b style="font-weight:600">' + esc(evText[1]) + '.</b> ' +
+      esc([].concat(ev.errors ? [ev.errors + ' open error' + (ev.errors === 1 ? '' : 's')] : [], ev.regulation_ok === false ? ['a regulation check fails'] : []).join('; ')) + (ev.errors || ev.regulation_ok === false ? '.' : '') + '</div></div>' : '') +
     (v.description || UI.edit === 'description' ? '<div class="card">' + cardHead('Course description', 'description', (v.edited || {}).description) +
       (UI.edit === 'description' ? edBox(edDescription()) : '<p>' + esc(v.description) + '</p>') + '</div>' : '') +
     '<div class="card">' + cardHead('Weekly plan', 'weeks', [].concat((v.edited || {}).weeks || [], (v.edited || {}).labs || []),
@@ -646,14 +702,14 @@ function gate3View(v, final) {
     v.weeks.map(w => '<tr><td>' + w.week + '</td><td>' + w.topics.map(t => esc(t.title) + ' <span class="muted tiny">(' + t.hours + ' h)</span>').join('<br>') + (w.midsem_after ? '<br><span class="chip amber" style="margin-top:4px">Mid-sem exam after this week</span>' : '') + '</td><td class="small">' + esc(w.labs.join('; ')) + '</td></tr>').join('') + '</table>') + '</div>' +
     '<div class="card">' + cardHead('Assessment', 'assessment', (v.edited || {}).assessment) + (UI.edit === 'assessment' ? edBox(edAssessment()) : '<table class="t"><tr><th>Component</th><th>Weight</th><th>How many</th><th>Invigilated</th></tr>' +
     v.assessment.map(a => '<tr><td>' + esc(a.name) + '</td><td>' + a.weight + '%</td><td>' + a.count + (a.due.length ? ' <span class="muted tiny">(week ' + a.due.join(', ') + ')</span>' : '') + '</td><td>' + (a.invigilated ? 'Yes' : 'No') + '</td></tr>').join('') + '</table>') +
-    '<p class="small" style="margin-top:8px;color:' + (v.invigilated_pct >= 40 ? 'var(--green)' : 'var(--amber)') + '">' + (v.invigilated_pct >= 40 ? ICON.check : ICON.alert) + ' ' + v.invigilated_pct + '% invigilated (the course template asks for at least 40%)</p>' +
+    '<p class="small" style="margin-top:8px;color:' + (v.invigilated_pct >= 40 ? 'var(--green)' : 'var(--amber)') + '">' + (v.invigilated_pct >= 40 ? ICON.check : ICON.alert) + ' ' + v.invigilated_pct + '% invigilated (at least 40% needed)</p>' +
     (Object.keys(v.co_marks).length ? '<p class="small muted" style="margin-top:4px">Marks per course outcome: ' + Object.entries(v.co_marks).map(([k, x]) => esc(k) + ' ' + Math.round(x) + '%').join(' · ') + '</p>' : '') + '</div>' +
     '<div class="card">' + cardHead('Books and papers', 'books', (v.edited || {}).books) + (UI.edit === 'books' ? edBox(edBooks()) : '') + (UI.edit === 'books' ? '' : v.books.map(b => { const rc = (v.recheck || {})[b.title] || {};
       return '<div class="row"><div><p>' + ext(b.link, b.title) + '</p><p class="small muted">' + esc([b.authors, b.year].filter(Boolean).join(' · ')) + (b.id ? ' · <span class="ref">' + esc(b.id) + '</span>' : '') + '</p>' +
       (rc.status === 'mismatch' ? '<div class="iss warning">Second check: ' + esc(rc.record) + '. Please check this book before using it.</div>' : '') + '</div>' +
       (!b.verified ? '<span class="chip amber">Not checked</span>' : rc.status === 'mismatch' ? '<span class="chip amber">' + ICON.alert + 'Check failed</span>'
-        : rc.status === 'match' ? '<span class="chip green">' + ICON.check + 'Checked twice</span>' : '<span class="chip green">' + ICON.check + 'Checked</span>') + '</div>'; }).join('')) +
-    (v.books_rejected ? '<p class="tiny muted" style="margin-top:8px">' + v.books_rejected + ' suggested book' + (v.books_rejected === 1 ? ' was' : 's were') + ' removed because no matching record was found online.</p>' : '') + '</div>' +
+        : '') + '</div>'; }).join('')) +
+    (v.books_rejected ? '<p class="tiny muted" style="margin-top:8px">' + v.books_rejected + ' book' + (v.books_rejected === 1 ? '' : 's') + ' removed: not found online.</p>' : '') + '</div>' +
     '<div class="card"><h2>The full proposal</h2><div style="display:flex;gap:8px;flex-wrap:wrap">' +
     '<button class="btn sm" data-act="proposal">' + (UI.proposal ? 'Hide' : 'Read') + ' the full proposal</button>' +
     '<a class="btn sm" href="/api/runs/' + esc(RID) + '/download/pdf" target="_blank">' + ICON.down + ' Course sheet (PDF)</a>' +
@@ -663,12 +719,12 @@ function gate3View(v, final) {
 const FB = [['outcomes', 'Course outcomes'], ['weeks', 'Weekly plan'], ['assessment', 'Assessment'], ['books', 'Books and papers'], ['overall', 'Would you use this as your starting draft?']];
 function feedbackCard() {
   const fb = UI.fb;
-  if (fb.sent) return '<div class="card"><h2>Thank you</h2><p class="muted">Your feedback is saved with this course. The team reviews it to improve the system.</p><button class="link small" data-act="fbagain" style="margin-top:8px">Add more feedback</button></div>';
-  return '<div class="card"><h2>How good is this draft?</h2><p class="muted small">Your ratings go to the ProfsAgent team and are saved with this course.</p>' +
-    FB.map(([k, label]) => '<div class="fbrow"><span>' + label + '</span><span class="stars" role="group" aria-label="' + esc(label) + '">' + [1, 2, 3, 4, 5].map(n => '<button data-act="rate" data-k="' + k + '" data-n="' + n + '" class="' + ((fb.ratings[k] || 0) >= n ? 'on' : '') + '" aria-label="' + n + ' of 5">★</button>').join('') + '</span></div>').join('') +
+  if (fb.sent) return '<div class="card"><h2>Thank you</h2><p class="muted">Your feedback is saved.</p><button class="link small" data-act="fbagain" style="margin-top:8px">Add more feedback</button></div>';
+  return '<div class="card"><h2>How good is this draft?</h2>' +
+    FB.map(([k, label]) => '<div class="fbrow"><span>' + label + '</span><span class="stars" role="group" aria-label="' + esc(label) + '">' + [1, 2, 3, 4, 5].map(n => '<button data-act="rate" data-k="' + k + '" data-n="' + n + '" class="' + ((fb.ratings[k] || 0) >= n ? 'on' : '') + '" aria-pressed="' + ((fb.ratings[k] || 0) === n) + '" aria-label="' + n + ' of 5">★</button>').join('') + '</span></div>').join('') +
     '<label class="f" for="fbchange">What would you change?</label><textarea id="fbchange" data-fb="change" rows="3" placeholder="CO3 is too vague; the project should be worth more; week 6 is overloaded">' + esc(fb.change) + '</textarea>' +
     '<label class="f" for="fbtime">Roughly how much of your time did this save?</label><select id="fbtime" data-fb="time_saved">' + ['', 'None', 'Under an hour', '1–3 hours', '3–8 hours', 'More than a day'].map(v => '<option' + (fb.time_saved === v ? ' selected' : '') + '>' + v + '</option>').join('') + '</select>' +
-    (fb.err ? '<p class="err">' + esc(fb.err) + '</p>' : '') + '<div style="margin-top:12px"><button class="btn primary" data-act="fbsend">Send feedback</button></div></div>';
+    (fb.err ? '<p class="err">' + esc(fb.err) + '</p>' : '') + '<div style="margin-top:12px"><button class="btn" data-act="fbsend">Send feedback</button></div></div>';
 }
 function decisionsCard(r) {
   if (!r.approvals.length) return '';
@@ -691,9 +747,9 @@ function runPage() {
   }
   if (r.status === 'done') {
     body = '<div class="center" style="padding-top:28px">' + ICON.big + '<h1 style="margin-top:12px">Your course is ready</h1><p class="muted">' + esc(r.course && r.course.name || r.title) + ' · approved by ' + esc(r.by) + '</p>' +
-      '<div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><a class="btn primary big" href="/api/runs/' + esc(RID) + '/download/pdf" target="_blank">' + ICON.down + 'Course sheet (PDF)</a>' +
-      '<a class="btn big" href="/api/runs/' + esc(RID) + '/download/xlsx">' + ICON.down + 'IIIT-D Excel template</a></div>' +
-      '<div style="margin-top:12px"><a class="btn primary" href="#/delivery/' + esc(RID) + '">Next: plan lecture delivery ' + ICON.arrow + '</a></div>' +
+      '<div style="margin-top:20px"><a class="btn primary big" href="#/delivery/' + esc(RID) + '">Next: plan the lectures ' + ICON.arrow + '</a></div>' +
+      '<div style="margin-top:12px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><a class="btn" href="/api/runs/' + esc(RID) + '/download/pdf" target="_blank">' + ICON.down + 'Course sheet (PDF)</a>' +
+      '<a class="btn" href="/api/runs/' + esc(RID) + '/download/xlsx">' + ICON.down + 'IIIT-D Excel template</a></div>' +
       '<div style="margin-top:12px;display:flex;justify-content:center;gap:18px;flex-wrap:wrap"><a class="link small" href="/api/runs/' + esc(RID) + '/download/md">Proposal as text (Markdown)</a><button class="link small" data-act="again">Start again with changes</button><a class="link small" href="#/new">Start another course</a></div></div>' +
       feedbackCard() + decisionsCard(r) + (r.view ? '<h2 style="margin-top:26px">The approved design</h2>' + gate3View(r.view, true) : '');
     return header() + courseBand(r) + stepBar(r) + '<div class="wrap" style="padding-top:12px">' + body + '</div>';
@@ -717,24 +773,22 @@ function runPage() {
 // ============================== Phase 2: lecture delivery (docs/04_phase2_UI_integration_guide.md) ==============================
 // Screens S0–S8 over Vihan's deliverable C backend. Every action calls the server; his files stay the source of truth.
 const D_CHOICES = [
-  ['own_material', 'I\'ll teach it with my own material', 'Nothing to run; the lecture is marked as covered.', 'You'],
-  ['attach_material', 'I\'ll attach my material; work with it', 'Upload files or paste links, then pick what should be done with them.', 'Material team (B)'],
-  ['generate_material', 'Generate the lecture material for me', 'Slides and notes written from this lecture\'s brief.', 'Material team (B)'],
-  ['assistance', 'Find learning resources for me', 'Videos, readings, practice, recorded lectures or clip playlists, checked and ranked.', 'Resources (C)'],
-  ['guest_lecture', 'Suggest a guest speaker to invite', '5–7 researchers and industry speakers, checked and ranked, plus a ready guest-lecture kit.', 'Resources (C)']];
+  ['own_material', 'I\'ll teach it with my own material', '', 'You'],
+  ['attach_material', 'I\'ll attach my material; work with it', 'Upload files or paste links.', ''],
+  ['generate_material', 'Make the slides for me', 'Slides, speaker notes and a quiz.', ''],
+  ['assistance', 'Find learning resources for me', 'Videos, readings and practice.', ''],
+  ['guest_lecture', 'Suggest a guest speaker to invite', 'With an invitation draft.', '']];
+const D_LONG = { own_material: 'Your own material', attach_material: 'Your files, worked on', generate_material: 'Slides made for you', assistance: 'Learning resources', guest_lecture: 'A guest speaker' };
 const D_SHORT = { own_material: 'Own', attach_material: 'Attach', generate_material: 'Generate', assistance: 'Resources', guest_lecture: 'Guest' };
 const D_WANTS = [['want_videos', 'Videos (short explainers, talks)'], ['want_readings', 'Readings (articles, docs, book chapters)'], ['want_practice', 'Practice (notebooks, exercises, datasets)'],
   ['want_recorded_lecture', 'A full recorded lecture (for a flipped class)'], ['want_clips', 'Clip playlists (only the minutes that matter)']];
 const D_TASKS = [['slides', 'Make slides'], ['summary', 'Summary'], ['quiz', 'Quiz'], ['gap_check', 'Check what it misses'], ['enrich', 'Add examples and references']];
 const D_KINDS = [['video', 'Videos', 3], ['recorded_lecture', 'Recorded lecture', 1], ['reading', 'Readings', 2], ['practice', 'Practice', 1]];
 const KIND_WANT = { video: 'want_videos', recorded_lecture: 'want_recorded_lecture', reading: 'want_readings', practice: 'want_practice' };
-const TIER = { 1: 'University or official course', 2: 'Known educator', 3: 'Official docs or recognised publisher', 4: 'Other source' };
 const USE = { professor_prep: 'For your preparation', pre_class: 'Before class', in_class_clip: 'In-class clip', after_class: 'After class', flipped_class: 'Flipped class', lab: 'Lab', practice: 'Practice' };
 const EKIND = { academic: 'Researcher', industry: 'Industry', iiitd: 'IIIT-D faculty' };
 const FORMAT = { live_remote_60: 'Live online talk, 60 min', live_in_person: 'In person', recorded_talk: 'Recorded talk', panel: 'Panel', qa_after_recorded: 'Recorded talk, then live Q&A' };
 const LINKS = { openalex: 'OpenAlex', orcid: 'ORCID', scholar_search: 'Google Scholar search', dblp: 'DBLP', github: 'GitHub', website: 'Website', page: 'Profile page', talk: 'Talk' };
-const RSCORE = { coverage: 'coverage', quality: 'quality', authority: 'authority', level_fit: 'level fit', reception: 'reception', practicality: 'practicality' };
-const ESCORE = { topical_fit: 'topical fit', teaching: 'teaching', practical: 'practical', standing: 'standing', recency: 'recency', feasibility: 'time-zone fit' };
 let regionName = c => c;
 try { const dn = new Intl.DisplayNames(['en'], { type: 'region' }); regionName = c => { try { return dn.of(c); } catch (e) { return c; } }; } catch (e) {}
 const hms = s => { if (s == null) return ''; s = Math.round(s); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(x).padStart(2, '0'); };
@@ -743,9 +797,30 @@ const clone = o => JSON.parse(JSON.stringify(o));
 const dblank = () => ({ own_material: null, attach_material: null, generate_material: null, assistance: null, guest_lecture: null, attachments: [], attach_tasks: [],
   want_videos: 'yes', want_readings: 'yes', want_practice: 'no', want_recorded_lecture: 'no', want_clips: 'no', confidence: null, note: '' });
 let DV = null, DRID = null, DLID = null, DCOURSES = null, dpoll = null, dPendingRender = false;
+// the class-time bar (docs/10 §5): how a lecture's minutes are spent, from the lecture plan (parts and how each is taught)
+const WAY = { slides: 'Slides', video: 'Video', nlm: 'NotebookLM', inclass: 'In class', sim: 'Simulation', quiz: 'Recap and quiz' };
+function ctParts(lid) {
+  const r = DV.results[lid], a = DV.survey[lid], l = lecOf(lid);
+  if (r && (r.components || []).length) {
+    const tl = {}; (r.timeline || []).forEach(x => { tl[x.component] = x; });
+    const nlm = ((r.notebooklm || {}).components || []);
+    return r.components.map(c => { const t = tl[c.id] || {};
+      const way = t.delivery === 'video' ? 'video' : (t.delivery === 'notebooklm' || (!t.delivery && nlm.includes(c.id))) ? 'nlm' : (t.delivery === 'in_class' || c.in_class) ? 'inclass' : 'slides';
+      return { way, minutes: c.minutes || 0, title: c.title || '' }; });
+  }
+  if (a && yes(a, 'own_material') && !yes(a, 'assistance') && l) return [{ way: 'slides', minutes: Math.round(l.hours * 60), title: 'Your own material' }];
+  return null;
+}
+function ctBar(parts, big) {
+  if (!parts) return '<div class="ctb empty' + (big ? ' big' : '') + '" role="img" aria-label="No time plan yet" title="No time plan yet: it appears once learning resources are found for this lecture"></div>';
+  const label = parts.map(x => x.minutes + ' min ' + WAY[x.way]).join(', ');
+  return '<div class="ctb' + (big ? ' big' : '') + '" role="img" aria-label="' + esc('How the class time is spent: ' + label) + '">' +
+    parts.map(x => '<span class="w-' + x.way + '" style="flex:' + Math.max(1, x.minutes) + '" title="' + esc(x.title + ' · ' + x.minutes + ' min · ' + WAY[x.way]) + '">' + (big ? esc(WAY[x.way]) + ' · ' + x.minutes : '') + '</span>').join('') + '</div>';
+}
+const dlegend = ways => '<div class="legend">' + (ways || Object.keys(WAY)).map(w => '<span><i class="w-' + w + '"></i>' + WAY[w] + '</span>').join('') + '</div>';
 const dmatJob = lid => ((((DV || {}).jobs || {}).material) || {})[lid] || null;
 const MSTATUS = { draft: ['Draft: not reviewed yet', 'amber'], 'ai-reviewed': ['Checked by a second AI, not by you', 'teal'], approved: ['Approved by you', 'green'], redo: ['Being redone', 'navy'], rejected: ['Rejected', 'grey'] };
-let PUI = { filter: { week: 'all', module: 'all', novel: false, status: 'all' }, draft: {}, errs: {}, tab: {}, show: {}, openReason: null, ownForm: null, kit: null, report: null, logOpen: {}, mat: {}, matLoading: {}, mAi: {}, mReason: null, simReason: null };
+let PUI = { filter: { week: 'all', module: 'all', novel: false, status: 'all' }, draft: {}, errs: {}, tab: {}, show: {}, openReason: null, ownForm: null, kit: null, report: null, logOpen: {}, mat: {}, matLoading: {}, mAi: {}, mReason: null, simReason: null, editChoices: {} };
 const dapi = p => '/api/delivery/' + encodeURIComponent(DRID) + p;
 const dhref = (...parts) => '#/delivery/' + [DRID].concat(parts).map(encodeURIComponent).join('/');
 function crumbs(parts) { return '<div class="crumbs">' + parts.map((p, i) => (i ? '<span>›</span>' : '') + (p[1] ? '<a href="' + esc(p[1]) + '">' + esc(p[0]) + '</a>' : '<span>' + esc(p[0]) + '</span>')).join('') + '</div>'; }
@@ -779,8 +854,8 @@ function dstatus(lid) {
     if (m) return m.status === 'approved' ? ['Slides approved', 'green'] : m.status === 'rejected' ? ['Slides rejected', 'grey'] : ['Slides ready for review', 'amber'];
     return ['Not started', 'grey'];
   }
-  if (wantsB) return ['Waiting for the material team', 'grey'];
-  return ['Covered (own material)', 'green'];
+  if (wantsB) return ['Saved; working with files comes later', 'grey'];
+  return ['Covered: your own material', 'green'];
 }
 function keysBanner() {
   if (!DV || DV.keys.youtube) return '';
@@ -791,41 +866,45 @@ function keysBanner() {
 // ---------------------------------- S0: pick a course ----------------------------------
 function dhome() {
   const cs = (DCOURSES && DCOURSES.courses) || [];
+  const main = (cs.find(c => !c.example) || cs[0] || {}).run_id;                  // one primary: your own course first, an example copy only if that is all there is
   return header() + '<div class="wrap">' + crumbs([['Your courses', '#/'], ['Lecture delivery']]) +
-    '<h1 style="margin-top:8px">Lecture delivery</h1><p class="muted">For an approved course: read each lecture\'s summary, choose how you want to deliver it, then review what ProfsAgent finds. Nothing is searched until you choose.</p>' +
+    '<h1 style="margin-top:8px">Lecture delivery</h1>' +
     (cs.length ? cs.map(c => '<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><b style="font-size:16px;font-weight:600">' + esc(c.title) + (c.code ? ' <span class="muted small" style="font-weight:400">' + esc(c.code) + '</span>' : '') + '</b>' +
         (c.example ? '<span class="chip grey">Example copy</span>' : '') + '</div>' +
-        '<p class="muted small" style="margin-top:2px">' + (c.lectures ? c.lectures + ' lectures · ' + c.decided + ' decided · ' + c.with_results + ' with results' : 'Not opened for delivery yet') + '</p>' +
-        '<div style="display:flex;justify-content:flex-end;margin-top:8px"><a class="btn primary" href="#/delivery/' + esc(c.run_id) + '">Plan lecture delivery ' + ICON.arrow + '</a></div></div>').join('')
-      : '<div class="card"><p class="muted">No approved course yet. Lecture delivery opens once a course design has been approved at its final check.</p></div>') +
-    (DCOURSES && DCOURSES.example_available ? '<div class="card"><h2>Try it on an example</h2><p class="small muted">Opens your own copy of the CS-601 course "Software Development using AI", with real learning resources and guest speakers already found for its first three lectures (from Vihan\'s test run). Changes stay in the copy.</p>' +
+        '<p class="muted small" style="margin-top:2px">' + (c.lectures ? c.lectures + ' lectures · ' + c.decided + ' decided' : 'Not opened for delivery yet') + '</p>' +
+        '<div style="display:flex;justify-content:flex-end;margin-top:8px"><a class="btn' + (c.run_id === main ? ' primary' : '') + '" href="#/delivery/' + esc(c.run_id) + '">Plan the lectures ' + ICON.arrow + '</a></div></div>').join('')
+      : '<div class="card"><p class="muted">No approved course yet.</p></div>') +
+    (DCOURSES && DCOURSES.example_available ? '<div class="card"><h2>Try it on an example</h2>' +
       '<div style="margin-top:10px"><button class="btn" data-act="d-example">Open a copy of the CS-601 example</button></div></div>' : '') + '</div>';
 }
 
 // ---------------------------------- S1: lecture list ----------------------------------
+const mostlyNovel = () => { const L = LECS(); return L.filter(l => l.novel).length > L.length / 2; };   // a tag on most lectures tells nothing
 function dlist() {
   const f = PUI.filter, L = LECS(), mods = [...new Set(L.map(l => l.module))];
+  const isReview = l => dstatus(l.id)[0].startsWith('Ready');
+  const counts = { all: L.length, undecided: L.filter(l => !DV.survey[l.id]).length, review: L.filter(isReview).length, decided: L.filter(l => DV.survey[l.id]).length };
   const list = L.filter(l => (f.week === 'all' || String(l.week) === f.week) && (f.module === 'all' || l.module === f.module) && (!f.novel || l.novel) &&
-    (f.status === 'all' || (f.status === 'undecided' ? !DV.survey[l.id] : f.status === 'review' ? dstatus(l.id)[0].startsWith('Ready') : f.status === 'decided' ? !!DV.survey[l.id] : true)));
+    (f.status === 'all' || (f.status === 'undecided' ? !DV.survey[l.id] : f.status === 'review' ? isReview(l) : f.status === 'decided' ? !!DV.survey[l.id] : true)));
   const weeks = [...new Set(list.map(l => l.week))];
-  const decided = L.filter(l => DV.survey[l.id]).length, review = L.filter(l => dstatus(l.id)[0].startsWith('Ready')).length;
   const hj = (DV.jobs || {}).health || {};
+  const used = Object.keys(WAY).filter(w => L.some(l => (ctParts(l.id) || []).some(x => x.way === w)));   // the legend names only what the bars show
   return header() + '<div class="wrap wide">' + crumbs([['Your courses', '#/'], ['Lecture delivery', '#/delivery'], [DV.run.course]]) +
-    '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-top:8px"><div><h1>Plan lecture delivery</h1>' +
-    '<p class="muted">For each lecture, read the summary, then choose how you want to deliver it. Nothing is searched or generated until you save a choice.</p>' +
-    '<div class="stats"><span><b>' + L.length + '</b> lectures</span><span><b>' + L.filter(l => l.novel).length + '</b> ★ new topics</span><span><b>' + decided + '</b> decided</span><span><b>' + review + '</b> ready for review</span></div></div>' +
+    '<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-top:10px"><div style="min-width:0"><h1>' + esc(DV.run.course) + '</h1>' +
+    '</div>' +
     '<div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn" href="' + dhref('student') + '">Preview as a student</a>' +
-    '<button class="btn" data-act="d-health"' + (['queued', 'running'].includes(hj.state) ? ' disabled' : '') + '>' + (['queued', 'running'].includes(hj.state) ? '<span class="spin"></span> Checking links…' : 'Check approved links') + '</button>' +
-    '<button class="btn" data-act="d-report">' + (PUI.report ? 'Hide' : 'Show') + ' the course report</button></div></div>' +
-    keysBanner() + dhealthSummary() +
-    (PUI.report ? '<div class="card proposal">' + PUI.report + '</div>' : '') +
-    '<div class="card"><div class="filters">' +
-    '<label>Week<select data-filter="week"><option value="all">All weeks</option>' + [...new Set(L.map(l => l.week))].map(w => '<option value="' + w + '"' + (f.week === String(w) ? ' selected' : '') + '>Week ' + w + '</option>').join('') + '</select></label>' +
-    '<label>Module<select data-filter="module"><option value="all">All modules</option>' + mods.map(m => '<option' + (f.module === m ? ' selected' : '') + '>' + esc(m) + '</option>').join('') + '</select></label>' +
-    '<label>Status<select data-filter="status">' + [['all', 'Any status'], ['undecided', 'Not decided'], ['decided', 'Decided'], ['review', 'Ready for review']].map(([v, t]) => '<option value="' + v + '"' + (f.status === v ? ' selected' : '') + '>' + t + '</option>').join('') + '</select></label>' +
-    '<label style="flex-direction:row;align-items:center;gap:6px;font-size:13px;color:var(--ink)"><input type="checkbox" data-filter="novel"' + (f.novel ? ' checked' : '') + '> ★ New topics only</label></div>' +
-    '<p class="tiny muted" style="margin-top:8px">★ New topic: no existing IIIT-D course teaches a close match, so it likely needs the most preparation.</p></div>' +
-    (list.length ? weeks.map(w => '<div class="week"><h3>Week ' + w + '</h3>' + list.filter(l => l.week === w).map(dlectureRow).join('') + '</div>').join('') : '<div class="card"><p class="muted">No lectures match these filters.</p></div>') + '</div>';
+    '<button class="btn quiet" data-act="d-health"' + (['queued', 'running'].includes(hj.state) ? ' disabled' : '') + '>' + (['queued', 'running'].includes(hj.state) ? '<span class="spin"></span> Checking links…' : 'Check approved links') + '</button>' +
+    '<button class="btn quiet" data-act="d-report">' + (PUI.report ? 'Hide' : 'Show') + ' the course report</button></div></div>' +
+    keysBanner() + dhealthSummary() + (PUI.report ? '<div class="card proposal">' + PUI.report + '</div>' : '') +
+    '<div class="filters" style="margin-top:20px;align-items:center">' +
+    '<div class="seg" role="group" aria-label="Show lectures">' + [['all', 'All'], ['undecided', 'Needs a decision'], ['review', 'Ready to review'], ['decided', 'Decided']].map(([v, t]) =>
+      '<button type="button" data-fstatus="' + v + '" class="' + (f.status === v ? 'on' : '') + '" aria-pressed="' + (f.status === v) + '">' + t + ' <span class="tiny" style="opacity:.75">' + counts[v] + '</span></button>').join('') + '</div>' +
+    '<select data-filter="week" aria-label="Week" style="width:auto"><option value="all">All weeks</option>' + [...new Set(L.map(l => l.week))].map(w => '<option value="' + w + '"' + (f.week === String(w) ? ' selected' : '') + '>Week ' + w + '</option>').join('') + '</select>' +
+    (mods.length > 1 ? '<select data-filter="module" aria-label="Module" style="width:auto;max-width:280px"><option value="all">All modules</option>' + mods.map(m => '<option' + (f.module === m ? ' selected' : '') + '>' + esc(m) + '</option>').join('') + '</select>' : '') +
+    (mostlyNovel() ? '' : '<label style="flex-direction:row;align-items:center;gap:6px;font-size:13px;color:var(--ink)"><input type="checkbox" data-filter="novel"' + (f.novel ? ' checked' : '') + '> ★ New topics only</label>') +
+    (used.length ? '<div style="margin-left:auto">' + dlegend(used) + '</div>' : '') + '</div>' +
+    (list.length ? weeks.map(w => '<div class="week"><h2>Week ' + w + '</h2>' + list.filter(l => l.week === w).map(l => dlectureRow(l, used.length > 0)).join('') + '</div>').join('')
+      : '<div class="card"><p class="muted">No lectures match these filters.</p></div>') + '</div>';
 }
 function dslidesChip(lid) {
   const a = DV.survey[lid]; if (!yes(a, 'generate_material')) return '';
@@ -836,17 +915,18 @@ function dslidesChip(lid) {
   if (m) return '<span class="chip ' + (MSTATUS[m.status] || ['', 'grey'])[1] + '">Slides: ' + esc(m.status === 'ai-reviewed' ? 'AI-checked' : m.status) + '</span>';
   return '<span class="chip grey">Slides: not made</span>';
 }
-function dlectureRow(l) {
+function dlectureRow(l, bar) {
   const a = DV.survey[l.id], st = dstatus(l.id);
-  const chips = a ? D_CHOICES.filter(([k]) => yes(a, k)).map(([k]) => '<span class="chip navy">' + D_SHORT[k] + '</span>').join('') : '';
-  return '<a class="lec" href="' + dhref(l.id) + '"><span class="lid">' + esc(l.id) + '</span><span style="min-width:0"><b style="font-weight:600">' + esc(l.topic) + '</b>' +
-    '<span class="meta"><span class="small muted">' + esc(l.module) + ' · ' + l.hours + ' h</span>' + (l.novel ? '<span class="chip star">★ New topic</span>' : '') + (l.continues ? '<span class="chip grey">Continues next lecture</span>' : '') + '</span></span>' +
-    '<span class="right"><span class="chips">' + chips + '</span><span class="chips"><span class="chip ' + st[1] + '">' + esc(st[0]) + '</span>' + (yes(a, 'assistance') || yes(a, 'guest_lecture') ? dslidesChip(l.id) : '') + dsimChip(l.id) + '</span></span></a>';
+  const status = a ? '<span class="chip ' + st[1] + '">' + esc(st[0]) + '</span>' : '<span class="btn quiet sm" style="pointer-events:none">Plan ' + ICON.arrow + '</span>';
+  const novel = l.novel && !mostlyNovel() ? ' <span class="chip star" title="No IIIT-D course teaches a close match, so it likely needs the most preparation">★ New topic</span>' : '';
+  return '<a class="lec' + (bar ? '' : ' nobar') + '" href="' + dhref(l.id) + '"><span class="lid">' + esc(l.id) + '</span><span style="min-width:0"><b style="font-weight:600">' + esc(l.topic) + '</b>' +
+    '<span class="meta"><span class="small muted">' + esc(l.module) + (l.continues ? ' · continues in the next lecture' : '') + '</span>' + novel + '</span></span>' +
+    '<span class="mins">' + Math.round(l.hours * 60) + ' min</span>' + (bar ? ctBar(ctParts(l.id)) : '') + '<span class="right">' + status + (a && (yes(a, 'assistance') || yes(a, 'guest_lecture')) ? dslidesChip(l.id) : '') + dsimChip(l.id) + '</span></a>';
 }
 function dhealthSummary() {
   const dead = (DV.health || {}).dead || [], hj = (DV.jobs || {}).health || {};
   if (hj.state === 'error') return '<div class="banner red">' + ICON.alert + '<div>The link check stopped: ' + esc(hj.error) + '</div></div>';
-  if (!dead.length) return DV.health.checked_at ? '<p class="tiny muted" style="margin-top:8px">Approved links last checked ' + esc(String(DV.health.checked_at).replace('T', ' ').slice(0, 16)) + ': all working.</p>' : '';
+  if (!dead.length) return '';
   return '<div class="banner amber">' + ICON.alert + '<div>' + dead.length + ' approved link' + (dead.length === 1 ? ' is' : 's are') + ' no longer available: ' +
     dead.map(x => '<a href="' + dhref(x.lecture) + '">' + esc(x.lecture) + '</a>').join(', ') + '. Open the lecture to replace ' + (dead.length === 1 ? 'it' : 'them') + '.</div></div>';
 }
@@ -857,30 +937,55 @@ function dlec() {
   const l = lecOf(DLID);
   if (!l) return header() + '<div class="wrap"><h1>Lecture not found</h1><a class="btn" href="' + dhref() + '">Back to the lectures</a></div>';
   const L = LECS(), idx = L.indexOf(l), a = DV.survey[l.id], d = ddraft(l.id), r = DV.results[l.id], prev = L[idx - 1], next = L[idx + 1];
+  const parts = ctParts(l.id), editing = !a || !!PUI.editChoices[l.id];
   return header() + '<div class="wrap wide">' + crumbs([['Your courses', '#/'], ['Lecture delivery', '#/delivery'], [DV.run.course, dhref()], [l.id]]) +
-    '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-top:8px;flex-wrap:wrap"><div style="min-width:0">' +
-    '<p class="small muted">Week ' + l.week + ' · lecture ' + l.slot + ' · ' + l.hours + ' h · ' + esc(l.module) + '</p><h1>' + esc(l.topic) + '</h1>' +
-    '<div class="chips" style="margin-top:4px">' + (l.novel ? '<span class="chip star">★ New topic</span>' : '') + (l.continues ? '<span class="chip grey">Continues in the next lecture</span>' : '') +
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-top:10px;flex-wrap:wrap"><div style="min-width:0;flex:1">' +
+    '<p class="small muted">Week ' + l.week + ' · lecture ' + l.slot + ' · ' + Math.round(l.hours * 60) + ' min · ' + esc(l.module) + '</p><h1 style="margin-top:4px">' + esc(l.topic) + '</h1>' +
+    '<div class="chips" style="margin-top:6px">' + (l.novel && !mostlyNovel() ? '<span class="chip star">★ New topic</span>' : '') + (l.continues ? '<span class="chip grey">Continues in the next lecture</span>' : '') +
     (r && r.continuation_of ? '<span class="chip grey">Continues ' + esc(r.continuation_of) + '</span>' : '') + '</div></div>' +
-    '<div style="display:flex;gap:8px">' + (prev ? '<a class="btn sm" href="' + dhref(prev.id) + '">← Previous</a>' : '<button class="btn sm" disabled>← Previous</button>') +
-    (next ? '<a class="btn sm" href="' + dhref(next.id) + '">Next ' + ICON.arrow + '</a>' : '<button class="btn sm" disabled>Next ' + ICON.arrow + '</button>') + '</div></div>' +
-    dhealthAlert(l.id) +
-    '<div class="card"><h2>What this lecture covers</h2><p class="summary">' + esc(l.summary) + '</p></div>' +
-    ddetails(l) + dchoicesCard(l, d, !!a) + (a ? dprogressCard(l) : '') + dsimCard(l) + (a ? dresultsCard(l) : '') + '</div>';
+    '<div style="display:flex;gap:8px">' + (prev ? '<a class="btn sm" href="' + dhref(prev.id) + '">← ' + esc(prev.id) + '</a>' : '<button class="btn sm" disabled>← Previous</button>') +
+    (next ? '<a class="btn sm" href="' + dhref(next.id) + '">' + esc(next.id) + ' →</a>' : '<button class="btn sm" disabled>Next →</button>') + '</div></div>' +
+    '<p class="summary" style="margin-top:10px">' + esc(l.summary) + '</p>' + dhealthAlert(l.id) +
+    '<div class="lp" style="margin-top:6px"><div style="min-width:0">' +
+    (parts ? dbarCard(l, parts) : '') + (editing ? dchoicesCard(l, d, !!a) : dhowCard(l, a)) +
+    (a && dneedsProgress(l) ? dprogressCard(l) : '') + (a ? dresultsCard(l) : '') + dsimCard(l) +
+    '</div><aside class="lp-aside">' + daside(l) + '</aside></div></div>';
 }
-function ddetails(l) {
+function dbarCard(l, parts) {
+  const tot = parts.reduce((x, p) => x + p.minutes, 0), by = {};
+  parts.forEach(p => { by[p.way] = (by[p.way] || 0) + p.minutes; });
+  return '<div class="card"><div class="card-h" style="margin-bottom:0"><h2>How the class time is spent</h2><span class="small muted">' + parts.length + ' part' + (parts.length === 1 ? '' : 's') + ' · ' + tot + ' min</span></div>' +
+    ctBar(parts, true) + '<div class="legend" style="margin-top:10px">' + Object.keys(WAY).filter(w => by[w]).map(w => '<span><i class="w-' + w + '"></i>' + WAY[w] + ' · ' + by[w] + ' min</span>').join('') + '</div></div>';
+}
+function dhowCard(l, a) {
+  const st = dstatus(l.id), chosen = D_CHOICES.filter(([k]) => yes(a, k)).map(([k]) => D_LONG[k]);
+  return '<div class="card"><div class="howcard"><div style="flex:1;min-width:0"><h2 style="margin:0 0 8px">How you’ll teach it</h2><div class="chips">' +
+    chosen.map(x => '<span class="chip navy">' + esc(x) + '</span>').join('') + '</div>' +
+    '<p class="small muted" style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="chip ' + st[1] + '">' + esc(st[0]) + '</span>' +
+    (a.note ? '<span>Note: “' + esc(a.note) + '”</span>' : '') + '</p></div>' +
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><button class="btn sm" data-act="d-editchoices">Change</button>' +
+    '<button class="btn quiet sm" data-act="d-bulk" data-scope="week">Apply to week ' + l.week + '</button><button class="btn quiet sm" data-act="d-bulk" data-scope="module">Apply to this module</button></div></div></div>';
+}
+function dneedsProgress(l) {
+  const a = DV.survey[l.id] || {}, j = djob(l.id), r = DV.results[l.id], mj = dmatJob(l.id), m = (DV.material || {})[l.id];
+  if ((j && ['queued', 'running', 'error'].includes(j.state)) || (mj && ['queued', 'running', 'error'].includes(mj.state))) return true;
+  if ((yes(a, 'assistance') || yes(a, 'guest_lecture')) && (!r || r.partial)) return true;
+  return yes(a, 'generate_material') && !m;
+}
+function daside(l) {
   const li = (arr, f) => arr && arr.length ? '<ul>' + arr.map(x => '<li>' + f(x) + '</li>').join('') + '</ul>' : '<p class="small muted">None</p>';
-  return '<div class="card"><h2>Details</h2><div class="grid2x">' +
+  return '<div class="card"><p class="tiny" style="font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px">About this lecture</p>' +
     '<div class="kv"><h3>Students should be able to</h3>' + li(l.los, x => esc(x.text) + ' <span class="chip navy">' + esc(x.bloom) + '</span>') + '</div>' +
-    '<div class="kv"><h3>Course outcome it serves</h3>' + li(l.cos, x => '<b style="font-weight:600">' + esc(x.id) + '</b> ' + esc(x.text)) + '</div>' +
-    '<div class="kv"><h3>Builds on</h3>' + li(l.builds_on, x => esc(x.topic) + (x.week ? ' <span class="muted small">(week ' + x.week + ')</span>' : '')) + '</div>' +
-    '<div class="kv"><h3>Prerequisite courses</h3>' + li(l.prereq, x => '<b style="font-weight:600">' + esc(x.course) + '</b>' + (x.kind ? ' <span class="muted small">(' + esc(x.kind) + ')</span>' : '') + (x.relied_topics && x.relied_topics.length ? ': ' + esc(x.relied_topics.join(', ')) : '')) + '</div>' +
-    '<div class="kv"><h3>Leads to</h3>' + li(l.leads_to, x => esc(x.topic) + (x.week ? ' <span class="muted small">(week ' + x.week + ')</span>' : '')) + '</div>' +
+    '<div class="kv"><h3>Course outcome it serves</h3>' + li(l.cos, x => '<b class="mono" style="font-weight:600">' + esc(x.id) + '</b> ' + esc(x.text)) + '</div>' +
     '<div class="kv"><h3>Assessed in</h3>' + li(l.assessed, x => esc(x.id) + ' <span class="muted small">(' + esc(x.type) + ', week ' + esc(x.due_week) + ')</span>') + '</div>' +
+    '<details class="kv"><summary>More: builds on, leads to, prerequisites, labs</summary>' +
+    '<div class="kv" style="border:0;padding-top:10px"><h3>Builds on</h3>' + li(l.builds_on, x => esc(x.topic) + (x.week ? ' <span class="muted small">(week ' + x.week + ')</span>' : '')) + '</div>' +
+    '<div class="kv"><h3>Leads to</h3>' + li(l.leads_to, x => esc(x.topic) + (x.week ? ' <span class="muted small">(week ' + x.week + ')</span>' : '')) + '</div>' +
+    '<div class="kv"><h3>Prerequisite courses</h3>' + li(l.prereq, x => '<b style="font-weight:600">' + esc(x.course) + '</b>' + (x.kind ? ' <span class="muted small">(' + esc(x.kind) + ')</span>' : '') + (x.relied_topics && x.relied_topics.length ? ': ' + esc(x.relied_topics.join(', ')) : '')) + '</div>' +
     '<div class="kv"><h3>Labs and practice</h3>' + li(l.labs, x => esc(x.title) + ' <span class="muted small">(week ' + esc(x.week) + (x.tools && x.tools.length ? '; ' + esc(x.tools.join(', ')) : '') + ')</span>') +
-      '<p class="small muted" style="margin-top:4px">' + (l.hands_on ? 'Hands-on lecture' : 'Not a hands-on lecture') + (l.outside != null ? ' · about ' + l.outside + ' h of work outside class' : '') + '</p></div>' +
-    '<div class="kv"><h3>Closest topic already taught</h3>' + (l.match ? '<p>' + esc(l.match.topic) + ' <span class="muted small">(' + Math.round(l.match.similarity * 100) + '% similar' + (l.novel ? ', so this is a new topic' : '') + ')</span></p>' : '<p class="small muted">None</p>') + '</div>' +
-    '</div></div>';
+    '<p class="small muted" style="margin-top:4px">' + (l.hands_on ? 'Hands-on lecture' : 'Not a hands-on lecture') + (l.outside != null ? ' · about ' + l.outside + ' h of work outside class' : '') + '</p></div>' +
+    '<div class="kv"><h3>Closest topic already taught at IIIT-D</h3>' + (l.match ? '<p class="small">' + esc(l.match.topic) + ' <span class="muted">(' + Math.round(l.match.similarity * 100) + '% similar' + (l.novel ? ', so this is a new topic' : '') + ')</span></p>' : '<p class="small muted">None</p>') + '</div>' +
+    '</details></div>';
 }
 function dchoicesCard(l, d, saved) {
   const e = PUI.errs, dis = k => d[k] === 'yes' ? '' : ' off', mc = DV.material_connected || {};
@@ -898,22 +1003,22 @@ function dchoicesCard(l, d, saved) {
     return '';
   };
   const box = (k, label, help, owner) => '<div class="choice' + (d[k] === 'yes' ? ' on' : '') + '"><label><input type="checkbox" data-choice="' + k + '"' + (d[k] === 'yes' ? ' checked' : '') + '>' +
-    '<span style="flex:1"><b style="font-weight:600">' + label + '</b><br><span class="small muted">' + help + (k === 'attach_material' && !mc.attach ? ' Not connected yet: your files and choice are saved for the material team.' : '') + '</span></span><span class="who-owns">' + owner + '</span></label>' + sub(k) + '</div>';
+    '<span style="flex:1"><b style="font-weight:600">' + label + '</b>' + (help ? '<br><span class="small muted">' + help + (k === 'attach_material' && !mc.attach ? ' Not connected yet.' : '') + '</span>' : '') + '</span><span class="who-owns">' + owner + '</span></label>' + sub(k) + '</div>';
   const L = LECS(), prev = L[L.indexOf(l) - 1];
   const j = djob(l.id), hasRun = !!(j || DV.results[l.id]);
-  return '<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap"><h2 style="margin:0">How do you want to deliver this lecture?</h2>' +
+  return '<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap"><h2 style="margin:0">How will you teach this lecture?</h2>' +
     (saved ? '<span class="chip green">' + ICON.check + 'Choices saved</span>' : '<span class="chip amber">Not decided yet</span>') + '</div>' +
-    '<p class="small muted" style="margin-top:4px">Pick one or more. For example: your own material + resources + a guest. Each choice becomes its own piece of work.</p>' +
     D_CHOICES.map(c => box(...c)).join('') + (e.none ? '<p class="err" style="margin-top:8px">' + esc(e.none) + '</p>' : '') +
     '<div class="grid2x" style="margin-top:14px"><div><label class="f" style="margin-top:0">How confident are you teaching this topic?</label><div class="seg" role="group" aria-label="Confidence from 1 to 5">' +
     [1, 2, 3, 4, 5].map(n => '<button type="button" data-conf="' + n + '" class="' + (d.confidence === n ? 'on' : '') + '" aria-pressed="' + (d.confidence === n) + '">' + n + '</button>').join('') + '</div>' +
     '<p class="tiny muted" style="margin-top:4px">1 = not at all, 5 = fully</p></div>' +
     '<div><label class="f" style="margin-top:0" for="dnote">Anything we should know? <span class="opt">(optional)</span></label><textarea id="dnote" rows="2" placeholder="Students struggle with configuring tool permissions">' + esc(d.note || '') + '</textarea>' +
-    '<p class="tiny muted" style="margin-top:4px">The resource reviewer reads this note.</p></div></div>' +
+    '</div></div>' +
     '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;justify-content:space-between"><div style="display:flex;gap:8px;flex-wrap:wrap">' +
     (prev ? '<button class="btn" data-act="d-sameprev"' + (DV.survey[prev.id] ? '' : ' disabled title="The previous lecture has no saved choices yet"') + '>Same as previous lecture</button>' : '') +
     (saved ? '<button class="btn" data-act="d-bulk" data-scope="week">Apply to week ' + l.week + '</button><button class="btn" data-act="d-bulk" data-scope="module">Apply to this module</button>' : '') +
-    '</div><button class="btn primary" data-act="d-save"' + (PUI.saving ? ' disabled' : '') + '>' + (saved && hasRun ? 'Save changes' : 'Save and start') + ' ' + ICON.arrow + '</button></div>' +
+    '</div><div style="display:flex;gap:8px">' + (saved ? '<button class="btn" data-act="d-canceledit">Cancel</button>' : '') +
+    '<button class="btn primary" data-act="d-save"' + (PUI.saving ? ' disabled' : '') + '>' + (saved && hasRun ? 'Save changes' : 'Save and start') + ' ' + ICON.arrow + '</button></div></div>' +
     (saved ? '<p class="tiny muted" style="margin-top:8px">"Apply to" copies these choices to lectures that have none yet (files are not copied). Their searches start when you open each one and press Save and start.</p>' : '') + '</div>';
 }
 
@@ -921,7 +1026,7 @@ function dchoicesCard(l, d, saved) {
 function dprogressCard(l) {
   const a = DV.survey[l.id], rows = [], j = djob(l.id), r = DV.results[l.id];
   if (yes(a, 'own_material')) rows.push(['Own material', '<span class="chip green">' + ICON.check + 'Covered</span>', '']);
-  if (yes(a, 'attach_material')) rows.push(['Working with your material', '<span class="chip grey">Not connected yet</span>', 'The material team\'s processor (Parth) is not connected yet. Your files and tasks are saved for it.']);
+  if (yes(a, 'attach_material')) rows.push(['Working with your material', '<span class="chip grey">Not connected yet</span>', 'Working with your files is not connected yet. Your files and tasks are saved for it.']);
   if (yes(a, 'generate_material')) {
     const mj = dmatJob(l.id), m = (DV.material || {})[l.id], mlab = 'Making slides and notes';
     const mlast = ((DV.log || {})[l.id] || []).filter(x => /lecture material|slides:/.test(x)).slice(-1)[0] || '';
@@ -964,9 +1069,9 @@ function dresultsCard(l) {
   let cur = PUI.tab[l.id]; if (!tabs.some(t => t[0] === cur)) cur = (tabs.find(t => t[0] === 'plan' || t[0] === 'res' || t[0] === 'guest') || tabs[0])[0];
   const running = j && ['queued', 'running'].includes(j.state);
   let body = '';
-  if (cur === 'own') body = '<p style="margin-top:12px">You will teach this lecture with your own material, so nothing needs to run. It counts as covered.</p>' + downLinks(l.id);
+  if (cur === 'own') body = '<p style="margin-top:12px">Covered by your own material.</p>' + downLinks(l.id);
   else if (cur === 'attach') body = '<div style="margin-top:12px"><p><b style="font-weight:600">Your material:</b> ' + (a.attachments.length ? a.attachments.map(x => esc(x.split('/').pop())).join(', ') : 'none yet') + '</p><p style="margin-top:4px"><b style="font-weight:600">Tasks:</b> ' +
-    esc(a.attach_tasks.map(t => (D_TASKS.find(x => x[0] === t) || [t, t])[1]).join(', ') || 'none') + '</p><div class="banner navy">' + ICON.alert + '<div>The material team\'s processor (Parth) is not connected yet. When it is, its slides, summary, quiz or gap report appear here. Your files are kept in this course\'s delivery folder.</div></div></div>';
+    esc(a.attach_tasks.map(t => (D_TASKS.find(x => x[0] === t) || [t, t])[1]).join(', ') || 'none') + '</p><div class="banner navy">' + ICON.alert + '<div>Working with your files is not connected yet. When it is, its slides, summary, quiz or gap report appear here. Your files are kept in this course\'s delivery folder.</div></div></div>';
   else if (cur === 'gen') body = dmaterialTab(l);
   else if (running && cur !== 'gen') body = '<p class="muted" style="margin-top:14px"><span class="spin"></span> Still searching. The results appear here when the search is done; the page stays usable meanwhile.</p>';
   else if (!r) body = '<p class="muted" style="margin-top:14px">No results yet. ' + (j && j.state === 'error' ? 'The last search stopped; see Progress above.' : 'Start the search under Progress.') + '</p>';
@@ -976,7 +1081,7 @@ function dresultsCard(l) {
   else if (cur === 'guest') body = dguestTab(l, r);
   const cnt = r && !running && cur !== 'gen' && cur !== 'attach' ? dcounts(l.id) : null;
   return '<div class="card"><h2>Results</h2><div class="tabs" role="tablist">' + tabs.map(([k, n]) => '<button class="tab' + (k === cur ? ' on' : '') + '" role="tab" aria-selected="' + (k === cur) + '" data-dtab="' + k + '">' + n + '</button>').join('') + '</div>' +
-    (cnt ? '<div class="reviewbar"><span class="small"><b>' + cnt.approved + '</b> approved · <b>' + cnt.pending + '</b> waiting for you · <b>' + cnt.removed + '</b> replaced or rejected</span><span class="tiny muted">Each decision is saved at once. Only approved items reach students.</span></div>' : '') +
+    (cnt ? '<div class="reviewbar"><span class="small"><b>' + cnt.approved + '</b> approved · <b>' + cnt.pending + '</b> waiting for you · <b>' + cnt.removed + '</b> replaced or rejected</span></div>' : '') +
     body + '</div>';
 }
 // ---------------------------------- B: generated slides (Parth's deliverable B) ----------------------------------
@@ -1042,10 +1147,6 @@ function dmaterialTab(l) {
     d.slides.map(sl => dslideCard(sl, d.sources)).join('') +
     '<div class="groupt"><h3>Make them again</h3></div>' + dgenControls(l.id, m);
 }
-function scoreBar(total, scores, labels) {
-  const tip = Object.entries(scores || {}).map(([k, v]) => (labels[k] || k) + ' ' + Number(v).toFixed(2)).join(' · ');
-  return '<span class="score" title="' + esc(tip) + '">Score <span class="sb"><i style="width:' + Math.round((total || 0) * 100) + '%"></i></span> ' + Number(total || 0).toFixed(2) + '</span>';
-}
 function dactions(lid, x, kind) {
   const open = PUI.openReason && PUI.openReason.key === x.key && PUI.openReason.kind === kind ? PUI.openReason : null, isExpert = kind === 'experts';
   const data = ' data-kind="' + esc(kind) + '" data-key="' + esc(x.key) + '" data-title="' + esc(x.title || x.name) + '"';
@@ -1058,15 +1159,14 @@ function dactions(lid, x, kind) {
 function dresCard(lid, x, kind) {
   const yt = x.yt && x.embeddable !== false;
   return '<div class="rcard' + (x.approved ? ' approved' : '') + '"><div class="rhead"><div style="min-width:0"><a class="rtitle" href="' + esc(x.url) + '" target="_blank" rel="noopener">' + esc(x.title) + '</a>' +
-    '<div class="rmeta"><span>' + esc(x.source || '') + '</span><span class="chip grey">' + (TIER[x.tier] || 'Source') + '</span>' + (x.dur ? '<span>' + hms(x.dur) + '</span>' : '') + (x.year ? '<span>' + esc(x.year) + '</span>' : '') +
-    (x.captions === true ? '<span>Captions ✓</span>' : x.captions === false ? '<span>No captions</span>' : '') + (x.licence ? '<span>' + esc(x.licence) + '</span>' : '') + scoreBar(x.total, x.scores, RSCORE) + '</div></div>' +
+    '<div class="rmeta"><span>' + esc(x.source || '') + '</span>' + (x.dur ? '<span>' + hms(x.dur) + '</span>' : '') + (x.year ? '<span>' + esc(x.year) + '</span>' : '') +
+    (x.captions === true ? '<span>Captions ✓</span>' : x.captions === false ? '<span>No captions</span>' : '') + (x.licence && !/standard youtube/i.test(x.licence) ? '<span>' + esc(x.licence) + '</span>' : '') + '</div></div>' +
     '<span class="rank">#' + esc(x.rank || '') + '</span></div>' +
     x.warnings.map(w => '<div class="warn">' + ICON.alert + ' ' + esc(w) + '</div>').join('') +
-    '<p class="why"><b style="font-weight:600">Why it was picked:</b> ' + esc(x.rationale || '') + '</p>' +
     (x.review && x.review.text ? '<div class="revbox">' + (x.review.use_as ? '<span class="chip teal">' + (USE[x.review.use_as] || esc(x.review.use_as)) + '</span> ' : '') + esc(x.review.text) +
-      (x.review.issues && x.review.issues.length ? '<p class="small muted" style="margin-top:4px">Reviewer notes: ' + esc(x.review.issues.join('; ')) + '</p>' : '') + '</div>' : '') +
-    (x.cover && x.cover.length ? '<p class="cover"><b style="font-weight:600">Where the topic is covered</b>' + (x.evidence ? ' <span class="muted small">(judged from the ' + esc(x.evidence) + ')</span>' : '') + ': ' +
-      x.cover.map(c => esc(c.label) + (c.segs.length && x.yt ? ' at ' + c.segs.map(s => '<a href="' + esc(x.url) + '&t=' + s[0] + 's" target="_blank" rel="noopener">' + hms(s[0]) + '–' + hms(s[1]) + '</a>').join(', ') : ' ✓')).join(' · ') + '</p>' : '') +
+      (x.review.issues && x.review.issues.length ? '<p class="small muted" style="margin-top:4px">Note: ' + esc(x.review.issues.join('; ')) + '</p>' : '') + '</div>' : '') +
+    (x.yt && (x.cover || []).some(c => c.segs.length) ? '<p class="cover"><b style="font-weight:600">Watch:</b> ' +              // the minutes that matter, when the video has them
+      x.cover.filter(c => c.segs.length).map(c => esc(c.label) + ' at ' + c.segs.map(s => '<a href="' + esc(x.url) + '&t=' + s[0] + 's" target="_blank" rel="noopener">' + hms(s[0]) + '–' + hms(s[1]) + '</a>').join(', ')).join(' · ') + '</p>' : '') +
     (yt ? (PUI.show['play' + x.key] ? '<iframe class="yt" src="https://www.youtube-nocookie.com/embed/' + esc(x.yt) + '" title="' + esc(x.title) + '" allowfullscreen loading="lazy"></iframe>' : '<div style="margin-top:8px"><button class="btn sm" data-act="d-play" data-key="' + esc(x.key) + '">▶ Play here</button></div>') : '') +
     dactions(lid, x, kind) + '</div>';
 }
@@ -1076,20 +1176,19 @@ function dgone(lid, kind) {
 }
 function dresourcesTab(l, a, r) {
   let out = '';
-  if (r.partial) out += '<div class="banner amber">' + ICON.alert + '<div><b style="font-weight:600">Partial results.</b> ' + esc(r.partial.reason || '') + '. Some videos were judged from their title and description only. Press <b>Finish the search</b> under Progress to complete them; your decisions on unchanged items are kept.</div></div>';
-  if (r.continuation_of) out += '<div class="banner navy">' + ICON.alert + '<div>This lecture continues ' + esc(r.continuation_of) + ', so these are the next-best items after that lecture\'s, and students get new material.</div></div>';
+  if (r.partial) out += '<div class="banner amber">' + ICON.alert + '<div><b style="font-weight:600">Partial results.</b> Press <b>Finish the search</b> under Progress.</div></div>';
+  if (r.continuation_of) out += '<div class="banner navy">' + ICON.alert + '<div>Continues ' + esc(r.continuation_of) + ': these are the next-best items.</div></div>';
   if (r.note) out += '<div class="banner navy">' + ICON.alert + '<div>' + esc(r.note) + '</div></div>';
-  if (r.counts) out += '<p class="tiny muted" style="margin-top:10px">' + r.counts.candidates + ' found · ' + r.counts.passed_checks + ' passed the checks · ' + r.counts.rejected + ' removed</p>';
   D_KINDS.forEach(([k, name, max]) => {
     if (!yes(a, KIND_WANT[k])) return;
     const shown = r.items[k] || [], reserve = r.reserve[k] || [], kid = 'res' + l.id + k;
-    out += '<div class="groupt"><h3>' + name + ' <span class="muted small" style="font-weight:400">· up to ' + max + '</span></h3>' + (reserve.length ? '<button class="link small" data-act="d-toggle" data-id="' + kid + '">' + (PUI.show[kid] ? 'Hide' : 'Show') + ' the next-best ' + reserve.length + '</button>' : '') + '</div>';
+    out += '<div class="groupt"><h3>' + name + '</h3>' + (reserve.length ? '<button class="link small" data-act="d-toggle" data-id="' + kid + '">' + (PUI.show[kid] ? 'Hide' : 'Show') + ' the next-best ' + reserve.length + '</button>' : '') + '</div>';
     out += shown.length ? shown.map(x => dresCard(l.id, x, k)).join('') : '<p class="muted small" style="margin-top:6px">No ' + name.toLowerCase() + ' passed the quality checks for this lecture.' + (k === 'video' || k === 'recorded_lecture' ? (DV.keys.youtube ? '' : ' (Video search is off on this laptop.)') : '') + '</p>';
-    if (PUI.show[kid]) out += '<div style="margin-left:14px;border-left:3px solid var(--line);padding-left:12px">' + reserve.map(x => '<p class="small" style="margin-top:8px"><a href="' + esc(x.url) + '" target="_blank" rel="noopener">' + esc(x.title) + '</a> <span class="muted">· ' + esc(x.source || '') + ' · score ' + Number(x.total || 0).toFixed(2) + '</span></p>').join('') + '<p class="tiny muted" style="margin-top:6px">“Replace” takes the first of these.</p></div>';
+    if (PUI.show[kid]) out += '<div style="margin-left:14px;border-left:3px solid var(--line);padding-left:12px">' + reserve.map(x => '<p class="small" style="margin-top:8px"><a href="' + esc(x.url) + '" target="_blank" rel="noopener">' + esc(x.title) + '</a> <span class="muted">· ' + esc(x.source || '') + '</span></p>').join('') + '</div>';
     out += dgone(l.id, k);
   });
   out += downLinks(l.id);
-  if (r.rejected && r.rejected.length) out += '<div class="groupt"><h3 class="small">Why not these?</h3><button class="link small" data-act="d-toggle" data-id="rej' + l.id + '">' + (PUI.show['rej' + l.id] ? 'Hide' : 'Show') + ' the reasons (' + r.rejected.length + (r.counts && r.counts.rejected > r.rejected.length ? ' of the ' + r.counts.rejected : '') + ' removed)</button></div>' +
+  if (r.rejected && r.rejected.length) out += '<div class="groupt"><h3 class="small">Why not these?</h3><button class="link small" data-act="d-toggle" data-id="rej' + l.id + '">' + (PUI.show['rej' + l.id] ? 'Hide' : 'Show') + ' removed (' + r.rejected.length + ')</button></div>' +
     (PUI.show['rej' + l.id] ? '<ul class="small" style="margin-top:6px">' + r.rejected.map(x => '<li><a href="' + esc(x.url) + '" target="_blank" rel="noopener">' + esc(x.title) + '</a> <span class="muted">· ' + esc((x.why || []).join('; ')) + '</span></li>').join('') + '</ul>' : '');
   return out;
 }
@@ -1098,7 +1197,6 @@ function downLinks(lid) {
   return '<div class="groupt"><h3>Your own links</h3>' + (f ? '' : '<button class="btn sm" data-act="d-ownopen">+ Add my own link</button>') + '</div>' +
     own.map((x, i) => '<div class="rcard approved"><div class="rhead"><div><a class="rtitle" href="' + esc(x.url) + '" target="_blank" rel="noopener">' + esc(x.title) + '</a><div class="rmeta"><span class="chip grey">' + esc((D_KINDS.find(k => k[0] === x.kind) || [0, 'Reading'])[1]) + '</span><span class="chip green">' + ICON.check + 'Approved (added by you)</span></div></div>' +
       '<button class="link small" data-act="d-ownrm" data-i="' + i + '">Remove</button></div></div>').join('') +
-    (!own.length && !f ? '<p class="small muted" style="margin-top:6px">Pin a resource you already know; it counts as approved.</p>' : '') +
     (f ? '<div class="rcard"><div class="grid2x"><div><label class="f" style="margin-top:0" for="ownt">Title</label><input type="text" id="ownt" value="' + esc(f.title || '') + '"></div>' +
       '<div><label class="f" style="margin-top:0" for="ownu">Link</label><input type="text" id="ownu" placeholder="https://…" value="' + esc(f.url || '') + '"></div></div>' +
       '<label class="f" for="ownk">Kind</label><select id="ownk">' + D_KINDS.map(([k, n]) => '<option value="' + k + '"' + (f.kind === k ? ' selected' : '') + '>' + n + '</option>').join('') + '</select>' + (f.err ? '<p class="err">' + esc(f.err) + '</p>' : '') +
@@ -1117,6 +1215,7 @@ function dplanTab(l, r) {
       (t.gap ? '<div class="small muted" style="margin-top:4px"><span class="chip navy">+ NotebookLM</span> ' + esc(t.gap.video_minutes) + ' of ' + esc(c.minutes) + ' min on video' +
         ((t.gap.missing || []).length ? '; the video leaves out: ' + esc(t.gap.missing.join('; ')) : '') + '</div>' : '');
     if (t.gap) { n.gap = (n.gap || 0) + 1; }
+    else if (t.delivery === 'video') { /* the checked video stretches above */ }
     else if (t.delivery === 'notebooklm') how = '<span class="chip navy">NotebookLM video</span> <span class="small muted">no YouTube video teaches it well enough</span>';
     else if (t.delivery === 'in_class') how = '<span class="chip grey">In class</span> <span class="small muted">' + esc((c.kind || '').replace('_', ' ')) + ', taught with your slides</span>';
     else how = '<span class="small muted">Videos were not asked for</span>';
@@ -1149,7 +1248,7 @@ function dguestTab(l, r) {
   const e = r.experts;
   if (!e) return '<p class="muted" style="margin-top:12px">This lecture was searched for resources only. Save your choices again to search for a guest too.</p>';
   if (e.same_as) return '<div class="banner navy" style="margin-top:12px">' + ICON.alert + '<div>Same guest list as ' + esc(e.same_as) + ', because this lecture continues that topic. <a href="' + dhref(e.same_as) + '">Open ' + esc(e.same_as) + '</a></div></div>';
-  return (e.counts ? '<p class="tiny muted" style="margin-top:10px">' + e.counts.candidates + ' found · ' + e.counts.assessed + ' assessed · ' + e.counts.passed_checks + ' passed the checks. ProfsAgent never contacts anyone: you send the invitation yourself.</p>' : '') +
+  return (e.counts ? '<p class="tiny muted" style="margin-top:10px">' + 'You send invitations yourself; ProfsAgent never contacts anyone.</p>' : '') +
     (DV.kits.includes(l.id) ? '<div style="margin-top:8px"><a class="btn sm" href="' + dhref(l.id, 'kit') + '">Open the guest-lecture kit</a></div>' : '') +
     (e.experts.length ? e.experts.map(x => dexpertCard(l.id, x)).join('') : '<p class="muted small" style="margin-top:8px">No speaker passed the checks.</p>') + dgone(l.id, 'experts') +
     (e.rejected && e.rejected.length ? '<div class="groupt"><h3 class="small">Why not these?</h3><button class="link small" data-act="d-toggle" data-id="xrej' + l.id + '">' + (PUI.show['xrej' + l.id] ? 'Hide' : 'Show') + ' ' + e.rejected.length + ' removed people</button></div>' +
@@ -1159,13 +1258,13 @@ function dexpertCard(lid, x) {
   return '<div class="rcard' + (x.approved ? ' approved' : '') + '"><div class="rhead"><div style="min-width:0"><span class="rtitle">' + esc(x.name) + '</span>' +
     '<div class="rmeta"><span>' + esc([x.role, x.affiliation || 'affiliation unknown'].filter(Boolean).join(', ')) + (x.country ? ' · ' + esc(regionName(x.country)) : '') + '</span>' +
     '<span class="chip grey">' + esc(EKIND[x.kind] || (x.kind || '').replace(/^./, c => c.toUpperCase())) + '</span>' +
-    (x.fit ? '<span class="chip ' + (x.fit === 'strong' ? 'green' : 'amber') + '">' + (x.fit === 'strong' ? 'Strong fit' : 'Moderate fit') + '</span>' : '') + scoreBar(x.total, x.scores, ESCORE) + '</div></div><span class="rank">#' + esc(x.rank || '') + '</span></div>' +
+    (x.fit ? '<span class="chip ' + (x.fit === 'strong' ? 'green' : 'amber') + '">' + (x.fit === 'strong' ? 'Strong fit' : 'Moderate fit') + '</span>' : '') + '</div></div><span class="rank">#' + esc(x.rank || '') + '</span></div>' +
     x.warnings.map(w => '<div class="warn">' + ICON.alert + ' ' + esc(w) + '</div>').join('') +
     '<p class="why"><b style="font-weight:600">Why:</b> ' + esc(x.why || '') + '</p>' +
     (x.evidence.length ? '<ul class="small" style="margin:6px 0 0;padding-left:18px">' + x.evidence.map(ev => '<li>' + (ev.url ? '<a href="' + esc(ev.url) + '" target="_blank" rel="noopener">' + esc(ev.title) + '</a>' : esc(ev.title)) + ' <span class="muted">· ' + esc([ev.kind, ev.venue, ev.year].filter(Boolean).join(', ')) + '</span></li>').join('') + '</ul>' : '') +
     '<p class="small" style="margin-top:6px">' + (x.format ? '<b style="font-weight:600">Suggested format:</b> ' + esc(FORMAT[x.format] || x.format) + ' · ' : '') +
     Object.entries(x.links || {}).filter(([, u]) => u).map(([k, u]) => '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(LINKS[k] || k) + '</a>').join(' · ') + '</p>' +
-    (x.verified ? '<p class="tiny muted" style="margin-top:4px">Identity confirmed by: ' + esc(x.verified) + '</p>' : '') + dactions(lid, Object.assign({ title: x.name }, x), 'experts') + '</div>';
+    (x.verified ? '<p class="tiny muted" style="margin-top:4px">Verified: ' + esc(x.verified) + '</p>' : '') + dactions(lid, Object.assign({ title: x.name }, x), 'experts') + '</div>';
 }
 function dhealthAlert(lid) {
   return ((DV.health || {}).dead || []).filter(x => x.lecture === lid).map(x => '<div class="banner amber">' + ICON.alert + '<div style="flex:1"><b style="font-weight:600">“' + esc(x.title) + '” is no longer available</b> (checked ' + esc(String(DV.health.checked_at || '').replace('T', ' ').slice(0, 16)) + ').' +
@@ -1213,7 +1312,7 @@ function dstudent() {
   const shown = r => r.items.length || r.sims.length || ((DV.material || {})[r.l.id] || {}).status === 'approved';
   const rows = LECS().map(l => ({ l, items: dapproved(l.id), sims: dsimApproved(l.id) })), any = rows.some(shown);
   return header() + '<div class="wrap">' + crumbs([['Your courses', '#/'], ['Lecture delivery', '#/delivery'], [DV.run.course, dhref()], ['Student view']]) +
-    '<div class="banner navy">' + ICON.check + '<div>This is what students see: approved items only (simulations first, opened at your class example), in rank order, with when to use them. No scores, warnings or speaker candidates.</div></div>' +
+    '<div class="banner navy">' + ICON.check + '<div>What students see: only what you approved.</div></div>' +
     '<h1 style="margin-top:16px">' + esc(DV.run.course) + '</h1><p class="muted">Learning resources by lecture</p>' +
     (any ? '' : '<div class="card"><p class="muted">Nothing has been released yet. Approve resources on a lecture page and they appear here.</p></div>') +
     rows.filter(shown).map(({ l, items }) => '<div class="card"><p class="small muted">Week ' + l.week + ' · ' + esc(l.id) + '</p><h2>' + esc(l.topic) + '</h2>' + dsimStudentRows(l) +
@@ -1222,7 +1321,7 @@ function dstudent() {
         return '<div class="row"><div style="min-width:0"><a href="' + esc(x.url) + '" target="_blank" rel="noopener" style="font-weight:600">' + esc(x.title) + '</a>' +
           '<div class="rmeta">' + (x.review && x.review.use_as ? '<span class="chip teal">' + (USE[x.review.use_as] || '') + '</span>' : '<span class="chip grey">' + esc(x.kindName || 'Resource') + '</span>') +
           (seg && x.yt ? '<span>Watch <a href="' + esc(x.url) + '&t=' + seg.segs[0][0] + 's" target="_blank" rel="noopener">' + hms(seg.segs[0][0]) + '–' + hms(seg.segs[0][1]) + '</a></span>' : '') + (x.dur ? '<span>' + hms(x.dur) + '</span>' : '') + '</div></div>' +
-          '<div style="text-align:right;flex:none"><span class="stars" role="group" aria-label="Rate this resource">' + [1, 2, 3, 4, 5].map(n => '<button data-act="d-rate" data-lid="' + esc(l.id) + '" data-key="' + esc(x.key) + '" data-title="' + esc(x.title) + '" data-n="' + n + '" class="' + (rt.r >= n ? 'on' : '') + '" aria-label="' + n + ' star' + (n > 1 ? 's' : '') + '">★</button>').join('') + '</span>' +
+          '<div style="text-align:right;flex:none"><span class="stars" role="group" aria-label="Rate this resource">' + [1, 2, 3, 4, 5].map(n => '<button data-act="d-rate" data-lid="' + esc(l.id) + '" data-key="' + esc(x.key) + '" data-title="' + esc(x.title) + '" data-n="' + n + '" class="' + (rt.r >= n ? 'on' : '') + '" aria-pressed="' + (rt.r === n) + '" aria-label="' + n + ' star' + (n > 1 ? 's' : '') + '">★</button>').join('') + '</span>' +
           (rt.r ? '<p class="tiny muted">Rating saved</p>' : '<p class="tiny muted">Rate it</p>') + '</div></div>'; }).join('') + '</div>').join('') + '</div>';
 }
 
@@ -1257,6 +1356,7 @@ async function dsave() {
   if (r.status === 422) { PUI.errs = r.data.errors || {}; render(); const e = app.querySelector('.err'); if (e) e.scrollIntoView({ block: 'center' }); return; }
   if (!r.ok) { toast((r.data && r.data.problem) || 'Could not save'); render(); return; }
   delete PUI.draft[lid];
+  PUI.editChoices[lid] = false;
   toast(r.data.start_c ? (r.data.refresh ? 'Saved. Searching again with the new choices.' : 'Saved. The search has started.') : 'Choices saved.');
   await loadDelivery(false);
 }
@@ -1271,6 +1371,8 @@ async function dupload(files) {
 async function dclick(act, b) {
   const lid = DLID;
   if (act.startsWith('d-sim')) return dsimclick(act, b, lid);
+  if (act === 'd-editchoices') { PUI.editChoices[lid] = true; render(); const c = app.querySelector('[data-choice]'); if (c) c.focus(); return; }
+  if (act === 'd-canceledit') { PUI.editChoices[lid] = false; delete PUI.draft[lid]; PUI.errs = {}; render(); return; }
   if (act === 'd-example') { b.disabled = true; const r = await post('/api/delivery/example'); if (r.ok) location.hash = '#/delivery/' + r.data.run_id; else { b.disabled = false; toast((r.data && r.data.detail) || 'Could not copy the example'); } return; }
   if (act === 'd-save') return dsave();
   if (act === 'd-mgen') {
@@ -1340,14 +1442,15 @@ function dchange(t) {
 // preview window. A simulation runs in a sandboxed frame; it reports its setup (profsagent-sim-state messages), which the
 // professor can keep as the class example that students start from.
 let SCAT = null, SREQ = null, SIMOV = null;
-const SUI = { q: '', req: null, reqErr: {}, sending: false, notes: {} };
+const SUI = { q: '', req: null, reqErr: {}, sending: false, notes: {}, page: 1, xpage: 1, brej: null, opts: {}, reqOpen: ({ '1': true, '0': false })[store.get('profsagent-reqopen')] ?? null };   // 10 a page; reqOpen null = open only when a request needs you
+const SIM_PAGE = 10;
 const simPage = (id, state, fresh) => '/api/simulations/' + encodeURIComponent(id) + '/page' + (fresh ? '?r=' + Date.now() : '') + (state ? '#' + state : '');
 async function loadSimCatalogue() { const r = await api('/api/simulations'); if (r.ok) SCAT = r.data; return r.ok; }
 function simChecked(c) {
-  if (!c.checked) return '<span class="chip grey">No check report yet</span>';
+  if (!c.checked) return '';
   if (!c.checked.ok) return '<span class="chip red">Its last check failed</span>';
   if (!c.checked.current) return '<span class="chip amber">Changed since its last check</span>';
-  return '<span class="chip green" title="' + esc(c.independent || '') + '">' + ICON.check + ' Checked ' + esc(String(c.checked.at || '').slice(0, 10)) + '</span>';
+  return '';
 }
 
 // ---------------------------------- the preview window (outside #app, so page updates never reload the simulation)
@@ -1412,94 +1515,156 @@ window.addEventListener('message', ev => {
 // ---------------------------------- the Simulations page
 function simsPage() {
   if (!SCAT) return header() + '<div class="wrap wide">' + crumbs([['Your courses', '#/'], ['Simulations']]) + '<p class="muted" style="margin-top:12px">Loading the simulations…</p></div>';
-  const E = SCAT.entries, X = (SCAT.external || {}).entries || [];
   return header() + '<div class="wrap wide">' + crumbs([['Your courses', '#/'], ['Simulations']]) +
     '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-top:8px"><div style="min-width:0;flex:1"><h1>Simulations</h1>' +
-    '<p class="muted">Interactive simulations for your class. Try any of them here. To use one in a lecture, approve it on that lecture\'s page in Lecture delivery.</p></div>' +
+    '<p class="muted">To use one in a lecture, approve it on the lecture\'s page.</p></div>' +
     (SUI.req ? '' : '<button class="btn primary" data-act="s-reqopen">Ask for a new simulation</button>') + '</div>' +
     (SUI.req ? simRequestForm() : '') +
     '<div class="card"><input type="text" data-sf="q" value="' + esc(SUI.q) + '" placeholder="Search by topic, for example: scheduling, clustering, convolution" aria-label="Search the simulations">' +
-    (X.length ? '<p class="tiny muted" style="margin-top:6px">The search also covers ' + X.length + ' simulations on ' + esc(SCAT.external.sites.slice(0, 3).join(', ')) + ' and other trusted sites, shown as links.</p>' : '') + '</div>' +
-    '<div id="simlist">' + E.map(simEntryCard).join('') + '<div id="extlist"></div>' +
+    '</div>' +
+    '<div id="simlist"><div id="simcards"></div><div id="simmore"></div><div id="extlist"></div>' +
     '<div class="card" id="simnone" hidden><p class="muted">No simulation matches your search yet.</p><div style="margin-top:10px"><button class="btn" data-act="s-reqopen" data-fromsearch="1">Ask for a new simulation</button></div></div></div>' +
     simRequestList() + '</div>';
 }
-function simEntryCard(c) {
-  const text = [c.title, c.summary, c.topics.join(' '), c.courses.map(x => x.code + ' ' + x.name).join(' ')].join(' ').toLowerCase();
-  return '<div class="rcard" data-simcard data-text="' + esc(text) + '">' +
-    '<div class="rhead"><div class="rtitle" style="min-width:0">' + esc(c.title) + '</div><span style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">' + simMade(c) + simCode(c) + simChecked(c) + '</span></div>' +
-    '<p class="why">' + esc(c.summary) + '</p>' +
-    '<p class="small muted" style="margin-top:4px">Covers: ' + esc(c.topics.join(', ')) + '</p>' +
-    (c.used.length ? '<p class="small" style="margin-top:4px"><b style="font-weight:600">In your lectures:</b> ' + c.used.map(u => '<a href="#/delivery/' + encodeURIComponent(u.run_id) + '/' + encodeURIComponent(u.lecture) + '">' + esc(u.course) + ', ' + esc(u.lecture) + '</a>').join('; ') + '</p>' : '') +
-    '<div class="acts"><button class="btn sm primary" data-act="s-open" data-sim="' + esc(c.id) + '">Try it</button></div></div>';
+// simulations of the same thing share a key: the title without "step by step", "· try it yourself", "(…)" and the like
+const simKey = t => String(t || '').toLowerCase().split(/[·(|–]/)[0]
+  .replace(/\b(step by step|try it yourself|visuali[sz](ed|ation)|simulations?|simulator|demo|interactive|animation|algorithms?)\b/g, ' ')
+  .replace(/[^a-z0-9+#]+/g, ' ').trim();
+const simText = c => [c.title, c.summary, (c.topics || []).join(' '), (c.courses || []).map(x => x.code + ' ' + x.name).join(' ')].join(' ').toLowerCase();
+const simUsed = c => (c.used || []).length ? '<p class="small" style="margin-top:4px"><b style="font-weight:600">In your lectures:</b> ' + c.used.map(u => '<a href="#/delivery/' + encodeURIComponent(u.run_id) + '/' + encodeURIComponent(u.lecture) + '">' + esc(u.course) + ', ' + esc(u.lecture) + '</a>').join('; ') + '</p>' : '';
+function simGroups(ours, links) {               // [{key, items: [{c} | {x}]}], in the order first seen
+  const gs = [], starts = (a, b) => a === b || a.startsWith(b + ' ');        // "tower of hanoi recursion" starts with "tower of hanoi"
+  [...ours.map(c => ({ c })), ...links.map(x => ({ x }))].forEach(it => {
+    const k = simKey((it.c || it.x).title) || (it.c || it.x).id, g = gs.find(g => starts(k, g.key) || starts(g.key, k));
+    if (g) { g.items.push(it); if (k.length < g.key.length) g.key = k; } else gs.push({ key: k, items: [it] });
+  });
+  return gs.map(g => g.items);
 }
-function sfilter() {
-  const words = SUI.q.trim().toLowerCase().split(/\s+/).filter(Boolean); let n = 0;
-  app.querySelectorAll('[data-simcard]').forEach(el => { const ok = words.every(w => el.dataset.text.includes(w)); el.hidden = !ok; n += ok ? 1 : 0; });
-  const xs = words.length ? (((SCAT || {}).external || {}).entries || []).filter(x => words.every(w => x.text.includes(w))) : [];
-  const box = document.getElementById('extlist');
-  if (box) box.innerHTML = xs.length ? '<h3 style="margin-top:18px">On other trusted sites</h3><p class="small muted">Links only; we have not checked these. To use one in a lecture, approve it when it is suggested on the lecture\'s page.</p>' +
-    xs.slice(0, 15).map(x => '<div class="rcard"><div class="rhead"><div class="rtitle" style="min-width:0">' + esc(x.title) + '</div><span style="display:flex;gap:6px">' + simCode(x) + '<span class="chip navy">' + esc(x.site_name) + '</span></span></div>' +
-      (x.summary ? '<p class="why">' + esc(x.summary) + '</p>' : '') + '<div class="acts"><a class="btn sm" href="' + esc(x.url) + '" target="_blank" rel="noopener">Open ' + ICON.link + '</a></div></div>').join('') +
-    (xs.length > 15 ? '<p class="small muted" style="margin-top:8px">' + (xs.length - 15) + ' more; add a word to narrow the search.</p>' : '') : '';
-  const none = document.getElementById('simnone'); if (none) none.hidden = n > 0 || xs.length > 0;
+// one card per topic: at most 3 simulations of the same thing (ours, the ones found online, the links you approved);
+// "Try it" lists them, and each opens on its own
+function simGroupCard(g) {
+  const items = (g.items || g).slice(0, 3), key = g.key || 'k:' + simKey(((items[0] || {}).c || (items[0] || {}).x || {}).title);
+  if (items.length === 1) return items[0].c ? simEntryCard(items[0].c) : simExtCard(items[0].x);
+  const shortest = items.slice().sort((a, b) => (a.c || a.x).title.length - (b.c || b.x).title.length)[0];
+  const head = items.find(it => it.c) || shortest, h = head.c || head.x, title = g.title || h.title;
+  const src = it => it.c ? 'ours' : it.x.site_name, same = it => items.filter(o => src(o) === src(it) && (o.c || o.x).title === (it.c || it.x).title).length > 1;   // "Version n" only for look-alikes from one source
+  const open = !!SUI.opts[key];
+  const opt = (it, i) => { const e = it.c || it.x;
+    return '<div class="simopt"><span class="chip ' + (it.c ? 'green">Ours' : 'navy">' + esc(e.site_name)) + '</span>' + simCode(e) +
+      '<span class="small muted" style="flex:1;min-width:0">' + (same(it) ? 'Version ' + (i + 1) : e.title !== title ? esc(e.title) : '') + '</span>' +
+      (it.c ? '<button class="btn sm" data-act="s-open" data-sim="' + esc(e.id) + '">Try it</button>' : '<a class="btn sm" href="' + esc(e.url) + '" target="_blank" rel="noopener">Open ' + ICON.link + '</a>') + '</div>'; };
+  return '<div class="rcard" data-simcard><div class="rhead"><div class="rtitle" style="min-width:0">' + esc(title) + '</div><span class="chip grey">' + items.length + ' options</span></div>' +
+    (h.summary ? '<p class="why">' + esc(h.summary) + '</p>' : '') + items.filter(it => it.c).map(it => simUsed(it.c)).join('') +
+    (open ? '<div class="simopts">' + items.map(opt).join('') + '</div>' : '') +
+    '<div class="acts"><button class="btn sm' + (open ? ' quiet' : '') + '" data-act="s-opts" data-key="' + esc(key) + '" aria-expanded="' + open + '">' + (open ? 'Hide the options' : 'Try it') + '</button></div></div>';
+}
+function simExtCard(x) {
+  return '<div class="rcard" data-simcard><div class="rhead"><div class="rtitle" style="min-width:0">' + esc(x.title) + '</div><span style="display:flex;gap:6px">' + simCode(x) + '<span class="chip navy">' + esc(x.site_name) + '</span></span></div>' +
+    (x.summary ? '<p class="why">' + esc(x.summary) + '</p>' : '') + '<div class="acts"><a class="btn sm" href="' + esc(x.url) + '" target="_blank" rel="noopener">Open ' + ICON.link + '</a></div></div>';
+}
+function simEntryCard(c) {
+  return '<div class="rcard" data-simcard>' +
+    '<div class="rhead"><div class="rtitle" style="min-width:0">' + esc(c.title) + '</div><span style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">' + simCode(c) + simChecked(c) + '</span></div>' +
+    '<p class="why">' + esc(c.summary) + '</p>' + simUsed(c) +
+    '<div class="acts"><button class="btn sm" data-act="s-open" data-sim="' + esc(c.id) + '">Try it</button></div></div>';
+}
+function pager(n, cur, act) {                // 1 2 3 … : the first, the last, and the pages next to the current one
+  if (n < 2) return '';
+  const show = [...new Set([1, cur - 1, cur, cur + 1, n])].filter(x => x >= 1 && x <= n).sort((a, b) => a - b);
+  let out = '', last = 0;
+  for (const x of show) { if (x - last > 1) out += '<span class="muted">…</span>';
+    out += '<button class="btn sm' + (x === cur ? ' on' : '') + '" data-act="' + act + '" data-p="' + x + '"' + (x === cur ? ' aria-current="page"' : '') + '>' + x + '</button>'; last = x; }
+  return '<nav class="pager" aria-label="Pages">' + (cur > 1 ? '<button class="btn sm quiet" data-act="' + act + '" data-p="' + (cur - 1) + '" aria-label="Previous page">‹</button>' : '') + out +
+    (cur < n ? '<button class="btn sm quiet" data-act="' + act + '" data-p="' + (cur + 1) + '" aria-label="Next page">›</button>' : '') + '</nav>';
+}
+function sfilter() {                         // draws the list: ours (with any links on the same subject), then links alone; 10 at a time
+  if (!SCAT) return;
+  const words = SUI.q.trim().toLowerCase().split(/\s+/).filter(Boolean), hit = t => words.every(w => t.includes(w));
+  // the topics you asked for first (what was built + what was found online), then the rest of ours, grouped by title
+  const topics = (SCAT.topics || []).map(g => ({ key: 'req:' + g.key, title: g.title, items: g.items.map(it => it.kind === 'ours' ? { c: SCAT.entries.find(e => e.id === it.id) }
+    : { x: { id: it.url, title: it.title, url: it.url, site_name: it.site_name, shows_code: it.shows_code, summary: it.summary } }).filter(it => it.c || it.x) })).filter(g => g.items.length);
+  const itText = it => it.c ? simText(it.c) : [it.x.title, it.x.site_name, it.x.summary].join(' ').toLowerCase();
+  const inTopic = new Set(topics.flatMap(g => g.items.map(it => it.c ? it.c.id : it.x.url)));
+  const ours = SCAT.entries.filter(c => !inTopic.has(c.id) && hit(simText(c)));
+  const links = words.length ? (((SCAT.external || {}).entries || []).filter(x => !inTopic.has(x.url) && hit(x.text))) : [];
+  const groups = simGroups(ours, links);
+  const mine = [...topics.filter(g => hit((g.title + ' ' + g.items.map(itText).join(' ')).toLowerCase())), ...groups.filter(g => g.some(it => it.c))];
+  const theirs = groups.filter(g => !g.some(it => it.c));
+  const cards = document.getElementById('simcards'), more = document.getElementById('simmore'), box = document.getElementById('extlist');
+  const pages = n => Math.max(1, Math.ceil(n / SIM_PAGE));
+  SUI.page = Math.min(SUI.page, pages(mine.length)); SUI.xpage = Math.min(SUI.xpage, pages(theirs.length));
+  const cut = (xs, pg) => xs.slice((pg - 1) * SIM_PAGE, pg * SIM_PAGE);
+  if (cards) cards.innerHTML = cut(mine, SUI.page).map(simGroupCard).join('');
+  if (more) more.innerHTML = pager(pages(mine.length), SUI.page, 's-page');
+  if (box) box.innerHTML = theirs.length ? '<h3 style="margin-top:18px">On other sites</h3>' + cut(theirs, SUI.xpage).map(simGroupCard).join('') + pager(pages(theirs.length), SUI.xpage, 's-xpage') : '';
+  const none = document.getElementById('simnone'); if (none) none.hidden = groups.length > 0;
 }
 function simRequestForm() {
   const r = SUI.req, e = SUI.reqErr || {}, err = k => e[k] ? '<p class="err">' + esc(e[k]) + '</p>' : '';
   return '<div class="card" id="simreq"><h2>Ask for a new simulation</h2>' +
-    (r.lecture ? '<p class="small">For <b style="font-weight:600">' + esc(r.course || '') + ', ' + esc(r.lecture) + '</b></p>' : '<p class="small muted">Describe what you need. The team builds and checks it; it then appears in this list and in your lecture suggestions.</p>') +
+    (r.lecture ? '<p class="small">For <b style="font-weight:600">' + esc(r.course || '') + ', ' + esc(r.lecture) + '</b></p>' : '') +
     '<label class="f" for="sq-topic">Topic</label><input type="text" id="sq-topic" data-sq="topic" value="' + esc(r.topic) + '" placeholder="For example: TCP congestion control">' + err('topic') +
     '<label class="f" for="sq-what">What should students see or try?</label><textarea id="sq-what" data-sq="what" rows="3" placeholder="For example: change the window size and the loss rate, and watch the sending rate rise and fall">' + esc(r.what) + '</textarea>' + err('what') +
     (r.run_id ? '' : '<label class="f" for="sq-course">Course <span class="opt">(optional)</span></label><input type="text" id="sq-course" data-sq="course" value="' + esc(r.course || '') + '">') +
-    '<div class="edfoot"><span class="small muted">Kept on this laptop for the simulation team.</span><span style="display:flex;gap:8px"><button class="btn sm" data-act="s-reqcancel">Cancel</button>' +
+    '<div class="edfoot"><span></span><span style="display:flex;gap:8px"><button class="btn sm" data-act="s-reqcancel">Cancel</button>' +
     '<button class="btn sm primary" data-act="s-reqsend"' + (SUI.sending ? ' disabled' : '') + '>Send the request</button></span></div></div>';
 }
 const RSTATUS = { requested: ['grey', 'Not started'], queued: ['navy', 'Waiting'], searching: ['navy', 'Looking for existing ones'],
   review: ['amber', 'Found some: your review'], chosen: ['green', 'Chosen'], build_queued: ['navy', 'Waiting to be built'], building: ['navy', 'Being built'],
-  ready: ['green', 'Ready to try'], needs_team: ['amber', 'Sent to the team'], paused: ['amber', 'Paused: AI quota used up'] };
+  ready: ['amber', 'Built: your review'], approved: ['green', 'Approved'], needs_team: ['amber', 'Sent to the team'], paused: ['amber', 'Paused: AI quota used up'] };
 const RBUSY = ['queued', 'searching', 'build_queued', 'building'];
+// a request is finished once you approved what it found or what the machine built for it
+const reqDone = q => q.status === 'chosen' || q.status === 'approved';
 function simRequestList() {
-  const rows = SCAT.requests; if (!rows.length) return '';
-  return '<div class="card" id="simrequests"><h2>Your requests</h2><p class="small muted">For each request the machine first looks for an existing simulation: our catalogue, trusted sites such as Virtual Labs, PhET and VisuAlgo, and the web. ' +
-    'It opens the top pages to check them and shows you what it found. Only if nothing fits, or you reject them all, does it build a new one (about 2–5 minutes).</p>' +
-    rows.map(simRequestRow).join('') + '</div>';
+  const rows = SCAT.requests.filter(q => !reqDone(q)); if (!rows.length) return '';
+  const needsYou = rows.some(q => ['review', 'ready', 'needs_team', 'paused', 'requested'].includes(q.status) || RBUSY.includes(q.status));
+  const open = SUI.reqOpen == null ? needsYou : SUI.reqOpen;
+  return '<details class="card" id="simrequests"' + (open ? ' open' : '') + '><summary class="reqsum"><h2>Your requests <span class="muted small" style="font-weight:400">' + rows.length + '</span></h2>' + (needsYou ? ' <span class="chip amber needs">Needs you</span>' : '') + '</summary>' +
+    rows.map(simRequestRow).join('') + '</details>';
 }
+document.addEventListener('toggle', e => { if (e.target.id === 'simrequests') { SUI.reqOpen = e.target.open; store.set('profsagent-reqopen', e.target.open ? '1' : '0'); } }, true);
 function simFoundCard(q, c) {
   const id = esc(q.id), rej = c.decision === 'reject', ok = c.decision === 'approve', open = ['review', 'chosen'].includes(q.status);
   const full = (q.found || []).filter(x => x.decision === 'approve').length >= SIM_MAX;
   const shot = c.shot ? '<img class="fshot" alt="" loading="lazy" src="/api/simulations/requests/' + id + '/shot/' + esc(c.shot) + '">'
     : '<div class="fshot fnone">' + (c.kind === 'ours' ? 'In our catalogue' : 'No picture') + '</div>';
-  const site = c.kind === 'ours' ? '<span class="chip green">Ours, checked</span>' : '<span class="chip navy">' + esc(c.site) + '</span>' + (c.trusted ? '<span class="chip teal">Trusted site</span>' : '<span class="chip grey">Found on the web</span>');
-  const look = c.kind === 'ours' ? '<button class="btn sm' + (open && !rej ? ' primary' : '') + '" data-act="s-open" data-sim="' + esc(c.id) + '">Try it</button>'
-    : '<a class="btn sm' + (open && !rej ? ' primary' : '') + '" href="' + esc(c.url) + '" target="_blank" rel="noopener">Open ' + ICON.link + '</a>';
+  const site = c.kind === 'ours' ? '<span class="chip green">Ours</span>' : '<span class="chip navy">' + esc(c.site) + '</span>';
+  const look = c.kind === 'ours' ? '<button class="btn sm" data-act="s-open" data-sim="' + esc(c.id) + '">Try it</button>'
+    : '<a class="btn sm" href="' + esc(c.url) + '" target="_blank" rel="noopener">Open ' + ICON.link + '</a>';
   const acts = open && !c.decision ? (full ? '' : '<button class="btn sm ok" data-act="s-found" data-req="' + id + '" data-n="' + c.n + '" data-d="approve">' + ICON.check + (q.status === 'chosen' ? ' Also approve' : ' Approve') + '</button>') +
       '<button class="btn sm bad" data-act="s-found" data-req="' + id + '" data-n="' + c.n + '" data-d="reject">Not this</button>'
     : (c.decision ? '<span class="chip ' + (ok ? 'green' : 'grey') + '">' + (ok ? 'Approved' : 'Rejected') + '</span>' + (open || ok ? '<button class="btn sm" data-act="s-found" data-req="' + id + '" data-n="' + c.n + '" data-d="undo">Undo</button>' : '') : '');
   return '<div class="fcard' + (rej ? ' rej' : '') + (ok ? ' ok' : '') + '">' + shot + '<div style="min-width:0"><b style="font-weight:600">' + esc(c.title) + '</b>' +
     '<div class="rmeta">' + site + simCode(c) + '</div>' + (c.summary ? '<p class="small" style="margin-top:4px">' + esc(c.summary) + '</p>' : '') +
-    '<p class="tiny muted" style="margin-top:2px">' + esc(c.why || '') + '</p><div class="acts">' + look + acts + '</div></div></div>';
+    '<div class="acts">' + look + acts + '</div></div></div>';
 }
 function simRequestRow(q) {
-  const st = RSTATUS[q.status] || ['grey', q.status], b = q.build || {}, sim = q.sim_id && SCAT.entries.find(e => e.id === q.sim_id), id = esc(q.id);
+  const st = RSTATUS[q.status] || ['grey', q.status], b = q.build || {}, sim = q.sim_id && (SCAT.entries.find(e => e.id === q.sim_id) || (SCAT.pending || []).find(e => e.id === q.sim_id)), id = esc(q.id);
   const spin = '<span class="spin"></span> ', found = q.found || [];
   let line = '', act = '', more = '';
-  if (q.status === 'queued') line = 'Starts in a moment. First it looks for existing simulations.';
-  else if (q.status === 'searching') line = spin + 'Looking in our catalogue, the saved links and the web, and opening the top pages to check them (about a minute).';
+  if (q.status === 'queued') line = 'Starting…';
+  else if (q.status === 'searching') line = spin + 'Looking for existing ones…';
   else if (q.status === 'review') {
-    line = 'These already exist. Open each one and approve up to ' + SIM_MAX + ' that fit (one that shows its code alongside helps students connect the steps with the algorithm), or press Not this. If you reject them all, the machine builds a new one.';
-    more = found.map(c => simFoundCard(q, c)).join('') + '<div class="acts" style="margin-top:10px"><input type="text" data-note="' + id + '" value="' + esc((SUI.notes || {})[q.id] || '') + '" placeholder="What is missing? (optional; the machine reads it)" aria-label="What is missing" style="flex:1;min-width:220px">' +
+    line = 'Found these. Approve up to ' + SIM_MAX + ', or press Not this.';
+    more = found.map(c => simFoundCard(q, c)).join('') + '<div class="acts" style="margin-top:10px"><input type="text" data-note="' + id + '" value="' + esc((SUI.notes || {})[q.id] || '') + '" placeholder="What is missing? (optional)" aria-label="What is missing" style="flex:1;min-width:220px">' +
       '<button class="btn sm" data-act="s-none" data-req="' + id + '">None of these fit: build a new one</button></div>';
   } else if (q.status === 'chosen') {
     const nOk = found.filter(c => c.decision === 'approve').length;
-    line = 'You chose ' + nOk + ' existing simulation' + (nOk === 1 ? '' : 's') + (q.lecture ? '; approved on ' + esc(q.lecture) : '') + '.' +
+    line = 'You chose ' + nOk + (q.lecture ? ', approved on ' + esc(q.lecture) : '') + '.' +
       (nOk < SIM_MAX && found.some(c => !c.decision) ? ' You can approve one more.' : '');
     more = found.filter(c => c.decision !== 'reject').map(c => simFoundCard(q, c)).join('');
-  } else if (q.status === 'build_queued') line = 'Starts in a moment.' + (found.length ? ' You rejected the ones found, so the machine builds a new one.' : '');
-  else if (q.status === 'building') line = spin + 'Attempt ' + (b.attempt || 1) + ' of ' + (b.of || 3) + ': the AI writes it, then the automatic checks run it.' + (found.length ? ' (You rejected the ones found.)' : ' (Nothing existing fitted.)');
-  else if (q.status === 'ready') { line = 'Built by the machine and checked automatically' + (b.attempts ? ' (attempt ' + b.attempts + ')' : '') + '. It is in the list above' + (q.lecture ? ', and on ' + esc(q.lecture) + ' waiting for your decision' : '') + '.';
-    act = sim ? '<button class="btn sm primary" data-act="s-open" data-sim="' + esc(sim.id) + '">Try it</button>' : ''; }
+  } else if (q.status === 'build_queued') line = 'Building starts in a moment.';
+  else if (q.status === 'building') line = spin + 'Building a new one (try ' + (b.attempt || 1) + ' of ' + (b.of || 3) + ')…';
+  else if (q.status === 'ready') {                // built by the machine: not in the list until you approve it
+    line = 'Try it, then approve it or say what is wrong.';
+    act = sim ? '<button class="btn sm" data-act="s-open" data-sim="' + esc(sim.id) + '">Try it</button>' : '';
+    more = SUI.brej === q.id
+      ? '<div class="acts" style="margin-top:8px"><input type="text" id="brej" placeholder="What is wrong? For example: no picture of the points" aria-label="What is wrong" style="flex:1;min-width:220px">' +
+        '<button class="btn sm bad" data-act="s-brejectsend" data-req="' + id + '">Reject and build again</button><button class="btn sm" data-act="s-brejcancel">Cancel</button></div>'
+      : '<div class="acts" style="margin-top:8px"><button class="btn sm ok" data-act="s-bapprove" data-req="' + id + '">' + ICON.check + ' Approve</button>' +
+        '<button class="btn sm bad" data-act="s-breject" data-req="' + id + '">Reject</button></div>'; }
   else if (q.status === 'needs_team' || q.status === 'paused') { line = esc(q.reason || ''); act = '<button class="btn sm" data-act="s-build" data-req="' + id + '">Try again</button>'; }
-  else if (q.status === 'requested') { line = 'Sent before the machine could look or build.'; act = '<button class="btn sm primary" data-act="s-build" data-req="' + id + '">Find or build it now</button>'; }
+  else if (q.status === 'requested') { line = 'Not started.'; act = '<button class="btn sm" data-act="s-build" data-req="' + id + '">Find or build it now</button>'; }
   return '<div class="row" style="display:block"><div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div style="min-width:0"><b style="font-weight:600">' + esc(q.topic) + '</b>' +
     (q.course ? ' <span class="muted small">' + esc(q.course) + (q.lecture ? ', ' + esc(q.lecture) : '') + '</span>' : '') + '<p class="small muted">' + esc(q.what) + '</p>' +
     (line ? '<p class="small" style="margin-top:4px;display:flex;gap:6px;align-items:center;flex-wrap:wrap">' + line + '</p>' : '') + '<p class="tiny muted">' + esc(String(q.at).slice(0, 16)) + '</p></div>' +
@@ -1512,8 +1677,9 @@ function simPoll() {                        // while a request is being built, r
   spoll = setTimeout(async () => {
     if (PAGE !== 'sims') return;
     const sig = () => JSON.stringify(SCAT.requests.map(r => [r.id, r.status, (r.build || {}).attempt]));
-    const before = sig();
+    const before = sig(), busy = SCAT.requests.filter(r => RBUSY.includes(r.status)).map(r => r.id);
     await loadSimCatalogue();
+    SCAT.requests.filter(r => busy.includes(r.id) && r.status === 'ready').forEach(r => toast('“' + r.topic + '” is built: try it, then approve or reject it.'));
     if (PAGE !== 'sims') return;
     if (before !== sig()) {
       const typing = document.activeElement && ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName) && app.contains(document.activeElement);
@@ -1524,28 +1690,40 @@ function simPoll() {                        // while a request is being built, r
   }, 5000);
 }
 const SIM_MAX = 2;      // simulations a professor may approve for one lecture or one request
-const simCode = c => c.shows_code ? '<span class="chip navy" title="The algorithm\'s code is shown beside the simulation, so students connect each step with the line that does it">Shows the code alongside</span>' : '';
-const simMade = c => c.built_by === 'machine' ? '<span class="chip teal" title="Built by the machine from a request and checked automatically; not yet reviewed by the team">Built by the machine</span>' : '';
+const simCode = c => c.shows_code ? '<span class="chip navy" title="Shows the algorithm\'s code beside it">With code</span>' : '';
 async function sclick(act, b) {
-  if (act === 's-open') { const c = SCAT && SCAT.entries.find(x => x.id === b.dataset.sim); if (c) simOpen({ id: c.id, title: c.title, version: c.version, state: '' }); return; }
+  if (act === 's-open') { const c = SCAT && (SCAT.entries.find(x => x.id === b.dataset.sim) || (SCAT.pending || []).find(x => x.id === b.dataset.sim)); if (c) simOpen({ id: c.id, title: c.title, version: c.version, state: '' }); return; }
   if (act === 's-reqopen') {
     SUI.req = { topic: b.dataset.fromsearch ? SUI.q.trim() : '', what: '', kind: '', course: '' }; SUI.reqErr = {}; render(); window.scrollTo(0, 0);
     const t = document.getElementById(SUI.req.topic ? 'sq-what' : 'sq-topic'); if (t) t.focus(); return;
   }
   if (act === 's-reqcancel') { SUI.req = null; SUI.reqErr = {}; render(); return; }
+  if (act === 's-opts') { SUI.opts[b.dataset.key] = !SUI.opts[b.dataset.key]; sfilter(); return; }
+  if (act === 's-page' || act === 's-xpage') {
+    SUI[act === 's-page' ? 'page' : 'xpage'] = +b.dataset.p; sfilter();
+    const top = document.getElementById(act === 's-page' ? 'simcards' : 'extlist'); if (top) top.scrollIntoView({ block: 'start' }); return; }
+  if (act === 's-bapprove' || act === 's-brejectsend') {
+    const reason = act === 's-brejectsend' ? ((document.getElementById('brej') || {}).value || '').trim() : '';
+    if (act === 's-brejectsend' && reason.length < 3) { toast('Write what is wrong first'); return; }
+    b.disabled = true;
+    const r = await post('/api/simulations/requests/' + encodeURIComponent(b.dataset.req) + '/review', { decision: act === 's-bapprove' ? 'approve' : 'reject', reason });
+    toast(!r.ok ? ((r.data && (r.data.problem || r.data.detail)) || 'Could not save') : act === 's-bapprove' ? 'Approved. It is in the list.' : 'Building it again with your note (about 2–5 minutes).');
+    SUI.brej = null; await loadSimCatalogue(); render(); return; }
+  if (act === 's-breject') { SUI.brej = b.dataset.req; render(); const t = document.getElementById('brej'); if (t) t.focus(); return; }
+  if (act === 's-brejcancel') { SUI.brej = null; render(); return; }
   if (act === 's-build' || act === 's-none') {
     b.disabled = true;
     const q = SCAT.requests.find(x => x.id === b.dataset.req) || {};
     const r = await post('/api/simulations/requests/' + encodeURIComponent(b.dataset.req) + '/build', { note: act === 's-none' ? ((SUI.notes || {})[b.dataset.req] || '') : '' });
     toast(!r.ok ? ((r.data && (r.data.problem || r.data.detail)) || 'Could not start')
-      : q.status === 'requested' ? 'First it looks for existing simulations (about a minute).' : 'The machine is building a new one now (about 2–5 minutes).');
+      : q.status === 'requested' ? 'Looking for existing ones (about a minute).' : 'Building a new one (about 2–5 minutes).');
     await loadSimCatalogue(); render(); return;
   }
   if (act === 's-found') {
     b.disabled = true;
     const d = b.dataset.d, r = await post('/api/simulations/requests/' + encodeURIComponent(b.dataset.req) + '/found/' + encodeURIComponent(b.dataset.n), { decision: d });
-    toast(!r.ok ? ((r.data && (r.data.problem || r.data.detail)) || 'Could not save') : d === 'approve' ? 'Chosen. Nothing needs to be built.' + (r.data.lecture_note ? ' ' + r.data.lecture_note : r.data.request.lecture ? ' It is approved on ' + r.data.request.lecture + '.' : '')
-      : d === 'reject' ? (r.data.start_build ? 'You rejected them all: the machine builds a new one now (about 2–5 minutes).' : 'Rejected') : 'Undone');
+    toast(!r.ok ? ((r.data && (r.data.problem || r.data.detail)) || 'Could not save') : d === 'approve' ? 'Approved.' + (r.data.lecture_note ? ' ' + r.data.lecture_note : r.data.request.lecture ? ' It is on ' + r.data.request.lecture + '.' : '')
+      : d === 'reject' ? (r.data.start_build ? 'Building a new one (about 2–5 minutes).' : 'Rejected') : 'Undone');
     await loadSimCatalogue(); render(); return;
   }
   if (act === 's-reqsend') {
@@ -1554,11 +1732,12 @@ async function sclick(act, b) {
     SUI.sending = false;
     if (r.status === 422) { SUI.reqErr = (r.data && r.data.errors) || {}; render(); return; }
     if (!r.ok) { toast((r.data && r.data.problem) || 'Could not send'); render(); return; }
-    SUI.req = null; SUI.reqErr = {}; await loadSimCatalogue(); render(); toast('Request sent. First the machine looks for existing simulations (about a minute).'); return;
+    SUI.req = null; SUI.reqErr = {}; await loadSimCatalogue(); render(); toast('Request sent. Looking for existing ones first.'); return;
   }
 }
 function sinput(t) {
-  if (t.dataset.sf) { SUI[t.dataset.sf] = t.value; sfilter(); return true; }
+  if (t.dataset.sf) { if (SUI[t.dataset.sf] === t.value) return true;      // the change event on leaving the box must not redraw the list under a click
+    SUI[t.dataset.sf] = t.value; SUI.page = SUI.xpage = 1; sfilter(); return true; }
   if (t.dataset.sq && SUI.req) { SUI.req[t.dataset.sq] = t.value; return true; }
   if (t.dataset.note) { SUI.notes[t.dataset.note] = t.value; return true; }
   return false;
@@ -1569,7 +1748,7 @@ const dsims = lid => ((((DV || {}).simulations || {}).lectures || {})[lid]) || {
 const isApproved = i => !!i.decision && i.decision.decision === 'approve';
 function dsimChip(lid) {
   const it = dsims(lid).items || [];
-  if (it.some(isApproved)) return '<span class="chip green">Simulation</span>';
+  if (it.some(isApproved)) return '<span class="chip green">' + ICON.check + 'Simulation</span>';
   if (it.some(i => !i.decision && !i.retired)) return '<span class="chip teal">Simulation suggested</span>';
   return '';
 }
@@ -1581,12 +1760,11 @@ function dsimCard(l) {
   const cur = pending[0], waiting = ['preparing', 'not started'].includes(S.state), nApproved = items.filter(isApproved).length;
   const withCode = cur && !cur.shows_code ? pending.find(i => i.shows_code) : null;      // a simulation with its code beside it, when one matches
   let body = approved.map(i => dsimItem(l, i, pending.length)).join('') + (cur ? dsimItem(l, cur, pending.length) : '') + (withCode ? dsimItem(l, withCode, pending.length) : '');
-  if (nApproved >= SIM_MAX) body += '<p class="small" style="margin-top:8px"><span class="chip green">' + SIM_MAX + ' of ' + SIM_MAX + ' approved</span> To approve another one, undo one of these first.</p>';
-  if (waiting) body += '<p class="small muted" style="margin-top:8px;display:flex;gap:8px;align-items:center"><span class="spin"></span> Looking for simulations that fit this course\'s lectures. The first time takes about half a minute.</p>';
-  else if (S.state === 'error') body += '<div class="banner red">' + ICON.alert + '<div>Could not look for simulations: ' + esc(S.error || 'unknown problem') + '. The rest of lecture delivery is not affected.</div></div>';
+  if (nApproved >= SIM_MAX) body += '<p class="small muted" style="margin-top:8px">To approve another, undo one first.</p>';
+  if (waiting) body += '<p class="small muted" style="margin-top:8px;display:flex;gap:8px;align-items:center"><span class="spin"></span> Looking for simulations…</p>';
+  else if (S.state === 'error') body += '<div class="banner red">' + ICON.alert + '<div>Could not look for simulations: ' + esc(S.error || 'unknown problem') + '.</div></div>';
   else if (!approved.length && !cur && !linksShown.length) body += dsimNone(x.kind);
-  else if (!approved.length && !cur) body += '<p class="small muted">None of our own simulations fits this lecture yet.</p>';
-  if (linksShown.length) body += '<h3 style="margin-top:16px">On other trusted sites</h3><p class="small muted">Links only. We have not checked these: open one, and approve it if it suits your class.</p>' +
+  if (linksShown.length) body += '<h3 style="margin-top:16px">On other sites</h3>' +
     linksShown.map(i => dsimExtItem(l, i)).join('');
   if (aside.length) body += '<details style="margin-top:10px"><summary>Set aside (' + aside.length + ')</summary>' + aside.map(i => '<div class="fbrow"><span><b style="font-weight:600">' + esc(i.title) + '</b>' +
     (i.external ? ' <span class="chip grey">' + esc(i.site_name) + '</span>' : '') + ' <span class="muted small">' +
@@ -1598,8 +1776,7 @@ function dsimCard(l) {
     (others.length ? '<select id="simadd" aria-label="Add a simulation from the catalogue" style="width:auto;max-width:100%"><option value="">Add one of ours…</option>' + others.map(e => '<option value="' + esc(e.id) + '">' + esc(e.title) + '</option>').join('') + '</select><button class="btn sm" data-act="d-simadd">Add</button>' : '') +
     '<a class="btn sm" href="#/simulations">Browse all simulations</a></div>';
   const chip = nApproved ? '<span class="chip green">' + nApproved + ' of ' + SIM_MAX + ' approved</span>' : (cur || linksShown.length) ? '<span class="chip amber">Waiting for your decision</span>' : '<span class="chip grey">None chosen</span>';
-  return '<div class="card" id="simcard"><div class="card-h"><h2>Simulation</h2>' + chip + '</div><p class="small muted">An interactive simulation students can use in class or on their own. Suggestions come from matching this lecture\'s topic with our catalogue and with trusted sites; no AI calls. ' +
-    'You can approve up to ' + SIM_MAX + '; one that shows its code alongside helps students connect each step with the algorithm.</p>' + body + '</div>';
+  return '<div class="card" id="simcard"><div class="card-h"><h2>Simulation</h2>' + chip + '</div>' + body + '</div>';
 }
 function dsimReason(l, i) {
   const o = PUI.simReason && PUI.simReason.sim === i.id && PUI.simReason.lid === l.id ? PUI.simReason : null;
@@ -1609,38 +1786,34 @@ function dsimReason(l, i) {
 function dsimExtItem(l, i) {
   const ap = isApproved(i), sid = esc(i.id), full = (dsims(l.id).items || []).filter(isApproved).length >= SIM_MAX;
   return '<div class="rcard' + (ap ? ' approved' : '') + '"><div class="rhead"><div style="min-width:0"><div class="rtitle">' + esc(i.title) + '</div>' +
-    '<div class="rmeta"><span class="chip navy">' + esc(i.site_name) + '</span><span class="chip grey">External, not checked by us</span>' + simCode(i) +
-    (i.score ? '<span>Matches “' + esc(i.matched) + '” (' + Math.round(i.score * 100) + '% similar)</span>' : '') + '</div></div>' +
+    '<div class="rmeta"><span class="chip navy">' + esc(i.site_name) + '</span>' + simCode(i) + '</div></div>' +
     (ap ? '<span class="chip green">' + ICON.check + ' Approved</span>' : '') + '</div>' +
     (i.summary ? '<p class="why">' + esc(i.summary) + '</p>' : '') +
-    '<div class="acts"><a class="btn sm' + (ap ? '' : ' primary') + '" href="' + esc(i.url) + '" target="_blank" rel="noopener">Open ' + ICON.link + '</a>' +
+    '<div class="acts"><a class="btn sm" href="' + esc(i.url) + '" target="_blank" rel="noopener">Open ' + ICON.link + '</a>' +
     (ap ? '<button class="btn sm" data-act="d-simdec" data-decision="undo" data-sim="' + sid + '">Undo approval</button>'
       : (full ? '' : '<button class="btn sm ok" data-act="d-simdec" data-decision="approve" data-sim="' + sid + '">' + ICON.check + ' Approve</button>') + '<button class="btn sm bad" data-act="d-simask" data-sim="' + sid + '">Reject</button>') +
     '</div>' + dsimReason(l, i) + '</div>';
 }
 function dsimNone(kind) {
-  if (kind && kind.id !== 'none') return '<div class="notice"><p><b style="font-weight:600">No simulation in the catalogue fits this lecture yet.</b> The kind that would suit this topic: <b style="font-weight:600">' + esc(kind.name) + '</b> (' + esc(kind.does.charAt(0).toLowerCase() + kind.does.slice(1)) + ')' +
-    (kind.also ? ', or ' + esc(kind.also.name) : '') + '.</p><p class="small muted" style="margin-top:4px">Ask for one, and the team can build it.</p></div>';
-  return '<div class="notice"><p><b style="font-weight:600">No simulation in the catalogue fits this lecture.</b> The topic does not clearly suit one either; it may be better taught with worked examples or discussion.</p>' +
-    '<p class="small muted" style="margin-top:4px">That second part is a guess (right about 3 times in 4). If you want one anyway, add it from the catalogue or ask for a new one.</p></div>';
+  if (kind && kind.id !== 'none') return '<p class="small muted" style="margin-top:6px">None fits yet. A ' + esc(kind.name.toLowerCase()) + ' would suit this topic.</p>';
+  return '<p class="small muted" style="margin-top:6px">None fits, and this topic may not need one.</p>';
 }
 function dsimItem(l, i, nPending) {
   const ap = isApproved(i), d = i.decision, sid = esc(i.id), full = (dsims(l.id).items || []).filter(isApproved).length >= SIM_MAX;
-  const match = i.source === 'added' ? (i.added_by === 'machine' ? 'Built by the machine from your request' : 'Added by you from the catalogue') : i.source === 'suggested' ? (i.close ? 'Close match' : 'Possible match') + ': ' +
-    (i.via === 'summary' ? 'the lecture summary' : '“' + esc(i.matched) + '”') + ' (' + Math.round(i.score * 100) + '% similar)' : '';
-  const ex = !i.class_example ? '<p class="small muted" style="margin-top:6px">Students start from its default example (this simulation cannot keep a class example yet).</p>'
-    : i.example ? '<p class="small" style="margin-top:6px"><b style="font-weight:600">Class example:</b> ' + esc(i.example.summary || 'saved') + ' <span class="muted">(saved ' + esc(String(i.example.at || '').slice(0, 16)) + ')</span> ' +
+  const match = i.source === 'added' ? (i.added_by === 'machine' ? 'From your request' : 'Added by you') : i.source === 'suggested' ? (i.close ? 'Close match' : 'Possible match') : '';
+  const ex = !i.class_example ? ''
+    : i.example ? '<p class="small" style="margin-top:6px"><b style="font-weight:600">Class example:</b> ' + esc(i.example.summary || 'saved') + ' ' +
       '<button class="link small" data-act="d-simclear" data-sim="' + sid + '">Remove</button></p>'
-    : '<p class="small muted" style="margin-top:6px"><b style="font-weight:600;color:var(--ink)">Class example:</b> none yet. Press Try it, set it up as you would in class, then press “Use this setup as the class example”.</p>';
-  const open = '<button class="btn sm' + (ap ? '' : ' primary') + '" data-act="d-simopen" data-sim="' + sid + '" data-lid="' + esc(l.id) + '">Try it</button>';
+    : '<p class="small muted" style="margin-top:6px">No class example yet: set one in Try it.</p>';
+  const open = '<button class="btn sm" data-act="d-simopen" data-sim="' + sid + '" data-lid="' + esc(l.id) + '">Try it</button>';
   const acts = ap ? open + (d.outdated ? '<button class="btn sm ok" data-act="d-simdec" data-decision="approve" data-sim="' + sid + '">' + ICON.check + ' Approve v' + esc(i.version) + '</button>' : '') +
       '<button class="btn sm" data-act="d-simdec" data-decision="undo" data-sim="' + sid + '">Undo approval</button>'
     : open + (full ? '' : '<button class="btn sm ok" data-act="d-simdec" data-decision="approve" data-sim="' + sid + '">' + ICON.check + ' Approve</button>') +
       (nPending > 1 ? '<button class="btn sm" data-act="d-simdec" data-decision="replace" data-sim="' + sid + '" title="Set it aside and show the next suggestion">Replace</button>' : '') +
       '<button class="btn sm bad" data-act="d-simask" data-sim="' + sid + '">Reject</button>';
   return '<div class="rcard' + (ap ? ' approved' : '') + '"><div class="rhead"><div style="min-width:0"><div class="rtitle">' + esc(i.title) + '</div>' +
-    '<div class="rmeta">' + simMade(i) + simCode(i) + simChecked(i) + (match ? '<span>' + match + '</span>' : '') + '</div></div>' +
-    (ap ? '<span class="chip green">' + ICON.check + ' Approved (v' + esc(d.version) + ')</span>' : '') + '</div>' +
+    '<div class="rmeta">' + simCode(i) + simChecked(i) + (match ? '<span>' + match + '</span>' : '') + '</div></div>' +
+    (ap ? '<span class="chip green">' + ICON.check + ' Approved</span>' : '') + '</div>' +
     '<p class="why">' + esc(i.summary) + '</p>' +
     (i.retired ? '<div class="warn">This simulation was retired from the catalogue. Students can still open it; consider another one.</div>' : '') +
     (ap && d.outdated ? '<div class="warn">Updated since you approved it (you approved v' + esc(d.version) + '; it is now v' + esc(i.version) + '). Try it again, then approve the new version.</div>' : '') +
@@ -1701,6 +1874,7 @@ function render() {
   dPendingRender = false;
   app.innerHTML = PAGE === 'form' ? form() : PAGE === 'run' ? runPage() : PAGE === 'dhome' ? dhome() : PAGE === 'dlist' ? dlist() :
     PAGE === 'dlec' ? dlec() : PAGE === 'dkit' ? dkit() : PAGE === 'dnlm' ? dnlm() : PAGE === 'dstudent' ? dstudent() : PAGE === 'sims' ? simsPage() : home();
+  const main = app.querySelector(':scope > .wrap'); if (main) main.setAttribute('role', 'main');
   window.scrollTo(0, y);
   if (PAGE === 'sims') { sfilter(); simPoll(); }
   if (PAGE === 'form' || (PAGE === 'run' && FORM)) lookupBackground();
@@ -1798,6 +1972,10 @@ app.addEventListener('toggle', ev => { if (ev.target.hasAttribute && ev.target.h
   if (ev.target.dataset && ev.target.dataset.dlog) PUI.logOpen[ev.target.dataset.dlog] = ev.target.open; }, true);
 app.addEventListener('focusout', () => { if (dPendingRender) setTimeout(() => { if (dPendingRender && !(document.activeElement && app.contains(document.activeElement) && ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName))) render(); }, 0); });
 app.addEventListener('click', async ev => {
+  if (PAGE === 'dlist') {
+    const fs = ev.target.closest('[data-fstatus]');
+    if (fs) { PUI.filter.status = fs.dataset.fstatus; store.set('profsagent-dfilter-' + DRID, JSON.stringify(PUI.filter)); render(); return; }
+  }
   if (PAGE === 'dlec') {
     const cf = ev.target.closest('[data-conf]'); if (cf) { ddraft(DLID).confidence = +cf.dataset.conf; render(); return; }
     const tb = ev.target.closest('[data-dtab]'); if (tb) { PUI.tab[DLID] = tb.dataset.dtab; render(); return; }

@@ -41,7 +41,7 @@ CHECK_JS = r"""
   if (P.length) return { problems: P, cases: 0 };
   const src = String(R.check);
   if (/\brun\s*\(|recipe\s*\.\s*run\b|this\s*\.\s*run\b/.test(src)) say('check() calls run(); it must work the answer out again by its own, different method');
-  const MARK = new Set(window.Stepper.marks), W = new Set(window.Stepper.widgets);
+  const MARK = new Set(window.Stepper.marks), W = new Set(window.Stepper.widgets), FIG = new Set(window.Stepper.figures || []);
   const codeOf = v => (typeof R.code === 'function' ? R.code(v) : R.code) || [];
   const isInt = x => Number.isInteger(x);
   const checkView = (view, where) => {
@@ -59,6 +59,27 @@ CHECK_JS = r"""
       else if (w.type === 'table') { if (!Array.isArray(w.columns) || !Array.isArray(w.rows) || w.rows.some(r => !Array.isArray(r) || r.length !== w.columns.length)) bad('rows must be lists as long as columns');
         else for (const [k, v] of Object.entries(w.marks || {})) { const [r, c] = k.split(',').map(Number); if (!MARK.has(v) || !(r >= 0 && r < w.rows.length && c >= 0 && c < w.columns.length)) bad(`mark ${k}: ${v}`); } }
       else if (w.type === 'text') { if (typeof w.text !== 'string') bad('text must be a string'); }
+      else if (w.type === 'plot') {
+        const num = v => typeof v === 'number' && isFinite(v), rng2 = r => Array.isArray(r) && r.length === 2 && num(r[0]) && num(r[1]) && r[0] < r[1];
+        if (!rng2(w.x) || !rng2(w.y)) bad('x and y must be [min, max] with min < max');
+        const pts = w.points || [];
+        if (!Array.isArray(pts) || pts.length > 2000) bad('points must be a list of at most 2000');
+        else if (pts.some(p => { const q = Array.isArray(p) ? { x: p[0], y: p[1] } : p || {}; return !num(q.x) || !num(q.y) || (q.mark && !MARK.has(q.mark)); })) bad('every point needs numbers x and y (and a valid mark)');
+        if ((w.lines || []).some(l => !Array.isArray(l.points) || l.points.some(p => !Array.isArray(p) || !num(p[0]) || !num(p[1])))) bad('lines must be {points: [[x, y], ...]}');
+        if ((w.shapes || []).some(s => !s || !(s.kind === 'circle' ? [s.cx, s.cy, s.r].every(num) : s.kind === 'rect' ? [s.x, s.y, s.w, s.h].every(num) : s.kind === 'segment' ? [s.x1, s.y1, s.x2, s.y2].every(num) : false))) bad('shapes must be circle {cx, cy, r}, rect {x, y, w, h} or segment {x1, y1, x2, y2}');
+        if (!pts.length && !(w.lines || []).length && !(w.shapes || []).length) bad('a plot needs points, lines or shapes');
+      }
+      else if (w.type === 'graph') {
+        const ns = w.nodes || [], idsN = new Set(ns.map(n => n && n.id));
+        if (!Array.isArray(w.nodes) || !ns.length || ns.length > 40 || idsN.size !== ns.length) bad('nodes must be 1 to 40 nodes with unique ids');
+        if ((w.edges || []).some(e => !idsN.has(e.from) || !idsN.has(e.to))) bad('every edge must join two node ids');
+        if (ns.some(n => n.mark && !MARK.has(n.mark)) || (w.edges || []).some(e => e.mark && !MARK.has(e.mark))) bad('marks on nodes and edges must be valid');
+      }
+      else if (w.type === 'grid') {
+        const c = w.cells;
+        if (!Array.isArray(c) || !c.length || c.length > 40 || c.some(r => !Array.isArray(r) || r.length !== c[0].length || r.length > 40)) bad('cells must be a rectangle of rows (at most 40 x 40)');
+        else for (const [k, v] of Object.entries(w.marks || {})) { const [r, cc] = k.split(',').map(Number); if (!MARK.has(v) || !(r >= 0 && r < c.length && cc >= 0 && cc < c[0].length)) bad(`mark ${k}: ${v}`); }
+      }
     }
   };
   const corrupt = x => {                    // a slightly wrong result, which an honest check must reject
@@ -85,6 +106,8 @@ CHECK_JS = r"""
       if (!isInt(st.line) || st.line < 1 || st.line > code.length) say(`${where}: line ${st.line} is not a line of the code (1..${code.length})`, 'line', 2);
       if (typeof st.note !== 'string' || !st.note.trim()) say(`${where}: every step needs a note (one plain sentence)`, 'note');
       checkView(st.view, where);
+      if (Array.isArray(st.view) && !st.view.some(w => w && FIG.has(w.type)))
+        say(`${where}: every step must show a figure (${[...FIG].join(', ')}); a table, variables or text alone is not a simulation`, 'nofigure');
       if (st.ask && (!Array.isArray(st.ask.options) || st.ask.options.length < 2 || !st.ask.options.map(String).includes(String(st.ask.answer)))) say(`${where}: ask.answer must be one of ask.options`, 'ask', 2);
     });
     let ck;

@@ -133,7 +133,9 @@ def test_requests_and_catalogue(runs, rid):
     sims.suggestions(rid, runs, wait=True)
     sims.decide(rid, "W01.L1", "os.memory.page_replacement", "approve", runs=runs)
     cat = sims.catalogue_view(runs)
-    assert len(cat["entries"]) == len([e for e in sims.entries() if e.get("status") != "retired"]) and len(cat["types"]) == 12
+    live = [e for e in sims.entries() if e.get("status") != "retired"]
+    assert len(cat["entries"]) == len([e for e in live if not sims.awaiting(e)]) and len(cat["types"]) == 12     # machine-built ones wait for approval
+    assert {e["id"] for e in cat["pending"]} == {e["id"] for e in live if sims.awaiting(e)}
     pr = next(e for e in cat["entries"] if e["id"] == "os.memory.page_replacement")
     assert pr["used"] == [{"run_id": rid, "course": pr["used"][0]["course"], "lecture": "W01.L1", "topic": TOPICS[0]}]
     assert pr["courses"][0]["code"] == "CSE231" and pr["level"]["id"] == "L3" and pr["summary"]
@@ -214,3 +216,23 @@ def test_links_to_trusted_sites(runs, rid, monkeypatch):
     assert it["decision"]["decision"] == "approve" and it["source"] == "decided" and it["external"]
     cat = sims.catalogue_view(runs)["external"]
     assert cat["sites"][0] in ("VisuAlgo", "PhET") and any("visualgo" in x["text"] and x["url"].startswith("https://") for x in cat["entries"])
+
+
+def test_topic_groups_keep_the_build_and_the_pages_found_online():
+    """Amit, 3 Nov: one topic, at most 3 simulations: approved pages first, then the build, then the best pages found;
+    rejected pages never come back; a request answered by approving found pages keeps just those."""
+    cards = [{"id": "auto.selection_sort", "shows_code": True}, {"id": "os.memory.page_replacement", "shows_code": True}]
+    link = lambda n, score, decision=None, code=False: {"kind": "link", "url": f"https://x.org/{n}", "title": n, "site": "x.org", "score": score,
+                                                         "decision": decision, "shows_code": code, "summary": ""}
+    reqs = [{"id": "R002", "topic": "Selection Sort", "status": "approved", "sim_id": "auto.selection_sort",
+             "found": [{"kind": "ours", "id": "auto.selection_sort", "score": 1.0}, link("vlabs", 0.68), link("w3", 0.61), link("visualgo", 0.59), link("bad", 0.9, "reject")]},
+            {"id": "R003", "topic": "Bubble Sort", "status": "chosen", "found": [link("ours?", 0.9), link("visualgo", 0.6, "approve"), link("vlabs-bubble", 0.5, "approve")]},
+            {"id": "R004", "topic": "Monte Carlo", "status": "ready", "sim_id": "auto.monte_carlo", "found": [link("trade", 0.4)]},
+            {"id": "R005", "topic": "selection sort", "status": "approved", "sim_id": "os.memory.page_replacement", "found": []}]
+    g = {x["title"]: x for x in sims.topic_groups(cards, reqs)}
+    assert set(g) == {"Selection Sort", "Bubble Sort"}                                     # waiting for review: not yet
+    sel = [i.get("id") or i["title"] for i in g["Selection Sort"]["items"]]
+    assert sel == ["auto.selection_sort", "vlabs", "w3"] and "bad" not in sel              # 3 at most; same topic merged, no rejected page
+    assert [i["title"] for i in g["Bubble Sort"]["items"]] == ["visualgo", "vlabs-bubble"]  # only what was approved
+    nocode = [{"id": "R9", "topic": "T", "status": "approved", "found": [link("a", 0.9), link("b", 0.8), link("c", 0.7), link("d", 0.6, code=True)]}]
+    assert [i["title"] for i in sims.topic_groups([], nocode)[0]["items"]] == ["a", "b", "d"]   # one with code takes the last place

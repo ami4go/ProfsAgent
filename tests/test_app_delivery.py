@@ -143,21 +143,6 @@ def test_attachments_are_kept_for_the_material_team(runs, rid):
     assert dv.save_attachment(rid, "W05.L2", "notes week5.pdf", b"x").endswith("notes week5-1.pdf")       # never overwrites
 
 
-def test_guard_for_lectures_without_research_queries(monkeypatch):
-    """Vihan's experts.iiitd_faculty took research_queries[0] even when the planner returned none (IndexError, the whole
-    lecture lost). The app's search process falls back to the lecture topic, like the rest of experts.py."""
-    from profsagent.app import delivery_step
-    from profsagent.delivery import experts
-    seen = []
-    monkeypatch.setattr(experts, "iiitd_faculty", lambda b, st, q: seen.append(q["research_queries"]) or [])
-    delivery_step.guard_empty_research_queries()
-    experts.iiitd_faculty({"topic": "CSS3 Styling, Flexbox, and Grid Systems"}, {}, {"research_queries": [], "video_queries": ["x"]})
-    experts.iiitd_faculty({"topic": "T"}, {}, {"research_queries": ["kept as it is"]})
-    assert seen == [["CSS3 Styling, Flexbox, and Grid Systems"], ["kept as it is"]]
-    delivery_step.guard_empty_research_queries()                 # installing it twice changes nothing
-    assert getattr(experts.iiitd_faculty, "_app_guard", False)
-
-
 def test_partial_lectures_are_flagged(runs, rid):
     p = runs / rid / "delivery" / "lectures" / "W01.L1.json"
     lec = json.loads(p.read_text(encoding="utf-8"))

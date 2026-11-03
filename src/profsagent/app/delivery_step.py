@@ -16,24 +16,6 @@ import sys
 import traceback
 
 
-def guard_empty_research_queries() -> None:
-    """Stopgap, until Vihan's experts.iiitd_faculty handles it: when the query planner returns no research queries
-    (common for applied topics such as CSS layout), `research_queries[0]` raised IndexError and the whole lecture was
-    lost, resources included. The rest of experts.py already falls back to the lecture topic; do the same here.
-    Vihan's file is not edited (docs/decisions.md, entry 19)."""
-    from profsagent.delivery import experts
-    orig = experts.iiitd_faculty
-    if getattr(orig, "_app_guard", False):
-        return
-
-    def iiitd_faculty(b, st, q):
-        if q and not q.get("research_queries"):
-            q = {**q, "research_queries": [b["topic"]]}
-        return orig(b, st, q)
-    iiitd_faculty._app_guard = True
-    experts.iiitd_faculty = iiitd_faculty
-
-
 def main(argv: list[str]) -> int:
     for s in (sys.stdout, sys.stderr):
         s.reconfigure(encoding="utf-8", errors="replace")
@@ -45,7 +27,6 @@ def main(argv: list[str]) -> int:
     args = json.loads(open(af, encoding="utf-8").read())
     try:
         if kind == "recommend":
-            guard_empty_research_queries()
             from profsagent.delivery import pipeline
             out = {"ok": pipeline.recommend(rid, lectures=args.get("lectures"), refresh=bool(args.get("refresh")))}
             try:

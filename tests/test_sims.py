@@ -73,7 +73,8 @@ def test_external_index_and_parsers():
     es = X.entries()
     assert len(es) > 100 and len({e["id"] for e in es}) == len(es)
     sites = X.sources()["sites"]
-    assert all(e["url"].startswith("https://") and e["site"] in sites and e["title"] for e in es)
+    # pages a professor approved from a web search (found.json) carry site "web"
+    assert all(e["url"].startswith("https://") and (e["site"] in sites or e["site"] == "web") and e["title"] for e in es)
     meta = {"keywords": {"7": {"strings": {"en": "Motion"}}},
             "projects": [{"simulations": [
                 {"name": "projectile-motion", "highGradeLevel": 3, "keywordIds": [7],

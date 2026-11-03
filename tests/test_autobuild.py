@@ -60,6 +60,11 @@ def test_the_checks_accept_the_example_and_catch_mistakes(tmp_path):
     lazy = EXAMPLE.replace("const { a, t } = p, r = trace.result || {};", "const { a, t } = p, r = recipe.run(values).result;")
     rep = AB.run_checks(lazy, tmp_path / "lazy", "Binary search")
     assert any("calls run()" in x for x in rep["problems"])
+    # Amit, 3 Nov: a simulation shows a figure; a list shown only as a table, beside variables, is refused
+    tables = EXAMPLE.replace("return [{ type: 'array', label: 'The list', items: a, marks, pointers },",
+                             "return [{ type: 'table', label: 'The list', columns: a.map((_, i) => i), rows: [a] },")
+    rep = AB.run_checks(tables, tmp_path / "tables", "Binary search")
+    assert any("must show a figure" in x for x in rep["problems"]), rep["problems"]
 
 
 class FakeAI:
@@ -110,6 +115,32 @@ def test_a_request_is_built_after_one_retry(sims_copy):
     assert e["class_example"] is True and (C.BUILD / f"{sid}.html").exists()
     assert json.loads((C.BUILD / "qa_report.json").read_text(encoding="utf-8"))[sid]["ok"] is True
     assert (runs / AB.BUILDS / "R007" / "attempt-1.problems.txt").read_text(encoding="utf-8") != "none"
+
+
+@needs_chrome
+def test_a_built_simulation_waits_for_the_professor(sims_copy):
+    """Amit, 3 Nov: what the machine builds is not in the list until a professor approves it; Reject (with a reason)
+    takes it out of the catalogue and builds it again with that reason."""
+    from profsagent.app import simulations as S
+    s, runs = sims_copy
+    REPLY = "```javascript\n" + EXAMPLE + "\n```"
+    req = {"id": "R009", "topic": "Binary search", "what": "See how the range halves each time", "at": "2026-11-03 10:00:00"}
+    AB.update_requests(runs, lambda rows: rows.append({**req, "status": "queued"}))
+    AB.set_request(runs, "R009", **AB.build_request(req, runs, llm=FakeAI([REPLY]), log=lambda m: None))
+    sid = S.requests(runs)[0]["sim_id"]
+    cat = S.catalogue_view(runs)
+    assert sid not in [e["id"] for e in cat["entries"]] and sid in [e["id"] for e in cat["pending"]]
+    assert S.review_build("R009", "reject", "", runs)["problem"].startswith("Write")
+    assert S.review_build("R009", "reject", "No picture of the range", runs) == {"ok": True, "start_build": True}
+    r = S.requests(runs)[0]
+    assert r["status"] == "build_queued" and r["note"] == "No picture of the range" and r["sim_id"] is None and not (s / sid).exists()
+    assert list((runs / AB.BUILDS / "rejected").glob(sid + "-*/sim.yaml"))
+    assert "No picture of the range" in AB.user_prompt(r)                                   # the rebuild carries the reason
+    AB.set_request(runs, "R009", **AB.build_request(r, runs, llm=FakeAI([REPLY]), log=lambda m: None))
+    assert S.review_build("R009", "approve", runs=runs) == {"ok": True}
+    assert S.requests(runs)[0]["status"] == "approved" and sid in [e["id"] for e in S.catalogue_view(runs)["entries"]]
+    assert "approved_by" in (s / sid / "sim.yaml").read_text(encoding="utf-8")
+    assert S.review_build("R009", "approve", runs=runs)["problem"]                         # nothing left to review
 
 
 def test_declined_and_unusable_replies(sims_copy):

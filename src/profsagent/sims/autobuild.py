@@ -161,7 +161,9 @@ def user_prompt(req: dict, previous: str | None = None, problems: list[str] | No
 
 Return ONE ```javascript code block that defines `const recipe = { ... };` and nothing else in the block.
 - Teach exactly the requested topic, at university level, with the widgets that show it best (for example array with
-  marks and pointers for sorting; stacks with disks for Tower of Hanoi; callstack for recursion; table for dynamic programming).
+  marks and pointers for sorting; stacks with disks for Tower of Hanoi; plot for sampling, geometry and convergence;
+  graph for networks and trees; grid for matrices and dynamic programming).
+- Every step must show a figure (array, stacks, plot, graph or grid). Tables and variables may only sit beside it.
 - Choose presets that show the interesting cases, keep inputs small, and give at least 2 textbook examples whose result
   you have worked out by hand.
 - If a step-by-step simulation cannot teach this topic at all, return instead the single line

@@ -73,8 +73,23 @@ A **recipe** is one plain JavaScript object, `const recipe = { ... };`, that the
 | `vars` | `values: {name: value}`, `marks: {name: mark}` |
 | `table` | `columns: [...]`, `rows: [[...]]`, `marks: {"row,col": mark}` |
 | `text` | `text`, `mark` |
+| `plot` | `x: [min, max]`, `y: [min, max]`, `points: [{x, y, mark, label}]` (or `[x, y]`), `lines: [{points: [[x, y], …], mark, label}]`, `shapes: [{kind: 'circle', cx, cy, r} \| {kind: 'rect', x, y, w, h} \| {kind: 'segment', x1, y1, x2, y2}]` (each with an optional `mark`), `xlabel`, `ylabel`, `equal: true` (same scale on both axes) |
+| `graph` | `nodes: [{id, label, mark, x, y}]` (x, y in 0..1; without them the nodes sit on a circle), `edges: [{from, to, label, mark}]`, `directed: true` |
+| `grid` | `cells: [[…], …]` (rows of equal length, at most 40 × 40), `marks: {"row,col": mark}`, `heat: true` (shade numbers by size), `hide_values: true` |
+
+**Every step must show a figure:** at least one `array`, `stacks`, `plot`, `graph` or `grid` widget. A `table`, `vars` or
+`text` may sit beside the figure, never instead of it; a page of tables is not a simulation. Pick the figure that shows
+the idea: `plot` for sampling, geometry, functions and convergence (for example, Monte Carlo points in the square with
+the circle as a shape, and the running estimate as a line in a second plot); `graph` for networks, trees and state
+machines; `grid` for matrices, mazes, dynamic programming and cellular automata; `array` with bars for sorting;
+`stacks` for stacks and Tower of Hanoi.
 
 **Marks:** `active` (yellow), `compare` (blue), `swap` (red), `done` (green), `min` (purple), `muted` (faded).
+For a random process, put a small seeded generator (for example mulberry32) in a helper, so `run` stays deterministic
+and the same seed always gives the same points; allow enough samples (for example up to 500, in batches per step) for
+the idea to show. Random points cannot be worked out by hand, so give such a recipe an optional text input that lists a
+few points explicitly (for example `0.1,0.2 0.9,0.8 0.5,0.5`; empty means "use the seeded generator"), and write the
+`examples` with listed points, whose result you can work out by hand.
 
 **Rules:**
 - Use plain JavaScript only: no libraries, no network, no `document` or `window`, no `eval`, no storage.

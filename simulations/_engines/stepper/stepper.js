@@ -10,6 +10,13 @@
     for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(String(k)));
     return e;
   };
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  const sv = (tag, attrs = {}, ...kids) => {             // the same helper for SVG drawings
+    const e = document.createElementNS(SVGNS, tag);
+    for (const [k, v] of Object.entries(attrs)) if (v !== false && v != null) e.setAttribute(k === 'class' ? 'class' : k, v);
+    for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(String(k)));
+    return e;
+  };
   function readHash() { try { const q = new URLSearchParams(location.hash.slice(1)); const o = {}; for (const [k, v] of q) o[k] = v; return Object.keys(o).length ? o : null; } catch (e) { return null; } }
   // the setup goes into the link and, inside the ProfsAgent app, to the app (simulations/_engines/share/share.js; optional)
   function share(cfg, values) {
@@ -56,7 +63,53 @@
         ...(w.rows || []).map((r, ri) => h('tr', {}, ...r.map((c, ci) => h('td', { class: mk(m[ri + ',' + ci]).trim() }, fmt(c)))))));
     },
     text(w) { return h('p', { class: 'sv-text' + mk(w.mark) }, fmt(w.text)); },
+    // ---- drawn figures: a simulation shows at least one of these (or array / stacks) on every step
+    plot(w) {                                            // points, lines and shapes on x-y axes
+      const [x0, x1] = w.x || [0, 1], [y0, y1] = w.y || [0, 1], W = 360, ml = w.ylabel ? 46 : 38, mr = 10, mt = 10, mb = w.xlabel ? 40 : 26;
+      const ph = w.equal ? Math.max(140, Math.min(300, (W - ml - mr) * (y1 - y0) / ((x1 - x0) || 1))) : 210, H = ph + mt + mb;
+      const X = v => ml + (W - ml - mr) * ((+v - x0) / ((x1 - x0) || 1)), Y = v => mt + ph - ph * ((+v - y0) / ((y1 - y0) || 1));
+      const cls = (base, m) => base + (MARKS.includes(m) ? ' m-' + m : '');
+      const id = 'clip' + Math.random().toString(36).slice(2, 8), tk = (a, b) => [a, (a + b) / 2, b];
+      const ticks = [...tk(x0, x1).map(v => sv('text', { x: X(v), y: mt + ph + 16, 'text-anchor': 'middle', class: 'sv-tick' }, fmt(v))),
+        ...tk(y0, y1).map(v => sv('text', { x: ml - 5, y: Y(v) + 4, 'text-anchor': 'end', class: 'sv-tick' }, fmt(v)))];
+      const shapes = (w.shapes || []).map(s => s.kind === 'circle' ? sv('ellipse', { cx: X(s.cx), cy: Y(s.cy), rx: Math.abs(X(s.cx + s.r) - X(s.cx)), ry: Math.abs(Y(s.cy + s.r) - Y(s.cy)), class: cls('sv-shape', s.mark) })
+        : s.kind === 'rect' ? sv('rect', { x: Math.min(X(s.x), X(s.x + s.w)), y: Math.min(Y(s.y), Y(s.y + s.h)), width: Math.abs(X(s.x + s.w) - X(s.x)), height: Math.abs(Y(s.y + s.h) - Y(s.y)), class: cls('sv-shape', s.mark) })
+        : sv('line', { x1: X(s.x1), y1: Y(s.y1), x2: X(s.x2), y2: Y(s.y2), class: cls('sv-seg', s.mark) }));
+      const lines = (w.lines || []).map(l => sv('polyline', { points: (l.points || []).map(p => X(p[0]) + ',' + Y(p[1])).join(' '), class: cls('sv-line', l.mark) }));
+      const pts = (w.points || []).map(p => { const q = Array.isArray(p) ? { x: p[0], y: p[1] } : p;
+        return sv('circle', { cx: X(q.x), cy: Y(q.y), r: q.mark === 'active' ? 5 : 3.2, class: cls('sv-pt', q.mark) }, q.label ? sv('title', {}, q.label) : null); });
+      const legend = (w.lines || []).filter(l => l.label).map((l, i) => sv('text', { x: W - mr - 4, y: mt + 14 + 14 * i, 'text-anchor': 'end', class: cls('sv-legend', l.mark) }, l.label));
+      return h('div', { class: 'sv-plot' }, sv('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': w.label || 'plot' },
+        sv('defs', {}, sv('clipPath', { id }, sv('rect', { x: ml, y: mt, width: W - ml - mr, height: ph }))),
+        sv('rect', { x: ml, y: mt, width: W - ml - mr, height: ph, class: 'sv-frame' }),
+        sv('g', { 'clip-path': 'url(#' + id + ')' }, ...shapes, ...lines, ...pts), ...ticks, ...legend,
+        w.xlabel ? sv('text', { x: (ml + W - mr) / 2, y: H - 6, 'text-anchor': 'middle', class: 'sv-axlabel' }, w.xlabel) : null,
+        w.ylabel ? sv('text', { x: 12, y: mt + ph / 2, 'text-anchor': 'middle', class: 'sv-axlabel', transform: 'rotate(-90 12 ' + (mt + ph / 2) + ')' }, w.ylabel) : null));
+    },
+    graph(w) {                                           // nodes and edges; a circle layout unless the nodes give x, y in 0..1
+      const ns = w.nodes || [], W = 360, H = 260, R = 16, at = {};
+      ns.forEach((n, i) => { const a = -Math.PI / 2 + 2 * Math.PI * i / Math.max(1, ns.length);
+        at[n.id] = n.x != null && n.y != null ? [30 + (W - 60) * n.x, 26 + (H - 52) * n.y] : [W / 2 + (W / 2 - 40) * Math.cos(a), H / 2 + (H / 2 - 32) * Math.sin(a)]; });
+      const cls = (base, m) => base + (MARKS.includes(m) ? ' m-' + m : '');
+      const id = 'arr' + Math.random().toString(36).slice(2, 8);
+      const edges = (w.edges || []).filter(e => at[e.from] && at[e.to]).map(e => { const [ax, ay] = at[e.from], [bx, by] = at[e.to], d = Math.hypot(bx - ax, by - ay) || 1;
+        const sx = ax + (bx - ax) * R / d, sy = ay + (by - ay) * R / d, tx = bx - (bx - ax) * (R + 2) / d, ty = by - (by - ay) * (R + 2) / d;
+        return sv('g', {}, sv('line', { x1: sx, y1: sy, x2: tx, y2: ty, class: cls('sv-edge', e.mark), 'marker-end': w.directed ? 'url(#' + id + ')' : null }),
+          e.label != null ? sv('text', { x: (ax + bx) / 2, y: (ay + by) / 2 - 4, 'text-anchor': 'middle', class: 'sv-elabel' }, fmt(e.label)) : null); });
+      const nodes = ns.map(n => sv('g', {}, sv('circle', { cx: at[n.id][0], cy: at[n.id][1], r: R, class: cls('sv-node', n.mark) }),
+        sv('text', { x: at[n.id][0], y: at[n.id][1] + 4, 'text-anchor': 'middle', class: 'sv-nlabel' }, fmt(n.label != null ? n.label : n.id))));
+      return h('div', { class: 'sv-plot' }, sv('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': w.label || 'graph' },
+        sv('defs', {}, sv('marker', { id, viewBox: '0 0 10 10', refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto-start-reverse' }, sv('path', { d: 'M0,0 L10,5 L0,10 z', class: 'sv-arrow' }))),
+        ...edges, ...nodes));
+    },
+    grid(w) {                                            // a board of squares: matrices, mazes, DP tables, cellular automata
+      const cells = w.cells || [], m = w.marks || {}, nums = cells.flat().filter(v => typeof v === 'number'), max = Math.max(1, ...nums.map(Math.abs));
+      return h('div', { class: 'sv-grid', style: 'grid-template-columns:repeat(' + ((cells[0] || []).length || 1) + ', minmax(26px, 44px))' },
+        ...cells.flatMap((row, r) => row.map((v, c) => h('div', { class: 'sv-sq' + mk(m[r + ',' + c]),
+          style: w.heat && typeof v === 'number' ? 'background:rgba(88,196,221,' + (0.12 + 0.75 * Math.abs(v) / max).toFixed(2) + ')' : null }, w.hide_values ? '' : fmt(v)))));
+    },
   };
+  const FIGURES = ['array', 'stacks', 'plot', 'graph', 'grid'];
   function renderView(view, st) {
     const ws = Array.isArray(st && st.view) ? st.view : [];
     view.replaceChildren(...ws.map(w => h('section', { class: 'sv-w' }, w && w.label ? h('div', { class: 'sv-label' }, w.label) : null,
@@ -171,5 +224,5 @@
     recompute();
     return { S, go, recompute, values, setValues, fields };
   }
-  window.Stepper = { mount, h, renderView, widgets: Object.keys(WIDGETS), marks: MARKS };
+  window.Stepper = { mount, h, renderView, widgets: Object.keys(WIDGETS), figures: FIGURES, marks: MARKS };
 })();

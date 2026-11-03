@@ -8,6 +8,143 @@ Mark anything still waiting for someone as **Open**.
 
 ---
 
+## 2026-11-03: machine-built simulations wait for the professor, and must show a figure
+
+### 35. A simulation the machine built is approved or rejected by the professor before anyone sees it; every step must show a picture
+- **Decision (Amit, 3 Nov):** after his Monte Carlo request, Amit asked for three things:
+  - Approval: "it didn't ask me for approve it or reject it … it just automatically got loaded".
+  - Figures: "a simulation … is something visual, not just the table entries".
+  - Pages: show 1 2 3 with 10 on each page.
+- **Changed:**
+  - **Approval:**
+    - A build now ends as "Built: your review" on the request. It is not in the Simulations list or the lecture suggestions until approved.
+    - The request row has Try it, Approve and Reject.
+    - Reject needs a reason. The build moves out of the catalogue (to `runs/_simulation_builds/rejected/`) and is built again with the reason as the professor's note.
+    - Approving it on its lecture page approves it too.
+    - Approval is written into the entry's `sim.yaml` (`approved_by`, `approved_at`). Its `status` stays `draft` until the team checks it.
+    - Code: `app/simulations.py` `awaiting()`, `approve_build()`, `review_build()`, and `pending` in `catalogue_view`; `POST /api/simulations/requests/{id}/review`.
+  - **Figures:**
+    - The stepper engine has three drawn widgets: `plot` (points, lines and shapes on axes), `graph` (nodes and edges) and `grid` (a board of squares).
+    - `qa_recipe.py` refuses a recipe if any step lacks a figure (`array`, `stacks`, `plot`, `graph` or `grid`). A table, variables or text may only sit beside one.
+    - The README the AI reads, and the build prompt, say so and suggest the right figure per topic.
+    - Our 8 hand-made simulations already draw figures; page replacement uses the textbook frames grid.
+  - **Pages:** the list shows 10 a page, with page numbers (1 2 … N, ‹ ›); search links are paged the same way.
+- **The Monte Carlo build (R004):**
+  - Its arithmetic was right, but it showed only tables, and its "random" points came from a short repeating formula.
+  - It was rejected with that reason; the old copy is in `runs/_simulation_builds/rejected/`.
+  - The rebuild failed on 3 Nov: Gemini answered 503 (unavailable), and the NVIDIA fallback stops at 8,192 output tokens, too short for a whole recipe.
+  - The request waits with "Try again".
+- **Checked:**
+  - tests: `test_autobuild.py` (the figure rule; build → reject → rebuild → approve) and `test_app_simulations.py`;
+  - Chrome click-through: 65 checks, 0 problems.
+- **One card per topic, up to 3 simulations (Amit, later on 3 Nov):** "for a single topic we can keep three simulations and let the user try any of them … keep the search results and newly generated ones altogether."
+  - **What a topic card holds:** each finished request (approved build, or found pages approved) becomes one card named after its topic. In order, it holds:
+    - the pages the professor approved;
+    - the build;
+    - the best pages its search found, by score.
+  - **Limits:** at most 3 options; rejected pages never come back. When none of the 3 shows its code, a candidate that does takes the last place.
+  - **Using it:** "Try it" lists the options, and each opens on its own (ours in the app, a site in a new tab). Requests with the same topic share a card.
+  - **Code:** `app/simulations.py` `topic_groups()` (`topics` in `catalogue_view`), and `simGroupCard` in `index.html`.
+  - **Backfill:** Tower of Hanoi (R001) and Selection Sort (R002) were built before the search step existed, so their searches were run now and kept on the requests:
+    - Hanoi: ours, Virtual Labs, Math Playground;
+    - Selection Sort: ours, Virtual Labs, W3Schools (with code);
+    - Bubble Sort shows the two pages Amit approved (VisuAlgo, Virtual Labs).
+  - **Tests:** `test_topic_groups_keep_the_build_and_the_pages_found_online`; Chrome click-through 66 checks, 0 problems.
+- **Agreed by:** Amit (3 Nov).
+- **Open for Vihan:** NVIDIA `max_tokens: 8192` in `config/models.yaml` truncates long generations, such as a simulation recipe of about 13k tokens. Could the `generate` role ask for more when the provider allows it?
+
+## 2026-11-03: less text on screen; the research_queries stopgap removed
+
+### 34. The app shows only what a professor needs; system details stay off the screen
+- **Decision (Amit, 3 Nov):** remove text a professor does not need to know; if something is really needed, keep it very short.
+- **Removed:**
+  - "Course database connected" (shown only when the database or the AI keys are missing);
+  - the how-it-works paragraphs on Your courses, Describe your course, Lecture delivery, the lecture list, the three checks, the Simulations page and the simulation requests;
+  - process counts ("72 found · 27 passed the checks · 45 removed"), score bars, source-tier chips, "Why it was picked", "up to 3", "Standard YouTube licence";
+  - "Approved links last checked …: all working" (a warning still appears when a link is dead);
+  - the "Checked twice" chips on books (a warning still shows when a check fails), and the technical notes on programme-outcome strengths;
+  - in simulations: "Built by the machine", "No check report yet", "Checked <date>", "External, not checked by us", the match percentages, and the "Covers:" lines (they still count for search);
+  - rule codes (V23, VK-CONFLICT …) on screen. They remain as a tooltip, for the team.
+- **Shortened:**
+  - "Shows the code alongside" → "With code";
+  - the problem banner → "N open problems. Fix with Edit, or continue with a reason.";
+  - the choice descriptions, the request status lines and the class-example line;
+  - the student-view banner → "What students see: only what you approved.".
+- **The Simulations page (Amit, later on 3 Nov):**
+  - A request leaves "Your requests" once it is done:
+    - you approved something it found; or
+    - its simulation is built. The simulation is then in the list, and a toast says so if the page is open.
+  - Only requests still being worked on, or waiting for you, stay listed.
+  - Because a request now closes at the first approval, a second simulation for that lecture is added on the lecture page.
+  - Simulations of the same thing share one card, with one line per version (Ours / the site, "With code", Try it / Open). The grouping key is the title without "step by step", "· try it yourself", "(…)" and the like, and a title that starts with another's joins its group. Examples:
+    - Falstad's "Low-Pass Filter (RC)", "(RL)" and the plain one;
+    - two built "Binary search" pages;
+    - in a search, ours with a link on the same subject.
+  - "Your requests" folds open or closed, and the app remembers the choice. While folded it says "Needs you" when a request is waiting for you.
+  - The list shows 10 simulations, then "Show more"; links found by a search come 10 at a time too.
+- **Also:** `app/delivery_step.py` no longer patches `experts.iiitd_faculty`. Vihan's code has fallen back to the lecture topic since 0914269, and he agreed to the removal (entry 32 (d)); its test went with it.
+- **Changed:** `src/profsagent/app/static/index.html`, `src/profsagent/app/delivery_step.py`, `tests/test_app_delivery.py`, `tests/test_sims.py` (pages approved from a web search carry site "web").
+- **Checked:**
+  - tests pass (`test_llm_check.py` left out: the known Python 3.10 failure);
+  - Chrome click-through of simulations, lecture delivery and in-place editing: 0 problems.
+- **Agreed by:** Amit (3 Nov).
+
+## 2026-11-03: the app's new look (UI plan phases 0 and 2)
+
+### 33. A calmer professor app: one design system, a class-time bar, and a shorter lecture page
+- **Decision (Amit, 3 Nov):** start the UI work in `docs/10_ui_improvement_plan.md` with phase 0 (foundations) and phase 2 (the lecture page).
+  - Style: calm minimalism, with bento layouts only on overview pages.
+  - Signature element: the class-time bar.
+  - The app stays plain JavaScript (no React), and the fonts ship with it.
+  - Course-centred navigation (phase 1) comes later.
+- **Why:** measured on 3 Nov, the lecture page was 4,417 px tall, with 1,367 words, 41 buttons and 20 form fields. The lecture list showed 77 chips, and the Simulations page had 16 primary buttons. Professors could not tell what to do next.
+- **Changed** (`src/profsagent/app/static/index.html`, plus a `/fonts/` route in `server.py`):
+  - **Design tokens.**
+    - Colours: one palette (cool paper, IIIT-D navy, and ok / warn / error / info colours).
+    - Six "way" colours for how class time is spent: slides, video, NotebookLM, in class, simulation, quiz. All pass WCAG AA with white labels.
+    - Type scale and fonts, bundled under the SIL Open Font License in `static/fonts/` with their licences: Atkinson Hyperlegible Next (text), Bricolage Grotesque (titles), JetBrains Mono (codes).
+    - Radii and motion, which respects reduced-motion settings.
+    - The old colour names still work, mapped onto the new tokens.
+  - **One primary button per screen.**
+    - Finished course: "Next: plan the lectures"; the PDF and Excel buttons become secondary.
+    - Home: only the oldest course waiting for you.
+    - Lecture delivery: your own course, not the example copy.
+    - Simulations: "Ask for a new simulation".
+  - **After approval, open problems are amber ("Approved with items left open"), not red.**
+  - **The class-time bar.**
+    - Shows each part of the lecture in minutes, coloured by how it is taught.
+    - Built from deliverable C's lecture plan (`components` and `timeline`).
+    - Appears in the lecture list, and large at the top of the lecture page.
+    - Hidden from the list until a course has at least one plan.
+  - **Lecture list.**
+    - Status filter with counts: All, Needs a decision, Ready to review, Decided.
+    - One status per row, plus the simulation chip.
+    - "★ New topic" only when it tells something; it is hidden when most topics are new.
+    - A legend that names only the colours in use.
+  - **Lecture page.**
+    - Two columns: the work on the left; "About this lecture" (outcomes, assessment, more) in a side panel.
+    - Once choices are saved they show as a short summary with Change, Apply to week and Apply to this module.
+    - The progress card shows only while something is running, failed or not started.
+  - **Plain words.** No team names in the choices ("Material team (B)", "(Parth)"); "Make the slides for me"; one name per action across screens.
+  - **Fix.** In the Lecture plan tab, a part taught by a checked YouTube stretch said "Videos were not asked for" instead of listing the video.
+  - **Accessibility (WCAG 2.1 AA, checked with `Temporary/ui_plan/a11y_check.py`):**
+    - text and field-edge contrast;
+    - header / navigation / main landmarks, with `aria-current` on the current section;
+    - heading order;
+    - star ratings announce their state;
+    - text links at least 24 px high;
+    - no sideways scrolling at 320 px (wide tables scroll inside themselves).
+- **Measured** (same data as the baseline, 1,440 px wide):
+  - Lecture page: 4,417 → 3,167 px, 1,367 → 1,013 words, form fields 20 → 1. Most of what remains is the results themselves.
+  - Lecture list: 77 → 3 chips.
+  - Primary buttons: Simulations 16 → 1, finished course 3 → 1, Lecture delivery 2 → 1.
+- **Checked:**
+  - tests: 414 passed, 1 skipped (`test_llm_check.py` left out: the known Python 3.10 failure);
+  - Chrome click-through of simulations, lecture delivery and in-place editing: 0 problems;
+  - the slides tab still opens.
+- **Agreed by:** Amit (3 Nov).
+- **For Vihan and Parth:** nothing changes in your code. The lecture page reads `components` and `timeline` exactly as deliverable C writes them; if their shape changes, please tell us.
+
 ## 2026-11-03: the delivery mix is built (`delivery/mix.py`); answers to Amit's (a)–(e) in entry 30
 
 ### 32. Each part of a lecture gets one way (slides, YouTube, YouTube + bridge slides, NotebookLM, in class, simulation), proposed by rules, explained by D7, decided by the professor; recap and quiz minutes are kept free

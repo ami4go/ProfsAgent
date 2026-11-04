@@ -158,14 +158,15 @@ with sync_playwright() as pw:
         expect(False, p)
     if not res["problems"]:
         expect(True, f"run() and the independent check agree on {res['cases']} inputs (presets, textbook examples, random)")
-    first = pg.inner_text(".st-check") if pg.locator(".st-check").count() else ""
+    first = (pg.text_content(".st-check") or "") if pg.locator(".st-check").count() else ""    # hidden while it passes
     expect(first.startswith("✓"), f"the live check line passes on the first example ({first[:80]!r})")
     pg.screenshot(path=str(OUT / "1_start.png"))
     n = pg.evaluate("window.__recipe.presets.length")
     for i in range(n):
         pg.select_option("#st-preset", str(i))
         pg.wait_for_timeout(350)
-        pg.click("text=⏭")
+        pg.locator(".st-board").click(position={"x": 4, "y": 4})
+        pg.keyboard.press("End")
         pos = pg.inner_text(".st-pos")
         expect("Step" in pos and pos.split("Step ")[1].split(" of ")[0] == pos.split(" of ")[1].split(" ")[0], f"example {i + 1} steps to its end ({pos})")
         pg.screenshot(path=str(OUT / f"2_example_{i + 1}_end.png"))
@@ -174,6 +175,11 @@ with sync_playwright() as pw:
     pg.wait_for_timeout(400)
     sw = pg.evaluate("document.documentElement.scrollWidth")
     expect(sw <= 392, f"phone: no sideways scrolling ({sw}px)")
+    for w_, h_ in ((1440, 900), (1280, 720)):                # Amit, 3 Nov: on a computer the whole page fits, nothing scrolls
+        pg.set_viewport_size({"width": w_, "height": h_})
+        pg.wait_for_timeout(250)
+        fit = pg.evaluate("[document.documentElement.scrollWidth, document.documentElement.scrollHeight]")
+        expect(fit[0] <= w_ and fit[1] <= h_ + 1, f"{w_}x{h_}: the page fits without scrolling ({fit[0]}x{fit[1]})")
     pg.screenshot(path=str(OUT / "3_phone.png"), full_page=True)
     expect(not errors, "no errors in the page" + ("" if not errors else ": " + " | ".join(errors[:3])))
     expect(not net, "no network requests (works offline)" + ("" if not net else ": " + ", ".join(net[:3])))

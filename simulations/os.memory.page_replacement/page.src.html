@@ -6,18 +6,19 @@
 <title>Page replacement: FIFO, LRU and Optimal · step by step</title>
 <link rel="stylesheet" href="../_engines/stepper/stepper.css">
 <style>
-  .grid { border-collapse: collapse; font: 14px "Cascadia Mono", Consolas, monospace; }
-  .grid td, .grid th { border: 1px solid #2A3140; width: 34px; height: 30px; text-align: center; }
-  .grid th { color: #9AA3B2; font-weight: 500; }
-  .grid th.now { color: #FFFF00; border-bottom: 2px solid #FFFF00; }
-  .grid th.rowh { width: 74px; text-align: left; padding-left: 6px; }
-  .grid td.new { color: #FFFF00; font-weight: 700; }
-  .grid td.fault { background: #3A1F22; } .grid td.hit { color: #83C167; }
-  .grid td.future { color: #3A4152; }
-  .grid tr.res td { font-family: "Segoe UI", sans-serif; font-size: 12.5px; }
-  .side { margin-top: 12px; font-size: 14px; color: #C9CED8; }
-  .side b { color: #fff; } .tag { color: #9AA3B2; }
-  .anomaly { color: #F5A623; }
+  /* drawn on the engine's chalkboard (stepper.css): chalk lines and colours */
+  .grid { border-collapse: collapse; font: 15px "JetBrains Mono", "Cascadia Mono", Consolas, monospace; margin: 0 auto; }
+  .grid td, .grid th { border: 1px solid rgba(241, 240, 230, .28); min-width: 30px; width: 36px; height: 34px; text-align: center; }
+  .grid th { color: #BCCBC2; font-weight: 600; }
+  .grid th.now { color: #F4E58C; border-bottom: 3px solid #F4E58C; }
+  .grid th.rowh { width: 82px; text-align: left; padding-left: 8px; }
+  .grid td.new { color: #F4E58C; font-weight: 700; }
+  .grid td.fault { background: rgba(242, 167, 184, .2); } .grid td.hit { color: #B8E2A0; font-weight: 600; }
+  .grid td.future { color: rgba(241, 240, 230, .25); }
+  .grid tr.res td { font-family: "Atkinson Hyperlegible Next", "Segoe UI", sans-serif; font-size: 13px; }
+  .side { margin-top: 14px; font-size: 16px; color: #F1F0E6; text-align: center; }
+  .side b { color: #F4E58C; } .tag { color: #BCCBC2; }
+  .anomaly { color: #F2A7B8; }
 </style>
 </head>
 <body>

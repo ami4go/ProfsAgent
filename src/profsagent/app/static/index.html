@@ -1481,7 +1481,7 @@ function simBar() {
   else if (ctx && ctx.canSave) line = '<b style="font-weight:600">Class example:</b> ' + (ctx.example ? esc(ctx.example.summary || 'saved') : 'none yet, so students start from the default') +
     '<br><b style="font-weight:600">On screen now:</b> ' + (o.cur == null ? 'waiting for the simulation…' : esc(o.curSummary || 'your setup')) + (same ? ' <span class="chip green">this is the class example</span>' : '');
   else if (ctx) line = 'This simulation cannot keep a class example yet, so students start from its default.';
-  bar.innerHTML = '<div class="simov-bar"><div style="min-width:0"><b style="font-weight:600;font-size:15px">' + esc(o.title) + '</b> <span class="chip grey">v' + esc(o.version) + '</span>' +
+  bar.innerHTML = '<div class="simov-bar"><div style="min-width:0"><b style="font-weight:600;font-size:15px">' + esc(o.title) + '</b>' +
     (o.lecture ? ' <span class="muted small">' + esc(o.lecture) + '</span>' : '') + '</div><div style="display:flex;gap:8px;flex-wrap:wrap">' +
     (ctx && ctx.canSave ? '<button class="btn sm primary" data-sim="save"' + (o.cur == null || same || o.saving ? ' disabled' : '') + '>Use this setup as the class example</button>' : '') +
     '<button class="btn sm" data-sim="reset" title="Reload it as it was when you opened it">Start over</button>' +

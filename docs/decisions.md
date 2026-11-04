@@ -8,6 +8,44 @@ Mark anything still waiting for someone as **Open**.
 
 ---
 
+## 2026-11-03: the simulation page: a chalkboard stage, code on request, Present mode
+
+### 36. Every stepper-engine simulation (all machine-built ones, and Page replacement) gets one calm page that fits the screen
+- **Decision (Amit, 3 Nov):** of three designs (`Temporary/ui_plan/sim_design/`: A lecture hall, B chalkboard, C trace), go with A plus B as a Present mode. He also asked for:
+  - a chalkboard look for the stage on the left;
+  - no sideways scrolling: everything fits inside;
+  - no coloured step strip, just the step;
+  - the code shown only when clicked.
+- **Why:** the old page drew a small figure in a large black box. It also:
+  - showed the final answer from step 1, spoiling the predict questions;
+  - greyed out "Next" with no reason while a question was open;
+  - cut the code line off;
+  - marked things by colour alone;
+  - printed a technical "Checked:" line.
+- **Changed** (`simulations/_engines/stepper/stepper.js`, `stepper.css`):
+  - **Layout:** the light page of the app; the title, an Example list, "Change the input" (the input form is hidden until then) and "⛶ Present".
+  - **The board:** a chalkboard holding the figure, drawn in chalk colours, with one sentence below it on what just happened, the predict question and, at the last step only, the result.
+  - **Controls:** Back, Next (it says "Answer to go on" while a question is open) and Play, with a plain step slider and "Step n of N".
+  - **Beside the board:**
+    - "Values" (the recipe's `vars`, moved off the board; a value that just changed is marked with what it was);
+    - "Code", hidden until "Show the code" or the C key.
+  - **Legend:** shows the colours the step uses (now, compared, swapped, done, smallest).
+  - **Present** (P, or the button): the board fills the screen with larger type and a floating control bar; Setup (S), Code (C) and Exit (Esc).
+  - **Fit:**
+    - on a computer the page is exactly one screen: bars, piles and plots scale to it, and two plots sit side by side;
+    - on a phone it is one column and scrolls only downwards;
+    - nothing ever scrolls sideways (checked at 1440×900, 1280×720 and 390 px).
+  - **Inside the app:** the page hides its own title, because the app's window already shows it; the app's window no longer shows a version number.
+  - **Other:**
+    - fonts are bundled into `stepper.css` (OFL), so a page is still one offline file;
+    - the independent check is shown only when it fails;
+    - Page replacement's own grid is redrawn in chalk colours (presentation only, same version).
+- **Checked:**
+  - `qa_recipe.py` now also fails a page that scrolls on a computer;
+  - all 3 machine-built pages and Page replacement pass their checks;
+  - Chrome click-through: 66 checks, 0 problems; tests pass.
+- **Agreed by:** Amit (3 Nov).
+
 ## 2026-11-03: machine-built simulations wait for the professor, and must show a figure
 
 ### 35. A simulation the machine built is approved or rejected by the professor before anyone sees it; every step must show a picture

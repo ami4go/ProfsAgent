@@ -102,7 +102,7 @@ with sync_playwright() as pw:
     expect(bad == 0, f"page vs a Python implementation: {n} runs (300 strings x 6 frame counts x 3 algorithms), {bad} differ")
 
     # ---- the page itself: live check, predict questions, keyboard, link, bad input
-    expect(pg.inner_text(".st-check").startswith("✓ Checked"), "the page's live check passes on the first example")
+    expect((pg.text_content(".st-check") or "").startswith("✓ Checked"), "the page's live check passes on the first example")
     pg.screenshot(path=str(OUT / "1_start.png"))
     for _ in range(4):
         pg.keyboard.press("ArrowRight")
@@ -114,8 +114,9 @@ with sync_playwright() as pw:
     pg.screenshot(path=str(OUT / "2_predict.png"))
     pg.select_option("#st-preset", "4")
     pg.wait_for_timeout(300)
-    expect("anomaly" in pg.inner_text(".st-summary").lower(), "Belady example: the summary points out the anomaly")
-    pg.click("text=⏭")
+    pg.locator(".st-board").click(position={"x": 4, "y": 4})
+    pg.keyboard.press("End")
+    expect("anomaly" in pg.inner_text(".st-summary").lower(), "Belady example: the summary (shown at the end) points out the anomaly")
     expect("10" in pg.inner_text(".side") and "Step 12 of 12" in pg.inner_text(".st-pos"), "the last step shows 10 faults")
     pg.screenshot(path=str(OUT / "3_belady.png"))
     link = pg.evaluate("location.hash")
@@ -131,10 +132,12 @@ with sync_playwright() as pw:
     p3.wait_for_function(LAST + " !== null", timeout=15000)
     m = p3.evaluate(LAST)
     expect(m["state"] == "refs=1+2+3+1+4&frames=2&algo=opt" and m["summary"].startswith("Optimal, 2 frames"), f"framed: reports the setup it opened with ({m})")
+    p3.frame_locator("#f").locator(".st-link", has_text="Change the input").click()
     p3.frame_locator("#f").locator("#st-frames").fill("3")
     p3.wait_for_function(LAST + ".state.includes('frames=3')", timeout=5000)
     expect(True, "framed: a change is reported")
     p3.close()
+    pg.locator(".st-link", has_text="Change the input").click()
     pg.fill("#st-refs", "1 2 x 4")
     pg.wait_for_timeout(400)
     expect("not a page number" in pg.inner_text(".st-panel"), "bad input is refused with a message")

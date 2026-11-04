@@ -1,0 +1,49 @@
+# Built by the machine (auto-build, decisions.md 28). Checked automatically; not yet reviewed by the team.
+id: auto.monte_carlo
+type:
+- 1-step-through
+title: Monte Carlo estimation of π
+summary: Generate random points in the unit square, count how many fall in the quarter circle, and watch the estimate of π converge.
+shows_code: true
+version: 1.0.0
+status: draft
+built_by: machine
+approved_at: "2026-11-03 20:21:09"
+approved_by: "Professor"
+request: R004
+courses: []
+topics:
+- Monte Carlo
+- probability
+- numerical integration
+- convergence
+- random sampling
+interactivity: L3
+engine:
+  name: stepper
+  path: _engines/stepper
+files:
+  page_src: page.src.html
+  qa: ../_engines/stepper/qa_recipe.py
+checks:
+  independent: re-count the stored points with a simple loop and recompute 4 × inside / total
+  qa: 'automatic (qa_recipe.py): presets, textbook examples and 40 random inputs against the independent check; a corrupted result must be rejected;
+    widgets, code lines and questions valid; every example to its end; phone; offline'
+sensitive: false
+offline: true
+class_example: true
+build:
+  attempts: 3
+  calls: 3
+  models:
+  - nvidia:nvidia/nemotron-3-ultra-550b-a55b
+  - nvidia:nvidia/nemotron-3-ultra-550b-a55b
+  - nvidia:nvidia/nemotron-3-ultra-550b-a55b
+  seconds: 500
+  at: 2026-11-03 20:18
+  prompt_version: 0.1.0
+changelog:
+- version: 1.0.0
+  date: '2026-11-03'
+  by: machine
+  change: built from request R004 (Monte Carlo); passed the automatic checks on attempt 3

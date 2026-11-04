@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monte Carlo estimation of π</title>
+<link rel="stylesheet" href="../_engines/stepper/stepper.css">
+</head>
+<body>
+<script src="../_engines/share/share.js"></script>
+<script src="../_engines/stepper/stepper.js"></script>
+<script>
+'use strict';
+// recipe: written by the machine (auto-build), accepted by _engines/stepper/qa_recipe.py
+const recipe = {
+  title: 'Monte Carlo estimation of π',
+  summary: 'Generate random points in the unit square, count how many fall in the quarter circle, and watch the estimate of π converge.',
+  topics: ['Monte Carlo', 'probability', 'numerical integration', 'convergence', 'random sampling'],
+  checked_by: 're-count the stored points with a simple loop and recompute 4 × inside / total',
+  intro: 'We estimate π by throwing random points into a 1×1 square. The fraction that land inside the quarter circle x²+y²≤1 tends to π/4. More points → better estimate.',
+  inputs: [
+    { id: 'totalPoints', label: 'Total points', kind: 'number', min: 1, max: 500, step: 1, help: 'How many random points to generate (batches of batchSize).' },
+    { id: 'batchSize', label: 'Points per step', kind: 'number', min: 1, max: 50, step: 1, help: 'Points added each time you press Next.' },
+    { id: 'seed', label: 'Random seed', kind: 'number', min: 0, max: 2147483647, step: 1, help: 'Seed for the deterministic generator (mulberry32).' },
+    { id: 'explicitPoints', label: 'Explicit points (optional)', kind: 'text', mono: true, help: 'Space-separated "x,y" pairs, e.g. "0.1,0.2 0.9,0.8". Overrides the generator.' }
+  ],
+  presets: [
+    { name: 'Textbook example (10 points)', values: { totalPoints: '10', batchSize: '5', seed: '123', explicitPoints: '0.1,0.1 0.5,0.5 0.9,0.1 0.2,0.8 0.7,0.7 0.3,0.3 0.6,0.2 0.8,0.9 0.4,0.4 0.9,0.5' } },
+    { name: 'Random run (100 points)', values: { totalPoints: '100', batchSize: '10', seed: '42', explicitPoints: '' } },
+    { name: 'Larger run (500 points)', values: { totalPoints: '500', batchSize: '25', seed: '999', explicitPoints: '' } }
+  ],
+  code: [
+    'parse inputs, prepare point list',
+    'inside = 0, total = 0, estimates = []',
+    'for each batch of points:',
+    '    for each point (x,y) in batch:',
+    '        total = total + 1',
+    '        if x*x + y*y <= 1: inside = inside + 1',
+    '    estimate = 4 * inside / total',
+    '    estimates.append(estimate)',
+    'return final estimate and error'
+  ],
+  // ---------- helpers ----------
+  mulberry32(a) {
+    return function() {
+      let t = (a += 0x6D2B79F5);
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  },
+  parseValues(values) {
+    const totalPoints = parseInt(values.totalPoints, 10);
+    const batchSize = parseInt(values.batchSize, 10);
+    const seed = parseInt(values.seed, 10);
+    const explicit = String(values.explicitPoints || '').trim();
+    let points = [];
+    if (explicit) {
+      const parts = explicit.split(/\s+/).filter(Boolean);
+      for (const p of parts) {
+        const [xs, ys] = p.split(',');
+        const x = parseFloat(xs), y = parseFloat(ys);
+        if (Number.isNaN(x) || Number.isNaN(y) || x < 0 || x > 1 || y < 0 || y > 1) {
+          return { error: { field: 'explicitPoints', message: 'Each point must be "x,y" with 0≤x,y≤1.' } };
+        }
+        points.push([x, y]);
+      }
+      if (points.length < totalPoints) {
+        return { error: { field: 'explicitPoints', message: `Need at least ${totalPoints} points.` } };
+      }
+      points = points.slice(0, totalPoints);
+    } else {
+      const rng = this.mulberry32(seed);
+      for (let i = 0; i < totalPoints; i++) {
+        points.push([rng(), rng()]);
+      }
+    }
+    if (totalPoints < 1 || totalPoints > 500) return { error: { field: 'totalPoints', message: 'Total points must be 1–500.' } };
+    if (batchSize < 1 || batchSize > 50) return { error: { field: 'batchSize', message: 'Batch size must be 1–50.' } };
+    return { totalPoints, batchSize, points };
+  },
+  // ---------- main algorithm ----------
+  run(values) {
+    const p = this.parseValues(values);
+    if (p.error) return p;
+    const { totalPoints, batchSize, points } = p;
+    const steps = [];
+    const PI = Math.PI;
+    // initial view: empty square with quarter circle
+    const makeView = (pts, estimates, inside, total, isFinal) => {
+      const marks = {};
+      pts.forEach((_, i) => {
+        const [x, y] = pts[i];
+        marks[i] = (x*x + y*y <= 1) ? 'done' : 'compare';
+      });
+      const plot1 = {
+        type: 'plot',
+        label: 'Points in unit square (green=inside, blue=outside)',
+        x: [0, 1], y: [0, 1],
+        points: pts.map((pt, i) => ({ x: pt[0], y: pt[1], mark: marks[i] })),
+        shapes: [{ kind: 'circle', cx: 0, cy: 0, r: 1, mark: 'muted' }],
+        equal: true
+      };
+      const plot2 = {
+        type: 'plot',
+        label: 'Running estimate of π (red) vs true π (gray)',
+        x: [0, totalPoints], y: [2.5, 4],
+        lines: [
+          { points: estimates.map((est, i) => [ (i+1)*batchSize, est ]), mark: 'swap', label: 'estimate' },
+          { points: [[0, PI], [totalPoints, PI]], mark: 'muted', label: 'π' }
+        ],
+        xlabel: 'Points so far', ylabel: 'Estimate'
+      };
+      const vars = {
+        type: 'vars',
+        label: 'Counters',
+        values: {
+          inside,
+          total,
+          estimate: total ? (4 * inside / total).toFixed(6) : '—',
+          error: total ? Math.abs(4 * inside / total - PI).toFixed(6) : '—'
+        }
+      };
+      return [plot1, plot2, vars];
+    };
+    // step 0: initial
+    steps.push({ line: 1, note: 'Ready to start. The quarter circle x²+y²=1 is drawn in the square.', view: makeView([], [], 0, 0) });
+    let inside = 0, total = 0, estimates = [];
+    const numBatches = Math.ceil(totalPoints / batchSize);
+    for (let b = 0; b < numBatches; b++) {
+      const batch = points.slice(b * batchSize, (b+1) * batchSize);
+      // ask on first batch
+      if (b === 0) {
+        const insideInBatch = batch.filter(([x,y]) => x*x+y*y<=1).length;
+        steps.push({
+          line: 3, note: `Adding first batch of ${batch.length} points.`,
+          view: makeView(batch, [], 0, 0),
+          ask: {
+            q: `How many of these ${batch.length} points will fall inside the quarter circle?`,
+            options: Array.from({length: batch.length+1}, (_,i)=>String(i)),
+            answer: String(insideInBatch),
+            why: `The area of the quarter circle is π/4 ≈ 0.785, so we expect about ${Math.round(batch.length*0.785)} points inside. Actual: ${insideInBatch}.`
+          }
+        });
+      }
+      // process batch
+      for (const [x,y] of batch) {
+        total++;
+        if (x*x + y*y <= 1) inside++;
+      }
+      const estimate = 4 * inside / total;
+      estimates.push(estimate);
+      const isLast = (b === numBatches-1);
+      steps.push({
+        line: isLast ? 8 : 7,
+        note: isLast
+          ? `All ${totalPoints} points done. Estimate = ${estimate.toFixed(6)}, error = ${Math.abs(estimate-PI).toFixed(6)}.`
+          : `Batch ${b+1}/${numBatches}: inside=${inside}, total=${total}, estimate=${estimate.toFixed(6)}.`,
+        view: makeView(points.slice(0, total), estimates, inside, total, isLast)
+      });
+    }
+    return {
+      steps,
+      summary: `<b>Final estimate:</b> ${(4*inside/total).toFixed(6)} (true π = ${PI.toFixed(6)}), error = ${Math.abs(4*inside/total-PI).toFixed(6)} after ${totalPoints} points.`,
+      result: { estimate: 4*inside/total, error: Math.abs(4*inside/total-PI), inside, total }
+    };
+  },
+  // ---------- independent check ----------
+  check(values, trace) {
+    const p = this.parseValues(values);
+    if (p.error) return { ok: false, text: p.error.message };
+    const { points } = p;
+    const r = trace.result || {};
+    let inside = 0;
+    for (const [x,y] of points) if (x*x + y*y <= 1) inside++;
+    const estimate = 4 * inside / points.length;
+    const error = Math.abs(estimate - Math.PI);
+    const ok = Math.abs(estimate - r.estimate) < 1e-9 && Math.abs(error - r.error) < 1e-9;
+    return { ok, text: ok ? `Recount matches: inside=${inside}, total=${points.length}, estimate=${estimate.toFixed(6)}.` : `Recount gives estimate=${estimate.toFixed(6)} but trace has ${r.estimate}.` };
+  },
+  // ---------- textbook examples ----------
+  examples: [
+    {
+      values: { totalPoints: '10', batchSize: '5', seed: '123', explicitPoints: '0.1,0.1 0.5,0.5 0.9,0.1 0.2,0.8 0.7,0.7 0.3,0.3 0.6,0.2 0.8,0.9 0.4,0.4 0.9,0.5' },
+      result: { estimate: 3.2, error: 0.05840734641020706, inside: 8, total: 10 }
+    },
+    {
+      values: { totalPoints: '4', batchSize: '2', seed: '0', explicitPoints: '0,0 1,0 0,1 1,1' },
+      result: { estimate: 3, error: 0.14159265358979312, inside: 3, total: 4 }
+    }
+  ],
+  // ---------- random generator for tests ----------
+  random(rng) {
+    const totalPoints = 10 + Math.floor(rng() * 49) * 10; // 10,20,...,500
+    const batchSize = 1 + Math.floor(rng() * 10); // 1..10
+    const seed = Math.floor(rng() * 2147483647);
+    return { totalPoints: String(totalPoints), batchSize: String(batchSize), seed: String(seed), explicitPoints: '' };
+  }
+};
+window.__recipe = recipe;
+window.__sim = Stepper.mount(recipe);
+</script>
+</body>
+</html>

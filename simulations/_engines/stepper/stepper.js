@@ -39,8 +39,8 @@
       for (const [name, i] of Object.entries(w.pointers || {})) (ptr[i] = ptr[i] || []).push(name);
       const max = Math.max(1, ...items.map(v => Math.abs(+v) || 0));
       return h('div', { class: 'sv-array' + (w.bars ? ' sv-bars' : '') }, ...items.map((v, i) => h('div', { class: 'sv-cell' + mk(marks[i]) },
-        w.bars ? h('div', { class: 'sv-bar', style: 'height:' + Math.max(4, Math.round(90 * Math.abs(+v || 0) / max)) + 'px' }) : null,
-        h('div', { class: 'sv-val' }, fmt(v)), h('div', { class: 'sv-idx' }, i), ptr[i] ? h('div', { class: 'sv-ptr' }, ptr[i].join(' ')) : null)),
+        w.bars ? h('div', { class: 'sv-bartrack' }, h('div', { class: 'sv-bar', style: 'height:' + Math.max(3, Math.round(100 * Math.abs(+v || 0) / max)) + '%' })) : null,
+        h('div', { class: 'sv-val' }, fmt(v)), h('div', { class: 'sv-idx' }, i), h('div', { class: 'sv-ptr' }, ptr[i] ? ptr[i].join(' ') : ''))),
         ...Object.entries(ptr).filter(([i]) => +i < 0 || +i >= items.length).map(([i, n]) => h('div', { class: 'sv-cell sv-muted' },
           h('div', { class: 'sv-val' }, '·'), h('div', { class: 'sv-idx' }, i), h('div', { class: 'sv-ptr' }, n.join(' ')))));
     },
@@ -104,54 +104,102 @@
     },
     grid(w) {                                            // a board of squares: matrices, mazes, DP tables, cellular automata
       const cells = w.cells || [], m = w.marks || {}, nums = cells.flat().filter(v => typeof v === 'number'), max = Math.max(1, ...nums.map(Math.abs));
-      return h('div', { class: 'sv-grid', style: 'grid-template-columns:repeat(' + ((cells[0] || []).length || 1) + ', minmax(26px, 44px))' },
+      return h('div', { class: 'sv-grid', style: 'grid-template-columns:repeat(' + ((cells[0] || []).length || 1) + ', minmax(0, 46px))' },
         ...cells.flatMap((row, r) => row.map((v, c) => h('div', { class: 'sv-sq' + mk(m[r + ',' + c]),
-          style: w.heat && typeof v === 'number' ? 'background:rgba(88,196,221,' + (0.12 + 0.75 * Math.abs(v) / max).toFixed(2) + ')' : null }, w.hide_values ? '' : fmt(v)))));
+          style: w.heat && typeof v === 'number' ? 'background:rgba(159,211,240,' + (0.08 + 0.6 * Math.abs(v) / max).toFixed(2) + ')' : null }, w.hide_values ? '' : fmt(v)))));
     },
   };
   const FIGURES = ['array', 'stacks', 'plot', 'graph', 'grid'];
-  function renderView(view, st) {
+  function renderView(view, st, k, tr, values, valsBox) {
+    // the figure goes on the board; with a values box beside it, `vars` widgets go there instead, and a value that just
+    // changed is marked with what it was
     const ws = Array.isArray(st && st.view) ? st.view : [];
-    view.replaceChildren(...ws.map(w => h('section', { class: 'sv-w' }, w && w.label ? h('div', { class: 'sv-label' }, w.label) : null,
+    const onBoard = ws.filter(w => !(valsBox && w && w.type === 'vars'));
+    view.replaceChildren(...onBoard.map(w => h('section', { class: 'sv-w' }, w && w.label ? h('div', { class: 'sv-label' }, w.label) : null,
       w && WIDGETS[w.type] ? WIDGETS[w.type](w) : h('p', { class: 'sv-text' }, 'Unknown view: ' + (w && w.type)))));
+    // a legend for the colours this step uses, so the meaning never rests on colour alone
+    const used = new Set(), seen = o => { if (o && typeof o === 'object') for (const [k, v] of Object.entries(o)) { if (k === 'mark' || k === 'marks') { if (typeof v === 'string') used.add(v); else if (v && typeof v === 'object') Object.values(v).forEach(m => used.add(m)); } else seen(v); } };
+    onBoard.forEach(seen);
+    const words = { active: 'now', compare: 'compared', swap: 'swapped', done: 'done', min: 'smallest' };
+    const keys = MARKS.filter(m => used.has(m) && words[m]);
+    if (keys.length) view.append(h('div', { class: 'sv-legend-row' }, ...keys.map(m => h('span', { class: 'sv-key sv-key-' + m }, words[m]))));
+    if (!valsBox) return;
+    const prevStep = tr && k > 0 ? tr.steps[k - 1] : null;
+    const before = Object.assign({}, ...((prevStep && Array.isArray(prevStep.view) ? prevStep.view : []).filter(w => w && w.type === 'vars').map(w => w.values || {})));
+    valsBox.replaceChildren(...ws.filter(w => w && w.type === 'vars').flatMap(w => Object.entries(w.values || {}).map(([key, v]) => {
+      const show = x => Array.isArray(x) ? '[' + x.map(fmt).join(', ') + ']' : fmt(x);
+      const changed = k > 0 && key in before && show(before[key]) !== show(v);
+      return h('div', { class: 'st-val' + (changed ? ' changed' : '') + mk((w.marks || {})[key]) }, h('b', {}, show(v)),
+        h('span', {}, key), changed ? h('span', { class: 'was' }, 'was ' + show(before[key])) : null);
+    })));
   }
 
   function mount(cfg) {
     const S = { values: {}, trace: null, k: 0, playing: null, predict: true, answered: {}, score: [0, 0] };
+    const store = { get(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} } };
     const root = document.body;
-    root.append(h('header', { class: 'st-head' }, h('h1', {}, cfg.title), h('p', {}, cfg.intro)));
-    const view = h('div', { class: 'st-view', 'aria-live': 'polite' });
-    const note = h('div', { class: 'st-note', 'aria-live': 'polite' });
-    const slider = h('input', { type: 'range', min: 0, max: 0, value: 0, 'aria-label': 'Step' });
-    const pos = h('span', { class: 'st-pos' });
-    const bFirst = h('button', { 'aria-label': 'First step', title: 'First step (Home)' }, '⏮');
-    const bBack = h('button', { 'aria-label': 'Previous step', title: 'Previous step (←)' }, '◀ Back');
-    const bNext = h('button', { class: 'primary', 'aria-label': 'Next step', title: 'Next step (→)' }, 'Next ▶');
-    const bLast = h('button', { 'aria-label': 'Last step', title: 'Last step (End)' }, '⏭');
-    const bPlay = h('button', { title: 'Play (space)' }, '▶ Play');
-    const checkLine = h('div', { class: 'st-check' });
-    const stage = h('section', { class: 'st-stage' }, view, note, h('div', { class: 'st-bar' }, bFirst, bBack, bNext, bLast, bPlay, slider, pos), checkLine);
+    root.classList.add('st-app');
+    if (window.parent !== window) root.classList.add('framed');      // inside the app: its window already shows the title
+    // ---- the top: title, the example, "Change the input", Present
     const preset = h('select', { id: 'st-preset', 'aria-label': 'Example' });
     (cfg.presets || []).forEach((p, i) => preset.append(h('option', { value: i }, p.name)));
     preset.append(h('option', { value: 'own' }, 'Your own'));
+    const bEdit = h('button', { class: 'st-link', 'aria-expanded': 'false', 'aria-controls': 'st-editor' }, 'Change the input');
+    const bPresent = h('button', { class: 'st-btn', title: 'Present on a projector (P)' }, '⛶ Present');
+    root.append(h('header', { class: 'st-head' }, h('div', { class: 'st-titles' }, h('h1', {}, cfg.title), cfg.intro ? h('p', {}, cfg.intro) : null),
+      h('div', { class: 'st-tools' }, h('label', { class: 'st-exl', for: 'st-preset' }, 'Example'), preset, bEdit, bPresent)));
+    // ---- the input, hidden until asked for
     const fields = {}, errs = {};
-    const inputsBox = h('div', {});
+    const inputsBox = h('div', { class: 'st-fields' });
     for (const f of cfg.inputs) {
       let inp;
       if (f.kind === 'select') { inp = h('select', { id: 'st-' + f.id }); f.options.forEach(([v, l]) => inp.append(h('option', { value: v }, l))); }
       else inp = h('input', { id: 'st-' + f.id, type: f.kind === 'number' ? 'number' : 'text', class: f.mono ? 'mono' : '', min: f.min, max: f.max, step: f.step, spellcheck: 'false', autocomplete: 'off' });
       fields[f.id] = inp; errs[f.id] = h('div', { class: 'st-err' });
-      inputsBox.append(...[h('label', { for: 'st-' + f.id }, f.label), inp, f.help ? h('div', { class: 'st-help' }, f.help) : null, errs[f.id]].filter(Boolean));
+      inputsBox.append(h('div', { class: 'st-field' }, h('label', { for: 'st-' + f.id }, f.label), inp, f.help ? h('div', { class: 'st-help' }, f.help) : null, errs[f.id]));
       inp.addEventListener(f.kind === 'select' ? 'change' : 'input', () => { preset.value = 'own'; schedule(); });
     }
     const predictBox = h('input', { type: 'checkbox', id: 'st-predict', checked: true });
+    const editor = h('section', { class: 'st-panel st-editor', id: 'st-editor', hidden: true, 'aria-label': 'Input' }, inputsBox,
+      h('div', { class: 'st-edfoot' }, h('label', { class: 'st-row', for: 'st-predict' }, predictBox, 'Ask me to predict before showing each answer'),
+        h('button', { class: 'st-btn', onclick: () => toggleEditor(false) }, 'Done')));
+    // ---- the board: the figure, then one sentence on what just happened; the question; the result only at the end
+    const view = h('div', { class: 'st-view' });
+    const note = h('div', { class: 'st-note', 'aria-live': 'polite' });
+    const summary = h('div', { class: 'st-summary', hidden: true });
+    const board = h('section', { class: 'st-board', 'aria-label': 'The simulation' }, view, h('div', { class: 'st-caption' }, note, summary));
+    // ---- the controls: Back, Next (the main one), Play, and the step
+    const bBack = h('button', { class: 'st-btn', title: 'Previous step (←)' }, '◀ Back');
+    const bNext = h('button', { class: 'st-btn primary', title: 'Next step (→)' }, 'Next ▶');
+    const bPlay = h('button', { class: 'st-btn', title: 'Play (space)' }, '▶ Play');
+    const slider = h('input', { type: 'range', min: 0, max: 0, value: 0, 'aria-label': 'Step' });
+    const pos = h('span', { class: 'st-pos' });
+    const checkLine = h('div', { class: 'st-check' });
+    const controls = h('div', { class: 'st-controls' }, bBack, bNext, bPlay, h('div', { class: 'st-track' }, slider, pos), checkLine);
+    // ---- beside the board: the values, and the code (shown only when asked for)
+    const vals = h('div', { class: 'st-vals' });
+    const valsCard = h('section', { class: 'st-card', hidden: true }, h('h2', {}, 'Values'), vals);
     const code = h('div', { class: 'st-code', 'aria-label': 'Algorithm' });
-    const summary = h('div', { class: 'st-summary' });
-    const panel = h('aside', { class: 'st-panel' },
-      h('h2', {}, 'Input'), h('label', { for: 'st-preset' }, 'Example'), preset, inputsBox,
-      h('div', { class: 'st-row' }, predictBox, h('label', { for: 'st-predict', style: 'margin:0' }, 'Ask me to predict before showing the answer')),
-      h('h2', {}, 'Algorithm'), code, h('h2', {}, 'Summary'), summary);
-    root.append(h('div', { class: 'st-layout' }, stage, panel));
+    const bCode = h('button', { class: 'st-link', 'aria-expanded': 'false', title: 'Code (C)' }, 'Show the code');
+    const codeCard = h('section', { class: 'st-card st-codecard' }, h('div', { class: 'st-cardh' }, h('h2', {}, 'Code'), bCode), code);
+    const side = h('aside', { class: 'st-side' }, valsCard, codeCard);
+    // ---- present mode: the board fills the screen
+    const pTools = h('div', { class: 'st-ptools' },
+      h('button', { class: 'st-pbtn', onclick: () => toggleEditor(editor.hidden) }, 'Setup', h('kbd', {}, 'S')),
+      h('button', { class: 'st-pbtn', onclick: () => toggleCode(!root.classList.contains('show-code')) }, 'Code', h('kbd', {}, 'C')),
+      h('button', { class: 'st-pbtn', onclick: () => togglePresent(false) }, 'Exit', h('kbd', {}, 'Esc')));
+    root.append(editor, h('main', { class: 'st-main' }, h('div', { class: 'st-left' }, board, controls), side), pTools);
+
+    function toggleEditor(on) { editor.hidden = !on; bEdit.setAttribute('aria-expanded', String(on)); if (on) { const f = editor.querySelector('input, select'); if (f) f.focus(); } }
+    function toggleCode(on) { root.classList.toggle('show-code', on); bCode.textContent = on ? 'Hide the code' : 'Show the code'; bCode.setAttribute('aria-expanded', String(on)); store.set('st-code', on ? '1' : '0'); }
+    function togglePresent(on) {
+      root.classList.toggle('present', on);
+      try { if (on && root.requestFullscreen && window.parent === window) root.requestFullscreen().catch(() => {}); else if (!on && document.fullscreenElement) document.exitFullscreen(); } catch (e) {}
+    }
+    bEdit.onclick = () => toggleEditor(editor.hidden);
+    bCode.onclick = () => toggleCode(!root.classList.contains('show-code'));
+    bPresent.onclick = () => togglePresent(!root.classList.contains('present'));
+    toggleCode(store.get('st-code') === '1');
 
     function values() { const o = {}; for (const f of cfg.inputs) o[f.id] = fields[f.id].value; return o; }
     function setValues(v) { for (const f of cfg.inputs) if (v[f.id] != null) fields[f.id].value = v[f.id]; }
@@ -162,11 +210,11 @@
       S.values = values();
       for (const id in errs) { errs[id].textContent = ''; fields[id].classList.remove('bad'); }
       const tr = cfg.run(S.values);
-      if (tr.error) { const id = tr.error.field; if (id && errs[id]) { errs[id].textContent = tr.error.message; fields[id].classList.add('bad'); }
-        S.trace = null; view.textContent = ''; note.textContent = tr.error.message; checkLine.textContent = ''; return; }
-      S.trace = tr; S.k = 0; S.answered = {}; S.score = [0, 0];
+      if (tr.error) { const id = tr.error.field; if (id && errs[id]) { errs[id].textContent = tr.error.message; fields[id].classList.add('bad'); toggleEditor(true); }
+        S.trace = null; view.textContent = ''; note.textContent = tr.error.message; checkLine.textContent = ''; summary.hidden = true; return; }
+      S.trace = tr; S.k = 0; S.answered = {}; S.score = [0, 0]; S.lastAnswer = null;
       slider.max = tr.steps.length - 1; share(cfg, S.values);
-      const ck = cfg.check(S.values, tr);
+      const ck = cfg.check(S.values, tr);                       // shown only when it fails; the text stays for the checks
       checkLine.className = 'st-check ' + (ck.ok ? 'ok' : 'bad');
       checkLine.innerHTML = (ck.ok ? '<b>✓ Checked:</b> ' : '<b>⚠ Check failed:</b> ') + ck.text;
       summary.innerHTML = tr.summary || '';
@@ -175,21 +223,24 @@
     function codeLines() { return typeof cfg.code === 'function' ? cfg.code(S.values) : cfg.code; }
     function show() {
       const tr = S.trace; if (!tr) return;
-      const st = tr.steps[S.k];
-      (cfg.render || renderView)(view, st, S.k, tr, S.values);
+      const st = tr.steps[S.k], last = tr.steps.length - 1;
+      (cfg.render || renderView)(view, st, S.k, tr, S.values, vals);
+      valsCard.hidden = !vals.childElementCount;
       code.replaceChildren(...codeLines().map((l, i) => h('div', { class: st.line === i + 1 ? 'on' : '' }, h('span', { class: 'ln' }, i + 1), l)));
-      slider.value = S.k; pos.textContent = `Step ${S.k} of ${tr.steps.length - 1}`;
-      bFirst.disabled = bBack.disabled = S.k === 0; bLast.disabled = S.k === tr.steps.length - 1;
+      slider.value = S.k; pos.textContent = `Step ${S.k} of ${last}`;
+      bBack.disabled = S.k === 0;
       const next = tr.steps[S.k + 1];
       const asking = S.predict && next && next.ask && !(S.k + 1 in S.answered);
-      note.replaceChildren(st.note || '');
+      note.replaceChildren(h('p', { class: 'st-say' }, st.note || ''));
+      if (S.lastAnswer && S.lastAnswer.k === S.k) note.append(h('p', { class: 'st-ask ' + (S.lastAnswer.right ? 'right' : 'wrong') }, S.lastAnswer.text));
       if (asking) {
-        const box = h('div', { class: 'st-ask' }, h('b', {}, 'Predict: '), next.ask.q);
-        const opts = h('div', { class: 'opts' }, ...next.ask.options.map(o => h('button', { onclick: () => answer(o) }, String(o))), h('button', { onclick: () => answer(null) }, 'Skip'));
-        box.append(opts); note.append(box);
+        note.append(h('div', { class: 'st-ask' }, h('p', { class: 'st-q' }, next.ask.q),
+          h('div', { class: 'opts' }, ...next.ask.options.map(o => h('button', { class: 'st-opt', onclick: () => answer(o) }, String(o))),
+            h('button', { class: 'st-opt skip', onclick: () => answer(null) }, 'Skip'))));
       }
-      bNext.disabled = S.k === tr.steps.length - 1 || asking;
-      if (S.lastAnswer && S.lastAnswer.k === S.k) note.append(h('div', { class: 'st-ask ' + (S.lastAnswer.right ? 'right' : 'wrong') }, S.lastAnswer.text));
+      bNext.disabled = S.k === last || asking;
+      bNext.textContent = asking ? 'Answer to go on' : S.k === last ? 'Done' : 'Next ▶';
+      summary.hidden = S.k !== last || !tr.summary;          // the result only at the end: no spoilers
       const [r, t] = S.score; if (t) pos.textContent += ` · predictions ${r}/${t}`;
     }
     function answer(o) {
@@ -201,19 +252,24 @@
     }
     function go(k) { if (!S.trace) return; S.k = Math.max(0, Math.min(S.trace.steps.length - 1, k)); show(); }
     function stop() { clearInterval(S.playing); S.playing = null; bPlay.textContent = '▶ Play'; }
-    bFirst.onclick = () => { stop(); go(0); }; bBack.onclick = () => { stop(); go(S.k - 1); };
-    bNext.onclick = () => go(S.k + 1); bLast.onclick = () => { stop(); S.predict = false; predictBox.checked = false; go(Infinity); };
+    function toEnd() { stop(); S.predict = false; predictBox.checked = false; go(Infinity); }
+    bBack.onclick = () => { stop(); go(S.k - 1); };
+    bNext.onclick = () => go(S.k + 1);
     bPlay.onclick = () => { if (S.playing) return stop(); bPlay.textContent = '❚❚ Pause';
       S.playing = setInterval(() => { if (!S.trace || S.k >= S.trace.steps.length - 1 || bNext.disabled) return stop(); go(S.k + 1); }, cfg.playMs || 900); };
     slider.oninput = () => { stop(); S.predict = false; predictBox.checked = false; go(+slider.value); };
     predictBox.onchange = () => { S.predict = predictBox.checked; show(); };
-    preset.onchange = () => { if (preset.value !== 'own') { setValues(cfg.presets[+preset.value].values); recompute(); } };
+    preset.onchange = () => { if (preset.value !== 'own') { setValues(cfg.presets[+preset.value].values); recompute(); } else toggleEditor(true); };
     document.addEventListener('keydown', ev => {
-      if (/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) return;
+      if (ev.key === 'Escape') { if (!editor.hidden) toggleEditor(false); else if (root.classList.contains('present')) togglePresent(false); return; }
+      if (/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName) || ev.ctrlKey || ev.metaKey || ev.altKey) return;
       if (ev.key === 'ArrowRight' && !bNext.disabled) { ev.preventDefault(); go(S.k + 1); }
       else if (ev.key === 'ArrowLeft') { ev.preventDefault(); stop(); go(S.k - 1); }
-      else if (ev.key === 'Home') { stop(); go(0); } else if (ev.key === 'End') bLast.onclick();
+      else if (ev.key === 'Home') { stop(); go(0); } else if (ev.key === 'End') toEnd();
       else if (ev.key === ' ') { ev.preventDefault(); bPlay.onclick(); }
+      else if (ev.key === 'p' || ev.key === 'P') togglePresent(!root.classList.contains('present'));
+      else if (ev.key === 'c' || ev.key === 'C') toggleCode(!root.classList.contains('show-code'));
+      else if ((ev.key === 's' || ev.key === 'S') && root.classList.contains('present')) toggleEditor(editor.hidden);
     });
     const fromLink = readHash();
     if (fromLink) {
@@ -222,7 +278,7 @@
       preset.value = pi >= 0 ? String(pi) : 'own';
     } else if (cfg.presets && cfg.presets.length) setValues(cfg.presets[0].values);
     recompute();
-    return { S, go, recompute, values, setValues, fields };
+    return { S, go, toEnd, recompute, values, setValues, fields, toggleCode, togglePresent, toggleEditor };
   }
   window.Stepper = { mount, h, renderView, widgets: Object.keys(WIDGETS), figures: FIGURES, marks: MARKS };
 })();

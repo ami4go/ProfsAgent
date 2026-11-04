@@ -1,0 +1,301 @@
+{
+ "lecture_id": "W02.S1",
+ "topic": "Scaled dot-product self-attention and masking",
+ "generated_at": "2026-11-05 01:25:35",
+ "prompt": "B1 0.4.0",
+ "files": {
+  "slides": "material\\W02.S1\\slides.pptx",
+  "notes": "material\\W02.S1\\notes.md",
+  "deck": "material\\W02.S1\\deck.json",
+  "quiz": "material\\W02.S1\\quiz.json"
+ },
+ "slides": 18,
+ "content_slides": 15,
+ "minutes": 90.0,
+ "errors": 0,
+ "warnings": 15,
+ "findings": [
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 3",
+    "C5"
+   ],
+   "message": "slide 3 ('From Soft Lookup to Self-Attention') cites [C5] 'The Illustrated Transformer', which matches it weakly (0.02; average source 0.22): check the citation",
+   "evidence": {
+    "similarity": 0.017
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 4",
+    "C3"
+   ],
+   "message": "slide 4 ('Linear Projections for Queries, Keys, and Values') cites [C3] 'Attention Is All You Need', which matches it weakly (0.11; average source 0.18): check the citation",
+   "evidence": {
+    "similarity": 0.111
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 4",
+    "C5"
+   ],
+   "message": "slide 4 ('Linear Projections for Queries, Keys, and Values') cites [C5] 'The Illustrated Transformer', which matches it weakly (0.11; average source 0.18): check the citation",
+   "evidence": {
+    "similarity": 0.11
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 5",
+    "C4"
+   ],
+   "message": "slide 5 ('The Scaled Dot-Product Attention Formulation') cites [C4] 'The Annotated Transformer', which matches it weakly (0.07; average source 0.20): check the citation",
+   "evidence": {
+    "similarity": 0.072
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 7",
+    "C4"
+   ],
+   "message": "slide 7 ('Matrix Form and Dimension Tracking') cites [C4] 'The Annotated Transformer', which matches it weakly (0.09; average source 0.19): check the citation",
+   "evidence": {
+    "similarity": 0.088
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 9",
+    "C3"
+   ],
+   "message": "slide 9 ('Checking Understanding: Scaling Factor Impact') cites [C3] 'Attention Is All You Need', which matches it weakly (0.06; average source 0.11): check the citation",
+   "evidence": {
+    "similarity": 0.062
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 10",
+    "C4"
+   ],
+   "message": "slide 10 ('The Purpose of Causal Masking in Decoder Layers') cites [C4] 'The Annotated Transformer', which matches it weakly (0.17; average source 0.28): check the citation",
+   "evidence": {
+    "similarity": 0.165
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 11",
+    "C4"
+   ],
+   "message": "slide 11 ('Constructing and Applying the Causal Mask') cites [C4] 'The Annotated Transformer', which matches it weakly (0.04; average source 0.13): check the citation",
+   "evidence": {
+    "similarity": 0.042
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 12",
+    "C4"
+   ],
+   "message": "slide 12 ('Worked Example: Masked Self-Attention Step-by-Step') cites [C4] 'The Annotated Transformer', which matches it weakly (0.08; average source 0.22): check the citation",
+   "evidence": {
+    "similarity": 0.083
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 13",
+    "C4"
+   ],
+   "message": "slide 13 ('Checking Understanding: Causal Masking Mechanics') cites [C4] 'The Annotated Transformer', which matches it weakly (0.09; average source 0.19): check the citation",
+   "evidence": {
+    "similarity": 0.089
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 14",
+    "C4"
+   ],
+   "message": "slide 14 ('Vectorized PyTorch Implementation') cites [C4] 'The Annotated Transformer', which matches it weakly (0.14; average source 0.19): check the citation",
+   "evidence": {
+    "similarity": 0.143
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 15",
+    "C4"
+   ],
+   "message": "slide 15 ('Activity: Coding Scaled Dot-Product Attention in PyTorch') cites [C4] 'The Annotated Transformer', which matches it weakly (0.19; average source 0.20): check the citation",
+   "evidence": {
+    "similarity": 0.194
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 17",
+    "C4"
+   ],
+   "message": "slide 17 ('Summary: Scaled Dot-Product Self-Attention') cites [C4] 'The Annotated Transformer', which matches it weakly (0.18; average source 0.24): check the citation",
+   "evidence": {
+    "similarity": 0.179
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10 ('Worked Example: Masked Self-Attention Step-by-Step'): [fact] The softmax weights for Position 3 in the worked example are incorrectly computed as [0.15, 0.42, 0.42] instead of approximately [0.10, 0.45, 0.45] given the raw scores [0.5, 2.0, 2.0]. Fix: Update the table to show correct softmax weights: [0.10, 0.45, 0.45] (or more precisely 0.100, 0.450, 0.450). (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Worked Example: Masked Self-Attention Step-by-Step"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-OVERFLOW",
+   "severity": "warning",
+   "nodes": [
+    "slide 14"
+   ],
+   "message": "slide 14: the code text may not fit its box; shorten it in PowerPoint",
+   "evidence": {},
+   "stage": "render"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 14,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Speech and Language Processing (3rd edition draft)",
+   "year": 2024,
+   "url": "https://web.stanford.edu/~jurafsky/slp3/",
+   "kind": "textbook",
+   "approved": true
+  },
+  "C2": {
+   "title": "Dive into Deep Learning, chapter 11: Attention Mechanisms and Transformers",
+   "year": 2023,
+   "url": "https://d2l.ai/chapter_attention-mechanisms-and-transformers/index.html",
+   "kind": "textbook",
+   "approved": true
+  },
+  "C3": {
+   "title": "Attention Is All You Need",
+   "year": 2017,
+   "url": "https://arxiv.org/abs/1706.03762",
+   "kind": "reading",
+   "approved": true
+  },
+  "C4": {
+   "title": "The Annotated Transformer",
+   "year": 2022,
+   "url": "https://nlp.seas.harvard.edu/annotated-transformer/",
+   "kind": "reading",
+   "approved": true
+  },
+  "C5": {
+   "title": "The Illustrated Transformer",
+   "year": 2018,
+   "url": "https://jalammar.github.io/illustrated-transformer/",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1",
+  "C2",
+  "C3",
+  "C4",
+  "C5"
+ ],
+ "calls": [
+  {
+   "endpoint": "gemini:gemini-3.6-flash:k25e39c0a",
+   "prompt_tokens": 1732,
+   "output_tokens": 10770
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 4490,
+   "output_tokens": 4084
+  },
+  {
+   "endpoint": "gemini:gemini-3.6-flash:k25e39c0a",
+   "prompt_tokens": 1934,
+   "output_tokens": 8932
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+  "model": "nvidia:nvidia/nemotron-3-ultra-550b-a55b",
+  "prompt_tokens": 4490,
+  "output_tokens": 4084,
+  "verdict": "The deck is largely accurate and well-structured, but the numerical error in the worked example on slide 10 must be corrected before teaching to avoid misleading students.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 10,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The softmax weights for Position 3 in the worked example are incorrectly computed as [0.15, 0.42, 0.42] instead of approximately [0.10, 0.45, 0.45] given the raw scores [0.5, 2.0, 2.0].",
+    "fix": "Update the table to show correct softmax weights: [0.10, 0.45, 0.45] (or more precisely 0.100, 0.450, 0.450)."
+   }
+  ],
+  "repaired": true
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

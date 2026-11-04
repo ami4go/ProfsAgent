@@ -1,0 +1,251 @@
+{
+ "lecture_id": "W01.S1",
+ "topic": "Sequence modelling and the limits of recurrent networks",
+ "generated_at": "2026-11-05 01:12:51",
+ "prompt": "B1 0.4.0",
+ "files": {
+  "slides": "material\\W01.S1\\slides.pptx",
+  "notes": "material\\W01.S1\\notes.md",
+  "deck": "material\\W01.S1\\deck.json",
+  "quiz": "material\\W01.S1\\quiz.json"
+ },
+ "slides": 16,
+ "content_slides": 13,
+ "minutes": 90.0,
+ "errors": 0,
+ "warnings": 9,
+ "findings": [
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 3",
+    "C1"
+   ],
+   "message": "slide 3 ('What is sequence modelling?') cites [C1] 'Speech and Language Processing (3rd edition draft)', which matches it weakly (0.31; average source 0.33): check the citation",
+   "evidence": {
+    "similarity": 0.314
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 4",
+    "C1"
+   ],
+   "message": "slide 4 ('Recurrent neural network (RNN) basics') cites [C1] 'Speech and Language Processing (3rd edition draft)', which matches it weakly (0.18; average source 0.34): check the citation",
+   "evidence": {
+    "similarity": 0.183
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 12",
+    "C2"
+   ],
+   "message": "slide 12 ('Why attention helps: soft lookup instead of hard bottleneck') cites [C2] 'Neural Machine Translation by Jointly Learning to Align and Translate', which matches it weakly (0.28; average source 0.30): check the citation",
+   "evidence": {
+    "similarity": 0.278
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 3"
+   ],
+   "message": "slide 3 ('What is sequence modelling?'): [fact] The claim that recurrent networks were the first deep learning models designed for sequence modelling is historically imprecise because earlier neural sequence models and recurrent architectures predate the modern deep-learning era. Fix: Say that recurrent networks became a standard deep-learning approach for sequence modelling because they maintain a hidden state updated at each time step. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "What is sequence modelling?"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 8"
+   ],
+   "message": "slide 8 ('Vanishing gradients make long-range learning hard'): [fact] The spectral-radius explanation is too narrow because Jacobian products can vanish even when the recurrent weight matrix has spectral radius greater than one, depending on the activations and other factors. Fix: Say that repeated Jacobian multiplication can produce exponentially shrinking gradients, often when relevant Jacobian factors have magnitudes below one, and that the spectral radius below one is one common sufficient condition. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Vanishing gradients make long-range learning hard"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 9"
+   ],
+   "message": "slide 9 ('Long-term dependencies remain difficult even with LSTM/GRU'): [fact] The unsupported threshold that performance drops sharply beyond roughly 20–30 tokens is not a general property of LSTM and GRU models, whose usable dependency lengths depend on the task, architecture, and training. Fix: Remove the numerical threshold and state that gated networks can still struggle with very long dependencies and long-sequence training, with difficulty depending on the task and architecture. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Long-term dependencies remain difficult even with LSTM/GRU"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10 ('Bottleneck illustrated: translating a 50-word sentence'): [fact] The slide presents omissions and hallucinations as inevitable consequences of the bottleneck, although they are possible failure modes rather than guaranteed outcomes. Fix: Say that the bottleneck can cause omissions, mistranslations, or hallucinations, especially for long or information-dense sentences. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Bottleneck illustrated: translating a 50-word sentence"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 12"
+   ],
+   "message": "slide 12 ('LSTM and GRU gating mechanisms'): [fact] The statement that LSTM and GRU still produce a single final hidden vector for the decoder is true for the encoder-decoder setup being discussed but is not a general property of these architectures. Fix: Say that in this encoder-decoder design, the encoder passes only its final fixed-size hidden state to the decoder. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "LSTM and GRU gating mechanisms"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 15"
+   ],
+   "message": "slide 15 ('Summary: Recurrent sequence models and their limits'): [fact] The claim that attention will remove the bottleneck is too absolute because attention still uses fixed-dimensional representations and can dilute relevant information across very long sequences. Fix: Say that attention will alleviate the single-vector bottleneck by giving the decoder direct access to all encoder states. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Summary: Recurrent sequence models and their limits"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [],
+ "sources": {
+  "C1": {
+   "title": "Speech and Language Processing (3rd edition draft)",
+   "year": 2024,
+   "url": "https://web.stanford.edu/~jurafsky/slp3/",
+   "kind": "textbook",
+   "approved": true
+  },
+  "C2": {
+   "title": "Neural Machine Translation by Jointly Learning to Align and Translate",
+   "year": 2015,
+   "url": "https://arxiv.org/abs/1409.0473",
+   "kind": "reading",
+   "approved": true
+  },
+  "C3": {
+   "title": "Long Short-Term Memory",
+   "year": 1997,
+   "url": "https://doi.org/10.1162/neco.1997.9.8.1735",
+   "kind": "reading",
+   "approved": true
+  },
+  "C4": {
+   "title": "On the difficulty of training recurrent neural networks",
+   "year": 2013,
+   "url": "https://arxiv.org/abs/1211.5063",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1",
+  "C2",
+  "C3",
+  "C4"
+ ],
+ "calls": [
+  {
+   "endpoint": "gemini:gemini-3.6-flash:k25e39c0a",
+   "prompt_tokens": 1642,
+   "output_tokens": 6124
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1831,
+   "output_tokens": 3361
+  },
+  {
+   "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+   "prompt_tokens": 3087,
+   "output_tokens": 720
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1905,
+   "output_tokens": 6563
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "prompt_tokens": 3087,
+  "output_tokens": 720,
+  "verdict": "The deck is broadly safe to teach from, but the professor should remove the unsupported 20–30-token threshold and soften the absolute claims about bottlenecks, spectral radius, and attention.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 3,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The claim that recurrent networks were the first deep learning models designed for sequence modelling is historically imprecise because earlier neural sequence models and recurrent architectures predate the modern deep-learning era.",
+    "fix": "Say that recurrent networks became a standard deep-learning approach for sequence modelling because they maintain a hidden state updated at each time step."
+   },
+   {
+    "slide": 8,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The spectral-radius explanation is too narrow because Jacobian products can vanish even when the recurrent weight matrix has spectral radius greater than one, depending on the activations and other factors.",
+    "fix": "Say that repeated Jacobian multiplication can produce exponentially shrinking gradients, often when relevant Jacobian factors have magnitudes below one, and that the spectral radius below one is one common sufficient condition."
+   },
+   {
+    "slide": 9,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The unsupported threshold that performance drops sharply beyond roughly 20–30 tokens is not a general property of LSTM and GRU models, whose usable dependency lengths depend on the task, architecture, and training.",
+    "fix": "Remove the numerical threshold and state that gated networks can still struggle with very long dependencies and long-sequence training, with difficulty depending on the task and architecture."
+   },
+   {
+    "slide": 10,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The slide presents omissions and hallucinations as inevitable consequences of the bottleneck, although they are possible failure modes rather than guaranteed outcomes.",
+    "fix": "Say that the bottleneck can cause omissions, mistranslations, or hallucinations, especially for long or information-dense sentences."
+   },
+   {
+    "slide": 12,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The statement that LSTM and GRU still produce a single final hidden vector for the decoder is true for the encoder-decoder setup being discussed but is not a general property of these architectures.",
+    "fix": "Say that in this encoder-decoder design, the encoder passes only its final fixed-size hidden state to the decoder."
+   },
+   {
+    "slide": 15,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The claim that attention will remove the bottleneck is too absolute because attention still uses fixed-dimensional representations and can dilute relevant information across very long sequences.",
+    "fix": "Say that attention will alleviate the single-vector bottleneck by giving the decoder direct access to all encoder states."
+   }
+  ],
+  "repaired": true
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

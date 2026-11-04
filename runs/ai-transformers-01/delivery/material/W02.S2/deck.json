@@ -1,0 +1,480 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W02.S2",
+ "title": "Multi-head attention",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "Recap: Single-Head Scaled Dot-Product Attention",
+   "bullets": [
+    "Attention computes weighted sums of values based on similarity between query and key vectors.",
+    "The scaling factor scaling by square root of d_k prevents vanishing gradients in softmax.",
+    "A single attention head averages representations across the sequence into one unified subspace.",
+    "Masking hides future tokens or padding positions by setting logits to negative infinity."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "In our previous session, we established the mathematical foundation of scaled dot-product attention. Remember that queries and keys interact via matrix multiplication to produce raw alignment scores, which are scaled and normalized with softmax to produce attention weights. However, a single attention operation calculates only one set of attention weights per query token. This limits the model to attending to a single subspace of context at a time, averaging out potentially distinct relationship types across the sequence.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C1",
+    "C2"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Motivation: Why Use Multiple Attention Heads?",
+   "bullets": [
+    "A single attention head can only attend to one relationship type per sequence position.",
+    "Multi-head attention allows the model to jointly attend to information from different representation subspaces.",
+    "Different heads specialize in syntactic relations, positional proximity, or semantic associations.",
+    "Combining multiple heads yields richer context representations than increasing projection dimension in one head."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Why do we need multiple attention heads instead of one big head? Imagine analyzing a sentence: a single word might need to focus on its verb for syntactic agreement, while simultaneously attending to its relative pronoun for semantic co-reference. A single attention head would force these competing signals to average out into one attention pattern. By splitting our projection into multiple heads, each head can independently learn to track distinct linguistic structures.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C1",
+    "C2",
+    "C4"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Architecture Overview of Multi-Head Attention",
+   "bullets": [
+    "Queries, keys, and values are projected into h lower-dimensional subspaces using learned matrices.",
+    "Scaled dot-product attention runs independently and in parallel across all h heads.",
+    "Outputs from each head are concatenated along the feature dimension back to d_model.",
+    "A final linear transformation merges the concatenated head outputs into the final representation."
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Multi-Head Attention Computation Flow",
+    "steps": [
+     "Input Q, K, V Matrices",
+     "Linear Projections (W_Q, W_K, W_V)",
+     "Split into h Parallel Heads",
+     "Scaled Dot-Product Attention",
+     "Concatenate Head Outputs",
+     "Final Output Projection (W_O)"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Here is the architectural overview of multi-head attention. We start with query, key, and value matrices. Instead of directly applying attention on the raw embeddings, we project them through learned linear transformations. The projected tensors are partitioned across h heads, where scaled dot-product attention runs in parallel. Finally, the attention outputs from all heads are concatenated and passed through a final linear projection layer W_O.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C2",
+    "C3",
+    "C4"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Linear Projections for Queries, Keys, and Values",
+   "bullets": [
+    "Input matrices undergo separate learned linear transformations before attention.",
+    "Parameter matrices W_Q, W_K, W_V project inputs into key/value feature spaces.",
+    "Projections enable learned task-specific transformations before performing attention operations.",
+    "Splitting projection outputs across heads satisfies d_k = d_v = d_model / h."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Let us inspect the linear projection step in detail. Before any head splitting occurs, the input embeddings of dimension d_model are multiplied by weight matrices W_Q, W_K, and W_V. These linear projections allow the network to project token representations into specific spaces tailored for matching queries with keys and gathering values. Crucially, we set the per-head dimension d_k equal to d_model divided by the number of heads h.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C1",
+    "C2",
+    "C3"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Hyperparameters and Tensor Dimension Relationships",
+   "bullets": [
+    "Total model embedding dimension d_model is partitioned into h heads of size d_k.",
+    "Setting d_k = d_model / h keeps total computational cost similar to single-head attention.",
+    "Batch size B and sequence lengths L_q, L_k remain tracked across all transformations.",
+    "Output dimension after projection matches original input embedding dimension d_model."
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Tensor Dimensions Across Multi-Head Attention Steps",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Tensor Stage",
+      "Batch & Seq Dims",
+      "Feature Dimension",
+      "Tensor Shape"
+     ],
+     [
+      "Input Matrices",
+      "B, L",
+      "d_model",
+      "(B, L, d_model)"
+     ],
+     [
+      "Linear Projection",
+      "B, L",
+      "d_model",
+      "(B, L, d_model)"
+     ],
+     [
+      "Split & Transposed",
+      "B, h, L",
+      "d_k",
+      "(B, h, L, d_k)"
+     ],
+     [
+      "Concatenated Heads",
+      "B, L",
+      "h * d_k",
+      "(B, L, d_model)"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "Understanding tensor dimensions is the single most important skill for implementing transformer modules without bugs. Notice how the total feature dimension d_model is conserved throughout. By choosing d_k = d_model / h, the total computational complexity across all h heads remains roughly identical to performing single-head attention with dimension d_model. This table highlights how batch size B, sequence length L, and head count h interact.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C2",
+    "C3"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Tensor Reshaping and Transposing for Parallel Heads",
+   "bullets": [
+    "Linear output shape (B, L, d_model) is reshaped to (B, L, h, d_k).",
+    "Permuting dimensions to (B, h, L, d_k) isolates head index into batch dimension.",
+    "Using PyTorch view requires contiguous memory layout after transposition.",
+    "Dynamic sequence sizing requires inferring sequence length with -1 during view."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "To compute attention across all heads in parallel using standard matrix operations, we reshape our 3D tensor of shape (B, L, d_model) into a 4D tensor (B, L, h, d_k), and then transpose dimensions 1 and 2 to obtain shape (B, h, L, d_k). Placing the head dimension h adjacent to batch dimension B allows PyTorch batch matrix multiplication to automatically execute attention across both batch items and heads simultaneously.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C2",
+    "C3"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Parallel Attention Matrix Multiplication across Heads",
+   "bullets": [
+    "Batch matrix multiplication broadcasts over batch size B and head dimension h.",
+    "Query-key score matrix product has shape (B, h, L_q, L_k).",
+    "Softmax operates along the last dimension L_k to generate attention weights per head.",
+    "Multiplying by values yields head context tensor of shape (B, h, L_q, d_v)."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Once queries and keys are reshaped to (B, h, L_q, d_k) and (B, h, L_k, d_k), PyTorch performs batched matrix multiplication over the last two dimensions. The resulting score tensor has 4 dimensions: (B, h, L_q, L_k). Softmax is computed along the final dimension L_k so that attention weights sum to 1 for each query token in every head independently. Multiplying by values produces context vectors of shape (B, h, L_q, d_v).",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C1",
+    "C2",
+    "C3"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Tensor Reshaping in Multi-Head Attention",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "Suppose batch size B=4, query sequence length L=10, d_model=512, and num_heads=8. What is the shape of tensor Q after projection, view, and transposition for attention?",
+    "options": [
+     "(4, 10, 8, 64)",
+     "(4, 8, 10, 64)",
+     "(4, 8, 64, 10)",
+     "(32, 10, 64)"
+    ],
+    "answer": 1,
+    "explanation": "After linear projection, Q has shape (4, 10, 512). Calculating d_k = 512 / 8 = 64, reshaping via view gives (4, 10, 8, 64). Transposing dimensions 1 and 2 yields (4, 8, 10, 64). Option 0 is tempting but incorrect because it omits the transpose step needed for parallel batch matrix multiplication across heads."
+   },
+   "notes": "Take a minute to trace this shape transformation on your scratchpad. Remember that after linear projection, we have 512 features per token, which we reshape into 8 heads of 64 dimensions each. We then swap the sequence length and head count dimensions so that the head count becomes part of the batched leading dimensions.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C2",
+    "C3"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "concept",
+   "title": "Concatenation and Output Linear Transformation",
+   "bullets": [
+    "Attention outputs from h heads with shape (B, h, L_q, d_v) are transposed back to (B, L_q, h, d_v).",
+    "Contiguous reshaping merges head outputs into shape (B, L_q, d_model).",
+    "Output linear layer W_O projects concatenated features back to model dimension.",
+    "This final projection allows interaction between information gathered across different heads."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "After context matrices are computed for each head, we must recombine them. We swap dimensions 1 and 2 back to obtain (B, L_q, h, d_v), invoke .contiguous(), and reshape into (B, L_q, d_model). Merging heads by simple concatenation is not enough: we must apply the final linear matrix W_O to allow representation signals from different heads to mix together effectively.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C1",
+    "C2",
+    "C3"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Worked Example: PyTorch Module Initialization",
+   "bullets": [
+    "Define MultiHeadAttention inheriting from nn.Module.",
+    "Verify divisibility: d_model must be divisible by num_heads.",
+    "Instantiate projection layers W_Q, W_K, W_V, and W_O as nn.Linear."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "PyTorch MultiHeadAttention Initialization",
+    "steps": [],
+    "code": "import torch\nimport torch.nn as nn\n\nclass MultiHeadAttention(nn.Module):\n    def __init__(self, d_model, num_heads):\n        super().__init__()\n        assert d_model % num_heads == 0, \"d_model must be divisible by num_heads\"\n        self.d_model = d_model\n        self.num_heads = num_heads\n        self.d_k = d_model // num_heads\n        \n        self.W_Q = nn.Linear(d_model, d_model)\n        self.W_K = nn.Linear(d_model, d_model)\n        self.W_V = nn.Linear(d_model, d_model)\n        self.W_O = nn.Linear(d_model, d_model)",
+    "language": "python",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Let us write the PyTorch module step by step. In __init__, we take d_model and num_heads as arguments. We assert that d_model is divisible by num_heads so that d_k is an exact integer. We create four nn.Linear layers: three for query, key, and value projections, and one for the final output transformation. Each layer maps from d_model to d_model.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C2",
+    "C3"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Worked Example: Dynamic Reshaping and Forward Pass",
+   "bullets": [
+    "Project inputs and reshape dynamically using -1 for sequence dimension.",
+    "Compute scaled dot-product attention across batch and head dimensions.",
+    "Transpose, concatenate heads, and apply the final projection layer."
+   ],
+   "figure": {
+    "kind": "code",
+    "caption": "PyTorch MultiHeadAttention Forward Pass with Dynamic Reshaping",
+    "steps": [],
+    "code": "def forward(self, query, key, value, mask=None):\n    B = query.size(0)\n    Q = self.W_Q(query).view(B, -1, self.num_heads, self.d_k).transpose(1, 2)\n    K = self.W_K(key).view(B, -1, self.num_heads, self.d_k).transpose(1, 2)\n    V = self.W_V(value).view(B, -1, self.num_heads, self.d_k).transpose(1, 2)\n    \n    scores = torch.matmul(Q, K.transpose(-2, -1)) / (self.d_k ** 0.5)\n    if mask is not None:\n        scores = scores.masked_fill(mask == 0, -1e9)\n    attn = torch.softmax(scores, dim=-1)\n    context = torch.matmul(attn, V)\n    \n    context = context.transpose(1, 2).contiguous().view(B, -1, self.d_model)\n    return self.W_O(context)",
+    "language": "python",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Pay close attention to how we reshape K and V using view(B, -1, self.num_heads, self.d_k). We use -1 for the sequence length dimension instead of passing the query sequence length L. This is critical because in encoder-decoder cross-attention, key and value sequence length L_k can differ from query sequence length L_q. Hardcoding L_q for K and V would cause a runtime crash whenever sequence lengths differ.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C2",
+    "C3"
+   ],
+   "minutes": 8.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Dynamic Reshaping for Variable Sequence Lengths",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "Why must key and value tensors be reshaped using dynamic view .view(B, -1, num_heads, d_k) rather than hardcoding query sequence length L_q?",
+    "options": [
+     "Because queries, keys, and values must always have different feature dimensions.",
+     "Because keys and values can have a sequence length L_k distinct from query sequence length L_q in cross-attention.",
+     "Because using -1 automatically calculates batch size B without reading it from the tensor.",
+     "Because PyTorch view does not support integer variables for sequence dimensions."
+    ],
+    "answer": 1,
+    "explanation": "In cross-attention (used in decoder blocks), queries come from the decoder with length L_q while keys and values come from the encoder with length L_k. Hardcoding L_q when reshaping keys and values raises a runtime dimension error whenever L_q != L_k. Option 0 is wrong because d_k is identical across Q, K, and V."
+   },
+   "notes": "This question reinforces a very common mistake in custom attention implementations. Always use -1 for the sequence dimension when calling view() on key and value projections so PyTorch dynamically infers the target sequence length regardless of whether you are running self-attention or cross-attention.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C2",
+    "C3"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "activity",
+   "title": "In-Class Activity: Tracing Tensor Shapes Step-by-Step",
+   "bullets": [
+    "Assume B=2, L_q=5, L_k=8, d_model=256, num_heads=4.",
+    "Calculate d_k and write out exact 4D shapes for Q, K, and V after transposition.",
+    "Compute the shape of intermediate matrix product Q @ K^T.",
+    "Trace shapes through softmax, value multiplication, output concatenation, and W_O projection."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Now open your notebooks or Jupyter environments. We are going to work through a shape tracing exercise by hand. Given batch size 2, query sequence length 5, key sequence length 8, embedding dimension 256, and 4 heads: compute d_k, write out the shape of Q, K, V after transposition, find the shape of the raw attention logits tensor before softmax, and confirm the final output shape.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C2",
+    "C3"
+   ],
+   "minutes": 10.0
+  },
+  {
+   "kind": "concept",
+   "title": "Computational Efficiency and Combined Projections",
+   "bullets": [
+    "Instead of 3 separate linear layers, Q, K, and V can be projected in a single merged matrix.",
+    "Single projection matrix of size (d_model, 3 * d_model) reduces PyTorch kernel launch overhead.",
+    "Result is split into Q, K, V along the last dimension prior to head reshaping.",
+    "Modern frameworks like PyTorch nn.MultiheadAttention utilize fused implementations for speed."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "In industrial implementations such as PyTorch's native nn.MultiheadAttention or FlashAttention, performance optimization is key. Rather than executing three separate linear layers for W_Q, W_K, and W_V, models often project inputs using a single combined linear layer of shape (d_model, 3 * d_model). The output is then chunked into three tensors. This reduces GPU kernel launch overhead and improves memory bandwidth utilization.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C1",
+    "C2",
+    "C3"
+   ],
+   "minutes": 5.0
+  },
+  {
+   "kind": "summary",
+   "title": "Summary: Multi-Head Attention Architecture",
+   "bullets": [
+    "Multi-head attention projects features into h subspaces to capture diverse relationship types.",
+    "Hyperparameter selection sets d_k = d_v = d_model / h to preserve computational budget.",
+    "Dynamic tensor reshaping using -1 accommodates differing query and key/value sequence lengths.",
+    "Concatenation followed by linear projection W_O integrates representation space across all heads."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "To summarize today's lecture: multi-head attention expands the capacity of attention mechanisms by projecting queries, keys, and values into h parallel subspaces. By setting d_k = d_model / h, we keep computational costs manageable. Always ensure your PyTorch code dynamically reshapes tensors using -1 to support variable key/value sequence lengths in cross-attention. In our next lecture, we will integrate multi-head attention with positional encodings.",
+   "los": [
+    "CO2.LO2"
+   ],
+   "sources": [
+    "C1",
+    "C2",
+    "C3"
+   ],
+   "minutes": 5.0
+  }
+ ]
+}

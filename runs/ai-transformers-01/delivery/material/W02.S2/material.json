@@ -1,0 +1,320 @@
+{
+ "lecture_id": "W02.S2",
+ "topic": "Multi-head attention",
+ "generated_at": "2026-11-05 01:33:21",
+ "prompt": "B1 0.4.0",
+ "files": {
+  "slides": "material\\W02.S2\\slides.pptx",
+  "notes": "material\\W02.S2\\notes.md",
+  "deck": "material\\W02.S2\\deck.json",
+  "quiz": "material\\W02.S2\\quiz.json"
+ },
+ "slides": 18,
+ "content_slides": 15,
+ "minutes": 90.0,
+ "errors": 0,
+ "warnings": 16,
+ "findings": [
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 4",
+    "C4"
+   ],
+   "message": "slide 4 ('Motivation: Why Use Multiple Attention Heads?') cites [C4] 'The Illustrated Transformer', which matches it weakly (0.04; average source 0.26): check the citation",
+   "evidence": {
+    "similarity": 0.044
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 5",
+    "C3"
+   ],
+   "message": "slide 5 ('Architecture Overview of Multi-Head Attention') cites [C3] 'The Annotated Transformer', which matches it weakly (0.22; average source 0.35): check the citation",
+   "evidence": {
+    "similarity": 0.218
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 5",
+    "C4"
+   ],
+   "message": "slide 5 ('Architecture Overview of Multi-Head Attention') cites [C4] 'The Illustrated Transformer', which matches it weakly (0.08; average source 0.35): check the citation",
+   "evidence": {
+    "similarity": 0.083
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 6",
+    "C3"
+   ],
+   "message": "slide 6 ('Linear Projections for Queries, Keys, and Values') cites [C3] 'The Annotated Transformer', which matches it weakly (0.21; average source 0.26): check the citation",
+   "evidence": {
+    "similarity": 0.214
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 7",
+    "C2"
+   ],
+   "message": "slide 7 ('Hyperparameters and Tensor Dimension Relationships') cites [C2] 'Attention Is All You Need', which matches it weakly (0.18; average source 0.20): check the citation",
+   "evidence": {
+    "similarity": 0.18
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 8",
+    "C2"
+   ],
+   "message": "slide 8 ('Tensor Reshaping and Transposing for Parallel Heads') cites [C2] 'Attention Is All You Need', which matches it weakly (0.14; average source 0.24): check the citation",
+   "evidence": {
+    "similarity": 0.142
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 9",
+    "C3"
+   ],
+   "message": "slide 9 ('Parallel Attention Matrix Multiplication across Heads') cites [C3] 'The Annotated Transformer', which matches it weakly (0.13; average source 0.20): check the citation",
+   "evidence": {
+    "similarity": 0.133
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 10",
+    "C3"
+   ],
+   "message": "slide 10 ('Check: Tensor Reshaping in Multi-Head Attention') cites [C3] 'The Annotated Transformer', which matches it weakly (0.26; average source 0.37): check the citation",
+   "evidence": {
+    "similarity": 0.264
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 11",
+    "C2"
+   ],
+   "message": "slide 11 ('Concatenation and Output Linear Transformation') cites [C2] 'Attention Is All You Need', which matches it weakly (0.23; average source 0.24): check the citation",
+   "evidence": {
+    "similarity": 0.233
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 12",
+    "C2"
+   ],
+   "message": "slide 12 ('Worked Example: PyTorch Module Initialization') cites [C2] 'Attention Is All You Need', which matches it weakly (0.11; average source 0.15): check the citation",
+   "evidence": {
+    "similarity": 0.112
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 13",
+    "C3"
+   ],
+   "message": "slide 13 ('Worked Example: Dynamic Reshaping and Forward Pass') cites [C3] 'The Annotated Transformer', which matches it weakly (0.20; average source 0.22): check the citation",
+   "evidence": {
+    "similarity": 0.2
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 14",
+    "C3"
+   ],
+   "message": "slide 14 ('Check: Dynamic Reshaping for Variable Sequence Lengths') cites [C3] 'The Annotated Transformer', which matches it weakly (0.07; average source 0.09): check the citation",
+   "evidence": {
+    "similarity": 0.075
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 15",
+    "C2"
+   ],
+   "message": "slide 15 ('In-Class Activity: Tracing Tensor Shapes Step-by-Step') cites [C2] 'Attention Is All You Need', which matches it weakly (0.08; average source 0.14): check the citation",
+   "evidence": {
+    "similarity": 0.08
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 16",
+    "C2"
+   ],
+   "message": "slide 16 ('Computational Efficiency and Combined Projections') cites [C2] 'Attention Is All You Need', which matches it weakly (0.08; average source 0.17): check the citation",
+   "evidence": {
+    "similarity": 0.077
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 17",
+    "C3"
+   ],
+   "message": "slide 17 ('Summary: Multi-Head Attention Architecture') cites [C3] 'The Annotated Transformer', which matches it weakly (0.25; average source 0.36): check the citation",
+   "evidence": {
+    "similarity": 0.245
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10 ('Worked Example: Forward Pass Implementation'): [code] Reshaping `K` and `V` using `L` (the query sequence length) causes a PyTorch runtime error if `key` and `value` have a different sequence length than `query`. Fix: Use `K = self.W_K(key).view(B, -1, self.num_heads, self.d_k).transpose(1, 2)` and `V = self.W_V(value).view(B, -1, self.num_heads, self.d_k).transpose(1, 2)` so the sequence dimension is dynamically inferred. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Worked Example: Forward Pass Implementation"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 12,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 13,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Dive into Deep Learning, chapter 11: Attention Mechanisms and Transformers",
+   "year": 2023,
+   "url": "https://d2l.ai/chapter_attention-mechanisms-and-transformers/index.html",
+   "kind": "textbook",
+   "approved": true
+  },
+  "C2": {
+   "title": "Attention Is All You Need",
+   "year": 2017,
+   "url": "https://arxiv.org/abs/1706.03762",
+   "kind": "reading",
+   "approved": true
+  },
+  "C3": {
+   "title": "The Annotated Transformer",
+   "year": 2022,
+   "url": "https://nlp.seas.harvard.edu/annotated-transformer/",
+   "kind": "reading",
+   "approved": true
+  },
+  "C4": {
+   "title": "The Illustrated Transformer",
+   "year": 2018,
+   "url": "https://jalammar.github.io/illustrated-transformer/",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1",
+  "C2",
+  "C3",
+  "C4"
+ ],
+ "calls": [
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1653,
+   "output_tokens": 6045
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1770,
+   "output_tokens": 6787
+  },
+  {
+   "endpoint": "gemini:gemini-3.6-flash:k25e39c0a",
+   "prompt_tokens": 2895,
+   "output_tokens": 4823
+  },
+  {
+   "endpoint": "gemini:gemini-3.6-flash:k3ca4d81f",
+   "prompt_tokens": 1818,
+   "output_tokens": 9695
+  }
+ ],
+ "ai_review": {
+  "endpoint": "gemini:gemini-3.6-flash:k25e39c0a",
+  "model": "gemini:gemini-3.6-flash",
+  "prompt_tokens": 2895,
+  "output_tokens": 4823,
+  "verdict": "The lecture deck is clear and well-aligned with learning outcomes, but the PyTorch forward pass implementation on Slide 10 needs to handle variable key/value sequence lengths safely before teaching.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 10,
+    "severity": "error",
+    "kind": "code",
+    "problem": "Reshaping `K` and `V` using `L` (the query sequence length) causes a PyTorch runtime error if `key` and `value` have a different sequence length than `query`.",
+    "fix": "Use `K = self.W_K(key).view(B, -1, self.num_heads, self.d_k).transpose(1, 2)` and `V = self.W_V(value).view(B, -1, self.num_heads, self.d_k).transpose(1, 2)` so the sequence dimension is dynamically inferred."
+   }
+  ],
+  "repaired": true
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

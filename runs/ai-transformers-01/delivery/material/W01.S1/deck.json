@@ -1,0 +1,412 @@
+{
+ "schema_version": "1",
+ "lecture_id": "W01.S1",
+ "title": "Sequence modelling and the limits of recurrent networks",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "What is sequence modelling?",
+   "bullets": [
+    "Sequences have variable length and order matters",
+    "Examples: text, speech, time series",
+    "Feed‑forward nets cannot handle variable length"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Introduce the idea that many tasks involve sequences: text, speech, time series. Explain that a sequence model must capture order and variable length. Mention that students have seen feed‑forward nets but those cannot handle variable‑length input. This sets up why recurrent architectures were developed.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "concept",
+   "title": "Recurrent neural network (RNN) basics",
+   "bullets": [
+    "Hidden state updated each time step",
+    "Same weights reused across steps",
+    "Output can be produced at every step"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "RNN recurrence",
+    "steps": [
+     "Input token",
+     "RNN cell",
+     "Hidden state",
+     "Output token"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Describe the RNN recurrence: h_t = f(W_hh h_{t-1} + W_xh x_t). Emphasize weight sharing across time steps, which gives parameter efficiency but creates a deep computational graph when unrolled. Note that the hidden state is the only memory passed forward.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [
+    "C1"
+   ],
+   "minutes": 8.0
+  },
+  {
+   "kind": "concept",
+   "title": "Encoder‑decoder translation with RNN",
+   "bullets": [
+    "Encoder reads source tokens sequentially",
+    "Final hidden state becomes context vector",
+    "Decoder generates target conditioned on context"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Encoder‑decoder pipeline",
+    "steps": [
+     "Source tokens",
+     "Encoder RNN",
+     "Context vector",
+     "Decoder RNN",
+     "Target tokens"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Walk through the classic encoder‑decoder architecture for machine translation. The encoder reads the source sentence token by token, updating its hidden state. After the last source token, the final hidden state becomes the context vector c. The decoder is another RNN initialized with c and generates the target sentence one token at a time.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [
+    "C2"
+   ],
+   "minutes": 10.0
+  },
+  {
+   "kind": "worked_problem",
+   "title": "Worked example: translating \"I love you\"",
+   "bullets": [
+    "Encoder produces hidden states h1, h2, h3",
+    "Context vector c equals final hidden state h3",
+    "Decoder starts from c and emits \"Je\"",
+    "Decoder continues with \"t'aime\""
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Step‑by‑step translation",
+    "steps": [
+     "Encode 'I love you'",
+     "Hidden states h1..h3",
+     "Context vector c",
+     "Decode 'Je t'aime'"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Use a concrete short sentence pair to illustrate the flow. Show how the encoder produces hidden states h1, h2, h3 for 'I love you'. The context vector c = h3 is passed to the decoder, which then emits 'Je', 't', 'aime'. Point out that all source information must be compressed into c, which becomes a bottleneck for longer sentences.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [
+    "C2"
+   ],
+   "minutes": 10.0
+  },
+  {
+   "kind": "concept",
+   "title": "Fixed‑size context vector is a bottleneck",
+   "bullets": [
+    "Context vector dimension does not grow with source length",
+    "Long sentences force compression into same vector",
+    "Information loss limits translation quality"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Explain that the context vector has fixed dimensionality regardless of source length. As the source grows, the encoder must squeeze more information into the same vector, causing loss of detail. This is the information bottleneck that motivated attention.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [
+    "C2"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "concept",
+   "title": "Vanishing gradient problem in deep unrolled RNNs",
+   "bullets": [
+    "Gradients multiplied by same matrix many times",
+    "Vanishing gradients erase long‑range signals",
+    "Exploding gradients cause unstable training"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "Core RNN training problems",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Problem",
+      "Effect"
+     ],
+     [
+      "Vanishing gradient",
+      "Long‑term dependencies lost"
+     ],
+     [
+      "Exploding gradient",
+      "Unstable training"
+     ],
+     [
+      "Sequential computation",
+      "No parallelism"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "When the RNN is unrolled for many steps, gradients are multiplied by the same weight matrix repeatedly. If the spectral radius is <1, gradients vanish; if >1, they explode. Both make learning long‑range dependencies hard. The sequential nature also prevents parallel computation on GPUs.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [
+    "C4"
+   ],
+   "minutes": 8.0
+  },
+  {
+   "kind": "concept",
+   "title": "LSTM and GRU mitigate but do not eliminate the issues",
+   "bullets": [
+    "Gating creates near‑constant gradient paths",
+    "Still process tokens sequentially",
+    "Final hidden state remains a single vector"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "LSTM and GRU introduce gating mechanisms that create paths with near‑constant gradient flow, alleviating vanishing gradients. However, they still process tokens sequentially and still compress the entire source into a final hidden state, so the bottleneck remains for very long sequences.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [
+    "C3"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "concept",
+   "title": "Training difficulty for very long sequences",
+   "bullets": [
+    "Memory for back‑propagation grows linearly",
+    "Gradient paths stay long despite gating",
+    "Difficulty varies with task and model size"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Even with gated units, training on very long sequences is difficult: memory for back‑propagation through time grows linearly, gradient paths remain long, and optimization can stall. The severity depends on the specific task, model size, and training tricks such as gradient clipping.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [
+    "C4"
+   ],
+   "minutes": 6.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Identify the encoder‑decoder bottleneck",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "What is the main limitation of the fixed‑size context vector in an RNN encoder‑decoder?",
+    "options": [
+     "It forces the decoder to generate tokens in parallel",
+     "It compresses the entire source sequence into a single vector",
+     "It eliminates the need for backpropagation through time",
+     "It allows unlimited sequence length"
+    ],
+    "answer": 1,
+    "explanation": "The context vector is a bottleneck because all source information must be compressed into one fixed‑size vector, limiting long sequences. The tempting wrong option about parallel generation is incorrect because RNN decoders generate sequentially, not in parallel."
+   },
+   "notes": "This question checks whether students understand that the fixed‑size context vector is the bottleneck. The correct answer highlights compression; the distractor about parallel generation is a common misconception because attention later enables parallelism.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "concept",
+   "title": "Why attention helps: soft lookup instead of hard bottleneck",
+   "bullets": [
+    "Decoder query attends to all encoder states",
+    "Attention weights produce a dynamic context",
+    "No single vector must hold everything"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "Attention mechanism",
+    "steps": [
+     "Decoder query",
+     "Attention scores",
+     "Weighted encoder states",
+     "Context vector"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Introduce attention as a soft lookup: at each decoder step, a query vector is compared to all encoder hidden states (keys) to produce attention weights. The weighted sum of values yields a context vector that changes per decoding step, removing the single‑vector bottleneck.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [
+    "C2"
+   ],
+   "minutes": 8.0
+  },
+  {
+   "kind": "concept",
+   "title": "Information flow comparison: RNN vs Attention",
+   "bullets": [
+    "RNN path length grows with sequence length",
+    "Attention gives constant‑length paths",
+    "Attention enables parallel computation"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "RNN encoder‑decoder vs Attention",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Model",
+      "Path length",
+      "Parallelism",
+      "Context flexibility"
+     ],
+     [
+      "RNN encoder‑decoder",
+      "O(sequence length)",
+      "Sequential",
+      "Single fixed vector"
+     ],
+     [
+      "Attention",
+      "O(1) per step",
+      "Parallel across heads",
+      "Dynamic per token"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "Compare the two architectures on three dimensions. RNN encoder‑decoder has a path length proportional to sequence length, strictly sequential decoding, and a single fixed context. Attention provides constant‑length paths, enables parallel computation across heads, and yields a dynamic context per target token.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [
+    "C2"
+   ],
+   "minutes": 7.0
+  },
+  {
+   "kind": "check",
+   "title": "Check: Attention advantage over RNN bottleneck",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "How does attention address the bottleneck of the encoder‑decoder RNN?",
+    "options": [
+     "By using a larger fixed‑size vector",
+     "By allowing the decoder to attend to all encoder hidden states at each step",
+     "By removing the encoder entirely",
+     "By training the decoder without gradients"
+    ],
+    "answer": 1,
+    "explanation": "Attention computes a weighted sum of all encoder hidden states, giving the decoder direct access to the whole source sequence. Option A is wrong because attention does not rely on a single fixed‑size vector."
+   },
+   "notes": "This question verifies that students grasp the key advantage of attention: direct access to all encoder states. The distractor about a larger fixed vector is plausible but incorrect because attention does not rely on a single vector.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [],
+   "minutes": 4.0
+  },
+  {
+   "kind": "summary",
+   "title": "Key takeaways",
+   "bullets": [
+    "RNNs process sequences step by step with a hidden state",
+    "Encoder‑decoder compresses source into one context vector",
+    "Fixed‑size vector creates an information bottleneck",
+    "Vanishing/exploding gradients hinder long‑range learning",
+    "LSTM/GRU improve gradients but not the bottleneck",
+    "Attention removes the bottleneck with dynamic soft lookup"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Recap the main points: RNNs process sequences step by step with a hidden state; encoder‑decoder compresses the source into one vector; this creates an information bottleneck and vanishing‑gradient problems; LSTM/GRU help gradients but not the bottleneck; attention solves both by letting the decoder attend to all encoder states dynamically.",
+   "los": [
+    "CO1.LO1"
+   ],
+   "sources": [],
+   "minutes": 5.0
+  }
+ ]
+}

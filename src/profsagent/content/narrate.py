@@ -5,10 +5,12 @@ MP4 video (the "series of 10-15 minute videos": a class's notes run about that l
 
 1. script   one text per .pptx slide (narration_script): the title and objectives from the frame, each content slide's
             notes; a question is read with its options, a pause, then the answer and why.
-2. voice    one WAV per slide with the Windows speech synthesizer (System.Speech, offline, no install; the voice in
-            config/content.yaml `narration.voice`).
+2. voice    one WAV per slide: Piper (offline neural voice, `pip install piper-tts` + a voice model in data/voices/,
+            config/content.yaml `narration.piper_model`), or the Windows speech synthesizer when Piper or its model is
+            missing (`narration.voice`).
 3. deck     slides_narrated.pptx through PowerPoint: each slide plays its audio on entry and advances when it ends.
-4. video    with video=True, PowerPoint exports slides_narrated.mp4 using those timings.
+4. animate  with animate=True, each flow figure is also a Manim clip in its place, playing with the voice (animate.py)
+5. video    with video=True, PowerPoint exports slides_narrated.mp4 using those timings.
 Windows with PowerPoint only (both are driven from PowerShell); elsewhere it raises NarrationUnavailable.
 The audio, the narrated deck and the video are large, so they are not committed (.gitignore).
 """
@@ -34,10 +36,10 @@ class NarrationUnavailable(RuntimeError):
 
 def _speakable(text: str) -> str:
     """Text as a voice should read it: no markdown, arrows and ids spelled out, one line."""
-    t = re.sub(r"[`*_#>]", "", text or "")
+    t = re.sub(r"\(CO\d+\.LO\d+\)", "", text or "")
+    t = re.sub(r"\[([CLP]\d+)\]", "", t)                 # source ids are not read aloud
+    t = re.sub(r"[`*_#>\[\]{}|]", " ", t)                # nor markdown and brackets (Piper has no sound for them)
     t = t.replace("→", " to ").replace("≈", " about ").replace("–", " to ").replace("&", " and ")
-    t = re.sub(r"\(CO\d+\.LO\d+\)", "", t)
-    t = re.sub(r"\[([CL]\d+)\]", "", t)
     return re.sub(r"\s+", " ", t).strip()
 
 
@@ -94,9 +96,13 @@ $p = $app.Presentations.Open($a.pptx, $true, $false, $false)
 try {
   for ($i = 0; $i -lt $a.items.Count; $i++) {
     $x = $a.items[$i]; $sl = $p.Slides.Item($i + 1)
-    $m = $sl.Shapes.AddMediaObject2($x.path, 0, -1, $p.PageSetup.SlideWidth - 40, $p.PageSetup.SlideHeight - 40, 24, 24)
+    $m = $sl.Shapes.AddMediaObject2($x.path, 0, -1, -60, -60, 24, 24)       # just off the slide: plays, never drawn
     $m.AnimationSettings.PlaySettings.HideWhileNotPlaying = -1
     $e = $sl.TimeLine.MainSequence.AddEffect($m, 83, 0, 2)
+    if ($x.anim) {
+      $v = $sl.Shapes.AddMediaObject2($x.anim.path, 0, -1, [double]$x.anim.left, [double]$x.anim.top, [double]$x.anim.width, [double]$x.anim.height)
+      $ev = $sl.TimeLine.MainSequence.AddEffect($v, 83, 0, 2)
+    }
     $sl.SlideShowTransition.AdvanceOnClick = 0
     $sl.SlideShowTransition.AdvanceOnTime = -1
     $sl.SlideShowTransition.AdvanceTime = [double]$x.seconds + [double]$a.gap_s
@@ -112,7 +118,26 @@ try {
 """
 
 
-def narrate(d: Path, deck: LectureDeck, frame: dict, cfg: dict, video: bool = False) -> dict:
+def piper_model(n: dict) -> Path | None:
+    """The Piper voice model when Piper is installed and the model downloaded; None otherwise (the Windows voice is used)."""
+    from profsagent.config import ROOT
+    m = ROOT / n.get("piper_model", "")
+    try:
+        import piper  # noqa: F401
+    except ImportError:
+        return None
+    return m if n.get("engine", "piper") == "piper" and m.is_file() else None
+
+
+def _speak_piper(model: Path, items: list[dict]) -> None:
+    from piper import PiperVoice
+    voice = PiperVoice.load(str(model))
+    for x in items:
+        with wave.open(x["path"], "wb") as wf:
+            voice.synthesize_wav(x["text"] or ".", wf)
+
+
+def narrate(d: Path, deck: LectureDeck, frame: dict, cfg: dict, video: bool = False, animate: bool = False) -> dict:
     """Narration files for the deck in material dir `d` (slides.pptx must exist). Returns material.json's `narration`."""
     from pptx import Presentation
     n = cfg["narration"]
@@ -121,18 +146,31 @@ def narrate(d: Path, deck: LectureDeck, frame: dict, cfg: dict, video: bool = Fa
     out = d / "narration"
     out.mkdir(exist_ok=True)
     items = [{"text": t, "path": str((out / f"slide_{i:02d}.wav").resolve())} for i, t in enumerate(texts, 1)]
-    _powershell(SPEAK, {"voice": n["voice"], "rate": n["rate"], "sample_rate": n["sample_rate"], "items": items},
-                timeout=60 + 30 * len(items))
+    model = piper_model(n)
+    if model:
+        _speak_piper(model, items)
+        voice = f"Piper {model.stem}"
+    else:
+        _powershell(SPEAK, {"voice": n["voice"], "rate": n["rate"], "sample_rate": n["sample_rate"], "items": items},
+                    timeout=60 + 30 * len(items))
+        voice = n["voice"]
     for x in items:
         with wave.open(x["path"]) as w:
             x["seconds"] = round(w.getnframes() / w.getframerate(), 1)
+    clips = {}
+    if animate:
+        from profsagent.content.animate import animate_deck
+        clips = animate_deck(d, deck, cfg, [x["seconds"] for x in items])
+        for no, c in clips.items():                     # EMU -> points for PowerPoint
+            items[no - 1]["anim"] = {"path": c["path"], "left": c["x"] / 12700, "top": c["y"] / 12700,
+                                     "width": c["w"] / 12700, "height": c["h"] / 12700}
     v = n["video"]
     args = {"pptx": str((d / "slides.pptx").resolve()), "out": str((d / "slides_narrated.pptx").resolve()), "items": items,
             "gap_s": n["gap_s"], "video": str((d / "slides_narrated.mp4").resolve()) if video else "",
             "height": v["height"], "fps": v["fps"], "quality": v["quality"], "timeout": v["timeout_s"]}
     _powershell(DECK, args, timeout=120 + (v["timeout_s"] if video else 0))
     total = sum(x["seconds"] + n["gap_s"] for x in items)
-    return {"voice": n["voice"], "engine": "Windows System.Speech + PowerPoint", "slides": len(items),
-            "minutes": round(total / 60, 1), "files": {"deck": "slides_narrated.pptx", "audio": "narration/",
+    return {"voice": voice, "engine": ("Piper" if model else "Windows System.Speech") + " + PowerPoint", "slides": len(items),
+            "minutes": round(total / 60, 1), "animated_slides": sorted(clips), "files": {"deck": "slides_narrated.pptx", "audio": "narration/",
                                                         **({"video": "slides_narrated.mp4"} if video else {})},
             "per_slide_seconds": [x["seconds"] for x in items]}

@@ -81,3 +81,30 @@ class DeckReview(BaseModel):
     issues: list[ReviewIssue] = Field(default_factory=list)
     quiz_answers: list[QuizAnswer] = Field(default_factory=list)
     verdict: str = Field("", description="one sentence: is the deck safe to teach from, and what most needs a look")
+
+
+# ------------------------------------------------------------------ B3: the professor's own material (content/attach.py)
+class AttachedQuestion(Quiz):
+    source: str = Field("", description="the part of the material it comes from: P1, P2 …")
+
+
+class Gap(BaseModel):
+    lo_id: str
+    status: Literal["covered", "partly", "missing"]
+    evidence: str = ""
+    add: str = Field("", description="what the professor should add for this outcome")
+
+
+class Enrichment(BaseModel):
+    kind: Literal["example", "figure", "check_question", "activity", "reading"]
+    where: str = ""
+    add: str
+
+
+class AttachedReport(BaseModel):
+    summary: str = ""
+    key_points: list[str] = Field(default_factory=list)
+    quiz: list[AttachedQuestion] = Field(default_factory=list)
+    gaps: list[Gap] = Field(default_factory=list)
+    issues: list[str] = Field(default_factory=list, description="statements that look outdated or wrong, quoted")
+    enrich: list[Enrichment] = Field(default_factory=list)

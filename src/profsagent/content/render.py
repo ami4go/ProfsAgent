@@ -12,6 +12,7 @@ reported as an overflow (a D-OVERFLOW warning in material.json).
 """
 from __future__ import annotations
 
+import json
 import math
 from pathlib import Path
 
@@ -56,12 +57,22 @@ class Deck:
         r = cfg["render"]
         self.c = {k: RGBColor.from_string(x) for k, x in r["colors"].items()}
         self.font, self.mono, self.footer = r["font"], r["mono_font"], footer
-        self.prs = Presentation()
-        self.prs.slide_width, self.prs.slide_height = Inches(r["width_in"]), Inches(r["height_in"])
+        if r.get("template"):                      # the professor's template (content/style.py): its masters, our layout
+            self.prs = Presentation(r["template"])
+            ids = self.prs.slides._sldIdLst
+            for sid in list(ids):
+                self.prs.part.drop_rel(sid.rId)
+                ids.remove(sid)
+            self.blank = next((lay for lay in self.prs.slide_layouts if lay.name.lower() == "blank"),
+                              min(self.prs.slide_layouts, key=lambda lay: len(lay.placeholders)))
+        else:
+            self.prs = Presentation()
+            self.prs.slide_width, self.prs.slide_height = Inches(r["width_in"]), Inches(r["height_in"])
+            self.blank = self.prs.slide_layouts[6]
         self.W, self.H = self.prs.slide_width, self.prs.slide_height
-        self.blank = self.prs.slide_layouts[6]
         self.n = 0
         self.overflows: list[dict] = []          # {slide, what}: text that does not fit even at the smallest size
+        self.figures: list[dict] = []            # {slide, kind, x, y, w, h} in EMU: where each figure is drawn (animate.py)
 
     def _fitted(self, what: str, paragraphs: list[str], w, h, start: int, smallest: int, gap_pt: float = 0.0,
                 glyph: float = GLYPH) -> int:
@@ -148,6 +159,7 @@ class Deck:
 
     # ------------------------------------------------------------------ figures
     def _figure(self, slide, f: Figure, x, y, w, h):
+        self.figures.append({"slide": self.n, "kind": f.kind, "x": int(x), "y": int(y), "w": int(w), "h": int(h)})
         cap_h = Inches(0.4) if f.caption else 0
         if f.kind == "flow":
             self._flow(slide, f.steps, x, y, w, h - cap_h)
@@ -288,6 +300,7 @@ def render_pptx(deck: LectureDeck, frame: dict, sources: dict[str, dict], cfg: d
     if cited:
         d.list_slide("References", [f"[{sid}] {ref_line(sources[sid])}" for sid in cited], start=18)
     d.save(path)
+    (path.parent / "layout.json").write_text(json.dumps({"slide_w": int(d.W), "slide_h": int(d.H), "figures": d.figures}), encoding="utf-8")
     return d.n, d.overflows
 
 

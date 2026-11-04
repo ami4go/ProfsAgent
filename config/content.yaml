@@ -25,8 +25,14 @@ render:
   colors: {ink: "1F2937", muted: "6B7280", accent: "0F766E", accent_soft: "CCFBF1", panel: "F3F4F6", code_bg: "111827",
            code_ink: "E5E7EB"}
 narration:                                 # content/narrate.py: run_content.py narrate (Windows + PowerPoint)
-  voice: Microsoft Zira Desktop            # a Windows voice (Settings -> Time & language -> Speech adds more)
+  engine: piper                            # piper (offline neural voice) | windows; piper falls back to windows if missing
+  piper_model: data/voices/en_US-lessac-medium.onnx   # python -m piper.download_voices --download-dir data/voices <voice>
+  voice: Microsoft Zira Desktop            # the Windows voice (Settings -> Time & language -> Speech adds more)
   rate: 0                                  # -10 (slow) .. 10 (fast)
   sample_rate: 16000                       # Hz, mono 16-bit: about 1.9 MB a minute
   gap_s: 1.0                               # silence after each slide's audio before the next slide
   video: {height: 720, fps: 24, quality: 70, timeout_s: 1800}
+attach:                                    # content/attach.py: the professor's own material (survey attach_material)
+  max_chars: 24000                         # material text given to the AI (B3) and to B1 for the slides task; the rest is cut
+  coverage: {covered: 0.5, partly: 0.35}   # local-model similarity of an outcome to its closest ~120-word passage
+                                           # (a topical hint, not calibrated; the AI's gap check decides, A-GAP flags conflicts)

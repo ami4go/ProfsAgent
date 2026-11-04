@@ -398,3 +398,121 @@ def test_a_class_spanning_two_topics_has_one_recap_first_and_one_quiz_last():
     out = G.class_edges(parts)
     assert [p["id"] for p in out] == ["B.RECAP", "A.C3", "B.C1", "A.QUIZ"]
     assert sum(p["minutes"] for p in out) == 90 and G.class_edges(parts[:1]) == parts[:1]
+
+
+# ------------------------------------------------------------------ the professor's own material (content/attach.py)
+from profsagent.content import attach as A  # noqa: E402
+from profsagent.content.models import AttachedQuestion, AttachedReport, Gap  # noqa: E402
+
+
+def _vec(texts):
+    """A fake embedding: 'attention' texts close to each other, everything else apart."""
+    import numpy as np
+    return np.array([[1.0, 0.0] if "attention" in t.lower() else [0.0, 1.0] for t in texts], dtype=float)
+
+
+def test_attachments_are_read_and_unreadable_ones_reported(tmp_path, monkeypatch):
+    from pptx import Presentation as P
+    monkeypatch.setattr(A, "RUNS", tmp_path)
+    d = tmp_path / "r" / "delivery" / "attachments" / "W01.L1"
+    d.mkdir(parents=True)
+    prs = P()
+    s = prs.slides.add_slide(prs.slide_layouts[1])
+    s.shapes.title.text, s.placeholders[1].text = "Attention", "queries meet keys"
+    s.notes_slide.notes_text_frame.text = "say softmax"
+    prs.save(str(d / "deck.pptx"))
+    (d / "notes.md").write_text("# Attention\nweights sum to one", encoding="utf-8")
+    (d / "pic.png").write_bytes(b"\x89PNG")
+    parts = A.read_attachments("r", [f"delivery/attachments/W01.L1/{n}" for n in ("deck.pptx", "notes.md", "pic.png")])
+    assert [p["id"] for p in parts] == ["P1", "P2", "P3"]
+    assert "queries meet keys" in parts[0]["text"] and "Notes: say softmax" in parts[0]["text"]
+    assert "weights sum to one" in parts[1]["text"] and parts[2]["error"] and not parts[2]["text"]
+
+
+def test_coverage_and_the_checks_on_the_ai_report():
+    los = [{"id": "LO1", "statement": "Explain attention weights"}, {"id": "LO2", "statement": "Train a tokenizer"}]
+    parts = [{"id": "P1", "text": "attention " * 50}]
+    cover = A.coverage(los, parts, CFG, embed=_vec)
+    assert [c["status"] for c in cover] == ["covered", "missing"]
+    rep = AttachedReport(quiz=[AttachedQuestion(question="q", options=["a", "a", "b"], answer=0, source="P9")],
+                         gaps=[Gap(lo_id="LO2", status="covered"), Gap(lo_id="LO7", status="missing")])
+    found = A.check_report(rep, {"LO1", "LO2"}, {"P1"}, cover, ["quiz", "gap_check"])
+    assert {x["code"] for x in found} == {"A-QUIZ", "A-REF", "A-MISSING", "A-GAP"}
+    assert A.valid_quiz(rep, found) == []
+    ok = AttachedReport(quiz=[AttachedQuestion(question="q", options=["a", "b", "c"], answer=0, source="[P1] slide 3, slide 5")])
+    assert A.check_report(ok, {"LO1"}, {"P1"}, cover, ["quiz"]) == []                 # a precise citation is fine
+
+
+def test_attach_material_writes_a_report_and_can_make_slides_from_the_material(run, st, monkeypatch):
+    from profsagent.delivery import common, survey as sv
+    lid = build_briefs(st)[0]["lecture_id"]
+    monkeypatch.setattr(A, "RUNS", run.parent)
+    monkeypatch.setattr(A, "load_state", lambda run_id: st)
+    (run.parent / "cs601" / "delivery" / "attachments" / lid).mkdir(parents=True)
+    (run.parent / "cs601" / "delivery" / "attachments" / lid / "n.md").write_text("Attention is a soft lookup. " * 30, encoding="utf-8")
+    monkeypatch.setattr(sv, "load", lambda r: {"lectures": {lid: {"attach_material": "yes", "attachments": [f"delivery/attachments/{lid}/n.md"],
+                                                                     "attach_tasks": ["summary", "quiz", "gap_check", "slides"]}}})
+    monkeypatch.setattr(common, "embed", _vec)
+    lo = build_briefs(st)[0]["learning_outcomes"][0]["id"]
+    rep = AttachedReport(summary="s", quiz=[AttachedQuestion(question="q", options=["a", "b", "c"], answer=1, source="P1")],
+                         gaps=[Gap(lo_id=lo, status="partly", add="an example")])
+
+    class Fake(FakeLLM):
+        def structured(self, **kw):
+            if kw["prompt_id"] == "B3":
+                self.calls.append(kw["user"])
+                return rep, SimpleNamespace(endpoint="fake:m:k", prompt_tokens=1, output_tokens=1)
+            return super().structured(**kw)
+    lecture = G.lecture_input(build_briefs(st)[0])
+    llm = Fake([good_deck(lecture)])
+    monkeypatch.setattr(G, "LLMClient", lambda *a: llm)
+    m = A.attach_material("cs601", lid, llm=llm, log=lambda _: None)
+    assert "[P1]" in llm.calls[0] and len(m["quiz"]) == 1 and m["gap_table"][0]["ai"] == "partly"
+    assert "professor_material" in llm.calls[1] and m["slides"]["files"]                 # the deck was made from it
+    md = (run / "material" / lid / "attached.md").read_text(encoding="utf-8")
+    assert "## Gap check" in md and "## Quiz" in md and "### Answers" in md
+
+
+# ------------------------------------------------------------------ the professor's style (content/style.py)
+def test_a_style_is_learned_from_a_deck_and_used_as_the_template(tmp_path, monkeypatch, lecture):
+    from pptx import Presentation as P
+    from profsagent.content import style as S
+    from profsagent.content.render import render_pptx
+    monkeypatch.setattr(S, "out_dir", lambda run_id: tmp_path)
+    prs = P()
+    for i in range(3):
+        s = prs.slides.add_slide(prs.slide_layouts[1])
+        s.shapes.title.text = f"How We Build Model {i}"
+        s.placeholders[1].text_frame.text = "we compute the scores first"
+        s.placeholders[1].text_frame.add_paragraph().text = "then we normalise them with softmax"
+    src = tmp_path / "mine.pptx"
+    prs.save(str(src))
+    prof = S.learn_style("r", [src])
+    w = prof["writing"]
+    assert w["bullets_per_slide"] == 2 and w["title_case"] == "Title Case" and w["voice"] == "we"
+    assert prof["look"]["font"] and prof["look"]["colors"].get("accent")
+    cfg = S.apply_look(CFG, S.load_style("r"))
+    assert cfg["render"]["template"].endswith("template.pptx") and S.for_b1(S.load_style("r"))["voice"] == "we"
+    fr = {"course": "C", "footer": "f", "subtitle": "s", "draft_note": "d", "objectives": ["o"], "objectives_notes": "n"}
+    n, _ = render_pptx(good_deck(lecture), fr, {}, cfg, tmp_path / "out.pptx")
+    out = P(str(tmp_path / "out.pptx"))
+    assert len(out.slides) == n and "How We Build" not in " ".join(sh.text_frame.text for s in out.slides for sh in s.shapes if sh.has_text_frame)
+
+
+# ------------------------------------------------------------------ student mode (content/student.py)
+def test_the_student_page_has_the_questions_but_not_the_notes_or_answer_keys(lecture):
+    from profsagent.content.student import student_page
+    deck = good_deck(lecture)
+    deck.slides[0].notes = "SECRET professor note"
+    fr = {"course": "C", "subtitle": "s", "objectives": ["Explain things (CO1.LO1)"]}
+    page = student_page(deck, fr, {"C1": {"title": "Book", "year": 2020, "url": "https://x.org"}})
+    assert "SECRET" not in page and "Answer:" not in page and "Which?" in page and 'data-answer="1"' in page
+    assert "Explain things</li>" in page and "https://x.org" in page and "score: 0 / 2" in page
+
+
+# ------------------------------------------------------------------ animation (content/animate.py, needs manim)
+def test_a_flow_becomes_a_short_animated_clip(tmp_path):
+    pytest.importorskip("manim")
+    from profsagent.content.animate import _clip
+    p = _clip(["Tokens", "Scores", "Softmax"], 5.0, 4.0, 2.0, CFG["render"]["colors"], tmp_path / "anim" / "f.mp4")
+    assert p.exists() and p.stat().st_size > 10_000

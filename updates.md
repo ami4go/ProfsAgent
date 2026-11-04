@@ -4,6 +4,35 @@ Short status note for teammates and their coding agents, so nobody has to re-rea
 Newest entry on top. Owners: Phase 2 deliverable A (UI, simulations) Amit, B (lecture content) Parth, C (resources,
 experts) Vihan.
 
+## 2026-11-05, night (Parth): attach_material, the professor's style, student mode, Piper voice and Manim animation
+
+**`attach_material` is built** (`content/attach.py`; CLI `run_content.py attach`). **For Amit:** it can be connected now.
+- Call: `attach_material(run_id, lecture_id, {"attachments"?, "tasks"?, "review"?})`. It defaults to the survey's
+  `attachments` and `attach_tasks` (the paths `save_attachment` returns, and links). It works for topic ids (W03.L1) and
+  class ids (W03.S1).
+- Output: `material/<lecture>/attached.json` (`parts`, `coverage`, `report` {summary, key_points, quiz, gaps, issues,
+  enrich}, `quiz` (only checked questions), `gap_table`, `findings`) and `attached.md`. With the `slides` task, also the
+  usual deck files, made from their material (cited P1…).
+- Cost: 1 AI call (B3), plus the deck's calls for `slides`. `app/delivery.py` still says `"attach": False` in
+  `material_connected`; switch it when the app calls it.
+- Live on the Transformers course: the professor's week-1 deck attached to the week-2 lecture. The gap check said
+  "partly" and named exactly what was missing (the √dₖ scaling, the matrix form, PyTorch, causal masking). The local
+  model alone said "covered", so the AI decides and `A-GAP` flags conflicts.
+
+**Style (`content/style.py`; `run_content.py style --run-id <id> --from deck.pptx`):** learns the professor's template
+(masters, logo), theme colours and fonts, and how they write (bullets per slide, words per bullet, title case, we/you).
+Every new deck of the run is rendered on their template, and B1 gets `lecture.style`.
+
+**Student mode (`content/student.py`):** `material/<lecture>/student.html` is written with every deck
+(`material.json → files.student`). It is one offline page: slides without notes or answer keys, recap with answers to
+reveal, clickable check questions, watch/simulation links, and the review quiz (C's D8 quiz when present) with a score.
+**For Amit:** the app's student view can link or embed it.
+
+**Narration:** Piper (`pip install piper-tts`, voice `data/voices/en_US-lessac-medium.onnx`, git-ignored; falls back to
+the Windows voice). `narrate --animate` uses Manim (`pip install manim`) to build each flow figure step by step in its
+place, playing with the voice. Speaker notes are now 90-150 words (B1 v0.6.0), so a 90-min class narrates for about 12-15 min.
+Tried on Transformers W02.S1: 8.1 min (older, shorter notes) with 4 animated figures.
+
 ## 2026-11-05, later (Parth): fixes in C's and A's code after a review (please check)
 
 Reviewed C and A (offline: tests, data, built pages; no AI calls) and fixed what was clearly a bug. All 376 offline tests

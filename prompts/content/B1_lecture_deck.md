@@ -1,6 +1,6 @@
 ---
 id: B1
-version: 0.5.0
+version: 0.6.0
 stage: Phase 2 · B · lecture slides
 model_class: generate
 temperature: 0.3
@@ -10,7 +10,9 @@ inputs:
   lecture: {lecture_id, topic, module, hours, learning_outcomes, course_outcomes, builds_on, prerequisites, leads_to,
             assessed_in, hands_on, labs, professor_note, parts: [{topic, minutes}],
             outline: [{id, title, teaches, key_terms, kind, minutes, delivered_by, clip, way, when, bridge, simulation}]
-                     (deliverable C's plan and the professor's delivery mix, when made)}
+                     (deliverable C's plan and the professor's delivery mix, when made),
+            professor_material (the text of the professor's own files, parts marked [P1] …, when attached),
+            style (how this professor writes slides, when learned from their decks)}
   sources: [{id, kind, title, year, url}]
   slides: {min, max}
   problems: findings of the checks on a previous attempt (repair only)
@@ -40,6 +42,12 @@ What to write:
   - kind "quiz": one `quiz` slide LAST, after the summary: how the review quiz runs (one question per part, time
     allowed, then the answers). Deliverable C writes the questions; do not write them.
   Without an outline, use only concept, example, worked_problem, activity, check and summary.
+- `lecture.professor_material`, when given: build the deck FROM the professor's material. Keep their order, terms,
+  notation and examples, and cite the part on each slide (`sources`: "P1" …). Add slides only for what the learning
+  outcomes need and the material lacks, and say so in that slide's notes ("Added: not in your material").
+- `lecture.style`, when given: write the way this professor writes: about `bullets_per_slide` bullets of about
+  `words_per_bullet` words, titles in their `title_case`, addressing students as they do (`voice`); the `examples` are
+  bullets from their own decks, for tone only (never copy them).
 - Every learning outcome must be served by at least one slide (list its id in `los`). An outcome at Bloom level 3 or
   above needs an `example` or `worked_problem` slide that shows the skill being used, step by step.
 - Include at least one `check` slide per lecture hour: a multiple-choice question students answer in class, given in
@@ -55,7 +63,8 @@ How to write a slide:
 - `figure` (optional, at most one): `flow` for a process or pipeline (2-6 short box labels), `code` for a short snippet
   (at most 14 lines, real and runnable in spirit), `table` for a comparison (header row + at most 5 rows, 4 columns).
   Use `none` when a figure would not help.
-- `notes`: what the professor says, 40-120 words: the explanation, an example, a common misconception.
+- `notes`: what the professor says, 90-150 words: the explanation, an example, a common misconception. (The notes
+  are also read aloud for the narrated video, so write them as speech.)
 - `minutes`: teaching time for the slide; all slides together ≈ the lecture length ({{ lecture.minutes }} minutes).
 - `sources`: ids of the given sources the slide draws on. Cite only ids from the list; cite nothing rather than guess.
 

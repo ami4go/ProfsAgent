@@ -192,6 +192,16 @@ python scripts/run_content.py generate --run-id cs601-02 --lectures W01.L2 --aut
    simulation and quiz slides; code fills clips and links from the outline (`check_outline`: D-OUTLINE, D-WATCH, D-SIM).
 4d. **Narration** (`run_content.py narrate [--video]`, `content/narrate.py`, Windows + PowerPoint, no AI calls): each
    slide read aloud from its notes into `slides_narrated.pptx` (plays and advances by itself) and optionally an MP4.
+4e. **The professor's own material** (`run_content.py attach`, `content/attach.py`, the survey's `attach_material`): their
+   files (pptx, pdf, docx, md, links) are read; each outcome is matched to the material locally; one AI call (B3) writes
+   the summary, a checked quiz, the gap check per outcome and ideas to enrich it (`attached.md`); task `slides` makes the
+   deck from their material (cited P1…).
+4f. **Their style** (`run_content.py style --from deck.pptx`, `content/style.py`, no AI): their template, theme colours
+   and fonts become the look of every new deck; their bullet length, title case and voice guide B1.
+4g. **Student mode** (`student.html` beside every deck, `content/student.py`): the class for students on any device:
+   slides without notes or answer keys, recap, clickable check questions, watch/simulation links, the review quiz.
+4h. **Narration voice and animation:** Piper (offline neural voice, `data/voices/`) replaces the Windows voice when
+   installed; `narrate --animate` turns flow figures into Manim clips that build up while they are explained.
 5. **Professor review** (`content/review.py`): `material/review.yaml` lists every deck; `approve` freezes it (a new
    generation needs `--force`), `redo` regenerates it with the professor's reason as instructions, `reject` drops it.
    `material.json → status` is draft | ai-reviewed | approved | redo | rejected.

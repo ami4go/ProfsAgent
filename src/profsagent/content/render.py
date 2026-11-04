@@ -27,7 +27,7 @@ from pptx.util import Emu, Inches, Pt
 from profsagent.content.models import FIRST_CONTENT_SLIDE, Figure, LectureDeck, Quiz, Slide
 
 BADGE = {"example": "Example", "worked_problem": "Worked problem", "activity": "Activity", "check": "Check", "summary": "Summary",
-         "recap": "Recap", "watch": "Watch", "debrief": "Debrief", "bridge": "Bridge", "simulation": "Try it", "quiz": "Review quiz"}
+         "recap": "Recap", "watch": "Watch", "debrief": "Debrief", "bridge": "Bridge", "simulation": "Try it", "quiz": "Review quiz", "answer": "Answer"}
 PANEL = {"watch": "WATCH", "simulation": "OPEN"}       # the label of the panel showing a slide's clip / link
 def answer(q: Quiz) -> str:
     """The answer line for notes and the handout ("?" when the index is invalid; D-QUIZ already reports that)."""

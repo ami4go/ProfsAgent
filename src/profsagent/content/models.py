@@ -33,7 +33,7 @@ KINDS_FOR_PARTS = ("recap", "watch", "debrief", "bridge", "simulation", "quiz") 
 
 class Slide(BaseModel):
     kind: Literal["concept", "example", "worked_problem", "activity", "check", "summary",
-                  "recap", "watch", "debrief", "bridge", "simulation", "quiz"]
+                  "recap", "watch", "debrief", "bridge", "simulation", "quiz", "answer"]
     title: str
     bullets: list[str] = Field(default_factory=list)
     figure: Figure = Field(default_factory=Figure)
@@ -108,3 +108,31 @@ class AttachedReport(BaseModel):
     gaps: list[Gap] = Field(default_factory=list)
     issues: list[str] = Field(default_factory=list, description="statements that look outdated or wrong, quoted")
     enrich: list[Enrichment] = Field(default_factory=list)
+
+
+# ------------------------------------------------------------------ B4 / B5: a class taught as 3-4 parts (content/lesson.py)
+class PlanPart(BaseModel):
+    title: str
+    los: list[str] = Field(default_factory=list, description="ids of the learning outcomes this part teaches")
+    teaches: str = Field(description="what students understand or can do after this part, in one or two sentences")
+    key_ideas: list[str] = Field(default_factory=list, description="3-5 ideas, in the order they are taught")
+    example: str = Field("", description="the worked example or demonstration that makes the part concrete")
+    minutes: int = Field(10, description="video minutes, quiz included")
+
+
+class LessonPlan(BaseModel):
+    parts: list[PlanPart]
+
+
+class TeachingSlide(BaseModel):
+    title: str
+    bullets: list[str] = Field(default_factory=list, description="2-4 short anchors (at most 12 words), never the script")
+    figure: Figure = Field(default_factory=Figure)
+    narration: str = Field(description="what the teacher says over this slide: 150-220 words of real teaching")
+    refs: list[str] = Field(default_factory=list, description="ids of the reference passages it draws on, e.g. C3#12")
+
+
+class TeachingPart(BaseModel):
+    slides: list[TeachingSlide]
+    quiz: list[Quiz] = Field(default_factory=list, description="3 questions on this part")
+    recap: str = Field("", description="2-3 sentences that close the part before its quiz")

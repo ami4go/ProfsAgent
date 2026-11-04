@@ -10,6 +10,8 @@ per-topic lecture brief (its length is the topic's hours that week). Decks are n
   python scripts/run_content.py check    --run-id cs601-02 --lectures W01.L1          # re-check and re-render a saved deck
   python scripts/run_content.py review   --run-id cs601-02 [--apply]                  # write review.yaml / apply decisions
   python scripts/run_content.py narrate  --run-id cs601-02 --lectures W03.S1 [--video] [--animate]  # narrated deck (+ MP4), no AI calls
+  python scripts/run_content.py teach    --run-id ai-transformers-01 --lectures W02.S1 [--video] [--animate]
+                                                                                  # a class as 3-4 taught video parts with quizzes
   python scripts/run_content.py style    --run-id cs601-02 --from my_deck.pptx         # learn the professor's look and writing
   python scripts/run_content.py attach   --run-id cs601-02 --lectures W03.L1 [--files a.pptx,https://…] [--tasks summary,quiz]
                                                                                   # the professor's own material (1 AI call)
@@ -67,7 +69,7 @@ def show(lid: str, m: dict) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["plan", "generate", "check", "review", "narrate", "attach", "style"])
+    ap.add_argument("cmd", choices=["plan", "generate", "check", "review", "narrate", "attach", "style", "teach"])
     ap.add_argument("--run-id", required=True)
     ap.add_argument("--lectures", help="comma-separated lecture ids, e.g. W01.L1,W02.L1")
     ap.add_argument("--from-survey", action="store_true", help="the lectures whose survey answer asks for generated material")
@@ -116,6 +118,13 @@ def main() -> None:
                   f"sources {list(src)}")
         per = 1 + c["deck"]["repair_rounds"] + (2 if a.auto_review else 0)
         print(f"AI calls: {len(ids) * (2 if a.auto_review else 1)} (up to {len(ids) * per} with repairs)")
+    elif a.cmd == "teach":
+        from profsagent.content.lesson import teach_class
+        for lid in ids:
+            m = teach_class(a.run_id, lid, {"video": a.video, "animate": a.animate})
+            for p in m["parts"]:
+                print(f"{lid} part {p['n']}: {p['title']} · {p['teaching_slides']} teaching slides, ~{p['narration_minutes']} min, "
+                      f"{len(p['quiz'])} quiz questions, {p['errors']} errors → {p['dir']}")
     elif a.cmd == "attach":
         from profsagent.content.attach import attach_material
         for lid in ids:

@@ -516,3 +516,65 @@ def test_a_flow_becomes_a_short_animated_clip(tmp_path):
     from profsagent.content.animate import _clip
     p = _clip(["Tokens", "Scores", "Softmax"], 5.0, 4.0, 2.0, CFG["render"]["colors"], tmp_path / "anim" / "f.mp4")
     assert p.exists() and p.stat().st_size > 10_000
+
+
+# ------------------------------------------------------------------ a class taught as 3-4 video parts (content/lesson.py)
+from profsagent.content import lesson as LS  # noqa: E402
+from profsagent.content.models import LessonPlan, PlanPart, TeachingPart, TeachingSlide  # noqa: E402
+
+REF = ("Attention lets every position look at every other position. The scores are scaled by the square root of the key "
+       "dimension so the softmax does not saturate when the dimension grows large and gradients stay useful. ") * 20
+
+
+def teaching(n_slides=6, words=160, refs=("C1#1",), narration=None):
+    q = Quiz(question="Why scale?", options=["speed", "stable softmax", "memory", "masking"], answer=1, explanation="it keeps it stable")
+    return TeachingPart(slides=[TeachingSlide(title=f"Idea {i}", bullets=["scores", "softmax"], refs=list(refs),
+                                              narration=narration or ("you compute the scores and then " * (words // 6)))
+                                for i in range(n_slides)], recap="We scaled the scores. The softmax stayed stable.", quiz=[q, q, q])
+
+
+def test_a_part_must_teach_in_its_own_words_and_end_with_three_questions():
+    known = {"C1#1": REF}
+    assert LS.check_part(teaching(), known, CFG) == []
+    copied = " ".join(REF.split()[:30])
+    found = LS.check_part(teaching(narration=copied + " and more words to explain " * 20), known, CFG)
+    assert "L-COPY" in codes(found, "error")
+    found = LS.check_part(teaching(n_slides=2, words=30, refs=("C9#9",)), known, CFG)
+    assert {"L-COUNT", "L-NARRATION", "L-REF"} <= codes(found, "error")
+    tp = teaching()
+    tp.quiz = tp.quiz[:2]
+    assert "L-QUIZ" in codes(LS.check_part(tp, known, CFG), "error")
+
+
+def test_teach_class_plans_parts_teaches_each_and_asks_before_answering(run, st, monkeypatch):
+    from profsagent.content.narrate import narration_script
+    lid = "W01.S1"
+    monkeypatch.setattr(LS, "load_state", lambda run_id: st)
+    monkeypatch.setattr(LS, "reference_text", lambda src, max_pages=10: REF if src.get("url") else "")
+    los = [x["id"] for x in G.units(st)[lid]["learning_outcomes"]]
+    plan = LessonPlan(parts=[PlanPart(title=f"Part {i}", los=los, teaches="t", key_ideas=["a", "b"], example="e", minutes=10)
+                             for i in range(3)])
+
+    class Fake:
+        def __init__(self):
+            self.calls = []
+
+        def structured(self, *, system, user, model_cls, prompt_id, **kw):
+            self.calls.append((prompt_id, user))
+            obj = plan if prompt_id == "B4" else teaching(refs=())
+            return obj, SimpleNamespace(endpoint="fake:m:k", prompt_tokens=1, output_tokens=1)
+    llm = Fake()
+    m = LS.teach_class("cs601", lid, llm=llm, embed=_vec, log=lambda _: None)
+    assert [c[0] for c in llm.calls] == ["B4", "B5", "B5", "B5"] and len(m["parts"]) == 3
+    assert "Attention lets every position" in llm.calls[1][1]                       # the part is grounded in the reference
+    d = run / "material" / lid / "lesson" / "part_2"
+    deck = LectureDeck.model_validate(json.loads((d / "deck.json").read_text(encoding="utf-8")))
+    kinds = [s.kind for s in deck.slides]
+    assert kinds[-6:] == ["check", "answer"] * 3 and kinds[-7] == "summary"           # each question, then its answer
+    fr = {"course": "C", "subtitle": "s", "objectives": ["o"]}
+    said = narration_script(deck, fr)
+    ask = next(t for t in said if t.startswith("Quiz question 1"))
+    assert "Pause the video" in ask and "The answer is" not in ask                    # the question slide never gives it away
+    assert any(t.startswith("The answer is B") for t in said)
+    assert (run / "material" / lid / "lesson" / "lesson.md").exists() and (d / "student.html").exists()
+    assert any(f["code"] == "L-UNCITED" for f in m["parts"][0]["findings"])          # slides citing nothing are flagged

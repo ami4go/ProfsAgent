@@ -47,6 +47,7 @@ def narration_script(deck: LectureDeck, frame: dict) -> list[str]:
     """One text per slide of slides.pptx, in order: title, objectives, the content slides, references."""
     out = [f"{frame['course']}. {deck.title}. {frame['subtitle'].replace('·', ',')}.",
            "In this class you will learn to: " + " ".join(f"{o.rstrip('.')}." for o in frame["objectives"])]
+    reveal = not any(s.kind == "answer" for s in deck.slides)   # a lesson deck has its own answer slides
     for s in deck.slides:
         text = s.notes
         if s.kind == "watch" and s.clip:
@@ -54,7 +55,9 @@ def narration_script(deck: LectureDeck, frame: dict) -> list[str]:
         if s.kind == "simulation" and s.link:
             text += f" Open the simulation: {s.link.split(' — ')[0]}."
         q = s.quiz
-        if q:
+        if q and not reveal:
+            text += " " + " ".join(f"{LETTERS[i]}: {o}." for i, o in enumerate(q.options))
+        elif q:
             opts = " ".join(f"{LETTERS[i]}: {o}." for i, o in enumerate(q.options))
             text += (f" Here is a question. {q.question} {opts} Pause the video and choose your answer."
                      f" {answer(q).replace('Answer:', 'The answer is')}. {q.explanation}")
@@ -96,7 +99,8 @@ $p = $app.Presentations.Open($a.pptx, $true, $false, $false)
 try {
   for ($i = 0; $i -lt $a.items.Count; $i++) {
     $x = $a.items[$i]; $sl = $p.Slides.Item($i + 1)
-    $m = $sl.Shapes.AddMediaObject2($x.path, 0, -1, -60, -60, 24, 24)       # just off the slide: plays, never drawn
+    $m = $sl.Shapes.AddMediaObject2($x.path, 0, -1, 0, 0, 24, 24)
+    $m.Left = $p.PageSetup.SlideWidth + 40; $m.Top = 40                     # moved off the slide: plays, never drawn
     $m.AnimationSettings.PlaySettings.HideWhileNotPlaying = -1
     $e = $sl.TimeLine.MainSequence.AddEffect($m, 83, 0, 2)
     if ($x.anim) {

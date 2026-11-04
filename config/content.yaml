@@ -36,3 +36,14 @@ attach:                                    # content/attach.py: the professor's 
   max_chars: 24000                         # material text given to the AI (B3) and to B1 for the slides task; the rest is cut
   coverage: {covered: 0.5, partly: 0.35}   # local-model similarity of an outcome to its closest ~120-word passage
                                            # (a topical hint, not calibrated; the AI's gap check decides, A-GAP flags conflicts)
+lesson:                                    # content/lesson.py: a class taught as 3-4 video parts (run_content.py teach)
+  parts: {min: 3, max: 4}
+  minutes: 40                              # video minutes planned for the class (8-12 per part)
+  slides: {min: 5, max: 8}                 # teaching slides per part (plus its title, recap, quiz and answer slides)
+  narration_words: {min: 110, max: 260}    # spoken teaching per slide; below min is L-NARRATION (too little to teach)
+  words_per_minute: 150
+  copy_ngram: 12                           # L-COPY: this many words in a row copied from a reference passage
+  plan_passages: 14                        # reference passages given to the plan (B4)
+  part_passages: 8                         # and to each part (B5)
+  spread_passages: true                    # a later part prefers passages the earlier parts did not use
+  max_pages: 10                            # an index page of a web reference: pages under it that are read

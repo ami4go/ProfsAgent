@@ -278,3 +278,19 @@ def test_source_coverage_reads_phrases_and_words():
                                 ["The model context protocol uses json-rpc messages; tools register at start."])
     assert cov == 0.67 and missing == ["lazy tool registration"]
     assert mix.coverage([], ["x"]) == (None, [])
+
+
+def test_editing_an_approved_mix_marks_its_quiz_outdated_and_a_dropped_part_does_not_crash_the_quiz(run, monkeypatch):
+    from profsagent.delivery import resources
+    L = "W01.L1"
+    run(L, [comp(L, 1, minutes=20), comp(L, 2, minutes=20), comp(L, 3, minutes=10)])
+    monkeypatch.setattr(resources, "llm_call", lambda llm, pid, ctx, model_cls, run_id, log: Quiz(questions=[
+        QuizQuestion(component=p["id"], question=f"q{i}", options=["a", "b", "c", "d"], answer="A") for i, p in enumerate(ctx["parts"])]))
+    mix.propose("r", L, use_ai=False)
+    assert mix.approve("r", L)["mix"]["materials"]["quiz"] == f"quiz/{L}.json"
+    m = mix.save("r", L, changes={f"{L}.C1": {"locked": True}})["mix"]
+    assert m["status"] == "proposed" and not m["materials"] and m["materials_outdated"]["quiz"] == f"quiz/{L}.json"
+    assert not mix.approve("r", L)["mix"]["materials_outdated"]                      # approved again: current again
+    run(L, [comp(L, 1, minutes=20), comp(L, 2, minutes=30)])                         # plan redone: C3 left the lecture
+    qz = mix.make_quiz("r", L, mix.load("r", L), log=lambda *_: None)
+    assert [q["component"] for q in qz["questions"]] == [f"{L}.C1", f"{L}.C2"]      # no KeyError; the checker drops C3's question

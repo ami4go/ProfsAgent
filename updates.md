@@ -4,6 +4,39 @@ Short status note for teammates and their coding agents, so nobody has to re-rea
 Newest entry on top. Owners: Phase 2 deliverable A (UI, simulations) Amit, B (lecture content) Parth, C (resources,
 experts) Vihan.
 
+## 2026-11-05, later (Parth): fixes in C's and A's code after a review (please check)
+
+Reviewed C and A (offline: tests, data, built pages; no AI calls) and fixed what was clearly a bug. All 376 offline tests
+pass (`tests/test_app*.py` need fastapi, not installed here).
+
+**For Vihan (C):**
+- `mix.save`: editing an approved mix sets it back to proposed and moves its pack and quiz to `materials_outdated`
+  (new field in `LectureMix`), so nobody uses a quiz made for the old mix; approving again clears it.
+- `mix.make_quiz`: no `KeyError` when a mix part's component left the lecture's plan (its question is dropped by your
+  existing check).
+- Recap and quiz at the class edges: B's `outline()` now merges them (`content/generate.class_edges`), so a class that
+  ends topic A and starts topic B opens with one recap and closes with one quiz (same minutes). You may still want a
+  session-aware reserve on C's side.
+- `tests/test_delivery.py`: the transcript test skips when `youtube-transcript-api` is missing. New `requirements.txt`.
+- **Still yours (data, needs AI calls):** commit CS-601's components / mix / NotebookLM / quiz; re-run once YouTube
+  unblocks (the 29 Oct snapshot has 3 empty lectures — W05.L1, W10.L1, W12.L1 — 10 without readings and 16 without
+  practice); update doc 04 with components, timeline, mix and D8.
+
+**For Amit (A and the app):**
+- `app/delivery._result`: reads C's `continues` (since 1 Nov) as well as `continuation_of`, so "Continues …" shows again.
+- Simulation types (`simulations/types.yaml`): AI/ML examples added to step-through, parameter explorer and networks.
+  "Attention" topics no longer land on *experiments on yourself* (psychology). Accuracy on the 165 labels unchanged
+  (75.2%), cross-validated 72.7% → 73.9%; `params.json` and `coverage.md` not regenerated.
+- Trusted links: Transformer Explainer (Polo Club) and LLM Visualization (bbycroft.net) in `external/sources.yaml` and
+  `index.json`. `external.text_for_matching`: hand-written entries also match topic by topic (downloaded PhET / Falstad
+  lists keep the joined form, so Falstad's "Transformers" circuits don't match vision transformers). Transformers
+  course: 0 → 4 of 22 lectures get a link; CS-601 and CSE201 unchanged.
+- Stepper engine: a widget may name its legend colours (`legend: {done: 'inside'}`); default words unchanged.
+- `auto.monte_carlo` 1.0.1: legend inside / outside / estimate (was "done / compared / swapped"), the question asked as a
+  prediction, up to 2000 points. Checked in a browser.
+- **Still yours:** `pip install playwright` to run `sims.py qa` (0/11 ran here: missing package, Chrome is present);
+  render the DBSCAN and convolution MP4s; review the 3 `auto.*` drafts; an attention simulation would serve AI courses.
+
 ## 2026-11-05 (Parth): B follows C's delivery mix; narrated decks and videos; a Transformers sample course
 
 **Slides for the delivery mix (`content/models.py`, `checks.py`, `generate.py`, `render.py`, B1 v0.5.0):**

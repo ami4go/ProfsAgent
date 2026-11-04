@@ -390,3 +390,11 @@ def test_the_narration_reads_notes_and_asks_before_it_answers(lecture):
     assert texts[2] == "Attention to weights softmax"                    # no markdown, ids or arrows read aloud
     q = next(t for t in texts if "Here is a question" in t)
     assert q.index("Pause the video") < q.index("The answer is B")
+
+
+def test_a_class_spanning_two_topics_has_one_recap_first_and_one_quiz_last():
+    parts = [{"id": "A.C3", "kind": "concept", "minutes": 40}, {"id": "A.QUIZ", "kind": "quiz", "minutes": 10},
+             {"id": "B.RECAP", "kind": "recap", "minutes": 5}, {"id": "B.C1", "kind": "concept", "minutes": 35}]
+    out = G.class_edges(parts)
+    assert [p["id"] for p in out] == ["B.RECAP", "A.C3", "B.C1", "A.QUIZ"]
+    assert sum(p["minutes"] for p in out) == 90 and G.class_edges(parts[:1]) == parts[:1]

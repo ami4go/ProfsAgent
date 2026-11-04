@@ -88,7 +88,18 @@ def outline(run_id: str, brief: dict) -> list[dict]:
                         **({"way": mx["way"], "when": mx["when"]} if mx else {}),
                         **({"bridge": mx["bridge"]} if mx and mx.get("bridge") else {}),
                         **({"simulation": mx["simulation"]} if mx and mx["way"] == "simulation" and mx.get("simulation") else {})})
-    return out
+    return class_edges(out)
+
+
+def class_edges(parts: list[dict]) -> list[dict]:
+    """C reserves a recap and a review quiz per topic lecture; a class that ends one topic and starts the next would get
+    the first topic's quiz and the second's recap back to back mid-class. The recaps become one recap that opens the
+    class and the quizzes one quiz that closes it, with the same minutes in total."""
+    recaps = [p for p in parts if p.get("kind") == "recap"]
+    quizzes = [p for p in parts if p.get("kind") == "quiz"]
+    rest = [p for p in parts if p.get("kind") not in ("recap", "quiz")]
+    merge = lambda xs: [{**xs[0], "minutes": sum(x["minutes"] for x in xs)}] if xs else []  # noqa: E731
+    return merge(recaps) + rest + merge(quizzes)
 
 
 def lecture_input(brief: dict, note: str = "", run_id: str | None = None) -> dict:

@@ -146,6 +146,7 @@ class LectureMix(M):
     approved_at: str = ""
     approved_by: str = ""
     materials: dict = Field(default_factory=dict)  # after approval: {"notebooklm": path, "quiz": path}
+    materials_outdated: dict = Field(default_factory=dict)  # an approved mix edited again: its old materials + outdated_at
 
 
 # ------------------------------------------------------------------ D7 reasons for the mix (may swap within the rules)

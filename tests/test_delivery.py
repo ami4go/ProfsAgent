@@ -190,6 +190,7 @@ def test_practice_generic_and_social_filters():
 
 
 def test_transcript_block_stops_requests_and_marks_partial(monkeypatch):
+    pytest.importorskip("youtube_transcript_api", reason="needs youtube-transcript-api (README install line)")
     from profsagent.delivery import sources
 
     class Blocked(Exception):
@@ -208,3 +209,10 @@ def test_transcript_block_stops_requests_and_marks_partial(monkeypatch):
     monkeypatch.setattr(sources.time, "sleep", lambda s: None)
     assert sources.transcript("a") is None and sources.transcript("b") is None
     assert calls == ["a"] and sources.transcripts_blocked()      # after the first block no request is sent
+
+
+
+def test_the_app_shows_continued_lectures_in_both_file_formats():
+    from profsagent.app import delivery as dv
+    assert dv._result({"continues": "W03.L1", "resources": {}}, None)["continuation_of"] == "W03.L1"         # since 1 Nov
+    assert dv._result({"continuation_of": "W02.L1", "resources": {}}, None)["continuation_of"] == "W02.L1"   # older runs

@@ -17,6 +17,8 @@ sites:
   tfplayground: {name: TensorFlow Playground, home: "https://playground.tensorflow.org", note: "Google; a small neural network in the browser"}
   cnnexplainer: {name: CNN Explainer, home: "https://poloclub.github.io/cnn-explainer/", note: "Georgia Tech Polo Club; convolutional networks"}
   seeingtheory: {name: Seeing Theory, home: "https://seeing-theory.brown.edu", note: "Brown University; probability and statistics"}
+  transformerexplainer: {name: Transformer Explainer, home: "https://poloclub.github.io/transformer-explainer/", note: "Georgia Tech Polo Club; a live GPT-2 model in the browser"}
+  llmviz: {name: LLM Visualization, home: "https://bbycroft.net/llm", note: "Brendan Bycroft; a 3D walk-through of a small GPT"}
 
 curated:
   visualgo:
@@ -64,9 +66,14 @@ curated:
 
 # Web search for a professor's request (src/profsagent/sims/websearch.py): first only these sites, then the open web.
 # The top pages are opened in Chrome and must load, have controls or a drawing area, and match the topic.
+  transformerexplainer:
+    - {id: gpt2, title: "Transformer Explainer", url: "https://poloclub.github.io/transformer-explainer/", summary: "Type a prompt and watch a live GPT-2 compute embeddings, Q K V, masked self-attention, multi-head attention and next-token probabilities; change the temperature.", topics: [transformer architecture, self-attention, attention mechanism, queries keys and values, multi-head attention, masked self-attention, softmax temperature, next token prediction, GPT, decoder-only transformer, positional encoding, embeddings]}
+  llmviz:
+    - {id: nanogpt, title: "LLM Visualization", url: "https://bbycroft.net/llm", summary: "A 3D walk-through of a small GPT: every matrix multiply of the embedding, attention, MLP and layer norm, step by step.", topics: [transformer architecture, large language models, self-attention, layer normalization, transformer block, GPT, residual connections, feed-forward network]}
+
 search:
   domains: [vlabs.ac.in, phet.colorado.edu, visualgo.net, falstad.com, pythontutor.com, circuitverse.org, seeing-theory.brown.edu,
-            cs.usfca.edu, geogebra.org, playground.tensorflow.org, poloclub.github.io]
+            cs.usfca.edu, geogebra.org, playground.tensorflow.org, poloclub.github.io, bbycroft.net]
   names:
     vlabs.ac.in: Virtual Labs (IITs/IIITs, MoE)
     phet.colorado.edu: PhET
@@ -79,3 +86,4 @@ search:
     geogebra.org: GeoGebra
     playground.tensorflow.org: TensorFlow Playground
     poloclub.github.io: Polo Club (Georgia Tech)
+    bbycroft.net: LLM Visualization

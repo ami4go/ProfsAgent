@@ -180,5 +180,11 @@ def shows_code(e: dict) -> bool:
 
 
 def text_for_matching(e: dict) -> list[str]:
-    """What a lecture topic is compared with: the title, and the title with its topics."""
-    return [e["title"], e["title"] + ": " + ", ".join(e["topics"][:8])]
+    """What a lecture topic is compared with: the title, and the title with its topics. A hand-written entry's topics
+    also count one by one (they are chosen per page, so "multi-head attention" finds the Transformer Explainer); the
+    downloaded PhET and Falstad lists keep only the joined form, because their topics are broad section names
+    ("Transformers" there is an electrical circuit)."""
+    out = [e["title"], e["title"] + ": " + ", ".join(e["topics"][:8])]
+    if not ((sources().get("sites") or {}).get(e.get("site")) or {}).get("fetched") and e.get("site") != "web":
+        out += list(e["topics"])
+    return out

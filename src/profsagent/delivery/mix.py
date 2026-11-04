@@ -751,10 +751,14 @@ def save(run_id: str, lecture_id: str, changes: dict | None = None, preset: str 
     if approve:
         m.update(status="approved", approved_at=now(), approved_by=by)
     elif changes:
+        if m.get("status") == "approved" and m.get("materials"):
+            # the pack and quiz were made for the approved mix: no longer current until it is approved again
+            m["materials_outdated"], m["materials"] = {**m["materials"], "outdated_at": now()}, {}
         m["status"] = "proposed"
     m = _save(run_id, m)
     if approve:
         m["materials"] = materials(run_id, lecture_id, log=log)
+        m["materials_outdated"] = {}
         m = _save(run_id, m)
     return {"mix": m}
 
@@ -823,9 +827,11 @@ def make_quiz(run_id: str, lecture_id: str, m: dict, log) -> dict:
     st = load_state(run_id)
     cc = st["cco_compact"]
     b = {x["lecture_id"]: x for x in read_json(d / "briefs.json", []) or []}.get(lecture_id) or {}
-    parts = [{"id": p["component"], "title": p["title"], "teaches": comps[p["component"]].get("teaches", ""),
-              "key_terms": comps[p["component"]].get("key_terms", []), "bloom": p["bloom"],
-              "lo_ids": comps[p["component"]].get("lo_ids", []), "way": p["way"],
+    # a part whose component left the lecture's plan (plan redone after the mix) no longer crashes; the program's
+    # check below drops its question, as for any question on an unknown part
+    parts = [{"id": p["component"], "title": p["title"], "teaches": comps.get(p["component"], {}).get("teaches", ""),
+              "key_terms": comps.get(p["component"], {}).get("key_terms", []), "bloom": p["bloom"],
+              "lo_ids": comps.get(p["component"], {}).get("lo_ids", []), "way": p["way"],
               "taught_by_video": clips.get(p["component"], []) if p["way"] in ("youtube", "youtube_bridge") else [],
               "left_to_slides": p.get("bridge", [])} for p in m["parts"]]
     ctx = {"course": {"course_name": cc["course_name"], "level": st.get("level"), "years": (cc.get("target_students") or {}).get("years")},

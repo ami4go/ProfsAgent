@@ -90,3 +90,11 @@ def test_external_index_and_parsers():
                         "topics": ["Signal Processing"]}]
     circ = X.parse_falstad_circuits('<li><b>Basics</b><ul><li id="ohms"><a href="e-ohms.html">Ohm\'s Law</a><li><a href="e-ohms.html">Ohm\'s Law</a>')
     assert len(circ) == 1 and circ[0]["url"] == "https://www.falstad.com/circuit/e-ohms.html" and circ[0]["topics"][0] == "Basics"
+
+
+def test_hand_written_links_match_by_each_topic_but_downloaded_lists_do_not():
+    from profsagent.sims import external as X
+    hand = {"site": "transformerexplainer", "title": "Transformer Explainer", "topics": ["multi-head attention", "positional encoding"]}
+    falstad = {"site": "falstad", "title": "Circuit: Transformer", "topics": ["Transformers"]}
+    assert "multi-head attention" in X.text_for_matching(hand)
+    assert X.text_for_matching(falstad) == ["Circuit: Transformer", "Circuit: Transformer: Transformers"]

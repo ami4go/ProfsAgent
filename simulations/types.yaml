@@ -15,7 +15,8 @@ types:
     does: Step forwards and backwards through a procedure; see the state and the code line; predict the next step
     engine: own HTML/JS + SVG stepper (simulations/_engines/stepper)
     check: a second implementation or a reference library, and invariants after every step
-    examples: [Dijkstra shortest path algorithm, process scheduling round robin, page replacement LRU FIFO, TCP three-way handshake,
+    examples: [self-attention computed step by step from queries keys and values, backpropagation through a small neural network, beam search decoding of a sequence model, byte-pair encoding tokenizer merges, FlashAttention tiled attention computation in GPU memory, vision transformer splitting an image into patch tokens,
+               Dijkstra shortest path algorithm, process scheduling round robin, page replacement LRU FIFO, TCP three-way handshake,
                sliding window protocol, B+ tree insertion and split, query processing and evaluation plan, normalization to BCNF,
                LR parsing table, register allocation, AES encryption rounds, RSA key generation steps, sorting algorithm,
                depth first search traversal, deadlock detection bankers algorithm, DNA replication steps, two phase locking]
@@ -24,7 +25,8 @@ types:
     does: Turn knobs and type formulas; curves, areas and points update live
     engine: manim-web (simulations/_lib)
     check: two numerical methods, plus the exact answer where known, live
-    examples: [convolution of signals, Fourier series coefficients, sampling and aliasing, probability distribution shape,
+    examples: [softmax temperature and attention weights, gradient descent learning rate and convergence, positional encoding sinusoid frequencies,
+               convolution of signals, Fourier series coefficients, sampling and aliasing, probability distribution shape,
                supply and demand curves, utility function and indifference curves, compound interest and net present value,
                antenna radiation pattern, transfer function frequency response, gradient descent learning rate,
                eigenvalues and eigenvectors, Taylor series approximation, psychometric function]
@@ -49,7 +51,8 @@ types:
     does: Build or edit a network; run algorithms and measures on it
     engine: own SVG (small), Cytoscape.js (large)
     check: results compared with networkx computed beforehand
-    examples: [routing algorithms distance vector link state, social network centrality, community detection,
+    examples: [neural network layers weights and activations, attention heads linking tokens in a transformer,
+               routing algorithms distance vector link state, social network centrality, community detection,
                minimum spanning tree, network flow, supply chain network, biological pathway network, PageRank,
                small world networks, graph colouring]
   - id: 6-machines-inside

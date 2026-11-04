@@ -25,7 +25,9 @@ from pptx.util import Emu, Inches, Pt
 
 from profsagent.content.models import FIRST_CONTENT_SLIDE, Figure, LectureDeck, Quiz, Slide
 
-BADGE = {"example": "Example", "worked_problem": "Worked problem", "activity": "Activity", "check": "Check", "summary": "Summary"}
+BADGE = {"example": "Example", "worked_problem": "Worked problem", "activity": "Activity", "check": "Check", "summary": "Summary",
+         "recap": "Recap", "watch": "Watch", "debrief": "Debrief", "bridge": "Bridge", "simulation": "Try it", "quiz": "Review quiz"}
+PANEL = {"watch": "WATCH", "simulation": "OPEN"}       # the label of the panel showing a slide's clip / link
 def answer(q: Quiz) -> str:
     """The answer line for notes and the handout ("?" when the index is invalid; D-QUIZ already reports that)."""
     ok = 0 <= q.answer < len(q.options)
@@ -249,6 +251,14 @@ class Deck:
         self._chrome(s, sl.title, BADGE.get(sl.kind), sl.sources)
         m, top = Inches(0.6), Inches(1.6)
         body_h = self.H - top - Inches(0.75)
+        show = sl.clip if sl.kind == "watch" else sl.link if sl.kind == "simulation" else ""
+        if show:                                       # what students watch or open, above the bullets
+            ph = Inches(0.9)
+            self._box(s, MSO_SHAPE.ROUNDED_RECTANGLE, m, top, self.W - 2 * m, ph, "accent_soft")
+            self._text(s, m + Inches(0.25), top, Inches(1.3), ph, PANEL[sl.kind], 16, "accent", bold=True, anchor=MSO_ANCHOR.MIDDLE)
+            tw = self.W - 2 * m - Inches(1.8)
+            self._text(s, m + Inches(1.55), top, tw, ph, show, self._fitted("panel", [show], tw, ph, 18, 12), anchor=MSO_ANCHOR.MIDDLE)
+            top, body_h = top + ph + Inches(0.25), body_h - ph - Inches(0.25)
         has_fig = sl.figure.kind != "none"
         if sl.quiz:
             self._quiz(s, sl.quiz, m + Inches(0.8), top, self.W - 2 * m - Inches(1.6), body_h)
@@ -292,6 +302,8 @@ def render_markdown(deck: LectureDeck, frame: dict, sources: dict[str, dict]) ->
          "## Learning outcomes", "", *[f"- {o}" for o in frame["objectives"]], ""]
     for i, sl in enumerate(deck.slides, FIRST_CONTENT_SLIDE):
         L += [f"## {i}. {sl.title}" + (f" ({BADGE[sl.kind]})" if sl.kind in BADGE else ""), ""]
+        if sl.clip or sl.link:
+            L += [f"> **{PANEL.get(sl.kind, 'SEE')}:** {sl.clip or sl.link}", ""]
         L += [f"- {b}" for b in sl.bullets]
         f = sl.figure
         if f.kind == "flow":

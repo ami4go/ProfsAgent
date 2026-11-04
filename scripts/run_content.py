@@ -9,6 +9,7 @@ per-topic lecture brief (its length is the topic's hours that week). Decks are n
   python scripts/run_content.py generate --run-id cs601-02 --lectures W01.L2 --auto-review   # a different AI checks the deck
   python scripts/run_content.py check    --run-id cs601-02 --lectures W01.L1          # re-check and re-render a saved deck
   python scripts/run_content.py review   --run-id cs601-02 [--apply]                  # write review.yaml / apply decisions
+  python scripts/run_content.py narrate  --run-id cs601-02 --lectures W03.S1 [--video] # narrated deck (+ MP4), no AI calls
 
 Outputs: runs/<id>/delivery/material/<lecture>/ (slides.pptx, notes.md, quiz.json, deck.json, material.json) and
 material/review.yaml. One B1 call per lecture, plus at most `deck.repair_rounds` when the deck has errors
@@ -62,7 +63,7 @@ def show(lid: str, m: dict) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["plan", "generate", "check", "review"])
+    ap.add_argument("cmd", choices=["plan", "generate", "check", "review", "narrate"])
     ap.add_argument("--run-id", required=True)
     ap.add_argument("--lectures", help="comma-separated lecture ids, e.g. W01.L1,W02.L1")
     ap.add_argument("--from-survey", action="store_true", help="the lectures whose survey answer asks for generated material")
@@ -72,6 +73,7 @@ def main() -> None:
     ap.add_argument("--force", action="store_true", help="generate: replace a deck the professor approved")
     ap.add_argument("--auto-review", action="store_true", help="generate: a different AI model checks each deck (1-2 more calls)")
     ap.add_argument("--apply", action="store_true", help="review: apply the decisions in review.yaml")
+    ap.add_argument("--video", action="store_true", help="narrate: also export an MP4 through PowerPoint")
     a = ap.parse_args()
 
     if a.cmd == "review":
@@ -98,6 +100,20 @@ def main() -> None:
                   f"sources {list(src)}")
         per = 1 + c["deck"]["repair_rounds"] + (2 if a.auto_review else 0)
         print(f"AI calls: {len(ids) * (2 if a.auto_review else 1)} (up to {len(ids) * per} with repairs)")
+    elif a.cmd == "narrate":
+        from profsagent.content.narrate import narrate
+        for lid in ids:
+            d = G.material_dir(a.run_id, lid)
+            man = read_json(d / "material.json")
+            if not man:
+                sys.exit(f"no generated material for {lid}; run generate first")
+            deck = LectureDeck.model_validate(read_json(d / "deck.json"))
+            print(f"{lid}: narrating {man['slides']} slides{' and exporting the video' if a.video else ''} …", flush=True)
+            man["narration"] = narrate(d, deck, G.frame(st, briefs[lid]), c, video=a.video)
+            write_json(d / "material.json", man)
+            n = man["narration"]
+            print(f"{lid}: {n['minutes']} min of narration ({n['voice']}) → {d / n['files']['deck']}"
+                  + (f" and {d / n['files']['video']}" if a.video else ""))
     elif a.cmd == "generate":
         feedback = R.redo_requests(a.run_id) if a.redo else {}
         failed = {}

@@ -4,6 +4,38 @@ Short status note for teammates and their coding agents, so nobody has to re-rea
 Newest entry on top. Owners: Phase 2 deliverable A (UI, simulations) Amit, B (lecture content) Parth, C (resources,
 experts) Vihan.
 
+## 2026-11-05 (Parth): B follows C's delivery mix; narrated decks and videos; a Transformers sample course
+
+**Slides for the delivery mix (`content/models.py`, `checks.py`, `generate.py`, `render.py`, B1 v0.5.0):**
+- New slide kinds, used when `lecture.outline` exists: `recap` (first), `watch` + `debrief` (video and NotebookLM
+  parts), `bridge` (the part's bridge points), `simulation`, `quiz` (last; C's D8 writes the questions).
+- Each slide records its outline part in `component`. **Code, not the AI, fills** a watch slide's `clip` and a
+  simulation slide's `link` from the outline (`fill_from_outline`), so no invented links. They show as a WATCH / OPEN
+  panel on the slide and in the handout.
+- New checks (`check_outline`): `D-OUTLINE` (a part with no slide, an unknown part, recap not first, quiz not last),
+  `D-WATCH` (video part without a watch slide, or a watch slide without a clip), `D-SIM`. `deck.json` schema 2
+  (version 1 decks still load).
+- **For Amit:** `deck.json` slides may carry `kind` recap / watch / debrief / bridge / simulation / quiz, `component`,
+  `clip` and `link`; `material.json` may carry `narration` (below).
+
+**Review of Vihan's outline wiring (1 Nov):** correct; his 30 tests pass. Two points for Vihan:
+- In a class that ends one topic and starts the next (e.g. W03.S1 = 60 min of A + 30 min of B), A's review quiz and
+  B's recap land back to back in the middle of the class. Recap and quiz should open and close the *class*.
+- CS-601's `components.json` and mix are not in the repo (scratch run), so B cannot use the outline on CS-601 yet:
+  please commit them (or a snapshot) when ready.
+
+**Narration (`content/narrate.py`, `run_content.py narrate [--video]`, no AI calls):**
+- Each slide is read from its speaker notes (questions read with options, a pause, then the answer) with the Windows
+  speech synthesizer. PowerPoint then builds `slides_narrated.pptx` (audio plays on entry, slides advance by
+  themselves) and, with `--video`, `slides_narrated.mp4`. Windows + PowerPoint only; the voice is set in
+  `config/content.yaml → narration`. Output is large and git-ignored.
+- CS-601 W03.S1: 19 slides, 7.5 min of narration, made in about 1 minute.
+
+**Transformers sample (`runs/ai-transformers-01/`):** a hand-written course design for "Introduction to Transformer
+Architecture" (5 COs, 12 LOs, 13 weeks, 16 real references; modelled on Stanford CS224N, D2L ch. 11, The Annotated
+Transformer, nanoGPT). It is not a Phase 1 run (`state.json → design_source` says so), and is used for B's week 1-2
+sample decks.
+
 ## 2026-11-03 (Vihan): the delivery mix — each part of a lecture delivered one way, proposed by rules, decided by the professor
 
 **What.** The proposal "Lecture delivery mix" (2 Nov) and Amit's reply (`docs/decisions.md` 30) are built on C's side;

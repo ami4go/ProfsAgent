@@ -333,3 +333,60 @@ def test_the_reviewer_is_barred_only_from_the_model_that_wrote_the_kept_deck(run
     llm = TwoWriters([good_deck(lecture, n=6), good_deck(lecture)], [DeckReview(verdict="ok")])
     m = G.generate_material("cs601", lecture["lecture_id"], AI, llm=llm, log=lambda _: None)
     assert llm.excluded[-1] == {"fake:b"} and m["status"] == "ai-reviewed"   # model a may review model b's deck
+
+
+# ------------------------------------------------------------------ slides for C's delivery mix (outline)
+from profsagent.content.checks import check_outline  # noqa: E402
+
+OUTLINE = [{"id": "L.RECAP", "title": "Recap", "kind": "recap", "minutes": 5, "delivered_by": "slides"},
+           {"id": "L.C1", "title": "Attention", "kind": "concept", "minutes": 30, "delivered_by": "video",
+            "clip": "1:00–9:00 of \"Attention explained\""},
+           {"id": "L.C2", "title": "Masking", "kind": "concept", "minutes": 25, "delivered_by": "in_class", "way": "simulation",
+            "simulation": {"title": "Attention playground", "url": "https://example.org/attn"}},
+           {"id": "L.QUIZ", "title": "Review quiz", "kind": "quiz", "minutes": 10, "delivered_by": "slides"}]
+
+
+def mix_deck(*kinds_parts):
+    return LectureDeck(lecture_id="L", title="T", slides=[Slide(kind=k, title=f"{k} {c}", bullets=["a", "b"], notes="n", component=c)
+                                                        for k, c in kinds_parts])
+
+
+def test_slides_follow_the_outline_and_code_fills_clips_and_links():
+    deck = mix_deck(("recap", "L.RECAP"), ("watch", "L.C1"), ("debrief", "L.C1"), ("simulation", "L.C2"), ("quiz", "L.QUIZ"))
+    G.fill_from_outline(deck, OUTLINE)
+    assert check_outline(deck, OUTLINE) == []
+    assert "1:00–9:00" in deck.slides[1].clip and deck.slides[3].link == "Attention playground — https://example.org/attn"
+
+
+def test_missing_parts_watch_and_simulation_slides_and_order_are_reported():
+    deck = mix_deck(("concept", "L.C1"), ("concept", "L.C2"), ("concept", "L.X"), ("recap", "L.RECAP"))
+    found = check_outline(G.fill_from_outline(deck, OUTLINE), OUTLINE)
+    got = {(x["code"], x["severity"]) for x in found}
+    assert {("D-OUTLINE", "error"), ("D-OUTLINE", "warning"), ("D-WATCH", "warning"), ("D-SIM", "warning")} <= got
+    assert any("open the class" in x["message"] for x in found) and any("close the class" in x["message"] for x in found)
+
+
+def test_watch_and_simulation_slides_show_their_clip_and_link(tmp_path):
+    from profsagent.content.render import render_markdown, render_pptx
+    deck = G.fill_from_outline(mix_deck(("watch", "L.C1"), ("simulation", "L.C2")), OUTLINE)
+    fr = {"course": "C", "footer": "C · L", "subtitle": "s", "draft_note": "d", "objectives": ["o"], "objectives_notes": "n"}
+    render_pptx(deck, fr, {}, CFG, tmp_path / "s.pptx")
+    text = " ".join(sh.text_frame.text for sl in Presentation(str(tmp_path / "s.pptx")).slides for sh in sl.shapes if sh.has_text_frame)
+    assert "WATCH" in text and "1:00–9:00" in text and "https://example.org/attn" in text and "Try it" in text
+    assert "**WATCH:** 1:00–9:00" in render_markdown(deck, fr, {})
+
+
+# ------------------------------------------------------------------ narration script (content/narrate.py; the voice and
+# PowerPoint parts need Windows and are tried by hand: run_content.py narrate)
+from profsagent.content.narrate import narration_script  # noqa: E402
+
+
+def test_the_narration_reads_notes_and_asks_before_it_answers(lecture):
+    deck = good_deck(lecture)
+    deck.slides[0].notes = "Attention → weights `softmax` [C1] (CO1.LO1)"
+    fr = {"course": "C", "subtitle": "Week 1 · M · 90 min", "objectives": ["Explain attention (CO1.LO1)"]}
+    texts = narration_script(deck, fr)
+    assert len(texts) == 2 + len(deck.slides) + 1                        # title, objectives, content, references
+    assert texts[2] == "Attention to weights softmax"                    # no markdown, ids or arrows read aloud
+    q = next(t for t in texts if "Here is a question" in t)
+    assert q.index("Pause the video") < q.index("The answer is B")

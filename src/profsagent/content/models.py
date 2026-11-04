@@ -28,8 +28,12 @@ class Quiz(BaseModel):
     explanation: str = ""
 
 
+KINDS_FOR_PARTS = ("recap", "watch", "debrief", "bridge", "simulation", "quiz")   # with deliverable C's outline / mix
+
+
 class Slide(BaseModel):
-    kind: Literal["concept", "example", "worked_problem", "activity", "check", "summary"]
+    kind: Literal["concept", "example", "worked_problem", "activity", "check", "summary",
+                  "recap", "watch", "debrief", "bridge", "simulation", "quiz"]
     title: str
     bullets: list[str] = Field(default_factory=list)
     figure: Figure = Field(default_factory=Figure)
@@ -38,11 +42,16 @@ class Slide(BaseModel):
     los: list[str] = Field(default_factory=list, description="ids of the lecture's learning outcomes this slide serves")
     sources: list[str] = Field(default_factory=list, description="ids of the given sources this slide draws on")
     minutes: float = 3.0
+    component: str = Field("", description="id of the lecture.outline part this slide teaches (when an outline is given)")
+    # filled by code from the outline, never by the AI (content/generate.fill_from_outline): what to watch or open
+    clip: str = ""
+    link: str = ""
 
 
 FIRST_CONTENT_SLIDE = 3   # the .pptx opens with the title and objectives slides code adds; every finding, the quiz
                           # and the handout number content slides as they appear in the .pptx
-SCHEMA_VERSION = "1"   # bump when a field changes meaning; deck.json records it so old decks are recognised
+SCHEMA_VERSION = "2"   # bump when a field changes meaning; deck.json records it so old decks are recognised
+                       # 2: slide kinds for C's delivery mix, `component`, `clip`, `link` (version 1 decks still load)
 
 
 class LectureDeck(BaseModel):

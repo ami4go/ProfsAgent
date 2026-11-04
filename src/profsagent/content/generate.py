@@ -151,6 +151,24 @@ def frame(st: dict, brief: dict) -> dict:
                                 f"Assessed in: {', '.join(a['id'] for a in brief.get('assessed_in') or []) or 'not assessed directly'}."}
 
 
+def fill_from_outline(deck: LectureDeck, outline: list[dict]) -> LectureDeck:
+    """Code, not the AI, writes what a slide shows students to watch or open: a watch slide gets its part's clip, a
+    simulation slide its part's simulation (title and link). Unknown parts are left to check_outline."""
+    parts = {p["id"]: p for p in outline}
+    for s in deck.slides:
+        p = parts.get(s.component)
+        if not p:
+            continue
+        if s.kind == "watch" and p.get("clip"):
+            s.clip = p["clip"]
+        if s.kind == "watch" and p.get("delivered_by") == "notebooklm" and not s.clip:
+            s.clip = f"NotebookLM video on \"{p['title']}\" (made by the professor from the lecture's NotebookLM pack)"
+        sim = p.get("simulation") or {}
+        if s.kind == "simulation" and sim:
+            s.link = " — ".join(x for x in (sim.get("title"), sim.get("url") or sim.get("id")) if x)
+    return deck
+
+
 # ------------------------------------------------------------------ outputs
 def write_outputs(d: Path, deck: LectureDeck, fr: dict, sources: dict, c: dict, found: list[dict]) -> tuple[int, list[dict]]:
     """deck.json, slides.pptx, notes.md and quiz.json; returns the slide count and the findings with the renderer's
@@ -192,7 +210,7 @@ def _ai_review(llm, deck, found, code, ctx, lecture, calls, author, check, run_i
                            + [p for p in ctx["problems"] if p["code"] == "PROFESSOR"])
         deck2, call = _ask(llm, ctx, run_id, log)
         calls.append(call)
-        found2, code2 = check(deck2)
+        found2, code2 = check(fill_from_outline(deck2, lecture.get("outline") or []))
         keep = len(errors(found2)) <= len(errors(found))
         log(f"  [{PID} after review] code-check errors {len(errors(found))} → {len(errors(found2))} {'ACCEPT' if keep else 'REJECT'}")
         if keep:
@@ -231,6 +249,8 @@ def generate_material(run_id: str, lecture_id: str, options: dict | None = None,
     log(f"B lecture material {run_id} {lecture_id}: {brief['topic']} ({brief['hours']:g} h, {len(sources)} sources)")
     deck, call = _ask(llm, ctx, run_id, log)
     calls, author = [call], call["endpoint"]           # author: who wrote the deck that is kept
+    outline_parts = lecture.get("outline") or []
+    fill_from_outline(deck, outline_parts)
     found, code = check(deck)
     log(f"  [{PID}] checks: {len(errors(found))} errors, {len(found) - len(errors(found))} warnings")
     for rnd in range(1, c["deck"]["repair_rounds"] + 1):
@@ -240,7 +260,7 @@ def generate_material(run_id: str, lecture_id: str, options: dict | None = None,
                            if x["severity"] == "error"] + [p for p in ctx["problems"] if p["code"] == "PROFESSOR"]
         deck2, call = _ask(llm, ctx, run_id, log)
         calls.append(call)
-        found2, code2 = check(deck2)
+        found2, code2 = check(fill_from_outline(deck2, outline_parts))
         keep = len(errors(found2)) < len(errors(found))
         log(f"  [{PID} repair {rnd}] errors {len(errors(found))} → {len(errors(found2))} {'ACCEPT' if keep else 'REJECT'}")
         if keep:

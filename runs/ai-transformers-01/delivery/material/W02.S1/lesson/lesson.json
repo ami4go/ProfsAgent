@@ -1,0 +1,1097 @@
+{
+ "lecture_id": "W02.S1",
+ "topic": "Scaled dot-product self-attention and masking",
+ "made_at": "2026-11-05 03:59:20",
+ "plan": {
+  "parts": [
+   {
+    "title": "Motivation and Mathematics of Scaled Dot-Product Attention",
+    "los": [
+     "CO2.LO1"
+    ],
+    "teaches": "Understand why scaling by the square root of the key dimension is required in dot-product attention to prevent vanishing gradients during softmax.",
+    "key_ideas": [
+     "Recap of dot-product attention as a soft dictionary lookup matching Queries (Q) and Keys (K).",
+     "Mathematical issue with unscaled dot products: variance of dot products grows linearly with key dimension d_k.",
+     "Vanishing gradients in softmax when extreme score magnitudes push activations into saturation regions.",
+     "Scaling factor 1/sqrt(d_k) stabilizes the variance of scores back to unit variance.",
+     "The standard matrix form: Attention(Q, K, V) = softmax(Q K^T / sqrt(d_k)) V."
+    ],
+    "example": "For query vector q = [1.0, -1.0, 2.0, 0.0] and key vector k = [2.0, 0.0, 1.0, -1.0] with dimension d_k = 4, the raw dot product is (1*2) + (-1*0) + (2*1) + (0*-1) = 4.0. Dividing by sqrt(4) = 2 rescales the raw score from 4.0 down to 2.0 before feeding it to softmax.",
+    "minutes": 10
+   },
+   {
+    "title": "Causal Masking and Step-by-Step Matrix Computation",
+    "los": [
+     "CO2.LO1"
+    ],
+    "teaches": "Perform manual matrix calculations for scaled dot-product attention with causal masking to preserve the autoregressive property.",
+    "key_ideas": [
+     "The autoregressive constraint in decoders: preventing attention to future token positions.",
+     "Constructing a lower-triangular causal mask matrix.",
+     "Masking illegal future positions by substituting score values with -infinity prior to softmax.",
+     "Softmax behavior on -infinity inputs resulting in exact zero attention probability weights.",
+     "Step-by-step matrix calculation of attention output from masked probabilities and Value vectors."
+    ],
+    "example": "Let Q K^T / sqrt(d_k) for a 2-token sequence produce score matrix [[2.0, 4.0], [2.0, 4.0]]. Applying a causal mask sets illegal position (1,2) to -inf, yielding [[2.0, -inf], [2.0, 4.0]]. Taking softmax per row gives attention weights [[1.0, 0.0], [0.12, 0.88]]. Multiplying by V = [[1.0, 0.0], [0.0, 1.0]] produces the final output matrix [[1.0, 0.0], [0.12, 0.88]].",
+    "minutes": 10
+   },
+   {
+    "title": "Vectorized PyTorch Implementation of Scaled Dot-Product Attention",
+    "los": [
+     "CO2.LO1"
+    ],
+    "teaches": "Implement vectorized batch scaled dot-product attention with causal masking efficiently using tensor operations in PyTorch.",
+    "key_ideas": [
+     "Tensor representations and shapes for query, key, and value matrices in batched operations.",
+     "Matrix multiplication via torch.matmul and key transpositions with transpose(-2, -1).",
+     "Applying causal mask efficiently using scores.masked_fill(mask == 0, -1e9).",
+     "Normalizing attention probabilities across token dimensions using scores.softmax(dim=-1).",
+     "Multiplying attention probability weights by values tensor to get final contextual representations."
+    ],
+    "example": "Tracing PyTorch code: Given query tensor of shape (1, 3, 4) and d_k = 4, compute scores = torch.matmul(query, key.transpose(-2, -1)) / math.sqrt(4) yielding shape (1, 3, 3). Execute scores.masked_fill(mask == 0, -1e9) to set upper-triangular scores to -1e9. Compute p_attn = scores.softmax(dim=-1) where -1e9 entries become 0.0, and return torch.matmul(p_attn, value) of shape (1, 3, 4).",
+    "minutes": 10
+   }
+  ]
+ },
+ "plan_findings": [],
+ "parts": [
+  {
+   "n": 1,
+   "title": "Motivation and Mathematics of Scaled Dot-Product Attention",
+   "teaches": "Understand why scaling by the square root of the key dimension is required in dot-product attention to prevent vanishing gradients during softmax.",
+   "key_ideas": [
+    "Recap of dot-product attention as a soft dictionary lookup matching Queries (Q) and Keys (K).",
+    "Mathematical issue with unscaled dot products: variance of dot products grows linearly with key dimension d_k.",
+    "Vanishing gradients in softmax when extreme score magnitudes push activations into saturation regions.",
+    "Scaling factor 1/sqrt(d_k) stabilizes the variance of scores back to unit variance.",
+    "The standard matrix form: Attention(Q, K, V) = softmax(Q K^T / sqrt(d_k)) V."
+   ],
+   "example": "For query vector q = [1.0, -1.0, 2.0, 0.0] and key vector k = [2.0, 0.0, 1.0, -1.0] with dimension d_k = 4, the raw dot product is (1*2) + (-1*0) + (2*1) + (0*-1) = 4.0. Dividing by sqrt(4) = 2 rescales the raw score from 4.0 down to 2.0 before feeding it to softmax.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "minutes": 10,
+   "dir": "material/W02.S1/lesson/part_1",
+   "slides": 16,
+   "teaching_slides": 6,
+   "quiz": [
+    {
+     "question": "Why is scaling by 1/sqrt(d_k) necessary in dot-product attention when key dimensions d_k are large?",
+     "options": [
+      "It reduces the time complexity of matrix multiplication from quadratic to linear.",
+      "It prevents softmax saturation and vanishing gradients by stabilizing score variance.",
+      "It guarantees that query and key matrices have matching spatial dimensions.",
+      "It eliminates the need to compute post-attention softmax probability distributions."
+     ],
+     "answer": 1,
+     "explanation": "Scaling by 1/sqrt(d_k) keeps the variance of score inputs to softmax at unit variance regardless of vector dimension d_k. This prevents extreme input magnitudes that push softmax into saturated regions where gradients vanish. Option 0 is wrong because scaling does not change matrix multiplication time complexity."
+    },
+    {
+     "question": "Suppose a query vector q and key vector k have dimension d_k = 16, and their raw unscaled dot product q^T k is 12.0. What is the scaled score passed to softmax?",
+     "options": [
+      "0.75",
+      "3.0",
+      "4.0",
+      "48.0"
+     ],
+     "answer": 1,
+     "explanation": "The scaled score is computed by dividing the raw dot product (12.0) by sqrt(d_k) = sqrt(16) = 4. Thus, 12.0 / 4 = 3.0. Option 2 is incorrect because 4 is the square root scale factor itself, not the resulting scaled score."
+    },
+    {
+     "question": "Which statement accurately distinguishes the role of scaling by 1/sqrt(d_k) from the role of softmax in attention?",
+     "options": [
+      "Scaling normalizes scores into a probability distribution summing to one, while softmax stabilizes variance.",
+      "Scaling is a pre-softmax variance control step, whereas softmax normalizes scaled scores into probabilities.",
+      "Scaling replaces softmax for high-dimensional vectors to avoid computing exponentials altogether.",
+      "Scaling is applied after softmax to re-weight the values vector matrix V."
+     ],
+     "answer": 1,
+     "explanation": "Scaling by 1/sqrt(d_k) stabilizes score variance before softmax, preventing extreme inputs. Softmax then converts these scaled real-valued scores into a probability distribution over keys. Option 0 reverses their roles."
+    }
+   ],
+   "narration_words": 961,
+   "narration_minutes": 6.4,
+   "passages": [
+    "C2#54",
+    "C2#68",
+    "C2#69",
+    "C3#10",
+    "C3#11",
+    "C4#11",
+    "C4#12",
+    "C4#13"
+   ],
+   "errors": 0,
+   "warnings": 0,
+   "findings": [],
+   "code_checks": [],
+   "narration": {
+    "voice": "Piper en_US-lessac-medium",
+    "engine": "Piper + PowerPoint",
+    "slides": 16,
+    "minutes": 10.4,
+    "animated_slides": [
+     3
+    ],
+    "files": {
+     "deck": "slides_narrated.pptx",
+     "audio": "narration/",
+     "video": "slides_narrated.mp4"
+    },
+    "per_slide_seconds": [
+     12.2,
+     41.0,
+     62.8,
+     58.1,
+     60.6,
+     62.5,
+     59.9,
+     55.3,
+     28.0,
+     32.4,
+     27.1,
+     22.8,
+     21.3,
+     37.2,
+     23.4,
+     2.6
+    ]
+   },
+   "teaching": {
+    "slides": [
+     {
+      "title": "Why Do We Scale Dot-Product Attention?",
+      "bullets": [
+       "Queries match keys to select values",
+       "Dot product measures similarity score",
+       "Softmax turns scores into weights"
+      ],
+      "figure": {
+       "kind": "flow",
+       "caption": "",
+       "steps": [
+        "Query & Key Vectors",
+        "Unscaled Dot Product",
+        "Softmax Activation",
+        "Weighted Sum of Values"
+       ],
+       "code": "",
+       "language": "",
+       "rows": []
+      },
+      "narration": "Welcome to part one of our lesson on transformer attention mechanisms. In previous sessions, you learned that attention acts like a soft dictionary lookup where queries match against keys to retrieve values. But have you ever wondered why every transformer implementation divides the dot product scores by the square root of the key dimension? In this video, we will answer that exact question. We'll explore the mathematical instability that happens when vector dimensions grow, and why unscaled dot products break backpropagation. When a query vector interacts with key vectors, we compute dot products to quantify similarity. These raw scores are then passed into a softmax function, which converts them into probability weights that sum to one. Finally, we multiply these weights by the value vectors to construct our context representation. While this concept is simple, using raw dot products directly leads to severe training bottlenecks in high-dimensional spaces. Let's break down the underlying mathematical cause step by step so you can build intuitive confidence in transformer architecture design.",
+      "refs": [
+       "C3#10",
+       "C4#11"
+      ]
+     },
+     {
+      "title": "What Happens When Key Dimensions Grow Large?",
+      "bullets": [
+       "Independent components with unit variance",
+       "Summing d_k random variables",
+       "Variance scales linearly with d_k"
+      ],
+      "figure": {
+       "kind": "none",
+       "caption": "",
+       "steps": [],
+       "code": "",
+       "language": "",
+       "rows": []
+      },
+      "narration": "To understand why unscaled dot products fail in high dimensions, let's examine the statistics of vector multiplication. Suppose the components of your query vector q and key vector k are independent random variables, each having a mean of zero and a variance of one. The dot product between q and k is computed by summing the elementwise products across all d k dimensions. Since each component product has a mean of zero and a variance of one, summing d k of these terms yields a total sum with a mean of zero, but a variance of d k. Notice what this means for your model as vector dimensions scale up. If your key dimension d k is 64, the variance of the raw dot product jumps to 64, which means typical score magnitudes can easily reach positive or negative eight. If d k is 512, variance hits 512. As d k grows larger, raw dot products spread farther from zero, producing massive score magnitudes before softmax even gets applied.",
+      "refs": [
+       "C3#11",
+       "C2#54",
+       "C4#13"
+      ]
+     },
+     {
+      "title": "The Vanishing Gradient Trap in Softmax",
+      "bullets": [
+       "Large inputs push softmax to extremes",
+       "Output approaches one-hot distribution",
+       "Gradients vanish during backpropagation"
+      ],
+      "figure": {
+       "kind": "none",
+       "caption": "",
+       "steps": [],
+       "code": "",
+       "language": "",
+       "rows": []
+      },
+      "narration": "Now, why are huge score magnitudes such a massive problem? The answer lies in how the softmax function behaves when fed extreme inputs. Softmax exponentiates each input score and normalizes the results. When score magnitudes become very large, exponentiation drastically amplifies small differences between scores. As a result, the largest score receives a softmax output probability extremely close to one, while all other scores are pushed nearly to zero. In effect, softmax saturates and begins acting almost like a hard max function. When softmax saturates, its mathematical derivative drops to near zero across almost all inputs. During backpropagation, gradients flowing backward through the attention layer get multiplied by these tiny derivatives. This creates the infamous vanishing gradient problem, where weight updates freeze and the model stops learning effectively. Without controlling the variance of input scores, deep transformer networks with high key dimensions become nearly impossible to train using gradient descent.",
+      "refs": [
+       "C3#11",
+       "C4#12"
+      ]
+     },
+     {
+      "title": "Stabilizing Scores with Square Root Scaling",
+      "bullets": [
+       "Divide scores by square root of d_k",
+       "Rescales variance back to unit variance",
+       "Standard matrix equation for attention"
+      ],
+      "figure": {
+       "kind": "table",
+       "caption": "",
+       "steps": [],
+       "code": "",
+       "language": "",
+       "rows": [
+        [
+         "Score Variance",
+         "d_k",
+         "1.0"
+        ],
+        [
+         "Softmax Regime",
+         "Saturates (Extreme)",
+         "Stable (Unit Variance)"
+        ],
+        [
+         "Gradient Flow",
+         "Vanishing Gradients",
+         "Healthy Backpropagation"
+        ]
+       ]
+      },
+      "narration": "To solve the vanishing gradient issue, Vaswani and team introduced scaled dot-product attention. The core idea is remarkably elegant: we divide every raw dot product by the square root of d k. Mathematically, if a random variable has a variance equal to d k, dividing that variable by the square root of d k scales its variance back down to exactly one. This ensures that regardless of whether your key dimension is 64, 512, or larger, the input scores entering softmax always maintain unit variance. In standard matrix notation, we write this complete operation as: attention of Q, K, and V equals the softmax of Q K transpose divided by the square root of d k, multiplied by V. Here, Q contains all query vectors, K contains all key vectors, and V contains all value vectors. By rescaling the matrix product of Q and K transpose before applying softmax, we maintain healthy gradients across arbitrarily large vector dimensions while preserving fast GPU matrix operations.",
+      "refs": [
+       "C3#10",
+       "C2#54",
+       "C2#69",
+       "C4#11"
+      ]
+     },
+     {
+      "title": "Walking Through a Numerical Example",
+      "bullets": [
+       "Vectors q and k with dimension d_k = 4",
+       "Raw dot product equals 4.0",
+       "Scaled score divides raw score by 2.0"
+      ],
+      "figure": {
+       "kind": "table",
+       "caption": "",
+       "steps": [],
+       "code": "",
+       "language": "",
+       "rows": [
+        [
+         "Raw Dot Product",
+         "(1*2) + (-1*0) + (2*1) + (0*-1)",
+         "4.0"
+        ],
+        [
+         "Scaling Factor",
+         "sqrt(d_k) = sqrt(4)",
+         "2.0"
+        ],
+        [
+         "Scaled Score",
+         "4.0 / 2.0",
+         "2.0"
+        ]
+       ]
+      },
+      "narration": "Let me walk you through a concrete numerical example so you can see this scaling mechanism in action. Imagine we have a four-dimensional setup where d k equals 4. Our query vector q is one, negative one, two, zero, and our key vector k is two, zero, one, negative one. First, let's compute the raw unscaled dot product. We multiply corresponding components and sum them up: one times two gives two, plus negative one times zero which is zero, plus two times one which is two, plus zero times negative one which is zero. Summing two plus zero plus two plus zero gives a raw dot product of 4.0. Next, we determine our scale factor, which is the square root of d k. Since d k is 4, the square root of 4 is 2.0. Finally, we divide our raw score of 4.0 by 2.0, giving a scaled score of 2.0. Notice how scaling reduces the magnitude from four down to two, preventing extreme inputs when we feed it into softmax.",
+      "refs": [
+       "C3#10",
+       "C2#54"
+      ]
+     },
+     {
+      "title": "Misconception: Scaling Is Not Probability Normalization",
+      "bullets": [
+       "Scaling adjusts variance before softmax",
+       "Softmax handles probability normalization",
+       "Division by square root of d_k is fixed"
+      ],
+      "figure": {
+       "kind": "none",
+       "caption": "",
+       "steps": [],
+       "code": "",
+       "language": "",
+       "rows": []
+      },
+      "narration": "Before we recap, let's address a common misconception that often trips up students on exams. A frequent mistake is assuming that scaling by the square root of d k is a substitute for probability normalization or that it turns scores into probabilities. That is incorrect. Scaling by the square root of d k is purely a variance stabilization step performed before softmax. It rescales the distribution of raw dot product magnitudes so that they don't grow with dimension size. Softmax is still entirely required afterward to convert those scaled real-valued scores into non-negative probabilities that sum to one across keys. Do not confuse pre-softmax score scaling with post-softmax probability normalization! Scaling regulates numerical variance and gradient magnitude, while softmax provides the probability distribution needed to weight the value vectors. Both steps serve distinct, vital roles in the attention pipeline.",
+      "refs": [
+       "C3#10",
+       "C2#54",
+       "C4#12"
+      ]
+     }
+    ],
+    "quiz": [
+     {
+      "question": "Why is scaling by 1/sqrt(d_k) necessary in dot-product attention when key dimensions d_k are large?",
+      "options": [
+       "It reduces the time complexity of matrix multiplication from quadratic to linear.",
+       "It prevents softmax saturation and vanishing gradients by stabilizing score variance.",
+       "It guarantees that query and key matrices have matching spatial dimensions.",
+       "It eliminates the need to compute post-attention softmax probability distributions."
+      ],
+      "answer": 1,
+      "explanation": "Scaling by 1/sqrt(d_k) keeps the variance of score inputs to softmax at unit variance regardless of vector dimension d_k. This prevents extreme input magnitudes that push softmax into saturated regions where gradients vanish. Option 0 is wrong because scaling does not change matrix multiplication time complexity."
+     },
+     {
+      "question": "Suppose a query vector q and key vector k have dimension d_k = 16, and their raw unscaled dot product q^T k is 12.0. What is the scaled score passed to softmax?",
+      "options": [
+       "0.75",
+       "3.0",
+       "4.0",
+       "48.0"
+      ],
+      "answer": 1,
+      "explanation": "The scaled score is computed by dividing the raw dot product (12.0) by sqrt(d_k) = sqrt(16) = 4. Thus, 12.0 / 4 = 3.0. Option 2 is incorrect because 4 is the square root scale factor itself, not the resulting scaled score."
+     },
+     {
+      "question": "Which statement accurately distinguishes the role of scaling by 1/sqrt(d_k) from the role of softmax in attention?",
+      "options": [
+       "Scaling normalizes scores into a probability distribution summing to one, while softmax stabilizes variance.",
+       "Scaling is a pre-softmax variance control step, whereas softmax normalizes scaled scores into probabilities.",
+       "Scaling replaces softmax for high-dimensional vectors to avoid computing exponentials altogether.",
+       "Scaling is applied after softmax to re-weight the values vector matrix V."
+      ],
+      "answer": 1,
+      "explanation": "Scaling by 1/sqrt(d_k) stabilizes score variance before softmax, preventing extreme inputs. Softmax then converts these scaled real-valued scores into a probability distribution over keys. Option 0 reverses their roles."
+     }
+    ],
+    "recap": "In this part, we learned that unscaled dot products have a variance that grows linearly with key dimension d_k, causing softmax saturation and vanishing gradients during training. Dividing raw dot products by the square root of d_k rescales score variance back to unit variance, enabling stable gradient flow. This gives us the standard formula: attention of Q, K, and V equals softmax of Q K transpose divided by the square root of d_k, multiplied by V."
+   }
+  },
+  {
+   "n": 2,
+   "title": "Causal Masking and Step-by-Step Matrix Computation",
+   "teaches": "Perform manual matrix calculations for scaled dot-product attention with causal masking to preserve the autoregressive property.",
+   "key_ideas": [
+    "The autoregressive constraint in decoders: preventing attention to future token positions.",
+    "Constructing a lower-triangular causal mask matrix.",
+    "Masking illegal future positions by substituting score values with -infinity prior to softmax.",
+    "Softmax behavior on -infinity inputs resulting in exact zero attention probability weights.",
+    "Step-by-step matrix calculation of attention output from masked probabilities and Value vectors."
+   ],
+   "example": "Let Q K^T / sqrt(d_k) for a 2-token sequence produce score matrix [[2.0, 4.0], [2.0, 4.0]]. Applying a causal mask sets illegal position (1,2) to -inf, yielding [[2.0, -inf], [2.0, 4.0]]. Taking softmax per row gives attention weights [[1.0, 0.0], [0.12, 0.88]]. Multiplying by V = [[1.0, 0.0], [0.0, 1.0]] produces the final output matrix [[1.0, 0.0], [0.12, 0.88]].",
+   "los": [
+    "CO2.LO1"
+   ],
+   "minutes": 10,
+   "dir": "material/W02.S1/lesson/part_2",
+   "slides": 16,
+   "teaching_slides": 6,
+   "quiz": [
+    {
+     "question": "Why is the causal mask applied to the attention scores prior to the softmax operation rather than afterward?",
+     "options": [
+      "To enable matrix multiplication with Value vectors of differing inner dimensions.",
+      "To ensure illegal connections become zero while remaining legal positions renormalize to sum to 1.0.",
+      "To convert the attention score matrix into a symmetric positive-definite matrix.",
+      "To avoid computing dot products between query vectors and future key vectors."
+     ],
+     "answer": 1,
+     "explanation": "Injecting negative infinity before softmax ensures e^(-inf) = 0, which makes future weights zero and renormalizes the remaining legal positions so their sum equals 1.0. Zeroing weights post-softmax leaves a row sum strictly less than 1.0, distorting representation magnitudes."
+    },
+    {
+     "question": "For a 3-token sequence, after scaling Q K^T, the first row of scores is [3.0, 5.0, 1.0]. What are the masked attention weights for token 1?",
+     "options": [
+      "[0.33, 0.33, 0.33]",
+      "[0.12, 0.0, 0.0]",
+      "[1.0, 0.0, 0.0]",
+      "[0.0, 0.88, 0.12]"
+     ],
+     "answer": 2,
+     "explanation": "Token 1 at position 1 can only attend to position 1. Positions 2 and 3 are set to -infinity, resulting in masked scores [3.0, -inf, -inf]. Softmax yields e^3 / (e^3 + 0 + 0) = 1.0 for position 1 and 0.0 for positions 2 and 3."
+    },
+    {
+     "question": "What happens to the output representation if a developer sets illegal future weights to 0.0 after running standard softmax?",
+     "options": [
+      "The model crashes due to a division by zero error in the dot-product computation.",
+      "The attention weights fail to sum to 1.0, causing an unintended shrinkage of the output vector norm.",
+      "The causal mask is inverted, causing tokens to only attend to future positions.",
+      "The Value matrix becomes singular and cannot be inverted during backpropagation."
+     ],
+     "answer": 1,
+     "explanation": "If probabilities are zeroed after softmax without renormalization, the row sum equals only the probability assigned to past tokens, which is strictly less than 1.0. This artificially dampens the scale of the resulting output vector."
+    }
+   ],
+   "narration_words": 950,
+   "narration_minutes": 6.3,
+   "passages": [
+    "C2#55",
+    "C2#73",
+    "C2#86",
+    "C3#12",
+    "C3#14",
+    "C3#15",
+    "C4#16",
+    "C5#10"
+   ],
+   "errors": 0,
+   "warnings": 0,
+   "findings": [],
+   "code_checks": [],
+   "narration": {
+    "voice": "Piper en_US-lessac-medium",
+    "engine": "Piper + PowerPoint",
+    "slides": 16,
+    "minutes": 10.0,
+    "animated_slides": [
+     3
+    ],
+    "files": {
+     "deck": "slides_narrated.pptx",
+     "audio": "narration/",
+     "video": "slides_narrated.mp4"
+    },
+    "per_slide_seconds": [
+     12.3,
+     34.1,
+     54.0,
+     57.8,
+     57.5,
+     62.4,
+     55.3,
+     54.8,
+     23.7,
+     30.7,
+     25.9,
+     32.3,
+     23.3,
+     34.0,
+     21.4,
+     2.6
+    ]
+   },
+   "teaching": {
+    "slides": [
+     {
+      "title": "Why Decoders Require Causal Masking",
+      "bullets": [
+       "Autoregressive generation generates tokens sequentially",
+       "Preventing leftward information flow",
+       "Unmasked self-attention leaks future context"
+      ],
+      "figure": {
+       "kind": "flow",
+       "caption": "",
+       "steps": [
+        "Token t Query",
+        "Attend to tokens 1 to t",
+        "Block tokens t+1 to T",
+        "Next-token prediction"
+       ],
+       "code": "",
+       "language": "",
+       "rows": []
+      },
+      "narration": "In part one, we mastered the core mathematics of scaled dot-product attention, seeing how queries and keys interact across an entire sequence simultaneously. But that poses an immediate dilemma when we build an autoregressive decoder. In language generation, text unfolds one token at a time from left to right. When the model predicts the token at position two, it cannot be allowed to peek at position three or four. If we simply compute standard bidirectional self-attention as we did earlier, every position will look ahead into the future representations, trivializing training and breaking the autoregressive contract. We call this unwanted leak leftward information flow. To fix this while retaining parallel GPU computation during training, we must enforce a causal constraint. Each position in the decoder should only be allowed to attend to positions up to and including itself. Let us explore the mechanism that enforces this boundary: the causal mask.",
+      "refs": [
+       "C3#14",
+       "C4#16"
+      ]
+     },
+     {
+      "title": "Constructing the Pre-Softmax Causal Mask",
+      "bullets": [
+       "Lower-triangular structure",
+       "Valid positions retained",
+       "Illegal future positions set to -infinity",
+       "Applied directly to raw scaled scores"
+      ],
+      "figure": {
+       "kind": "table",
+       "caption": "",
+       "steps": [],
+       "code": "",
+       "language": "",
+       "rows": [
+        [
+         "Pos 1",
+         "Keep score",
+         "Set to -inf"
+        ],
+        [
+         "Pos 2",
+         "Keep score",
+         "Keep score"
+        ]
+       ]
+      },
+      "narration": "How do we structurally prohibit attention to future tokens without throwing away matrix parallelism? We construct a causal mask matrix matching the shape of our query-key dot products. Consider a sequence of length T. The allowed interactions form a lower-triangular matrix, including the main diagonal. For row index i and column index j, if j is less than or equal to i, the token is attending to past positions or itself, which is entirely legal. However, whenever j exceeds i, that represents an illegal query into the future. Instead of dropping rows or running sequential loops, we intercept the raw attention scores right after dividing query times key transpose by the square root of d k, but strictly before evaluating softmax. At every illegal position where j is greater than i, we overwrite the score with negative infinity. As you will see next, setting these values to negative infinity before exponentiation is mathematically crucial for preserving valid probability distributions.",
+      "refs": [
+       "C3#14",
+       "C4#16",
+       "C2#73"
+      ]
+     },
+     {
+      "title": "Softmax Behavior with Negative Infinity",
+      "bullets": [
+       "Exponentiation of -infinity approaches zero",
+       "Zero numerator yields zero weight",
+       "Remaining probabilities renormalize cleanly",
+       "Preserves strict probability distribution"
+      ],
+      "figure": {
+       "kind": "none",
+       "caption": "",
+       "steps": [],
+       "code": "",
+       "language": "",
+       "rows": []
+      },
+      "narration": "Let us examine why negative infinity is the exact tool we need. Recall that the softmax function operates row by row. For a given score, softmax takes e raised to that score and divides it by the sum of e raised to each score across the row. When we substitute negative infinity into an illegal future entry, e raised to negative infinity evaluates strictly to zero. Consequently, that illegal connection contributes zero to the row's denominator sum, and its numerator is zero, driving the resulting attention probability weight exactly to zero. Meanwhile, the legal positions with finite real scores compute their usual exponential values. Because the denominator now sums exclusively over the legal positions, the surviving entries automatically renormalize so that their attention probabilities sum precisely to one. This guarantees that future tokens exert absolutely zero influence on the current token, cleanly preserving autoregression without altering the core attention architecture.",
+      "refs": [
+       "C3#14",
+       "C4#16",
+       "C2#55"
+      ]
+     },
+     {
+      "title": "Worked Example: Calculating Masked Attention Weights",
+      "bullets": [
+       "Raw scaled scores: [[2.0, 4.0], [2.0, 4.0]]",
+       "Masked scores: [[2.0, -inf], [2.0, 4.0]]",
+       "Row 1 softmax: [1.0, 0.0]",
+       "Row 2 softmax: [0.12, 0.88]"
+      ],
+      "figure": {
+       "kind": "table",
+       "caption": "",
+       "steps": [],
+       "code": "",
+       "language": "",
+       "rows": [
+        [
+         "Scaled QK^T",
+         "[2.0, 4.0]",
+         "[2.0, 4.0]"
+        ],
+        [
+         "Apply Mask",
+         "[2.0, -inf]",
+         "[2.0, 4.0]"
+        ],
+        [
+         "Softmax Weights",
+         "[1.0, 0.0]",
+         "[0.12, 0.88]"
+        ]
+       ]
+      },
+      "narration": "Now let us work through our example step by step using real numbers. Suppose we process a two-token sequence where the query-key dot products divided by the square root of d k give a two-by-two matrix with row one having scores two point zero and four point zero, and row two also having two point zero and four point zero. Position one cannot look at position two. So we apply our causal mask to entry row one, column two, turning four point zero into negative infinity. Row two is completely legal, so it stays two point zero and four point zero. Now we compute the row-wise softmax. For row one, e to the second power divided by e to the second power plus e to negative infinity simplifies to e squared over e squared plus zero, which equals exactly one point zero for token one, and zero point zero for token two. For row two, both positions are valid: e squared is approximately seven point three nine, and e to the fourth is approximately fifty-four point six. Normalizing gives twelve hundredths for position one and eighty-eight hundredths for position two.",
+      "refs": [
+       "C3#14",
+       "C5#10"
+      ]
+     },
+     {
+      "title": "Worked Example: Output from Value Vectors",
+      "bullets": [
+       "Value matrix V: [[1.0, 0.0], [0.0, 1.0]]",
+       "Row 1: 1.0 * v1 + 0.0 * v2",
+       "Row 2: 0.12 * v1 + 0.88 * v2",
+       "Attention output: [[1.0, 0.0], [0.12, 0.88]]"
+      ],
+      "figure": {
+       "kind": "none",
+       "caption": "",
+       "steps": [],
+       "code": "",
+       "language": "",
+       "rows": []
+      },
+      "narration": "With the attention weight matrix established as row one having one point zero and zero point zero, and row two having twelve hundredths and eighty-eight hundredths, the final step is multiplying this matrix by our Value matrix V. Let V have row one as one point zero, zero point zero, and row two as zero point zero, one point zero. For the first token's output representation, we take one point zero times vector one plus zero point zero times vector two. That yields the vector one point zero, zero point zero. Notice that position one's output contains absolutely no information from the second token's value vector. For the second token, the output is twelve hundredths times vector one plus eighty-eight hundredths times vector two, producing the vector twelve hundredths, eighty-eight hundredths. Position two blends both tokens according to its learned attention scores. We have successfully maintained the autoregressive constraint through straightforward matrix arithmetic.",
+      "refs": [
+       "C2#73",
+       "C3#12"
+      ]
+     },
+     {
+      "title": "A Fatal Misconception: Post-Softmax Zeroing",
+      "bullets": [
+       "Pre-softmax mask: injects -infinity",
+       "Post-softmax zeroing: zeros raw probabilities",
+       "Violation: row sum falls below 1.0",
+       "Distorts output vector scale"
+      ],
+      "figure": {
+       "kind": "table",
+       "caption": "",
+       "steps": [],
+       "code": "",
+       "language": "",
+       "rows": [
+        [
+         "Pre-Softmax (-inf)",
+         "[1.0, 0.0]",
+         "1.0 (Valid)"
+        ],
+        [
+         "Post-Softmax Zero",
+         "[0.12, 0.0]",
+         "0.12 (Invalid)"
+        ]
+       ]
+      },
+      "narration": "A common mistake when students implement causal attention is trying to zero out illegal positions after computing the softmax rather than before. Let us see why that breaks the model. In our example, if you took the unmasked softmax of row one with scores two point zero and four point zero, the resulting weights would be roughly twelve hundredths and eighty-eight hundredths. If you then manually zeroed position two to prevent cheating, row one would be twelve hundredths and zero point zero. The probabilities now sum to only twelve hundredths, not one point zero. When multiplied by the values, the output vector's magnitude collapses to twelve percent of its expected norm. Softmax represents a convex combination of value vectors. By setting pre-softmax logits to negative infinity instead, the remaining legal weights properly expand and renormalize to sum to one point zero, preserving both gradient stability and numerical fidelity.",
+      "refs": [
+       "C3#14",
+       "C2#55"
+      ]
+     }
+    ],
+    "quiz": [
+     {
+      "question": "Why is the causal mask applied to the attention scores prior to the softmax operation rather than afterward?",
+      "options": [
+       "To enable matrix multiplication with Value vectors of differing inner dimensions.",
+       "To ensure illegal connections become zero while remaining legal positions renormalize to sum to 1.0.",
+       "To convert the attention score matrix into a symmetric positive-definite matrix.",
+       "To avoid computing dot products between query vectors and future key vectors."
+      ],
+      "answer": 1,
+      "explanation": "Injecting negative infinity before softmax ensures e^(-inf) = 0, which makes future weights zero and renormalizes the remaining legal positions so their sum equals 1.0. Zeroing weights post-softmax leaves a row sum strictly less than 1.0, distorting representation magnitudes."
+     },
+     {
+      "question": "For a 3-token sequence, after scaling Q K^T, the first row of scores is [3.0, 5.0, 1.0]. What are the masked attention weights for token 1?",
+      "options": [
+       "[0.33, 0.33, 0.33]",
+       "[0.12, 0.0, 0.0]",
+       "[1.0, 0.0, 0.0]",
+       "[0.0, 0.88, 0.12]"
+      ],
+      "answer": 2,
+      "explanation": "Token 1 at position 1 can only attend to position 1. Positions 2 and 3 are set to -infinity, resulting in masked scores [3.0, -inf, -inf]. Softmax yields e^3 / (e^3 + 0 + 0) = 1.0 for position 1 and 0.0 for positions 2 and 3."
+     },
+     {
+      "question": "What happens to the output representation if a developer sets illegal future weights to 0.0 after running standard softmax?",
+      "options": [
+       "The model crashes due to a division by zero error in the dot-product computation.",
+       "The attention weights fail to sum to 1.0, causing an unintended shrinkage of the output vector norm.",
+       "The causal mask is inverted, causing tokens to only attend to future positions.",
+       "The Value matrix becomes singular and cannot be inverted during backpropagation."
+      ],
+      "answer": 1,
+      "explanation": "If probabilities are zeroed after softmax without renormalization, the row sum equals only the probability assigned to past tokens, which is strictly less than 1.0. This artificially dampens the scale of the resulting output vector."
+     }
+    ],
+    "recap": "In this part, we saw how causal masking enforces the autoregressive constraint in decoders by substituting negative infinity into future score positions before softmax. This guarantees that illegal connections evaluate to zero probability while surviving tokens properly renormalize to sum to one. Multiplying these masked weights by the Value matrix yields causal output representations in parallel."
+   }
+  },
+  {
+   "n": 3,
+   "title": "Vectorized PyTorch Implementation of Scaled Dot-Product Attention",
+   "teaches": "Implement vectorized batch scaled dot-product attention with causal masking efficiently using tensor operations in PyTorch.",
+   "key_ideas": [
+    "Tensor representations and shapes for query, key, and value matrices in batched operations.",
+    "Matrix multiplication via torch.matmul and key transpositions with transpose(-2, -1).",
+    "Applying causal mask efficiently using scores.masked_fill(mask == 0, -1e9).",
+    "Normalizing attention probabilities across token dimensions using scores.softmax(dim=-1).",
+    "Multiplying attention probability weights by values tensor to get final contextual representations."
+   ],
+   "example": "Tracing PyTorch code: Given query tensor of shape (1, 3, 4) and d_k = 4, compute scores = torch.matmul(query, key.transpose(-2, -1)) / math.sqrt(4) yielding shape (1, 3, 3). Execute scores.masked_fill(mask == 0, -1e9) to set upper-triangular scores to -1e9. Compute p_attn = scores.softmax(dim=-1) where -1e9 entries become 0.0, and return torch.matmul(p_attn, value) of shape (1, 3, 4).",
+   "los": [
+    "CO2.LO1"
+   ],
+   "minutes": 10,
+   "dir": "material/W02.S1/lesson/part_3",
+   "slides": 16,
+   "teaching_slides": 6,
+   "quiz": [
+    {
+     "question": "Why is key.transpose(-2, -1) preferred over key.transpose(1, 2) when implementing attention key transposition in PyTorch?",
+     "options": [
+      "It automatically performs scaling by the square root of d_k during transposition.",
+      "It operates on the last two dimensions, ensuring compatibility with both 3D and 4D multi-head tensors.",
+      "It replaces masked future positions with negative infinity without requiring masked_fill.",
+      "It transposes the batch dimension with the feature dimension to speed up GPU memory access."
+     ],
+     "answer": 1,
+     "explanation": "Using negative indexing transpose(-2, -1) dynamically selects the last two dimensions (sequence length and d_k), making the code work seamlessly for 3D tensors (batch, seq, d_k) and 4D multi-head tensors (batch, heads, seq, d_k). Hardcoding transpose(1, 2) fails on 4D tensors because index 1 is the head dimension, not sequence length."
+    },
+    {
+     "question": "In a batched attention operation, given a Query tensor of shape (1, 3, 4), Key tensor of shape (1, 3, 4), and Value tensor of shape (1, 3, 4), what are the shapes of the attention weights p_attn and the final output tensor respectively?",
+     "options": [
+      "p_attn has shape (1, 4, 4) and final output has shape (1, 3, 3).",
+      "p_attn has shape (1, 3, 4) and final output has shape (1, 3, 4).",
+      "p_attn has shape (1, 3, 3) and final output has shape (1, 3, 4).",
+      "p_attn has shape (1, 3, 3) and final output has shape (1, 4, 4)."
+     ],
+     "answer": 2,
+     "explanation": "torch.matmul(query, key.transpose(-2, -1)) multiplies (1, 3, 4) by (1, 4, 3) yielding p_attn of shape (1, 3, 3). Then torch.matmul(p_attn, value) multiplies (1, 3, 3) by (1, 3, 4) producing a final output tensor of shape (1, 3, 4). Option 1 incorrectly assumes p_attn retains the input embedding shape."
+    },
+    {
+     "question": "What happens if scores.softmax(dim=-2) is used instead of scores.softmax(dim=-1) when computing attention weights?",
+     "options": [
+      "Future positions will retain positive values instead of becoming 0.0 after masking.",
+      "Attention probabilities are normalized across queries per key token instead of across key tokens per query token.",
+      "PyTorch raises a runtime shape mismatch error because dim=-2 is an invalid axis index.",
+      "The softmax values will all become negative one billion (-1e9)."
+     ],
+     "answer": 1,
+     "explanation": "dim=-1 normalizes along the last axis (keys for each query), creating valid probability distributions across key tokens for each input query. Using dim=-2 normalizes along the query axis across queries for each key token, breaking the proper attention distribution per token."
+    }
+   ],
+   "narration_words": 1083,
+   "narration_minutes": 7.2,
+   "passages": [
+    "C2#70",
+    "C2#71",
+    "C2#80",
+    "C3#9",
+    "C4#2",
+    "C4#22",
+    "C4#35",
+    "C5#9"
+   ],
+   "errors": 0,
+   "warnings": 0,
+   "findings": [],
+   "code_checks": [
+    {
+     "slide": 4,
+     "language": "python",
+     "status": "ok",
+     "detail": ""
+    }
+   ],
+   "narration": {
+    "voice": "Piper en_US-lessac-medium",
+    "engine": "Piper + PowerPoint",
+    "slides": 16,
+    "minutes": 11.8,
+    "animated_slides": [
+     5,
+     6
+    ],
+    "files": {
+     "deck": "slides_narrated.pptx",
+     "audio": "narration/",
+     "video": "slides_narrated.mp4"
+    },
+    "per_slide_seconds": [
+     12.8,
+     39.5,
+     65.6,
+     67.7,
+     65.9,
+     67.5,
+     71.8,
+     67.9,
+     26.4,
+     35.3,
+     29.7,
+     45.8,
+     32.2,
+     35.8,
+     24.8,
+     2.7
+    ]
+   },
+   "teaching": {
+    "slides": [
+     {
+      "title": "Tensor Shapes for Batched Self-Attention",
+      "bullets": [
+       "Query & Key shape: (batch_size, seq_len, d_k)",
+       "Value shape: (batch_size, seq_len, d_v)",
+       "Batched operations across batch dimension"
+      ],
+      "figure": {
+       "kind": "table",
+       "caption": "",
+       "steps": [],
+       "code": "",
+       "language": "",
+       "rows": [
+        [
+         "Query (Q)",
+         "(batch_size, seq_len, d_k)",
+         "Token query vectors"
+        ],
+        [
+         "Key (K)",
+         "(batch_size, seq_len, d_k)",
+         "Token key vectors"
+        ],
+        [
+         "Value (V)",
+         "(batch_size, seq_len, d_v)",
+         "Token value vectors"
+        ],
+        [
+         "Scores",
+         "(batch_size, seq_len, seq_len)",
+         "Pairwise compatibility matrix"
+        ]
+       ]
+      },
+      "narration": "Welcome back! In our previous parts, we mastered the mathematical foundation of scaled dot-product attention and derived how causal masking prevents tokens from looking into the future. Now, in this final part, we answer a crucial engineering question: how do we implement this entire pipeline efficiently in PyTorch using vectorized tensor operations? In deep learning, we never process one sequence at a time in a loop. Instead, we bundle multiple sequences into batches. That means our query, key, and value matrices gain a batch dimension. Specifically, the query tensor has shape batch size, sequence length, and key dimension d k. The key tensor shares this exact shape of batch size, sequence length, and d k. The value tensor has shape batch size, sequence length, and value dimension d v. By structuring our data into three-dimensional tensors, PyTorch can run matrix operations for every sequence in the batch simultaneously on GPU hardware. Understanding these tensor dimensions is your key to reading and writing production-grade Transformer code without getting lost in shape errors.",
+      "refs": [
+       "C2#70",
+       "C2#71",
+       "C5#9"
+      ]
+     },
+     {
+      "title": "Computing Scaled Attention Scores via Matrix Multiplication",
+      "bullets": [
+       "Transpose keys with key.transpose(-2, -1)",
+       "Batch matrix multiply via torch.matmul",
+       "Scale scores by dividing math.sqrt(d_k)"
+      ],
+      "figure": {
+       "kind": "code",
+       "caption": "",
+       "steps": [],
+       "code": "d_k = query.size(-1)\n# Swap last two dimensions of key tensor\nkey_T = key.transpose(-2, -1)\n# Batched matrix multiplication & scaling\nscores = torch.matmul(query, key_T) / math.sqrt(d_k)",
+       "language": "python",
+       "rows": []
+      },
+      "narration": "Now that our tensors are shaped correctly, let's calculate the pairwise similarity scores between every query token and key token. Mathematically, we need to multiply the query matrix by the transpose of the key matrix. But in PyTorch, how do we transpose key vectors when there is a batch dimension in front? We use key dot transpose with negative two and negative one. Using negative indices targets the last two dimensions—sequence length and d k—swapping them regardless of how many batch dimensions exist before them. So a key tensor of shape batch size, sequence length, d k becomes batch size, d k, sequence length. Next, we use torch dot matmul to perform batch matrix multiplication. Multiplying shape batch size, sequence length, d k by batch size, d k, sequence length yields a scores tensor of shape batch size, sequence length, sequence length. Finally, we scale these scores by dividing by the square root of d k, which is extracted dynamically as query dot size at index negative one. This scaling prevents dot products from growing excessively large, keeping gradients stable during backpropagation.",
+      "refs": [
+       "C2#70",
+       "C2#71",
+       "C3#9"
+      ]
+     },
+     {
+      "title": "Vectorized Causal Masking with masked_fill",
+      "bullets": [
+       "Mask shape: (1, seq_len, seq_len) lower-triangular",
+       "Zero mask entries indicate forbidden positions",
+       "scores.masked_fill(mask == 0, -1e9)"
+      ],
+      "figure": {
+       "kind": "flow",
+       "caption": "",
+       "steps": [
+        "Raw Scaled Scores",
+        "Compare mask == 0",
+        "Fill True with -1e9",
+        "Causal Masked Scores"
+       ],
+       "code": "",
+       "language": "",
+       "rows": []
+      },
+      "narration": "Once we have our scaled scores tensor, we must enforce causality so that token i cannot attend to any future token j where j is greater than i. In the previous part, we saw that masking conceptually sets future interaction entries to negative infinity. In PyTorch, we execute this efficiently using tensor broadcasting and the masked fill operation. We define a binary mask tensor, typically a lower-triangular matrix of ones with zeros in the upper-triangle. We then call scores dot masked fill, passing the condition mask equals zero and the fill value negative one e nine, representing negative one billion. PyTorch evaluates the boolean condition across all batch elements. Wherever the mask is zero—which corresponds to forbidden future tokens—the score value is instantly replaced with negative one billion. Why do we use negative one billion instead of actual negative infinity? Because negative one billion is a finite floating-point number that avoids numerical instability like NaN values during gradient computation, yet it is so large and negative that its exponential in the softmax function evaluates to exactly zero.",
+      "refs": [
+       "C2#70",
+       "C3#9",
+       "C4#22"
+      ]
+     },
+     {
+      "title": "Softmax Normalization and Value Weighted Sum",
+      "bullets": [
+       "Softmax over key dimension: scores.softmax(dim=-1)",
+       "-1e9 entries map to 0.0 attention weight",
+       "Weighted sum output: torch.matmul(p_attn, value)"
+      ],
+      "figure": {
+       "kind": "flow",
+       "caption": "",
+       "steps": [
+        "Masked Scores",
+        "Softmax(dim=-1)",
+        "Attention Weights (p_attn)",
+        "MatMul with Value Tensor"
+       ],
+       "code": "",
+       "language": "",
+       "rows": []
+      },
+      "narration": "With our causal mask applied, we are ready to turn these raw, masked scores into probability distributions and compute our final contextual embeddings. First, we normalize the scores across the key tokens by calling scores dot softmax with dim equals negative one. Specifying dim equals negative one instructs PyTorch to compute softmax independently along the last dimension of the tensor. This means for each query token in every sequence of the batch, the attention weights across all key tokens sum to one. Crucially, any score that was filled with negative one billion becomes zero point zero after softmax, effectively severing any attention to future tokens. The output of this step, which we call p attn, has shape batch size, sequence length, sequence length. Finally, we multiply p attn by our value tensor using torch dot matmul. Multiplying p attn of shape batch size, sequence length, sequence length by value of shape batch size, sequence length, d v produces our final output tensor of shape batch size, sequence length, d v. Each token now holds a weighted sum of values from allowed past positions.",
+      "refs": [
+       "C2#70",
+       "C3#9"
+      ]
+     },
+     {
+      "title": "Step-by-Step PyTorch Code Execution Trace",
+      "bullets": [
+       "Input query shape: (1, 3, 4), d_k = 4",
+       "MatMul & Scale yields (1, 3, 3) scores",
+       "Masked Fill & Softmax upper triangle set to 0.0",
+       "Output shape: (1, 3, 4) via torch.matmul"
+      ],
+      "figure": {
+       "kind": "table",
+       "caption": "",
+       "steps": [],
+       "code": "",
+       "language": "",
+       "rows": [
+        [
+         "1. Transpose",
+         "key.transpose(-2, -1)",
+         "(1, 4, 3)",
+         "Last 2 dims swapped"
+        ],
+        [
+         "2. MatMul & Scale",
+         "torch.matmul(Q, K_T) / 2.0",
+         "(1, 3, 3)",
+         "Unmasked scaled scores"
+        ],
+        [
+         "3. Masked Fill",
+         "scores.masked_fill(mask==0, -1e9)",
+         "(1, 3, 3)",
+         "Upper triangle is -1e9"
+        ],
+        [
+         "4. Softmax",
+         "scores.softmax(dim=-1)",
+         "(1, 3, 3)",
+         "Upper triangle is 0.0"
+        ],
+        [
+         "5. Value Product",
+         "torch.matmul(p_attn, value)",
+         "(1, 3, 4)",
+         "Final output representation"
+        ]
+       ]
+      },
+      "narration": "Let's trace this entire vectorized pipeline step by step using concrete tensor dimensions from our example. Suppose our batch size is one, sequence length is three tokens, and d k is four. So our query, key, and value tensors each have shape one, three, four. First, transposing the key tensor with key dot transpose negative two, negative one changes its shape from one, three, four to one, four, three. Next, we multiply query of shape one, three, four by transposed key of shape one, four, three, and divide by the square root of four, which is two. This gives a scaled scores tensor of shape one, three, three. Then, we apply scores dot masked fill with mask equals zero setting score entries in the upper-triangular positions to negative one e nine. Applying scores dot softmax with dim equals negative one converts those negative one e nine entries into exactly zero point zero, while ensuring each row sums to one point zero. Finally, multiplying p attn of shape one, three, three by value of shape one, three, four yields our final contextual tensor of shape one, three, four. Every step cleanly preserves vectorization!",
+      "refs": [
+       "C2#70",
+       "C3#9"
+      ]
+     },
+     {
+      "title": "Common Pitfalls: Softmax Dimension and Transpose Indexing",
+      "bullets": [
+       "softmax(dim=-2) normalizes incorrectly across queries",
+       "hardcoded transpose(1, 2) breaks on 4D tensors",
+       "Use dim=-1 for key normalization",
+       "Use transpose(-2, -1) for multi-head compatibility"
+      ],
+      "figure": {
+       "kind": "none",
+       "caption": "",
+       "steps": [],
+       "code": "",
+       "language": "",
+       "rows": []
+      },
+      "narration": "Before we recap, let's highlight a subtle but critical misconception that trips up many developers when implementing attention in PyTorch. The first mistake is picking the wrong dimension for softmax, specifically using dim equals negative two instead of dim equals negative one. If you apply softmax along dim equals negative two, PyTorch normalizes down the columns across queries rather than across keys! That means the attention weights for a single query across all key tokens won't sum to one, destroying the mathematical probability distribution. The second common mistake is hardcoding transpose dimensions as transpose one, two instead of transpose negative two, negative one. While transpose one, two works for three-dimensional tensors of shape batch, seq, d k, it silently breaks when you expand to multi-head attention with four-dimensional tensors of shape batch, heads, seq, d k! Using negative indices negative two and negative one ensures your transposition always operates on the last two spatial dimensions regardless of how many leading batch or head dimensions you have. Always double-check your softmax dimension and use negative indexing for robust code.",
+      "refs": [
+       "C2#70",
+       "C2#71"
+      ]
+     }
+    ],
+    "quiz": [
+     {
+      "question": "Why is key.transpose(-2, -1) preferred over key.transpose(1, 2) when implementing attention key transposition in PyTorch?",
+      "options": [
+       "It automatically performs scaling by the square root of d_k during transposition.",
+       "It operates on the last two dimensions, ensuring compatibility with both 3D and 4D multi-head tensors.",
+       "It replaces masked future positions with negative infinity without requiring masked_fill.",
+       "It transposes the batch dimension with the feature dimension to speed up GPU memory access."
+      ],
+      "answer": 1,
+      "explanation": "Using negative indexing transpose(-2, -1) dynamically selects the last two dimensions (sequence length and d_k), making the code work seamlessly for 3D tensors (batch, seq, d_k) and 4D multi-head tensors (batch, heads, seq, d_k). Hardcoding transpose(1, 2) fails on 4D tensors because index 1 is the head dimension, not sequence length."
+     },
+     {
+      "question": "In a batched attention operation, given a Query tensor of shape (1, 3, 4), Key tensor of shape (1, 3, 4), and Value tensor of shape (1, 3, 4), what are the shapes of the attention weights p_attn and the final output tensor respectively?",
+      "options": [
+       "p_attn has shape (1, 4, 4) and final output has shape (1, 3, 3).",
+       "p_attn has shape (1, 3, 4) and final output has shape (1, 3, 4).",
+       "p_attn has shape (1, 3, 3) and final output has shape (1, 3, 4).",
+       "p_attn has shape (1, 3, 3) and final output has shape (1, 4, 4)."
+      ],
+      "answer": 2,
+      "explanation": "torch.matmul(query, key.transpose(-2, -1)) multiplies (1, 3, 4) by (1, 4, 3) yielding p_attn of shape (1, 3, 3). Then torch.matmul(p_attn, value) multiplies (1, 3, 3) by (1, 3, 4) producing a final output tensor of shape (1, 3, 4). Option 1 incorrectly assumes p_attn retains the input embedding shape."
+     },
+     {
+      "question": "What happens if scores.softmax(dim=-2) is used instead of scores.softmax(dim=-1) when computing attention weights?",
+      "options": [
+       "Future positions will retain positive values instead of becoming 0.0 after masking.",
+       "Attention probabilities are normalized across queries per key token instead of across key tokens per query token.",
+       "PyTorch raises a runtime shape mismatch error because dim=-2 is an invalid axis index.",
+       "The softmax values will all become negative one billion (-1e9)."
+      ],
+      "answer": 1,
+      "explanation": "dim=-1 normalizes along the last axis (keys for each query), creating valid probability distributions across key tokens for each input query. Using dim=-2 normalizes along the query axis across queries for each key token, breaking the proper attention distribution per token."
+     }
+    ],
+    "recap": "In this final part, we translated scaled dot-product attention and causal masking into efficient, batched PyTorch code using vectorized tensor operations. We saw how torch.matmul, transpose(-2, -1), masked_fill, and softmax(dim=-1) come together to process entire sequence batches in parallel. Master these PyTorch tensor patterns, and you will have the foundation to build complete multi-head Transformer architectures."
+   }
+  }
+ ],
+ "references": [
+  {
+   "id": "C1",
+   "title": "Speech and Language Processing (3rd edition draft)",
+   "url": "https://web.stanford.edu/~jurafsky/slp3/",
+   "words": 3232,
+   "error": ""
+  },
+  {
+   "id": "C2",
+   "title": "Dive into Deep Learning, chapter 11: Attention Mechanisms and Transformers",
+   "url": "https://d2l.ai/chapter_attention-mechanisms-and-transformers/index.html",
+   "words": 43845,
+   "error": ""
+  },
+  {
+   "id": "C3",
+   "title": "Attention Is All You Need",
+   "url": "https://arxiv.org/abs/1706.03762",
+   "words": 6111,
+   "error": ""
+  },
+  {
+   "id": "C4",
+   "title": "The Annotated Transformer",
+   "url": "https://nlp.seas.harvard.edu/annotated-transformer/",
+   "words": 6810,
+   "error": ""
+  },
+  {
+   "id": "C5",
+   "title": "The Illustrated Transformer",
+   "url": "https://jalammar.github.io/illustrated-transformer/",
+   "words": 4154,
+   "error": ""
+  }
+ ],
+ "calls": [
+  {
+   "prompt": "B4",
+   "endpoint": "cache(gemini:gemini-3.6-flash:k25e39c0a)",
+   "prompt_tokens": 0,
+   "output_tokens": 0
+  },
+  {
+   "prompt": "B5",
+   "endpoint": "cache(gemini:gemini-3.6-flash:k3ca4d81f)",
+   "prompt_tokens": 0,
+   "output_tokens": 0
+  },
+  {
+   "prompt": "B5",
+   "endpoint": "cache(gemini:gemini-3.8-flash:k25e39c0a)",
+   "prompt_tokens": 0,
+   "output_tokens": 0
+  },
+  {
+   "prompt": "B5",
+   "endpoint": "cache(gemini:gemini-3.6-flash:k3ca4d81f)",
+   "prompt_tokens": 0,
+   "output_tokens": 0
+  }
+ ],
+ "status": "draft"
+}

@@ -218,7 +218,20 @@ def view(rid: str, runs: Path | None = None) -> dict:
         "material": material_summary(rid, runs),
         "material_connected": {"generate": True, "attach": False},   # B (Parth): generate is built; attach is not yet
         "simulations": _simulations(rid, runs),
+        "mix": mix_view(rid, runs),
     }
+
+
+def mix_view(rid: str, runs: Path | None = None) -> dict:
+    """Vihan's delivery mix (delivery/mix.py): each lecture's plan (delivery/mix/<lecture>.json), its quiz after approval
+    (delivery/quiz/<lecture>.json) and the course's style."""
+    d = _d(rid, runs or RUNS)
+    plans = {p.stem: m for p in sorted((d / "mix").glob("W*.json")) if (m := _rj(p))} if (d / "mix").exists() else {}
+    quiz = {}
+    for p in sorted((d / "quiz").glob("W*.json")) if (d / "quiz").exists() else []:
+        q = _rj(p) or {}
+        quiz[p.stem] = {k: q.get(k) for k in ("questions", "recap", "minutes", "made_at", "problems")}
+    return {"lectures": plans, "quiz": quiz, "style": (_rj(d / "mix" / "course.json") or {}).get("style") or "mix"}
 
 
 def _simulations(rid: str, runs: Path) -> dict:
@@ -529,11 +542,13 @@ class DeliveryManager:
     def _jobs(self, rid: str) -> dict:
         return _rj(_d(rid, self.runs) / "app_jobs.json", {"lectures": {}})
 
-    def _set(self, rid: str, lids: list[str] | None, material: str | None = None, **kw) -> None:
+    def _set(self, rid: str, lids: list[str] | None, material: str | None = None, mixl: str | None = None, **kw) -> None:
         with self.lock:
             j = self._jobs(rid)
             if material:
                 j.setdefault("material", {})[material] = {**(j.get("material", {}).get(material) or {}), **kw, "at": time.time()}
+            elif mixl:
+                j.setdefault("mix", {})[mixl] = {**(j.get("mix", {}).get(mixl) or {}), **kw, "at": time.time()}
             elif lids is None:
                 j["health"] = {**(j.get("health") or {}), **kw, "at": time.time()}
             for lid in lids or []:
@@ -551,6 +566,9 @@ class DeliveryManager:
             for lid, x in (j.get("material") or {}).items():
                 if x.get("state") in ("queued", "running"):
                     self.queue_material(d.name, lid, x.get("options") or {})
+            for lid, x in (j.get("mix") or {}).items():
+                if x.get("state") in ("queued", "running"):
+                    self.queue_mix(d.name, lid, x.get("args") or {"action": "propose"})
 
     def queue_recommend(self, rid: str, lectures: list[str], refresh: bool = False) -> None:
         self.cancelled.discard(rid)
@@ -562,6 +580,12 @@ class DeliveryManager:
         self.cancelled.discard(rid)
         self._set(rid, None, material=lid, state="queued", error=None, options=options)
         self.q.put(("material", rid, {"lecture": lid, "options": options}))
+
+    def queue_mix(self, rid: str, lid: str, args: dict) -> None:
+        """C's delivery mix for one lecture: propose (again, with a note), re-propose with a style, or approve."""
+        self.cancelled.discard(rid)
+        self._set(rid, None, mixl=lid, state="queued", error=None, action=args.get("action"), args=args)
+        self.q.put(("mix", rid, {**args, "lecture": lid}))
 
     def queue_health(self, rid: str) -> None:
         self.cancelled.discard(rid)
@@ -586,7 +610,8 @@ class DeliveryManager:
                 continue
             lids = args.get("lectures") if kind == "recommend" else None
             mat = args.get("lecture") if kind == "material" else None
-            self._set(rid, lids, material=mat, state="running")
+            mixl = args.get("lecture") if kind == "mix" else None
+            self._set(rid, lids, material=mat, mixl=mixl, state="running")
             d = _d(rid, self.runs)
             af, rf = d / "app_step_args.json", d / "app_step_result.json"
             _wj(af, args)
@@ -604,15 +629,19 @@ class DeliveryManager:
                 continue
             res = _rj(rf) or {"error": {"message": "the job's process ended without a result", "type": "StepCrashed"}}
             if "ok" in res:
-                self._set(rid, lids, material=mat, state="done", error=None)
+                self._set(rid, lids, material=mat, mixl=mixl, state="done", error=None)
             else:
-                self._set(rid, lids, material=mat, state="error", error=_plain_error(res["error"], kind))
+                self._set(rid, lids, material=mat, mixl=mixl, state="error", error=_plain_error(res["error"], kind))
 
 
 def _plain_error(err: dict, kind: str = "recommend") -> str:
     t, msg = err.get("type", ""), err.get("message", "")
     if err.get("quota"):
         return "The free AI quota is used up for today; try again after about 1:30 pm IST."
+    if kind == "mix":
+        if "no component plan" in msg:
+            return "This lecture has no parts yet: find its learning resources again first."
+        return f"Making the plan stopped ({t}). Press Try again."
     if kind == "material":
         if "approved these slides" in msg:
             return "You approved these slides, so they are protected. Use Generate again and confirm to replace them."

@@ -365,6 +365,47 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True, del
             dmgr.queue_recommend(rid, want, refresh=bool(body.get("refresh")))
         return {"started": want}
 
+    @app.post("/api/delivery/{rid}/mix/{lid}")
+    def delivery_mix(rid: str, lid: str, body: dict = Body(...)):
+        """C's delivery mix for one lecture (delivery/mix.py): save = the professor's changes (way, lock, before or in
+        class; checked against the evidence, no AI); propose / preset / approve run in the background (D7, D8)."""
+        course_dir(rid)
+        if not LID.match(lid):
+            raise HTTPException(404, "No such lecture")
+        from profsagent.delivery import mix
+        act, by = str(body.get("action") or ""), str(body.get("by") or os.environ.get("APP_USER_NAME") or "Professor")[:80]
+        if act == "save":
+            clean = {}
+            for cid, ch in (body.get("changes") or {}).items():
+                if not isinstance(ch, dict) or not re.fullmatch(r"W\d\d\.L\d+\.C\d+", str(cid)):
+                    continue
+                c = {}
+                if ch.get("way") in mix.mcfg()["ways"]:
+                    c["way"] = ch["way"]
+                if "locked" in ch:
+                    c["locked"] = bool(ch["locked"])
+                if ch.get("when") in ("in_class", "pre_class"):
+                    c["when"] = ch["when"]
+                if c:
+                    clean[str(cid)] = c
+            r = mix.save(rid, lid, changes=clean, by=by)
+            if r.get("errors"):
+                return JSONResponse({"problem": " ".join(str(v) for v in r["errors"].values()), "errors": r["errors"]}, status_code=409)
+            return {"mix": r["mix"]}
+        if act == "style":
+            try:
+                return {"style": mix.course_style(rid, str(body.get("style") or ""))}
+            except ValueError as e:
+                return JSONResponse({"problem": str(e)}, status_code=409)
+        if act in ("propose", "preset", "approve"):
+            if act == "preset" and body.get("preset") not in mix.mcfg()["presets"]:
+                return JSONResponse({"problem": "Unknown style"}, status_code=409)
+            if act != "propose" and not mix.load(rid, lid):
+                return JSONResponse({"problem": "No plan yet for this lecture"}, status_code=409)
+            dmgr.queue_mix(rid, lid, {"action": act, "note": str(body.get("note") or "")[:600], "preset": body.get("preset"), "by": by})
+            return {"queued": True}
+        return JSONResponse({"problem": "Unknown action"}, status_code=409)
+
     @app.post("/api/delivery/{rid}/bulk")
     def delivery_bulk(rid: str, body: dict = Body(...)):
         course_dir(rid)

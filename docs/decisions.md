@@ -8,6 +8,34 @@ Mark anything still waiting for someone as **Open**.
 
 ---
 
+## 2026-11-04: Vihan's delivery mix in the app (the Lecture plan tab is its editor)
+
+### 37. The professor sees, changes and approves how each part of a lecture is taught, in the app
+- **Decision (Amit, 4 Nov, for the demo on 5 Nov):** build the mix editor and bring all of Vihan's 0c26ee9 into the UI.
+- **Changed:**
+  - **Backend.** Vihan's `delivery/mix.py` is used unchanged:
+    - `app/delivery.py`: `mix_view()` (every lecture's plan, its quiz after approval, the course style) sits in the delivery view; `DeliveryManager.queue_mix()` runs mix jobs, resumed after a restart.
+    - `app/delivery_step.py`: kind `mix`. `propose` (with the professor's note, D7) and `preset` (re-propose in a style) map to `mix.save(preset=…)`; `approve` maps to `mix.approve`, which writes the NotebookLM pack for the NotebookLM parts and the D8 quiz.
+    - `server.py`: `POST /api/delivery/{rid}/mix/{lid}` with these actions:
+      - `save` (way / lock / before or in class; `mix.save` refuses a way the evidence cannot support, e.g. YouTube without a checked stretch, and the app shows its reason);
+      - `style`;
+      - `propose` / `preset` / `approve` (queued).
+  - **The Lecture plan tab:**
+    - each part shows its time, how it is taught (only possible ways), "Before class" for video and NotebookLM parts, a Lock, D7's reason, the checked YouTube stretches, the bridge points, the terms NotebookLM's sources miss, and the simulation (Try it). The next-best way has a "Use this" button;
+    - the five styles (Slides only / Slides + clips / Slides + NotebookLM / Flipped / Full mix);
+    - the lecture checks in plain words;
+    - the minutes per way, and the professor's preparation;
+    - a note with "Plan again with my note", and "Approve the plan". After approval it links the NotebookLM prompts and shows the closing quiz and recap questions.
+    - A lecture whose parts were made before the mix existed gets "Plan how to teach each part".
+  - **Elsewhere on the screen:**
+    - the class-time bar follows the plan: recap first, quiz last, and parts watched before class are hatched;
+    - a "Teaching style" choice on the lecture list sets the course style (`course_style`).
+- **Checked:**
+  - `tests/test_app_mix.py`: the view, jobs and errors, and the professor's changes through the HTTP API;
+  - a real search on 2 lectures of the CS-601 practice copy (`app-cs601-example-01`) made their parts and plans with Vihan's code.
+- **Agreed by:** Amit (4 Nov).
+- **For Vihan:** nothing changed in `delivery/`. If the mix file's shape changes, the editor reads `parts[].{way, when, allowed, alternative, segments, bridge, uncovered, simulation, locked}` and `totals`.
+
 ## 2026-11-03: the simulation page: a chalkboard stage, code on request, Present mode
 
 ### 36. Every stepper-engine simulation (all machine-built ones, and Page replacement) gets one calm page that fits the screen

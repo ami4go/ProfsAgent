@@ -161,6 +161,15 @@ details.card > summary.reqsum{cursor:pointer;list-style-position:inside}details.
 details.card[open] > summary.reqsum{margin-bottom:10px}details[open] > summary .needs{display:none}
 .simopts{margin-top:10px;border-top:1px solid var(--line)}.simopt{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px 0;border-bottom:1px solid var(--line)}.simopt:last-child{border-bottom:0}
 .pager{display:flex;gap:6px;justify-content:center;align-items:center;flex-wrap:wrap;margin:14px 0}.pager .btn.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.mixhead{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.mixnotes{margin-top:10px;background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:var(--r-md);padding:8px 12px;color:var(--warn-ink)}
+.mixnotes p{margin:2px 0;display:flex;gap:6px;align-items:flex-start}
+.mixt td{vertical-align:top}.mixt select{width:100%}.mixt tr.locked td{background:#F7F9FC}.mixt tr.mixfixed td{background:var(--sunken)}
+.mixev{display:flex;flex-direction:column;gap:3px;margin-top:6px}
+.mixt .btn.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.mixfoot{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end;margin-top:12px}.mixfoot textarea{width:100%}
+.mixquiz{margin-top:12px}.mixquiz .qq{border-top:1px solid var(--line);padding:8px 0}.mixquiz ol{margin:4px 0 4px 20px;padding:0}
+@media (max-width:820px){.mixfoot{grid-template-columns:minmax(0,1fr)}}
 .week{margin-top:22px}.week h2{font-size:var(--t-xs);font-weight:600;margin:0;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3)}
 .lec{display:grid;grid-template-columns:64px minmax(0,1fr) 60px minmax(100px,220px) 310px;gap:16px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:12px 16px;margin-top:8px;text-decoration:none;color:var(--ink);
   transition:border-color var(--dur-1) var(--ease-out),box-shadow var(--dur-1) var(--ease-out)}
@@ -221,6 +230,7 @@ pre.code{background:#111827;color:#E5E7EB;border-radius:var(--r-md);padding:10px
 .ctb span{display:block;height:100%;min-width:3px}
 .ctb.big{height:32px;border-radius:10px;gap:3px;margin-top:8px}
 .ctb.big span{border-radius:6px;color:#fff;font-size:var(--t-xs);font-weight:600;display:flex;align-items:center;padding:0 8px;white-space:nowrap;overflow:hidden}
+.ctb span.pre{background-image:repeating-linear-gradient(-45deg,rgba(255,255,255,.45) 0 4px,transparent 4px 9px)}
 .ctb.empty{border:1.5px dashed var(--line-strong);background:repeating-linear-gradient(-45deg,transparent 0 6px,var(--sunken) 6px 8px)}
 .w-slides{background:var(--w-slides)}.w-video{background:var(--w-video)}.w-nlm{background:var(--w-nlm)}.w-inclass{background:var(--w-inclass)}.w-sim{background:var(--w-sim)}.w-quiz{background:var(--w-quiz)}
 .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:var(--t-xs);color:var(--ink2)}.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
@@ -799,8 +809,23 @@ const dblank = () => ({ own_material: null, attach_material: null, generate_mate
 let DV = null, DRID = null, DLID = null, DCOURSES = null, dpoll = null, dPendingRender = false;
 // the class-time bar (docs/10 §5): how a lecture's minutes are spent, from the lecture plan (parts and how each is taught)
 const WAY = { slides: 'Slides', video: 'Video', nlm: 'NotebookLM', inclass: 'In class', sim: 'Simulation', quiz: 'Recap and quiz' };
+// C's delivery mix (Vihan, delivery/mix.py): the way each part is taught, decided by the professor
+const MIXWAY = { slides: 'slides', youtube: 'video', youtube_bridge: 'video', notebooklm: 'nlm', in_class: 'inclass', simulation: 'sim' };
+const MIXLABEL = { slides: 'Slides', youtube: 'YouTube clip', youtube_bridge: 'YouTube + slides', notebooklm: 'NotebookLM video', in_class: 'In class', simulation: 'Simulation' };
+const MIXPRESET = [['slides_only', 'Slides only'], ['slides_clips', 'Slides + clips'], ['slides_notebooklm', 'Slides + NotebookLM'], ['flipped', 'Flipped'], ['full_mix', 'Full mix']];
+const dmix = lid => (((DV || {}).mix || {}).lectures || {})[lid] || null;
+const dmixJob = lid => ((((DV || {}).jobs || {}).mix) || {})[lid] || null;
+const dmixBusy = lid => { const j = dmixJob(lid); return !!(j && ['queued', 'running'].includes(j.state)); };
 function ctParts(lid) {
-  const r = DV.results[lid], a = DV.survey[lid], l = lecOf(lid);
+  const r = DV.results[lid], a = DV.survey[lid], l = lecOf(lid), m = dmix(lid);
+  if (m && (m.parts || []).length) {                  // the plan: recap, the parts as decided, the closing quiz
+    const out = [];
+    if (m.recap_minutes) out.push({ way: 'quiz', minutes: m.recap_minutes, title: 'Recap of the last lecture' });
+    m.parts.forEach(p => out.push({ way: MIXWAY[p.way] || 'slides', minutes: p.minutes, pre: p.when === 'pre_class',
+      title: p.title + ' · ' + MIXLABEL[p.way] + (p.when === 'pre_class' ? ', watched before class' : '') }));
+    if (m.quiz_minutes) out.push({ way: 'quiz', minutes: m.quiz_minutes, title: 'Closing quiz' });
+    return out;
+  }
   if (r && (r.components || []).length) {
     const tl = {}; (r.timeline || []).forEach(x => { tl[x.component] = x; });
     const nlm = ((r.notebooklm || {}).components || []);
@@ -815,19 +840,19 @@ function ctBar(parts, big) {
   if (!parts) return '<div class="ctb empty' + (big ? ' big' : '') + '" role="img" aria-label="No time plan yet" title="No time plan yet: it appears once learning resources are found for this lecture"></div>';
   const label = parts.map(x => x.minutes + ' min ' + WAY[x.way]).join(', ');
   return '<div class="ctb' + (big ? ' big' : '') + '" role="img" aria-label="' + esc('How the class time is spent: ' + label) + '">' +
-    parts.map(x => '<span class="w-' + x.way + '" style="flex:' + Math.max(1, x.minutes) + '" title="' + esc(x.title + ' · ' + x.minutes + ' min · ' + WAY[x.way]) + '">' + (big ? esc(WAY[x.way]) + ' · ' + x.minutes : '') + '</span>').join('') + '</div>';
+    parts.map(x => '<span class="w-' + x.way + (x.pre ? ' pre' : '') + '" style="flex:' + Math.max(1, x.minutes) + '" title="' + esc(x.title + ' · ' + x.minutes + ' min · ' + WAY[x.way]) + '">' + (big ? esc(WAY[x.way]) + ' · ' + x.minutes : '') + '</span>').join('') + '</div>';
 }
 const dlegend = ways => '<div class="legend">' + (ways || Object.keys(WAY)).map(w => '<span><i class="w-' + w + '"></i>' + WAY[w] + '</span>').join('') + '</div>';
 const dmatJob = lid => ((((DV || {}).jobs || {}).material) || {})[lid] || null;
 const MSTATUS = { draft: ['Draft: not reviewed yet', 'amber'], 'ai-reviewed': ['Checked by a second AI, not by you', 'teal'], approved: ['Approved by you', 'green'], redo: ['Being redone', 'navy'], rejected: ['Rejected', 'grey'] };
-let PUI = { filter: { week: 'all', module: 'all', novel: false, status: 'all' }, draft: {}, errs: {}, tab: {}, show: {}, openReason: null, ownForm: null, kit: null, report: null, logOpen: {}, mat: {}, matLoading: {}, mAi: {}, mReason: null, simReason: null, editChoices: {} };
+let PUI = { filter: { week: 'all', module: 'all', novel: false, status: 'all' }, draft: {}, errs: {}, tab: {}, show: {}, openReason: null, ownForm: null, kit: null, report: null, logOpen: {}, mat: {}, matLoading: {}, mAi: {}, mReason: null, simReason: null, editChoices: {}, mixNote: {} };
 const dapi = p => '/api/delivery/' + encodeURIComponent(DRID) + p;
 const dhref = (...parts) => '#/delivery/' + [DRID].concat(parts).map(encodeURIComponent).join('/');
 function crumbs(parts) { return '<div class="crumbs">' + parts.map((p, i) => (i ? '<span>›</span>' : '') + (p[1] ? '<a href="' + esc(p[1]) + '">' + esc(p[0]) + '</a>' : '<span>' + esc(p[0]) + '</span>')).join('') + '</div>'; }
 const LECS = () => (DV ? DV.lectures : []);
 const lecOf = id => LECS().find(l => l.id === id);
 const djob = lid => (((DV || {}).jobs || {}).lectures || {})[lid] || null;
-const dbusy = () => DV && (['preparing', 'not started'].includes((DV.simulations || {}).state) || Object.values((DV.jobs || {}).lectures || {}).some(j => ['queued', 'running'].includes(j.state)) || Object.values((DV.jobs || {}).material || {}).some(j => ['queued', 'running'].includes(j.state)) || ['queued', 'running'].includes(((DV.jobs || {}).health || {}).state));
+const dbusy = () => DV && (['preparing', 'not started'].includes((DV.simulations || {}).state) || Object.values((DV.jobs || {}).mix || {}).some(j => ['queued', 'running'].includes(j.state)) || Object.values((DV.jobs || {}).lectures || {}).some(j => ['queued', 'running'].includes(j.state)) || Object.values((DV.jobs || {}).material || {}).some(j => ['queued', 'running'].includes(j.state)) || ['queued', 'running'].includes(((DV.jobs || {}).health || {}).state));
 
 function dcounts(lid) {
   const r = DV.results[lid]; if (!r) return null;
@@ -894,7 +919,9 @@ function dlist() {
     '</div>' +
     '<div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn" href="' + dhref('student') + '">Preview as a student</a>' +
     '<button class="btn quiet" data-act="d-health"' + (['queued', 'running'].includes(hj.state) ? ' disabled' : '') + '>' + (['queued', 'running'].includes(hj.state) ? '<span class="spin"></span> Checking links…' : 'Check approved links') + '</button>' +
-    '<button class="btn quiet" data-act="d-report">' + (PUI.report ? 'Hide' : 'Show') + ' the course report</button></div></div>' +
+    '<button class="btn quiet" data-act="d-report">' + (PUI.report ? 'Hide' : 'Show') + ' the course report</button>' +
+    '<label class="small" style="display:flex;gap:6px;align-items:center;color:var(--ink2)">Teaching style <select data-mixstyle aria-label="Teaching style for this course" style="width:auto">' +
+      [['slides', 'Slides'], ['mix', 'Mix'], ['flipped', 'Flipped']].map(([k, t]) => '<option value="' + k + '"' + (((DV.mix || {}).style || 'mix') === k ? ' selected' : '') + '>' + t + '</option>').join('') + '</select></label></div></div>' +
     keysBanner() + dhealthSummary() + (PUI.report ? '<div class="card proposal">' + PUI.report + '</div>' : '') +
     '<div class="filters" style="margin-top:20px;align-items:center">' +
     '<div class="seg" role="group" aria-label="Show lectures">' + [['all', 'All'], ['undecided', 'Needs a decision'], ['review', 'Ready to review'], ['decided', 'Decided']].map(([v, t]) =>
@@ -1060,8 +1087,8 @@ function dresultsCard(l) {
   if (yes(a, 'own_material')) tabs.push(['own', 'My material']);
   if (yes(a, 'attach_material')) tabs.push(['attach', 'Attached material']);
   if (yes(a, 'generate_material') || (DV.material || {})[l.id]) tabs.push(['gen', 'Generated slides']);
-  const hasPlan = r && (r.components || []).length;
-  if (yes(a, 'assistance') && hasPlan) tabs.push(['plan', 'Lecture plan']);
+  const hasPlan = (r && (r.components || []).length) || dmix(l.id);
+  if ((yes(a, 'assistance') && hasPlan) || dmix(l.id)) tabs.push(['plan', 'Lecture plan']);
   if (yes(a, 'assistance')) tabs.push(['res', 'Resources']);
   if (yes(a, 'assistance') && yes(a, 'want_clips') && !hasPlan) tabs.push(['clips', 'Clip playlist']);
   if (yes(a, 'guest_lecture')) tabs.push(['guest', 'Guest speakers']);
@@ -1075,7 +1102,7 @@ function dresultsCard(l) {
   else if (cur === 'gen') body = dmaterialTab(l);
   else if (running && cur !== 'gen') body = '<p class="muted" style="margin-top:14px"><span class="spin"></span> Still searching. The results appear here when the search is done; the page stays usable meanwhile.</p>';
   else if (!r) body = '<p class="muted" style="margin-top:14px">No results yet. ' + (j && j.state === 'error' ? 'The last search stopped; see Progress above.' : 'Start the search under Progress.') + '</p>';
-  else if (cur === 'plan') body = dplanTab(l, r);
+  else if (cur === 'plan') body = dmix(l.id) || dmixBusy(l.id) ? dmixTab(l, r) : dplanTab(l, r) + dmixStart(l);
   else if (cur === 'res') body = r.has_resources ? dresourcesTab(l, a, r) : '<p class="muted" style="margin-top:12px">This lecture was searched for guest speakers only. Save your choices again to search for resources too.</p>';
   else if (cur === 'clips') body = (r.clips && r.clips.length ? '<ol style="margin-top:12px">' + r.clips.map(x => '<li>Watch <a href="' + esc(x.url) + '" target="_blank" rel="noopener">' + esc(x.start) + '–' + esc(x.end) + '</a> of <i>' + esc(x.video) + '</i> for ' + esc(x.target) + ' (' + esc(x.minutes) + ' min)</li>').join('') + '</ol>' : '<p class="muted" style="margin-top:12px">No clip playlist was built for this lecture.</p>');
   else if (cur === 'guest') body = dguestTab(l, r);
@@ -1201,6 +1228,58 @@ function downLinks(lid) {
       '<div><label class="f" style="margin-top:0" for="ownu">Link</label><input type="text" id="ownu" placeholder="https://…" value="' + esc(f.url || '') + '"></div></div>' +
       '<label class="f" for="ownk">Kind</label><select id="ownk">' + D_KINDS.map(([k, n]) => '<option value="' + k + '"' + (f.kind === k ? ' selected' : '') + '>' + n + '</option>').join('') + '</select>' + (f.err ? '<p class="err">' + esc(f.err) + '</p>' : '') +
       '<div class="acts"><button class="btn sm primary" data-act="d-ownsave">Add as approved</button><button class="btn sm" data-act="d-ownclose">Cancel</button></div></div>' : '');
+}
+// ---- the delivery mix editor
+function dmixStart(l) {                               // a part plan without a mix yet (made before 3 Nov): propose one
+  const j = dmixJob(l.id);
+  return '<div class="acts" style="margin-top:14px"><button class="btn primary" data-act="d-mixpropose">Plan how to teach each part</button>' +
+    (j && j.state === 'error' ? '<span class="small" style="color:var(--err)">' + esc(j.error || '') + '</span>' : '') + '</div>';
+}
+function dmixTab(l, r) {
+  const m = dmix(l.id), j = dmixJob(l.id), busy = dmixBusy(l.id), comps = {};
+  ((r && r.components) || []).forEach(c => { comps[c.id] = c; });
+  if (!m) return '<p class="small" style="margin-top:14px;display:flex;gap:8px;align-items:center"><span class="spin"></span> Planning how to teach each part (about half a minute)…</p>';
+  const approved = m.status === 'approved', q = ((DV.mix || {}).quiz || {})[l.id];
+  const head = '<div class="mixhead"><div class="seg" role="group" aria-label="Style of this lecture">' + MIXPRESET.map(([k, t]) =>
+      '<button type="button" data-act="d-mixpreset" data-preset="' + k + '" class="' + (m.preset === k ? 'on' : '') + '" aria-pressed="' + (m.preset === k) + '"' + (busy ? ' disabled' : '') + '>' + t + '</button>').join('') + '</div>' +
+    (busy ? '<span class="small" style="display:flex;gap:6px;align-items:center"><span class="spin"></span> ' + (j.action === 'approve' ? 'Making the NotebookLM prompts and the quiz…' : 'Planning…') + '</span>'
+      : approved ? '<span class="chip green">' + ICON.check + 'Approved</span>' : '<span class="chip amber">Not approved yet</span>') + '</div>';
+  const err = j && j.state === 'error' ? '<div class="banner red">' + ICON.alert + '<div>' + esc(j.error || '') + '</div></div>' : '';
+  const checks = (m.checks || []).filter(c => !['L-AI', 'L-RESERVE'].includes(c.code));
+  const notes = checks.length ? '<div class="mixnotes">' + checks.map(c => { const t = c.message.replace(/W\d\d\.L\d+\.C(\d+)/g, 'Part $1');   // plain words: no part ids
+      return '<p class="small">' + ICON.alert + ' ' + esc(t.charAt(0).toUpperCase() + t.slice(1)) + '</p>'; }).join('') + '</div>' : '';
+  const fixed = (title, min) => '<tr class="mixfixed"><td><b style="font-weight:600">' + title + '</b></td><td class="mono">' + min + ' min</td><td colspan="2"><span class="small muted">Questions from the last quiz</span></td></tr>';
+  const row = p => {
+    const c = comps[p.component] || {}, ways = [...new Set(['slides', 'in_class', 'notebooklm', ...(p.allowed || [])])];
+    const video = ['youtube', 'youtube_bridge'].includes(p.way);
+    const ev = [];
+    if (video && (p.segments || []).length) ev.push('<span class="small">' + p.segments.map(sg => '<a href="' + esc(sg.url) + '" target="_blank" rel="noopener">▶ ' + esc(sg.start) + '–' + esc(sg.end) + '</a> <span class="muted">' + esc(sg.video) + '</span>').join(' · ') + '</span>');
+    if (p.way === 'youtube_bridge' && (p.bridge || []).length) ev.push('<span class="small muted">Your slides add: ' + esc(p.bridge.join('; ')) + '</span>');
+    if (p.way === 'notebooklm' && (p.uncovered || []).length) ev.push('<span class="small" style="color:var(--warn-ink)">Add a source that covers: ' + esc(p.uncovered.join(', ')) + '</span>');
+    if (p.way === 'simulation' && p.simulation) ev.push('<span class="small">' + (p.simulation.id ? '<button class="link small" data-act="d-simopen" data-sim="' + esc(p.simulation.id) + '" data-title="' + esc(p.simulation.title) + '" data-lid="' + esc(l.id) + '">Try “' + esc(p.simulation.title) + '”</button>'
+      : '<a href="' + esc(p.simulation.url || '#') + '" target="_blank" rel="noopener">Open “' + esc(p.simulation.title) + '” ' + ICON.link + '</a>') + '</span>');
+    const alt = p.alternative && p.alternative.way && p.alternative.way !== p.way && !approved
+      ? '<span class="small muted">Or ' + esc(MIXLABEL[p.alternative.way] || p.alternative.way) + ': ' + esc(p.alternative.reason || '') + ' <button class="link small" data-act="d-mixalt" data-cid="' + esc(p.component) + '" data-way="' + esc(p.alternative.way) + '"' + (busy ? ' disabled' : '') + '>Use this</button></span>' : '';
+    return '<tr' + (p.locked ? ' class="locked"' : '') + '><td><b style="font-weight:600">' + esc(p.title) + '</b>' + (c.teaches && c.teaches !== p.title ? '<div class="small muted">' + esc(c.teaches) + '</div>' : '') +
+      '<div class="small" style="margin-top:4px">' + esc(p.reason || '') + '</div>' + (ev.length || alt ? '<div class="mixev">' + ev.join('') + alt + '</div>' : '') + '</td>' +
+      '<td class="mono" style="white-space:nowrap">' + p.minutes + ' min</td>' +
+      '<td><select data-mixway="' + esc(p.component) + '" aria-label="How to teach ' + esc(p.title) + '"' + (busy ? ' disabled' : '') + '>' + ways.map(w => '<option value="' + w + '"' + (w === p.way ? ' selected' : '') + '>' + MIXLABEL[w] + '</option>').join('') + '</select>' +
+      (video || p.way === 'notebooklm' ? '<select data-mixwhen="' + esc(p.component) + '" aria-label="When students watch it" style="margin-top:6px"' + (busy ? ' disabled' : '') + '><option value="in_class"' + (p.when !== 'pre_class' ? ' selected' : '') + '>In class</option><option value="pre_class"' + (p.when === 'pre_class' ? ' selected' : '') + '>Before class</option></select>' : '') + '</td>' +
+      '<td><button class="btn sm' + (p.locked ? ' on' : '') + '" data-act="d-mixlock" data-cid="' + esc(p.component) + '" aria-pressed="' + !!p.locked + '" title="A locked part stays as it is when you ask for a new plan"' + (busy ? ' disabled' : '') + '>' + (p.locked ? '🔒 Locked' : 'Lock') + '</button></td></tr>';
+  };
+  const tot = m.totals || {}, inClass = [['slides', 'Slides'], ['video_in_class', 'Video'], ['notebooklm', 'NotebookLM'], ['in_class', 'In class'], ['simulation', 'Simulation']].filter(([k]) => tot[k]);
+  const sums = '<p class="small" style="margin-top:10px">' + (inClass.length ? 'In class: ' + inClass.map(([k, t]) => t + ' ' + tot[k] + ' min').join(' · ') : '') +
+    (tot.video_pre_class ? ' · before class: ' + tot.video_pre_class + ' min of video' : '') + (m.prep_minutes ? ' · your preparation: about ' + m.prep_minutes + ' min' : '') + '</p>';
+  const quizBox = approved && q ? '<details class="mixquiz"><summary>The closing quiz (' + (q.questions || []).length + ' questions)' + ((q.recap || []).length ? ' and ' + q.recap.length + ' recap questions' : '') + '</summary>' +
+      (q.questions || []).map((x, i) => '<div class="qq"><p><b style="font-weight:600">' + (i + 1) + '.</b> ' + esc(x.question) + '</p>' + ((x.options || []).length ? '<ol type="A">' + x.options.map(o => '<li>' + esc(o) + '</li>').join('') + '</ol>' : '') +
+        '<p class="small muted">Answer: ' + esc(x.answer) + (x.explanation ? ' · ' + esc(x.explanation) : '') + '</p></div>').join('') + '</details>' : '';
+  const after = approved ? '<div class="acts" style="margin-top:12px">' + ((DV.notebooklm || []).includes(l.id) && (m.parts || []).some(p => p.way === 'notebooklm') ? '<a class="btn sm" href="' + dhref(l.id, 'notebooklm') + '">Open the NotebookLM prompts</a>' : '') +
+      '<span class="small muted">Approved ' + esc(String(m.approved_at || '').slice(0, 16).replace('T', ' ')) + '. Slides made from now on follow this plan.</span></div>' + quizBox : '';
+  return '<div style="margin-top:12px">' + head + err + notes + '<table class="t mixt" style="margin-top:10px"><tr><th>Part</th><th style="width:70px">Time</th><th style="width:190px">How</th><th style="width:96px"></th></tr>' +
+    (m.recap_minutes ? fixed('Recap of the last lecture', m.recap_minutes) : '') + (m.parts || []).map(row).join('') + (m.quiz_minutes ? fixed('Closing quiz', m.quiz_minutes).replace('Questions from the last quiz', 'Made when you approve') : '') + '</table>' + sums +
+    '<div class="mixfoot"><textarea id="mixnote" rows="2" placeholder="Anything to change? For example: more in-class work; keep videos short"' + (busy ? ' disabled' : '') + '>' + esc(PUI.mixNote[l.id] != null ? PUI.mixNote[l.id] : (m.note || '')) + '</textarea>' +
+    '<div class="acts"><button class="btn" data-act="d-mixpropose"' + (busy ? ' disabled' : '') + '>Plan again with my note</button>' +
+    '<button class="btn primary" data-act="d-mixapprove"' + (busy ? ' disabled' : '') + '>' + (approved ? 'Approve again' : 'Approve the plan') + '</button></div></div>' + after + '</div>';
 }
 // C (since 2026-11-01): the lecture as components, each delivered by checked video minutes, a NotebookLM video or in class
 function dplanTab(l, r) {
@@ -1368,6 +1447,31 @@ async function dupload(files) {
   if (!r.ok) { toast((r.data && r.data.detail) || 'Upload failed'); return; }
   const d = ddraft(DLID); d.attachments = d.attachments.concat(r.data.saved); delete PUI.errs.attach; render(); toast('Attached. Press Save to keep it.');
 }
+async function dmixclick(act, b, lid) {
+  const go = async body => { b.disabled = true; const r = await post(dapi('/mix/' + encodeURIComponent(lid)), body); b.disabled = false;
+    if (!r.ok) { toast((r.data && (r.data.problem || r.data.detail)) || 'Could not save'); return null; } return r.data; };
+  if (act === 'd-mixpropose') { const note = (document.getElementById('mixnote') || {}).value || '';
+    if (await go({ action: 'propose', note })) { toast(note.trim() ? 'Planning again with your note…' : 'Planning how to teach each part…'); PUI.tab[lid] = 'plan'; return loadDelivery(false); } return; }
+  if (act === 'd-mixpreset') { if (await go({ action: 'preset', preset: b.dataset.preset })) { toast('Planning in this style…'); return loadDelivery(false); } return; }
+  if (act === 'd-mixapprove') { if (await go({ action: 'approve' })) { toast('Approved. Making the NotebookLM prompts and the quiz…'); return loadDelivery(false); } return; }
+  const m = dmix(lid), p = m && m.parts.find(x => x.component === b.dataset.cid); if (!p) return;
+  const ch = act === 'd-mixlock' ? { locked: !p.locked } : act === 'd-mixalt' ? { way: b.dataset.way } : null; if (!ch) return;
+  const r = await go({ action: 'save', changes: { [p.component]: ch } });
+  if (r) { DV.mix.lectures[lid] = r.mix; render(); }
+}
+async function dmixstyle(t) {                  // the course's style: new plans start from it (Vihan's course_style)
+  const first = (LECS()[0] || {}).id; if (!first) return;
+  const r = await post(dapi('/mix/' + encodeURIComponent(first)), { action: 'style', style: t.value });
+  if (!r.ok) { toast((r.data && r.data.problem) || 'Could not save'); return; }
+  DV.mix.style = r.data.style; toast('New lecture plans start in this style');
+}
+async function dmixchange(t) {
+  const lid = DLID, cid = t.dataset.mixway || t.dataset.mixwhen, ch = t.dataset.mixway ? { way: t.value } : { when: t.value };
+  t.disabled = true;
+  const r = await post(dapi('/mix/' + encodeURIComponent(lid)), { action: 'save', changes: { [cid]: ch } });
+  if (!r.ok) { toast((r.data && (r.data.problem || r.data.detail)) || 'Could not save'); render(); return; }
+  DV.mix.lectures[lid] = r.data.mix; toast('Saved'); render();
+}
 async function dclick(act, b) {
   const lid = DLID;
   if (act.startsWith('d-sim')) return dsimclick(act, b, lid);
@@ -1375,6 +1479,7 @@ async function dclick(act, b) {
   if (act === 'd-canceledit') { PUI.editChoices[lid] = false; delete PUI.draft[lid]; PUI.errs = {}; render(); return; }
   if (act === 'd-example') { b.disabled = true; const r = await post('/api/delivery/example'); if (r.ok) location.hash = '#/delivery/' + r.data.run_id; else { b.disabled = false; toast((r.data && r.data.detail) || 'Could not copy the example'); } return; }
   if (act === 'd-save') return dsave();
+  if (act.startsWith('d-mix')) return dmixclick(act, b, lid);
   if (act === 'd-mgen') {
     const m = (DV.material || {})[lid], force = m && m.status === 'approved';
     if (force && !window.confirm('You approved these slides. Make a new version and replace them?')) return;
@@ -1418,6 +1523,7 @@ async function dclick(act, b) {
 }
 function dinput(t) {
   if (t.id === 'dnote' && DLID) { ddraft(DLID).note = t.value; return true; }
+  if (t.id === 'mixnote' && DLID) { PUI.mixNote[DLID] = t.value; return true; }
   if (t.id === 'rs' && PUI.openReason) { PUI.openReason.text = t.value; PUI.openReason.err = null; return true; }
   if (t.id === 'mrs' && PUI.mReason) { PUI.mReason.text = t.value; PUI.mReason.err = null; return true; }
   if (t.id === 'simrs' && PUI.simReason) { PUI.simReason.text = t.value; PUI.simReason.err = null; return true; }
@@ -1426,7 +1532,9 @@ function dinput(t) {
 }
 function dchange(t) {
   if (t.dataset.filter) { PUI.filter[t.dataset.filter] = t.type === 'checkbox' ? t.checked : t.value; store.set('profsagent-dfilter-' + DRID, JSON.stringify(PUI.filter)); render(); return true; }
+  if (t.dataset.mixstyle != null) { dmixstyle(t); return true; }
   if (PAGE !== 'dlec') return false;
+  if (t.dataset.mixway || t.dataset.mixwhen) { dmixchange(t); return true; }
   const d = ddraft(DLID);
   if (t.dataset.choice) { d[t.dataset.choice] = t.checked ? 'yes' : 'no'; PUI.errs = {}; render(); return true; }
   if (t.dataset.want) { d[t.dataset.want] = t.checked ? 'yes' : 'no'; delete PUI.errs.wants; render(); return true; }
@@ -1829,7 +1937,8 @@ function dsimStudentRows(l) {
 async function dsimclick(act, b, lid) {
   const url = dapi('/simulations/' + encodeURIComponent(lid));
   if (act === 'd-simopen') {
-    const lid2 = b.dataset.lid || lid, i = (dsims(lid2).items || []).find(y => y.id === b.dataset.sim); if (!i) return;
+    const lid2 = b.dataset.lid || lid, i = (dsims(lid2).items || []).find(y => y.id === b.dataset.sim);
+    if (!i) { if (b.dataset.sim) simOpen({ id: b.dataset.sim, title: b.dataset.title || 'Simulation', version: '', state: '' }); return; }   // e.g. from the lecture plan
     const student = b.dataset.student === '1';
     simOpen({ id: i.id, title: i.title, version: i.version, state: i.example ? i.example.state : '', lecture: lid2, student, example: i.example,
               ctx: student ? null : { rid: DRID, lid: lid2, canSave: i.class_example, example: i.example } });

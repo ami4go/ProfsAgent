@@ -34,6 +34,19 @@ def main(argv: list[str]) -> int:
                 out["graph"] = write(rid)
             except Exception as e:  # noqa: BLE001 — the files are complete; Neo4j records can be written later
                 out["graph"] = f"skipped ({type(e).__name__})"
+        elif kind == "mix":                 # C's delivery mix for one lecture (D7 reasons; D8 quiz on approval)
+            from profsagent.delivery import mix
+            from profsagent.delivery.pipeline import Log
+            lid, act, log = args["lecture"], args.get("action") or "propose", Log(rid)
+            if act == "approve":
+                r = mix.approve(rid, lid, by=args.get("by") or "Professor", log=log)
+            elif act == "preset":
+                r = mix.save(rid, lid, preset=args.get("preset"), by=args.get("by") or "Professor", log=log)
+            else:
+                r = {"mix": mix.propose(rid, lid, note=args.get("note") or "", log=log)}
+            if r.get("errors"):
+                raise ValueError("; ".join(str(v) for v in r["errors"].values()))
+            out = {"ok": {"lecture": lid, "status": r["mix"]["status"]}}
         elif kind == "material":
             from profsagent.content.generate import generate_material
             from profsagent.delivery.pipeline import Log

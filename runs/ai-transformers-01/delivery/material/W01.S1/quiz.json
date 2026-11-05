@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 11,
+  "los": [
+   "CO1.LO1"
+  ],
+  "question": "What is the main limitation of the fixed‑size context vector in an RNN encoder‑decoder?",
+  "options": [
+   "It forces the decoder to generate tokens in parallel",
+   "It compresses the entire source sequence into a single vector",
+   "It eliminates the need for backpropagation through time",
+   "It allows unlimited sequence length"
+  ],
+  "answer": 1,
+  "explanation": "The context vector is a bottleneck because all source information must be compressed into one fixed‑size vector, limiting long sequences. The tempting wrong option about parallel generation is incorrect because RNN decoders generate sequentially, not in parallel."
+ },
+ {
+  "slide": 14,
+  "los": [
+   "CO1.LO1"
+  ],
+  "question": "How does attention address the bottleneck of the encoder‑decoder RNN?",
+  "options": [
+   "By using a larger fixed‑size vector",
+   "By allowing the decoder to attend to all encoder hidden states at each step",
+   "By removing the encoder entirely",
+   "By training the decoder without gradients"
+  ],
+  "answer": 1,
+  "explanation": "Attention computes a weighted sum of all encoder hidden states, giving the decoder direct access to the whole source sequence. Option A is wrong because attention does not rely on a single fixed‑size vector."
+ }
+]

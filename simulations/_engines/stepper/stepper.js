@@ -120,7 +120,9 @@
     // a legend for the colours this step uses, so the meaning never rests on colour alone
     const used = new Set(), seen = o => { if (o && typeof o === 'object') for (const [k, v] of Object.entries(o)) { if (k === 'mark' || k === 'marks') { if (typeof v === 'string') used.add(v); else if (v && typeof v === 'object') Object.values(v).forEach(m => used.add(m)); } else seen(v); } };
     onBoard.forEach(seen);
-    const words = { active: 'now', compare: 'compared', swap: 'swapped', done: 'done', min: 'smallest' };
+    // a widget may name its colours itself (`legend: {done: 'inside'}`); otherwise the sorting words below
+    const words = Object.assign({ active: 'now', compare: 'compared', swap: 'swapped', done: 'done', min: 'smallest' },
+      ...onBoard.map(w => (w && w.legend && typeof w.legend === 'object') ? w.legend : {}));
     const keys = MARKS.filter(m => used.has(m) && words[m]);
     if (keys.length) view.append(h('div', { class: 'sv-legend-row' }, ...keys.map(m => h('span', { class: 'sv-key sv-key-' + m }, words[m]))));
     if (!valsBox) return;

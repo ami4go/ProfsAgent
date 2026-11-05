@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 10,
+  "los": [
+   "CO2.LO2"
+  ],
+  "question": "Suppose batch size B=4, query sequence length L=10, d_model=512, and num_heads=8. What is the shape of tensor Q after projection, view, and transposition for attention?",
+  "options": [
+   "(4, 10, 8, 64)",
+   "(4, 8, 10, 64)",
+   "(4, 8, 64, 10)",
+   "(32, 10, 64)"
+  ],
+  "answer": 1,
+  "explanation": "After linear projection, Q has shape (4, 10, 512). Calculating d_k = 512 / 8 = 64, reshaping via view gives (4, 10, 8, 64). Transposing dimensions 1 and 2 yields (4, 8, 10, 64). Option 0 is tempting but incorrect because it omits the transpose step needed for parallel batch matrix multiplication across heads."
+ },
+ {
+  "slide": 14,
+  "los": [
+   "CO2.LO2"
+  ],
+  "question": "Why must key and value tensors be reshaped using dynamic view .view(B, -1, num_heads, d_k) rather than hardcoding query sequence length L_q?",
+  "options": [
+   "Because queries, keys, and values must always have different feature dimensions.",
+   "Because keys and values can have a sequence length L_k distinct from query sequence length L_q in cross-attention.",
+   "Because using -1 automatically calculates batch size B without reading it from the tensor.",
+   "Because PyTorch view does not support integer variables for sequence dimensions."
+  ],
+  "answer": 1,
+  "explanation": "In cross-attention (used in decoder blocks), queries come from the decoder with length L_q while keys and values come from the encoder with length L_k. Hardcoding L_q when reshaping keys and values raises a runtime dimension error whenever L_q != L_k. Option 0 is wrong because d_k is identical across Q, K, and V."
+ }
+]

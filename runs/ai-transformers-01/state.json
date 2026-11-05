@@ -1,0 +1,1802 @@
+{
+ "cco_compact": {
+  "course_name": "Introduction to Transformer Architecture",
+  "description": "A course on the transformer, the architecture behind modern language and vision models. Students build attention and a transformer from scratch, study tokenisation, positional encoding, training and scaling, and examine encoder, decoder and encoder-decoder variants, fine-tuning and efficient inference."
+ },
+ "department": "CSE",
+ "level": 4,
+ "ltp": {
+  "L": 3,
+  "T": 0,
+  "P": 2
+ },
+ "weeks": 13,
+ "midsem_after_week": 7,
+ "lab_required": "yes",
+ "cos": [
+  {
+   "id": "CO1",
+   "statement": "Explain how attention removes the bottlenecks of recurrent sequence models, for a given sequence-to-sequence task, by tracing how information flows between positions in each model.",
+   "verb": "explain",
+   "behaviour": "how attention removes the bottlenecks of recurrent sequence models",
+   "condition": "for a given sequence-to-sequence task",
+   "degree": "by tracing how information flows between positions in each model",
+   "bloom_level": 2
+  },
+  {
+   "id": "CO2",
+   "statement": "Implement scaled dot-product attention, multi-head attention and a complete transformer block in PyTorch, from a written specification, such that the outputs match a reference implementation to within 1e-5.",
+   "verb": "implement",
+   "behaviour": "scaled dot-product attention, multi-head attention and a complete transformer block in PyTorch",
+   "condition": "from a written specification",
+   "degree": "such that the outputs match a reference implementation to within 1e-5",
+   "bloom_level": 3
+  },
+  {
+   "id": "CO3",
+   "statement": "Train a small decoder-only transformer with a byte-pair-encoding tokenizer and the language-modelling objective, on a given text corpus, reaching the target validation loss set in the assignment.",
+   "verb": "train",
+   "behaviour": "a small decoder-only transformer with a byte-pair-encoding tokenizer and the language-modelling objective",
+   "condition": "on a given text corpus",
+   "degree": "reaching the target validation loss set in the assignment",
+   "bloom_level": 3
+  },
+  {
+   "id": "CO4",
+   "statement": "Compare encoder-only, decoder-only, encoder-decoder and vision transformer variants, for a given task and compute budget, justifying the choice with architecture and cost trade-offs.",
+   "verb": "compare",
+   "behaviour": "encoder-only, decoder-only, encoder-decoder and vision transformer variants",
+   "condition": "for a given task and compute budget",
+   "degree": "justifying the choice with architecture and cost trade-offs",
+   "bloom_level": 4
+  },
+  {
+   "id": "CO5",
+   "statement": "Evaluate fine-tuning, scaling and inference choices such as LoRA, scaling laws, the KV cache, quantisation and efficient attention, for a given deployment budget, using measured quality, memory and latency.",
+   "verb": "evaluate",
+   "behaviour": "fine-tuning, scaling and inference choices such as LoRA, scaling laws, the KV cache, quantisation and efficient attention",
+   "condition": "for a given deployment budget",
+   "degree": "using measured quality, memory and latency",
+   "bloom_level": 5
+  }
+ ],
+ "los": [
+  {
+   "id": "CO1.LO1",
+   "parent_co": "CO1",
+   "statement": "Describe how a recurrent network processes a sequence and why its fixed-size state limits long inputs using a worked encoder-decoder translation example, naming the vanishing-gradient and bottleneck problems.",
+   "verb": "describe",
+   "behaviour": "how a recurrent network processes a sequence and why its fixed-size state limits long inputs",
+   "condition": "using a worked encoder-decoder translation example",
+   "degree": "naming the vanishing-gradient and bottleneck problems",
+   "bloom_level": 2
+  },
+  {
+   "id": "CO1.LO2",
+   "parent_co": "CO1",
+   "statement": "Explain attention as a soft dictionary lookup over queries, keys and values for a toy alignment between a source and a target sentence, computing the attention weights by hand.",
+   "verb": "explain",
+   "behaviour": "attention as a soft dictionary lookup over queries, keys and values",
+   "condition": "for a toy alignment between a source and a target sentence",
+   "degree": "computing the attention weights by hand",
+   "bloom_level": 2
+  },
+  {
+   "id": "CO2.LO1",
+   "parent_co": "CO2",
+   "statement": "Compute scaled dot-product self-attention, including the softmax scaling by the square root of the key dimension for a small matrix example and in vectorised PyTorch, with the causal mask applied where required.",
+   "verb": "compute",
+   "behaviour": "scaled dot-product self-attention, including the softmax scaling by the square root of the key dimension",
+   "condition": "for a small matrix example and in vectorised PyTorch",
+   "degree": "with the causal mask applied where required",
+   "bloom_level": 3
+  },
+  {
+   "id": "CO2.LO2",
+   "parent_co": "CO2",
+   "statement": "Implement multi-head attention with learned projections as a PyTorch module, with tensor shapes checked at every step.",
+   "verb": "implement",
+   "behaviour": "multi-head attention with learned projections",
+   "condition": "as a PyTorch module",
+   "degree": "with tensor shapes checked at every step",
+   "bloom_level": 3
+  },
+  {
+   "id": "CO2.LO3",
+   "parent_co": "CO2",
+   "statement": "Assemble a transformer block from attention, a feed-forward network, residual connections, layer normalisation and positional encoding from the original paper's description, passing the provided shape and equivalence tests.",
+   "verb": "assemble",
+   "behaviour": "a transformer block from attention, a feed-forward network, residual connections, layer normalisation and positional encoding",
+   "condition": "from the original paper's description",
+   "degree": "passing the provided shape and equivalence tests",
+   "bloom_level": 3
+  },
+  {
+   "id": "CO3.LO1",
+   "parent_co": "CO3",
+   "statement": "Apply byte-pair encoding to build a tokenizer on a given corpus, reproducing the reference merges for the first 20 steps.",
+   "verb": "apply",
+   "behaviour": "byte-pair encoding to build a tokenizer",
+   "condition": "on a given corpus",
+   "degree": "reproducing the reference merges for the first 20 steps",
+   "bloom_level": 3
+  },
+  {
+   "id": "CO3.LO2",
+   "parent_co": "CO3",
+   "statement": "Train a character- or BPE-level GPT with the next-token objective on a single GPU or CPU, logging training and validation loss and generating samples.",
+   "verb": "train",
+   "behaviour": "a character- or BPE-level GPT with the next-token objective",
+   "condition": "on a single GPU or CPU",
+   "degree": "logging training and validation loss and generating samples",
+   "bloom_level": 3
+  },
+  {
+   "id": "CO4.LO1",
+   "parent_co": "CO4",
+   "statement": "Contrast BERT-style encoders, GPT-style decoders and T5-style encoder-decoders for classification, generation and translation tasks, stating which attention masks each uses and why.",
+   "verb": "contrast",
+   "behaviour": "BERT-style encoders, GPT-style decoders and T5-style encoder-decoders",
+   "condition": "for classification, generation and translation tasks",
+   "degree": "stating which attention masks each uses and why",
+   "bloom_level": 4
+  },
+  {
+   "id": "CO4.LO2",
+   "parent_co": "CO4",
+   "statement": "Justify the patch-embedding design of the vision transformer against a convolutional baseline, using data and compute requirements.",
+   "verb": "justify",
+   "behaviour": "the patch-embedding design of the vision transformer",
+   "condition": "against a convolutional baseline",
+   "degree": "using data and compute requirements",
+   "bloom_level": 4
+  },
+  {
+   "id": "CO5.LO1",
+   "parent_co": "CO5",
+   "statement": "Estimate the compute-optimal model and data size from a published scaling law, within the budget given.",
+   "verb": "estimate",
+   "behaviour": "the compute-optimal model and data size",
+   "condition": "from a published scaling law",
+   "degree": "within the budget given",
+   "bloom_level": 4
+  },
+  {
+   "id": "CO5.LO2",
+   "parent_co": "CO5",
+   "statement": "Evaluate LoRA fine-tuning against full fine-tuning on a small downstream task, reporting quality, trainable parameters and memory.",
+   "verb": "evaluate",
+   "behaviour": "LoRA fine-tuning against full fine-tuning",
+   "condition": "on a small downstream task",
+   "degree": "reporting quality, trainable parameters and memory",
+   "bloom_level": 5
+  },
+  {
+   "id": "CO5.LO3",
+   "parent_co": "CO5",
+   "statement": "Measure the effect of the KV cache, quantisation and efficient attention on inference for a given model, reporting latency, memory and output quality.",
+   "verb": "measure",
+   "behaviour": "the effect of the KV cache, quantisation and efficient attention on inference",
+   "condition": "for a given model",
+   "degree": "reporting latency, memory and output quality",
+   "bloom_level": 5
+  }
+ ],
+ "modules": [
+  {
+   "id": "M1",
+   "title": "From sequence models to attention",
+   "order": 1,
+   "primary_cos": [
+    "CO1"
+   ],
+   "topics": [
+    {
+     "id": "M1.T1",
+     "title": "Sequence modelling and the limits of recurrent networks",
+     "est_hours": 1.5,
+     "serves_los": [
+      "CO1.LO1"
+     ],
+     "requires": [],
+     "topic_uid": null,
+     "hands_on": false,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M1.T2",
+     "title": "Attention as a soft lookup: queries, keys and values",
+     "est_hours": 1.5,
+     "serves_los": [
+      "CO1.LO2"
+     ],
+     "requires": [
+      "M1.T1"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "M2",
+   "title": "The transformer block",
+   "order": 2,
+   "primary_cos": [
+    "CO2"
+   ],
+   "topics": [
+    {
+     "id": "M2.T1",
+     "title": "Scaled dot-product self-attention and masking",
+     "est_hours": 1.5,
+     "serves_los": [
+      "CO2.LO1"
+     ],
+     "requires": [
+      "M1.T2"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M2.T2",
+     "title": "Multi-head attention",
+     "est_hours": 1.5,
+     "serves_los": [
+      "CO2.LO2"
+     ],
+     "requires": [
+      "M2.T1"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M2.T3",
+     "title": "Positional encoding",
+     "est_hours": 1.5,
+     "serves_los": [
+      "CO2.LO3"
+     ],
+     "requires": [
+      "M2.T2"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M2.T4",
+     "title": "Residuals, layer normalisation and the full transformer block",
+     "est_hours": 1.5,
+     "serves_los": [
+      "CO2.LO3"
+     ],
+     "requires": [
+      "M2.T3"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "M3",
+   "title": "Tokenisation, embeddings and language modelling",
+   "order": 3,
+   "primary_cos": [
+    "CO3"
+   ],
+   "topics": [
+    {
+     "id": "M3.T1",
+     "title": "Tokenisation with byte-pair encoding",
+     "est_hours": 1.5,
+     "serves_los": [
+      "CO3.LO1"
+     ],
+     "requires": [],
+     "topic_uid": null,
+     "hands_on": true,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M3.T2",
+     "title": "Embeddings and the language-modelling objective",
+     "est_hours": 1.5,
+     "serves_los": [
+      "CO3.LO2"
+     ],
+     "requires": [
+      "M3.T1",
+      "M2.T4"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M3.T3",
+     "title": "Training a small GPT from scratch",
+     "est_hours": 3.0,
+     "serves_los": [
+      "CO3.LO2"
+     ],
+     "requires": [
+      "M3.T2"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "outside_load_hours": 8.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "M4",
+   "title": "Transformer variants",
+   "order": 4,
+   "primary_cos": [
+    "CO4"
+   ],
+   "topics": [
+    {
+     "id": "M4.T1",
+     "title": "Encoder-only models: BERT and masked language modelling",
+     "est_hours": 1.5,
+     "serves_los": [
+      "CO4.LO1"
+     ],
+     "requires": [
+      "M3.T2"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M4.T2",
+     "title": "Decoder-only models: GPT and causal generation",
+     "est_hours": 1.5,
+     "serves_los": [
+      "CO4.LO1"
+     ],
+     "requires": [
+      "M3.T3"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M4.T3",
+     "title": "Encoder-decoder models: T5 and translation",
+     "est_hours": 1.5,
+     "serves_los": [
+      "CO4.LO1"
+     ],
+     "requires": [
+      "M4.T1",
+      "M4.T2"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M4.T4",
+     "title": "Vision transformers",
+     "est_hours": 1.5,
+     "serves_los": [
+      "CO4.LO2"
+     ],
+     "requires": [
+      "M4.T1"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "M5",
+   "title": "Training, scaling and fine-tuning",
+   "order": 5,
+   "primary_cos": [
+    "CO5"
+   ],
+   "topics": [
+    {
+     "id": "M5.T1",
+     "title": "Optimisation and training stability",
+     "est_hours": 1.5,
+     "serves_los": [
+      "CO3.LO2"
+     ],
+     "requires": [
+      "M3.T3"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M5.T2",
+     "title": "Scaling laws and compute-optimal training",
+     "est_hours": 1.5,
+     "serves_los": [
+      "CO5.LO1"
+     ],
+     "requires": [
+      "M5.T1"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M5.T3",
+     "title": "Pre-training, fine-tuning and instruction tuning",
+     "est_hours": 3.0,
+     "serves_los": [
+      "CO5.LO2"
+     ],
+     "requires": [
+      "M5.T2"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M5.T4",
+     "title": "Parameter-efficient fine-tuning with LoRA",
+     "est_hours": 1.5,
+     "serves_los": [
+      "CO5.LO2"
+     ],
+     "requires": [
+      "M5.T3"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "M6",
+   "title": "Efficient inference",
+   "order": 6,
+   "primary_cos": [
+    "CO5"
+   ],
+   "topics": [
+    {
+     "id": "M6.T1",
+     "title": "Decoding strategies: greedy, beam search and sampling",
+     "est_hours": 1.5,
+     "serves_los": [
+      "CO4.LO1"
+     ],
+     "requires": [
+      "M4.T2"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M6.T2",
+     "title": "The KV cache",
+     "est_hours": 1.5,
+     "serves_los": [
+      "CO5.LO3"
+     ],
+     "requires": [
+      "M6.T1"
+     ],
+     "topic_uid": null,
+     "hands_on": true,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M6.T3",
+     "title": "Quantisation",
+     "est_hours": 1.5,
+     "serves_los": [
+      "CO5.LO3"
+     ],
+     "requires": [
+      "M6.T2"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M6.T4",
+     "title": "Efficient attention: FlashAttention and sparse attention",
+     "est_hours": 3.0,
+     "serves_los": [
+      "CO5.LO3"
+     ],
+     "requires": [
+      "M6.T2"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    },
+    {
+     "id": "M6.T5",
+     "title": "Course synthesis: choosing and deploying a transformer",
+     "est_hours": 3.0,
+     "serves_los": [
+      "CO4.LO1",
+      "CO5.LO3"
+     ],
+     "requires": [
+      "M6.T4"
+     ],
+     "topic_uid": null,
+     "hands_on": false,
+     "outside_load_hours": 4.0,
+     "sources": [
+      {
+       "tag": "HAND",
+       "ref": "public syllabi",
+       "basis": null
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "schedule": {
+  "weeks": [
+   {
+    "week": 1,
+    "items": [
+     {
+      "topic_id": "M1.T1",
+      "hours": 1.5
+     },
+     {
+      "topic_id": "M1.T2",
+      "hours": 1.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 2,
+    "items": [
+     {
+      "topic_id": "M2.T1",
+      "hours": 1.5
+     },
+     {
+      "topic_id": "M2.T2",
+      "hours": 1.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 3,
+    "items": [
+     {
+      "topic_id": "M2.T3",
+      "hours": 1.5
+     },
+     {
+      "topic_id": "M2.T4",
+      "hours": 1.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 4,
+    "items": [
+     {
+      "topic_id": "M3.T1",
+      "hours": 1.5
+     },
+     {
+      "topic_id": "M3.T2",
+      "hours": 1.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 5,
+    "items": [
+     {
+      "topic_id": "M3.T3",
+      "hours": 3.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 6,
+    "items": [
+     {
+      "topic_id": "M4.T1",
+      "hours": 1.5
+     },
+     {
+      "topic_id": "M4.T2",
+      "hours": 1.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 7,
+    "items": [
+     {
+      "topic_id": "M4.T3",
+      "hours": 1.5
+     },
+     {
+      "topic_id": "M4.T4",
+      "hours": 1.5
+     }
+    ],
+    "is_midsem_boundary": true
+   },
+   {
+    "week": 8,
+    "items": [
+     {
+      "topic_id": "M5.T1",
+      "hours": 1.5
+     },
+     {
+      "topic_id": "M5.T2",
+      "hours": 1.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 9,
+    "items": [
+     {
+      "topic_id": "M5.T3",
+      "hours": 3.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 10,
+    "items": [
+     {
+      "topic_id": "M5.T4",
+      "hours": 1.5
+     },
+     {
+      "topic_id": "M6.T1",
+      "hours": 1.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 11,
+    "items": [
+     {
+      "topic_id": "M6.T2",
+      "hours": 1.5
+     },
+     {
+      "topic_id": "M6.T3",
+      "hours": 1.5
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 12,
+    "items": [
+     {
+      "topic_id": "M6.T4",
+      "hours": 3.0
+     }
+    ],
+    "is_midsem_boundary": false
+   },
+   {
+    "week": 13,
+    "items": [
+     {
+      "topic_id": "M6.T5",
+      "hours": 3.0
+     }
+    ],
+    "is_midsem_boundary": false
+   }
+  ],
+  "topic_weeks": {
+   "M1.T1": [
+    1
+   ],
+   "M1.T2": [
+    1
+   ],
+   "M2.T1": [
+    2
+   ],
+   "M2.T2": [
+    2
+   ],
+   "M2.T3": [
+    3
+   ],
+   "M2.T4": [
+    3
+   ],
+   "M3.T1": [
+    4
+   ],
+   "M3.T2": [
+    4
+   ],
+   "M3.T3": [
+    5
+   ],
+   "M4.T1": [
+    6
+   ],
+   "M4.T2": [
+    6
+   ],
+   "M4.T3": [
+    7
+   ],
+   "M4.T4": [
+    7
+   ],
+   "M5.T1": [
+    8
+   ],
+   "M5.T2": [
+    8
+   ],
+   "M5.T3": [
+    9
+   ],
+   "M5.T4": [
+    10
+   ],
+   "M6.T1": [
+    10
+   ],
+   "M6.T2": [
+    11
+   ],
+   "M6.T3": [
+    11
+   ],
+   "M6.T4": [
+    12
+   ],
+   "M6.T5": [
+    13
+   ]
+  }
+ },
+ "assessment": {
+  "components": [
+   {
+    "type": "quiz",
+    "weight_pct": 10.0,
+    "instances": [
+     {
+      "id": "A:Quiz1",
+      "release_week": 1,
+      "due_week": 3,
+      "covers_topics": [
+       "M1.T1",
+       "M1.T2",
+       "M2.T1"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO1.LO1",
+        "marks_pct_of_instance": 33.3
+       },
+       {
+        "lo_id": "CO1.LO2",
+        "marks_pct_of_instance": 33.3
+       },
+       {
+        "lo_id": "CO2.LO1",
+        "marks_pct_of_instance": 33.3
+       }
+      ]
+     },
+     {
+      "id": "A:Quiz2",
+      "release_week": 4,
+      "due_week": 6,
+      "covers_topics": [
+       "M3.T1",
+       "M3.T2"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO3.LO1",
+        "marks_pct_of_instance": 100.0
+       }
+      ]
+     },
+     {
+      "id": "A:Quiz3",
+      "release_week": 9,
+      "due_week": 11,
+      "covers_topics": [
+       "M5.T2",
+       "M6.T1"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO5.LO1",
+        "marks_pct_of_instance": 100.0
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "assignment",
+    "weight_pct": 30.0,
+    "instances": [
+     {
+      "id": "A:A1-attention-from-scratch",
+      "release_week": 2,
+      "due_week": 4,
+      "covers_topics": [
+       "M2.T1",
+       "M2.T2",
+       "M2.T3",
+       "M2.T4"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO2.LO1",
+        "marks_pct_of_instance": 33.3
+       },
+       {
+        "lo_id": "CO2.LO2",
+        "marks_pct_of_instance": 33.3
+       },
+       {
+        "lo_id": "CO2.LO3",
+        "marks_pct_of_instance": 33.3
+       }
+      ]
+     },
+     {
+      "id": "A:A2-train-a-mini-gpt",
+      "release_week": 5,
+      "due_week": 7,
+      "covers_topics": [
+       "M3.T1",
+       "M3.T2",
+       "M3.T3"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO3.LO1",
+        "marks_pct_of_instance": 50.0
+       },
+       {
+        "lo_id": "CO3.LO2",
+        "marks_pct_of_instance": 50.0
+       }
+      ]
+     },
+     {
+      "id": "A:A3-lora-and-efficient-inference",
+      "release_week": 10,
+      "due_week": 12,
+      "covers_topics": [
+       "M5.T4",
+       "M6.T2",
+       "M6.T3"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO5.LO2",
+        "marks_pct_of_instance": 50.0
+       },
+       {
+        "lo_id": "CO5.LO3",
+        "marks_pct_of_instance": 50.0
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "midsem",
+    "weight_pct": 20.0,
+    "instances": [
+     {
+      "id": "A:MidSem",
+      "release_week": 6,
+      "due_week": 8,
+      "covers_topics": [
+       "M1.T1",
+       "M1.T2",
+       "M2.T1",
+       "M2.T2",
+       "M2.T3",
+       "M2.T4",
+       "M3.T1",
+       "M3.T2"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO1.LO1",
+        "marks_pct_of_instance": 25.0
+       },
+       {
+        "lo_id": "CO1.LO2",
+        "marks_pct_of_instance": 25.0
+       },
+       {
+        "lo_id": "CO2.LO1",
+        "marks_pct_of_instance": 25.0
+       },
+       {
+        "lo_id": "CO3.LO1",
+        "marks_pct_of_instance": 25.0
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "project",
+    "weight_pct": 15.0,
+    "instances": [
+     {
+      "id": "A:Project",
+      "release_week": 11,
+      "due_week": 13,
+      "covers_topics": [
+       "M4.T4",
+       "M5.T3",
+       "M6.T5"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO4.LO2",
+        "marks_pct_of_instance": 50.0
+       },
+       {
+        "lo_id": "CO5.LO2",
+        "marks_pct_of_instance": 50.0
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "type": "endsem",
+    "weight_pct": 25.0,
+    "instances": [
+     {
+      "id": "A:EndSem",
+      "release_week": 12,
+      "due_week": 14,
+      "covers_topics": [
+       "M4.T1",
+       "M4.T2",
+       "M4.T3",
+       "M5.T2",
+       "M6.T2",
+       "M6.T4"
+      ],
+      "assesses": [
+       {
+        "lo_id": "CO4.LO1",
+        "marks_pct_of_instance": 33.3
+       },
+       {
+        "lo_id": "CO5.LO1",
+        "marks_pct_of_instance": 33.3
+       },
+       {
+        "lo_id": "CO5.LO3",
+        "marks_pct_of_instance": 33.3
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ "labs_tutorials": {
+  "concerns": [],
+  "missing": [],
+  "labs": [
+   {
+    "week": 1,
+    "id": "W01.LAB",
+    "title": "PyTorch warm-up and an RNN baseline",
+    "exercise": "Train a small GRU language model on character data and plot how its loss behaves on long sequences.",
+    "practises_los": [
+     "CO1.LO1"
+    ],
+    "uses_topics": [
+     "M1.T1"
+    ],
+    "tools": [
+     "Python",
+     "PyTorch",
+     "Jupyter"
+    ]
+   },
+   {
+    "week": 2,
+    "id": "W02.LAB",
+    "title": "Attention by hand and in code",
+    "exercise": "Compute attention weights for a 4-token toy example by hand, then vectorise scaled dot-product and multi-head attention in PyTorch and check the shapes.",
+    "practises_los": [
+     "CO1.LO2",
+     "CO2.LO1",
+     "CO2.LO2"
+    ],
+    "uses_topics": [
+     "M1.T2",
+     "M2.T1",
+     "M2.T2"
+    ],
+    "tools": [
+     "Python",
+     "PyTorch",
+     "Jupyter"
+    ]
+   },
+   {
+    "week": 3,
+    "id": "W03.LAB",
+    "title": "Build the transformer block",
+    "exercise": "Assemble a transformer block and pass the equivalence tests.",
+    "practises_los": [
+     "CO2.LO3"
+    ],
+    "uses_topics": [
+     "M2.T3",
+     "M2.T4"
+    ],
+    "tools": [
+     "Python",
+     "PyTorch"
+    ]
+   },
+   {
+    "week": 5,
+    "id": "W05.LAB",
+    "title": "Train a mini-GPT",
+    "exercise": "Train a small GPT on a text corpus and sample from it.",
+    "practises_los": [
+     "CO3.LO2"
+    ],
+    "uses_topics": [
+     "M3.T3"
+    ],
+    "tools": [
+     "Python",
+     "PyTorch",
+     "GPU (Colab)"
+    ]
+   }
+  ]
+ },
+ "positioning": {
+  "concerns": [],
+  "missing": [],
+  "prerequisites": [
+   {
+    "course_uid": "Machine Learning",
+    "kind": "hard",
+    "relied_topics": [
+     "gradient descent",
+     "neural networks",
+     "cross-entropy loss"
+    ]
+   },
+   {
+    "course_uid": "Linear Algebra",
+    "kind": "hard",
+    "relied_topics": [
+     "matrix multiplication",
+     "dot products",
+     "softmax over vectors"
+    ]
+   },
+   {
+    "course_uid": "Probability and Statistics",
+    "kind": "soft",
+    "relied_topics": [
+     "probability distributions",
+     "likelihood"
+    ]
+   }
+  ]
+ },
+ "resources": [
+  {
+   "candidate_id": "https://web.stanford.edu/~jurafsky/slp3/",
+   "role": "textbook",
+   "title": "Speech and Language Processing (3rd edition draft)",
+   "authors": [
+    "Daniel Jurafsky",
+    "James H. Martin"
+   ],
+   "year": 2024,
+   "edition": null,
+   "venue": "Draft textbook",
+   "identifier": {
+    "isbn": null,
+    "doi": null,
+    "arxiv": null,
+    "url": "https://web.stanford.edu/~jurafsky/slp3/"
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M1.T1",
+     "reason": "RNNs, attention, transformers, tokenisation and language models chapters."
+    },
+    {
+     "topic_id": "M1.T2",
+     "reason": "RNNs, attention, transformers, tokenisation and language models chapters."
+    },
+    {
+     "topic_id": "M2.T1",
+     "reason": "RNNs, attention, transformers, tokenisation and language models chapters."
+    },
+    {
+     "topic_id": "M3.T1",
+     "reason": "RNNs, attention, transformers, tokenisation and language models chapters."
+    },
+    {
+     "topic_id": "M3.T2",
+     "reason": "RNNs, attention, transformers, tokenisation and language models chapters."
+    },
+    {
+     "topic_id": "M4.T1",
+     "reason": "RNNs, attention, transformers, tokenisation and language models chapters."
+    },
+    {
+     "topic_id": "M4.T2",
+     "reason": "RNNs, attention, transformers, tokenisation and language models chapters."
+    }
+   ],
+   "status": "verified"
+  },
+  {
+   "candidate_id": "https://d2l.ai/chapter_attention-mechanisms-and-transformers/index.html",
+   "role": "textbook",
+   "title": "Dive into Deep Learning, chapter 11: Attention Mechanisms and Transformers",
+   "authors": [
+    "Aston Zhang",
+    "Zachary C. Lipton",
+    "Mu Li",
+    "Alexander J. Smola"
+   ],
+   "year": 2023,
+   "edition": null,
+   "venue": "Cambridge University Press / d2l.ai",
+   "identifier": {
+    "isbn": null,
+    "doi": null,
+    "arxiv": null,
+    "url": "https://d2l.ai/chapter_attention-mechanisms-and-transformers/index.html"
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M1.T2",
+     "reason": "Queries, keys and values, multi-head attention, positional encoding, ViT, with runnable code."
+    },
+    {
+     "topic_id": "M2.T1",
+     "reason": "Queries, keys and values, multi-head attention, positional encoding, ViT, with runnable code."
+    },
+    {
+     "topic_id": "M2.T2",
+     "reason": "Queries, keys and values, multi-head attention, positional encoding, ViT, with runnable code."
+    },
+    {
+     "topic_id": "M2.T3",
+     "reason": "Queries, keys and values, multi-head attention, positional encoding, ViT, with runnable code."
+    },
+    {
+     "topic_id": "M2.T4",
+     "reason": "Queries, keys and values, multi-head attention, positional encoding, ViT, with runnable code."
+    },
+    {
+     "topic_id": "M4.T4",
+     "reason": "Queries, keys and values, multi-head attention, positional encoding, ViT, with runnable code."
+    }
+   ],
+   "status": "verified"
+  },
+  {
+   "candidate_id": "1706.03762",
+   "role": "reading",
+   "title": "Attention Is All You Need",
+   "authors": [
+    "Ashish Vaswani",
+    "Noam Shazeer",
+    "Niki Parmar",
+    "Jakob Uszkoreit"
+   ],
+   "year": 2017,
+   "edition": null,
+   "venue": "NeurIPS",
+   "identifier": {
+    "isbn": null,
+    "doi": null,
+    "arxiv": "1706.03762",
+    "url": null
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M2.T1",
+     "reason": "The original transformer."
+    },
+    {
+     "topic_id": "M2.T2",
+     "reason": "The original transformer."
+    },
+    {
+     "topic_id": "M2.T3",
+     "reason": "The original transformer."
+    },
+    {
+     "topic_id": "M2.T4",
+     "reason": "The original transformer."
+    }
+   ],
+   "status": "verified"
+  },
+  {
+   "candidate_id": "1409.0473",
+   "role": "reading",
+   "title": "Neural Machine Translation by Jointly Learning to Align and Translate",
+   "authors": [
+    "Dzmitry Bahdanau",
+    "Kyunghyun Cho",
+    "Yoshua Bengio"
+   ],
+   "year": 2015,
+   "edition": null,
+   "venue": "ICLR",
+   "identifier": {
+    "isbn": null,
+    "doi": null,
+    "arxiv": "1409.0473",
+    "url": null
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M1.T1",
+     "reason": "Attention introduced to fix the fixed-length encoder bottleneck."
+    },
+    {
+     "topic_id": "M1.T2",
+     "reason": "Attention introduced to fix the fixed-length encoder bottleneck."
+    }
+   ],
+   "status": "verified"
+  },
+  {
+   "candidate_id": "10.1162/neco.1997.9.8.1735",
+   "role": "reading",
+   "title": "Long Short-Term Memory",
+   "authors": [
+    "Sepp Hochreiter",
+    "Jürgen Schmidhuber"
+   ],
+   "year": 1997,
+   "edition": null,
+   "venue": "Neural Computation",
+   "identifier": {
+    "isbn": null,
+    "doi": "10.1162/neco.1997.9.8.1735",
+    "arxiv": null,
+    "url": null
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M1.T1",
+     "reason": "The gated recurrent cell and the vanishing-gradient motivation."
+    }
+   ],
+   "status": "verified"
+  },
+  {
+   "candidate_id": "1211.5063",
+   "role": "reading",
+   "title": "On the difficulty of training recurrent neural networks",
+   "authors": [
+    "Razvan Pascanu",
+    "Tomas Mikolov",
+    "Yoshua Bengio"
+   ],
+   "year": 2013,
+   "edition": null,
+   "venue": "ICML",
+   "identifier": {
+    "isbn": null,
+    "doi": null,
+    "arxiv": "1211.5063",
+    "url": null
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M1.T1",
+     "reason": "Vanishing and exploding gradients in RNNs."
+    }
+   ],
+   "status": "verified"
+  },
+  {
+   "candidate_id": "https://nlp.seas.harvard.edu/annotated-transformer/",
+   "role": "reading",
+   "title": "The Annotated Transformer",
+   "authors": [
+    "Alexander Rush",
+    "Austin Huang",
+    "Suraj Subramanian",
+    "Jonathan Sum"
+   ],
+   "year": 2022,
+   "edition": null,
+   "venue": "Harvard NLP (blog)",
+   "identifier": {
+    "isbn": null,
+    "doi": null,
+    "arxiv": null,
+    "url": "https://nlp.seas.harvard.edu/annotated-transformer/"
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M2.T1",
+     "reason": "Line-by-line PyTorch implementation of the paper."
+    },
+    {
+     "topic_id": "M2.T2",
+     "reason": "Line-by-line PyTorch implementation of the paper."
+    },
+    {
+     "topic_id": "M2.T3",
+     "reason": "Line-by-line PyTorch implementation of the paper."
+    },
+    {
+     "topic_id": "M2.T4",
+     "reason": "Line-by-line PyTorch implementation of the paper."
+    }
+   ],
+   "status": "verified"
+  },
+  {
+   "candidate_id": "https://jalammar.github.io/illustrated-transformer/",
+   "role": "reading",
+   "title": "The Illustrated Transformer",
+   "authors": [
+    "Jay Alammar"
+   ],
+   "year": 2018,
+   "edition": null,
+   "venue": "Blog",
+   "identifier": {
+    "isbn": null,
+    "doi": null,
+    "arxiv": null,
+    "url": "https://jalammar.github.io/illustrated-transformer/"
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M1.T2",
+     "reason": "Visual walk-through of self-attention and multi-head attention."
+    },
+    {
+     "topic_id": "M2.T1",
+     "reason": "Visual walk-through of self-attention and multi-head attention."
+    },
+    {
+     "topic_id": "M2.T2",
+     "reason": "Visual walk-through of self-attention and multi-head attention."
+    }
+   ],
+   "status": "verified"
+  },
+  {
+   "candidate_id": "1508.07909",
+   "role": "reading",
+   "title": "Neural Machine Translation of Rare Words with Subword Units",
+   "authors": [
+    "Rico Sennrich",
+    "Barry Haddow",
+    "Alexandra Birch"
+   ],
+   "year": 2016,
+   "edition": null,
+   "venue": "ACL",
+   "identifier": {
+    "isbn": null,
+    "doi": null,
+    "arxiv": "1508.07909",
+    "url": null
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M3.T1",
+     "reason": "Byte-pair encoding for NLP."
+    }
+   ],
+   "status": "verified"
+  },
+  {
+   "candidate_id": "1810.04805",
+   "role": "reading",
+   "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+   "authors": [
+    "Jacob Devlin",
+    "Ming-Wei Chang",
+    "Kenton Lee",
+    "Kristina Toutanova"
+   ],
+   "year": 2019,
+   "edition": null,
+   "venue": "NAACL",
+   "identifier": {
+    "isbn": null,
+    "doi": null,
+    "arxiv": "1810.04805",
+    "url": null
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M4.T1",
+     "reason": "Encoder-only pre-training."
+    }
+   ],
+   "status": "verified"
+  },
+  {
+   "candidate_id": "2010.11929",
+   "role": "reading",
+   "title": "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale",
+   "authors": [
+    "Alexey Dosovitskiy",
+    "Lucas Beyer",
+    "Alexander Kolesnikov"
+   ],
+   "year": 2021,
+   "edition": null,
+   "venue": "ICLR",
+   "identifier": {
+    "isbn": null,
+    "doi": null,
+    "arxiv": "2010.11929",
+    "url": null
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M4.T4",
+     "reason": "The vision transformer."
+    }
+   ],
+   "status": "verified"
+  },
+  {
+   "candidate_id": "2001.08361",
+   "role": "reading",
+   "title": "Scaling Laws for Neural Language Models",
+   "authors": [
+    "Jared Kaplan",
+    "Sam McCandlish",
+    "Tom Henighan"
+   ],
+   "year": 2020,
+   "edition": null,
+   "venue": "arXiv",
+   "identifier": {
+    "isbn": null,
+    "doi": null,
+    "arxiv": "2001.08361",
+    "url": null
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M5.T2",
+     "reason": "Loss as a power law in parameters, data and compute."
+    }
+   ],
+   "status": "verified"
+  },
+  {
+   "candidate_id": "2203.15556",
+   "role": "reading",
+   "title": "Training Compute-Optimal Large Language Models",
+   "authors": [
+    "Jordan Hoffmann",
+    "Sebastian Borgeaud",
+    "Arthur Mensch"
+   ],
+   "year": 2022,
+   "edition": null,
+   "venue": "NeurIPS",
+   "identifier": {
+    "isbn": null,
+    "doi": null,
+    "arxiv": "2203.15556",
+    "url": null
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M5.T2",
+     "reason": "Chinchilla: compute-optimal model and data size."
+    }
+   ],
+   "status": "verified"
+  },
+  {
+   "candidate_id": "2106.09685",
+   "role": "reading",
+   "title": "LoRA: Low-Rank Adaptation of Large Language Models",
+   "authors": [
+    "Edward J. Hu",
+    "Yelong Shen",
+    "Phillip Wallis"
+   ],
+   "year": 2022,
+   "edition": null,
+   "venue": "ICLR",
+   "identifier": {
+    "isbn": null,
+    "doi": null,
+    "arxiv": "2106.09685",
+    "url": null
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M5.T4",
+     "reason": "Parameter-efficient fine-tuning."
+    }
+   ],
+   "status": "verified"
+  },
+  {
+   "candidate_id": "2205.14135",
+   "role": "reading",
+   "title": "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+   "authors": [
+    "Tri Dao",
+    "Daniel Y. Fu",
+    "Stefano Ermon",
+    "Atri Rudra",
+    "Christopher Ré"
+   ],
+   "year": 2022,
+   "edition": null,
+   "venue": "NeurIPS",
+   "identifier": {
+    "isbn": null,
+    "doi": null,
+    "arxiv": "2205.14135",
+    "url": null
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M6.T4",
+     "reason": "IO-aware exact attention."
+    }
+   ],
+   "status": "verified"
+  },
+  {
+   "candidate_id": "https://github.com/karpathy/nanoGPT",
+   "role": "practice",
+   "title": "nanoGPT",
+   "authors": [
+    "Andrej Karpathy"
+   ],
+   "year": 2023,
+   "edition": null,
+   "venue": "GitHub",
+   "identifier": {
+    "isbn": null,
+    "doi": null,
+    "arxiv": null,
+    "url": "https://github.com/karpathy/nanoGPT"
+   },
+   "supports_topics": [
+    {
+     "topic_id": "M3.T3",
+     "reason": "A minimal GPT training repository used in the mini-GPT assignment."
+    },
+    {
+     "topic_id": "M4.T2",
+     "reason": "A minimal GPT training repository used in the mini-GPT assignment."
+    }
+   ],
+   "status": "verified"
+  }
+ ],
+ "design_source": {
+  "kind": "hand-authored (not a Phase 1 run)",
+  "modelled_on": [
+   "Stanford CS224N (Natural Language Processing with Deep Learning)",
+   "Dive into Deep Learning, chapter 11",
+   "Harvard NLP, The Annotated Transformer",
+   "Andrej Karpathy, nanoGPT"
+  ],
+  "input": "eval/inputs/dept_courses/transformers_full.yaml",
+  "made_for": "deliverable B slide samples, weeks 1-2"
+ }
+}

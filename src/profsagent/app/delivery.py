@@ -149,7 +149,9 @@ def _expert(x: dict) -> dict:
 def _result(lec: dict, topic_id: str | None) -> dict:
     r = lec.get("resources") or {}
     e = lec.get("experts")
-    out = {"generated_at": lec.get("generated_at"), "continuation_of": lec.get("continuation_of"), "note": r.get("note"), "counts": r.get("counts"),
+    # C writes `continues` since 1 Nov (`continuation_of` before); the page keeps reading `continuation_of`
+    out = {"generated_at": lec.get("generated_at"), "continuation_of": lec.get("continues") or lec.get("continuation_of"),
+           "note": r.get("note"), "counts": r.get("counts"),
            "partial": lec.get("partial"),
            "has_resources": bool(lec.get("resources")),
            "items": {k: [_resource(c, topic_id) for c in v] for k, v in (r.get("items") or {}).items()},

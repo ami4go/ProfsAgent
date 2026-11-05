@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 12,
+  "los": [
+   "CO1.LO2"
+  ],
+  "question": "Which statement about attention weights is true?",
+  "options": [
+   "They are always binary (0 or 1)",
+   "They sum to 1 across keys",
+   "They are computed without softmax",
+   "They are independent of the query"
+  ],
+  "answer": 1,
+  "explanation": "Attention weights are produced by softmax, so they are non‑negative and sum to 1. The most tempting wrong option is that they are binary, which describes hard alignment."
+ },
+ {
+  "slide": 15,
+  "los": [
+   "CO1.LO2"
+  ],
+  "question": "Why is soft attention preferred during training?",
+  "options": [
+   "It is faster to compute",
+   "It yields exact alignments",
+   "It is differentiable",
+   "It uses fewer parameters"
+  ],
+  "answer": 2,
+  "explanation": "Soft attention produces a differentiable weighted sum, enabling backpropagation. Hard alignment is non‑differentiable, requiring reinforcement learning or EM."
+ }
+]

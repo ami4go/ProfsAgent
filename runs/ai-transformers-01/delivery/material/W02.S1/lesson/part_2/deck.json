@@ -1,0 +1,445 @@
+{
+ "schema_version": "2",
+ "lecture_id": "W02.S1.P2",
+ "title": "Part 2 of 3: Causal Masking and Step-by-Step Matrix Computation",
+ "slides": [
+  {
+   "kind": "concept",
+   "title": "Why Decoders Require Causal Masking",
+   "bullets": [
+    "Autoregressive generation generates tokens sequentially",
+    "Preventing leftward information flow",
+    "Unmasked self-attention leaks future context"
+   ],
+   "figure": {
+    "kind": "flow",
+    "caption": "",
+    "steps": [
+     "Token t Query",
+     "Attend to tokens 1 to t",
+     "Block tokens t+1 to T",
+     "Next-token prediction"
+    ],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "In part one, we mastered the core mathematics of scaled dot-product attention, seeing how queries and keys interact across an entire sequence simultaneously. But that poses an immediate dilemma when we build an autoregressive decoder. In language generation, text unfolds one token at a time from left to right. When the model predicts the token at position two, it cannot be allowed to peek at position three or four. If we simply compute standard bidirectional self-attention as we did earlier, every position will look ahead into the future representations, trivializing training and breaking the autoregressive contract. We call this unwanted leak leftward information flow. To fix this while retaining parallel GPU computation during training, we must enforce a causal constraint. Each position in the decoder should only be allowed to attend to positions up to and including itself. Let us explore the mechanism that enforces this boundary: the causal mask.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [
+    "C3",
+    "C4"
+   ],
+   "minutes": 1.0,
+   "component": "",
+   "clip": "",
+   "link": ""
+  },
+  {
+   "kind": "example",
+   "title": "Constructing the Pre-Softmax Causal Mask",
+   "bullets": [
+    "Lower-triangular structure",
+    "Valid positions retained",
+    "Illegal future positions set to -infinity",
+    "Applied directly to raw scaled scores"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Pos 1",
+      "Keep score",
+      "Set to -inf"
+     ],
+     [
+      "Pos 2",
+      "Keep score",
+      "Keep score"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "How do we structurally prohibit attention to future tokens without throwing away matrix parallelism? We construct a causal mask matrix matching the shape of our query-key dot products. Consider a sequence of length T. The allowed interactions form a lower-triangular matrix, including the main diagonal. For row index i and column index j, if j is less than or equal to i, the token is attending to past positions or itself, which is entirely legal. However, whenever j exceeds i, that represents an illegal query into the future. Instead of dropping rows or running sequential loops, we intercept the raw attention scores right after dividing query times key transpose by the square root of d k, but strictly before evaluating softmax. At every illegal position where j is greater than i, we overwrite the score with negative infinity. As you will see next, setting these values to negative infinity before exponentiation is mathematically crucial for preserving valid probability distributions.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [
+    "C2",
+    "C3",
+    "C4"
+   ],
+   "minutes": 1.1,
+   "component": "",
+   "clip": "",
+   "link": ""
+  },
+  {
+   "kind": "concept",
+   "title": "Softmax Behavior with Negative Infinity",
+   "bullets": [
+    "Exponentiation of -infinity approaches zero",
+    "Zero numerator yields zero weight",
+    "Remaining probabilities renormalize cleanly",
+    "Preserves strict probability distribution"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "Let us examine why negative infinity is the exact tool we need. Recall that the softmax function operates row by row. For a given score, softmax takes e raised to that score and divides it by the sum of e raised to each score across the row. When we substitute negative infinity into an illegal future entry, e raised to negative infinity evaluates strictly to zero. Consequently, that illegal connection contributes zero to the row's denominator sum, and its numerator is zero, driving the resulting attention probability weight exactly to zero. Meanwhile, the legal positions with finite real scores compute their usual exponential values. Because the denominator now sums exclusively over the legal positions, the surviving entries automatically renormalize so that their attention probabilities sum precisely to one. This guarantees that future tokens exert absolutely zero influence on the current token, cleanly preserving autoregression without altering the core attention architecture.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [
+    "C2",
+    "C3",
+    "C4"
+   ],
+   "minutes": 1.0,
+   "component": "",
+   "clip": "",
+   "link": ""
+  },
+  {
+   "kind": "example",
+   "title": "Worked Example: Calculating Masked Attention Weights",
+   "bullets": [
+    "Raw scaled scores: [[2.0, 4.0], [2.0, 4.0]]",
+    "Masked scores: [[2.0, -inf], [2.0, 4.0]]",
+    "Row 1 softmax: [1.0, 0.0]",
+    "Row 2 softmax: [0.12, 0.88]"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Scaled QK^T",
+      "[2.0, 4.0]",
+      "[2.0, 4.0]"
+     ],
+     [
+      "Apply Mask",
+      "[2.0, -inf]",
+      "[2.0, 4.0]"
+     ],
+     [
+      "Softmax Weights",
+      "[1.0, 0.0]",
+      "[0.12, 0.88]"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "Now let us work through our example step by step using real numbers. Suppose we process a two-token sequence where the query-key dot products divided by the square root of d k give a two-by-two matrix with row one having scores two point zero and four point zero, and row two also having two point zero and four point zero. Position one cannot look at position two. So we apply our causal mask to entry row one, column two, turning four point zero into negative infinity. Row two is completely legal, so it stays two point zero and four point zero. Now we compute the row-wise softmax. For row one, e to the second power divided by e to the second power plus e to negative infinity simplifies to e squared over e squared plus zero, which equals exactly one point zero for token one, and zero point zero for token two. For row two, both positions are valid: e squared is approximately seven point three nine, and e to the fourth is approximately fifty-four point six. Normalizing gives twelve hundredths for position one and eighty-eight hundredths for position two.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [
+    "C3",
+    "C5"
+   ],
+   "minutes": 1.3,
+   "component": "",
+   "clip": "",
+   "link": ""
+  },
+  {
+   "kind": "example",
+   "title": "Worked Example: Output from Value Vectors",
+   "bullets": [
+    "Value matrix V: [[1.0, 0.0], [0.0, 1.0]]",
+    "Row 1: 1.0 * v1 + 0.0 * v2",
+    "Row 2: 0.12 * v1 + 0.88 * v2",
+    "Attention output: [[1.0, 0.0], [0.12, 0.88]]"
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "With the attention weight matrix established as row one having one point zero and zero point zero, and row two having twelve hundredths and eighty-eight hundredths, the final step is multiplying this matrix by our Value matrix V. Let V have row one as one point zero, zero point zero, and row two as zero point zero, one point zero. For the first token's output representation, we take one point zero times vector one plus zero point zero times vector two. That yields the vector one point zero, zero point zero. Notice that position one's output contains absolutely no information from the second token's value vector. For the second token, the output is twelve hundredths times vector one plus eighty-eight hundredths times vector two, producing the vector twelve hundredths, eighty-eight hundredths. Position two blends both tokens according to its learned attention scores. We have successfully maintained the autoregressive constraint through straightforward matrix arithmetic.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [
+    "C2",
+    "C3"
+   ],
+   "minutes": 1.0,
+   "component": "",
+   "clip": "",
+   "link": ""
+  },
+  {
+   "kind": "example",
+   "title": "A Fatal Misconception: Post-Softmax Zeroing",
+   "bullets": [
+    "Pre-softmax mask: injects -infinity",
+    "Post-softmax zeroing: zeros raw probabilities",
+    "Violation: row sum falls below 1.0",
+    "Distorts output vector scale"
+   ],
+   "figure": {
+    "kind": "table",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": [
+     [
+      "Pre-Softmax (-inf)",
+      "[1.0, 0.0]",
+      "1.0 (Valid)"
+     ],
+     [
+      "Post-Softmax Zero",
+      "[0.12, 0.0]",
+      "0.12 (Invalid)"
+     ]
+    ]
+   },
+   "quiz": null,
+   "notes": "A common mistake when students implement causal attention is trying to zero out illegal positions after computing the softmax rather than before. Let us see why that breaks the model. In our example, if you took the unmasked softmax of row one with scores two point zero and four point zero, the resulting weights would be roughly twelve hundredths and eighty-eight hundredths. If you then manually zeroed position two to prevent cheating, row one would be twelve hundredths and zero point zero. The probabilities now sum to only twelve hundredths, not one point zero. When multiplied by the values, the output vector's magnitude collapses to twelve percent of its expected norm. Softmax represents a convex combination of value vectors. By setting pre-softmax logits to negative infinity instead, the remaining legal weights properly expand and renormalize to sum to one point zero, preserving both gradient stability and numerical fidelity.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [
+    "C2",
+    "C3"
+   ],
+   "minutes": 1.0,
+   "component": "",
+   "clip": "",
+   "link": ""
+  },
+  {
+   "kind": "summary",
+   "title": "What you learned",
+   "bullets": [
+    "In this part, we saw how causal masking enforces the autoregressive constraint in decoders by substituting negative infinity into future score positions before softmax.",
+    "This guarantees that illegal connections evaluate to zero probability while surviving tokens properly renormalize to sum to one.",
+    "Multiplying these masked weights by the Value matrix yields causal output representations in parallel."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "In this part, we saw how causal masking enforces the autoregressive constraint in decoders by substituting negative infinity into future score positions before softmax. This guarantees that illegal connections evaluate to zero probability while surviving tokens properly renormalize to sum to one. Multiplying these masked weights by the Value matrix yields causal output representations in parallel.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 0.5,
+   "component": "",
+   "clip": "",
+   "link": ""
+  },
+  {
+   "kind": "check",
+   "title": "Quiz 1 of 3",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "Why is the causal mask applied to the attention scores prior to the softmax operation rather than afterward?",
+    "options": [
+     "To enable matrix multiplication with Value vectors of differing inner dimensions.",
+     "To ensure illegal connections become zero while remaining legal positions renormalize to sum to 1.0.",
+     "To convert the attention score matrix into a symmetric positive-definite matrix.",
+     "To avoid computing dot products between query vectors and future key vectors."
+    ],
+    "answer": 1,
+    "explanation": "Injecting negative infinity before softmax ensures e^(-inf) = 0, which makes future weights zero and renormalizes the remaining legal positions so their sum equals 1.0. Zeroing weights post-softmax leaves a row sum strictly less than 1.0, distorting representation magnitudes."
+   },
+   "notes": "Quiz question 1. Why is the causal mask applied to the attention scores prior to the softmax operation rather than afterward? Pause the video and choose your answer.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 0.7,
+   "component": "",
+   "clip": "",
+   "link": ""
+  },
+  {
+   "kind": "answer",
+   "title": "Answer 1: B",
+   "bullets": [
+    "B. To ensure illegal connections become zero while remaining legal positions renormalize to sum to 1.0.",
+    "Injecting negative infinity before softmax ensures e^(-inf) = 0, which makes future weights zero and renormalizes the remaining legal positions so their sum equals 1.0.",
+    "Zeroing weights post-softmax leaves a row sum strictly less than 1.0, distorting representation magnitudes."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "The answer is B: To ensure illegal connections become zero while remaining legal positions renormalize to sum to 1.0.. Injecting negative infinity before softmax ensures e^(-inf) = 0, which makes future weights zero and renormalizes the remaining legal positions so their sum equals 1.0. Zeroing weights post-softmax leaves a row sum strictly less than 1.0, distorting representation magnitudes.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 0.7,
+   "component": "",
+   "clip": "",
+   "link": ""
+  },
+  {
+   "kind": "check",
+   "title": "Quiz 2 of 3",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "For a 3-token sequence, after scaling Q K^T, the first row of scores is [3.0, 5.0, 1.0]. What are the masked attention weights for token 1?",
+    "options": [
+     "[0.33, 0.33, 0.33]",
+     "[0.12, 0.0, 0.0]",
+     "[1.0, 0.0, 0.0]",
+     "[0.0, 0.88, 0.12]"
+    ],
+    "answer": 2,
+    "explanation": "Token 1 at position 1 can only attend to position 1. Positions 2 and 3 are set to -infinity, resulting in masked scores [3.0, -inf, -inf]. Softmax yields e^3 / (e^3 + 0 + 0) = 1.0 for position 1 and 0.0 for positions 2 and 3."
+   },
+   "notes": "Quiz question 2. For a 3-token sequence, after scaling Q K^T, the first row of scores is [3.0, 5.0, 1.0]. What are the masked attention weights for token 1? Pause the video and choose your answer.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 0.7,
+   "component": "",
+   "clip": "",
+   "link": ""
+  },
+  {
+   "kind": "answer",
+   "title": "Answer 2: C",
+   "bullets": [
+    "C. [1.0, 0.0, 0.0]",
+    "Token 1 at position 1 can only attend to position 1.",
+    "Positions 2 and 3 are set to -infinity, resulting in masked scores [3.0, -inf, -inf].",
+    "Softmax yields e^3 / (e^3 + 0 + 0) = 1.0 for position 1 and 0.0 for positions 2 and 3."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "The answer is C: [1.0, 0.0, 0.0]. Token 1 at position 1 can only attend to position 1. Positions 2 and 3 are set to -infinity, resulting in masked scores [3.0, -inf, -inf]. Softmax yields e^3 / (e^3 + 0 + 0) = 1.0 for position 1 and 0.0 for positions 2 and 3.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 0.7,
+   "component": "",
+   "clip": "",
+   "link": ""
+  },
+  {
+   "kind": "check",
+   "title": "Quiz 3 of 3",
+   "bullets": [],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": {
+    "question": "What happens to the output representation if a developer sets illegal future weights to 0.0 after running standard softmax?",
+    "options": [
+     "The model crashes due to a division by zero error in the dot-product computation.",
+     "The attention weights fail to sum to 1.0, causing an unintended shrinkage of the output vector norm.",
+     "The causal mask is inverted, causing tokens to only attend to future positions.",
+     "The Value matrix becomes singular and cannot be inverted during backpropagation."
+    ],
+    "answer": 1,
+    "explanation": "If probabilities are zeroed after softmax without renormalization, the row sum equals only the probability assigned to past tokens, which is strictly less than 1.0. This artificially dampens the scale of the resulting output vector."
+   },
+   "notes": "Quiz question 3. What happens to the output representation if a developer sets illegal future weights to 0.0 after running standard softmax? Pause the video and choose your answer.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 0.7,
+   "component": "",
+   "clip": "",
+   "link": ""
+  },
+  {
+   "kind": "answer",
+   "title": "Answer 3: B",
+   "bullets": [
+    "B. The attention weights fail to sum to 1.0, causing an unintended shrinkage of the output vector norm.",
+    "If probabilities are zeroed after softmax without renormalization, the row sum equals only the probability assigned to past tokens, which is strictly less than 1.0.",
+    "This artificially dampens the scale of the resulting output vector."
+   ],
+   "figure": {
+    "kind": "none",
+    "caption": "",
+    "steps": [],
+    "code": "",
+    "language": "",
+    "rows": []
+   },
+   "quiz": null,
+   "notes": "The answer is B: The attention weights fail to sum to 1.0, causing an unintended shrinkage of the output vector norm.. If probabilities are zeroed after softmax without renormalization, the row sum equals only the probability assigned to past tokens, which is strictly less than 1.0. This artificially dampens the scale of the resulting output vector.",
+   "los": [
+    "CO2.LO1"
+   ],
+   "sources": [],
+   "minutes": 0.7,
+   "component": "",
+   "clip": "",
+   "link": ""
+  }
+ ]
+}

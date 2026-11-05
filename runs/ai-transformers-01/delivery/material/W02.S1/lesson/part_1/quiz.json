@@ -1,0 +1,47 @@
+[
+ {
+  "slide": 10,
+  "los": [
+   "CO2.LO1"
+  ],
+  "question": "Why is scaling by 1/sqrt(d_k) necessary in dot-product attention when key dimensions d_k are large?",
+  "options": [
+   "It reduces the time complexity of matrix multiplication from quadratic to linear.",
+   "It prevents softmax saturation and vanishing gradients by stabilizing score variance.",
+   "It guarantees that query and key matrices have matching spatial dimensions.",
+   "It eliminates the need to compute post-attention softmax probability distributions."
+  ],
+  "answer": 1,
+  "explanation": "Scaling by 1/sqrt(d_k) keeps the variance of score inputs to softmax at unit variance regardless of vector dimension d_k. This prevents extreme input magnitudes that push softmax into saturated regions where gradients vanish. Option 0 is wrong because scaling does not change matrix multiplication time complexity."
+ },
+ {
+  "slide": 12,
+  "los": [
+   "CO2.LO1"
+  ],
+  "question": "Suppose a query vector q and key vector k have dimension d_k = 16, and their raw unscaled dot product q^T k is 12.0. What is the scaled score passed to softmax?",
+  "options": [
+   "0.75",
+   "3.0",
+   "4.0",
+   "48.0"
+  ],
+  "answer": 1,
+  "explanation": "The scaled score is computed by dividing the raw dot product (12.0) by sqrt(d_k) = sqrt(16) = 4. Thus, 12.0 / 4 = 3.0. Option 2 is incorrect because 4 is the square root scale factor itself, not the resulting scaled score."
+ },
+ {
+  "slide": 14,
+  "los": [
+   "CO2.LO1"
+  ],
+  "question": "Which statement accurately distinguishes the role of scaling by 1/sqrt(d_k) from the role of softmax in attention?",
+  "options": [
+   "Scaling normalizes scores into a probability distribution summing to one, while softmax stabilizes variance.",
+   "Scaling is a pre-softmax variance control step, whereas softmax normalizes scaled scores into probabilities.",
+   "Scaling replaces softmax for high-dimensional vectors to avoid computing exponentials altogether.",
+   "Scaling is applied after softmax to re-weight the values vector matrix V."
+  ],
+  "answer": 1,
+  "explanation": "Scaling by 1/sqrt(d_k) stabilizes score variance before softmax, preventing extreme inputs. Softmax then converts these scaled real-valued scores into a probability distribution over keys. Option 0 reverses their roles."
+ }
+]

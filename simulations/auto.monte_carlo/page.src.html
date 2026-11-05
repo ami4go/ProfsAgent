@@ -19,7 +19,7 @@ const recipe = {
   checked_by: 're-count the stored points with a simple loop and recompute 4 × inside / total',
   intro: 'We estimate π by throwing random points into a 1×1 square. The fraction that land inside the quarter circle x²+y²≤1 tends to π/4. More points → better estimate.',
   inputs: [
-    { id: 'totalPoints', label: 'Total points', kind: 'number', min: 1, max: 500, step: 1, help: 'How many random points to generate (batches of batchSize).' },
+    { id: 'totalPoints', label: 'Total points', kind: 'number', min: 1, max: 2000, step: 1, help: 'How many random points to generate (batches of batchSize).' },
     { id: 'batchSize', label: 'Points per step', kind: 'number', min: 1, max: 50, step: 1, help: 'Points added each time you press Next.' },
     { id: 'seed', label: 'Random seed', kind: 'number', min: 0, max: 2147483647, step: 1, help: 'Seed for the deterministic generator (mulberry32).' },
     { id: 'explicitPoints', label: 'Explicit points (optional)', kind: 'text', mono: true, help: 'Space-separated "x,y" pairs, e.g. "0.1,0.2 0.9,0.8". Overrides the generator.' }
@@ -75,7 +75,7 @@ const recipe = {
         points.push([rng(), rng()]);
       }
     }
-    if (totalPoints < 1 || totalPoints > 500) return { error: { field: 'totalPoints', message: 'Total points must be 1–500.' } };
+    if (totalPoints < 1 || totalPoints > 2000) return { error: { field: 'totalPoints', message: 'Total points must be 1–2000.' } };
     if (batchSize < 1 || batchSize > 50) return { error: { field: 'batchSize', message: 'Batch size must be 1–50.' } };
     return { totalPoints, batchSize, points };
   },
@@ -87,15 +87,17 @@ const recipe = {
     const steps = [];
     const PI = Math.PI;
     // initial view: empty square with quarter circle
-    const makeView = (pts, estimates, inside, total, isFinal) => {
+    // hide=true: the points are drawn grey, so a prediction is not answered by the picture
+    const makeView = (pts, estimates, inside, total, isFinal, hide) => {
       const marks = {};
       pts.forEach((_, i) => {
         const [x, y] = pts[i];
-        marks[i] = (x*x + y*y <= 1) ? 'done' : 'compare';
+        marks[i] = hide ? 'muted' : (x*x + y*y <= 1) ? 'done' : 'compare';
       });
       const plot1 = {
         type: 'plot',
-        label: 'Points in unit square (green=inside, blue=outside)',
+        label: 'Points in the unit square',
+        legend: { done: 'inside the quarter circle', compare: 'outside' },
         x: [0, 1], y: [0, 1],
         points: pts.map((pt, i) => ({ x: pt[0], y: pt[1], mark: marks[i] })),
         shapes: [{ kind: 'circle', cx: 0, cy: 0, r: 1, mark: 'muted' }],
@@ -103,7 +105,8 @@ const recipe = {
       };
       const plot2 = {
         type: 'plot',
-        label: 'Running estimate of π (red) vs true π (gray)',
+        label: 'Running estimate of π against the true π (grey line)',
+        legend: { swap: 'estimate' },
         x: [0, totalPoints], y: [2.5, 4],
         lines: [
           { points: estimates.map((est, i) => [ (i+1)*batchSize, est ]), mark: 'swap', label: 'estimate' },
@@ -134,9 +137,9 @@ const recipe = {
         const insideInBatch = batch.filter(([x,y]) => x*x+y*y<=1).length;
         steps.push({
           line: 3, note: `Adding first batch of ${batch.length} points.`,
-          view: makeView(batch, [], 0, 0),
+          view: makeView(batch, [], 0, 0, false, true),
           ask: {
-            q: `How many of these ${batch.length} points will fall inside the quarter circle?`,
+            q: `Before they appear: of the next ${batch.length} random points, how many do you expect inside the quarter circle?`,
             options: Array.from({length: batch.length+1}, (_,i)=>String(i)),
             answer: String(insideInBatch),
             why: `The area of the quarter circle is π/4 ≈ 0.785, so we expect about ${Math.round(batch.length*0.785)} points inside. Actual: ${insideInBatch}.`

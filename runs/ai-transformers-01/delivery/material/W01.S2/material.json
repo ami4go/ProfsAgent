@@ -1,0 +1,289 @@
+{
+ "lecture_id": "W01.S2",
+ "topic": "Attention as a soft lookup: queries, keys and values",
+ "generated_at": "2026-11-05 01:21:13",
+ "prompt": "B1 0.4.0",
+ "files": {
+  "slides": "material\\W01.S2\\slides.pptx",
+  "notes": "material\\W01.S2\\notes.md",
+  "deck": "material\\W01.S2\\deck.json",
+  "quiz": "material\\W01.S2\\quiz.json"
+ },
+ "slides": 17,
+ "content_slides": 14,
+ "minutes": 89.0,
+ "errors": 0,
+ "warnings": 12,
+ "findings": [
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 3",
+    "C1"
+   ],
+   "message": "slide 3 ('From RNNs to attention: the bottleneck') cites [C1] 'Speech and Language Processing (3rd edition draft)', which matches it weakly (0.29; average source 0.38): check the citation",
+   "evidence": {
+    "similarity": 0.292
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 4",
+    "C4"
+   ],
+   "message": "slide 4 ('Attention as a soft dictionary lookup') cites [C4] 'The Illustrated Transformer', which matches it weakly (0.03; average source 0.09): check the citation",
+   "evidence": {
+    "similarity": 0.027
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 7",
+    "C1"
+   ],
+   "message": "slide 7 ('From scores to attention weights') cites [C1] 'Speech and Language Processing (3rd edition draft)', which matches it weakly (0.12; average source 0.22): check the citation",
+   "evidence": {
+    "similarity": 0.122
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 10",
+    "C4"
+   ],
+   "message": "slide 10 ('Toy alignment: English → French') cites [C4] 'The Illustrated Transformer', which matches it weakly (0.03; average source 0.30): check the citation",
+   "evidence": {
+    "similarity": 0.032
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 13",
+    "C4"
+   ],
+   "message": "slide 13 ('Interpreting attention weights') cites [C4] 'The Illustrated Transformer', which matches it weakly (0.03; average source 0.37): check the citation",
+   "evidence": {
+    "similarity": 0.033
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 16",
+    "C1"
+   ],
+   "message": "slide 16 ('Summary: attention as soft lookup') cites [C1] 'Speech and Language Processing (3rd edition draft)', which matches it weakly (0.28; average source 0.29): check the citation",
+   "evidence": {
+    "similarity": 0.284
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-GROUND",
+   "severity": "warning",
+   "nodes": [
+    "slide 16",
+    "C4"
+   ],
+   "message": "slide 16 ('Summary: attention as soft lookup') cites [C4] 'The Illustrated Transformer', which matches it weakly (0.01; average source 0.29): check the citation",
+   "evidence": {
+    "similarity": 0.011
+   },
+   "stage": "content"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 7"
+   ],
+   "message": "slide 7 ('Computing attention scores'): [fact] The additive Bahdanau score is written as v^T tanh(Wq + Uki), but the standard form is v_a^T tanh(W_a q + U_a k_i) with compatible dimensions and no missing bias convention. Fix: Write the additive score as v_a^T tanh(W_a q + U_a k_i). (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Computing attention scores"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 10"
+   ],
+   "message": "slide 10 ('Toy alignment: English to French'): [fact] The example alignment assigns the highest weight of 0.8 to 'sat' for both 's'est' and 'assis', even though the notes claim that both tokens align to 'sat' because of the compound verb, which is linguistically misleading for this French example. Fix: Use a linguistically plausible alignment, such as giving 's'est' and 'assis' lower or distributed attention over 'sat' and the other source tokens, and describe the matrix as illustrative rather than a learned alignment. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Toy alignment: English to French"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI-FIXED",
+   "severity": "warning",
+   "nodes": [
+    "slide 11"
+   ],
+   "message": "slide 11 ('Compute attention weights by hand'): [fact] The stated context vector [0.575, 0.910] is arithmetically wrong: the weighted sum is approximately [0.575, 0.910] only if the third key is [-1,0] and the weights are approximately [0.665,0.245,0.090], but the slide's displayed weights and arithmetic do not match the rounded values actually obtained from the stated softmax. Fix: Recompute and display the weights and context consistently, for example weights approximately [0.665, 0.245, 0.090] and c approximately [0.575, 0.910] only after checking the exact multiplication, or use the exact expressions and a calculator-verified numerical result. (rewritten to fix this; not re-read by the reviewer)",
+   "evidence": {
+    "title": "Compute attention weights by hand"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 14"
+   ],
+   "message": "slide 14 ('Visualizing attention: alignment matrix'): [fact] The claim that attention weights are interpretable as alignments is stated too strongly, because attention weights do not necessarily represent linguistic alignments or explanations and can be diffuse or misleading. Fix: Say that attention weights can provide useful visualizations of how the model distributes information and often resemble alignments, but are not guaranteed to be faithful explanations. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Visualizing attention: alignment matrix"
+   },
+   "stage": "ai-review"
+  },
+  {
+   "code": "D-AI",
+   "severity": "warning",
+   "nodes": [
+    "slide 16"
+   ],
+   "message": "slide 16 ('Summary: Attention as soft lookup'): [fact] The summary says attention replaces a fixed context vector with a weighted sum, which is accurate for encoder-decoder attention but does not distinguish this from the fixed-vector bottleneck being replaced in the original sequence-to-sequence architecture. Fix: State that attention replaces a single fixed encoder summary with a context vector computed separately for each decoder step. (found before the rewrite; the slide may have moved)",
+   "evidence": {
+    "kind": "fact",
+    "title": "Summary: Attention as soft lookup"
+   },
+   "stage": "ai-review"
+  }
+ ],
+ "code_checks": [
+  {
+   "slide": 6,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  },
+  {
+   "slide": 9,
+   "language": "python",
+   "status": "ok",
+   "detail": ""
+  }
+ ],
+ "sources": {
+  "C1": {
+   "title": "Speech and Language Processing (3rd edition draft)",
+   "year": 2024,
+   "url": "https://web.stanford.edu/~jurafsky/slp3/",
+   "kind": "textbook",
+   "approved": true
+  },
+  "C2": {
+   "title": "Dive into Deep Learning, chapter 11: Attention Mechanisms and Transformers",
+   "year": 2023,
+   "url": "https://d2l.ai/chapter_attention-mechanisms-and-transformers/index.html",
+   "kind": "textbook",
+   "approved": true
+  },
+  "C3": {
+   "title": "Neural Machine Translation by Jointly Learning to Align and Translate",
+   "year": 2015,
+   "url": "https://arxiv.org/abs/1409.0473",
+   "kind": "reading",
+   "approved": true
+  },
+  "C4": {
+   "title": "The Illustrated Transformer",
+   "year": 2018,
+   "url": "https://jalammar.github.io/illustrated-transformer/",
+   "kind": "reading",
+   "approved": true
+  }
+ },
+ "cited": [
+  "C1",
+  "C2",
+  "C3",
+  "C4"
+ ],
+ "calls": [
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 1684,
+   "output_tokens": 4004
+  },
+  {
+   "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+   "prompt_tokens": 3406,
+   "output_tokens": 671
+  },
+  {
+   "endpoint": "nvidia:nvidia/nemotron-3-ultra-550b-a55b:ke411530f",
+   "prompt_tokens": 2169,
+   "output_tokens": 5766
+  }
+ ],
+ "ai_review": {
+  "endpoint": "nvidia:minimaxai/minimax-m3.1-flash:ke411530f",
+  "model": "nvidia:minimaxai/minimax-m3.1-flash",
+  "prompt_tokens": 3406,
+  "output_tokens": 671,
+  "verdict": "The deck is broadly teachable, but the professor should verify the slide 11 arithmetic and correct the additive-attention formula and the potentially misleading alignment example before class.",
+  "questions": 2,
+  "quiz_disagreements": 0,
+  "issues": [
+   {
+    "slide": 7,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The additive Bahdanau score is written as v^T tanh(Wq + Uki), but the standard form is v_a^T tanh(W_a q + U_a k_i) with compatible dimensions and no missing bias convention.",
+    "fix": "Write the additive score as v_a^T tanh(W_a q + U_a k_i)."
+   },
+   {
+    "slide": 10,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The example alignment assigns the highest weight of 0.8 to 'sat' for both 's'est' and 'assis', even though the notes claim that both tokens align to 'sat' because of the compound verb, which is linguistically misleading for this French example.",
+    "fix": "Use a linguistically plausible alignment, such as giving 's'est' and 'assis' lower or distributed attention over 'sat' and the other source tokens, and describe the matrix as illustrative rather than a learned alignment."
+   },
+   {
+    "slide": 11,
+    "severity": "error",
+    "kind": "fact",
+    "problem": "The stated context vector [0.575, 0.910] is arithmetically wrong: the weighted sum is approximately [0.575, 0.910] only if the third key is [-1,0] and the weights are approximately [0.665,0.245,0.090], but the slide's displayed weights and arithmetic do not match the rounded values actually obtained from the stated softmax.",
+    "fix": "Recompute and display the weights and context consistently, for example weights approximately [0.665, 0.245, 0.090] and c approximately [0.575, 0.910] only after checking the exact multiplication, or use the exact expressions and a calculator-verified numerical result."
+   },
+   {
+    "slide": 14,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The claim that attention weights are interpretable as alignments is stated too strongly, because attention weights do not necessarily represent linguistic alignments or explanations and can be diffuse or misleading.",
+    "fix": "Say that attention weights can provide useful visualizations of how the model distributes information and often resemble alignments, but are not guaranteed to be faithful explanations."
+   },
+   {
+    "slide": 16,
+    "severity": "warning",
+    "kind": "fact",
+    "problem": "The summary says attention replaces a fixed context vector with a weighted sum, which is accurate for encoder-decoder attention but does not distinguish this from the fixed-vector bottleneck being replaced in the original sequence-to-sequence architecture.",
+    "fix": "State that attention replaces a single fixed encoder summary with a context vector computed separately for each decoder step."
+   }
+  ],
+  "repaired": true
+ },
+ "status": "ai-reviewed",
+ "review_history": [],
+ "feedback": null
+}

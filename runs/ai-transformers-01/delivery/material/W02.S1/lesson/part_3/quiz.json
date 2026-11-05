@@ -1,0 +1,47 @@
+[
+ {
+  "slide": 10,
+  "los": [
+   "CO2.LO1"
+  ],
+  "question": "Why is key.transpose(-2, -1) preferred over key.transpose(1, 2) when implementing attention key transposition in PyTorch?",
+  "options": [
+   "It automatically performs scaling by the square root of d_k during transposition.",
+   "It operates on the last two dimensions, ensuring compatibility with both 3D and 4D multi-head tensors.",
+   "It replaces masked future positions with negative infinity without requiring masked_fill.",
+   "It transposes the batch dimension with the feature dimension to speed up GPU memory access."
+  ],
+  "answer": 1,
+  "explanation": "Using negative indexing transpose(-2, -1) dynamically selects the last two dimensions (sequence length and d_k), making the code work seamlessly for 3D tensors (batch, seq, d_k) and 4D multi-head tensors (batch, heads, seq, d_k). Hardcoding transpose(1, 2) fails on 4D tensors because index 1 is the head dimension, not sequence length."
+ },
+ {
+  "slide": 12,
+  "los": [
+   "CO2.LO1"
+  ],
+  "question": "In a batched attention operation, given a Query tensor of shape (1, 3, 4), Key tensor of shape (1, 3, 4), and Value tensor of shape (1, 3, 4), what are the shapes of the attention weights p_attn and the final output tensor respectively?",
+  "options": [
+   "p_attn has shape (1, 4, 4) and final output has shape (1, 3, 3).",
+   "p_attn has shape (1, 3, 4) and final output has shape (1, 3, 4).",
+   "p_attn has shape (1, 3, 3) and final output has shape (1, 3, 4).",
+   "p_attn has shape (1, 3, 3) and final output has shape (1, 4, 4)."
+  ],
+  "answer": 2,
+  "explanation": "torch.matmul(query, key.transpose(-2, -1)) multiplies (1, 3, 4) by (1, 4, 3) yielding p_attn of shape (1, 3, 3). Then torch.matmul(p_attn, value) multiplies (1, 3, 3) by (1, 3, 4) producing a final output tensor of shape (1, 3, 4). Option 1 incorrectly assumes p_attn retains the input embedding shape."
+ },
+ {
+  "slide": 14,
+  "los": [
+   "CO2.LO1"
+  ],
+  "question": "What happens if scores.softmax(dim=-2) is used instead of scores.softmax(dim=-1) when computing attention weights?",
+  "options": [
+   "Future positions will retain positive values instead of becoming 0.0 after masking.",
+   "Attention probabilities are normalized across queries per key token instead of across key tokens per query token.",
+   "PyTorch raises a runtime shape mismatch error because dim=-2 is an invalid axis index.",
+   "The softmax values will all become negative one billion (-1e9)."
+  ],
+  "answer": 1,
+  "explanation": "dim=-1 normalizes along the last axis (keys for each query), creating valid probability distributions across key tokens for each input query. Using dim=-2 normalizes along the query axis across queries for each key token, breaking the proper attention distribution per token."
+ }
+]

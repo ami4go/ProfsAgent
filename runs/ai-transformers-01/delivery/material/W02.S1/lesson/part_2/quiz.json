@@ -1,0 +1,47 @@
+[
+ {
+  "slide": 10,
+  "los": [
+   "CO2.LO1"
+  ],
+  "question": "Why is the causal mask applied to the attention scores prior to the softmax operation rather than afterward?",
+  "options": [
+   "To enable matrix multiplication with Value vectors of differing inner dimensions.",
+   "To ensure illegal connections become zero while remaining legal positions renormalize to sum to 1.0.",
+   "To convert the attention score matrix into a symmetric positive-definite matrix.",
+   "To avoid computing dot products between query vectors and future key vectors."
+  ],
+  "answer": 1,
+  "explanation": "Injecting negative infinity before softmax ensures e^(-inf) = 0, which makes future weights zero and renormalizes the remaining legal positions so their sum equals 1.0. Zeroing weights post-softmax leaves a row sum strictly less than 1.0, distorting representation magnitudes."
+ },
+ {
+  "slide": 12,
+  "los": [
+   "CO2.LO1"
+  ],
+  "question": "For a 3-token sequence, after scaling Q K^T, the first row of scores is [3.0, 5.0, 1.0]. What are the masked attention weights for token 1?",
+  "options": [
+   "[0.33, 0.33, 0.33]",
+   "[0.12, 0.0, 0.0]",
+   "[1.0, 0.0, 0.0]",
+   "[0.0, 0.88, 0.12]"
+  ],
+  "answer": 2,
+  "explanation": "Token 1 at position 1 can only attend to position 1. Positions 2 and 3 are set to -infinity, resulting in masked scores [3.0, -inf, -inf]. Softmax yields e^3 / (e^3 + 0 + 0) = 1.0 for position 1 and 0.0 for positions 2 and 3."
+ },
+ {
+  "slide": 14,
+  "los": [
+   "CO2.LO1"
+  ],
+  "question": "What happens to the output representation if a developer sets illegal future weights to 0.0 after running standard softmax?",
+  "options": [
+   "The model crashes due to a division by zero error in the dot-product computation.",
+   "The attention weights fail to sum to 1.0, causing an unintended shrinkage of the output vector norm.",
+   "The causal mask is inverted, causing tokens to only attend to future positions.",
+   "The Value matrix becomes singular and cannot be inverted during backpropagation."
+  ],
+  "answer": 1,
+  "explanation": "If probabilities are zeroed after softmax without renormalization, the row sum equals only the probability assigned to past tokens, which is strictly less than 1.0. This artificially dampens the scale of the resulting output vector."
+ }
+]

@@ -27,6 +27,8 @@ from profsagent.content.checks import check_deck, content_range
 from profsagent.content.models import FIRST_CONTENT_SLIDE, LectureDeck
 from profsagent.content.render import render_markdown, render_pptx
 from profsagent.content.sessions import build_sessions
+from profsagent.content.student import student_page
+from profsagent.content.style import apply_look, for_b1, load_style
 from profsagent.content.verify import verify
 from profsagent.delivery.brief import build_briefs, clean
 from profsagent.delivery.common import load_state, now, out_dir, read_json, write_json
@@ -88,7 +90,18 @@ def outline(run_id: str, brief: dict) -> list[dict]:
                         **({"way": mx["way"], "when": mx["when"]} if mx else {}),
                         **({"bridge": mx["bridge"]} if mx and mx.get("bridge") else {}),
                         **({"simulation": mx["simulation"]} if mx and mx["way"] == "simulation" and mx.get("simulation") else {})})
-    return out
+    return class_edges(out)
+
+
+def class_edges(parts: list[dict]) -> list[dict]:
+    """C reserves a recap and a review quiz per topic lecture; a class that ends one topic and starts the next would get
+    the first topic's quiz and the second's recap back to back mid-class. The recaps become one recap that opens the
+    class and the quizzes one quiz that closes it, with the same minutes in total."""
+    recaps = [p for p in parts if p.get("kind") == "recap"]
+    quizzes = [p for p in parts if p.get("kind") == "quiz"]
+    rest = [p for p in parts if p.get("kind") not in ("recap", "quiz")]
+    merge = lambda xs: [{**xs[0], "minutes": sum(x["minutes"] for x in xs)}] if xs else []  # noqa: E731
+    return merge(recaps) + rest + merge(quizzes)
 
 
 def lecture_input(brief: dict, note: str = "", run_id: str | None = None) -> dict:
@@ -151,7 +164,38 @@ def frame(st: dict, brief: dict) -> dict:
                                 f"Assessed in: {', '.join(a['id'] for a in brief.get('assessed_in') or []) or 'not assessed directly'}."}
 
 
+def fill_from_outline(deck: LectureDeck, outline: list[dict]) -> LectureDeck:
+    """Code, not the AI, writes what a slide shows students to watch or open: a watch slide gets its part's clip, a
+    simulation slide its part's simulation (title and link). Unknown parts are left to check_outline."""
+    parts = {p["id"]: p for p in outline}
+    for s in deck.slides:
+        p = parts.get(s.component)
+        if not p:
+            continue
+        if s.kind == "watch" and p.get("clip"):
+            s.clip = p["clip"]
+        if s.kind == "watch" and p.get("delivered_by") == "notebooklm" and not s.clip:
+            s.clip = f"NotebookLM video on \"{p['title']}\" (made by the professor from the lecture's NotebookLM pack)"
+        sim = p.get("simulation") or {}
+        if s.kind == "simulation" and sim:
+            s.link = " — ".join(x for x in (sim.get("title"), sim.get("url") or sim.get("id")) if x)
+    return deck
+
+
 # ------------------------------------------------------------------ outputs
+def c_quiz(d: Path) -> list[dict] | None:
+    """Deliverable C's closing review quiz (D8) for this lecture, as {question, options, answer index, explanation}; None
+    when C has not made one (C files it under the topic lecture's id, delivery/quiz/<lecture>.json)."""
+    q = read_json(d.parent.parent / "quiz" / f"{d.name}.json") or {}
+    out = []
+    for x in q.get("questions") or []:
+        opts, a = x.get("options") or [], x.get("answer")
+        i = "ABCDE".index(a.upper()) if isinstance(a, str) and len(a) == 1 and a.upper() in "ABCDE" else a
+        if opts and isinstance(i, int) and 0 <= i < len(opts):
+            out.append({"question": x["question"], "options": opts, "answer": i, "explanation": x.get("explanation") or x.get("why") or ""})
+    return out or None
+
+
 def write_outputs(d: Path, deck: LectureDeck, fr: dict, sources: dict, c: dict, found: list[dict]) -> tuple[int, list[dict]]:
     """deck.json, slides.pptx, notes.md and quiz.json; returns the slide count and the findings with the renderer's
     D-OVERFLOW warnings (replacing any from an earlier render)."""
@@ -159,6 +203,7 @@ def write_outputs(d: Path, deck: LectureDeck, fr: dict, sources: dict, c: dict, 
     n, overflows = render_pptx(deck, fr, sources, c, d / "slides.pptx")
     (d / "notes.md").write_text(render_markdown(deck, fr, sources), encoding="utf-8")
     write_json(d / "quiz.json", [{"slide": i, "los": s.los, **s.quiz.model_dump()} for i, s in enumerate(deck.slides, FIRST_CONTENT_SLIDE) if s.quiz])
+    (d / "student.html").write_text(student_page(deck, fr, sources, c_quiz(d)), encoding="utf-8")
     over = [{**v("D-OVERFLOW", WARN, [f"slide {o['slide']}"], f"slide {o['slide']}: the {o['what']} text may not fit its "
                                                                 "box; shorten it in PowerPoint"), "stage": "render"} for o in overflows]
     return n, [x for x in found if x["code"] != "D-OVERFLOW"] + over
@@ -192,7 +237,7 @@ def _ai_review(llm, deck, found, code, ctx, lecture, calls, author, check, run_i
                            + [p for p in ctx["problems"] if p["code"] == "PROFESSOR"])
         deck2, call = _ask(llm, ctx, run_id, log)
         calls.append(call)
-        found2, code2 = check(deck2)
+        found2, code2 = check(fill_from_outline(deck2, lecture.get("outline") or []))
         keep = len(errors(found2)) <= len(errors(found))
         log(f"  [{PID} after review] code-check errors {len(errors(found))} → {len(errors(found2))} {'ACCEPT' if keep else 'REJECT'}")
         if keep:
@@ -204,8 +249,9 @@ def generate_material(run_id: str, lecture_id: str, options: dict | None = None,
                       log: Callable[[str], None] = print) -> dict:
     """Slides and notes for one lecture. options: include_pending (bool); note (str: what the professor wants
     emphasised); feedback (str: the professor's redo instructions, given to B1 as a problem to fix); force (bool: replace
-    an approved deck); review ("ai": a different model checks the deck, see content/ai_review.py). Returns the manifest
-    written to material.json."""
+    an approved deck); review ("ai": a different model checks the deck, see content/ai_review.py); material ({text, parts}:
+    the professor's own material, from content/attach.py: the deck is built from it and cites it as P1…). Returns the
+    manifest written to material.json."""
     o, c = options or {}, cfg()
     old = read_json(material_dir(run_id, lecture_id) / "material.json") or {}
     if old.get("status") == "approved" and not o.get("force"):
@@ -218,6 +264,15 @@ def generate_material(run_id: str, lecture_id: str, options: dict | None = None,
     llm = llm or LLMClient(out_dir(run_id) / "material" / "llm_calls.jsonl")
     lecture = lecture_input(brief, o.get("note", ""), run_id)
     sources = gather_sources(st, run_id, brief, o.get("include_pending", c["sources"]["include_pending"]), c["sources"]["max_external"])
+    prof = load_style(run_id)                      # the professor's own look and writing (content/style.py), if learned
+    if for_b1(prof):
+        lecture["style"] = for_b1(prof)
+    c_render = apply_look(c, prof)
+    mat = o.get("material")                        # the professor's own material (content/attach.py, task "slides")
+    if mat:
+        lecture["professor_material"] = mat["text"]
+        sources.update({p["id"]: {"title": f"Professor's material: {p['name']}", "year": None, "url": None,
+                                  "kind": "professor material", "approved": True} for p in mat["parts"]})
     lo_min, lo_max = content_range(brief["hours"], c)
     ctx = {"course": {"course_name": st["cco_compact"]["course_name"], "level": st.get("level")}, "lecture": lecture,
            "sources": [{"id": k, **{f: s[f] for f in ("kind", "title", "year", "url")}} for k, s in sources.items()],
@@ -231,6 +286,8 @@ def generate_material(run_id: str, lecture_id: str, options: dict | None = None,
     log(f"B lecture material {run_id} {lecture_id}: {brief['topic']} ({brief['hours']:g} h, {len(sources)} sources)")
     deck, call = _ask(llm, ctx, run_id, log)
     calls, author = [call], call["endpoint"]           # author: who wrote the deck that is kept
+    outline_parts = lecture.get("outline") or []
+    fill_from_outline(deck, outline_parts)
     found, code = check(deck)
     log(f"  [{PID}] checks: {len(errors(found))} errors, {len(found) - len(errors(found))} warnings")
     for rnd in range(1, c["deck"]["repair_rounds"] + 1):
@@ -240,7 +297,7 @@ def generate_material(run_id: str, lecture_id: str, options: dict | None = None,
                            if x["severity"] == "error"] + [p for p in ctx["problems"] if p["code"] == "PROFESSOR"]
         deck2, call = _ask(llm, ctx, run_id, log)
         calls.append(call)
-        found2, code2 = check(deck2)
+        found2, code2 = check(fill_from_outline(deck2, outline_parts))
         keep = len(errors(found2)) < len(errors(found))
         log(f"  [{PID} repair {rnd}] errors {len(errors(found))} → {len(errors(found2))} {'ACCEPT' if keep else 'REJECT'}")
         if keep:
@@ -251,12 +308,13 @@ def generate_material(run_id: str, lecture_id: str, options: dict | None = None,
         deck, found, code, ai = _ai_review(llm, deck, found, code, ctx, lecture, calls, author, check, run_id, log)
 
     deck.lecture_id = lecture_id
-    n, found = write_outputs(d, deck, frame(st, brief), sources, c, found)
+    n, found = write_outputs(d, deck, frame(st, brief), sources, c_render, found)
     manifest = {"lecture_id": lecture_id, "topic": brief["topic"], "generated_at": now(), "prompt": f"{PID} {load_prompt(PID).version}",
                 "files": {"slides": str((d / "slides.pptx").relative_to(out_dir(run_id))),
                           "notes": str((d / "notes.md").relative_to(out_dir(run_id))),
                           "deck": str((d / "deck.json").relative_to(out_dir(run_id))),
-                          "quiz": str((d / "quiz.json").relative_to(out_dir(run_id)))},
+                          "quiz": str((d / "quiz.json").relative_to(out_dir(run_id))),
+                          "student": str((d / "student.html").relative_to(out_dir(run_id)))},
                 "slides": n, "content_slides": len(deck.slides), "minutes": sum(s.minutes for s in deck.slides),
                 "errors": len(errors(found)), "warnings": len(found) - len(errors(found)), "findings": found,
                 "code_checks": code, "sources": sources, "cited": sorted({s for sl in deck.slides for s in sl.sources}),

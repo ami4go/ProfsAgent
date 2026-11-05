@@ -15,6 +15,12 @@
     D-TIME      warning  the slides' minutes differ from the lecture length by more than the tolerance
     D-CHECK     warning  fewer check-for-understanding slides than lecture hours
     D-OVERFLOW  warning  text that does not fit its box even at the smallest font (raised by render.py)
+With deliverable C's outline (lecture.outline: the class's parts, their minutes and how each is delivered):
+    D-OUTLINE   error    a slide names a part that is not in the outline
+                warning  a part of the outline has no slide; the recap is not first or the review quiz not last
+    D-WATCH     warning  a part delivered by a video (YouTube or NotebookLM) has no watch slide, or a watch slide
+                         has no clip to show
+    D-SIM       warning  a part delivered by a simulation has no simulation slide
 """
 from __future__ import annotations
 
@@ -74,8 +80,44 @@ def check_deck(deck: LectureDeck, lecture: dict, source_ids: set[str], cfg: dict
     if checks < wanted:
         out.append(v("D-CHECK", WARN, [], f"{checks} check-for-understanding slides for a {lecture['hours']:g}-hour lecture "
                                          f"(at least {wanted}, one per hour)"))
+    out += check_outline(deck, lecture.get("outline") or [])
     for x in out:
         x["stage"] = "content"
+    return out
+
+
+def check_outline(deck: LectureDeck, outline: list[dict]) -> list[dict]:
+    """The deck against C's plan for the class: every part taught, video and simulation parts introduced, the recap
+    first and the review quiz last."""
+    if not outline:
+        return []
+    parts = {p["id"]: p for p in outline}
+    slides = list(enumerate(deck.slides, FIRST_CONTENT_SLIDE))
+    by_part: dict[str, list] = {}
+    out = []
+    for i, s in slides:
+        if s.component and s.component not in parts:
+            out.append(v("D-OUTLINE", ERR, [f"slide {i}"], f"slide {i} names part {s.component}, which is not in the outline"))
+        by_part.setdefault(s.component, []).append((i, s))
+    for pid, p in parts.items():
+        mine = by_part.get(pid) or []
+        if not mine:
+            out.append(v("D-OUTLINE", WARN, [pid], f"part {pid} ('{p['title']}', {p['minutes']} min) has no slide"))
+            continue
+        kinds = {s.kind for _, s in mine}
+        if p.get("delivered_by") in ("video", "notebooklm") and "watch" not in kinds:
+            out.append(v("D-WATCH", WARN, [pid], f"part {pid} ('{p['title']}') is delivered by a video but has no watch slide"))
+        if p.get("way") == "simulation" and "simulation" not in kinds:
+            out.append(v("D-SIM", WARN, [pid], f"part {pid} ('{p['title']}') is delivered by a simulation but has no simulation slide"))
+    for i, s in slides:
+        if s.kind == "watch" and not s.clip and (parts.get(s.component) or {}).get("delivered_by") == "video":
+            out.append(v("D-WATCH", WARN, [f"slide {i}"], f"slide {i} ('{s.title}') is a watch slide with no clip from the outline"))
+    first = [p for p in outline if p.get("kind") == "recap"]
+    last = [p for p in outline if p.get("kind") == "quiz"]
+    if first and deck.slides and deck.slides[0].component != first[0]["id"]:
+        out.append(v("D-OUTLINE", WARN, ["slide 3"], "the recap of the previous lecture should open the class"))
+    if last and deck.slides and deck.slides[-1].component != last[-1]["id"]:
+        out.append(v("D-OUTLINE", WARN, [f"slide {slides[-1][0]}"], "the review quiz should close the class"))
     return out
 
 

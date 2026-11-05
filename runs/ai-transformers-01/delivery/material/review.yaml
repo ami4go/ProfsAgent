@@ -1,0 +1,38 @@
+# Decide each lecture's generated slides: decision: approve | redo | reject   (reason: required for redo / reject)
+#   approve  the slides are final as they are now in slides.pptx (your PowerPoint edits included)
+#   redo     generate them again; write in `reason` what to change (one AI call when you run generate --redo)
+#   reject   do not use generated slides for this lecture
+# Then run: python scripts/run_content.py review --run-id <id> --apply
+lectures:
+  W01.S1:
+    topic: Sequence modelling and the limits of recurrent networks
+    slides: 16
+    errors: 0
+    warnings: 9
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W01.S2:
+    topic: 'Attention as a soft lookup: queries, keys and values'
+    slides: 17
+    errors: 0
+    warnings: 12
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W02.S1:
+    topic: Scaled dot-product self-attention and masking
+    slides: 18
+    errors: 0
+    warnings: 15
+    status: ai-reviewed
+    decision: pending
+    reason: ''
+  W02.S2:
+    topic: Multi-head attention
+    slides: 18
+    errors: 0
+    warnings: 16
+    status: ai-reviewed
+    decision: pending
+    reason: ''

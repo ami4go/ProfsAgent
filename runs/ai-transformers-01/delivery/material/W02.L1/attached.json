@@ -1,0 +1,216 @@
+{
+ "lecture_id": "W02.L1",
+ "topic": "Scaled dot-product self-attention and masking",
+ "made_at": "2026-11-05 03:14:26",
+ "tasks": [
+  "summary",
+  "quiz",
+  "gap_check",
+  "enrich"
+ ],
+ "status": "draft",
+ "parts": [
+  {
+   "id": "P1",
+   "name": "attention_lookup.pptx",
+   "kind": "pptx",
+   "chars": 9579,
+   "error": ""
+  }
+ ],
+ "coverage": [
+  {
+   "lo_id": "CO2.LO1",
+   "status": "covered",
+   "similarity": 0.582,
+   "part": "P1",
+   "passage": "Notes: Step‑by‑step: compute dot‑product scores, exponentiate, normalise to get weights, then form the context vector as the weighted sum of the given value vectors. The arithmetic has been verified: weights ≈ [0.665, 0.245, 0.090] and context ≈ [0.665, 0.245]. (slide 12) Check: attention weight pro"
+  }
+ ],
+ "report": {
+  "summary": "The lecture material introduces the concept of attention as an architectural solution to the recurrent neural network (RNN) information bottleneck, where a single hidden state compresses the entire sequence past. It explains the mechanics of attention using the metaphor of a soft, differentiable dictionary lookup involving query, key, and value vectors. The slides contrast scoring functions, detailing both unscaled dot-product scoring and Bahdanau additive scoring. They demonstrate how raw scores are transformed into a probability distribution over keys using softmax, and how values are subsequently aggregated into a context vector. An illustrative English-to-French toy alignment and a step-by-step numerical hand calculation walk students through the computation of attention weights and the resulting context vector. Finally, the material contrasts differentiable soft alignment with non-differentiable hard alignment, highlighting why soft attention enables end-to-end gradient-based training.",
+  "key_points": [
+   "Attention resolves the sequential RNN bottleneck by allowing direct access to all token positions.",
+   "The attention mechanism functions as a differentiable soft lookup using queries (what is sought), keys (what is offered), and values (content retrieved).",
+   "Compatibility scoring can be computed via dot-product ($q \\cdot k$) or Bahdanau additive scoring ($v_a^T \\tanh(W_a q + U_a k)$).",
+   "Softmax normalises raw compatibility scores into non-negative attention weights that sum to 1.",
+   "The context vector is formed as a convex combination (weighted sum) of value vectors.",
+   "Soft alignment is smooth and differentiable, enabling backpropagation, unlike hard alignment which requires discrete selection.",
+   "Attention heatmaps visualise token relevance, though learned weights do not guarantee true linguistic alignment."
+  ],
+  "quiz": [
+   {
+    "question": "What primary limitation of recurrent neural networks (RNNs) does the attention mechanism resolve?",
+    "options": [
+     "Compressing the entire sequence history into a single fixed-size hidden state that dilutes long-range dependencies",
+     "The inability to train on continuous vector representations using backpropagation through time",
+     "The excessive GPU memory requirement of maintaining query and key projection matrices",
+     "A strict requirement that input sequences and output sequences must have identical lengths"
+    ],
+    "answer": 0,
+    "explanation": "Slide 3 explicitly notes that RNNs force all past sequence information into a single fixed-size hidden state, creating an information bottleneck and causing vanishing gradients over long distances. Inability to train with backpropagation is false because RNNs are trained via backpropagation through time.",
+    "source": "[P1] slide 3"
+   },
+   {
+    "question": "In the attention lookup framework, what role does a key vector ($k_i$) play relative to a query vector ($q$)?",
+    "options": [
+     "It represents the stored features of an item used to measure compatibility with what the query seeks",
+     "It specifies the information the current token actively seeks to extract from other positions",
+     "It serves as the final output representation passed directly to the subsequent transformer layer",
+     "It acts as a static, non-learnable positional mask that zeroes out future tokens"
+    ],
+    "answer": 0,
+    "explanation": "Slides 4 and 5 define the query as what is sought, the key as the stored item offered for matching, and the value as the content retrieved. Specifying what the current token seeks describes the query, not the key.",
+    "source": "[P1] slide 4, slide 5"
+   },
+   {
+    "question": "How is the Bahdanau additive attention score computed between a query vector $q$ and a key vector $k_i$?",
+    "options": [
+     "score = $v_a^T \\tanh(W_a q + U_a k_i)$",
+     "score = $q^T k_i / \\sqrt{d_k}$",
+     "score = $\\text{softmax}(W_a q \\cdot U_a k_i)$",
+     "score = $\\sigma(v_a^T (q + k_i))$"
+    ],
+    "answer": 0,
+    "explanation": "Slides 6 and 9 present the corrected Bahdanau additive scoring formula as $v_a^T \\tanh(W_a q + U_a k_i)$, where separate projection matrices $W_a$ and $U_a$ project the query and key before applying a tanh non-linearity and a dot product with $v_a$. Option 1 describes scaled dot-product attention.",
+    "source": "[P1] slide 6, slide 9"
+   },
+   {
+    "question": "Given query $q=[1, 0]$ and keys $k_1=[1, 1]$, $k_2=[0, 1]$, and $k_3=[-1, 0]$ with dot-product scoring, what are the raw compatibility scores prior to softmax?",
+    "options": [
+     "1, 0, -1",
+     "2, 1, 0",
+     "0.665, 0.245, 0.090",
+     "1, 1, -1"
+    ],
+    "answer": 0,
+    "explanation": "Computing dot products gives: $q \\cdot k_1 = 1(1) + 0(1) = 1$; $q \\cdot k_2 = 1(0) + 0(1) = 0$; $q \\cdot k_3 = 1(-1) + 0(0) = -1$. The values 0.665, 0.245, 0.090 are the post-softmax weights, not the raw scores.",
+    "source": "[P1] slide 11"
+   },
+   {
+    "question": "Why is soft attention preferred over hard attention during neural network training?",
+    "options": [
+     "Soft attention yields a smooth, weighted sum that is fully differentiable for gradient descent",
+     "Soft attention uses a non-differentiable argmax function that speeds up matrix operations",
+     "Soft attention strictly constrains the model to attend to exactly one source token at a time",
+     "Soft attention guarantees that the resulting alignments match human linguistic rules"
+    ],
+    "answer": 0,
+    "explanation": "Slides 14 and 15 emphasize that soft attention produces a differentiable convex combination of values, enabling standard backpropagation, whereas hard alignment makes a discrete choice (e.g. argmax) and is non-differentiable. Attending to exactly one token describes hard alignment.",
+    "source": "[P1] slide 14, slide 15"
+   }
+  ],
+  "gaps": [
+   {
+    "lo_id": "CO2.LO1",
+    "status": "partly",
+    "evidence": "[P1] slide 6, 7, 11",
+    "add": "The current material covers only unscaled vector dot-product attention and Bahdanau additive attention for cross-attention. It lacks: (1) the division by $\\sqrt{d_k}$ in scaled dot-product attention, (2) the full matrix formulation for self-attention ($Q K^T / \\sqrt{d_k}$), (3) vectorised PyTorch implementation, and (4) causal masking for autoregressive decoding."
+   }
+  ],
+  "issues": [
+   "Mismatch between attached slide deck and syllabus lecture: The deck attached is from Week 1 (W01.S2, 'Attention as a soft lookup: queries, keys and values', tagged with CO1.LO2), whereas the scheduled lecture is W02.L1 ('Scaled dot-product self-attention and masking', mapped to CO2.LO1). As a result, core Level-4 topics like the $\\sqrt{d_k}$ scaling derivation, matrix self-attention, PyTorch code, and causal masking are completely missing from the deck."
+  ],
+  "enrich": [
+   {
+    "kind": "example",
+    "where": "Scaling factor explanation",
+    "add": "Provide a mathematical justification showing that when elements of $q$ and $k$ are independent random variables with mean 0 and variance 1, their dot product has variance $d_k$, demonstrating how division by $\\sqrt{d_k}$ prevents softmax saturation and vanishing gradients."
+   },
+   {
+    "kind": "figure",
+    "where": "Causal masking",
+    "add": "Add a visual diagram of an upper-triangular mask matrix containing $-\\infty$ above the diagonal, showing how adding this mask prior to softmax sets post-softmax attention weights for future positions to 0."
+   },
+   {
+    "kind": "activity",
+    "where": "Vectorised PyTorch implementation",
+    "add": "Include a code snippet and student fill-in-the-blank exercise implementing `scaled_dot_product_attention(Q, K, V, mask=None)` using `torch.matmul`, `math.sqrt(d_k)`, `masked_fill`, and `torch.softmax`."
+   },
+   {
+    "kind": "check_question",
+    "where": "Masking implementation",
+    "add": "Add a check question asking: 'Why do we fill masked positions with $-\\infty$ (or $-1e9$) before softmax rather than zeroing out the attention weights after softmax?' to test understanding of probability normalization."
+   }
+  ]
+ },
+ "quiz": [
+  {
+   "question": "What primary limitation of recurrent neural networks (RNNs) does the attention mechanism resolve?",
+   "options": [
+    "Compressing the entire sequence history into a single fixed-size hidden state that dilutes long-range dependencies",
+    "The inability to train on continuous vector representations using backpropagation through time",
+    "The excessive GPU memory requirement of maintaining query and key projection matrices",
+    "A strict requirement that input sequences and output sequences must have identical lengths"
+   ],
+   "answer": 0,
+   "explanation": "Slide 3 explicitly notes that RNNs force all past sequence information into a single fixed-size hidden state, creating an information bottleneck and causing vanishing gradients over long distances. Inability to train with backpropagation is false because RNNs are trained via backpropagation through time.",
+   "source": "[P1] slide 3"
+  },
+  {
+   "question": "In the attention lookup framework, what role does a key vector ($k_i$) play relative to a query vector ($q$)?",
+   "options": [
+    "It represents the stored features of an item used to measure compatibility with what the query seeks",
+    "It specifies the information the current token actively seeks to extract from other positions",
+    "It serves as the final output representation passed directly to the subsequent transformer layer",
+    "It acts as a static, non-learnable positional mask that zeroes out future tokens"
+   ],
+   "answer": 0,
+   "explanation": "Slides 4 and 5 define the query as what is sought, the key as the stored item offered for matching, and the value as the content retrieved. Specifying what the current token seeks describes the query, not the key.",
+   "source": "[P1] slide 4, slide 5"
+  },
+  {
+   "question": "How is the Bahdanau additive attention score computed between a query vector $q$ and a key vector $k_i$?",
+   "options": [
+    "score = $v_a^T \\tanh(W_a q + U_a k_i)$",
+    "score = $q^T k_i / \\sqrt{d_k}$",
+    "score = $\\text{softmax}(W_a q \\cdot U_a k_i)$",
+    "score = $\\sigma(v_a^T (q + k_i))$"
+   ],
+   "answer": 0,
+   "explanation": "Slides 6 and 9 present the corrected Bahdanau additive scoring formula as $v_a^T \\tanh(W_a q + U_a k_i)$, where separate projection matrices $W_a$ and $U_a$ project the query and key before applying a tanh non-linearity and a dot product with $v_a$. Option 1 describes scaled dot-product attention.",
+   "source": "[P1] slide 6, slide 9"
+  },
+  {
+   "question": "Given query $q=[1, 0]$ and keys $k_1=[1, 1]$, $k_2=[0, 1]$, and $k_3=[-1, 0]$ with dot-product scoring, what are the raw compatibility scores prior to softmax?",
+   "options": [
+    "1, 0, -1",
+    "2, 1, 0",
+    "0.665, 0.245, 0.090",
+    "1, 1, -1"
+   ],
+   "answer": 0,
+   "explanation": "Computing dot products gives: $q \\cdot k_1 = 1(1) + 0(1) = 1$; $q \\cdot k_2 = 1(0) + 0(1) = 0$; $q \\cdot k_3 = 1(-1) + 0(0) = -1$. The values 0.665, 0.245, 0.090 are the post-softmax weights, not the raw scores.",
+   "source": "[P1] slide 11"
+  },
+  {
+   "question": "Why is soft attention preferred over hard attention during neural network training?",
+   "options": [
+    "Soft attention yields a smooth, weighted sum that is fully differentiable for gradient descent",
+    "Soft attention uses a non-differentiable argmax function that speeds up matrix operations",
+    "Soft attention strictly constrains the model to attend to exactly one source token at a time",
+    "Soft attention guarantees that the resulting alignments match human linguistic rules"
+   ],
+   "answer": 0,
+   "explanation": "Slides 14 and 15 emphasize that soft attention produces a differentiable convex combination of values, enabling standard backpropagation, whereas hard alignment makes a discrete choice (e.g. argmax) and is non-differentiable. Attending to exactly one token describes hard alignment.",
+   "source": "[P1] slide 14, slide 15"
+  }
+ ],
+ "gap_table": [
+  {
+   "lo_id": "CO2.LO1",
+   "ai": "partly",
+   "local": "covered",
+   "similarity": 0.582,
+   "add": "The current material covers only unscaled vector dot-product attention and Bahdanau additive attention for cross-attention. It lacks: (1) the division by $\\sqrt{d_k}$ in scaled dot-product attention, (2) the full matrix formulation for self-attention ($Q K^T / \\sqrt{d_k}$), (3) vectorised PyTorch implementation, and (4) causal masking for autoregressive decoding."
+  }
+ ],
+ "findings": [],
+ "calls": [
+  {
+   "endpoint": "cache(gemini:gemini-3.8-flash:k25e39c0a)",
+   "prompt_tokens": 0,
+   "output_tokens": 0
+  }
+ ]
+}

@@ -12,6 +12,7 @@ reported as an overflow (a D-OVERFLOW warning in material.json).
 """
 from __future__ import annotations
 
+import json
 import math
 from pathlib import Path
 
@@ -25,7 +26,9 @@ from pptx.util import Emu, Inches, Pt
 
 from profsagent.content.models import FIRST_CONTENT_SLIDE, Figure, LectureDeck, Quiz, Slide
 
-BADGE = {"example": "Example", "worked_problem": "Worked problem", "activity": "Activity", "check": "Check", "summary": "Summary"}
+BADGE = {"example": "Example", "worked_problem": "Worked problem", "activity": "Activity", "check": "Check", "summary": "Summary",
+         "recap": "Recap", "watch": "Watch", "debrief": "Debrief", "bridge": "Bridge", "simulation": "Try it", "quiz": "Review quiz", "answer": "Answer"}
+PANEL = {"watch": "WATCH", "simulation": "OPEN"}       # the label of the panel showing a slide's clip / link
 def answer(q: Quiz) -> str:
     """The answer line for notes and the handout ("?" when the index is invalid; D-QUIZ already reports that)."""
     ok = 0 <= q.answer < len(q.options)
@@ -54,12 +57,22 @@ class Deck:
         r = cfg["render"]
         self.c = {k: RGBColor.from_string(x) for k, x in r["colors"].items()}
         self.font, self.mono, self.footer = r["font"], r["mono_font"], footer
-        self.prs = Presentation()
-        self.prs.slide_width, self.prs.slide_height = Inches(r["width_in"]), Inches(r["height_in"])
+        if r.get("template"):                      # the professor's template (content/style.py): its masters, our layout
+            self.prs = Presentation(r["template"])
+            ids = self.prs.slides._sldIdLst
+            for sid in list(ids):
+                self.prs.part.drop_rel(sid.rId)
+                ids.remove(sid)
+            self.blank = next((lay for lay in self.prs.slide_layouts if lay.name.lower() == "blank"),
+                              min(self.prs.slide_layouts, key=lambda lay: len(lay.placeholders)))
+        else:
+            self.prs = Presentation()
+            self.prs.slide_width, self.prs.slide_height = Inches(r["width_in"]), Inches(r["height_in"])
+            self.blank = self.prs.slide_layouts[6]
         self.W, self.H = self.prs.slide_width, self.prs.slide_height
-        self.blank = self.prs.slide_layouts[6]
         self.n = 0
         self.overflows: list[dict] = []          # {slide, what}: text that does not fit even at the smallest size
+        self.figures: list[dict] = []            # {slide, kind, x, y, w, h} in EMU: where each figure is drawn (animate.py)
 
     def _fitted(self, what: str, paragraphs: list[str], w, h, start: int, smallest: int, gap_pt: float = 0.0,
                 glyph: float = GLYPH) -> int:
@@ -146,6 +159,7 @@ class Deck:
 
     # ------------------------------------------------------------------ figures
     def _figure(self, slide, f: Figure, x, y, w, h):
+        self.figures.append({"slide": self.n, "kind": f.kind, "x": int(x), "y": int(y), "w": int(w), "h": int(h)})
         cap_h = Inches(0.4) if f.caption else 0
         if f.kind == "flow":
             self._flow(slide, f.steps, x, y, w, h - cap_h)
@@ -249,6 +263,14 @@ class Deck:
         self._chrome(s, sl.title, BADGE.get(sl.kind), sl.sources)
         m, top = Inches(0.6), Inches(1.6)
         body_h = self.H - top - Inches(0.75)
+        show = sl.clip if sl.kind == "watch" else sl.link if sl.kind == "simulation" else ""
+        if show:                                       # what students watch or open, above the bullets
+            ph = Inches(0.9)
+            self._box(s, MSO_SHAPE.ROUNDED_RECTANGLE, m, top, self.W - 2 * m, ph, "accent_soft")
+            self._text(s, m + Inches(0.25), top, Inches(1.3), ph, PANEL[sl.kind], 16, "accent", bold=True, anchor=MSO_ANCHOR.MIDDLE)
+            tw = self.W - 2 * m - Inches(1.8)
+            self._text(s, m + Inches(1.55), top, tw, ph, show, self._fitted("panel", [show], tw, ph, 18, 12), anchor=MSO_ANCHOR.MIDDLE)
+            top, body_h = top + ph + Inches(0.25), body_h - ph - Inches(0.25)
         has_fig = sl.figure.kind != "none"
         if sl.quiz:
             self._quiz(s, sl.quiz, m + Inches(0.8), top, self.W - 2 * m - Inches(1.6), body_h)
@@ -278,6 +300,7 @@ def render_pptx(deck: LectureDeck, frame: dict, sources: dict[str, dict], cfg: d
     if cited:
         d.list_slide("References", [f"[{sid}] {ref_line(sources[sid])}" for sid in cited], start=18)
     d.save(path)
+    (path.parent / "layout.json").write_text(json.dumps({"slide_w": int(d.W), "slide_h": int(d.H), "figures": d.figures}), encoding="utf-8")
     return d.n, d.overflows
 
 
@@ -292,6 +315,8 @@ def render_markdown(deck: LectureDeck, frame: dict, sources: dict[str, dict]) ->
          "## Learning outcomes", "", *[f"- {o}" for o in frame["objectives"]], ""]
     for i, sl in enumerate(deck.slides, FIRST_CONTENT_SLIDE):
         L += [f"## {i}. {sl.title}" + (f" ({BADGE[sl.kind]})" if sl.kind in BADGE else ""), ""]
+        if sl.clip or sl.link:
+            L += [f"> **{PANEL.get(sl.kind, 'SEE')}:** {sl.clip or sl.link}", ""]
         L += [f"- {b}" for b in sl.bullets]
         f = sl.figure
         if f.kind == "flow":

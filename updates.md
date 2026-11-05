@@ -4,6 +4,100 @@ Short status note for teammates and their coding agents, so nobody has to re-rea
 Newest entry on top. Owners: Phase 2 deliverable A (UI, simulations) Amit, B (lecture content) Parth, C (resources,
 experts) Vihan.
 
+## 2026-11-05, night (Parth): attach_material, the professor's style, student mode, Piper voice and Manim animation
+
+**`attach_material` is built** (`content/attach.py`; CLI `run_content.py attach`). **For Amit:** it can be connected now.
+- Call: `attach_material(run_id, lecture_id, {"attachments"?, "tasks"?, "review"?})`. It defaults to the survey's
+  `attachments` and `attach_tasks` (the paths `save_attachment` returns, and links). It works for topic ids (W03.L1) and
+  class ids (W03.S1).
+- Output: `material/<lecture>/attached.json` (`parts`, `coverage`, `report` {summary, key_points, quiz, gaps, issues,
+  enrich}, `quiz` (only checked questions), `gap_table`, `findings`) and `attached.md`. With the `slides` task, also the
+  usual deck files, made from their material (cited P1…).
+- Cost: 1 AI call (B3), plus the deck's calls for `slides`. `app/delivery.py` still says `"attach": False` in
+  `material_connected`; switch it when the app calls it.
+- Live on the Transformers course: the professor's week-1 deck attached to the week-2 lecture. The gap check said
+  "partly" and named exactly what was missing (the √dₖ scaling, the matrix form, PyTorch, causal masking). The local
+  model alone said "covered", so the AI decides and `A-GAP` flags conflicts.
+
+**Style (`content/style.py`; `run_content.py style --run-id <id> --from deck.pptx`):** learns the professor's template
+(masters, logo), theme colours and fonts, and how they write (bullets per slide, words per bullet, title case, we/you).
+Every new deck of the run is rendered on their template, and B1 gets `lecture.style`.
+
+**Student mode (`content/student.py`):** `material/<lecture>/student.html` is written with every deck
+(`material.json → files.student`). It is one offline page: slides without notes or answer keys, recap with answers to
+reveal, clickable check questions, watch/simulation links, and the review quiz (C's D8 quiz when present) with a score.
+**For Amit:** the app's student view can link or embed it.
+
+**Narration:** Piper (`pip install piper-tts`, voice `data/voices/en_US-lessac-medium.onnx`, git-ignored; falls back to
+the Windows voice). `narrate --animate` uses Manim (`pip install manim`) to build each flow figure step by step in its
+place, playing with the voice. Speaker notes are now 90-150 words (B1 v0.6.0), so a 90-min class narrates for about 12-15 min.
+Tried on Transformers W02.S1: 8.1 min (older, shorter notes) with 4 animated figures.
+
+## 2026-11-05, later (Parth): fixes in C's and A's code after a review (please check)
+
+Reviewed C and A (offline: tests, data, built pages; no AI calls) and fixed what was clearly a bug. All 376 offline tests
+pass (`tests/test_app*.py` need fastapi, not installed here).
+
+**For Vihan (C):**
+- `mix.save`: editing an approved mix sets it back to proposed and moves its pack and quiz to `materials_outdated`
+  (new field in `LectureMix`), so nobody uses a quiz made for the old mix; approving again clears it.
+- `mix.make_quiz`: no `KeyError` when a mix part's component left the lecture's plan (its question is dropped by your
+  existing check).
+- Recap and quiz at the class edges: B's `outline()` now merges them (`content/generate.class_edges`), so a class that
+  ends topic A and starts topic B opens with one recap and closes with one quiz (same minutes). You may still want a
+  session-aware reserve on C's side.
+- `tests/test_delivery.py`: the transcript test skips when `youtube-transcript-api` is missing. New `requirements.txt`.
+- **Still yours (data, needs AI calls):** commit CS-601's components / mix / NotebookLM / quiz; re-run once YouTube
+  unblocks (the 29 Oct snapshot has 3 empty lectures — W05.L1, W10.L1, W12.L1 — 10 without readings and 16 without
+  practice); update doc 04 with components, timeline, mix and D8.
+
+**For Amit (A and the app):**
+- `app/delivery._result`: reads C's `continues` (since 1 Nov) as well as `continuation_of`, so "Continues …" shows again.
+- Simulation types (`simulations/types.yaml`): AI/ML examples added to step-through, parameter explorer and networks.
+  "Attention" topics no longer land on *experiments on yourself* (psychology). Accuracy on the 165 labels unchanged
+  (75.2%), cross-validated 72.7% → 73.9%; `params.json` and `coverage.md` not regenerated.
+- Trusted links: Transformer Explainer (Polo Club) and LLM Visualization (bbycroft.net) in `external/sources.yaml` and
+  `index.json`. `external.text_for_matching`: hand-written entries also match topic by topic (downloaded PhET / Falstad
+  lists keep the joined form, so Falstad's "Transformers" circuits don't match vision transformers). Transformers
+  course: 0 → 4 of 22 lectures get a link; CS-601 and CSE201 unchanged.
+- Stepper engine: a widget may name its legend colours (`legend: {done: 'inside'}`); default words unchanged.
+- `auto.monte_carlo` 1.0.1: legend inside / outside / estimate (was "done / compared / swapped"), the question asked as a
+  prediction, up to 2000 points. Checked in a browser.
+- **Still yours:** `pip install playwright` to run `sims.py qa` (0/11 ran here: missing package, Chrome is present);
+  render the DBSCAN and convolution MP4s; review the 3 `auto.*` drafts; an attention simulation would serve AI courses.
+
+## 2026-11-05 (Parth): B follows C's delivery mix; narrated decks and videos; a Transformers sample course
+
+**Slides for the delivery mix (`content/models.py`, `checks.py`, `generate.py`, `render.py`, B1 v0.5.0):**
+- New slide kinds, used when `lecture.outline` exists: `recap` (first), `watch` + `debrief` (video and NotebookLM
+  parts), `bridge` (the part's bridge points), `simulation`, `quiz` (last; C's D8 writes the questions).
+- Each slide records its outline part in `component`. **Code, not the AI, fills** a watch slide's `clip` and a
+  simulation slide's `link` from the outline (`fill_from_outline`), so no invented links. They show as a WATCH / OPEN
+  panel on the slide and in the handout.
+- New checks (`check_outline`): `D-OUTLINE` (a part with no slide, an unknown part, recap not first, quiz not last),
+  `D-WATCH` (video part without a watch slide, or a watch slide without a clip), `D-SIM`. `deck.json` schema 2
+  (version 1 decks still load).
+- **For Amit:** `deck.json` slides may carry `kind` recap / watch / debrief / bridge / simulation / quiz, `component`,
+  `clip` and `link`; `material.json` may carry `narration` (below).
+
+**Review of Vihan's outline wiring (1 Nov):** correct; his 30 tests pass. Two points for Vihan:
+- In a class that ends one topic and starts the next (e.g. W03.S1 = 60 min of A + 30 min of B), A's review quiz and
+  B's recap land back to back in the middle of the class. Recap and quiz should open and close the *class*.
+- CS-601's `components.json` and mix are not in the repo (scratch run), so B cannot use the outline on CS-601 yet:
+  please commit them (or a snapshot) when ready.
+
+**Narration (`content/narrate.py`, `run_content.py narrate [--video]`, no AI calls):**
+- Each slide is read from its speaker notes (questions read with options, a pause, then the answer) with the Windows
+  speech synthesizer. PowerPoint then builds `slides_narrated.pptx` (audio plays on entry, slides advance by
+  themselves) and, with `--video`, `slides_narrated.mp4`. Windows + PowerPoint only; the voice is set in
+  `config/content.yaml → narration`. Output is large and git-ignored.
+- CS-601 W03.S1: 19 slides, 7.5 min of narration, made in about 1 minute.
+
+**Transformers sample (`runs/ai-transformers-01/`):** a hand-written course design for "Introduction to Transformer
+Architecture" (5 COs, 12 LOs, 13 weeks, 16 real references; modelled on Stanford CS224N, D2L ch. 11, The Annotated
+Transformer, nanoGPT). It is not a Phase 1 run (`state.json → design_source` says so), and is used for B's week 1-2
+sample decks.
+
 ## 2026-11-03 (Vihan): the delivery mix — each part of a lecture delivered one way, proposed by rules, decided by the professor
 
 **What.** The proposal "Lecture delivery mix" (2 Nov) and Amit's reply (`docs/decisions.md` 30) are built on C's side;

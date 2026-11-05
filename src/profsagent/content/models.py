@@ -28,8 +28,12 @@ class Quiz(BaseModel):
     explanation: str = ""
 
 
+KINDS_FOR_PARTS = ("recap", "watch", "debrief", "bridge", "simulation", "quiz")   # with deliverable C's outline / mix
+
+
 class Slide(BaseModel):
-    kind: Literal["concept", "example", "worked_problem", "activity", "check", "summary"]
+    kind: Literal["concept", "example", "worked_problem", "activity", "check", "summary",
+                  "recap", "watch", "debrief", "bridge", "simulation", "quiz", "answer"]
     title: str
     bullets: list[str] = Field(default_factory=list)
     figure: Figure = Field(default_factory=Figure)
@@ -38,11 +42,16 @@ class Slide(BaseModel):
     los: list[str] = Field(default_factory=list, description="ids of the lecture's learning outcomes this slide serves")
     sources: list[str] = Field(default_factory=list, description="ids of the given sources this slide draws on")
     minutes: float = 3.0
+    component: str = Field("", description="id of the lecture.outline part this slide teaches (when an outline is given)")
+    # filled by code from the outline, never by the AI (content/generate.fill_from_outline): what to watch or open
+    clip: str = ""
+    link: str = ""
 
 
 FIRST_CONTENT_SLIDE = 3   # the .pptx opens with the title and objectives slides code adds; every finding, the quiz
                           # and the handout number content slides as they appear in the .pptx
-SCHEMA_VERSION = "1"   # bump when a field changes meaning; deck.json records it so old decks are recognised
+SCHEMA_VERSION = "2"   # bump when a field changes meaning; deck.json records it so old decks are recognised
+                       # 2: slide kinds for C's delivery mix, `component`, `clip`, `link` (version 1 decks still load)
 
 
 class LectureDeck(BaseModel):
@@ -72,3 +81,58 @@ class DeckReview(BaseModel):
     issues: list[ReviewIssue] = Field(default_factory=list)
     quiz_answers: list[QuizAnswer] = Field(default_factory=list)
     verdict: str = Field("", description="one sentence: is the deck safe to teach from, and what most needs a look")
+
+
+# ------------------------------------------------------------------ B3: the professor's own material (content/attach.py)
+class AttachedQuestion(Quiz):
+    source: str = Field("", description="the part of the material it comes from: P1, P2 …")
+
+
+class Gap(BaseModel):
+    lo_id: str
+    status: Literal["covered", "partly", "missing"]
+    evidence: str = ""
+    add: str = Field("", description="what the professor should add for this outcome")
+
+
+class Enrichment(BaseModel):
+    kind: Literal["example", "figure", "check_question", "activity", "reading"]
+    where: str = ""
+    add: str
+
+
+class AttachedReport(BaseModel):
+    summary: str = ""
+    key_points: list[str] = Field(default_factory=list)
+    quiz: list[AttachedQuestion] = Field(default_factory=list)
+    gaps: list[Gap] = Field(default_factory=list)
+    issues: list[str] = Field(default_factory=list, description="statements that look outdated or wrong, quoted")
+    enrich: list[Enrichment] = Field(default_factory=list)
+
+
+# ------------------------------------------------------------------ B4 / B5: a class taught as 3-4 parts (content/lesson.py)
+class PlanPart(BaseModel):
+    title: str
+    los: list[str] = Field(default_factory=list, description="ids of the learning outcomes this part teaches")
+    teaches: str = Field(description="what students understand or can do after this part, in one or two sentences")
+    key_ideas: list[str] = Field(default_factory=list, description="3-5 ideas, in the order they are taught")
+    example: str = Field("", description="the worked example or demonstration that makes the part concrete")
+    minutes: int = Field(10, description="video minutes, quiz included")
+
+
+class LessonPlan(BaseModel):
+    parts: list[PlanPart]
+
+
+class TeachingSlide(BaseModel):
+    title: str
+    bullets: list[str] = Field(default_factory=list, description="2-4 short anchors (at most 12 words), never the script")
+    figure: Figure = Field(default_factory=Figure)
+    narration: str = Field(description="what the teacher says over this slide: 150-220 words of real teaching")
+    refs: list[str] = Field(default_factory=list, description="ids of the reference passages it draws on, e.g. C3#12")
+
+
+class TeachingPart(BaseModel):
+    slides: list[TeachingSlide]
+    quiz: list[Quiz] = Field(default_factory=list, description="3 questions on this part")
+    recap: str = Field("", description="2-3 sentences that close the part before its quiz")

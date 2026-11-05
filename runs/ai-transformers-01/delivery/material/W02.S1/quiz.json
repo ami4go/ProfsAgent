@@ -1,0 +1,32 @@
+[
+ {
+  "slide": 9,
+  "los": [
+   "CO2.LO1"
+  ],
+  "question": "If key dimension d_k increases from 16 to 64, by what factor should the raw dot products Q K^T be scaled before applying softmax?",
+  "options": [
+   "Scale by 1/4",
+   "Scale by 1/8",
+   "Scale by 1/16",
+   "Scale by 1/64"
+  ],
+  "answer": 1,
+  "explanation": "The scaling factor is 1 / sqrt(d_k). For d_k = 64, sqrt(64) = 8, so the scaling factor is 1/8. Option A (1/4) incorrectly uses sqrt(16) or takes 16/64, while Option D (1/64) forgets the square root entirely."
+ },
+ {
+  "slide": 13,
+  "los": [
+   "CO2.LO1"
+  ],
+  "question": "Why is negative infinity (-inf) used in the additive attention mask instead of 0?",
+  "options": [
+   "Because 0 added to logits would leave them unchanged, allowing future tokens to get non-zero softmax weight",
+   "Because softmax(0) equals infinity, which causes numerical underflow",
+   "Because negative infinity sets matrix values to zero prior to matrix multiplication",
+   "Because PyTorch does not support boolean masking during forward pass"
+  ],
+  "answer": 0,
+  "explanation": "Adding 0 to raw scores (logits) leaves them as-is, which would result in non-zero softmax probabilities e^score / sum. Adding -inf ensures exp(-inf) = 0, giving exact 0 softmax weight to future tokens. Option B is incorrect because exp(0) = 1, not infinity."
+ }
+]

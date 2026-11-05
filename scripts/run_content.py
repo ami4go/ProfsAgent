@@ -9,6 +9,12 @@ per-topic lecture brief (its length is the topic's hours that week). Decks are n
   python scripts/run_content.py generate --run-id cs601-02 --lectures W01.L2 --auto-review   # a different AI checks the deck
   python scripts/run_content.py check    --run-id cs601-02 --lectures W01.L1          # re-check and re-render a saved deck
   python scripts/run_content.py review   --run-id cs601-02 [--apply]                  # write review.yaml / apply decisions
+  python scripts/run_content.py narrate  --run-id cs601-02 --lectures W03.S1 [--video] [--animate]  # narrated deck (+ MP4), no AI calls
+  python scripts/run_content.py teach    --run-id ai-transformers-01 --lectures W02.S1 [--video] [--animate]
+                                                                                  # a class as 3-4 taught video parts with quizzes
+  python scripts/run_content.py style    --run-id cs601-02 --from my_deck.pptx         # learn the professor's look and writing
+  python scripts/run_content.py attach   --run-id cs601-02 --lectures W03.L1 [--files a.pptx,https://…] [--tasks summary,quiz]
+                                                                                  # the professor's own material (1 AI call)
 
 Outputs: runs/<id>/delivery/material/<lecture>/ (slides.pptx, notes.md, quiz.json, deck.json, material.json) and
 material/review.yaml. One B1 call per lecture, plus at most `deck.repair_rounds` when the deck has errors
@@ -31,6 +37,7 @@ from profsagent.content import generate as G  # noqa: E402
 from profsagent.content import review as R  # noqa: E402
 from profsagent.content.checks import check_deck, content_range  # noqa: E402
 from profsagent.content.models import LectureDeck  # noqa: E402
+from profsagent.content.style import apply_look, learn_style, load_style  # noqa: E402
 from profsagent.content.verify import verify  # noqa: E402
 from profsagent.delivery import survey as sv  # noqa: E402
 from profsagent.delivery.common import load_state, read_json, write_json  # noqa: E402
@@ -62,7 +69,7 @@ def show(lid: str, m: dict) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["plan", "generate", "check", "review"])
+    ap.add_argument("cmd", choices=["plan", "generate", "check", "review", "narrate", "attach", "style", "teach"])
     ap.add_argument("--run-id", required=True)
     ap.add_argument("--lectures", help="comma-separated lecture ids, e.g. W01.L1,W02.L1")
     ap.add_argument("--from-survey", action="store_true", help="the lectures whose survey answer asks for generated material")
@@ -72,7 +79,20 @@ def main() -> None:
     ap.add_argument("--force", action="store_true", help="generate: replace a deck the professor approved")
     ap.add_argument("--auto-review", action="store_true", help="generate: a different AI model checks each deck (1-2 more calls)")
     ap.add_argument("--apply", action="store_true", help="review: apply the decisions in review.yaml")
+    ap.add_argument("--video", action="store_true", help="narrate: also export an MP4 through PowerPoint")
+    ap.add_argument("--animate", action="store_true", help="narrate: flow figures become Manim animations (pip install manim)")
+    ap.add_argument("--from", dest="style_from", default="", help="style: the professor's .pptx decks, comma-separated")
+    ap.add_argument("--files", default="", help="attach: files (paths from the course folder) or links; default the survey's")
+    ap.add_argument("--tasks", default="", help="attach: slides,summary,quiz,gap_check,enrich; default the survey's")
     a = ap.parse_args()
+
+    if a.cmd == "style":
+        prof = learn_style(a.run_id, [Path(x.strip()) for x in a.style_from.split(",") if x.strip()])
+        lk, w = prof["look"], prof["writing"]
+        print(f"look: font {lk.get('font')}, colours {lk.get('colors')}, {lk['width_in']}x{lk['height_in']} in, template kept")
+        print(f"writing: {w['bullets_per_slide']} bullets/slide, {w['words_per_bullet']} words/bullet, {w['title_case']}, "
+              f"voice '{w['voice']}', from {w['slides_measured']} slides → runs/{a.run_id}/delivery/style/profile.json")
+        return
 
     if a.cmd == "review":
         if a.apply:
@@ -98,6 +118,37 @@ def main() -> None:
                   f"sources {list(src)}")
         per = 1 + c["deck"]["repair_rounds"] + (2 if a.auto_review else 0)
         print(f"AI calls: {len(ids) * (2 if a.auto_review else 1)} (up to {len(ids) * per} with repairs)")
+    elif a.cmd == "teach":
+        from profsagent.content.lesson import teach_class
+        for lid in ids:
+            m = teach_class(a.run_id, lid, {"video": a.video, "animate": a.animate})
+            for p in m["parts"]:
+                print(f"{lid} part {p['n']}: {p['title']} · {p['teaching_slides']} teaching slides, ~{p['narration_minutes']} min, "
+                      f"{len(p['quiz'])} quiz questions, {p['errors']} errors → {p['dir']}")
+    elif a.cmd == "attach":
+        from profsagent.content.attach import attach_material
+        for lid in ids:
+            m = attach_material(a.run_id, lid, {"attachments": [x.strip() for x in a.files.split(",") if x.strip()] or None,
+                                                "tasks": [x.strip() for x in a.tasks.split(",") if x.strip()] or None,
+                                                "review": "ai" if a.auto_review else None, "force": a.force})
+            gaps = [g for g in m["gap_table"] if g["ai"] != "covered"]
+            print(f"{lid}: {len(m['parts'])} part(s) read, {len(m['quiz'])} quiz questions, {len(gaps)} outcomes not fully covered, "
+                  f"{len(m['findings'])} findings")
+    elif a.cmd == "narrate":
+        from profsagent.content.narrate import narrate
+        for lid in ids:
+            d = G.material_dir(a.run_id, lid)
+            man = read_json(d / "material.json")
+            if not man:
+                sys.exit(f"no generated material for {lid}; run generate first")
+            deck = LectureDeck.model_validate(read_json(d / "deck.json"))
+            print(f"{lid}: narrating {man['slides']} slides{' and exporting the video' if a.video else ''} …", flush=True)
+            man["narration"] = narrate(d, deck, G.frame(st, briefs[lid]), apply_look(c, load_style(a.run_id)), video=a.video,
+                                       animate=a.animate)
+            write_json(d / "material.json", man)
+            n = man["narration"]
+            print(f"{lid}: {n['minutes']} min of narration ({n['voice']}) → {d / n['files']['deck']}"
+                  + (f" and {d / n['files']['video']}" if a.video else ""))
     elif a.cmd == "generate":
         feedback = R.redo_requests(a.run_id) if a.redo else {}
         failed = {}
@@ -127,7 +178,7 @@ def main() -> None:
             # the code checks are redone; the AI review's findings are kept (re-reviewing would need a call)
             found = (check_deck(deck, G.lecture_input(b), set(man["sources"]), c) + more
                      + [x for x in man["findings"] if x.get("stage") == "ai-review"])
-            man["slides"], found = G.write_outputs(d, deck, G.frame(st, b), man["sources"], c, found)
+            man["slides"], found = G.write_outputs(d, deck, G.frame(st, b), man["sources"], apply_look(c, load_style(a.run_id)), found)
             man.update(findings=found, errors=len(errors(found)), warnings=len(found) - len(errors(found)))
             write_json(d / "material.json", man)
             show(lid, man)

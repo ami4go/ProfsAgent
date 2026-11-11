@@ -29,6 +29,13 @@ python scripts/run_design.py --input eval/inputs/cse201_P2.yaml --run-id cse201-
 python scripts/evaluate_run.py --run-id cse201-dev-01 --reference eval/reference/cse201_sheet.tsv
 python -m pytest -q tests
 ```
+**The professor app** (course design, lecture delivery, simulations in the browser; `docs/11_frontend.md`):
+```bash
+python scripts/run_app.py          # http://127.0.0.1:8000; the built pages are in the repo, no Node needed
+python scripts/run_app_demo.py     # the same app on recorded runs: no AI keys, no Neo4j (for UI work and demos)
+cd frontend && npm install && npm run dev    # only to change the frontend (then `npm run build` and commit static/ui)
+```
+
 Without `--auto-approve` the run stops at each professor gate. Answer a gate with
 `--resume --decision approve|reject --by "<name>"`.
 
@@ -65,6 +72,7 @@ Outputs in `runs/<run-id>/`:
 | `agents/pipeline.py` | stages S1–S9 and gates |
 | `orchestrator/graph.py` | LangGraph state machine, SQLite checkpoints, `interrupt()` gates |
 | `render/proposal.py` | deterministic rendering (no LLM) |
+| `app/` + `frontend/` | the professor app: FastAPI server and views (`app/`), React frontend and design system (`frontend/`, built into `app/static/ui`) |
 
 ## IIIT-D CSE course description template
 The official template is stored in `templates/iiitd_cse_course_template.xlsx` (sheets *Template* and *Taxonomy*). The pipeline follows it:

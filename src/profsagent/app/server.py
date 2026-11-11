@@ -1,5 +1,5 @@
-"""FastAPI server: the professor UI (static/index.html) and its JSON API over RunManager (course design, Phase 1)
-and DeliveryManager (lecture delivery, Phase 2: Vihan's deliverable C, docs/04_phase2_UI_integration_guide.md).
+"""FastAPI server: the professor UI (static/ui, built from frontend/) and its JSON API over RunManager (course design,
+Phase 1) and DeliveryManager (lecture delivery, Phase 2: Vihan's deliverable C, docs/04_phase2_UI_integration_guide.md).
 
 Settings (environment or .env): APP_HOST (default 127.0.0.1, this laptop only), APP_PORT (8000),
 KG_BACKEND (neo4j | stub, read by the pipeline), NEO4J_URI.
@@ -18,7 +18,8 @@ from urllib.parse import urlparse
 
 import yaml
 from fastapi import Body, FastAPI, File, HTTPException, UploadFile
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from profsagent.app import delivery as dv
 from profsagent.app import formmap, views
@@ -27,6 +28,10 @@ from profsagent.app.runner import PREFIX, RunManager, read_meta
 from profsagent.config import ROOT, RUNS, keys
 
 STATIC = Path(__file__).resolve().parent / "static"
+UI = STATIC / "ui"                # the built frontend (frontend/: `npm run build` writes here; the build is committed)
+NOT_BUILT = ("<!doctype html><title>ProfsAgent</title><body style='font:16px system-ui;max-width:40rem;margin:4rem auto;padding:0 1rem'>"
+             "<h1>ProfsAgent</h1><p>The app's pages are not built on this machine.</p>"
+             "<pre>cd frontend\nnpm install\nnpm run build</pre><p>Then reload this page. The API is running.</p>")
 RUN_ID = re.compile(rf"^{PREFIX}[a-z0-9-]+$")
 NO_CACHE = {"Cache-Control": "no-store"}
 # simulation pages run sandboxed: their own origin (no access to this app's API), no network, no forms or frames
@@ -109,15 +114,12 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True, del
 
     @app.get("/")
     def index():
-        return FileResponse(STATIC / "index.html", headers=NO_CACHE)
+        if not (UI / "index.html").exists():
+            return HTMLResponse(NOT_BUILT, status_code=503, headers=NO_CACHE)
+        return FileResponse(UI / "index.html", headers=NO_CACHE)
 
-    @app.get("/fonts/{name}")
-    def font(name: str):
-        """The bundled OFL fonts (static/fonts), so the app looks the same offline."""
-        p = STATIC / "fonts" / name
-        if not re.fullmatch(r"[a-z0-9-]+\.woff2", name) or not p.is_file():
-            raise HTTPException(404, "No such font")
-        return FileResponse(p, media_type="font/woff2", headers={"Cache-Control": "public, max-age=31536000, immutable"})
+    # scripts, styles and the bundled OFL fonts: file names carry a content hash, so they can be cached for good
+    app.mount("/ui", StaticFiles(directory=UI, check_dir=False), name="ui")
 
     @app.get("/api/health")
     def health():
@@ -173,6 +175,26 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True, del
         if st:
             out["course"] = views.course_summary(st)
         return JSONResponse(out, headers=NO_CACHE)
+
+    @app.get("/api/runs/{rid}/stage/{gate}")
+    def stage(rid: str, gate: str):
+        """What one check shows, built by the same code as the waiting check's view, so that a step can be read again
+        after it was approved. Read-only: `editable` is true only for the check that is waiting right now."""
+        d = run_dir(rid)
+        m = read_meta(d)
+        st = views.state_of(d)
+        done = set((st or {}).get("stages_done", []))
+        if gate == "gate0_details" and (d / "fill.json").exists() and (d / "input.yaml").exists():
+            view = views.details(d)
+        elif gate == "gate1_context" and st and "s3_constraints" in done:
+            view = views.gate1(st)
+        elif gate == "gate2_outcomes" and st and "s4_outcomes" in done:
+            view = views.gate2(st)
+        elif gate == "gate3_proposal" and st and (d / "proposal.md").exists():
+            view = views.gate3(st, d)
+        else:
+            raise HTTPException(404, "This step has nothing to show yet")
+        return JSONResponse({"gate": gate, "view": view, "editable": m.get("status") == "waiting" and m.get("gate") == gate}, headers=NO_CACHE)
 
     @app.post("/api/runs/{rid}/decision")
     def decision(rid: str, body: dict = Body(...)):

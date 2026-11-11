@@ -8,6 +8,33 @@ Mark anything still waiting for someone as **Open**.
 
 ---
 
+## 2026-11-11: the professor app's frontend is rebuilt (dark, component-based)
+
+### 38. A new frontend with a design system replaces the single `index.html`
+- **Decision (Vihan, 11 Nov):** rework the complete UI from scratch as a premium dark application; the stack was left open.
+- **Why:** the one-file UI (2,200 lines) had reached the limit of what could be changed safely, and `docs/10_ui_improvement_plan.md`
+  already asked for a split, a status vocabulary and the course as the place you work in.
+- **Changed:**
+  - **`frontend/`** (new): React 19 + TypeScript + Vite + Tailwind 4, TanStack Query, Radix, Motion. Design tokens, a component kit
+    and every screen of the old app (`docs/11_frontend.md` has the map and the design system).
+  - **Information architecture** (plan §7): Courses | Simulations, with Ctrl K. A course has four tabs: Overview, Design, Lectures,
+    Student view. Old `#/run/…` and `#/delivery/…` links redirect.
+  - **`app/server.py`:** `GET /` serves the build (`static/ui`, committed, so the app still runs with Python alone); the `/fonts/`
+    route and `static/index.html` are gone. One new read-only endpoint, `GET /api/runs/{id}/stage/{gate}`, so an approved step can
+    be read again. No other API change.
+  - **`scripts/run_app_demo.py`** (new): the real app with recorded runs replayed in place of the AI stages, to work on the UI and
+    to demo without keys or Neo4j.
+- **Checked:** `npm run build` (type-check) and `npm test` (28 tests); `tests/test_app*.py` (62 pass, 2 new); every screen driven in
+  a browser against the demo server (create → four checks with edits, overrides and stop; lecture plan, resources, speakers, slides,
+  simulations, student view); axe audit of nine screens: no violations; no horizontal overflow at 390, 820 and 1280 px.
+- **Not checked here:** a live AI run and Neo4j (no keys on the build machine); simulation suggestions and the briefs of a newly
+  approved course (they need the local embedding model, which could not be downloaded there).
+- **Open:** Amit's review of the new look against the plan in `docs/10`; the course-sheet PDF export uses a Windows font path
+  (`scripts/export_course_sheet_pdf.py`), so the PDF download fails on Linux and macOS (the app now says so instead of opening an error page).
+- **Agreed by:** Vihan (asked for it). **Open:** Amit.
+
+---
+
 ## 2026-11-04: Vihan's delivery mix in the app (the Lecture plan tab is its editor)
 
 ### 37. The professor sees, changes and approves how each part of a lecture is taught, in the app

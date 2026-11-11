@@ -1,0 +1,251 @@
+/* ProfsAgent design system — tokens first, then base styles, then the few bespoke pieces Tailwind cannot express.
+   Dark by design. Four colours carry meaning on a graphite base:
+     iris  = ProfsAgent (what it wrote, what you can do)     mint = approved / verified by you
+     amber = waiting for your decision                        rose = a problem that blocks
+   Charts use their own validated palette (--color-way-*, --color-heat-*), never the status colours. */
+@import "tailwindcss";
+
+/* Fonts ship with the app (OFL, via @fontsource), so it looks the same offline. Latin and Latin Extended only. */
+@font-face { font-family: 'Geist Variable'; font-style: normal; font-display: swap; font-weight: 100 900;
+  src: url('@fontsource-variable/geist/files/geist-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Geist Variable'; font-style: normal; font-display: swap; font-weight: 100 900;
+  src: url('@fontsource-variable/geist/files/geist-latin-ext-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+@font-face { font-family: 'Geist Mono Variable'; font-style: normal; font-display: swap; font-weight: 100 900;
+  src: url('@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Geist Mono Variable'; font-style: normal; font-display: swap; font-weight: 100 900;
+  src: url('@fontsource-variable/geist-mono/files/geist-mono-latin-ext-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+@font-face { font-family: 'Newsreader Variable'; font-style: normal; font-display: swap; font-weight: 200 800;
+  src: url('@fontsource-variable/newsreader/files/newsreader-latin-opsz-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Newsreader Variable'; font-style: normal; font-display: swap; font-weight: 200 800;
+  src: url('@fontsource-variable/newsreader/files/newsreader-latin-ext-opsz-normal.woff2') format('woff2-variations');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+
+@theme {
+  /* ---- type */
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Consolas, monospace;
+  --font-display: "Newsreader Variable", "Iowan Old Style", Georgia, serif;
+
+  --text-2xs: 0.6875rem;  --text-2xs--line-height: 1rem;
+  --text-xs: 0.75rem;     --text-xs--line-height: 1.125rem;
+  --text-sm: 0.8125rem;   --text-sm--line-height: 1.25rem;
+  --text-base: 0.875rem;  --text-base--line-height: 1.375rem;
+  --text-md: 0.9375rem;   --text-md--line-height: 1.5rem;
+  --text-lg: 1.0625rem;   --text-lg--line-height: 1.5rem;
+  --text-xl: 1.25rem;     --text-xl--line-height: 1.625rem;
+  --text-2xl: 1.5rem;     --text-2xl--line-height: 1.875rem;
+  --text-3xl: 1.875rem;   --text-3xl--line-height: 2.25rem;
+  --text-4xl: 2.375rem;   --text-4xl--line-height: 2.625rem;
+
+  /* ---- neutrals: graphite */
+  --color-canvas: #0a0c10;
+  --color-sunken: #07090c;
+  --color-surface-1: #11141a;
+  --color-surface-2: #161a22;
+  --color-surface-3: #1d222c;
+  --color-surface-4: #262c38;
+  --color-line: rgb(255 255 255 / 0.07);
+  --color-line-strong: rgb(255 255 255 / 0.13);
+  --color-ink-1: #eceef2;
+  --color-ink-2: #aeb5c0;
+  --color-ink-3: #868e9c;
+  --color-ink-4: #5a6170;
+
+  /* ---- iris: ProfsAgent, actions, focus */
+  --color-iris-200: #d3d8ff;
+  --color-iris-300: #b3bbff;
+  --color-iris-400: #8f9bff;
+  --color-iris-500: #6e7cf7;
+  --color-iris-600: #5563e8;
+  --color-iris-700: #3a45a8;
+  --color-iris-soft: rgb(110 124 247 / 0.13);
+  --color-iris-line: rgb(110 124 247 / 0.36);
+
+  /* ---- mint: approved, verified */
+  --color-mint-300: #8aecc8;
+  --color-mint-400: #45d6a4;
+  --color-mint-500: #22b783;
+  --color-mint-soft: rgb(69 214 164 / 0.11);
+  --color-mint-line: rgb(69 214 164 / 0.3);
+
+  /* ---- amber: waiting for you, warnings */
+  --color-amber-300: #ffd78f;
+  --color-amber-400: #f5b544;
+  --color-amber-500: #d9952a;
+  --color-amber-soft: rgb(245 181 68 / 0.11);
+  --color-amber-line: rgb(245 181 68 / 0.3);
+
+  /* ---- rose: blocking problems, destructive actions */
+  --color-rose-300: #ffb1ac;
+  --color-rose-400: #f47a74;
+  --color-rose-500: #e0554e;
+  --color-rose-soft: rgb(244 122 116 / 0.11);
+  --color-rose-line: rgb(244 122 116 / 0.32);
+
+  /* ---- charts (validated on surface-1 with dataviz/validate_palette.js; never used for status) */
+  --color-way-slides: #3987e5;
+  --color-way-video: #c98500;
+  --color-way-nlm: #d55181;
+  --color-way-inclass: #008300;
+  --color-way-quiz: #596170;
+  --color-heat-1: #3a45a8;
+  --color-heat-2: #6674f0;
+  --color-heat-3: #b3bbff;
+
+  /* ---- shape */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+
+  /* ---- depth: a lighter surface, a hairline, and a soft shadow */
+  --shadow-1: 0 1px 0 rgb(255 255 255 / 0.03) inset, 0 1px 2px rgb(0 0 0 / 0.35);
+  --shadow-2: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 10px 30px -12px rgb(0 0 0 / 0.65);
+  --shadow-3: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 28px 80px -20px rgb(0 0 0 / 0.8);
+  --shadow-glow: 0 0 0 1px rgb(110 124 247 / 0.4), 0 8px 28px -8px rgb(110 124 247 / 0.45);
+
+  /* ---- motion: quick, ease-out, never ease-in */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.1);
+
+  /* ---- layout */
+  --spacing-sidebar: 16rem;
+  --spacing-topbar: 3.25rem;
+  --container-page: 70rem;
+  --container-wide: 84rem;
+  --container-read: 46rem;
+
+  --animate-fade-in: fade-in 0.22s var(--ease-out) both;
+  --animate-rise: rise 0.28s var(--ease-out) both;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-pulse-ring: pulse-ring 2s var(--ease-out) infinite;
+}
+
+@keyframes fade-in { from { opacity: 0 } to { opacity: 1 } }
+@keyframes rise { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: none } }
+@keyframes shimmer { from { background-position: 200% 0 } to { background-position: -200% 0 } }
+@keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgb(110 124 247 / 0.45) } 70%, 100% { box-shadow: 0 0 0 9px rgb(110 124 247 / 0) } }
+@keyframes spin { to { transform: rotate(360deg) } }
+
+/* ================================================================== base */
+@layer base {
+  html { color-scheme: dark; -webkit-text-size-adjust: 100%; scroll-padding-top: 7rem; }
+  body {
+    margin: 0; min-height: 100dvh; background: var(--color-canvas); color: var(--color-ink-1);
+    font-family: var(--font-sans); font-size: var(--text-base); line-height: 1.55;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; font-feature-settings: "ss01", "cv11";
+  }
+  ::selection { background: rgb(110 124 247 / 0.35); color: #fff; }
+  :focus-visible { outline: 2px solid var(--color-iris-400); outline-offset: 2px; border-radius: var(--radius-xs); }
+  a { color: inherit; }
+  button, input, textarea, select { font: inherit; color: inherit; }
+  h1, h2, h3, h4, p { margin: 0; }
+  * { scrollbar-width: thin; scrollbar-color: rgb(255 255 255 / 0.14) transparent; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: rgb(255 255 255 / 0.12); border-radius: 99px; border: 2px solid transparent; background-clip: padding-box; }
+  ::-webkit-scrollbar-thumb:hover { background-color: rgb(255 255 255 / 0.22); }
+  summary { cursor: pointer; }
+  summary::-webkit-details-marker { display: none; }
+  select option { background: var(--color-surface-2); color: var(--color-ink-1); }
+}
+
+/* ================================================================== bespoke pieces */
+@layer components {
+  /* the canvas: a faint column grid that fades out, and two quiet light sources */
+  .app-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(1100px 460px at 22% -12%, rgb(110 124 247 / 0.11), transparent 62%),
+      radial-gradient(820px 380px at 96% -8%, rgb(69 214 164 / 0.05), transparent 60%),
+      var(--color-canvas); }
+  .app-bg::before { content: ""; position: absolute; inset: 0;
+    background-image: linear-gradient(90deg, rgb(255 255 255 / 0.032) 1px, transparent 1px); background-size: 64px 100%;
+    mask-image: linear-gradient(to bottom, #000 0%, transparent 62%); -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 62%); }
+
+  /* glass: only for chrome that floats above content (sidebar, top bar, dialogs, the decision bar) */
+  .glass { background: color-mix(in oklab, var(--color-surface-1) 74%, transparent);
+    -webkit-backdrop-filter: blur(18px) saturate(150%); backdrop-filter: blur(18px) saturate(150%); }
+  .glass-strong { background: color-mix(in oklab, var(--color-surface-2) 86%, transparent);
+    -webkit-backdrop-filter: blur(28px) saturate(160%); backdrop-filter: blur(28px) saturate(160%); }
+
+  .h-display { font-family: var(--font-display); font-weight: 480; letter-spacing: -0.012em; font-optical-sizing: auto; }
+  .label-caps { font-size: var(--text-2xs); line-height: 1rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ink-3); }
+  .tnum { font-variant-numeric: tabular-nums; }
+
+  /* a card group where the card under the pointer stays sharp and its neighbours step back */
+  @media (hover: hover) {
+    .focus-group > * { transition: opacity 0.25s var(--ease-out), filter 0.25s var(--ease-out), transform 0.25s var(--ease-out), border-color 0.2s var(--ease-out); }
+    .focus-group:hover > *:not(:hover):not(:focus-within) { opacity: 0.62; filter: saturate(0.7); }
+  }
+
+  /* the one glowing action on a screen: a gradient hairline with a soft halo */
+  .btn-glow { position: relative; isolation: isolate; }
+  .btn-glow::before { content: ""; position: absolute; inset: -1px; border-radius: inherit; z-index: -1; padding: 1px;
+    background: linear-gradient(120deg, var(--color-iris-300), var(--color-iris-600) 45%, var(--color-mint-400));
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; }
+  .btn-glow::after { content: ""; position: absolute; inset: 4px 10px -6px; border-radius: inherit; z-index: -2; opacity: 0.55;
+    background: linear-gradient(120deg, var(--color-iris-500), var(--color-mint-500)); filter: blur(16px); transition: opacity 0.3s var(--ease-out), filter 0.3s var(--ease-out); }
+  .btn-glow:hover::after { opacity: 0.8; filter: blur(20px); }
+
+  /* a search field whose hairline lights up and turns while it has focus */
+  @property --glow-angle { syntax: "<angle>"; inherits: false; initial-value: 80deg; }
+  .glow-field { position: relative; border-radius: var(--radius-lg); padding: 1px; isolation: isolate;
+    background: conic-gradient(from var(--glow-angle), rgb(255 255 255 / 0.1), rgb(255 255 255 / 0.1) 30%, var(--color-iris-500) 46%, rgb(255 255 255 / 0.1) 58%, rgb(255 255 255 / 0.1) 80%, var(--color-mint-500) 92%, rgb(255 255 255 / 0.1));
+    transition: --glow-angle 1.6s var(--ease-out); }
+  .glow-field:hover { --glow-angle: 200deg; }
+  .glow-field:focus-within { --glow-angle: 440deg; box-shadow: 0 0 34px -12px rgb(110 124 247 / 0.55); }
+  .glow-field > .glow-inner { border-radius: calc(var(--radius-lg) - 1px); background: var(--color-surface-1); }
+
+  /* the working loader: four dots, the outer two swing */
+  .cradle { --size: 26px; --speed: 1.2s; position: relative; display: inline-flex; align-items: center; justify-content: center; width: var(--size); height: var(--size); color: var(--color-iris-400); flex: none; }
+  .cradle > i { position: relative; display: flex; align-items: center; height: 100%; width: 25%; transform-origin: center top; }
+  .cradle > i::after { content: ""; display: block; width: 100%; height: 25%; border-radius: 50%; background: currentColor; }
+  .cradle > i:first-child { animation: cradle-a var(--speed) linear infinite; }
+  .cradle > i:last-child { animation: cradle-b var(--speed) linear infinite; }
+  @keyframes cradle-a { 0% { transform: rotate(0); animation-timing-function: ease-out } 25% { transform: rotate(70deg); animation-timing-function: ease-in } 50% { transform: rotate(0); animation-timing-function: linear } }
+  @keyframes cradle-b { 0% { transform: rotate(0); animation-timing-function: linear } 50% { transform: rotate(0); animation-timing-function: ease-out } 75% { transform: rotate(-70deg); animation-timing-function: ease-in } }
+
+  .spinner { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgb(255 255 255 / 0.16); border-top-color: currentColor; animation: spin 0.8s linear infinite; flex: none; display: inline-block; }
+
+  .skeleton { border-radius: var(--radius-sm); background: linear-gradient(90deg, rgb(255 255 255 / 0.04) 25%, rgb(255 255 255 / 0.085) 37%, rgb(255 255 255 / 0.04) 63%); background-size: 400% 100%; animation: shimmer 1.6s linear infinite; }
+
+  /* chart textures: the second channel beside hue (45° = a simulation, 135° = watched before class) */
+  .hatch-45 { background-image: repeating-linear-gradient(45deg, rgb(255 255 255 / 0.42) 0 2px, transparent 2px 6px); }
+  .hatch-135 { background-image: repeating-linear-gradient(135deg, rgb(10 12 16 / 0.6) 0 3px, transparent 3px 6px); }
+
+  /* text written by the server from Markdown (the proposal, the course report) */
+  .prose-app { color: var(--color-ink-2); font-size: var(--text-base); line-height: 1.65; overflow-wrap: anywhere; }
+  .prose-app h1 { font-family: var(--font-display); font-weight: 480; font-size: var(--text-2xl); line-height: 1.25; color: var(--color-ink-1); margin: 0 0 0.5rem; }
+  .prose-app h2 { font-size: var(--text-lg); font-weight: 600; color: var(--color-ink-1); margin: 1.75rem 0 0.5rem; padding-top: 1rem; border-top: 1px solid var(--color-line); }
+  .prose-app h3 { font-size: var(--text-md); font-weight: 600; color: var(--color-ink-1); margin: 1.25rem 0 0.375rem; }
+  .prose-app p { margin: 0.5rem 0; }
+  .prose-app ul, .prose-app ol { margin: 0.5rem 0; padding-left: 1.25rem; }
+  .prose-app li { margin: 0.2rem 0; }
+  .prose-app ul > li { list-style: disc; } .prose-app ol > li { list-style: decimal; }
+  .prose-app li::marker { color: var(--color-ink-4); }
+  .prose-app a { color: var(--color-iris-300); text-decoration: underline; text-decoration-color: var(--color-iris-line); text-underline-offset: 3px; }
+  .prose-app a:hover { text-decoration-color: currentColor; }
+  .prose-app strong, .prose-app b { color: var(--color-ink-1); font-weight: 600; }
+  .prose-app code { font-family: var(--font-mono); font-size: 0.92em; background: var(--color-surface-3); padding: 0.1em 0.35em; border-radius: var(--radius-xs); }
+  .prose-app table { border-collapse: collapse; margin: 0.75rem 0; font-size: var(--text-sm); display: block; overflow-x: auto; max-width: 100%; }
+  .prose-app th, .prose-app td { border: 1px solid var(--color-line); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+  .prose-app th { background: var(--color-surface-2); color: var(--color-ink-1); font-weight: 600; white-space: nowrap; }
+  .prose-app hr { border: 0; border-top: 1px solid var(--color-line); margin: 1.25rem 0; }
+  .prose-app blockquote { margin: 0.75rem 0; padding-left: 0.9rem; border-left: 2px solid var(--color-line-strong); color: var(--color-ink-3); }
+}
+
+/* movement goes, fades stay */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  .spinner, .cradle > i { animation: none !important; }
+  .skeleton { animation: none !important; }
+}
+@media (forced-colors: active) {
+  .btn-glow::before, .btn-glow::after { display: none; }
+}

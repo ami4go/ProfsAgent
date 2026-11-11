@@ -368,6 +368,38 @@ def test_api(server):
     assert c.get(f"/api/runs/{rid}/download/pdf").status_code == 404                  # no design yet
 
 
+def test_a_step_can_be_read_again_after_it_is_approved(server):
+    """GET /api/runs/<id>/stage/<gate>: the same view code as the waiting check, read-only once it is approved."""
+    import shutil
+    c, mgr = server
+    rid = c.post("/api/runs", json=good_form()).json()["run_id"]
+    wait_for(mgr, rid, "waiting")
+    s = c.get(f"/api/runs/{rid}/stage/gate0_details").json()
+    assert s["editable"] is True and s["view"]["filled"]["topics"]["reason"]            # the waiting check
+    assert c.get(f"/api/runs/{rid}/stage/gate1_context").status_code == 404              # nothing designed yet
+    assert c.get(f"/api/runs/{rid}/stage/nonsense").status_code == 404
+    run = c.get(f"/api/runs/{rid}").json()
+    assert c.post(f"/api/runs/{rid}/decision", json={"gate": "gate0_details", "decision": "approve", "values": run["view"]["form"]}).json()["ok"]
+    wait_for(mgr, rid, "waiting")
+    s = c.get(f"/api/runs/{rid}/stage/gate0_details").json()
+    assert s["editable"] is False and s["view"]["form"]["name"] == good_form()["name"]   # approved: still readable
+    for f in ("state.json", "proposal.md"):                                              # a real finished design's files
+        shutil.copy2(REAL / f, mgr.runs / rid / f)
+    for gate, key in (("gate1_context", "rules"), ("gate2_outcomes", "cos"), ("gate3_proposal", "weeks")):
+        s = c.get(f"/api/runs/{rid}/stage/{gate}").json()
+        assert s["gate"] == gate and s["view"][key] and s["editable"] is (gate == "gate1_context")
+
+
+def test_the_built_pages_are_served(server):
+    c, _ = server
+    html = c.get("/").text
+    assert "<title>ProfsAgent</title>" in html and c.get("/").headers["cache-control"] == "no-store"
+    import re
+    assets = re.findall(r'(?:src|href)="(/ui/assets/[^"]+)"', html)
+    assert assets and all(c.get(a).status_code == 200 for a in assets)                   # the script and the stylesheet
+    assert c.get("/ui/../server.py").status_code in (404, 400)
+
+
 # ------------------------------------------------------------------ Delete: to the bin, from Neo4j, ending a running step
 def test_delete_moves_a_waiting_course_to_the_bin(mgr):
     rid, _ = mgr.create(good_form())

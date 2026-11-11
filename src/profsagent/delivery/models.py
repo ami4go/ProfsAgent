@@ -64,17 +64,37 @@ class ComponentPlan(M):
     components: list[Component]
 
 
-# ------------------------------------------------------------------ D6 does this video stretch teach the component?
-class SegmentCheck(M):
-    id: str                                        # the stretch id given in the prompt (s1, s2, ...)
-    verdict: Literal["teaches_fully", "teaches_partly", "mentions", "off_topic"]
-    start: str = ""                                # m:ss (or h:mm:ss) of the first marker that teaches it
-    end: str = ""                                  # m:ss of the marker where the teaching of it ends
-    covered: list[str] = Field(default_factory=list)   # points of the component this stretch teaches
-    missing: list[str] = Field(default_factory=list)   # points it leaves out
+# ------------------------------------------------------------------ D9 which parts of the lecture does this video teach, and where?
+class PartFinding(M):
+    part: str                                      # the part's short id (C1, C2, ...)
+    teaches: Literal["fully", "partly", "no"]
+    start: str = ""                                # m:ss marker of the first line that teaches it
+    end: str = ""                                  # m:ss marker of the last line that still teaches it
+    why: str = ""                                  # <= 20 words
+
+
+class VideoReading(M):
+    parts: list[PartFinding] = Field(default_factory=list)
+
+
+# ------------------------------------------------------------------ D10 a second model checks one clip against one part
+class PointCheck(M):
+    n: int                                         # the point's number in the checklist
+    status: Literal["taught", "mentioned", "absent"]
+    quote: str = ""                                # words copied from the clip (taught points only); programs check them
+
+
+class ClipVerdict(M):
+    relevance: int = Field(ge=1, le=5)             # really about this part, in the same sense of the words
+    sufficiency: int = Field(ge=1, le=5)           # a student could learn the part from this clip alone
+    points: list[PointCheck] = Field(default_factory=list)
+    clean_start: int = Field(default=3, ge=1, le=5)
+    clean_end: int = Field(default=3, ge=1, le=5)
+    stands_alone: int = Field(default=3, ge=1, le=5)   # 1: leans on earlier parts of the video that students did not see
     clarity: int = Field(default=3, ge=1, le=5)
     level_fit: int = Field(default=3, ge=1, le=5)
-    note: str = ""                                 # ≤ 25 words for the professor
+    strengths: list[str] = Field(default_factory=list)
+    limitations: list[str] = Field(default_factory=list)
 
 
 # ------------------------------------------------------------------ the delivery mix (delivery/mix.py; file delivery/mix/<lecture>.json)
@@ -90,6 +110,9 @@ class MixSegment(M):
     end: str
     minutes: float
     verdict: str
+    verified: bool = False                         # passed the independent check (segments.py)
+    block: Optional[str] = None                    # parts in the same block are one continuous watch of one video
+    coverage: Optional[float] = None               # share of the part's checklist the clip teaches
 
 
 class MixSimulation(M):
@@ -174,10 +197,6 @@ class QuizQuestion(M):
 
 class Quiz(M):
     questions: list[QuizQuestion]
-
-
-class SegmentChecks(M):
-    checks: list[SegmentCheck]
 
 
 # ------------------------------------------------------------------ D3 practitioners from web search

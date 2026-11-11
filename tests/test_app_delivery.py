@@ -108,6 +108,33 @@ def test_own_links_ratings_and_bulk(runs, rid):
     assert dv.view(rid, runs)["survey"]["W05.L2"]["guest_lecture"] == "yes"
 
 
+def test_material_for_chosen_weeks_only(runs, rid):
+    s = yaml.safe_load((runs / rid / "delivery" / "survey.yaml").read_text(encoding="utf-8"))
+    for lid in ("W05.L1", "W05.L2", "W06.L1"):
+        s["lectures"][lid].update({k: None for k in dv.CHOICES + dv.WANTS})        # (old-format want_* answers count as choices)
+    s["lectures"]["W05.L2"].update(own_material="yes", guest_lecture="yes")       # saved choices: kept, only added to
+    (runs / rid / "delivery" / "survey.yaml").write_text(yaml.safe_dump(s, allow_unicode=True), encoding="utf-8")
+    assert dv.for_weeks(rid, [5], False, False)["problem"] and dv.for_weeks(rid, [99], True, False)["problem"]
+    out = dv.for_weeks(rid, [5], material=True, resources=False)
+    assert [x["id"] for x in out["lectures"]] == ["W05.L1", "W05.L2"] and all(x["start_b"] for x in out["lectures"])
+    v = dv.view(rid, runs)["survey"]
+    assert v["W05.L1"]["generate_material"] == "yes" and v["W05.L1"]["assistance"] == "no"
+    assert v["W05.L2"]["own_material"] == "yes" and v["W05.L2"]["guest_lecture"] == "yes" and v["W05.L2"]["generate_material"] == "yes"
+    assert not v.get("W06.L1")                                                         # other weeks untouched
+    both = dv.for_weeks(rid, [5], material=True, resources=True)
+    assert all(x["start_c"] for x in both["lectures"]) and dv.view(rid, runs)["survey"]["W05.L1"]["want_videos"] == "yes"
+
+
+def test_a_held_out_course_is_hidden_and_used_as_the_reference():
+    from profsagent.app import formmap
+    f = {"name": "Machine Learning", "description": "x" * 40, "hold_out": ["AI501", "cse 343"], "hold_out_domains": ["techtree.iiitd.edu.in"],
+         "reference_course": "AI501___ECE363___ECE563___CSE343__CSE543"}
+    _, cfg = formmap.to_pipeline(f)
+    assert cfg["exclude_courses"] == ["AI501", "CSE343"] and cfg["blocklist"]["course_codes"] == ["AI501", "CSE343"]
+    assert cfg["blocklist"]["domains"] == ["techtree.iiitd.edu.in"] and cfg["reference_course"].startswith("AI501")
+    assert formmap.to_pipeline({"name": "X course", "description": "y" * 40})[1]["exclude_courses"] == []
+
+
 def test_jobs_run_in_a_child_process_and_can_be_cancelled(runs, rid):
     ok = ("import json,sys; from pathlib import Path; d=Path(sys.argv[1]); "
           "(d/'app_step_result.json').write_text(json.dumps({'ok': {}}))")

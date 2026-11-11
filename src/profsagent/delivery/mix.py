@@ -19,12 +19,16 @@ The rules, in order (the first that matches wins; the preset limits which ways c
   R1   in class: an activity or discussion; a worked example or case study at Bloom 4+
   R1b  simulation: a process, mechanism or algorithm at Bloom 2–4 with a matching simulation (Amit's rule)
   P    the professor's own habit, once they have made enough changes (preferences)
-  R2   youtube: a stretch teaches the part fully, clarity and level fit >= 4, 0.6–1.3 x the part's minutes
-  R3   youtube_bridge: stretches teach it partly and cover >= 60% of its minutes
+  R2   youtube: a clip passed the independent check (segments.py, config videos.gate), alone or as part of a block of
+       consecutive parts one video teaches. For results from before 10 Nov: teaches it fully, clarity and level fit >= 4,
+       0.6–1.3 x the part's minutes
+  R3   youtube_bridge: old results only (stretches teach it partly and cover >= 60% of its minutes); a partly useful video is
+       no longer suggested
   R4   notebooklm: a concept, mechanism or comparison; the notebook's sources cover >= 60% of its key terms; the
        professor's confidence <= 3 or a new topic
   R5   slides
-Then the lecture as a whole: the first part is taught live, at most 2 NotebookLM videos, at most 4 switches of way,
+Then the lecture as a whole: the first part is taught live (unless a checked clip teaches it: then it is watched before
+class and class opens with a live debrief), at most 2 NotebookLM videos, at most 4 switches of way,
 video in class at most 40% of the minutes (longer clips and the excess are watched before class). A part the professor
 set or locked is never changed by the program; it only gets a note.
 """
@@ -112,7 +116,7 @@ def source_texts(resources: dict) -> list[str]:
     from profsagent.research.fetch import fetch
     out = []
     items = resources.get("items") or {}
-    for v in items.get("video") or []:
+    for v in list(items.get("video") or []) + list(resources.get("notebooklm_sources") or []):
         d = read_json(_cache_path("transcript", v["id"])) if v.get("id") else None
         if d and isinstance(d.get("v"), list):
             out.append(" ".join(x["text"] for x in d["v"]))
@@ -229,8 +233,9 @@ def evidence(c: dict, g: dict, minutes: int) -> dict:
     segs = _segments(row, g["video_quality"])
     vmin = round(sum(s["minutes"] for s in segs), 1)
     lo, hi = r["youtube_length"]
-    full = [s for s in segs if s["verdict"] == "teaches_fully" and s["clarity"] >= r["youtube_min_clarity"]
-            and s["level_fit"] >= r["youtube_min_level_fit"] and lo <= s["minutes"] / max(minutes, 1) <= hi]
+    # a clip that passed the independent check (segments.py) has already met the one gate, including the length of its block
+    full = [s for s in segs if s.get("verified") or (s["verdict"] == "teaches_fully" and s["clarity"] >= r["youtube_min_clarity"]
+            and s["level_fit"] >= r["youtube_min_level_fit"] and lo <= s["minutes"] / max(minutes, 1) <= hi)]
     cov, uncovered = coverage(c.get("key_terms") or [], g["texts"])
     missing = list((row.get("gap") or {}).get("missing") or [])
     if not missing:
@@ -239,7 +244,7 @@ def evidence(c: dict, g: dict, minutes: int) -> dict:
     allowed = ["slides", "in_class"]
     if full:
         allowed.append("youtube")
-    if segs:
+    if segs and not all(s.get("verified") for s in segs):   # old results only: a checked clip is suggested whole or not at all
         allowed.append("youtube_bridge")
     if cov is None or cov >= r["notebooklm_min_coverage"]:
         allowed.append("notebooklm")
@@ -254,7 +259,7 @@ def possible_ways(ev: dict) -> list[str]:
     slides and in class are always possible (NotebookLM with a warning when its sources miss terms)."""
     out = ["slides", "in_class", "notebooklm"]
     if ev["segments"]:
-        out += ["youtube", "youtube_bridge"]
+        out += ["youtube"] + (["youtube_bridge"] if "youtube_bridge" in ev["allowed"] else [])
     if ev["simulation"]:
         out.append("simulation")
     return out
@@ -282,14 +287,14 @@ def candidates(c: dict, ev: dict, g: dict, prefs: dict) -> list[tuple[str, str]]
         out.append((p["way"], "P"))
     if ev["full"]:
         out.append(("youtube", "R2"))
-    if ev["segments"] and ev["share"] >= r["bridge_min_share"]:
+    if "youtube_bridge" in ev["allowed"] and ev["share"] >= r["bridge_min_share"]:
         out.append(("youtube_bridge", "R3"))
     conf = g["survey"].get("confidence")
     if (kind in r["notebooklm_kinds"] and not ev["full"] and "notebooklm" in ev["allowed"]
             and ((conf or 99) <= r["notebooklm_max_confidence"] or g["brief"].get("novel"))):
         out.append(("notebooklm", "R4"))
     out.append(("slides", "R5"))
-    if ev["segments"] and not any(w in ("youtube", "youtube_bridge") for w, _ in out):
+    if "youtube_bridge" in ev["allowed"] and not any(w in ("youtube", "youtube_bridge") for w, _ in out):
         out.append(("youtube_bridge", "alt"))            # shown as the alternative: a clip plus slides
     return list(dict.fromkeys(out))
 
@@ -311,6 +316,9 @@ def rule_reason(way: str, rule: str, c: dict, ev: dict, g: dict, prefs: dict) ->
         return f"You usually deliver {c.get('kind', '').replace('_', ' ')} parts as {LABEL[way]} ({p['count']} of {p['of']} of your changes)."
     if way == "youtube":
         s = ev["full"][0] if ev["full"] else ev["segments"][0]
+        if s.get("verified"):
+            cov = "" if s.get("coverage") is None else f"covers {round(100 * s['coverage'])}% of its points, "
+            return f"{s['start']}–{s['end']} of \"{s['video'][:60]}\" teaches it ({s['minutes']} min; {cov}checked by a second AI on every word)."
         return f"{s['start']}–{s['end']} of \"{s['video'][:60]}\" teaches all of it ({s['minutes']} min, checked on the transcript)."
     if way == "youtube_bridge":
         miss = "; ".join(ev["missing"][:3])
@@ -351,7 +359,9 @@ def _attach(p: dict, ev: dict) -> None:
     p["segments"], p["video_minutes"], p["bridge"], p["simulation"] = [], 0.0, [], None
     if way in ("youtube", "youtube_bridge"):
         segs = ev["full"][:1] if (way == "youtube" and ev["full"]) else ev["segments"]
-        p["segments"] = [{k: s[k] for k in ("video", "video_id", "url", "start", "end", "minutes", "verdict")} for s in segs]
+        p["segments"] = [{k: s.get(k) for k in ("video", "video_id", "url", "start", "end", "minutes", "verdict", "verified", "block", "coverage")} for s in segs]
+        for s in p["segments"]:
+            s["verified"] = bool(s["verified"])
         p["video_minutes"] = round(sum(s["minutes"] for s in segs), 1)
         if way == "youtube_bridge":
             p["bridge"] = ev["missing"]
@@ -409,7 +419,20 @@ def lecture_checks(parts: list[dict], evs: dict, preset_ways: list[str], flipped
             if p["way"] in VIDEO_WAYS and p["when"] != "pre_class" and not _protected(p):
                 p["when"] = "pre_class"
     first = parts[0] if parts else None
-    if L["first_part_live"] and first and not flipped and first["way"] in ("youtube", "notebooklm"):
+    checked = bool(first and first.get("segments")) and all(s.get("verified") for s in first["segments"])
+    if (L["first_part_live"] and first and not flipped and first["way"] == "youtube"
+            and (len(_block(first, parts)) > 1 or (checked and L.get("checked_clip_opens", True)))
+            and not any(_protected(p) for p in _block(first, parts))):
+        # one video teaches the opening part(s), or a clip the second AI passed teaches the first part: students watch it
+        # before class and the lecture opens with a live debrief, so the professor still frames the lecture and a clip that
+        # passed every check is not thrown away for slides (user, 10 Nov)
+        n = len(_block(first, parts))
+        for p in _block(first, parts):
+            if act:
+                p["when"] = "pre_class"
+        what = f"one video teaches the first {n} parts" if n > 1 else f"a checked clip teaches {first['component']}"
+        notes.append({"code": "L-BLOCK", "message": f"{what}: watched before class, and class opens with a live debrief"})
+    elif L["first_part_live"] and first and not flipped and first["way"] in ("youtube", "notebooklm"):
         if act and not _protected(first):
             old = first["way"]
             change(first, "slides", f"The first part is taught live to frame the lecture; {LABEL[old]} stays the alternative.")
@@ -446,10 +469,12 @@ def lecture_checks(parts: list[dict], evs: dict, preset_ways: list[str], flipped
     if _switches(parts) > L["max_switches"]:
         notes.append({"code": "L-SWITCH", "message": f"the lecture switches way {_switches(parts)} times (aim for at most {L['max_switches']})"})
     for p in parts:
-        long = max((s["minutes"] for s in p.get("segments") or []), default=0)
+        block = _block(p, parts) or [p]
+        long = max(max((s["minutes"] for s in p.get("segments") or []), default=0), _block_minutes(block))
         if p["way"] in ("youtube", "youtube_bridge") and p["when"] == "in_class" and long > L["clip_in_class_max_min"]:
-            if act and not _protected(p):
-                p["when"] = "pre_class"
+            if act and not any(_protected(x) for x in block):
+                for x in block:                   # one continuous watch: all of it moves
+                    x["when"] = "pre_class"
                 notes.append({"code": "L-LONG", "message": f"{p['component']}: a {long}-min clip is watched before class"})
             else:
                 notes.append({"code": "L-LONG", "message": f"{p['component']}: a {long}-min clip in class (over {L['clip_in_class_max_min']} min)"})
@@ -462,12 +487,26 @@ def lecture_checks(parts: list[dict], evs: dict, preset_ways: list[str], flipped
             notes.append({"code": "L-VIDEO", "message": f"video takes {round(100 * share())}% of class time (aim for at most {round(100 * L['video_share_max'])}%)"})
             break
         p = max(movable, key=_video_min)
-        p["when"] = "pre_class"
+        for x in _block(p, parts) or [p]:
+            if not _protected(x):
+                x["when"] = "pre_class"
         notes.append({"code": "L-VIDEO", "message": f"{p['component']}: watched before class to keep video under {round(100 * L['video_share_max'])}% of class time"})
     for p in parts:
         if p["way"] == "notebooklm" and p.get("coverage") is not None and p["coverage"] < mcfg()["rules"]["notebooklm_min_coverage"]:
             notes.append({"code": "L-SOURCES", "message": f"{p['component']}: add a source that explains {', '.join(p.get('uncovered', [])[:4])} before making its NotebookLM video"})
     return notes
+
+
+def _block(p: dict, parts: list[dict]) -> list[dict]:
+    """The parts one continuous watch of a video delivers, p among them; [] when p is not in a block."""
+    b = next((s.get("block") for s in p.get("segments") or [] if s.get("block")), None)
+    if p.get("way") != "youtube" or not b:
+        return []
+    return [x for x in parts if x.get("way") == "youtube" and any(s.get("block") == b for s in x.get("segments") or [])]
+
+
+def _block_minutes(block: list[dict]) -> float:
+    return round(sum(p.get("video_minutes") or 0 for p in block), 1)
 
 
 def _video_min(p: dict) -> float:
@@ -794,6 +833,7 @@ def write_pack(run_id: str, lecture_id: str, m: dict) -> dict | None:
     tid = briefs[lecture_id]["topic_id"]
     earlier = [c for c in (plans.get(tid) or {}).get("components", []) if c["lecture_id"] < lecture_id]
     srcs = {k: (res.get("items") or {}).get(k, []) for k in ("video", "reading", "practice")}
+    srcs["video"] = list(srcs["video"]) + list(res.get("notebooklm_sources") or [])
     md, summary = pack(load_state(run_id), briefs[lecture_id], comps, earlier, res.get("timeline") or [], srcs, mix=m)
     (d / "notebooklm").mkdir(exist_ok=True)
     (d / "notebooklm" / f"{lecture_id}.md").write_text(md, encoding="utf-8")

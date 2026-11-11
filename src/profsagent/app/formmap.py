@@ -135,4 +135,13 @@ def to_pipeline(f: dict) -> tuple[dict, dict]:
     slug = re.sub(r"[^A-Z0-9]+", "-", _s(f.get("name")).upper()).strip("-")[:24] or "COURSE"
     run_cfg = {"project_id": f"P-APP-{slug}", "exclude_courses": [], "blocklist": {"domains": [], "course_codes": [], "title_fragments": []},
                "external_research": bool(f.get("external_research", True)), "department": _s(f.get("department")) or "CSE"}
+    # re-creating a course that already exists (to compare with the real one): it is hidden from the graph and from
+    # research, and evaluate/reference.py compares the design with its sheet in data/enriched
+    held = [re.sub(r"\s+", "", str(c)).upper() for c in (f.get("hold_out") or []) if str(c).strip()][:8]
+    if held:
+        run_cfg["exclude_courses"] = held
+        run_cfg["blocklist"]["course_codes"] = held
+        run_cfg["blocklist"]["domains"] = [str(x) for x in (f.get("hold_out_domains") or [])][:8]
+    if _s(f.get("reference_course")):
+        run_cfg["reference_course"] = _s(f.get("reference_course"))
     return form, run_cfg

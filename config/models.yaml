@@ -62,6 +62,20 @@ roles:
     - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 6500}
     - {provider: gemini, model: gemini-3.8-flash}
     - {provider: nvidia, model: nvidia/nemotron-3-ultra-550b-a55b}
+  read:                # D9: reads a video's transcript. 3.6 first: gemini-3.8-flash hung for the full 180 s on a 2.7K-token D9 (10 Nov)
+                       # and on YouTube input (9 Nov), and each hang costs three minutes before the next model is tried
+    - {provider: gemini, model: gemini-3.6-flash}
+    - {provider: nvidia, model: nvidia/nemotron-3-ultra-550b-a55b}
+    - {provider: nvidia, model: minimaxai/minimax-m3.1-flash}
+    - {provider: gemini, model: gemini-3.8-flash}
+    - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 5500}
+  verify:              # D10: checks a video clip. Whichever model read the video (D9) is excluded per call, so the checker is
+                       # always a different model; NVIDIA first keeps the Gemini quota for reading
+    - {provider: nvidia, model: nvidia/nemotron-3-ultra-550b-a55b}
+    - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 6500}   # 2 s a call; minimax took 138 s (10 Nov)
+    - {provider: gemini, model: gemini-3.6-flash}
+    - {provider: nvidia, model: minimaxai/minimax-m3.1-flash}
+    - {provider: gemini, model: gemini-3.8-flash}
   review:              # B2 AI review of a lecture deck (content/ai_review.py). The deck's own generator model is excluded
                        # per call, so the reviewer is always a different model; this order only says which one comes first
     - {provider: gemini, model: gemini-3.6-flash}

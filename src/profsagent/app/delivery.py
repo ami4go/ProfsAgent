@@ -323,6 +323,44 @@ def bulk(rid: str, lid: str, scope: str) -> dict:
     return {"applied": done}
 
 
+def for_weeks(rid: str, weeks: list[int], material: bool, resources: bool) -> dict:
+    """Turn on slides (B) and/or the resource search (C) for every lecture of the chosen weeks, then say what to start.
+    A lecture's saved choices are kept and only added to (nothing is switched off); a lecture with no choices gets just
+    what was asked, with the lecture page's default resource kinds (videos and readings). Returns {lectures: [{id,
+    start_c, refresh, start_b}], skipped: [{id, why}]} or {problem}."""
+    from profsagent.delivery import survey as sv
+    if not (material or resources):
+        return {"problem": "Pick slides, resources or both."}
+    want = {int(w) for w in weeks if str(w).isdigit()}
+    briefs = [b for b in _rj(_d(rid) / "briefs.json", []) if int(b.get("week") or 0) in want]
+    if not briefs:
+        return {"problem": "No lectures in those weeks."}
+    ensure(rid)
+    lectures = (sv.load(rid).get("lectures") or {})
+    out, skipped = [], []
+    for b in briefs:
+        lid = b["lecture_id"]
+        if lid not in lectures:
+            skipped.append({"id": lid, "why": "not in the lecture plan"})
+            continue
+        old = sv._migrate(lectures[lid])
+        a = {k: old.get(k) for k in KEEP}
+        if not any(old.get(k) is not None for k in CHOICES):
+            a.update({k: "no" for k in CHOICES} | {"want_videos": "yes", "want_readings": "yes"})
+        if material:
+            a["generate_material"] = "yes"
+        if resources:
+            a["assistance"] = "yes"
+            if not any(a.get(w) == "yes" for w in WANTS):
+                a.update(want_videos="yes", want_readings="yes")
+        r = save_choices(rid, lid, a)
+        if r.get("errors"):
+            skipped.append({"id": lid, "why": " ".join(r["errors"].values())})
+            continue
+        out.append({"id": lid, "start_c": bool(r["start_c"]), "refresh": bool(r["refresh"]), "start_b": bool(r["start_b"])})
+    return {"lectures": out, "skipped": skipped}
+
+
 def same_as_previous(rid: str, lid: str) -> dict:
     from profsagent.delivery import survey as sv
     s = sv.load(rid)

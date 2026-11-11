@@ -1,0 +1,1746 @@
+{
+ "lecture_id": "W12.L2",
+ "topic": "Deployment and reliability metric evaluation",
+ "generated_at": "2026-11-02 22:40:24",
+ "components": [
+  {
+   "lecture_id": "W12.L2",
+   "title": "Key deployment metrics overview",
+   "teaches": "Students learn the definitions of latency, error rate, throughput, deployment frequency, and rollback time. They understand how each metric signals the health of a deployment pipeline.",
+   "key_terms": [
+    "latency",
+    "error rate",
+    "throughput",
+    "deployment frequency",
+    "rollback time"
+   ],
+   "kind": "concept",
+   "bloom": 2,
+   "lo_ids": [
+    "CO4.LO3"
+   ],
+   "minutes": 15,
+   "id": "W12.L2.C1",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W12.L2",
+   "title": "Reliability metrics and SLOs",
+   "teaches": "Students define availability, MTBF, MTTR, SLO, SLI, and error budget. They see how these metrics quantify system reliability and guide release decisions.",
+   "key_terms": [
+    "availability",
+    "MTBF",
+    "MTTR",
+    "SLO",
+    "SLI",
+    "error budget"
+   ],
+   "kind": "concept",
+   "bloom": 2,
+   "lo_ids": [
+    "CO4.LO3"
+   ],
+   "minutes": 15,
+   "id": "W12.L2.C2",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W12.L2",
+   "title": "Instrumenting a multi-component system with OpenTelemetry",
+   "teaches": "Students follow the steps to add traces, metrics, and logs across services using OpenTelemetry SDKs. They configure exporters to Prometheus and verify that data flows correctly.",
+   "key_terms": [
+    "OpenTelemetry",
+    "traces",
+    "metrics",
+    "logs",
+    "Prometheus exporter",
+    "context propagation"
+   ],
+   "kind": "mechanism",
+   "bloom": 3,
+   "lo_ids": [
+    "CO4.LO3"
+   ],
+   "minutes": 15,
+   "id": "W12.L2.C3",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W12.L2",
+   "title": "Live dashboard walkthrough with Grafana",
+   "teaches": "Students watch the creation of a Grafana dashboard that visualizes deployment and reliability metrics. They learn to set alert rules on error‑budget burn rate.",
+   "key_terms": [
+    "Grafana",
+    "dashboard",
+    "panels",
+    "alerting",
+    "error budget"
+   ],
+   "kind": "demo",
+   "bloom": 3,
+   "lo_ids": [
+    "CO4.LO3"
+   ],
+   "minutes": 15,
+   "id": "W12.L2.C4",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W12.L2",
+   "title": "Scenario walkthrough 1: load‑test and failure injection",
+   "teaches": "The instructor runs a k6 load test against the sample project, injects a service failure with Chaos Mesh, and evaluates whether SLOs remain satisfied. Students observe metric shifts in real time.",
+   "key_terms": [
+    "k6",
+    "load test",
+    "failure injection",
+    "Chaos Mesh",
+    "SLO evaluation"
+   ],
+   "kind": "worked_example",
+   "bloom": 4,
+   "lo_ids": [
+    "CO4.LO3"
+   ],
+   "minutes": 15,
+   "id": "W12.L2.C5",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W12.L2",
+   "title": "Student activity: evaluate metrics on supplied project",
+   "teaches": "In pairs, students use the instrumented project to compute deployment and reliability metrics, decide if a release meets the defined SLOs, and present their go/no‑go recommendation for peer review.",
+   "key_terms": [
+    "metric calculation",
+    "release decision",
+    "presentation",
+    "peer review"
+   ],
+   "kind": "activity",
+   "bloom": 5,
+   "lo_ids": [
+    "CO4.LO3"
+   ],
+   "minutes": 15,
+   "id": "W12.L2.C6",
+   "in_class": true
+  }
+ ],
+ "resources": {
+  "lecture_id": "W12.L2",
+  "topic": "Deployment and reliability metric evaluation",
+  "want": {
+   "want_videos": false,
+   "want_readings": true,
+   "want_practice": true,
+   "want_recorded_lecture": false,
+   "want_clips": false,
+   "want_guest": true,
+   "confidence": 2,
+   "note": "",
+   "choices": [
+    "own_material",
+    "generate_material",
+    "assistance",
+    "guest_lecture"
+   ]
+  },
+  "queries": {
+   "lecture_id": "W12.L2",
+   "video_queries": [
+    "deployment and reliability metrics tutorial",
+    "evaluating software reliability metrics lecture",
+    "AI system deployment metrics explained"
+   ],
+   "reading_queries": [
+    "software reliability metric evaluation guide",
+    "deployment metrics for multi component systems"
+   ],
+   "practice_queries": [
+    "reliability metrics evaluation notebook exercise"
+   ],
+   "recorded_lecture_query": "software reliability metric evaluation lecture",
+   "research_queries": [
+    "software reliability evaluation metrics",
+    "AI deployment monitoring metrics"
+   ],
+   "practitioner_query": "site reliability engineer AI platform"
+  },
+  "items": {
+   "video": [
+    {
+     "kind": "video",
+     "id": "yIB3bl9OGW0",
+     "url": "https://www.youtube.com/watch?v=yIB3bl9OGW0",
+     "title": "DevOps Metrics",
+     "source": "AltexSoft",
+     "tier": 4,
+     "duration_s": 636,
+     "published": "2022-02-02T14:50:50Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 4820,
+     "likes": 122,
+     "comments": 1,
+     "subscribers": 73700,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.051,
+      "segment": 0.335,
+      "clarity": 0.8,
+      "level_fit": 0.7,
+      "authority": 0.35,
+      "reception": 0.567
+     },
+     "total": 0.341,
+     "findings": [],
+     "rationale": "Teaches C1 Key deployment metrics overview (0:00–4:27, partly); C2 Reliability metrics and SLOs (3:46–7:43, partly) [checked on the transcript] · AltexSoft · tier 4 · 10:36 · 4,820 views",
+     "components": [
+      {
+       "id": "W12.L2.C1",
+       "title": "Key deployment metrics overview",
+       "start": "0:00",
+       "end": "4:27",
+       "start_s": 0.0,
+       "end_s": 267.5,
+       "verdict": "teaches_partly",
+       "covered": [
+        "deployment frequency"
+       ],
+       "missing": [
+        "latency",
+        "error rate",
+        "throughput",
+        "rollback time"
+       ],
+       "note": "Only covers deployment frequency; other four metrics not addressed.",
+       "chapter": null
+      },
+      {
+       "id": "W12.L2.C2",
+       "title": "Reliability metrics and SLOs",
+       "start": "3:46",
+       "end": "7:43",
+       "start_s": 226.0,
+       "end_s": 463.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "availability",
+        "MTBF",
+        "MTTR",
+        "MTTF"
+       ],
+       "missing": [
+        "SLO",
+        "SLI",
+        "error budget",
+        "how metrics guide release decisions"
+       ],
+       "note": "Covers MTTF, MTTR, MTBF, availability with formulas; misses SLO, SLI, error budget.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.051,
+      "evidence": "transcript",
+      "per_target": {
+       "W12.L2.C1": {
+        "text": "Key deployment metrics overview",
+        "covered": true,
+        "sim": 0.543,
+        "segments": [
+         {
+          "start": 0.0,
+          "end": 267.5,
+          "sim": 0.543
+         }
+        ]
+       },
+       "W12.L2.C2": {
+        "text": "Reliability metrics and SLOs",
+        "covered": true,
+        "sim": 0.422,
+        "segments": [
+         {
+          "start": 226.0,
+          "end": 463.0,
+          "sim": 0.422
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Only covers deployment frequency; other four metrics not addressed.; Covers MTTF, MTTR, MTBF, availability with formulas; misses SLO, SLI, error budget.",
+      "issues": [
+       "leaves out: latency",
+       "leaves out: error rate",
+       "leaves out: throughput",
+       "leaves out: rollback time"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "In this final episode,  Ihor Pavlenko, a quality assurance competence leader at AltexSoft, talks about tracking your DevOps success. \n\nHe explains:\n00:45 Why do we need DevOps metrics?\n01:54 DevOps performance metrics\n• Mean Time to Change\n• Deployment Frequency\n03:23 DevOps team and software quality control metrics\n• Mean Time to Failure\n• Mean Time to Detection\n• Mean Time to Recovery\n• Mean Time between Failures\n• Defect Escape Ratio\n03:29 Software performance and reliability metrics\n• Server Uptime \n• Apdex\n\nCheck out more information on DevOps in our articles:\n1) DevOps Metrics: Mean Time to Failure, Server Uptime, Mean Time Between Failures, Mean Time to Recovery, and More https://www.",
+     "rank": 1,
+     "status": "proposed"
+    },
+    {
+     "kind": "video",
+     "id": "6dW7r7DyklY",
+     "url": "https://www.youtube.com/watch?v=6dW7r7DyklY",
+     "title": "DevOps Metrics That Matter | DORA, Reliability & Delivery Performance",
+     "source": "Joshua Moses | Cybertrace Foundation",
+     "tier": 4,
+     "duration_s": 597,
+     "published": "2026-10-16T05:00:20Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 7,
+     "likes": 1,
+     "comments": 0,
+     "subscribers": 183,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.031,
+      "segment": 0.355,
+      "clarity": 0.8,
+      "level_fit": 0.8,
+      "authority": 0.35,
+      "reception": 0.622
+     },
+     "total": 0.363,
+     "findings": [],
+     "rationale": "Teaches C2 Reliability metrics and SLOs (1:50–6:50, partly) [checked on the transcript] · Joshua Moses | Cybertrace Foundation · tier 4 · 9:57 · 7 views",
+     "components": [
+      {
+       "id": "W12.L2.C2",
+       "title": "Reliability metrics and SLOs",
+       "start": "1:50",
+       "end": "6:50",
+       "start_s": 110.6,
+       "end_s": 410.6,
+       "verdict": "teaches_partly",
+       "covered": [
+        "SLI",
+        "SLO",
+        "MTTR (as mean time to repair)"
+       ],
+       "missing": [
+        "availability",
+        "MTBF",
+        "error budget"
+       ],
+       "note": "Introduces SLI/SLO with latency example; mentions MTTR earlier; misses availability, MTBF, error budget.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.031,
+      "evidence": "transcript",
+      "per_target": {
+       "W12.L2.C2": {
+        "text": "Reliability metrics and SLOs",
+        "covered": true,
+        "sim": 0.439,
+        "segments": [
+         {
+          "start": 110.6,
+          "end": 410.6,
+          "sim": 0.439
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Introduces SLI/SLO with latency example; mentions MTTR earlier; misses availability, MTBF, error budget.",
+      "issues": [
+       "leaves out: availability",
+       "leaves out: MTBF",
+       "leaves out: error budget"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Learn to measure DevOps outcomes without creating misleading incentives. Explore DORA delivery metrics, lead time, deployment frequency, change failure, recovery time, reliability indicators, and continuous improvement.\n\nPart 24 of the DevOps Cybersecurity Masterclass. Learn the concepts, decisions, and engineering practices that support reliable, secure software delivery.\n\nCybersecurity Masterclass by Joshua Moses | CyberTrace Foundation.\n\nChapters :\n0:00 Why DevOps metrics matter\n1:17 Deployment frequency and lead time\n2:47 Change failure and recovery\n4:22 Reliability and service health\n5:58 Avoiding vanity metrics\n7:45 Turning measurements into improvements\n\nSubscribe for practical cybers",
+     "rank": 2,
+     "status": "proposed"
+    },
+    {
+     "kind": "video",
+     "id": "bFzVrx8zyFY",
+     "url": "https://www.youtube.com/watch?v=bFzVrx8zyFY",
+     "title": "DevOps Metrics Explained | DORA Metrics Every Engineer Must Know",
+     "source": "K4 Coding Academy",
+     "tier": 4,
+     "duration_s": 470,
+     "published": "2026-05-17T12:36:01Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 338,
+     "likes": 8,
+     "comments": 0,
+     "subscribers": 422,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.028,
+      "segment": 0.339,
+      "clarity": 0.8,
+      "level_fit": 0.8,
+      "authority": 0.35,
+      "reception": 0.535
+     },
+     "total": 0.337,
+     "findings": [],
+     "rationale": "Teaches C1 Key deployment metrics overview (0:00–4:39, partly) [checked on the transcript] · K4 Coding Academy · tier 4 · 7:50 · 338 views",
+     "components": [
+      {
+       "id": "W12.L2.C1",
+       "title": "Key deployment metrics overview",
+       "start": "0:00",
+       "end": "4:39",
+       "start_s": 0.0,
+       "end_s": 279.2,
+       "verdict": "teaches_partly",
+       "covered": [
+        "deployment frequency",
+        "rollback time (as MTTR)"
+       ],
+       "missing": [
+        "latency",
+        "error rate",
+        "throughput"
+       ],
+       "note": "Explains deployment frequency and MTTR well; omits latency, error rate, throughput.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.028,
+      "evidence": "transcript",
+      "per_target": {
+       "W12.L2.C1": {
+        "text": "Key deployment metrics overview",
+        "covered": true,
+        "sim": 0.438,
+        "segments": [
+         {
+          "start": 0.0,
+          "end": 279.2,
+          "sim": 0.438
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Explains deployment frequency and MTTR well; omits latency, error rate, throughput.",
+      "issues": [
+       "leaves out: latency",
+       "leaves out: error rate",
+       "leaves out: throughput"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Want to measure your DevOps performance like top engineering teams? This video explains the most important DevOps Metrics in a simple and practical way!\n\nIn this tutorial, you’ll learn:\n✔️ What are DevOps Metrics\n✔️ DORA Metrics explained\n✔️ Deployment Frequency\n✔️ Lead Time for Changes\n✔️ Mean Time to Recovery (MTTR)\n✔️ Change Failure Rate\n✔️ How to improve DevOps performance\n\nWe’ll also cover real-world examples of how companies use these metrics to increase delivery speed, improve reliability, and reduce failures.\n\n🔥 Perfect for:\n\n* DevOps Engineers\n* Software Developers\n* Engineering Managers\n* SRE & Cloud Engineers\n\n💡 By the end of this video, you’ll understand how to track and improve ",
+     "rank": 3,
+     "status": "proposed"
+    }
+   ],
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://www.cortex.io/post/how-to-choose-your-software-reliability-metrics",
+     "title": "Reliability Metrics: What to Track & How to Act On Them | Cortex",
+     "source": "cortex.io",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.793,
+      "quality": 0.8,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.68,
+     "rank": 1,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W12.L2.C1 ✓, W12.L2.C2 ✓, W12.L2.C3 ✗, W12.L2.C4 ✓, W12.L2.C5 ✓, W12.L2.C6 ✓ [from page text] · cortex.io · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Good overview of reliability metric selection and actionability; lacks hands-on evaluation exercises.",
+      "issues": [
+       "excerpts short, no hands-on",
+       "focus on selection rather than evaluation"
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 4,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.793,
+      "evidence": "text",
+      "per_target": {
+       "M8.T2": {
+        "covered": true,
+        "sim": 0.677,
+        "segments": []
+       },
+       "W12.L2.C1": {
+        "covered": true,
+        "sim": 0.556,
+        "segments": [],
+        "text": "Key deployment metrics overview. Students learn the definitions of latency, error rate, throughput, deployment frequency"
+       },
+       "W12.L2.C2": {
+        "covered": true,
+        "sim": 0.706,
+        "segments": [],
+        "text": "Reliability metrics and SLOs. Students define availability, MTBF, MTTR, SLO, SLI, and error budget. They see how these m"
+       },
+       "W12.L2.C3": {
+        "covered": false,
+        "sim": 0.362,
+        "segments": [],
+        "text": "Instrumenting a multi-component system with OpenTelemetry. Students follow the steps to add traces, metrics, and logs ac"
+       },
+       "W12.L2.C4": {
+        "covered": true,
+        "sim": 0.451,
+        "segments": [],
+        "text": "Live dashboard walkthrough with Grafana. Students watch the creation of a Grafana dashboard that visualizes deployment a"
+       },
+       "W12.L2.C5": {
+        "covered": true,
+        "sim": 0.617,
+        "segments": [],
+        "text": "Scenario walkthrough 1: load‑test and failure injection. The instructor runs a k6 load test against the sample project, "
+       },
+       "W12.L2.C6": {
+        "covered": true,
+        "sim": 0.497,
+        "segments": [],
+        "text": "Student activity: evaluate metrics on supplied project. In pairs, students use the instrumented project to compute deplo"
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://lansa.com/blog/app-development/software-quality-metrics/",
+     "title": "10 Software Quality Metrics that Matter | LANSA",
+     "source": "lansa.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.733,
+      "quality": 0.75,
+      "authority": 0.35,
+      "level_fit": 0.6,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.629,
+     "rank": 2,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W12.L2.C1 ✓, W12.L2.C2 ✓, W12.L2.C3 ✗, W12.L2.C4 ✓, W12.L2.C5 ✗, W12.L2.C6 ✓ [from page text] · lansa.com · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Broad overview of software quality metrics including availability; not focused on deployment evaluation.",
+      "issues": [
+       "generic software quality metrics, not specific to deployment reliability evaluation",
+       "excerpts short"
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 3,
+      "level_fit": 3
+     },
+     "coverage": {
+      "score": 0.733,
+      "evidence": "text",
+      "per_target": {
+       "M8.T2": {
+        "covered": true,
+        "sim": 0.577,
+        "segments": []
+       },
+       "W12.L2.C1": {
+        "covered": true,
+        "sim": 0.543,
+        "segments": [],
+        "text": "Key deployment metrics overview. Students learn the definitions of latency, error rate, throughput, deployment frequency"
+       },
+       "W12.L2.C2": {
+        "covered": true,
+        "sim": 0.569,
+        "segments": [],
+        "text": "Reliability metrics and SLOs. Students define availability, MTBF, MTTR, SLO, SLI, and error budget. They see how these m"
+       },
+       "W12.L2.C3": {
+        "covered": false,
+        "sim": 0.4,
+        "segments": [],
+        "text": "Instrumenting a multi-component system with OpenTelemetry. Students follow the steps to add traces, metrics, and logs ac"
+       },
+       "W12.L2.C4": {
+        "covered": true,
+        "sim": 0.426,
+        "segments": [],
+        "text": "Live dashboard walkthrough with Grafana. Students watch the creation of a Grafana dashboard that visualizes deployment a"
+       },
+       "W12.L2.C5": {
+        "covered": false,
+        "sim": 0.398,
+        "segments": [],
+        "text": "Scenario walkthrough 1: load‑test and failure injection. The instructor runs a k6 load test against the sample project, "
+       },
+       "W12.L2.C6": {
+        "covered": true,
+        "sim": 0.55,
+        "segments": [],
+        "text": "Student activity: evaluate metrics on supplied project. In pairs, students use the instrumented project to compute deplo"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "reserve": {
+   "reading": [],
+   "video": [
+    {
+     "kind": "video",
+     "id": "Ii9XMqjEcWI",
+     "url": "https://www.youtube.com/watch?v=Ii9XMqjEcWI",
+     "title": "RELIABILITY METRICS(UNIT-7)",
+     "source": "SKDAV GP",
+     "tier": 4,
+     "duration_s": 484,
+     "published": "2020-12-21T13:45:21Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 173,
+     "likes": 2,
+     "comments": 0,
+     "subscribers": 3100,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.015,
+      "segment": 0.177,
+      "clarity": 0.6,
+      "level_fit": 0.6,
+      "authority": 0.35,
+      "reception": 0.268
+     },
+     "total": 0.174,
+     "findings": [],
+     "rationale": "Teaches C2 Reliability metrics and SLOs (0:28–2:58, partly) [checked on the transcript] · SKDAV GP · tier 4 · 8:04 · 173 views",
+     "components": [
+      {
+       "id": "W12.L2.C2",
+       "title": "Reliability metrics and SLOs",
+       "start": "0:28",
+       "end": "2:58",
+       "start_s": 28.0,
+       "end_s": 178.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "availability",
+        "MTBF",
+        "MTTR"
+       ],
+       "missing": [
+        "SLO",
+        "SLI",
+        "error budget"
+       ],
+       "note": "Defines MTBF, MTTR, availability; omits SLO, SLI, error budget.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.015,
+      "evidence": "transcript",
+      "per_target": {
+       "W12.L2.C2": {
+        "text": "Reliability metrics and SLOs",
+        "covered": true,
+        "sim": 0.577,
+        "segments": [
+         {
+          "start": 28.0,
+          "end": 178.0,
+          "sim": 0.577
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Defines MTBF, MTTR, availability; omits SLO, SLI, error budget.",
+      "issues": [
+       "leaves out: SLO",
+       "leaves out: SLI",
+       "leaves out: error budget"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "5TH SEM IT",
+     "rank": 4,
+     "status": "reserve"
+    },
+    {
+     "kind": "video",
+     "id": "LiaBWWsplRI",
+     "url": "https://www.youtube.com/watch?v=LiaBWWsplRI",
+     "title": "Module 10: Optimizing Delivery Metrics & Deployment Queries | AZ-400 Certification | English",
+     "source": "QuickTechie Official",
+     "tier": 4,
+     "duration_s": 436,
+     "published": "2026-05-24T06:53:34Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 9,
+     "likes": 0,
+     "comments": 0,
+     "subscribers": 11100,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.009,
+      "segment": 0.159,
+      "clarity": 0.6,
+      "level_fit": 0.6,
+      "authority": 0.35,
+      "reception": 0.111
+     },
+     "total": 0.137,
+     "findings": [],
+     "rationale": "Teaches C1 Key deployment metrics overview (1:23–2:55, partly) [checked on the transcript] · QuickTechie Official · tier 4 · 7:16 · 9 views",
+     "components": [
+      {
+       "id": "W12.L2.C1",
+       "title": "Key deployment metrics overview",
+       "start": "1:23",
+       "end": "2:55",
+       "start_s": 83.0,
+       "end_s": 175.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "latency",
+        "error rate",
+        "rollback time (as rollback frequency)"
+       ],
+       "missing": [
+        "throughput",
+        "deployment frequency"
+       ],
+       "note": "Covers latency, error rate, rollback frequency in context of blue-green/canary; misses throughput and deployment frequency definitions.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.009,
+      "evidence": "transcript",
+      "per_target": {
+       "W12.L2.C1": {
+        "text": "Key deployment metrics overview",
+        "covered": true,
+        "sim": 0.606,
+        "segments": [
+         {
+          "start": 83.0,
+          "end": 175.0,
+          "sim": 0.606
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Covers latency, error rate, rollback frequency in context of blue-green/canary; misses throughput and deployment frequency definitions.",
+      "issues": [
+       "leaves out: throughput",
+       "leaves out: deployment frequency"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Welcome to Module 10 of the AZ-400 Microsoft DevOps Engineer Expert Certification Training Course, where you’ll learn how to optimize delivery metrics, deployment analytics, and operational queries to improve software release performance and deployment reliability.\n\nThis module focuses on tracking deployment efficiency, monitoring release health, analyzing pipeline performance, and using data-driven insights to strengthen continuous delivery and DevOps operations.\n\nWhat You’ll Learn in This Module:\n\nUnderstanding delivery metrics and deployment performance indicators\nMeasuring deployment frequency, success rates, and recovery time\nMonitoring release pipelines and operational deployment healt",
+     "rank": 5,
+     "status": "reserve"
+    }
+   ]
+  },
+  "rejected": [
+   {
+    "title": "Understanding and Achieving Software Reliability",
+    "url": "https://www.waru.edu/acquipedia-article/understanding-and-achieving-software-reliability",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Software Reliability |",
+    "url": "https://lfiondella.sites.umassd.edu/research/software-reliability/",
+    "why": [
+     "AI review: off topic (excerpts only show publication list, no teaching content; not a learning resource)"
+    ]
+   },
+   {
+    "title": "[PDF] Software Reliability Fundamentals for Information Technology Systems",
+    "url": "https://www.afit.edu/STAT/statcoe_files/Software%20Reliability%20Fundamentals%20Best%20Practice%20final.pdf",
+    "why": [
+     "page not readable (status None, ConnectError: [Errno 11002] getaddrinfo failed)"
+    ]
+   },
+   {
+    "title": "CHAPTER 4, Calculations",
+    "url": "https://www.sars.org.uk/BOK/Applied%20R&M%20Manual%20for%20Defence%20Systems%20(GR-77)/p3c51.pdf",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "OptiSigns Introduces a New Guide to Help Businesses Choose Digital Signage Software | Markets Insider",
+    "url": "https://markets.businessinsider.com/news/stocks/optisigns-introduces-a-new-guide-to-help-businesses-choose-digital-signage-software-1035719230",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "A Guide to Asset Management Software Solutions for Power Industry Leaders",
+    "url": "https://ca.finance.yahoo.com/news/guide-asset-management-software-solutions-140324737.html",
+    "why": [
+     "AI review: off topic (focus on power industry asset management, not software deployment reliability)"
+    ]
+   },
+   {
+    "title": "Software Engineering",
+    "url": "https://openlibrary.org/books/OL28345690M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "ICACIEM 2017",
+    "url": "https://openlibrary.org/books/OL26457447M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Robot Performance Evaluation for Engineering Applications: A Systematic Review of Metrics, Methods and Practices",
+    "url": "https://doi.org/10.3390/technologies14050297",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "A Systematic Literature Review on Hardware Reliability Assessment Methods for Deep Neural Networks",
+    "url": "https://dl.acm.org/doi/pdf/10.1145/3638242",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Systematic Review of Key Performance Metrics in Modern DevOps and Software Reliability Engineering",
+    "url": "https://www.futureengineeringjournal.com/uploads/archives/20250509183635_FEI-2025-1-026.1.pdf",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Are LLM watermarks reliable in practice? A systematic review of evidence, robustness, threat models, and deployment assumptions",
+    "url": "https://www.sciencedirect.com/science/article/pii/S1574013726001826/pdf",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Exercise | Springer Nature Link",
+    "url": "https://link.springer.com/chapter/10.1007/978-3-031-64803-8_12",
+    "why": [
+     "score 0.51 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Mastering Reliability: Key Metrics Every Site Reliability Engineer Should Track",
+    "url": "https://medium.com/@shiqs90/mastering-reliability-key-metrics-every-site-reliability-engineer-should-track-b81536cea0f1",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "A Guide to SRE Metrics",
+    "url": "https://www.nobl9.com/site-reliability-engineering-tools/sre-metrics",
+    "why": [
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "[E] Self-study: Reliability analysis exercises : r/statistics",
+    "url": "https://www.reddit.com/r/statistics/comments/jtpzpn/e_selfstudy_reliability_analysis_exercises",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "Reliability KPIs That Show Up in Every Board Review",
+    "url": "https://execviva.com/executive-hub/reliability-kpis/",
+    "why": [
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "Tracking Reliability: Metrics that Matter | Reliability and Maintainability Center",
+    "url": "https://rmc.utk.edu/tracking-reliability-metrics-that-matter/",
+    "why": [
+     "score 0.56 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "6 Software Reliability Metrics That Matter to Engineers | FireHydrant",
+    "url": "https://firehydrant.com/blog/6-software-reliability-metrics-that-matter/",
+    "why": [
+     "score 0.58 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "bregman-arie/devops-exercises — Linux, Jenkins, AWS, SRE, Prometheus, Docker, Python, Ansible, Git, Kubernetes, Terraform, OpenStack, SQL, NoSQL, Azure,",
+    "url": "https://github.com/bregman-arie/devops-exercises",
+    "why": [
+     "score 0.58 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "marcelscruz/public-apis — A collaborative list of public APIs for developers",
+    "url": "https://github.com/marcelscruz/public-apis",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "ChHsiching/GitHub-Chinese-Top-Charts — 🇨🇳 GitHub中文排行榜，帮助你发现高分优秀中文项目。",
+    "url": "https://github.com/ChHsiching/GitHub-Chinese-Top-Charts",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "toolleeo/awesome-cli-apps-in-a-csv — The largest Awesome Curated list of command line programs (CLI/TUI) with source data organized into CSV files",
+    "url": "https://github.com/toolleeo/awesome-cli-apps-in-a-csv",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "PavelGrigoryevDS/awesome-data-analysis — 🚀 500+ curated resources for Data Analysis & Data Science: Python, SQL, Statistics, ML, AI, Visualization, Cheatsheets,",
+    "url": "https://github.com/PavelGrigoryevDS/awesome-data-analysis",
+    "why": [
+     "score 0.57 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "",
+    "url": "https://www",
+    "why": [
+     "page not readable (status None, ConnectError: [Errno 11001] getaddrinfo failed)"
+    ]
+   },
+   {
+    "title": "DORA Metrics Explained — 4 Metrics That Measure DevOps Performance (Part-1)",
+    "url": "https://www.youtube.com/watch?v=8l3toAmExe4",
+    "why": [
+     "too short to teach a component (1:04)"
+    ]
+   },
+   {
+    "title": "How much does a BACKEND SOFTWARE ENGINEER make? #shorts #ytshorts #techjobsin2minutes",
+    "url": "https://www.youtube.com/watch?v=naKSTWu-z8I",
+    "why": [
+     "too short to teach a component (0:50)"
+    ]
+   },
+   {
+    "title": "Learn Observability in 5 hours | Tool wise Demo + Complete Demo using Open Telemetry",
+    "url": "https://www.youtube.com/watch?v=cYAE0ZhT43c",
+    "why": [
+     "too long to find a segment in (4:57:21)"
+    ]
+   },
+   {
+    "title": "Master Master #DORA Metrics for #DevOps Success!",
+    "url": "https://www.youtube.com/watch?v=PugyjDC6ffE",
+    "why": [
+     "too short to teach a component (0:56)"
+    ]
+   },
+   {
+    "title": "What is Deployment Frequency? - The Four Key Metrics of DORA (Part 4)",
+    "url": "https://www.youtube.com/watch?v=sNYxZPvGfNA",
+    "why": [
+     "too short to teach a component (2:42)"
+    ]
+   },
+   {
+    "title": "Roadmap to Become a Generative AI Expert for Beginners in 2025",
+    "url": "https://www.youtube.com/watch?v=39zbC_PrNQs",
+    "why": [
+     "too short to teach a component (0:05)"
+    ]
+   },
+   {
+    "title": "GPU Hosting Explained – Everything You Need to Know for AI Deployment | Cyfuture AI",
+    "url": "https://www.youtube.com/watch?v=bG9T9FKHIv4",
+    "why": [
+     "too short to teach a component (2:35)"
+    ]
+   },
+   {
+    "title": "The Four Pillars of AI Observability in 90 Seconds",
+    "url": "https://www.youtube.com/watch?v=CnopEhA6Khk",
+    "why": [
+     "too short to teach a component (1:31)"
+    ]
+   },
+   {
+    "title": "6 Steps to Build an AI Model: From Data to Deployment",
+    "url": "https://www.youtube.com/watch?v=9lGT-vvn7hI",
+    "why": [
+     "too short to teach a component (2:59)"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 27,
+   "passed_checks": 2,
+   "rejected": 25,
+   "videos_used": 3
+  },
+  "clips": [
+   {
+    "target": "Key deployment metrics overview",
+    "target_ids": [
+     "W12.L2.C1"
+    ],
+    "component": "W12.L2.C1",
+    "video": "DevOps Metrics Explained | DORA Metrics Every Engineer Must Know",
+    "source": "K4 Coding Academy",
+    "url": "https://www.youtube.com/watch?v=bFzVrx8zyFY&t=0s",
+    "start": "0:00",
+    "end": "4:39",
+    "minutes": 4.7,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "deployment frequency",
+     "rollback time (as MTTR)"
+    ],
+    "missing": [
+     "latency",
+     "error rate",
+     "throughput"
+    ],
+    "note": "Explains deployment frequency and MTTR well; omits latency, error rate, throughput."
+   },
+   {
+    "target": "Key deployment metrics overview",
+    "target_ids": [
+     "W12.L2.C1"
+    ],
+    "component": "W12.L2.C1",
+    "video": "DevOps Metrics",
+    "source": "AltexSoft",
+    "url": "https://www.youtube.com/watch?v=yIB3bl9OGW0&t=0s",
+    "start": "0:00",
+    "end": "4:27",
+    "minutes": 4.5,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "deployment frequency"
+    ],
+    "missing": [
+     "latency",
+     "error rate",
+     "throughput",
+     "rollback time"
+    ],
+    "note": "Only covers deployment frequency; other four metrics not addressed."
+   },
+   {
+    "target": "Reliability metrics and SLOs",
+    "target_ids": [
+     "W12.L2.C2"
+    ],
+    "component": "W12.L2.C2",
+    "video": "DevOps Metrics That Matter | DORA, Reliability & Delivery Performance",
+    "source": "Joshua Moses | Cybertrace Foundation",
+    "url": "https://www.youtube.com/watch?v=6dW7r7DyklY&t=110s",
+    "start": "1:50",
+    "end": "6:50",
+    "minutes": 5.0,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "SLI",
+     "SLO",
+     "MTTR (as mean time to repair)"
+    ],
+    "missing": [
+     "availability",
+     "MTBF",
+     "error budget"
+    ],
+    "note": "Introduces SLI/SLO with latency example; mentions MTTR earlier; misses availability, MTBF, error budget."
+   },
+   {
+    "target": "Reliability metrics and SLOs",
+    "target_ids": [
+     "W12.L2.C2"
+    ],
+    "component": "W12.L2.C2",
+    "video": "DevOps Metrics",
+    "source": "AltexSoft",
+    "url": "https://www.youtube.com/watch?v=yIB3bl9OGW0&t=226s",
+    "start": "3:46",
+    "end": "7:43",
+    "minutes": 4.0,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "availability",
+     "MTBF",
+     "MTTR",
+     "MTTF"
+    ],
+    "missing": [
+     "SLO",
+     "SLI",
+     "error budget",
+     "how metrics guide release decisions"
+    ],
+    "note": "Covers MTTF, MTTR, MTBF, availability with formulas; misses SLO, SLI, error budget."
+   }
+  ],
+  "timeline": [
+   {
+    "component": "W12.L2.C1",
+    "title": "Key deployment metrics overview",
+    "minutes": 15,
+    "kind": "concept",
+    "delivery": "video",
+    "gap": {
+     "video_minutes": 9.1,
+     "missing": [
+      "latency",
+      "error rate",
+      "throughput",
+      "rollback time"
+     ]
+    },
+    "segments": [
+     {
+      "video": "DevOps Metrics Explained | DORA Metrics Every Engineer Must Know",
+      "video_id": "bFzVrx8zyFY",
+      "url": "https://www.youtube.com/watch?v=bFzVrx8zyFY&t=0s",
+      "start": "0:00",
+      "end": "4:39",
+      "minutes": 4.7,
+      "verdict": "teaches_partly",
+      "score": 0.339
+     },
+     {
+      "video": "DevOps Metrics",
+      "video_id": "yIB3bl9OGW0",
+      "url": "https://www.youtube.com/watch?v=yIB3bl9OGW0&t=0s",
+      "start": "0:00",
+      "end": "4:27",
+      "minutes": 4.5,
+      "verdict": "teaches_partly",
+      "score": 0.329
+     }
+    ]
+   },
+   {
+    "component": "W12.L2.C2",
+    "title": "Reliability metrics and SLOs",
+    "minutes": 15,
+    "kind": "concept",
+    "delivery": "video",
+    "gap": {
+     "video_minutes": 8.9,
+     "missing": [
+      "error budget",
+      "how metrics guide release decisions"
+     ]
+    },
+    "segments": [
+     {
+      "video": "DevOps Metrics That Matter | DORA, Reliability & Delivery Performance",
+      "video_id": "6dW7r7DyklY",
+      "url": "https://www.youtube.com/watch?v=6dW7r7DyklY&t=110s",
+      "start": "1:50",
+      "end": "6:50",
+      "minutes": 5.0,
+      "verdict": "teaches_partly",
+      "score": 0.355
+     },
+     {
+      "video": "DevOps Metrics",
+      "video_id": "yIB3bl9OGW0",
+      "url": "https://www.youtube.com/watch?v=yIB3bl9OGW0&t=226s",
+      "start": "3:46",
+      "end": "7:43",
+      "minutes": 4.0,
+      "verdict": "teaches_partly",
+      "score": 0.335
+     }
+    ]
+   },
+   {
+    "component": "W12.L2.C3",
+    "title": "Instrumenting a multi-component system with OpenTelemetry",
+    "minutes": 15,
+    "kind": "mechanism",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W12.L2.C4",
+    "title": "Live dashboard walkthrough with Grafana",
+    "minutes": 15,
+    "kind": "demo",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W12.L2.C5",
+    "title": "Scenario walkthrough 1: load‑test and failure injection",
+    "minutes": 15,
+    "kind": "worked_example",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W12.L2.C6",
+    "title": "Student activity: evaluate metrics on supplied project",
+    "minutes": 15,
+    "kind": "activity",
+    "delivery": "in_class",
+    "segments": []
+   }
+  ],
+  "partial": {
+   "reason": "YouTube blocked transcript requests (from 22:14)",
+   "videos_without_transcript": [
+    "cM8VErTzOr4",
+    "y2D7OzNZK5g",
+    "BQXnKpP2lrI",
+    "A7XEDU-ed_4",
+    "Gp9DhFWGgJQ",
+    "hLvwoow3XTk",
+    "ws_9sJvbIag",
+    "vTiIkdDwT-0",
+    "rmBd6R0W3kk",
+    "uz5BEadZwLc",
+    "FczbSauVvjw",
+    "Xs6E-MAJbfE"
+   ]
+  },
+  "components": [
+   {
+    "lecture_id": "W12.L2",
+    "title": "Key deployment metrics overview",
+    "teaches": "Students learn the definitions of latency, error rate, throughput, deployment frequency, and rollback time. They understand how each metric signals the health of a deployment pipeline.",
+    "key_terms": [
+     "latency",
+     "error rate",
+     "throughput",
+     "deployment frequency",
+     "rollback time"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO4.LO3"
+    ],
+    "minutes": 15,
+    "id": "W12.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W12.L2",
+    "title": "Reliability metrics and SLOs",
+    "teaches": "Students define availability, MTBF, MTTR, SLO, SLI, and error budget. They see how these metrics quantify system reliability and guide release decisions.",
+    "key_terms": [
+     "availability",
+     "MTBF",
+     "MTTR",
+     "SLO",
+     "SLI",
+     "error budget"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO4.LO3"
+    ],
+    "minutes": 15,
+    "id": "W12.L2.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W12.L2",
+    "title": "Instrumenting a multi-component system with OpenTelemetry",
+    "teaches": "Students follow the steps to add traces, metrics, and logs across services using OpenTelemetry SDKs. They configure exporters to Prometheus and verify that data flows correctly.",
+    "key_terms": [
+     "OpenTelemetry",
+     "traces",
+     "metrics",
+     "logs",
+     "Prometheus exporter",
+     "context propagation"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO4.LO3"
+    ],
+    "minutes": 15,
+    "id": "W12.L2.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W12.L2",
+    "title": "Live dashboard walkthrough with Grafana",
+    "teaches": "Students watch the creation of a Grafana dashboard that visualizes deployment and reliability metrics. They learn to set alert rules on error‑budget burn rate.",
+    "key_terms": [
+     "Grafana",
+     "dashboard",
+     "panels",
+     "alerting",
+     "error budget"
+    ],
+    "kind": "demo",
+    "bloom": 3,
+    "lo_ids": [
+     "CO4.LO3"
+    ],
+    "minutes": 15,
+    "id": "W12.L2.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W12.L2",
+    "title": "Scenario walkthrough 1: load‑test and failure injection",
+    "teaches": "The instructor runs a k6 load test against the sample project, injects a service failure with Chaos Mesh, and evaluates whether SLOs remain satisfied. Students observe metric shifts in real time.",
+    "key_terms": [
+     "k6",
+     "load test",
+     "failure injection",
+     "Chaos Mesh",
+     "SLO evaluation"
+    ],
+    "kind": "worked_example",
+    "bloom": 4,
+    "lo_ids": [
+     "CO4.LO3"
+    ],
+    "minutes": 15,
+    "id": "W12.L2.C5",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W12.L2",
+    "title": "Student activity: evaluate metrics on supplied project",
+    "teaches": "In pairs, students use the instrumented project to compute deployment and reliability metrics, decide if a release meets the defined SLOs, and present their go/no‑go recommendation for peer review.",
+    "key_terms": [
+     "metric calculation",
+     "release decision",
+     "presentation",
+     "peer review"
+    ],
+    "kind": "activity",
+    "bloom": 5,
+    "lo_ids": [
+     "CO4.LO3"
+    ],
+    "minutes": 15,
+    "id": "W12.L2.C6",
+    "in_class": true
+   }
+  ],
+  "notebooklm": {
+   "pack": "notebooklm/W12.L2.md",
+   "components": [],
+   "sources": 6
+  }
+ },
+ "experts": {
+  "lecture_id": "W12.L2",
+  "topic": "Deployment and reliability metric evaluation",
+  "experts": [
+   {
+    "name": "P. K. Kapur",
+    "kind": "academic",
+    "affiliation": "Amity University",
+    "country": "IN",
+    "links": {
+     "openalex": "https://openalex.org/A5013827274",
+     "orcid": "https://orcid.org/0000-0001-8006-5952",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=P.+K.+Kapur+Amity+University"
+    },
+    "metrics": {
+     "cited_by": 5682,
+     "h_index": 34,
+     "works_count": 388,
+     "matching_works": 2
+    },
+    "scores": {
+     "topical_fit": 0.897,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.718,
+     "recency": 0.6,
+     "feasibility": 1.0
+    },
+    "total": 0.585,
+    "rank": 1,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2023,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "evidence focuses on reliability modeling not deployment metrics"
+     },
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "no demonstrated live evaluation walkthroughs"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Software Reliability Growth Model for N-Version Fault Tolerant Software with Common and Independent Faults",
+      "year": 2023,
+      "url": "https://doi.org/10.1142/s0218539323500262",
+      "cited_by": 1,
+      "venue": "International Journal of Reliability Quality and Safety Engineering",
+      "venue_quality": 0.8
+     },
+     {
+      "kind": "paper",
+      "title": "A SOFTWARE RELIABILITY GROWTH MODEL FOR VITAL QUALITY METRICS",
+      "year": 2012,
+      "url": "https://doi.org/10.7166/18-2-121",
+      "cited_by": 19,
+      "venue": "The South African Journal of Industrial Engineering",
+      "venue_quality": 0.8
+     }
+    ],
+    "why": "Publishes software reliability growth models (2023, 2012) but evidence is theoretical modeling, not hands-on deployment/reliability metric evaluation with scenario walkthroughs.",
+    "fit": "moderate",
+    "suggested_format": "live_in_person",
+    "concerns": [
+     "evidence focuses on reliability modeling not deployment metrics",
+     "no demonstrated live evaluation walkthroughs"
+    ]
+   },
+   {
+    "name": "P. Dhavakumar",
+    "kind": "academic",
+    "affiliation": "Vellore Institute of Technology University",
+    "country": "IN",
+    "links": {
+     "openalex": "https://openalex.org/A5035571245",
+     "orcid": "https://orcid.org/0000-0001-8365-4234",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=P.+Dhavakumar+Vellore+Institute+of+Technology+University"
+    },
+    "metrics": {
+     "cited_by": 74,
+     "h_index": 5,
+     "works_count": 19,
+     "matching_works": 2
+    },
+    "scores": {
+     "topical_fit": 0.758,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.539,
+     "recency": 1.0,
+     "feasibility": 1.0
+    },
+    "total": 0.569,
+    "rank": 2,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2024,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "modeling-focused not hands-on evaluation"
+     },
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "no deployment metrics evidence"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Enhancing Software Reliability through Naive Bayes-based Defect Prediction",
+      "year": 2024,
+      "url": "https://doi.org/10.21203/rs.3.rs-4268707/v1",
+      "cited_by": 0,
+      "venue": "Research Square",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "An efficient parameter optimization of software reliability growth model by using chaotic grey wolf optimization algorithm",
+      "year": 2020,
+      "url": "https://doi.org/10.1007/s12652-020-02476-z",
+      "cited_by": 30,
+      "venue": "Journal of Ambient Intelligence and Humanized Computing",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Recent paper on Naive Bayes defect prediction for reliability (2024) and reliability growth model optimization (2020), but work is predictive modeling not live deployment metric evaluation.",
+    "fit": "moderate",
+    "suggested_format": "live_in_person",
+    "concerns": [
+     "modeling-focused not hands-on evaluation",
+     "no deployment metrics evidence"
+    ]
+   },
+   {
+    "name": "Anu G. Aggarwal",
+    "kind": "academic",
+    "affiliation": "University of Delhi",
+    "country": "IN",
+    "links": {
+     "openalex": "https://openalex.org/A5041713395",
+     "orcid": "https://orcid.org/0000-0001-5448-9540",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Anu+G.+Aggarwal+University+of+Delhi"
+    },
+    "metrics": {
+     "cited_by": 1363,
+     "h_index": 20,
+     "works_count": 134,
+     "matching_works": 2
+    },
+    "scores": {
+     "topical_fit": 0.835,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.647,
+     "recency": 0.6,
+     "feasibility": 1.0
+    },
+    "total": 0.562,
+    "rank": 3,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2023,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "academic modeling focus"
+     },
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "no live scenario walkthrough evidence"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Modeling the Role of Testing Coverage in the Software Reliability Assessment",
+      "year": 2023,
+      "url": "https://doi.org/10.33889/ijmems.2023.8.3.028",
+      "cited_by": 3,
+      "venue": "International Journal of Mathematical Engineering and Management Sciences",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Software Reliability Growth Model for N-Version Fault Tolerant Software with Common and Independent Faults",
+      "year": 2023,
+      "url": "https://doi.org/10.1142/s0218539323500262",
+      "cited_by": 1,
+      "venue": "International Journal of Reliability Quality and Safety Engineering",
+      "venue_quality": 0.8
+     }
+    ],
+    "why": "Papers on testing coverage in reliability assessment (2023) and N-version fault tolerance (2023) show reliability modeling expertise, not deployment metric evaluation practice.",
+    "fit": "moderate",
+    "suggested_format": "live_in_person",
+    "concerns": [
+     "academic modeling focus",
+     "no live scenario walkthrough evidence"
+    ]
+   },
+   {
+    "name": "Ritu Gupta",
+    "kind": "academic",
+    "affiliation": "Manipal Academy of Higher Education",
+    "country": "IN",
+    "links": {
+     "openalex": "https://openalex.org/A5101647307",
+     "orcid": "https://orcid.org/0000-0001-7949-4733",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Ritu+Gupta+Manipal+Academy+of+Higher+Education"
+    },
+    "metrics": {
+     "cited_by": 667,
+     "h_index": 14,
+     "works_count": 79,
+     "matching_works": 2
+    },
+    "scores": {
+     "topical_fit": 0.835,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.601,
+     "recency": 0.6,
+     "feasibility": 1.0
+    },
+    "total": 0.56,
+    "rank": 4,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2023,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "identical evidence to x4/x6"
+     },
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "modeling not hands-on evaluation"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Modeling the Role of Testing Coverage in the Software Reliability Assessment",
+      "year": 2023,
+      "url": "https://doi.org/10.33889/ijmems.2023.8.3.028",
+      "cited_by": 3,
+      "venue": "International Journal of Mathematical Engineering and Management Sciences",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Software Reliability Growth Model for N-Version Fault Tolerant Software with Common and Independent Faults",
+      "year": 2023,
+      "url": "https://doi.org/10.1142/s0218539323500262",
+      "cited_by": 1,
+      "venue": "International Journal of Reliability Quality and Safety Engineering",
+      "venue_quality": 0.8
+     }
+    ],
+    "why": "Same 2023 papers on testing coverage and N-version reliability models; academic reliability modeling background, not deployment evaluation practice.",
+    "fit": "moderate",
+    "suggested_format": "live_in_person",
+    "concerns": [
+     "identical evidence to x4/x6",
+     "modeling not hands-on evaluation"
+    ]
+   }
+  ],
+  "reserve": [],
+  "rejected": [
+   {
+    "name": "Christian Posta",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.34 is below 0.5"
+    ]
+   },
+   {
+    "name": "Sudeep Kumar",
+    "why": [
+     "too little research record yet (h-index 4 on OpenAlex, below 5)"
+    ]
+   },
+   {
+    "name": "Pankaj Jalote",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.31 is below 0.5"
+    ]
+   },
+   {
+    "name": "Om Prakash Sangwan",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "AI fit check: weak"
+    ]
+   },
+   {
+    "name": "Stevan Malesevic",
+    "why": [
+     "topical fit 0.10 is below 0.5"
+    ]
+   },
+   {
+    "name": "Rahul Mohananai",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.27 is below 0.5"
+    ]
+   },
+   {
+    "name": "Christopher Heiser",
+    "why": [
+     "topical fit 0.09 is below 0.5"
+    ]
+   },
+   {
+    "name": "Arani Bhattacharya",
+    "why": [
+     "topical fit 0.00 is below 0.5"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 31,
+   "assessed": 12,
+   "passed_checks": 4
+  }
+ },
+ "partial": {
+  "reason": "YouTube blocked transcript requests (from 22:14)",
+  "videos_without_transcript": [
+   "cM8VErTzOr4",
+   "y2D7OzNZK5g",
+   "BQXnKpP2lrI",
+   "A7XEDU-ed_4",
+   "Gp9DhFWGgJQ",
+   "hLvwoow3XTk",
+   "ws_9sJvbIag",
+   "vTiIkdDwT-0",
+   "rmBd6R0W3kk",
+   "uz5BEadZwLc",
+   "FczbSauVvjw",
+   "Xs6E-MAJbfE"
+  ]
+ }
+}

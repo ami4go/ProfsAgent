@@ -1,0 +1,467 @@
+{
+ "lecture_id": "W04.L1",
+ "topic": "Custom tool integrations using model context protocols",
+ "generated_at": "2026-11-02 21:20:35",
+ "components": [
+  {
+   "lecture_id": "W04.L1",
+   "title": "Static analysis and linter rules for safe MCP server code",
+   "teaches": "Students will configure static analysis tools to validate type safety, async patterns, and error handling in custom MCP server implementations. They will identify common static analyser warnings related to untyped JSON schema bindings and unhandled promises.",
+   "key_terms": [
+    "Static Analysis",
+    "Type Checking",
+    "Linter Rules",
+    "Async Warnings",
+    "Strict Type Annotations"
+   ],
+   "kind": "mechanism",
+   "bloom": 3,
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "minutes": 15,
+   "id": "W04.L1.C1",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W04.L1",
+   "title": "Activity: Passing automated MCP tool test suites without warnings",
+   "teaches": "Students will run integration test suites against their configured MCP tool integration in an agent workspace environment. They will fix failing test cases and resolve all static analysis warnings to ensure production-grade tool configuration.",
+   "key_terms": [
+    "Integration Tests",
+    "Test Harness",
+    "Zero Warnings",
+    "Public Test Suite",
+    "Tool Validation"
+   ],
+   "kind": "activity",
+   "bloom": 3,
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "minutes": 15,
+   "id": "W04.L1.C2",
+   "in_class": true
+  }
+ ],
+ "continues": "W03.L2",
+ "resources": {
+  "lecture_id": "W04.L1",
+  "topic": "Custom tool integrations using model context protocols",
+  "want": {
+   "want_videos": false,
+   "want_readings": true,
+   "want_practice": true,
+   "want_recorded_lecture": false,
+   "want_clips": false,
+   "want_guest": true,
+   "confidence": 2,
+   "note": "",
+   "choices": [
+    "own_material",
+    "generate_material",
+    "assistance",
+    "guest_lecture"
+   ]
+  },
+  "queries": {
+   "lecture_id": "W04.L1",
+   "video_queries": [
+    "model context protocol tutorial",
+    "custom tool integrations agent workspace",
+    "Anthropic MCP explained lecture"
+   ],
+   "reading_queries": [
+    "Static analysis and linter rules for safe MCP server code Custom tool integrations using model context protocols"
+   ],
+   "practice_queries": [
+    "Static analysis and linter rules for safe MCP server code hands-on tutorial"
+   ],
+   "recorded_lecture_query": "model context protocol workshop lecture",
+   "research_queries": [
+    "model context protocols agents",
+    "tool integration language models"
+   ],
+   "practitioner_query": "AI engineer model context protocol"
+  },
+  "items": {
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://github.com/ModelContextProtocol-Security",
+     "title": "Model Context Protocol Security Project · GitHub",
+     "source": "github.com",
+     "tier": 3,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.88,
+      "quality": 0.24,
+      "authority": 0.65,
+      "level_fit": 0.4,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.604,
+     "rank": 1,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W04.L1.C1 ✓, W04.L1.C2 ✓ [from page text] · github.com · tier 3",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "review": {
+      "review": "A GitHub organization landing page aggregating MCP security repos. Useful as a pointer to tooling, but lacks direct instructional guidance for students configuring tools.",
+      "issues": [
+       "Landing page of GitHub organization rather than instructional text",
+       "Does not explain configuring tools or passing static analysis"
+      ],
+      "use_as": "professor_prep",
+      "explains": "mentions",
+      "clarity": 2,
+      "correctness": 4,
+      "depth": 1,
+      "examples": 1,
+      "level_fit": 2
+     },
+     "coverage": {
+      "score": 0.88,
+      "evidence": "text",
+      "per_target": {
+       "M2.T2": {
+        "covered": true,
+        "sim": 0.585,
+        "segments": []
+       },
+       "W04.L1.C1": {
+        "covered": true,
+        "sim": 0.494,
+        "segments": [],
+        "text": "Static analysis and linter rules for safe MCP server code. Students will configure static analysis tools to validate typ"
+       },
+       "W04.L1.C2": {
+        "covered": true,
+        "sim": 0.527,
+        "segments": [],
+        "text": "Activity: Passing automated MCP tool test suites without warnings. Students will run integration test suites against the"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "reserve": {
+   "reading": [],
+   "video": []
+  },
+  "rejected": [
+   {
+    "title": "MCP Security: Risks, Real Incidents and Best Practices (2026)",
+    "url": "https://www.pillar.security/blog/the-security-risks-of-model-context-protocol-mcp",
+    "why": [
+     "score 0.59 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "MCP Adoption Statistics 2026: Registry, SDK and CVE Data",
+    "url": "https://www.digitalapplied.com/blog/mcp-adoption-statistics-2026-model-context-protocol",
+    "why": [
+     "score 0.46 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Model Context Protocol (MCP): Security Design ...",
+    "url": "https://media.defense.gov/2026/Jun/02/2003943289/-1/-1/0/CSI_MCP_SECURITY.PDF",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "MCP Security: Top 7 Risks and Critical Best PracticesMCP Security Best Practices: The Complete 2026 Guide",
+    "url": "https://obot.ai/resources/learning-center/mcp-security",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Security Best Practices - Model Context Protocol",
+    "url": "https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices",
+    "why": [
+     "score 0.52 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "MCP Security Risks & Best Practices: Enterprise Guide",
+    "url": "https://www.truefoundry.com/blog/mcp-security-risks-best-practices",
+    "why": [
+     "score 0.53 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Introduction to making very big books",
+    "url": "https://openlibrary.org/works/OL15901078W",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "The web application hacker's handbook",
+    "url": "https://openlibrary.org/books/OL50509771M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "ICACIEM 2017",
+    "url": "https://openlibrary.org/books/OL26457447M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Model Context Protocol Servers: A Systematic Review of Designs, Use Cases and Future Directions",
+    "url": "https://doi.org/10.35444/ijana.2026.17605",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Systematic review of bankruptcy prediction models: Towards a framework for tool selection",
+    "url": "https://eprints.leedsbeckett.ac.uk/id/eprint/4197/1/SystematicReviewofBankruptcyAM_AJAYI.pdf",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Tools Integration for Supporting Software Measurement: A Systematic Literature Review",
+    "url": "https://sol.sbc.org.br/journals/index.php/isys/article/download/295/293",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "A META-ANALYSIS OF ERP AND CRM INTEGRATION TOOLS IN BUSINESS PROCESS OPTIMIZATION",
+    "url": "https://global.asrcconference.com/index.php/asrc/article/download/14/15",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "static-analysis/README.md at master · analysis-tools-dev/static-analysis · GitHub",
+    "url": "https://github.com/analysis-tools-dev/static-analysis/blob/master/README.md",
+    "why": [
+     "score 0.56 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Securing MCP: a defense-first architecture guide – Christian Schneider",
+    "url": "https://christian-schneider.net/blog/securing-mcp-defense-first-architecture/",
+    "why": [
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "What Is a Code Review MCP Server? | AI Code Review | Sonar",
+    "url": "https://www.sonarsource.com/resources/library/code-review-mcp-server/",
+    "why": [
+     "score 0.53 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Static Code Analysis: The Complete Guide to Getting Started with SCA | Splunk",
+    "url": "https://www.splunk.com/en_us/blog/learn/static-code-analysis.html",
+    "why": [
+     "score 0.46 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Static Code Analysis: Top 7 Methods, Pros/Cons and Best Practices",
+    "url": "https://www.oligo.security/academy/static-code-analysis",
+    "why": [
+     "score 0.49 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Static Code Analysis: Tools and Best Practices | Cycode",
+    "url": "https://cycode.com/blog/static-code-analysis",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "A Security Engineer's Guide to MCP | Semgrep",
+    "url": "https://semgrep.dev/blog/2025/a-security-engineers-guide-to-mcp/",
+    "why": [
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "PC-lint Plus | Static Code Analysis for C and C++  | Vector",
+    "url": "https://www.vector.com/en/product/pc-lint-plus/",
+    "why": [
+     "score 0.43 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "avelino/awesome-go — A curated list of awesome Go frameworks, libraries and software",
+    "url": "https://github.com/avelino/awesome-go",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "ripienaar/free-for-dev — A list of SaaS, PaaS and IaaS offerings that have free tiers of interest to devops and infradev",
+    "url": "https://github.com/ripienaar/free-for-dev",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "rust-unofficial/awesome-rust — A curated list of Rust code and resources.",
+    "url": "https://github.com/rust-unofficial/awesome-rust",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "matteocrippa/awesome-swift — A collaborative list of awesome Swift libraries and resources. Feel free to contribute!",
+    "url": "https://github.com/matteocrippa/awesome-swift",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "h4cc/awesome-elixir — A curated list of amazingly awesome Elixir and Erlang libraries, resources and shiny things. Updates:",
+    "url": "https://github.com/h4cc/awesome-elixir",
+    "why": [
+     "AI review: off topic (Completely off-topic list of Elixir libraries; No relation to Model Context Protocol)",
+     "AI review: a general introduction to a broader concept, not this lecture's topic",
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "MCP Full Course For Beginners (With Deployment)",
+    "url": "https://www.youtube.com/watch?v=io02ZM0ADqM",
+    "why": [
+     "too long to find a segment in (3:46:07)"
+    ]
+   },
+   {
+    "title": "MCP Explained | Model Context Protocol  #agenticai",
+    "url": "https://www.youtube.com/watch?v=I8Xf2jewMhQ",
+    "why": [
+     "too short to teach a component (1:49)"
+    ]
+   },
+   {
+    "title": "How does MCP work? How to use Model Context Protocol Server #mcp",
+    "url": "https://www.youtube.com/watch?v=Y0ZuxSqJIvQ",
+    "why": [
+     "too short to teach a component (0:43)"
+    ]
+   },
+   {
+    "title": "MCP Explained Right | Why MCP Is NOT About Adding Tools (Think Like an Architect)",
+    "url": "https://www.youtube.com/watch?v=7gQntKsRqTM",
+    "why": [
+     "audio language is 'ta'"
+    ]
+   },
+   {
+    "title": "MCP for Beginners | Model Context Protocol Explained in Tamil | Karthik's Show",
+    "url": "https://www.youtube.com/watch?v=9iv76EqaWuY",
+    "why": [
+     "audio language is 'ta'"
+    ]
+   },
+   {
+    "title": "MCP Explained in 2 Minutes (Model Context Protocol)",
+    "url": "https://www.youtube.com/watch?v=taeX8tgpPRQ",
+    "why": [
+     "too short to teach a component (2:28)"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 27,
+   "passed_checks": 1,
+   "rejected": 26,
+   "videos_used": 0
+  },
+  "clips": [],
+  "timeline": [
+   {
+    "component": "W04.L1.C1",
+    "title": "Static analysis and linter rules for safe MCP server code",
+    "minutes": 15,
+    "kind": "mechanism",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W04.L1.C2",
+    "title": "Activity: Passing automated MCP tool test suites without warnings",
+    "minutes": 15,
+    "kind": "activity",
+    "delivery": "in_class",
+    "segments": []
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W04.L1",
+    "title": "Static analysis and linter rules for safe MCP server code",
+    "teaches": "Students will configure static analysis tools to validate type safety, async patterns, and error handling in custom MCP server implementations. They will identify common static analyser warnings related to untyped JSON schema bindings and unhandled promises.",
+    "key_terms": [
+     "Static Analysis",
+     "Type Checking",
+     "Linter Rules",
+     "Async Warnings",
+     "Strict Type Annotations"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W04.L1.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W04.L1",
+    "title": "Activity: Passing automated MCP tool test suites without warnings",
+    "teaches": "Students will run integration test suites against their configured MCP tool integration in an agent workspace environment. They will fix failing test cases and resolve all static analysis warnings to ensure production-grade tool configuration.",
+    "key_terms": [
+     "Integration Tests",
+     "Test Harness",
+     "Zero Warnings",
+     "Public Test Suite",
+     "Tool Validation"
+    ],
+    "kind": "activity",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W04.L1.C2",
+    "in_class": true
+   }
+  ],
+  "notebooklm": {
+   "pack": "notebooklm/W04.L1.md",
+   "components": [],
+   "sources": 2
+  }
+ },
+ "experts": {
+  "same_as": "W03.L2",
+  "experts": [],
+  "reserve": [],
+  "rejected": [],
+  "counts": {}
+ }
+}

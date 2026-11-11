@@ -1,0 +1,1498 @@
+{
+ "lecture_id": "W11.L2",
+ "topic": "Pipeline evaluation mechanisms and metrics",
+ "generated_at": "2026-11-02 22:26:53",
+ "components": [
+  {
+   "lecture_id": "W11.L2",
+   "title": "AI-Native Testing Landscape Overview",
+   "teaches": "Students will identify the unique challenges of testing AI-native systems, including nondeterminism, data drift, and model versioning. They will distinguish between model-centric and system-centric testing concerns.",
+   "key_terms": [
+    "AI-native",
+    "nondeterminism",
+    "data drift",
+    "model versioning",
+    "testing challenges"
+   ],
+   "kind": "concept",
+   "bloom": 2,
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "minutes": 15,
+   "id": "W11.L2.C1",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W11.L2",
+   "title": "Unit Testing ML Model Components",
+   "teaches": "Students will describe unit-level testing mechanisms such as property-based testing, metamorphic testing, and test oracle construction for individual model functions. They will explain how these mechanisms detect logic errors in preprocessing, inference, and postprocessing.",
+   "key_terms": [
+    "property-based testing",
+    "metamorphic testing",
+    "test oracle",
+    "preprocessing",
+    "inference"
+   ],
+   "kind": "mechanism",
+   "bloom": 2,
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "minutes": 15,
+   "id": "W11.L2.C2",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W11.L2",
+   "title": "Integration Testing of ML Pipelines",
+   "teaches": "Students will outline integration testing strategies for end-to-end ML pipelines, including contract testing, schema validation, and pipeline replay. They will compare static vs dynamic pipeline validation approaches.",
+   "key_terms": [
+    "contract testing",
+    "schema validation",
+    "pipeline replay",
+    "static validation",
+    "dynamic validation"
+   ],
+   "kind": "mechanism",
+   "bloom": 2,
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "minutes": 15,
+   "id": "W11.L2.C3",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W11.L2",
+   "title": "Model Performance Evaluation Metrics",
+   "teaches": "Students will define key model-centric metrics such as accuracy, F1, AUC, calibration error, and perplexity, and explain when each is appropriate. They will interpret metric trade-offs for classification, generation, and ranking tasks.",
+   "key_terms": [
+    "accuracy",
+    "F1",
+    "AUC",
+    "calibration error",
+    "perplexity",
+    "metric trade-offs"
+   ],
+   "kind": "concept",
+   "bloom": 2,
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "minutes": 15,
+   "id": "W11.L2.C4",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W11.L2",
+   "title": "System-Level Quality Metrics",
+   "teaches": "Students will describe system-level metrics including latency, throughput, memory footprint, robustness to adversarial inputs, and data freshness. They will relate these metrics to SLA requirements in production AI services.",
+   "key_terms": [
+    "latency",
+    "throughput",
+    "memory footprint",
+    "robustness",
+    "data freshness",
+    "SLA"
+   ],
+   "kind": "concept",
+   "bloom": 2,
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "minutes": 15,
+   "id": "W11.L2.C5",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W11.L2",
+   "title": "Mapping Mechanisms to Metrics",
+   "teaches": "Students will apply a comparative framework that links each testing mechanism to the metrics it informs, highlighting coverage gaps. They will evaluate which combination of mechanisms yields comprehensive metric coverage for a given architecture.",
+   "key_terms": [
+    "comparative framework",
+    "coverage gaps",
+    "mechanism-metric mapping",
+    "comprehensive coverage",
+    "architecture"
+   ],
+   "kind": "comparison",
+   "bloom": 3,
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "minutes": 15,
+   "id": "W11.L2.C6",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W11.L2",
+   "title": "Case Study: RAG Pipeline Evaluation",
+   "teaches": "Students will walk through a retrieval-augmented generation pipeline, applying unit, integration, and system tests, and compute model and system metrics. They will critique the evaluation plan and suggest improvements.",
+   "key_terms": [
+    "RAG",
+    "retrieval-augmented generation",
+    "unit test",
+    "integration test",
+    "system metrics",
+    "critique"
+   ],
+   "kind": "case_study",
+   "bloom": 3,
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "minutes": 15,
+   "id": "W11.L2.C7",
+   "in_class": false
+  }
+ ],
+ "resources": {
+  "lecture_id": "W11.L2",
+  "topic": "Pipeline evaluation mechanisms and metrics",
+  "want": {
+   "want_videos": false,
+   "want_readings": true,
+   "want_practice": true,
+   "want_recorded_lecture": false,
+   "want_clips": false,
+   "want_guest": true,
+   "confidence": 2,
+   "note": "",
+   "choices": [
+    "own_material",
+    "generate_material",
+    "assistance",
+    "guest_lecture"
+   ]
+  },
+  "queries": {
+   "lecture_id": "W11.L2",
+   "video_queries": [
+    "pipeline evaluation mechanisms and metrics tutorial",
+    "ML pipeline testing and evaluation lecture",
+    "evaluating machine learning pipelines metrics explained"
+   ],
+   "reading_queries": [
+    "pipeline evaluation mechanisms for AI software",
+    "metrics for evaluating automated software pipelines"
+   ],
+   "practice_queries": [
+    "ML pipeline evaluation metrics exercise notebook"
+   ],
+   "recorded_lecture_query": "pipeline evaluation mechanisms and metrics lecture",
+   "research_queries": [
+    "pipeline evaluation metrics AI",
+    "testing machine learning pipelines"
+   ],
+   "practitioner_query": "MLOps engineer pipeline evaluation"
+  },
+  "items": {
+   "video": [
+    {
+     "kind": "video",
+     "id": "DcZ-XCk-O_M",
+     "url": "https://www.youtube.com/watch?v=DcZ-XCk-O_M",
+     "title": "Why Your AI Application Needs Multiple Eval Pipelines? | CampusX",
+     "source": "CampusX",
+     "tier": 4,
+     "duration_s": 1686,
+     "published": "2026-07-03T14:30:29Z",
+     "licence": "Creative Commons (CC BY)",
+     "captions": true,
+     "views": 37318,
+     "likes": 937,
+     "comments": 48,
+     "subscribers": 755000,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.007,
+      "segment": 0.169,
+      "clarity": 0.8,
+      "level_fit": 0.6,
+      "authority": 0.35,
+      "reception": 0.735
+     },
+     "total": 0.238,
+     "findings": [],
+     "rationale": "Teaches C7 Case Study: RAG Pipeline Evaluation (3:29–4:52, partly) [checked on the transcript] · CampusX · tier 4 · 28:06 · 37,318 views",
+     "components": [
+      {
+       "id": "W11.L2.C7",
+       "title": "Case Study: RAG Pipeline Evaluation",
+       "start": "3:29",
+       "end": "4:52",
+       "start_s": 209.0,
+       "end_s": 292.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "Breaks down RAG architecture components to identify potential failure points"
+       ],
+       "missing": [
+        "Unit, integration, and system testing execution",
+        "Calculating model and system metrics",
+        "Critiquing an evaluation plan"
+       ],
+       "note": "Explains RAG chatbot architecture and motivates multi-pipeline component testing, but cuts off before testing details.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.007,
+      "evidence": "transcript",
+      "per_target": {
+       "W11.L2.C7": {
+        "text": "Case Study: RAG Pipeline Evaluation",
+        "covered": true,
+        "sim": 0.474,
+        "segments": [
+         {
+          "start": 209.0,
+          "end": 292.0,
+          "sim": 0.474
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Explains RAG chatbot architecture and motivates multi-pipeline component testing, but cuts off before testing details.",
+      "issues": [
+       "leaves out: Unit, integration, and system testing execution",
+       "leaves out: Calculating model and system metrics",
+       "leaves out: Critiquing an evaluation plan"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "In this lecture of the LLM Evaluation Masterclass, we break down why a robust AI system demands multiple, distinct evaluation pipelines operating in parallel.\n\nNotes: https://1drv.ms/o/c/85452F67DAA1111C/IgCIRXGQVQm8R7-eF2h5lZ4NAayeX_9R3V4XHDDmsXYMnrk\n\nThis lecture was taken live for insiders, join here: https://youtu.be/j_G30FLmCcw\n\n📱 Grow with us:\nCampusX' LinkedIn: https://www.linkedin.com/company/campusx-official\nCampusX on Instagram for daily tips: https://www.instagram.com/campusx.official\nMy LinkedIn: https://www.linkedin.com/in/nitish-singh-03412789\nDiscord: https://discord.gg/PsWu8R87Z8\nE-mail us at support@campusx.in\n\nChapters:\n\n00:00 - Recap: Why We Need Evals & Model vs. Applicat",
+     "rank": 1,
+     "status": "proposed"
+    }
+   ],
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://arxiv.org/html/2602.18029v1",
+     "title": "Towards More Standardized AI Evaluation:From Models to Agents",
+     "source": "arxiv.org",
+     "tier": 2,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.633,
+      "quality": 0.75,
+      "authority": 0.8,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.682,
+     "rank": 1,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W11.L2.C1 ✓, W11.L2.C2 ✗, W11.L2.C3 ✗, W11.L2.C4 ✓, W11.L2.C5 ✓, W11.L2.C6 ✓, W11.L2.C7 ✓ [from page text] · arxiv.org · tier 2",
+     "findings": [],
+     "review": {
+      "review": "Useful conceptual framing of evaluation pipelines, methodological pillars, benchmark lifecycle, and limits of generic metrics. The excerpts lack a complete worked example and omit unit- and integration-level testing.",
+      "issues": [
+       "Excerpts are fragmented, so some methodological claims are difficult to follow.",
+       "No concrete worked evaluation pipeline or metric-calculation example is visible.",
+       "Does not cover unit-level or integration testing mechanisms."
+      ],
+      "use_as": "professor_prep",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 4,
+      "examples": 2,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.633,
+      "evidence": "text",
+      "per_target": {
+       "M7.T2": {
+        "covered": true,
+        "sim": 0.505,
+        "segments": []
+       },
+       "W11.L2.C1": {
+        "covered": true,
+        "sim": 0.49,
+        "segments": [],
+        "text": "AI-Native Testing Landscape Overview. Students will identify the unique challenges of testing AI-native systems, includi"
+       },
+       "W11.L2.C2": {
+        "covered": false,
+        "sim": 0.419,
+        "segments": [],
+        "text": "Unit Testing ML Model Components. Students will describe unit-level testing mechanisms such as property-based testing, m"
+       },
+       "W11.L2.C3": {
+        "covered": false,
+        "sim": 0.372,
+        "segments": [],
+        "text": "Integration Testing of ML Pipelines. Students will outline integration testing strategies for end-to-end ML pipelines, i"
+       },
+       "W11.L2.C4": {
+        "covered": true,
+        "sim": 0.559,
+        "segments": [],
+        "text": "Model Performance Evaluation Metrics. Students will define key model-centric metrics such as accuracy, F1, AUC, calibrat"
+       },
+       "W11.L2.C5": {
+        "covered": true,
+        "sim": 0.497,
+        "segments": [],
+        "text": "System-Level Quality Metrics. Students will describe system-level metrics including latency, throughput, memory footprin"
+       },
+       "W11.L2.C6": {
+        "covered": true,
+        "sim": 0.428,
+        "segments": [],
+        "text": "Mapping Mechanisms to Metrics. Students will apply a comparative framework that links each testing mechanism to the metr"
+       },
+       "W11.L2.C7": {
+        "covered": true,
+        "sim": 0.529,
+        "segments": [],
+        "text": "Case Study: RAG Pipeline Evaluation. Students will walk through a retrieval-augmented generation pipeline, applying unit"
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://www.growthbook.io/insights/how-build-reliable-evaluation-pipelines-ai-systems",
+     "title": "How to build reliable evaluation pipelines for AI systems | Growthbook",
+     "source": "growthbook.io",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.789,
+      "quality": 0.75,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.669,
+     "rank": 2,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W11.L2.C1 ✓, W11.L2.C2 ✗, W11.L2.C3 ✓, W11.L2.C4 ✓, W11.L2.C5 ✓, W11.L2.C6 ✓, W11.L2.C7 ✓ [from page text] · growthbook.io · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Strong explanation of layered metrics, failure-mode visibility, and data architecture for reliable AI evaluation. Useful for connecting mechanisms to operational metrics, though excerpts show few concrete worked examples.",
+      "issues": [
+       "Product-oriented framing may emphasize implementation choices over comparative evaluation principles.",
+       "No explicit worked metric calculation is visible in the excerpts.",
+       "Unit-level testing is not covered."
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 4,
+      "depth": 4,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.789,
+      "evidence": "text",
+      "per_target": {
+       "M7.T2": {
+        "covered": true,
+        "sim": 0.678,
+        "segments": []
+       },
+       "W11.L2.C1": {
+        "covered": true,
+        "sim": 0.516,
+        "segments": [],
+        "text": "AI-Native Testing Landscape Overview. Students will identify the unique challenges of testing AI-native systems, includi"
+       },
+       "W11.L2.C2": {
+        "covered": false,
+        "sim": 0.374,
+        "segments": [],
+        "text": "Unit Testing ML Model Components. Students will describe unit-level testing mechanisms such as property-based testing, m"
+       },
+       "W11.L2.C3": {
+        "covered": true,
+        "sim": 0.511,
+        "segments": [],
+        "text": "Integration Testing of ML Pipelines. Students will outline integration testing strategies for end-to-end ML pipelines, i"
+       },
+       "W11.L2.C4": {
+        "covered": true,
+        "sim": 0.536,
+        "segments": [],
+        "text": "Model Performance Evaluation Metrics. Students will define key model-centric metrics such as accuracy, F1, AUC, calibrat"
+       },
+       "W11.L2.C5": {
+        "covered": true,
+        "sim": 0.536,
+        "segments": [],
+        "text": "System-Level Quality Metrics. Students will describe system-level metrics including latency, throughput, memory footprin"
+       },
+       "W11.L2.C6": {
+        "covered": true,
+        "sim": 0.482,
+        "segments": [],
+        "text": "Mapping Mechanisms to Metrics. Students will apply a comparative framework that links each testing mechanism to the metr"
+       },
+       "W11.L2.C7": {
+        "covered": true,
+        "sim": 0.563,
+        "segments": [],
+        "text": "Case Study: RAG Pipeline Evaluation. Students will walk through a retrieval-augmented generation pipeline, applying unit"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "reserve": {
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://labelstud.io/learning-center/how-to-set-up-ai-evaluation-pipelines-in-a-machine-learning-workflow/",
+     "title": "Set Up AI Evaluation Pipelines in Machine Learning Workflows | Label Studio",
+     "source": "labelstud.io",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.767,
+      "quality": 0.65,
+      "authority": 0.35,
+      "level_fit": 0.6,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.621,
+     "rank": 3,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W11.L2.C1 ✓, W11.L2.C2 ✗, W11.L2.C3 ✓, W11.L2.C4 ✓, W11.L2.C5 ✓, W11.L2.C6 ✓, W11.L2.C7 ✓ [from page text] · labelstud.io · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Clear, practical overview of repeatable evaluation pipelines, automated runs, regression tracking, and continuous evaluation. It appears introductory and does not visibly provide comparative analysis or worked metric examples.",
+      "issues": [
+       "Excerpts are brief and fragmented, limiting assessment of technical depth.",
+       "Workflow guidance is more operational than comparative.",
+       "No visible worked example, metric calculation, or unit-testing coverage."
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 4,
+      "depth": 3,
+      "examples": 2,
+      "level_fit": 3
+     },
+     "coverage": {
+      "score": 0.767,
+      "evidence": "text",
+      "per_target": {
+       "M7.T2": {
+        "covered": true,
+        "sim": 0.687,
+        "segments": []
+       },
+       "W11.L2.C1": {
+        "covered": true,
+        "sim": 0.478,
+        "segments": [],
+        "text": "AI-Native Testing Landscape Overview. Students will identify the unique challenges of testing AI-native systems, includi"
+       },
+       "W11.L2.C2": {
+        "covered": false,
+        "sim": 0.35,
+        "segments": [],
+        "text": "Unit Testing ML Model Components. Students will describe unit-level testing mechanisms such as property-based testing, m"
+       },
+       "W11.L2.C3": {
+        "covered": true,
+        "sim": 0.537,
+        "segments": [],
+        "text": "Integration Testing of ML Pipelines. Students will outline integration testing strategies for end-to-end ML pipelines, i"
+       },
+       "W11.L2.C4": {
+        "covered": true,
+        "sim": 0.584,
+        "segments": [],
+        "text": "Model Performance Evaluation Metrics. Students will define key model-centric metrics such as accuracy, F1, AUC, calibrat"
+       },
+       "W11.L2.C5": {
+        "covered": true,
+        "sim": 0.509,
+        "segments": [],
+        "text": "System-Level Quality Metrics. Students will describe system-level metrics including latency, throughput, memory footprin"
+       },
+       "W11.L2.C6": {
+        "covered": true,
+        "sim": 0.452,
+        "segments": [],
+        "text": "Mapping Mechanisms to Metrics. Students will apply a comparative framework that links each testing mechanism to the metr"
+       },
+       "W11.L2.C7": {
+        "covered": true,
+        "sim": 0.591,
+        "segments": [],
+        "text": "Case Study: RAG Pipeline Evaluation. Students will walk through a retrieval-augmented generation pipeline, applying unit"
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://www.confident-ai.com/knowledge-base/compare/best-ai-evaluation-tools-for-ci-cd",
+     "title": "9 Best AI Evaluation Tools for CI/CD Pipelines in 2026 - Confident AI",
+     "source": "confident-ai.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.626,
+      "quality": 0.7,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.602,
+     "rank": 4,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W11.L2.C1 ✓, W11.L2.C2 ✗, W11.L2.C3 ✓, W11.L2.C4 ✗, W11.L2.C5 ✓, W11.L2.C6 ✓, W11.L2.C7 ✓ [from page text] · confident-ai.com · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Useful practical guide to CI/CD evaluation gates, representative benchmarks, failure-mode checks, and tool choices. It supports mechanism comparison, but omits foundational metric definitions and may age quickly.",
+      "issues": [
+       "Tool comparison may date quickly despite the 2026 framing.",
+       "Model-performance metric definitions are not covered.",
+       "Excerpts show implementation guidance but no completed worked pipeline."
+      ],
+      "use_as": "after_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 4,
+      "depth": 3,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.626,
+      "evidence": "text",
+      "per_target": {
+       "M7.T2": {
+        "covered": true,
+        "sim": 0.55,
+        "segments": []
+       },
+       "W11.L2.C1": {
+        "covered": true,
+        "sim": 0.524,
+        "segments": [],
+        "text": "AI-Native Testing Landscape Overview. Students will identify the unique challenges of testing AI-native systems, includi"
+       },
+       "W11.L2.C2": {
+        "covered": false,
+        "sim": 0.404,
+        "segments": [],
+        "text": "Unit Testing ML Model Components. Students will describe unit-level testing mechanisms such as property-based testing, m"
+       },
+       "W11.L2.C3": {
+        "covered": true,
+        "sim": 0.443,
+        "segments": [],
+        "text": "Integration Testing of ML Pipelines. Students will outline integration testing strategies for end-to-end ML pipelines, i"
+       },
+       "W11.L2.C4": {
+        "covered": false,
+        "sim": 0.336,
+        "segments": [],
+        "text": "Model Performance Evaluation Metrics. Students will define key model-centric metrics such as accuracy, F1, AUC, calibrat"
+       },
+       "W11.L2.C5": {
+        "covered": true,
+        "sim": 0.498,
+        "segments": [],
+        "text": "System-Level Quality Metrics. Students will describe system-level metrics including latency, throughput, memory footprin"
+       },
+       "W11.L2.C6": {
+        "covered": true,
+        "sim": 0.491,
+        "segments": [],
+        "text": "Mapping Mechanisms to Metrics. Students will apply a comparative framework that links each testing mechanism to the metr"
+       },
+       "W11.L2.C7": {
+        "covered": true,
+        "sim": 0.494,
+        "segments": [],
+        "text": "Case Study: RAG Pipeline Evaluation. Students will walk through a retrieval-augmented generation pipeline, applying unit"
+       }
+      }
+     }
+    }
+   ],
+   "video": []
+  },
+  "rejected": [
+   {
+    "title": "What Is An Evaluation Pipeline | Arize AI",
+    "url": "https://arize.com/glossary/evaluation-pipeline/",
+    "why": [
+     "score 0.49 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "How to Evaluate AI Systems | Splunk",
+    "url": "https://www.splunk.com/en_us/blog/learn/ai-system-evaluation.html",
+    "why": [
+     "score 0.53 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "How to build a continuous evaluation pipeline for multi-agent systems with Gemini",
+    "url": "https://www.youtube.com/watch?v=WRU7-4bpZkg",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "AI-Powered Pipeline Management Software | Revenue Grid",
+    "url": "https://revenuegrid.com/solutions/pipeline-management-software/",
+    "why": [
+     "score 0.42 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Pipelines 2015",
+    "url": "https://openlibrary.org/books/OL44547306M",
+    "why": [
+     "score 0.43 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Data-Driven Healthcare: Biostatistics and Clinical Applications",
+    "url": "https://openlibrary.org/books/OL61429857M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "A TOUR OF THE WORLD",
+    "url": "https://openlibrary.org/works/OL42823332W",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Systematic review and analysis on underwater image enhancement methods, datasets, and evaluation metrics",
+    "url": "https://www.spiedigitallibrary.org/journals/journal-of-electronic-imaging/volume-31/issue-6/060901/Systematic-review-and-analysis-on-underwater-image-enhancement-methods-datasets/10.1117/1.JEI.31.6.060901.pdf",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "Analysis pipelines for calcium imaging data",
+    "url": "https://www.sciencedirect.com/science/article/pii/S0959438818300941/pdf",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Challenges, Advances, and Evaluation Metrics in Medical Image Enhancement: A Systematic Literature Review",
+    "url": "https://arxiv.org/pdf/2510.13638",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Towards Circular Economy Metrics: a Systematic Review",
+    "url": "https://link.springer.com/content/pdf/10.1007/s43615-025-00604-5.pdf",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "From Jupyter notebook experiments to ML pipelines that work",
+    "url": "https://medium.com/factset/from-jupyter-notebook-experiments-to-ml-pipelines-that-work-2c9c3ae5a3c5",
+    "why": [
+     "page not readable (status None, ConnectError: [WinError 10054] An existing connection was forcibly closed by the remote host)"
+    ]
+   },
+   {
+    "title": "MLPERF04-BP03 Establish a model performance evaluation pipeline - Machine Learning Lens",
+    "url": "https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/mlperf04-bp03.html",
+    "why": [
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "ML Model Evaluation: Metrics, Validation & Error Analysis | Snowflake",
+    "url": "https://www.snowflake.com/en/artificial-intelligence/machine-learning/model-evaluation/",
+    "why": [
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "1.3. Model Evaluation — Increase citations, ease review & collaboration: Better ML in Science",
+    "url": "https://ml.recipes/notebooks/1-model-evaluation.html",
+    "why": [
+     "score 0.39 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Vertex AI Pipelines: Production MLOps on Google Cloud",
+    "url": "https://www.udemy.com/course/vertex-ai-pipelines-production-mlops-on-google-cloud",
+    "why": [
+     "blocked or paywalled source (udemy.com)"
+    ]
+   },
+   {
+    "title": "csharp-notebooks/machine-learning/04-Model Evaluation.ipynb at main · dotnet/csharp-notebooks",
+    "url": "https://github.com/dotnet/csharp-notebooks/blob/main/machine-learning/04-Model%20Evaluation.ipynb",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "A simple way to create ML Model Cards in Python",
+    "url": "https://www.evidentlyai.com/blog/ml-model-card-tutorial",
+    "why": [
+     "score 0.43 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Evaluation Metrics - RDD-based API - Spark 4.2.0 Documentation",
+    "url": "https://spark.apache.org/docs/latest/mllib-evaluation-metrics.html",
+    "why": [
+     "score 0.43 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "academic/awesome-datascience — :memo: An awesome Data Science repository to learn and apply for real world problems.",
+    "url": "https://github.com/academic/awesome-datascience",
+    "why": [
+     "AI review: a general introduction to a broader concept, not this lecture's topic",
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "marcelscruz/public-apis — A collaborative list of public APIs for developers",
+    "url": "https://github.com/marcelscruz/public-apis",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "firmai/industry-machine-learning — A curated list of applied machine learning and data science notebooks and libraries across different industries (by @fir",
+    "url": "https://github.com/firmai/industry-machine-learning",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "sacridini/Awesome-Geospatial — Long list of geospatial tools and resources",
+    "url": "https://github.com/sacridini/Awesome-Geospatial",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "onnxsim/onnxsim — Simplify your onnx model",
+    "url": "https://github.com/onnxsim/onnxsim",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "",
+    "url": "https://1drv.ms/o/c/85452F67DAA1111C/IgCIRXGQVQm8R7-eF2h5lZ4NAayeX_9R3V4XHDDmsXYMnrk",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "RAG Retrieval Metrics Explained: Recall, Precision, MRR & NDCG",
+    "url": "https://www.youtube.com/watch?v=1M24UHWL41A",
+    "why": [
+     "too short to teach a component (1:36)"
+    ]
+   },
+   {
+    "title": "How to evaluate AI agents #AI #AIagents #agenteval",
+    "url": "https://www.youtube.com/watch?v=DJrCDx1_TPY",
+    "why": [
+     "too short to teach a component (1:25)"
+    ]
+   },
+   {
+    "title": "Machine Learning Interview Questions and Answers | ML Interview Questions and Answers",
+    "url": "https://www.youtube.com/watch?v=EJ9GLTePkmw",
+    "why": [
+     "too short to teach a component (0:06)"
+    ]
+   },
+   {
+    "title": "Tutorial-24:Pipelines in machine learning | Code implementation | Telugu | Machine Learning",
+    "url": "https://www.youtube.com/watch?v=SJMpfZS5-uo",
+    "why": [
+     "audio language is 'te'"
+    ]
+   },
+   {
+    "title": "Scikit-Learn Pipelines: Evaluation & Hyperparameter Tuning | Machine Learning",
+    "url": "https://www.youtube.com/watch?v=TxguuYdWafw",
+    "why": [
+     "too short to teach a component (0:30)"
+    ]
+   },
+   {
+    "title": "The Machine Learning Pipeline in 60 seconds",
+    "url": "https://www.youtube.com/watch?v=RhzKo4_Tlzo",
+    "why": [
+     "too short to teach a component (2:03)"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 29,
+   "passed_checks": 4,
+   "rejected": 25,
+   "videos_used": 1
+  },
+  "clips": [
+   {
+    "target": "Case Study: RAG Pipeline Evaluation",
+    "target_ids": [
+     "W11.L2.C7"
+    ],
+    "component": "W11.L2.C7",
+    "video": "Why Your AI Application Needs Multiple Eval Pipelines? | CampusX",
+    "source": "CampusX",
+    "url": "https://www.youtube.com/watch?v=DcZ-XCk-O_M&t=209s",
+    "start": "3:29",
+    "end": "4:52",
+    "minutes": 1.4,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "Breaks down RAG architecture components to identify potential failure points"
+    ],
+    "missing": [
+     "Unit, integration, and system testing execution",
+     "Calculating model and system metrics",
+     "Critiquing an evaluation plan"
+    ],
+    "note": "Explains RAG chatbot architecture and motivates multi-pipeline component testing, but cuts off before testing details."
+   }
+  ],
+  "timeline": [
+   {
+    "component": "W11.L2.C1",
+    "title": "AI-Native Testing Landscape Overview",
+    "minutes": 15,
+    "kind": "concept",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W11.L2.C2",
+    "title": "Unit Testing ML Model Components",
+    "minutes": 15,
+    "kind": "mechanism",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W11.L2.C3",
+    "title": "Integration Testing of ML Pipelines",
+    "minutes": 15,
+    "kind": "mechanism",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W11.L2.C4",
+    "title": "Model Performance Evaluation Metrics",
+    "minutes": 15,
+    "kind": "concept",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W11.L2.C5",
+    "title": "System-Level Quality Metrics",
+    "minutes": 15,
+    "kind": "concept",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W11.L2.C6",
+    "title": "Mapping Mechanisms to Metrics",
+    "minutes": 15,
+    "kind": "comparison",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W11.L2.C7",
+    "title": "Case Study: RAG Pipeline Evaluation",
+    "minutes": 15,
+    "kind": "case_study",
+    "delivery": "video",
+    "gap": {
+     "video_minutes": 1.4,
+     "missing": [
+      "Unit, integration, and system testing execution",
+      "Calculating model and system metrics",
+      "Critiquing an evaluation plan"
+     ]
+    },
+    "segments": [
+     {
+      "video": "Why Your AI Application Needs Multiple Eval Pipelines? | CampusX",
+      "video_id": "DcZ-XCk-O_M",
+      "url": "https://www.youtube.com/watch?v=DcZ-XCk-O_M&t=209s",
+      "start": "3:29",
+      "end": "4:52",
+      "minutes": 1.4,
+      "verdict": "teaches_partly",
+      "score": 0.169
+     }
+    ]
+   }
+  ],
+  "partial": {
+   "reason": "YouTube blocked transcript requests (from 22:14)",
+   "videos_without_transcript": [
+    "LbX4X71-TFI",
+    "tLMViADvSNE",
+    "v7YW97YJ5DA",
+    "9X11mwHHl-0",
+    "c09drtuCS3c",
+    "4dwsSz_fNSQ",
+    "v6DtYYafrWQ",
+    "cNF_MO82Qew",
+    "qwyW0pHz9ag",
+    "rysdr4khB5k",
+    "-3L3QGVnUOQ",
+    "lt1YxJ_8Jzs"
+   ]
+  },
+  "components": [
+   {
+    "lecture_id": "W11.L2",
+    "title": "AI-Native Testing Landscape Overview",
+    "teaches": "Students will identify the unique challenges of testing AI-native systems, including nondeterminism, data drift, and model versioning. They will distinguish between model-centric and system-centric testing concerns.",
+    "key_terms": [
+     "AI-native",
+     "nondeterminism",
+     "data drift",
+     "model versioning",
+     "testing challenges"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W11.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W11.L2",
+    "title": "Unit Testing ML Model Components",
+    "teaches": "Students will describe unit-level testing mechanisms such as property-based testing, metamorphic testing, and test oracle construction for individual model functions. They will explain how these mechanisms detect logic errors in preprocessing, inference, and postprocessing.",
+    "key_terms": [
+     "property-based testing",
+     "metamorphic testing",
+     "test oracle",
+     "preprocessing",
+     "inference"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W11.L2.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W11.L2",
+    "title": "Integration Testing of ML Pipelines",
+    "teaches": "Students will outline integration testing strategies for end-to-end ML pipelines, including contract testing, schema validation, and pipeline replay. They will compare static vs dynamic pipeline validation approaches.",
+    "key_terms": [
+     "contract testing",
+     "schema validation",
+     "pipeline replay",
+     "static validation",
+     "dynamic validation"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W11.L2.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W11.L2",
+    "title": "Model Performance Evaluation Metrics",
+    "teaches": "Students will define key model-centric metrics such as accuracy, F1, AUC, calibration error, and perplexity, and explain when each is appropriate. They will interpret metric trade-offs for classification, generation, and ranking tasks.",
+    "key_terms": [
+     "accuracy",
+     "F1",
+     "AUC",
+     "calibration error",
+     "perplexity",
+     "metric trade-offs"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W11.L2.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W11.L2",
+    "title": "System-Level Quality Metrics",
+    "teaches": "Students will describe system-level metrics including latency, throughput, memory footprint, robustness to adversarial inputs, and data freshness. They will relate these metrics to SLA requirements in production AI services.",
+    "key_terms": [
+     "latency",
+     "throughput",
+     "memory footprint",
+     "robustness",
+     "data freshness",
+     "SLA"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W11.L2.C5",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W11.L2",
+    "title": "Mapping Mechanisms to Metrics",
+    "teaches": "Students will apply a comparative framework that links each testing mechanism to the metrics it informs, highlighting coverage gaps. They will evaluate which combination of mechanisms yields comprehensive metric coverage for a given architecture.",
+    "key_terms": [
+     "comparative framework",
+     "coverage gaps",
+     "mechanism-metric mapping",
+     "comprehensive coverage",
+     "architecture"
+    ],
+    "kind": "comparison",
+    "bloom": 3,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W11.L2.C6",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W11.L2",
+    "title": "Case Study: RAG Pipeline Evaluation",
+    "teaches": "Students will walk through a retrieval-augmented generation pipeline, applying unit, integration, and system tests, and compute model and system metrics. They will critique the evaluation plan and suggest improvements.",
+    "key_terms": [
+     "RAG",
+     "retrieval-augmented generation",
+     "unit test",
+     "integration test",
+     "system metrics",
+     "critique"
+    ],
+    "kind": "case_study",
+    "bloom": 3,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W11.L2.C7",
+    "in_class": false
+   }
+  ],
+  "notebooklm": {
+   "pack": "notebooklm/W11.L2.md",
+   "components": [
+    "W11.L2.C3",
+    "W11.L2.C6"
+   ],
+   "sources": 4
+  }
+ },
+ "experts": {
+  "lecture_id": "W11.L2",
+  "topic": "Pipeline evaluation mechanisms and metrics",
+  "experts": [
+   {
+    "name": "Pankaj Jalote",
+    "kind": "iiitd",
+    "affiliation": "IIIT-Delhi",
+    "country": "IN",
+    "links": {
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Pankaj+Jalote+IIIT+Delhi",
+     "openalex": "https://openalex.org/A5057154526",
+     "orcid": "https://orcid.org/0009-0001-8552-8394"
+    },
+    "metrics": {
+     "cited_by": 3951,
+     "h_index": 32,
+     "works_count": 208
+    },
+    "scores": {
+     "topical_fit": 0.516,
+     "teaching": 1.0,
+     "practical": 0.2,
+     "standing": 0.76,
+     "recency": 1.0,
+     "feasibility": 1.0
+    },
+    "total": 0.756,
+    "rank": 1,
+    "verified_identity": "IIIT-D course directory + OpenAlex author record",
+    "latest_year": 2026,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "course",
+      "title": "Teaches CSE701 Topics in Software Engineering: AI in SE at IIIT-D",
+      "year": 2026,
+      "url": "https://techtree.iiitd.edu.in/viewDescription/filename?=CSE701"
+     },
+     {
+      "kind": "course",
+      "title": "Teaches CSE583 Software Development using Open Source at IIIT-D",
+      "year": 2026,
+      "url": "https://techtree.iiitd.edu.in/viewDescription/filename?=CSE583"
+     },
+     {
+      "kind": "paper",
+      "title": "Computer Science Curricula 2023",
+      "year": 2024,
+      "url": "https://doi.org/10.1145/3664191",
+      "cited_by": 234,
+      "venue": "ACM eBooks",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "System Test Case Design from Requirements Specifications: Insights and Challenges of Using ChatGPT",
+      "year": 2024,
+      "url": "https://doi.org/10.48550/arxiv.2412.03693",
+      "cited_by": 2,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Teaches AI in Software Engineering (2026) and published on automated test case design using ChatGPT (2024), relevant to pipeline evaluation mechanisms.",
+    "fit": "strong",
+    "suggested_format": "live_in_person",
+    "concerns": []
+   },
+   {
+    "name": "Riddam Jain",
+    "kind": "industry",
+    "role": "Staff Engineer",
+    "affiliation": "",
+    "links": {
+     "page": "https://riddam.github.io/guides/mlops-production-guide/"
+    },
+    "metrics": {},
+    "scores": {
+     "topical_fit": 0.654,
+     "teaching": 0.9,
+     "practical": 1.0,
+     "standing": 0.3,
+     "recency": 0.6,
+     "feasibility": 0.6
+    },
+    "total": 0.638,
+    "rank": 2,
+    "verified_identity": "named on https://riddam.github.io/guides/mlops-production-guide/",
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "single talk, not sustained research"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "talk",
+      "title": "MLOps & AI Production Operations: The 2026 Guide · Riddam Jain",
+      "url": "https://riddam.github.io/guides/mlops-production-guide/"
+     }
+    ],
+    "why": "Talk on MLOps & AI Production Operations (2026) covers pipeline evaluation mechanisms and metrics for AI-native architectures.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": [
+     "single talk, not sustained research"
+    ]
+   },
+   {
+    "name": "Aditya Parameswaran",
+    "kind": "academic",
+    "affiliation": "Assoc. Prof, EECS, UC Berkeley & AI x Data Research Lead, Snowflake",
+    "affiliation_openalex": "Shanghai Jiao Tong University",
+    "country": "US",
+    "links": {
+     "openalex": "https://openalex.org/A5013608601",
+     "orcid": "https://orcid.org/0000-0002-4538-4752",
+     "scholar": "https://scholar.google.com/citations?user=VeB3UbcAAAAJ"
+    },
+    "metrics": {
+     "cited_by": 10768,
+     "h_index": 57,
+     "works_count": 249,
+     "matching_works": 2,
+     "i10_index": 120,
+     "source": "Google Scholar"
+    },
+    "scores": {
+     "topical_fit": 0.675,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.82,
+     "recency": 0.6,
+     "feasibility": 0.0
+    },
+    "total": 0.559,
+    "rank": 3,
+    "verified_identity": "OpenAlex author record + ORCID + Google Scholar profile",
+    "latest_year": 2021,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "papers from 2021, but still foundational"
+     }
+    ],
+    "interests": [
+     "Data Management",
+     "AI Systems",
+     "HCI",
+     "Visualization",
+     "Data Exploration"
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Production Machine Learning Pipelines",
+      "year": 2021,
+      "url": "https://doi.org/10.1145/3448016.3457566",
+      "cited_by": 66,
+      "venue": "ACM SIGMOD International Conference on Management of Data (SIGMOD)",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Towards Observability for Machine Learning Pipelines",
+      "year": 2021,
+      "url": "https://openalex.org/W3198313108",
+      "cited_by": 7,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Published seminal papers on production ML pipelines (2021) and observability for ML pipelines (2021), directly relevant to pipeline evaluation mechanisms and metrics.",
+    "fit": "strong",
+    "suggested_format": "recorded_talk",
+    "concerns": [
+     "papers from 2021, but still foundational",
+     "no shared working hours with India: a recorded talk or an evening (IST) session"
+    ]
+   },
+   {
+    "name": "Georgia Dede",
+    "kind": "academic",
+    "role": "Assistant Professor",
+    "affiliation": "Harokopio University of Athens",
+    "links": {
+     "scholar": "https://scholar.google.com/citations?user=x_MCOPUAAAAJ"
+    },
+    "metrics": {
+     "h_index": 13,
+     "cited_by": 483,
+     "i10_index": 18,
+     "source": "Google Scholar"
+    },
+    "scores": {
+     "topical_fit": 0.574,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.499,
+     "recency": 1.0,
+     "feasibility": 0.6
+    },
+    "total": 0.487,
+    "rank": 4,
+    "verified_identity": "Google Scholar profile (id from their paper)",
+    "latest_year": 2026,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "venue quality unknown; evaluation focus may be broader than automated testing"
+     }
+    ],
+    "interests": [
+     "Evaluation of Systems/Services/Scenarios",
+     "Decision Support Systems & Development",
+     "Multicriteria"
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Evaluation and Taxonomy Framework of Multi-Cloud Pipelines: An AI Case Study with CRITIC",
+      "year": 2026,
+      "url": "https://ieeexplore.ieee.org/abstract/document/11679769/"
+     }
+    ],
+    "why": "Co-authored multi-cloud pipeline evaluation framework (2026); research interests include evaluation of systems and decision support.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": [
+     "venue quality unknown; evaluation focus may be broader than automated testing"
+    ]
+   },
+   {
+    "name": "Evangelia Filiopoulou",
+    "kind": "academic",
+    "role": "Research Associate and Adjunct lecturer",
+    "affiliation": "Harokopio University of Athens",
+    "links": {
+     "scholar": "https://scholar.google.com/citations?user=6R561xIAAAAJ"
+    },
+    "metrics": {
+     "h_index": 13,
+     "cited_by": 451,
+     "i10_index": 16,
+     "source": "Google Scholar"
+    },
+    "scores": {
+     "topical_fit": 0.573,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.498,
+     "recency": 1.0,
+     "feasibility": 0.6
+    },
+    "total": 0.486,
+    "rank": 5,
+    "verified_identity": "Google Scholar profile (id from their paper)",
+    "latest_year": 2026,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "primary research focus on cloud economics, not pipeline evaluation"
+     }
+    ],
+    "interests": [
+     "Cloud Computing Economics",
+     "Gen AI decision making",
+     "FinOps",
+     "Techno economics"
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Evaluation and Taxonomy Framework of Multi-Cloud Pipelines: An AI Case Study with CRITIC",
+      "year": 2026,
+      "url": "https://ieeexplore.ieee.org/abstract/document/11679769/"
+     }
+    ],
+    "why": "Co-authored 2026 paper on evaluation framework for multi-cloud pipelines with AI case study.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": [
+     "primary research focus on cloud economics, not pipeline evaluation"
+    ]
+   }
+  ],
+  "reserve": [],
+  "rejected": [
+   {
+    "name": "Michail Gkasios",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "too little research record yet (h-index 2 on Google Scholar, below 5)",
+     "AI fit check: weak"
+    ]
+   },
+   {
+    "name": "Vinish Kathuria",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.11 is below 0.5"
+    ]
+   },
+   {
+    "name": "Neoklis Polyzotis",
+    "why": [
+     "topical fit 0.49 is below 0.5"
+    ]
+   },
+   {
+    "name": "Yue Li",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "AI check: the evidence is from another field that only shares words with this topic",
+     "AI fit check: weak"
+    ]
+   },
+   {
+    "name": "Arani Bhattacharya",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.05 is below 0.5"
+    ]
+   },
+   {
+    "name": "Yiming Liu",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "AI check: the evidence is from another field that only shares words with this topic",
+     "AI fit check: weak"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 34,
+   "assessed": 11,
+   "passed_checks": 5
+  }
+ },
+ "partial": {
+  "reason": "YouTube blocked transcript requests (from 22:14)",
+  "videos_without_transcript": [
+   "LbX4X71-TFI",
+   "tLMViADvSNE",
+   "v7YW97YJ5DA",
+   "9X11mwHHl-0",
+   "c09drtuCS3c",
+   "4dwsSz_fNSQ",
+   "v6DtYYafrWQ",
+   "cNF_MO82Qew",
+   "qwyW0pHz9ag",
+   "rysdr4khB5k",
+   "-3L3QGVnUOQ",
+   "lt1YxJ_8Jzs"
+  ]
+ }
+}

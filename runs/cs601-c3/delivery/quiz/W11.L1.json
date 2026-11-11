@@ -1,0 +1,72 @@
+{
+ "lecture_id": "W11.L1",
+ "topic": "Automated testing and evaluation mechanisms",
+ "made_at": "2026-11-03 15:46:57",
+ "minutes": {
+  "recap": 0,
+  "quiz": 0
+ },
+ "recap": [],
+ "questions": [
+  {
+   "component": "W11.L1.C1",
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "bloom": 5,
+   "question": "You are auditing an AI-native recommendation API that currently relies only on static unit tests and offline Precision@K metrics. Your gap analysis reveals that the system frequently fails when real users request rare categories. Which improvement best addresses this evaluation gap?",
+   "options": [
+    "Increase code coverage of the API route handlers to 100%.",
+    "Integrate behavioral test suites using edge-case inputs alongside online slice-based evaluation metrics.",
+    "Measure latency using load testing tools without changing model evaluation metrics.",
+    "Switch the recommendation algorithm database from PostgreSQL to Redis."
+   ],
+   "answer": "B",
+   "explanation": "Addressing coverage gaps in AI services requires behavioral testing targeted at edge cases and slice-based metrics to evaluate sub-population performance beyond aggregate precision."
+  },
+  {
+   "component": "W11.L1.C1",
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "bloom": 5,
+   "question": "An engineering team is selecting an automated testing mechanism for a real-time recommendation system. They need to evaluate output quality under live data distribution shifts without disrupting user experience. Which framework setup is most appropriate?",
+   "options": [
+    "Stress testing the database under peak load.",
+    "Manual code reviews of the model prompt and architecture.",
+    "Shadow deployment combined with automated divergence and drift metrics.",
+    "Offline unit testing using static mock inputs."
+   ],
+   "answer": "C",
+   "explanation": "Shadow deployment allows real-time evaluation against live production traffic using drift/divergence metrics without impacting actual end users."
+  },
+  {
+   "component": "W11.L1.C1",
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "bloom": 5,
+   "question": "A evaluation framework for a recommendation API measures accuracy (Recall@K) and API latency. However, users complain that the recommendations feel repetitive and predictable. Which metric should be added to the comparative evaluation framework to fix this assessment gap?",
+   "options": [
+    "Response Time Percentile (P99)",
+    "Mean Time To Recovery (MTTR)",
+    "Intra-List Diversity (ILD) or Novelty Score",
+    "Cyclomatic Complexity of the API pipeline"
+   ],
+   "answer": "C",
+   "explanation": "Intra-List Diversity directly measures the variety of recommended items within a list, resolving the gap where accuracy metrics favor repeated popular items."
+  },
+  {
+   "component": "W11.L1.C1",
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "bloom": 5,
+   "question": "You are reviewing an AI-native recommendation API's evaluation pipeline that lacks robust failure mode detection. Propose one automated testing mechanism and one metric to evaluate how gracefully the system handles out-of-domain inputs.",
+   "options": [],
+   "answer": "Implement adversarial perturbational testing (or behavioral testing) with synthetic out-of-domain inputs, and measure Fallback/Refusal Rate or Out-of-Distribution (OOD) Detection Accuracy.",
+   "explanation": "Adversarial or behavioral testing generates non-standard inputs to test resilience, while Fallback or OOD detection metrics measure whether the system safely defaults to non-hallucinated responses."
+  }
+ ],
+ "problems": []
+}

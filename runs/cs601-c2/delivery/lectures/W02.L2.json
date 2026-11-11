@@ -1,0 +1,1986 @@
+{
+ "lecture_id": "W02.L2",
+ "topic": "Coding agents and context engineering",
+ "generated_at": "2026-11-02 23:33:15",
+ "components": [
+  {
+   "lecture_id": "W02.L2",
+   "title": "Anatomy of coding agent workspaces and execution lifecycle",
+   "teaches": "Students will understand the core architectural layers of an autonomous coding agent workspace, including environment virtualization, state tracking, and scratchpad management. They will trace how an agent transitions from prompt ingestion to planning, tool dispatch, and observation intake.",
+   "key_terms": [
+    "coding agent",
+    "agent workspace",
+    "execution lifecycle",
+    "state tracking",
+    "observation loop",
+    "scratchpad"
+   ],
+   "kind": "concept",
+   "bloom": 2,
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "minutes": 15,
+   "id": "W02.L2.C1",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W02.L2",
+   "title": "Context engineering strategies for constrained context windows",
+   "teaches": "Students will learn context engineering mechanisms such as selective file tree pruning, sliding context windows, and dynamic relevance filtering. They will evaluate trade-offs between full repository indexing and lightweight context token budgets to prevent model distraction.",
+   "key_terms": [
+    "context engineering",
+    "context window",
+    "token budget",
+    "relevance filtering",
+    "context compaction",
+    "prompt caching"
+   ],
+   "kind": "mechanism",
+   "bloom": 2,
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "minutes": 15,
+   "id": "W02.L2.C2",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W02.L2",
+   "title": "Structuring MCP tool schemas and workspace descriptors",
+   "teaches": "Students will learn how to structure tool definitions using Model Context Protocol (MCP) JSON schemas so agents can discover and invoke workspace tools cleanly. They will specify required arguments, return payloads, and environment permissions according to MCP interface specifications.",
+   "key_terms": [
+    "Model Context Protocol",
+    "tool schema",
+    "JSON-RPC",
+    "workspace descriptor",
+    "tool discovery",
+    "parameter validation"
+   ],
+   "kind": "mechanism",
+   "bloom": 3,
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "minutes": 15,
+   "id": "W02.L2.C3",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W02.L2",
+   "title": "Evaluating context pollution and tool discovery trade-offs",
+   "teaches": "Students will analyse the failure modes caused by context pollution when exposing too many MCP tools or verbose tool definitions to a coding agent. They will compare lazy tool registration against global tool injection in terms of latency, token cost, and hallucinated invocations.",
+   "key_terms": [
+    "context pollution",
+    "lazy tool registration",
+    "hallucinated invocation",
+    "token overhead",
+    "tool selection accuracy"
+   ],
+   "kind": "comparison",
+   "bloom": 4,
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "minutes": 15,
+   "id": "W02.L2.C4",
+   "in_class": false
+  }
+ ],
+ "resources": {
+  "lecture_id": "W02.L2",
+  "topic": "Coding agents and context engineering",
+  "want": {
+   "want_videos": false,
+   "want_readings": true,
+   "want_practice": true,
+   "want_recorded_lecture": false,
+   "want_clips": false,
+   "want_guest": true,
+   "confidence": 2,
+   "note": "",
+   "choices": [
+    "own_material",
+    "generate_material",
+    "assistance",
+    "guest_lecture"
+   ]
+  },
+  "queries": {
+   "lecture_id": "W02.L2",
+   "video_queries": [
+    "coding agents context engineering tutorial",
+    "MCP custom tool integration explained",
+    "AI coding agents workspace architecture talk"
+   ],
+   "reading_queries": [
+    "coding agents context engineering guide",
+    "MCP custom tools integration documentation"
+   ],
+   "practice_queries": [
+    "MCP custom tool server coding lab"
+   ],
+   "recorded_lecture_query": null,
+   "research_queries": [
+    "coding agents context engineering",
+    "tool use language model agents"
+   ],
+   "practitioner_query": "coding agent tool integration"
+  },
+  "items": {
+   "video": [
+    {
+     "kind": "video",
+     "id": "3KAI__5dUn0",
+     "url": "https://www.youtube.com/watch?v=3KAI__5dUn0",
+     "title": "Context Engineering & Coding Agents with Cursor",
+     "source": "OpenAI",
+     "tier": 3,
+     "duration_s": 1123,
+     "published": "2025-10-08T17:00:27Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 43315,
+     "likes": 856,
+     "comments": 34,
+     "subscribers": 2100000,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.073,
+      "segment": 0.393,
+      "clarity": 0.8,
+      "level_fit": 0.8,
+      "authority": 0.65,
+      "reception": 0.631
+     },
+     "total": 0.397,
+     "findings": [],
+     "rationale": "Teaches C2 Context engineering strategies for constrained context windo (5:21–7:50, partly); C1 Anatomy of coding agent workspaces and execution lifecycle (10:09–15:35, partly) [checked on the transcript] · OpenAI · tier 3 · 18:43 · 43,315 views",
+     "components": [
+      {
+       "id": "W02.L2.C2",
+       "title": "Context engineering strategies for constrained context windows",
+       "start": "5:21",
+       "end": "7:50",
+       "start_s": 321.0,
+       "end_s": 470.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "semantic search as relevance filtering",
+        "token budget awareness",
+        "offline indexing trade-off"
+       ],
+       "missing": [
+        "selective file tree pruning",
+        "sliding context windows",
+        "dynamic relevance filtering beyond semantic search"
+       ],
+       "note": "Explains semantic search and token budget trade-offs; misses file pruning and sliding windows.",
+       "chapter": null
+      },
+      {
+       "id": "W02.L2.C1",
+       "title": "Anatomy of coding agent workspaces and execution lifecycle",
+       "start": "10:09",
+       "end": "15:35",
+       "start_s": 609.0,
+       "end_s": 935.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "environment virtualization (cloud sandboxes vs. local git worktrees)",
+        "task and to-do tracking",
+        "tool execution permissions and self-verification"
+       ],
+       "missing": [
+        "formal execution lifecycle walkthrough from prompt ingestion to tool dispatch",
+        "architectural scratchpad management"
+       ],
+       "note": "Great industry insight into Cursor's workspace isolation and tooling, but lacks a formal step-by-step execution lifecycle trace.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.073,
+      "evidence": "transcript",
+      "per_target": {
+       "W02.L2.C2": {
+        "text": "Context engineering strategies for constrained context windows",
+        "covered": true,
+        "sim": 0.473,
+        "segments": [
+         {
+          "start": 321.0,
+          "end": 470.0,
+          "sim": 0.473
+         }
+        ]
+       },
+       "W02.L2.C1": {
+        "text": "Anatomy of coding agent workspaces and execution lifecycle",
+        "covered": true,
+        "sim": 0.545,
+        "segments": [
+         {
+          "start": 609.0,
+          "end": 935.0,
+          "sim": 0.545
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Explains semantic search and token budget trade-offs; misses file pruning and sliding windows.; Great industry insight into Cursor's workspace isolation and tooling, but lacks a formal step-by-step execution lifecycle trace.",
+      "issues": [
+       "leaves out: selective file tree pruning",
+       "leaves out: sliding context windows",
+       "leaves out: dynamic relevance filtering beyond semantic search",
+       "leaves out: formal execution lifecycle walkthrough from prompt ingestion to tool dispatch"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Cursor has grown from next action prediction to fully autonomous coding agents. Learn how they’ve built their agent harness and tools, approached context engineering, and enabled support for running many agents in parallel.",
+     "rank": 1,
+     "status": "proposed"
+    },
+    {
+     "kind": "video",
+     "id": "SIZsFGvtClM",
+     "url": "https://www.youtube.com/watch?v=SIZsFGvtClM",
+     "title": "Agentic Engineering: 5 Terms Every AI Developer Should Know",
+     "source": "IBM Technology",
+     "tier": 2,
+     "duration_s": 701,
+     "published": "2026-10-26T11:00:26Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 67222,
+     "likes": 932,
+     "comments": 41,
+     "subscribers": 1830000,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.047,
+      "segment": 0.367,
+      "clarity": 0.8,
+      "level_fit": 0.6,
+      "authority": 0.8,
+      "reception": 0.626
+     },
+     "total": 0.374,
+     "findings": [],
+     "rationale": "Teaches C1 Anatomy of coding agent workspaces and execution lifecycle (5:31–10:39, partly) [checked on the transcript] · IBM Technology · tier 2 · 11:41 · 67,222 views",
+     "components": [
+      {
+       "id": "W02.L2.C1",
+       "title": "Anatomy of coding agent workspaces and execution lifecycle",
+       "start": "5:31",
+       "end": "10:39",
+       "start_s": 331.0,
+       "end_s": 639.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "agent execution lifecycle loop (goal, act, observe)",
+        "agent harness runtime and tool execution",
+        "environment sandboxing and container isolation"
+       ],
+       "missing": [
+        "scratchpad management",
+        "in-depth state tracking implementation"
+       ],
+       "note": "Accessible overview of agent harnesses, execution loops, and sandboxing, though it omits specific scratchpad mechanics.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.047,
+      "evidence": "transcript",
+      "per_target": {
+       "W02.L2.C1": {
+        "text": "Anatomy of coding agent workspaces and execution lifecycle",
+        "covered": true,
+        "sim": 0.491,
+        "segments": [
+         {
+          "start": 331.0,
+          "end": 639.0,
+          "sim": 0.491
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Accessible overview of agent harnesses, execution loops, and sandboxing, though it omits specific scratchpad mechanics.",
+      "issues": [
+       "leaves out: scratchpad management",
+       "leaves out: in-depth state tracking implementation"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Learn more about Agentic Engineering here → https://ibm.biz/~Tlo2yQJqq\n\nAI engineering is becoming more than writing code. Cedric Clyburn breaks down five essential concepts behind agentic engineering, including prompt engineering, context engineering, AI agents, and software factories. Learn the ideas shaping the future of AI-assisted software development.\n\n00:00 - AI‑Written Code and the Rise of Agentic Engineering\n00:37 - Five Core Concepts Every AI Builder Should Know\n00:56 - Prompt Engineering: Communicating Clearly With Models\n01:42 - Why Domain Expertise Matters More Than Model Size\n02:29 - Few‑Shot Prompts and Chain‑of‑Thought for Smaller Models\n03:22 - Context Engineering: Managing ",
+     "rank": 2,
+     "status": "proposed"
+    },
+    {
+     "kind": "video",
+     "id": "IS_y40zY-hc",
+     "url": "https://www.youtube.com/watch?v=IS_y40zY-hc",
+     "title": "Advanced Context Engineering for Agents",
+     "source": "YC Root Access",
+     "tier": 4,
+     "duration_s": 878,
+     "published": "2025-08-25T16:10:09Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 216859,
+     "likes": 7037,
+     "comments": 218,
+     "subscribers": 376000,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.04,
+      "segment": 0.345,
+      "clarity": 0.8,
+      "level_fit": 1.0,
+      "authority": 0.35,
+      "reception": 0.844
+     },
+     "total": 0.389,
+     "findings": [],
+     "rationale": "Teaches C2 Context engineering strategies for constrained context windo (3:43–8:08, partly) [checked on the transcript] · YC Root Access · tier 4 · 14:38 · 216,859 views",
+     "components": [
+      {
+       "id": "W02.L2.C2",
+       "title": "Context engineering strategies for constrained context windows",
+       "start": "3:43",
+       "end": "8:08",
+       "start_s": 223.0,
+       "end_s": 488.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "intentional compaction",
+        "sub-agents for context control",
+        "token budget awareness",
+        "progress files for context handoff"
+       ],
+       "missing": [
+        "selective file tree pruning",
+        "sliding context windows",
+        "dynamic relevance filtering (explicit)"
+       ],
+       "note": "Practical compaction and sub-agent strategies; assumes familiarity with agent loops.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.04,
+      "evidence": "transcript",
+      "per_target": {
+       "W02.L2.C2": {
+        "text": "Context engineering strategies for constrained context windows",
+        "covered": true,
+        "sim": 0.465,
+        "segments": [
+         {
+          "start": 223.0,
+          "end": 488.0,
+          "sim": 0.465
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Practical compaction and sub-agent strategies; assumes familiarity with agent loops.",
+      "issues": [
+       "leaves out: selective file tree pruning",
+       "leaves out: sliding context windows",
+       "leaves out: dynamic relevance filtering (explicit)"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Dexter Horthy, founder of Human Layer, shares what his team has learned about scaling coding agents in real-world software projects. He walks through why naive back-and-forth prompting fails, how spec-first development keeps teams aligned, and why “everything is context engineering.” From compaction strategies to subagents and planning workflows, he shows how intentional context management turns AI coding from prototypes into production.\n\nChapters:\n00:09 - The Origin of Context Engineering\n00:46 - Key Talks and Insights from AI Engineering\n01:45 - Challenges with AI in Complex Systems\n03:12 - The Shift to Spec-First Development\n04:03 - Advanced Context Engineering for Coding Agents\n04:48 - I",
+     "rank": 3,
+     "status": "proposed"
+    }
+   ],
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html",
+     "title": "Context Engineering for Coding Agents",
+     "source": "martinfowler.com",
+     "tier": 2,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.979,
+      "quality": 0.42,
+      "authority": 0.8,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.737,
+     "rank": 1,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W02.L2.C1 ✓, W02.L2.C2 ✓, W02.L2.C3 ✓, W02.L2.C4 ✓ [from page text] · martinfowler.com · tier 2",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "review": {
+      "review": "Good conceptual overview of context engineering for coding agents, but lacks hands-on MCP configuration guidance.",
+      "issues": [
+       "Excerpts too short to confirm MCP tool schema coverage",
+       "No mention of static analysis or test-driven configuration"
+      ],
+      "use_as": "pre_class",
+      "explains": "mentions",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 2,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.979,
+      "evidence": "text",
+      "per_target": {
+       "M2.T1": {
+        "covered": true,
+        "sim": 0.848,
+        "segments": []
+       },
+       "W02.L2.C1": {
+        "covered": true,
+        "sim": 0.592,
+        "segments": [],
+        "text": "Anatomy of coding agent workspaces and execution lifecycle. Students will understand the core architectural layers of an"
+       },
+       "W02.L2.C2": {
+        "covered": true,
+        "sim": 0.566,
+        "segments": [],
+        "text": "Context engineering strategies for constrained context windows. Students will learn context engineering mechanisms such "
+       },
+       "W02.L2.C3": {
+        "covered": true,
+        "sim": 0.543,
+        "segments": [],
+        "text": "Structuring MCP tool schemas and workspace descriptors. Students will learn how to structure tool definitions using Mode"
+       },
+       "W02.L2.C4": {
+        "covered": true,
+        "sim": 0.575,
+        "segments": [],
+        "text": "Evaluating context pollution and tool discovery trade-offs. Students will analyse the failure modes caused by context po"
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+     "title": "Effective context engineering for AI agents \\ Anthropic",
+     "source": "anthropic.com",
+     "tier": 3,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.91,
+      "quality": 0.42,
+      "authority": 0.65,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.69,
+     "rank": 2,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W02.L2.C1 ✓, W02.L2.C2 ✓, W02.L2.C3 ✓, W02.L2.C4 ✓ [from page text] · anthropic.com · tier 3",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "review": {
+      "review": "Authoritative overview of context engineering principles, but not a tutorial on MCP tool integration.",
+      "issues": [
+       "Excerpts focus on theory, not MCP tool integration",
+       "No practical steps for custom tool configuration"
+      ],
+      "use_as": "pre_class",
+      "explains": "mentions",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 2,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.91,
+      "evidence": "text",
+      "per_target": {
+       "M2.T1": {
+        "covered": true,
+        "sim": 0.676,
+        "segments": []
+       },
+       "W02.L2.C1": {
+        "covered": true,
+        "sim": 0.53,
+        "segments": [],
+        "text": "Anatomy of coding agent workspaces and execution lifecycle. Students will understand the core architectural layers of an"
+       },
+       "W02.L2.C2": {
+        "covered": true,
+        "sim": 0.673,
+        "segments": [],
+        "text": "Context engineering strategies for constrained context windows. Students will learn context engineering mechanisms such "
+       },
+       "W02.L2.C3": {
+        "covered": true,
+        "sim": 0.476,
+        "segments": [],
+        "text": "Structuring MCP tool schemas and workspace descriptors. Students will learn how to structure tool definitions using Mode"
+       },
+       "W02.L2.C4": {
+        "covered": true,
+        "sim": 0.621,
+        "segments": [],
+        "text": "Evaluating context pollution and tool discovery trade-offs. Students will analyse the failure modes caused by context po"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "reserve": {
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://code.visualstudio.com/docs/agents/guides/context-engineering-guide",
+     "title": "Set up a context engineering flow in VS Code",
+     "source": "code.visualstudio.com",
+     "tier": 3,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.833,
+      "quality": 0.45,
+      "authority": 0.65,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.669,
+     "rank": 3,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W02.L2.C1 ✓, W02.L2.C2 ✓, W02.L2.C3 ✓, W02.L2.C4 ✓ [from page text] · code.visualstudio.com · tier 3",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "review": {
+      "review": "Good intro to context engineering in VS Code, but lacks depth on MCP tool schemas and static analysis.",
+      "issues": [
+       "skips MCP tool schema configuration",
+       "no static analyser integration",
+       "focuses on VS Code specific workflow"
+      ],
+      "use_as": "pre_class",
+      "explains": "mentions",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.833,
+      "evidence": "text",
+      "per_target": {
+       "M2.T1": {
+        "covered": true,
+        "sim": 0.624,
+        "segments": []
+       },
+       "W02.L2.C1": {
+        "covered": true,
+        "sim": 0.545,
+        "segments": [],
+        "text": "Anatomy of coding agent workspaces and execution lifecycle. Students will understand the core architectural layers of an"
+       },
+       "W02.L2.C2": {
+        "covered": true,
+        "sim": 0.527,
+        "segments": [],
+        "text": "Context engineering strategies for constrained context windows. Students will learn context engineering mechanisms such "
+       },
+       "W02.L2.C3": {
+        "covered": true,
+        "sim": 0.459,
+        "segments": [],
+        "text": "Structuring MCP tool schemas and workspace descriptors. Students will learn how to structure tool definitions using Mode"
+       },
+       "W02.L2.C4": {
+        "covered": true,
+        "sim": 0.498,
+        "segments": [],
+        "text": "Evaluating context pollution and tool discovery trade-offs. Students will analyse the failure modes caused by context po"
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://www.faros.ai/blog/context-engineering-for-developers",
+     "title": "Context Engineering Guide for Developers",
+     "source": "faros.ai",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.931,
+      "quality": 0.45,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.658,
+     "rank": 4,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W02.L2.C1 ✓, W02.L2.C2 ✓, W02.L2.C3 ✓, W02.L2.C4 ✓ [from page text] · faros.ai · tier 4",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "review": {
+      "review": "High-level context engineering strategies with a production example, but misses MCP tool integration specifics.",
+      "issues": [
+       "no MCP tool schema details",
+       "no static analyser or test configuration",
+       "high-level strategies only"
+      ],
+      "use_as": "pre_class",
+      "explains": "mentions",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.931,
+      "evidence": "text",
+      "per_target": {
+       "M2.T1": {
+        "covered": true,
+        "sim": 0.695,
+        "segments": []
+       },
+       "W02.L2.C1": {
+        "covered": true,
+        "sim": 0.583,
+        "segments": [],
+        "text": "Anatomy of coding agent workspaces and execution lifecycle. Students will understand the core architectural layers of an"
+       },
+       "W02.L2.C2": {
+        "covered": true,
+        "sim": 0.661,
+        "segments": [],
+        "text": "Context engineering strategies for constrained context windows. Students will learn context engineering mechanisms such "
+       },
+       "W02.L2.C3": {
+        "covered": true,
+        "sim": 0.466,
+        "segments": [],
+        "text": "Structuring MCP tool schemas and workspace descriptors. Students will learn how to structure tool definitions using Mode"
+       },
+       "W02.L2.C4": {
+        "covered": true,
+        "sim": 0.593,
+        "segments": [],
+        "text": "Evaluating context pollution and tool discovery trade-offs. Students will analyse the failure modes caused by context po"
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://www.langchain.com/blog/context-engineering-for-agents",
+     "title": "Context Engineering",
+     "source": "langchain.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.927,
+      "quality": 0.45,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.657,
+     "rank": 5,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W02.L2.C1 ✓, W02.L2.C2 ✓, W02.L2.C3 ✓, W02.L2.C4 ✓ [from page text] · langchain.com · tier 4",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "review": {
+      "review": "Good overview of context engineering challenges and strategies, but not specific to MCP tool integration.",
+      "issues": [
+       "no MCP tool schema configuration",
+       "no static analyser or test passing",
+       "focuses on LangGraph"
+      ],
+      "use_as": "pre_class",
+      "explains": "mentions",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.927,
+      "evidence": "text",
+      "per_target": {
+       "M2.T1": {
+        "covered": true,
+        "sim": 0.742,
+        "segments": []
+       },
+       "W02.L2.C1": {
+        "covered": true,
+        "sim": 0.584,
+        "segments": [],
+        "text": "Anatomy of coding agent workspaces and execution lifecycle. Students will understand the core architectural layers of an"
+       },
+       "W02.L2.C2": {
+        "covered": true,
+        "sim": 0.62,
+        "segments": [],
+        "text": "Context engineering strategies for constrained context windows. Students will learn context engineering mechanisms such "
+       },
+       "W02.L2.C3": {
+        "covered": true,
+        "sim": 0.46,
+        "segments": [],
+        "text": "Structuring MCP tool schemas and workspace descriptors. Students will learn how to structure tool definitions using Mode"
+       },
+       "W02.L2.C4": {
+        "covered": true,
+        "sim": 0.599,
+        "segments": [],
+        "text": "Evaluating context pollution and tool discovery trade-offs. Students will analyse the failure modes caused by context po"
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://sourcegraph.com/blog/context-engineering",
+     "title": "Context Engineering: A Practical Guide for AI Agents (2026) | Sourcegraph",
+     "source": "sourcegraph.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.979,
+      "quality": 0.45,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.675,
+     "rank": 6,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W02.L2.C1 ✓, W02.L2.C2 ✓, W02.L2.C3 ✓, W02.L2.C4 ✓ [from page text] · sourcegraph.com · tier 4",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "review": {
+      "review": "Practical guide to context engineering pillars including tools, but unclear on MCP specifics for custom integrations.",
+      "issues": [
+       "Excerpts don't show MCP schema details",
+       "May not cover static analysis or test requirements"
+      ],
+      "use_as": "flipped_class",
+      "explains": "mentions",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.979,
+      "evidence": "text",
+      "per_target": {
+       "M2.T1": {
+        "covered": true,
+        "sim": 0.709,
+        "segments": []
+       },
+       "W02.L2.C1": {
+        "covered": true,
+        "sim": 0.543,
+        "segments": [],
+        "text": "Anatomy of coding agent workspaces and execution lifecycle. Students will understand the core architectural layers of an"
+       },
+       "W02.L2.C2": {
+        "covered": true,
+        "sim": 0.638,
+        "segments": [],
+        "text": "Context engineering strategies for constrained context windows. Students will learn context engineering mechanisms such "
+       },
+       "W02.L2.C3": {
+        "covered": true,
+        "sim": 0.619,
+        "segments": [],
+        "text": "Structuring MCP tool schemas and workspace descriptors. Students will learn how to structure tool definitions using Mode"
+       },
+       "W02.L2.C4": {
+        "covered": true,
+        "sim": 0.565,
+        "segments": [],
+        "text": "Evaluating context pollution and tool discovery trade-offs. Students will analyse the failure modes caused by context po"
+       }
+      }
+     }
+    }
+   ],
+   "video": [
+    {
+     "kind": "video",
+     "id": "4GiqzUHD5AA",
+     "url": "https://www.youtube.com/watch?v=4GiqzUHD5AA",
+     "title": "Context Engineering for Agents",
+     "source": "LangChain",
+     "tier": 3,
+     "duration_s": 1326,
+     "published": "2025-07-02T15:54:01Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 205411,
+     "likes": 5038,
+     "comments": 63,
+     "subscribers": 208000,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.022,
+      "segment": 0.215,
+      "clarity": 1.0,
+      "level_fit": 0.8,
+      "authority": 0.65,
+      "reception": 0.739
+     },
+     "total": 0.274,
+     "findings": [],
+     "rationale": "Teaches C1 Anatomy of coding agent workspaces and execution lifecycle (3:43–6:10, partly) [checked on the transcript] · LangChain · tier 3 · 22:06 · 205,411 views",
+     "components": [
+      {
+       "id": "W02.L2.C1",
+       "title": "Anatomy of coding agent workspaces and execution lifecycle",
+       "start": "3:43",
+       "end": "6:10",
+       "start_s": 223.0,
+       "end_s": 370.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "scratchpad management and persistence",
+        "runtime state objects vs. file persistence",
+        "session memory vs. task state"
+       ],
+       "missing": [
+        "environment virtualization",
+        "step-by-step execution lifecycle (tool dispatch, observation loop)"
+       ],
+       "note": "Clear conceptual breakdown of scratchpads and agent state persistence, but omits environment virtualization and the full execution loop.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.022,
+      "evidence": "transcript",
+      "per_target": {
+       "W02.L2.C1": {
+        "text": "Anatomy of coding agent workspaces and execution lifecycle",
+        "covered": true,
+        "sim": 0.514,
+        "segments": [
+         {
+          "start": 223.0,
+          "end": 370.0,
+          "sim": 0.514
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Clear conceptual breakdown of scratchpads and agent state persistence, but omits environment virtualization and the full execution loop.",
+      "issues": [
+       "leaves out: environment virtualization",
+       "leaves out: step-by-step execution lifecycle (tool dispatch, observation loop)"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Agents need context (e.g., instructions, external knowledge, tool feedback) to perform tasks. Context engineering is the art and science of filling the context window with just the right information at each step of an agent’s trajectory. In this video, we break down some common strategies — write, select, compress, and isolate — for context engineering by reviewing various popular agents and papers. We then explain how LangGraph is designed to support them!\n\nBlog:\nhttps://blog.langchain.com/context-engineering-for-agents/\n\nVideo notes:\nhttps://mirror-feeling-d80.notion.site/Context-Engineering-for-Agents-21f808527b17802db4b1c84a068a0976?source=copy_link\n\nLearn how to build with LangGraph on ",
+     "rank": 4,
+     "status": "reserve"
+    }
+   ]
+  },
+  "rejected": [
+   {
+    "title": "Complete guide to context engineering for coding agents | Latitude",
+    "url": "https://latitude.so/blog/context-engineering-guide-coding-agents",
+    "why": [
+     "AI review: a general introduction to a broader concept, not this lecture's topic"
+    ]
+   },
+   {
+    "title": "AI Engineering",
+    "url": "https://openlibrary.org/books/OL54058212M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "The Context Window Is a Budget",
+    "url": "https://openlibrary.org/books/OL62593468M",
+    "why": [
+     "score 0.50 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Codex Remote: Engineering From Your Phone",
+    "url": "https://openlibrary.org/books/OL62593455M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Refusal Evaluation in Coding LLMs and Code Agents: A Systematic Review of Thirteen Malicious-Code Prompt Corpora (2023-2025)",
+    "url": "https://arxiv.org/pdf/2605.20351",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Intelligent agents in biomedical engineering: a systematic review",
+    "url": "https://medcraveonline.com/IJBSBE/IJBSBE-06-00200.pdf",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "From Code Author to Code Reviewer: A Systematic Review of Practitioner Experience with Generative AI in Software Engineering",
+    "url": "https://journal-isi.org/index.php/isi/article/download/1826/1060",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Open BOK on Software Engineering Educational Context: A Systematic Literature Review",
+    "url": "https://www.mdpi.com/2071-1050/12/17/6858/pdf?version=1598346905",
+    "why": [
+     "page not readable (status 200, unsupported content-type )"
+    ]
+   },
+   {
+    "title": "Guided: Build a Simple MCP Server",
+    "url": "https://www.pluralsight.com/labs/codeLabs/guided-build-a-simple-mcp-server",
+    "why": [
+     "blocked or paywalled source (pluralsight.com)"
+    ]
+   },
+   {
+    "title": "Lab MCP Server | Awesome MCP Servers",
+    "url": "https://mcpservers.org/servers/harehimself/mcp-lab",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Custom MCP Server Development: Build, Host & Run | Reflekt Lab",
+    "url": "https://reflektlab.ai/mcp/",
+    "why": [
+     "score 0.41 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Building an MCP Server for My Lab, by Chris Shiflett",
+    "url": "https://shiflett.org/blog/2026/building-an-mcp-server",
+    "why": [
+     "score 0.41 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "MCP Tutorial: Build Your First MCP Server and Client from Scratch (Free Labs)",
+    "url": "https://www.youtube.com/watch?v=RhTiAOGwbYE",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "Miro Launches MCP Server to Connect Visual Collaboration With AI Coding Tools",
+    "url": "https://finance.yahoo.com/news/miro-launches-mcp-server-connect-130000959.html",
+    "why": [
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "Introducing the Wix Model Context Protocol (MCP) Server for Seamless AI-Driven Web App Development",
+    "url": "https://www.stocktitan.net/news/WIX/introducing-the-wix-model-context-protocol-mcp-server-for-seamless-7gis3597ni61.html",
+    "why": [
+     "score 0.54 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Introducing TestCollab MCP Server",
+    "url": "https://testcollab.com/blog/introducing-testcollab-mcp-server",
+    "why": [
+     "score 0.41 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "public-apis/public-apis — A collective list of free APIs",
+    "url": "https://github.com/public-apis/public-apis",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "awesome-selfhosted/awesome-selfhosted — A list of Free Software network services and web applications which can be hosted on your own servers",
+    "url": "https://github.com/awesome-selfhosted/awesome-selfhosted",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "ripienaar/free-for-dev — A list of SaaS, PaaS and IaaS offerings that have free tiers of interest to devops and infradev",
+    "url": "https://github.com/ripienaar/free-for-dev",
+    "why": [
+     "score 0.51 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Graphify-Labs/graphify — Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill fo",
+    "url": "https://github.com/Graphify-Labs/graphify",
+    "why": [
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "paperclipai/paperclip — The open-source app everyone uses to manage agents at work",
+    "url": "https://github.com/paperclipai/paperclip",
+    "why": [
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "What is Agentic Engineering? | IBM",
+    "url": "https://www.ibm.com/think/topics/agentic-engineering",
+    "why": [
+     "score 0.53 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Demo to Production. Architect a Real Agentic AI System (Step by Step)",
+    "url": "https://www.youtube.com/watch?v=ZIAzZtKWmbI",
+    "why": [
+     "audio language is 'ta'"
+    ]
+   },
+   {
+    "title": "🔥AI Agents vs Agentic AI | Intellipaat",
+    "url": "https://www.youtube.com/watch?v=SKd15qYtkdU",
+    "why": [
+     "too short to teach a component (0:58)"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 29,
+   "passed_checks": 7,
+   "rejected": 22,
+   "videos_used": 3
+  },
+  "clips": [
+   {
+    "target": "Anatomy of coding agent workspaces and execution lifecycle",
+    "target_ids": [
+     "W02.L2.C1"
+    ],
+    "component": "W02.L2.C1",
+    "video": "Context Engineering & Coding Agents with Cursor",
+    "source": "OpenAI",
+    "url": "https://www.youtube.com/watch?v=3KAI__5dUn0&t=609s",
+    "start": "10:09",
+    "end": "15:35",
+    "minutes": 5.4,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "environment virtualization (cloud sandboxes vs. local git worktrees)",
+     "task and to-do tracking",
+     "tool execution permissions and self-verification"
+    ],
+    "missing": [
+     "formal execution lifecycle walkthrough from prompt ingestion to tool dispatch",
+     "architectural scratchpad management"
+    ],
+    "note": "Great industry insight into Cursor's workspace isolation and tooling, but lacks a formal step-by-step execution lifecycle trace."
+   },
+   {
+    "target": "Anatomy of coding agent workspaces and execution lifecycle",
+    "target_ids": [
+     "W02.L2.C1"
+    ],
+    "component": "W02.L2.C1",
+    "video": "Agentic Engineering: 5 Terms Every AI Developer Should Know",
+    "source": "IBM Technology",
+    "url": "https://www.youtube.com/watch?v=SIZsFGvtClM&t=331s",
+    "start": "5:31",
+    "end": "10:39",
+    "minutes": 5.1,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "agent execution lifecycle loop (goal, act, observe)",
+     "agent harness runtime and tool execution",
+     "environment sandboxing and container isolation"
+    ],
+    "missing": [
+     "scratchpad management",
+     "in-depth state tracking implementation"
+    ],
+    "note": "Accessible overview of agent harnesses, execution loops, and sandboxing, though it omits specific scratchpad mechanics."
+   },
+   {
+    "target": "Context engineering strategies for constrained context windows",
+    "target_ids": [
+     "W02.L2.C2"
+    ],
+    "component": "W02.L2.C2",
+    "video": "Advanced Context Engineering for Agents",
+    "source": "YC Root Access",
+    "url": "https://www.youtube.com/watch?v=IS_y40zY-hc&t=223s",
+    "start": "3:43",
+    "end": "8:08",
+    "minutes": 4.4,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "intentional compaction",
+     "sub-agents for context control",
+     "token budget awareness",
+     "progress files for context handoff"
+    ],
+    "missing": [
+     "selective file tree pruning",
+     "sliding context windows",
+     "dynamic relevance filtering (explicit)"
+    ],
+    "note": "Practical compaction and sub-agent strategies; assumes familiarity with agent loops."
+   },
+   {
+    "target": "Context engineering strategies for constrained context windows",
+    "target_ids": [
+     "W02.L2.C2"
+    ],
+    "component": "W02.L2.C2",
+    "video": "Context Engineering & Coding Agents with Cursor",
+    "source": "OpenAI",
+    "url": "https://www.youtube.com/watch?v=3KAI__5dUn0&t=321s",
+    "start": "5:21",
+    "end": "7:50",
+    "minutes": 2.5,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "semantic search as relevance filtering",
+     "token budget awareness",
+     "offline indexing trade-off"
+    ],
+    "missing": [
+     "selective file tree pruning",
+     "sliding context windows",
+     "dynamic relevance filtering beyond semantic search"
+    ],
+    "note": "Explains semantic search and token budget trade-offs; misses file pruning and sliding windows."
+   }
+  ],
+  "timeline": [
+   {
+    "component": "W02.L2.C1",
+    "title": "Anatomy of coding agent workspaces and execution lifecycle",
+    "minutes": 15,
+    "kind": "concept",
+    "delivery": "video",
+    "gap": {
+     "video_minutes": 10.6,
+     "missing": [
+      "formal execution lifecycle walkthrough from prompt ingestion to tool dispatch",
+      "architectural scratchpad management",
+      "scratchpad management",
+      "in-depth state tracking implementation"
+     ]
+    },
+    "segments": [
+     {
+      "video": "Context Engineering & Coding Agents with Cursor",
+      "video_id": "3KAI__5dUn0",
+      "url": "https://www.youtube.com/watch?v=3KAI__5dUn0&t=609s",
+      "start": "10:09",
+      "end": "15:35",
+      "minutes": 5.4,
+      "verdict": "teaches_partly",
+      "score": 0.393
+     },
+     {
+      "video": "Agentic Engineering: 5 Terms Every AI Developer Should Know",
+      "video_id": "SIZsFGvtClM",
+      "url": "https://www.youtube.com/watch?v=SIZsFGvtClM&t=331s",
+      "start": "5:31",
+      "end": "10:39",
+      "minutes": 5.1,
+      "verdict": "teaches_partly",
+      "score": 0.367
+     }
+    ]
+   },
+   {
+    "component": "W02.L2.C2",
+    "title": "Context engineering strategies for constrained context windows",
+    "minutes": 15,
+    "kind": "mechanism",
+    "delivery": "video",
+    "gap": {
+     "video_minutes": 6.9,
+     "missing": [
+      "selective file tree pruning",
+      "sliding context windows",
+      "dynamic relevance filtering (explicit)",
+      "dynamic relevance filtering beyond semantic search"
+     ]
+    },
+    "segments": [
+     {
+      "video": "Advanced Context Engineering for Agents",
+      "video_id": "IS_y40zY-hc",
+      "url": "https://www.youtube.com/watch?v=IS_y40zY-hc&t=223s",
+      "start": "3:43",
+      "end": "8:08",
+      "minutes": 4.4,
+      "verdict": "teaches_partly",
+      "score": 0.345
+     },
+     {
+      "video": "Context Engineering & Coding Agents with Cursor",
+      "video_id": "3KAI__5dUn0",
+      "url": "https://www.youtube.com/watch?v=3KAI__5dUn0&t=321s",
+      "start": "5:21",
+      "end": "7:50",
+      "minutes": 2.5,
+      "verdict": "teaches_partly",
+      "score": 0.257
+     }
+    ]
+   },
+   {
+    "component": "W02.L2.C3",
+    "title": "Structuring MCP tool schemas and workspace descriptors",
+    "minutes": 15,
+    "kind": "mechanism",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W02.L2.C4",
+    "title": "Evaluating context pollution and tool discovery trade-offs",
+    "minutes": 15,
+    "kind": "comparison",
+    "delivery": "notebooklm",
+    "segments": []
+   }
+  ],
+  "partial": {
+   "reason": "YouTube blocked transcript requests (from 22:43)",
+   "videos_without_transcript": [
+    "TlIOk8VuEBU",
+    "S_oN3vlzpMw",
+    "vif8NQcjVf0"
+   ]
+  },
+  "components": [
+   {
+    "lecture_id": "W02.L2",
+    "title": "Anatomy of coding agent workspaces and execution lifecycle",
+    "teaches": "Students will understand the core architectural layers of an autonomous coding agent workspace, including environment virtualization, state tracking, and scratchpad management. They will trace how an agent transitions from prompt ingestion to planning, tool dispatch, and observation intake.",
+    "key_terms": [
+     "coding agent",
+     "agent workspace",
+     "execution lifecycle",
+     "state tracking",
+     "observation loop",
+     "scratchpad"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W02.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W02.L2",
+    "title": "Context engineering strategies for constrained context windows",
+    "teaches": "Students will learn context engineering mechanisms such as selective file tree pruning, sliding context windows, and dynamic relevance filtering. They will evaluate trade-offs between full repository indexing and lightweight context token budgets to prevent model distraction.",
+    "key_terms": [
+     "context engineering",
+     "context window",
+     "token budget",
+     "relevance filtering",
+     "context compaction",
+     "prompt caching"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W02.L2.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W02.L2",
+    "title": "Structuring MCP tool schemas and workspace descriptors",
+    "teaches": "Students will learn how to structure tool definitions using Model Context Protocol (MCP) JSON schemas so agents can discover and invoke workspace tools cleanly. They will specify required arguments, return payloads, and environment permissions according to MCP interface specifications.",
+    "key_terms": [
+     "Model Context Protocol",
+     "tool schema",
+     "JSON-RPC",
+     "workspace descriptor",
+     "tool discovery",
+     "parameter validation"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W02.L2.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W02.L2",
+    "title": "Evaluating context pollution and tool discovery trade-offs",
+    "teaches": "Students will analyse the failure modes caused by context pollution when exposing too many MCP tools or verbose tool definitions to a coding agent. They will compare lazy tool registration against global tool injection in terms of latency, token cost, and hallucinated invocations.",
+    "key_terms": [
+     "context pollution",
+     "lazy tool registration",
+     "hallucinated invocation",
+     "token overhead",
+     "tool selection accuracy"
+    ],
+    "kind": "comparison",
+    "bloom": 4,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W02.L2.C4",
+    "in_class": false
+   }
+  ],
+  "notebooklm": {
+   "pack": "notebooklm/W02.L2.md",
+   "components": [
+    "W02.L2.C2"
+   ],
+   "sources": 6
+  }
+ },
+ "experts": {
+  "lecture_id": "W02.L2",
+  "topic": "Coding agents and context engineering",
+  "experts": [
+   {
+    "name": "Di Wang",
+    "kind": "industry",
+    "role": "open-source maintainer",
+    "affiliation": "Tsinghua University",
+    "links": {
+     "github": "https://github.com/Windy3f3f3f3f"
+    },
+    "metrics": {
+     "followers": 126
+    },
+    "scores": {
+     "topical_fit": 0.8,
+     "teaching": 0.5,
+     "practical": 1.0,
+     "standing": 0.526,
+     "recency": 1.0,
+     "feasibility": 0.6
+    },
+    "total": 0.817,
+    "rank": 1,
+    "verified_identity": "GitHub account",
+    "latest_year": 2026,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "repo",
+      "title": "Windy3f3f3f3f/how-claude-code-works (3,800 stars): Deep dive into Claude Code internals — architecture, agent loop, context engineering, and more. / 深入",
+      "year": 2026,
+      "url": "https://github.com/Windy3f3f3f3f/how-claude-code-works"
+     }
+    ],
+    "why": "Maintains the popular repository How Claude Code Works, providing an in-depth exploration of coding agent loops, architecture, and context engineering.",
+    "fit": "strong",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Han Li",
+    "kind": "industry",
+    "role": "Postdoc",
+    "affiliation": "Queen's University",
+    "affiliation_openalex": "China Mobile (China)",
+    "country": "CA",
+    "links": {
+     "openalex": "https://openalex.org/A5125198720",
+     "scholar": "https://scholar.google.com/citations?user=3xI3QLsAAAAJ"
+    },
+    "metrics": {
+     "cited_by": 1183,
+     "h_index": 14,
+     "works_count": 3,
+     "matching_works": 1,
+     "i10_index": 16,
+     "source": "Google Scholar"
+    },
+    "scores": {
+     "topical_fit": 0.8,
+     "teaching": 0.5,
+     "practical": 1.0,
+     "standing": 0.644,
+     "recency": 1.0,
+     "feasibility": 0.0
+    },
+    "total": 0.763,
+    "rank": 2,
+    "verified_identity": "OpenAlex author record + Google Scholar profile",
+    "latest_year": 2026,
+    "findings": [],
+    "interests": [
+     "Software Engineering",
+     "AI Agents",
+     "Model Context Protocol"
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "ContextBench: A Benchmark for Context Retrieval in Coding Agents",
+      "year": 2026,
+      "url": "https://doi.org/10.48550/arxiv.2602.05892",
+      "cited_by": 3,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Has dedicated research interests in AI Agents and Model Context Protocol, and co-authored ContextBench evaluating context retrieval specifically for coding agents.",
+    "fit": "strong",
+    "suggested_format": "recorded_talk",
+    "concerns": [
+     "no shared working hours with India: a recorded talk or an evening (IST) session"
+    ]
+   },
+   {
+    "name": "Matthias Galster",
+    "kind": "academic",
+    "affiliation": "University of Bergamo",
+    "country": "IT",
+    "links": {
+     "openalex": "https://openalex.org/A5034571717",
+     "orcid": "https://orcid.org/0000-0003-3491-1833",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Matthias+Galster+University+of+Bergamo",
+     "semantic_scholar": "https://www.semanticscholar.org/author/2387790888"
+    },
+    "metrics": {
+     "cited_by": 2305,
+     "h_index": 25,
+     "works_count": 212,
+     "matching_works": 1
+    },
+    "scores": {
+     "topical_fit": 0.784,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.713,
+     "recency": 1.0,
+     "feasibility": 0.5
+    },
+    "total": 0.689,
+    "rank": 3,
+    "verified_identity": "OpenAlex author record + ORCID + Semantic Scholar",
+    "latest_year": 2026,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Context Engineering for AI Agents in Open-Source Software",
+      "year": 2026,
+      "url": "https://doi.org/10.1145/3793302.3793350",
+      "cited_by": 7,
+      "venue": "International Conference on Mining Software Repositories (MSR)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored Context Engineering for AI Agents in Open-Source Software, directly addressing context engineering methodologies for software development agents.",
+    "fit": "strong",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Bapi Chatterjee",
+    "kind": "iiitd",
+    "affiliation": "IIIT-Delhi",
+    "country": "IN",
+    "links": {
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Bapi+Chatterjee+IIIT+Delhi",
+     "openalex": "https://openalex.org/A5043227337",
+     "orcid": "https://orcid.org/0000-0002-2742-4028"
+    },
+    "metrics": {
+     "cited_by": 307,
+     "h_index": 7,
+     "works_count": 48
+    },
+    "scores": {
+     "topical_fit": 0.565,
+     "teaching": 1.0,
+     "practical": 0.2,
+     "standing": 0.459,
+     "recency": 1.0,
+     "feasibility": 1.0
+    },
+    "total": 0.607,
+    "rank": 4,
+    "verified_identity": "IIIT-D course directory + OpenAlex author record",
+    "latest_year": 2026,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "course covers general agentic reasoning rather than coding agents or context engineering"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "course",
+      "title": "Teaches CSE594A Agentic Reasoning at IIIT-D",
+      "year": 2026,
+      "url": "https://techtree.iiitd.edu.in/viewDescription/filename?=CSE594A"
+     }
+    ],
+    "why": "Teaches a graduate course on Agentic Reasoning, covering relevant principles of agent architectures and workflows.",
+    "fit": "moderate",
+    "suggested_format": "live_in_person",
+    "concerns": [
+     "course covers general agentic reasoning rather than coding agents or context engineering"
+    ]
+   },
+   {
+    "name": "Karthik Vaidhyanathan",
+    "kind": "academic",
+    "role": "Assistant Professor",
+    "affiliation": "IIIT Hyderabad",
+    "affiliation_openalex": "International Institute of Information Technology",
+    "country": "IN",
+    "links": {
+     "openalex": "https://openalex.org/A5081488877",
+     "orcid": "https://orcid.org/0000-0003-2317-6175",
+     "scholar": "https://scholar.google.com/citations?user=qtITyHkAAAAJ"
+    },
+    "metrics": {
+     "cited_by": 1203,
+     "h_index": 19,
+     "works_count": 115,
+     "matching_works": 3,
+     "i10_index": 36,
+     "source": "Google Scholar"
+    },
+    "scores": {
+     "topical_fit": 0.636,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.669,
+     "recency": 1.0,
+     "feasibility": 1.0
+    },
+    "total": 0.558,
+    "rank": 5,
+    "verified_identity": "OpenAlex author record + ORCID + Google Scholar profile",
+    "latest_year": 2026,
+    "findings": [],
+    "interests": [
+     "Software Architecture",
+     "Artificial Intelligence",
+     "Green AI",
+     "Software Engineering",
+     "Agentic AI"
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "A Research Agenda on Agents and Software Engineering: Outcomes from the Rio A2SE Seminar",
+      "year": 2026,
+      "url": "https://doi.org/10.48550/arxiv.2605.11720",
+      "cited_by": 0,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Context Matters: Evaluating Context Strategies for Automated ADR Generation Using LLMs",
+      "year": 2026,
+      "url": "https://doi.org/10.48550/arxiv.2604.03826",
+      "cited_by": 0,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Watts and Debts of Agentic Frameworks: An Empirical Study (Registered Report)",
+      "year": 2026,
+      "url": "https://doi.org/10.48550/arxiv.2606.10702",
+      "cited_by": 0,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Researches agentic AI and context strategies in software engineering, co-authoring papers on agent research agendas and context strategies for LLM-driven architectural decisions.",
+    "fit": "moderate",
+    "suggested_format": "live_in_person",
+    "concerns": []
+   },
+   {
+    "name": "Mukul Pratap Singh",
+    "kind": "industry",
+    "affiliation": "Microsoft",
+    "country": "US",
+    "links": {
+     "openalex": "https://openalex.org/A5101442631",
+     "orcid": "https://orcid.org/0000-0001-9510-4512",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Mukul+Pratap+Singh+Microsoft+%28United+States%29"
+    },
+    "metrics": {
+     "cited_by": 520,
+     "h_index": 10,
+     "works_count": 124,
+     "matching_works": 2
+    },
+    "scores": {
+     "topical_fit": 0.544,
+     "teaching": 0.2,
+     "practical": 1.0,
+     "standing": 0.606,
+     "recency": 1.0,
+     "feasibility": 0.0
+    },
+    "total": 0.487,
+    "rank": 6,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2026,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "context strategies are evaluated on document understanding rather than software coding"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Agentic Context Strategies for Multi-Format Document Understanding: When Should Language Models Use Tools?",
+      "year": 2026,
+      "url": "https://doi.org/10.18653/v1/2026.acl-industry.133",
+      "cited_by": 0,
+      "venue": "Proceedings of the conference - Association for Computational Linguistics. Meeting",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Agentic Context Strategies for Multi-Format Document Understanding: When Should Language Models Use Tools?",
+      "year": 2026,
+      "url": "https://doi.org/10.48448/p47s-sr28",
+      "cited_by": 0,
+      "venue": "Underline Science Inc.",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored research on agentic context strategies and determining when language models should invoke tools within workspaces.",
+    "fit": "moderate",
+    "suggested_format": "recorded_talk",
+    "concerns": [
+     "context strategies are evaluated on document understanding rather than software coding",
+     "no shared working hours with India: a recorded talk or an evening (IST) session"
+    ]
+   }
+  ],
+  "reserve": [
+   {
+    "name": "Sebastian Baltes",
+    "kind": "academic",
+    "affiliation": "Heidelberg University",
+    "country": "DE",
+    "links": {
+     "openalex": "https://openalex.org/A5033132966",
+     "orcid": "https://orcid.org/0000-0002-2442-7522",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Sebastian+Baltes+Heidelberg+University"
+    },
+    "metrics": {
+     "cited_by": 1792,
+     "h_index": 20,
+     "works_count": 115,
+     "matching_works": 1
+    },
+    "scores": {
+     "topical_fit": 0.784,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.683,
+     "recency": 1.0,
+     "feasibility": 0.5
+    },
+    "total": 0.685,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2026,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Context Engineering for AI Agents in Open-Source Software",
+      "year": 2026,
+      "url": "https://doi.org/10.1145/3793302.3793350",
+      "cited_by": 7,
+      "venue": "International Conference on Mining Software Repositories (MSR)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored Context Engineering for AI Agents in Open-Source Software, focusing specifically on context construction and management for software agents.",
+    "fit": "strong",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Mansi Uniyal",
+    "kind": "industry",
+    "affiliation": "Microsoft",
+    "country": "US",
+    "links": {
+     "openalex": "https://openalex.org/A5018302659",
+     "orcid": "https://orcid.org/0009-0009-8102-5421",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Mansi+Uniyal+Microsoft+%28United+States%29"
+    },
+    "metrics": {
+     "cited_by": 19,
+     "h_index": 1,
+     "works_count": 11,
+     "matching_works": 2
+    },
+    "scores": {
+     "topical_fit": 0.544,
+     "teaching": 0.2,
+     "practical": 1.0,
+     "standing": 0.49,
+     "recency": 1.0,
+     "feasibility": 0.0
+    },
+    "total": 0.476,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2026,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "context strategies are evaluated on document understanding rather than software coding"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Agentic Context Strategies for Multi-Format Document Understanding: When Should Language Models Use Tools?",
+      "year": 2026,
+      "url": "https://doi.org/10.18653/v1/2026.acl-industry.133",
+      "cited_by": 0,
+      "venue": "Proceedings of the conference - Association for Computational Linguistics. Meeting",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Agentic Context Strategies for Multi-Format Document Understanding: When Should Language Models Use Tools?",
+      "year": 2026,
+      "url": "https://doi.org/10.48448/p47s-sr28",
+      "cited_by": 0,
+      "venue": "Underline Science Inc.",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored research evaluating agentic context strategies and tool invocation decisions for language models.",
+    "fit": "moderate",
+    "suggested_format": "recorded_talk",
+    "concerns": [
+     "context strategies are evaluated on document understanding rather than software coding",
+     "no shared working hours with India: a recorded talk or an evening (IST) session"
+    ]
+   },
+   {
+    "name": "Ryan Nadel",
+    "kind": "industry",
+    "affiliation": "Microsoft",
+    "country": "US",
+    "links": {
+     "openalex": "https://openalex.org/A5114426592",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Ryan+Nadel+Microsoft+%28United+States%29"
+    },
+    "metrics": {
+     "cited_by": 0,
+     "h_index": 0,
+     "works_count": 3,
+     "matching_works": 2
+    },
+    "scores": {
+     "topical_fit": 0.508,
+     "teaching": 0.2,
+     "practical": 1.0,
+     "standing": 0.42,
+     "recency": 1.0,
+     "feasibility": 0.0
+    },
+    "total": 0.459,
+    "verified_identity": "OpenAlex author record",
+    "latest_year": 2026,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "context strategies are evaluated on document understanding rather than software coding"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Agentic Context Strategies for Multi-Format Document Understanding: When Should Language Models Use Tools?",
+      "year": 2026,
+      "url": "https://doi.org/10.18653/v1/2026.acl-industry.133",
+      "cited_by": 0,
+      "venue": "Proceedings of the conference - Association for Computational Linguistics. Meeting",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Agentic Context Strategies for Multi-Format Document Understanding: When Should Language Models Use Tools?",
+      "year": 2026,
+      "url": "https://doi.org/10.48448/p47s-sr28",
+      "cited_by": 0,
+      "venue": "Underline Science Inc.",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored research investigating agentic context strategies and tool integration decisions for language models.",
+    "fit": "moderate",
+    "suggested_format": "recorded_talk",
+    "concerns": [
+     "context strategies are evaluated on document understanding rather than software coding",
+     "no shared working hours with India: a recorded talk or an evening (IST) session"
+    ]
+   }
+  ],
+  "rejected": [
+   {
+    "name": "Rili Feng",
+    "why": [
+     "too little research record yet (h-index 3 on Google Scholar, below 5)"
+    ]
+   },
+   {
+    "name": "Pankaj Jalote",
+    "why": [
+     "topical fit 0.36 is below 0.5"
+    ]
+   },
+   {
+    "name": "Bohan Zhang",
+    "why": [
+     "too little research record yet (h-index 2 on OpenAlex, below 5)"
+    ]
+   },
+   {
+    "name": "Letian Zhu",
+    "why": [
+     "too little research record yet (h-index 1 on OpenAlex, below 5)"
+    ]
+   },
+   {
+    "name": "Raghava Mutharaju",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.26 is below 0.5"
+    ]
+   },
+   {
+    "name": "Rohit Ghumare",
+    "why": [
+     "topical fit 0.03 is below 0.5"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 35,
+   "assessed": 15,
+   "passed_checks": 9
+  }
+ },
+ "partial": {
+  "reason": "YouTube blocked transcript requests (from 22:43)",
+  "videos_without_transcript": [
+   "TlIOk8VuEBU",
+   "S_oN3vlzpMw",
+   "vif8NQcjVf0"
+  ]
+ }
+}

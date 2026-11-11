@@ -1,0 +1,126 @@
+{
+ "lecture_id": "W01.L2",
+ "topic": "Model context protocols and architecture",
+ "made_at": "2026-11-03 15:46:53",
+ "minutes": {
+  "recap": 5,
+  "quiz": 5
+ },
+ "recap": [
+  {
+   "component": "W01.L1.C1",
+   "lo_ids": [
+    "CO1.LO3"
+   ],
+   "bloom": 1,
+   "question": "How does the developer workflow fundamentally shift when transitioning from traditional edit-compile-debug loops to AI-augmented development?",
+   "options": [
+    "Developers no longer need to write design specifications or document interfaces.",
+    "Developers replace manual testing entirely with automated model verifications.",
+    "Code compilation occurs automatically after every keystroke via remote inference servers.",
+    "The core routine shifts toward continuous speculative drafting and prompt refinement."
+   ],
+   "answer": "D",
+   "explanation": "AI-augmented workflows transform the traditional linear edit-compile-debug loop into continuous speculative drafting, where developers refine prompts and evaluate model suggestions iteratively."
+  },
+  {
+   "component": "W01.L1.C2",
+   "lo_ids": [
+    "CO1.LO3"
+   ],
+   "bloom": 1,
+   "question": "In the architecture of a modern AI code assistant, what is the primary role of the local IDE extension?",
+   "options": [
+    "Compiling code and checking type correctness remote endpoints.",
+    "Executing deep learning model inference locally on client hardware.",
+    "Generating synthetic datasets for model fine-tuning.",
+    "Gathering telemetry, local buffers, and cursor position to pass to the orchestrator."
+   ],
+   "answer": "D",
+   "explanation": "The local IDE extension collects real-time editor state such as local buffer snippets, cursor position, and telemetry before handing them off to an orchestrator for prompt assembly."
+  },
+  {
+   "component": "W01.L1.C3",
+   "lo_ids": [
+    "CO1.LO3"
+   ],
+   "bloom": 2,
+   "question": "What primary trade-off occurs when expanding the context window scope to include more surrounding file content in autocompletion prompts?",
+   "options": [
+    "Broader context increases generation latency while providing more accurate background.",
+    "Larger context budgets eliminate the possibility of model hallucinations.",
+    "A larger token budget speeds up model inference time.",
+    "Including open editor tabs automatically reduces memory usage on the client machine."
+   ],
+   "answer": "B",
+   "explanation": "Expanding the context scope gives the model useful ambient information, but processing more tokens increases prompt processing and overall inference latency."
+  }
+ ],
+ "questions": [
+  {
+   "component": "W01.L2.C1",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 2,
+   "question": "How does adopting a Client-Host-Server topology with Model Context Protocol (MCP) solve the M×N integration problem for LLM applications?",
+   "options": [
+    "It removes the need for tool invocation by having the LLM directly execute local code.",
+    "It converts all tool communication payloads from JSON into binary protocols.",
+    "It replaces custom integrations with a standardized interface between host environments and external servers.",
+    "It mandates a single centralized database that all LLM clients and data sources must share."
+   ],
+   "answer": "C",
+   "explanation": "MCP introduces a standardized client-host-server interface, decoupling LLM clients from disparate external tools and reducing M×N bespoke integrations into an M+N architecture."
+  },
+  {
+   "component": "W01.L2.C2",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 2,
+   "question": "In local MCP communication using the stdio transport layer, how are requests and responses framed and transmitted?",
+   "options": [
+    "As raw binary streams sent across shared system memory",
+    "As protocol buffers transmitted via a WebSockets connection",
+    "As JSON-RPC 2.0 structured messages sent over standard input and output streams",
+    "As HTTP POST requests with Server-Sent Events headers"
+   ],
+   "answer": "C",
+   "explanation": "The stdio transport mechanism uses standard input/output streams to frame and exchange JSON-RPC 2.0 structured requests, responses, and notifications between host and subprocess."
+  },
+  {
+   "component": "W01.L2.C3",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 2,
+   "question": "During the MCP initialization handshake, what is the primary role of capability negotiation?",
+   "options": [
+    "To determine whether messages should switch from standard text to compressed binary format",
+    "To verify API keys and encrypt the stdio communication channel",
+    "To dynamically allocate hardware CPU and memory limits for the server process",
+    "To allow client and server to declare supported features like tools, resources, and prompts before starting operations"
+   ],
+   "answer": "D",
+   "explanation": "Capability negotiation occurs during initialization so both client and server can declare supported features (such as resources, prompts, and tools) and ensure compatibility before requests begin."
+  },
+  {
+   "component": "W01.L2.C4",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 4,
+   "question": "A engineering team is choosing between local stdio and remote SSE deployments for an MCP server accessing a shared cloud database. Which trade-off makes remote SSE the better choice for this scenario?",
+   "options": [
+    "Remote SSE eliminates network latency compared to local subprocess execution.",
+    "Remote SSE allows central network deployment and bearer authentication, avoiding duplicate local process management on each developer machine.",
+    "Local stdio cannot handle JSON-RPC 2.0 message framing over local sub-processes.",
+    "Local stdio requires opening exposed incoming network ports on host machines."
+   ],
+   "answer": "B",
+   "explanation": "Remote SSE services allow central deployment, network-based authentication, and persistence across users, whereas stdio is designed for local subprocess isolation on a single host machine."
+  }
+ ],
+ "problems": []
+}

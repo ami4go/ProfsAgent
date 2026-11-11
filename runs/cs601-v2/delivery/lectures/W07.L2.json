@@ -1,0 +1,1559 @@
+{
+ "lecture_id": "W07.L2",
+ "topic": "Iterative development and loop engineering",
+ "generated_at": "2026-11-02 22:09:55",
+ "components": [
+  {
+   "lecture_id": "W07.L2",
+   "title": "Iterative Loop Engineering Overview",
+   "teaches": "Students learn the definition of iterative loop engineering, its role in AI‑assisted coding, and the high‑level phases of a coding agent's generate‑test‑refactor cycle.",
+   "key_terms": [
+    "iterative loop engineering",
+    "coding agent",
+    "generate-test-refactor",
+    "AI-assisted coding"
+   ],
+   "kind": "concept",
+   "bloom": 2,
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "minutes": 15,
+   "id": "W07.L2.C1",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W07.L2",
+   "title": "Execution Log Structure and Fields",
+   "teaches": "Students identify the standard schema of an execution log, including timestamp, event type, agent identifier, and payload, and understand how each field maps to a control‑flow step.",
+   "key_terms": [
+    "log schema",
+    "timestamp",
+    "event type",
+    "agent identifier",
+    "payload"
+   ],
+   "kind": "concept",
+   "bloom": 2,
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "minutes": 15,
+   "id": "W07.L2.C2",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W07.L2",
+   "title": "Control‑Flow Step Taxonomy",
+   "teaches": "Students categorize the distinct step types recorded in logs—function calls, loop iterations, conditional branches, and agent decision points—and explain how each appears in the log artifact.",
+   "key_terms": [
+    "function call",
+    "loop iteration",
+    "conditional branch",
+    "agent decision",
+    "step taxonomy"
+   ],
+   "kind": "mechanism",
+   "bloom": 3,
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "minutes": 15,
+   "id": "W07.L2.C3",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W07.L2",
+   "title": "Instrumentation and Logging Frameworks",
+   "teaches": "Students observe a live demo of adding instrumentation hooks to a coding agent using Python's logging module and OpenTelemetry, seeing how logs are emitted in real time.",
+   "key_terms": [
+    "instrumentation",
+    "logging framework",
+    "OpenTelemetry",
+    "hook",
+    "real‑time emission"
+   ],
+   "kind": "demo",
+   "bloom": 3,
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "minutes": 15,
+   "id": "W07.L2.C4",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W07.L2",
+   "title": "Worked Example: Simple Agent Loop Trace",
+   "teaches": "Students follow a step‑by‑step trace of a toy generate‑test‑refactor agent, mapping each log entry to source‑code changes and identifying the control‑flow path.",
+   "key_terms": [
+    "toy agent",
+    "generate-test-refactor",
+    "trace mapping",
+    "source‑code change",
+    "control‑flow path"
+   ],
+   "kind": "worked_example",
+   "bloom": 4,
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "minutes": 15,
+   "id": "W07.L2.C5",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W07.L2",
+   "title": "Activity: Instrument a Toy Agent",
+   "teaches": "Students modify a provided skeleton agent to emit structured logs, run it on a sample task, and verify that all control‑flow steps appear in the output log.",
+   "key_terms": [
+    "skeleton agent",
+    "structured log",
+    "sample task",
+    "verification",
+    "control‑flow coverage"
+   ],
+   "kind": "activity",
+   "bloom": 3,
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "minutes": 15,
+   "id": "W07.L2.C6",
+   "in_class": true
+  },
+  {
+   "lecture_id": "W07.L2",
+   "title": "Mapping Log Steps to Code Changes",
+   "teaches": "Students learn techniques to correlate log entries with diffs in the codebase, using timestamps and agent IDs to reconstruct the iterative development narrative.",
+   "key_terms": [
+    "log correlation",
+    "code diff",
+    "timestamp alignment",
+    "agent ID",
+    "development narrative"
+   ],
+   "kind": "mechanism",
+   "bloom": 4,
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "minutes": 15,
+   "id": "W07.L2.C7",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W07.L2",
+   "title": "Pitfalls and Best Practices in Tracing",
+   "teaches": "Students compare common logging anti‑patterns—missing context, inconsistent granularity, and timestamp drift—with recommended practices for reliable traceability.",
+   "key_terms": [
+    "anti‑pattern",
+    "missing context",
+    "granularity",
+    "timestamp drift",
+    "best practice"
+   ],
+   "kind": "comparison",
+   "bloom": 4,
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "minutes": 15,
+   "id": "W07.L2.C8",
+   "in_class": false
+  }
+ ],
+ "resources": {
+  "lecture_id": "W07.L2",
+  "topic": "Iterative development and loop engineering",
+  "want": {
+   "want_videos": false,
+   "want_readings": true,
+   "want_practice": true,
+   "want_recorded_lecture": false,
+   "want_clips": false,
+   "want_guest": true,
+   "confidence": 2,
+   "note": "",
+   "choices": [
+    "own_material",
+    "generate_material",
+    "assistance",
+    "guest_lecture"
+   ]
+  },
+  "queries": {
+   "lecture_id": "W07.L2",
+   "video_queries": [
+    "iterative loop engineering coding agents tutorial",
+    "agentic software engineering trace analysis lecture",
+    "iterative development loops AI explained"
+   ],
+   "reading_queries": [
+    "coding agent execution logs iterative development",
+    "trace execution logs coding agents tutorial"
+   ],
+   "practice_queries": [
+    "coding agent execution log trace analysis lab notebook"
+   ],
+   "recorded_lecture_query": "iterative development and loop engineering lecture",
+   "research_queries": [
+    "coding agent execution traces",
+    "iterative loop engineering software agents"
+   ],
+   "practitioner_query": "AI coding agent developer"
+  },
+  "items": {
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://www.augmentcode.com/guides/agent-run-development-loop",
+     "title": "The Agent-Run Loop: Reframing the SDLC as a Continuous Cycle | Augment Code",
+     "source": "augmentcode.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.661,
+      "quality": 0.75,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.624,
+     "rank": 1,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W07.L2.C1 ✓, W07.L2.C2 ✗, W07.L2.C3 ✓, W07.L2.C4 ✗, W07.L2.C5 ✓, W07.L2.C6 ✓, W07.L2.C7 ✓, W07.L2.C8 ✗ [from page text] · augmentcode.com · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Good conceptual overview of agent-run loops; lacks technical depth on log tracing.",
+      "issues": [
+       "lacks technical details on log structure",
+       "no worked trace example"
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.661,
+      "evidence": "text",
+      "per_target": {
+       "M5.T1": {
+        "covered": true,
+        "sim": 0.553,
+        "segments": []
+       },
+       "W07.L2.C1": {
+        "covered": true,
+        "sim": 0.64,
+        "segments": [],
+        "text": "Iterative Loop Engineering Overview. Students learn the definition of iterative loop engineering, its role in AI‑assiste"
+       },
+       "W07.L2.C2": {
+        "covered": false,
+        "sim": 0.371,
+        "segments": [],
+        "text": "Execution Log Structure and Fields. Students identify the standard schema of an execution log, including timestamp, even"
+       },
+       "W07.L2.C3": {
+        "covered": true,
+        "sim": 0.525,
+        "segments": [],
+        "text": "Control‑Flow Step Taxonomy. Students categorize the distinct step types recorded in logs—function calls, loop iterations"
+       },
+       "W07.L2.C4": {
+        "covered": false,
+        "sim": 0.403,
+        "segments": [],
+        "text": "Instrumentation and Logging Frameworks. Students observe a live demo of adding instrumentation hooks to a coding agent u"
+       },
+       "W07.L2.C5": {
+        "covered": true,
+        "sim": 0.579,
+        "segments": [],
+        "text": "Worked Example: Simple Agent Loop Trace. Students follow a step‑by‑step trace of a toy generate‑test‑refactor agent, map"
+       },
+       "W07.L2.C6": {
+        "covered": true,
+        "sim": 0.512,
+        "segments": [],
+        "text": "Activity: Instrument a Toy Agent. Students modify a provided skeleton agent to emit structured logs, run it on a sample "
+       },
+       "W07.L2.C7": {
+        "covered": true,
+        "sim": 0.472,
+        "segments": [],
+        "text": "Mapping Log Steps to Code Changes. Students learn techniques to correlate log entries with diffs in the codebase, using "
+       },
+       "W07.L2.C8": {
+        "covered": false,
+        "sim": 0.321,
+        "segments": [],
+        "text": "Pitfalls and Best Practices in Tracing. Students compare common logging anti‑patterns—missing context, inconsistent gran"
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://www.ibm.com/think/topics/loop-engineering",
+     "title": "What Is Loop Engineering? | IBM",
+     "source": "ibm.com",
+     "tier": 4,
+     "page_type": "linked by video",
+     "scores": {
+      "coverage": 0.625,
+      "quality": 0.8,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.621,
+     "rank": 2,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W07.L2.C1 ✓, W07.L2.C2 ✗, W07.L2.C3 ✓, W07.L2.C4 ✓, W07.L2.C5 ✓, W07.L2.C6 ✓, W07.L2.C7 ✓, W07.L2.C8 ✗ [from page text] · ibm.com · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Clear definition of loop engineering from IBM; good for intro but lacks hands-on trace analysis.",
+      "issues": [
+       "high-level, no technical trace details"
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 5,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.625,
+      "evidence": "text",
+      "per_target": {
+       "M5.T1": {
+        "covered": true,
+        "sim": 0.696,
+        "segments": []
+       },
+       "W07.L2.C1": {
+        "covered": true,
+        "sim": 0.8,
+        "segments": [],
+        "text": "Iterative Loop Engineering Overview. Students learn the definition of iterative loop engineering, its role in AI‑assiste"
+       },
+       "W07.L2.C2": {
+        "covered": false,
+        "sim": 0.371,
+        "segments": [],
+        "text": "Execution Log Structure and Fields. Students identify the standard schema of an execution log, including timestamp, even"
+       },
+       "W07.L2.C3": {
+        "covered": true,
+        "sim": 0.426,
+        "segments": [],
+        "text": "Control‑Flow Step Taxonomy. Students categorize the distinct step types recorded in logs—function calls, loop iterations"
+       },
+       "W07.L2.C4": {
+        "covered": true,
+        "sim": 0.467,
+        "segments": [],
+        "text": "Instrumentation and Logging Frameworks. Students observe a live demo of adding instrumentation hooks to a coding agent u"
+       },
+       "W07.L2.C5": {
+        "covered": true,
+        "sim": 0.533,
+        "segments": [],
+        "text": "Worked Example: Simple Agent Loop Trace. Students follow a step‑by‑step trace of a toy generate‑test‑refactor agent, map"
+       },
+       "W07.L2.C6": {
+        "covered": true,
+        "sim": 0.479,
+        "segments": [],
+        "text": "Activity: Instrument a Toy Agent. Students modify a provided skeleton agent to emit structured logs, run it on a sample "
+       },
+       "W07.L2.C7": {
+        "covered": true,
+        "sim": 0.456,
+        "segments": [],
+        "text": "Mapping Log Steps to Code Changes. Students learn techniques to correlate log entries with diffs in the codebase, using "
+       },
+       "W07.L2.C8": {
+        "covered": false,
+        "sim": 0.29,
+        "segments": [],
+        "text": "Pitfalls and Best Practices in Tracing. Students compare common logging anti‑patterns—missing context, inconsistent gran"
+       }
+      }
+     }
+    }
+   ],
+   "practice": [
+    {
+     "kind": "practice",
+     "url": "https://github.com/rohitg00/ai-engineering-from-scratch",
+     "title": "rohitg00/ai-engineering-from-scratch — Learn AI Engineering! Learn it. Build it. Ship it for others.",
+     "source": "GitHub",
+     "tier": 3,
+     "page_type": "repository",
+     "licence": "MIT",
+     "stars": 75206,
+     "scores": {
+      "coverage": 0.443,
+      "quality": 0.42,
+      "authority": 0.65,
+      "level_fit": 0.8,
+      "reception": 1.0,
+      "practicality": 1.0
+     },
+     "total": 0.617,
+     "rank": 1,
+     "status": "proposed",
+     "rationale": "Covers: topic ✗, W07.L2.C1 ✓, W07.L2.C2 ✓, W07.L2.C3 ✓, W07.L2.C4 ✗, W07.L2.C5 ✓, W07.L2.C6 ✓, W07.L2.C7 ✓, W07.L2.C8 ✗ [from page text] · GitHub · tier 3",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "review": {
+      "review": "Curriculum with lessons on agent loops; good for structured practice but main lecture topic not explicitly covered.",
+      "issues": [
+       "main topic not covered",
+       "excerpts only show lesson titles"
+      ],
+      "use_as": "practice",
+      "explains": "mentions",
+      "clarity": 3,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.443,
+      "evidence": "text",
+      "per_target": {
+       "M5.T1": {
+        "covered": false,
+        "sim": 0.38,
+        "segments": []
+       },
+       "W07.L2.C1": {
+        "covered": true,
+        "sim": 0.47,
+        "segments": [],
+        "text": "Iterative Loop Engineering Overview. Students learn the definition of iterative loop engineering, its role in AI‑assiste"
+       },
+       "W07.L2.C2": {
+        "covered": true,
+        "sim": 0.435,
+        "segments": [],
+        "text": "Execution Log Structure and Fields. Students identify the standard schema of an execution log, including timestamp, even"
+       },
+       "W07.L2.C3": {
+        "covered": true,
+        "sim": 0.436,
+        "segments": [],
+        "text": "Control‑Flow Step Taxonomy. Students categorize the distinct step types recorded in logs—function calls, loop iterations"
+       },
+       "W07.L2.C4": {
+        "covered": false,
+        "sim": 0.41,
+        "segments": [],
+        "text": "Instrumentation and Logging Frameworks. Students observe a live demo of adding instrumentation hooks to a coding agent u"
+       },
+       "W07.L2.C5": {
+        "covered": true,
+        "sim": 0.502,
+        "segments": [],
+        "text": "Worked Example: Simple Agent Loop Trace. Students follow a step‑by‑step trace of a toy generate‑test‑refactor agent, map"
+       },
+       "W07.L2.C6": {
+        "covered": true,
+        "sim": 0.451,
+        "segments": [],
+        "text": "Activity: Instrument a Toy Agent. Students modify a provided skeleton agent to emit structured logs, run it on a sample "
+       },
+       "W07.L2.C7": {
+        "covered": true,
+        "sim": 0.481,
+        "segments": [],
+        "text": "Mapping Log Steps to Code Changes. Students learn techniques to correlate log entries with diffs in the codebase, using "
+       },
+       "W07.L2.C8": {
+        "covered": false,
+        "sim": 0.361,
+        "segments": [],
+        "text": "Pitfalls and Best Practices in Tracing. Students compare common logging anti‑patterns—missing context, inconsistent gran"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "reserve": {
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://addyosmani.com/blog/self-improving-agents/",
+     "title": "Self-Improving Coding Agents | AddyOsmani.com",
+     "source": "addyosmani.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.628,
+      "quality": 0.75,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.612,
+     "rank": 3,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W07.L2.C1 ✓, W07.L2.C2 ✗, W07.L2.C3 ✗, W07.L2.C4 ✗, W07.L2.C5 ✓, W07.L2.C6 ✓, W07.L2.C7 ✓, W07.L2.C8 ✗ [from page text] · addyosmani.com · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Blog post on self-improving agent loops; good for motivation but not for technical tracing skills.",
+      "issues": [
+       "blog post, not academic",
+       "limited technical detail on log tracing"
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.628,
+      "evidence": "text",
+      "per_target": {
+       "M5.T1": {
+        "covered": true,
+        "sim": 0.589,
+        "segments": []
+       },
+       "W07.L2.C1": {
+        "covered": true,
+        "sim": 0.698,
+        "segments": [],
+        "text": "Iterative Loop Engineering Overview. Students learn the definition of iterative loop engineering, its role in AI‑assiste"
+       },
+       "W07.L2.C2": {
+        "covered": false,
+        "sim": 0.348,
+        "segments": [],
+        "text": "Execution Log Structure and Fields. Students identify the standard schema of an execution log, including timestamp, even"
+       },
+       "W07.L2.C3": {
+        "covered": false,
+        "sim": 0.387,
+        "segments": [],
+        "text": "Control‑Flow Step Taxonomy. Students categorize the distinct step types recorded in logs—function calls, loop iterations"
+       },
+       "W07.L2.C4": {
+        "covered": false,
+        "sim": 0.389,
+        "segments": [],
+        "text": "Instrumentation and Logging Frameworks. Students observe a live demo of adding instrumentation hooks to a coding agent u"
+       },
+       "W07.L2.C5": {
+        "covered": true,
+        "sim": 0.57,
+        "segments": [],
+        "text": "Worked Example: Simple Agent Loop Trace. Students follow a step‑by‑step trace of a toy generate‑test‑refactor agent, map"
+       },
+       "W07.L2.C6": {
+        "covered": true,
+        "sim": 0.525,
+        "segments": [],
+        "text": "Activity: Instrument a Toy Agent. Students modify a provided skeleton agent to emit structured logs, run it on a sample "
+       },
+       "W07.L2.C7": {
+        "covered": true,
+        "sim": 0.518,
+        "segments": [],
+        "text": "Mapping Log Steps to Code Changes. Students learn techniques to correlate log entries with diffs in the codebase, using "
+       },
+       "W07.L2.C8": {
+        "covered": false,
+        "sim": 0.321,
+        "segments": [],
+        "text": "Pitfalls and Best Practices in Tracing. Students compare common logging anti‑patterns—missing context, inconsistent gran"
+       }
+      }
+     }
+    }
+   ],
+   "practice": [],
+   "video": []
+  },
+  "rejected": [
+   {
+    "title": "Do AI Coding Agents Log Like Humans? An Empirical Study",
+    "url": "https://arxiv.org/html/2604.09409v1",
+    "why": [
+     "score 0.58 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Leveraging GitHub's AI Coding Agent: From Planning to Feature · community · Discussion #163572 · GitHub",
+    "url": "https://github.com/orgs/community/discussions/163572",
+    "why": [
+     "score 0.49 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Coding Agents: What They Are and How They Work | Snowflake",
+    "url": "https://www.snowflake.com/en/artificial-intelligence/agents/coding-agents/",
+    "why": [
+     "score 0.52 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "How Do AI Agents Execute Code? | Blaxel",
+    "url": "https://blaxel.ai/blog/how-do-ai-agents-execute-code",
+    "why": [
+     "score 0.46 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Agent Logging 101: The Complete Guide to Knowing What Your AI Agents Are Actually Doing",
+    "url": "https://sidsaladi.substack.com/p/agent-logging-101-the-complete-guide",
+    "why": [
+     "score 0.46 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Qodo Launches CLI Agent Framework, Enabling Any Developer to Create Specialized Coding Agents in Minutes",
+    "url": "https://finance.yahoo.com/news/qodo-launches-cli-agent-framework-110000294.html",
+    "why": [
+     "score 0.37 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Software Engineering",
+    "url": "https://openlibrary.org/books/OL28345690M",
+    "why": [
+     "score 0.39 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Object-oriented software engineering : an agile unified methodology",
+    "url": "https://openlibrary.org/books/OL27461769M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Introduction to Computing Using Python",
+    "url": "https://openlibrary.org/books/OL34178285M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Design and development of engineered receptors for cell and tissue engineering",
+    "url": "https://www.sciencedirect.com/science/article/pii/S2452310021000573/pdf",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Looping the Genome with SMC Complexes",
+    "url": "https://www.annualreviews.org/doi/pdf/10.1146/annurev-biochem-032620-110506",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Engineering the next generation of cell-based therapeutics",
+    "url": "https://www.nature.com/articles/s41573-022-00476-6",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Big Data Analytics in Chemical Engineering",
+    "url": "https://www.annualreviews.org/doi/pdf/10.1146/annurev-chembioeng-060816-101555",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "TraceLab: Coding-Agent Serving Workloads",
+    "url": "https://www.emergentmind.com/topics/tracelab",
+    "why": [
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "TraceLab: Characterizing Coding Agent Workloads for LLM Serving | alphaXiv",
+    "url": "https://www.alphaxiv.org/abs/2606.30560",
+    "why": [
+     "score 0.46 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "TraceLab: Characterizing Coding Agent Workloads for LLM Serving | SyFI Lab",
+    "url": "https://syfi.cs.washington.edu/blog/2026-06-25-tracelab",
+    "why": [
+     "page not readable (status None, ConnectTimeout: _ssl.c:1059: The handshake operation timed out)"
+    ]
+   },
+   {
+    "title": "CodeTracer: Towards Traceable Agent States",
+    "url": "https://arxiv.org/html/2604.11641v3",
+    "why": [
+     "a paper is not practice material"
+    ]
+   },
+   {
+    "title": "AI Observability for Coding Agents: Complete Guide | Blaxel Blog",
+    "url": "https://blaxel.ai/blog/ai-observability",
+    "why": [
+     "score 0.53 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Agent Tracing: End-to-End Observability for Complex AI Systems",
+    "url": "https://www.comet.com/site/blog/ai-agent-tracing/",
+    "why": [
+     "score 0.53 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Agent Observability for AI Coding: How to Trace What Your Agents Actually Did | Augment Code",
+    "url": "https://www.augmentcode.com/guides/agent-observability-for-ai-coding",
+    "why": [
+     "score 0.50 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "How to test log redaction in agent-written code | Factory",
+    "url": "https://factory.com/articles/log-redaction-coding-agents",
+    "why": [
+     "page not readable (status None, ConnectError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1077))"
+    ]
+   },
+   {
+    "title": "public-apis/public-apis — A collective list of free APIs",
+    "url": "https://github.com/public-apis/public-apis",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "trimstray/the-book-of-secret-knowledge — A collection of inspiring lists, manuals, cheatsheets, blogs, hacks, one-liners, cli/web tools and more.",
+    "url": "https://github.com/trimstray/the-book-of-secret-knowledge",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "ripienaar/free-for-dev — A list of SaaS, PaaS and IaaS offerings that have free tiers of interest to devops and infradev",
+    "url": "https://github.com/ripienaar/free-for-dev",
+    "why": [
+     "score 0.51 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "punkpeye/awesome-mcp-servers — A collection of MCP servers.",
+    "url": "https://github.com/punkpeye/awesome-mcp-servers",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Coder Agents - AI Coding Agents on Your Infrastructure | Coder",
+    "url": "https://coder.com/solutions/agents",
+    "why": [
+     "score 0.37 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "What Is Loop Engineering? Building Better AI Agents",
+    "url": "https://www.youtube.com/watch?v=DQBqh6gcx7U&t=0s",
+    "why": [
+     "C1: sufficiency 3 < 4"
+    ]
+   },
+   {
+    "title": "What is Loop Engineering? The New Skill for AI Agents — 30 Seconds",
+    "url": "https://www.youtube.com/watch?v=s6GDMav2Tso",
+    "why": [
+     "too short to teach a part (0:31)"
+    ]
+   },
+   {
+    "title": "How to build a Claude Agent team that runs in loops",
+    "url": "https://www.youtube.com/watch?v=mt_sEoBnD_g",
+    "why": [
+     "too short to teach a part (1:13)"
+    ]
+   },
+   {
+    "title": "Loop Engineering 101 Explained | Rakesh Gohel",
+    "url": "https://www.youtube.com/watch?v=54-W_AL1N8I",
+    "why": [
+     "too short to teach a part (0:12)"
+    ]
+   },
+   {
+    "title": "How Loop Engineering Automates AI",
+    "url": "https://www.youtube.com/watch?v=5miEzamahtg",
+    "why": [
+     "too short to teach a part (1:15)"
+    ]
+   },
+   {
+    "title": "How Loop Engineering Automates AI",
+    "url": "https://www.youtube.com/watch?v=uk4eB_9Me2o",
+    "why": [
+     "too short to teach a part (0:52)"
+    ]
+   },
+   {
+    "title": "The TRUE Impact of AI on Software Engineering (Complete Analysis)",
+    "url": "https://www.youtube.com/watch?v=WIhvfnjIxMc",
+    "why": [
+     "too short to teach a part (0:52)"
+    ]
+   },
+   {
+    "title": "🔥AI Agents vs Agentic AI | Intellipaat",
+    "url": "https://www.youtube.com/watch?v=SKd15qYtkdU",
+    "why": [
+     "too short to teach a part (0:58)"
+    ]
+   },
+   {
+    "title": "Agentic AI Engineering: Complete 4-Hour Workshop feat. MCP, CrewAI and OpenAI Agents SDK",
+    "url": "https://www.youtube.com/watch?v=LSk5KaEGVk4",
+    "why": [
+     "too long to find a clip in (3:34:17)"
+    ]
+   },
+   {
+    "title": "RoadMap to learn Agentic AI #ai #agenticai #education",
+    "url": "https://www.youtube.com/watch?v=a-1lZvvTNOs",
+    "why": [
+     "too short to teach a part (0:07)"
+    ]
+   },
+   {
+    "title": "DHH: Future of Programming, AI, Agentic Engineering, Vibe Coding & Linux | Lex Fridman Podcast #501",
+    "url": "https://www.youtube.com/watch?v=NYFGCESmikA",
+    "why": [
+     "too long to find a clip in (5:15:51)"
+    ]
+   },
+   {
+    "title": "Intro to Programming: Loops",
+    "url": "https://www.youtube.com/watch?v=wxds6MAtUQ0",
+    "why": [
+     "too short to teach a part (1:41)"
+    ]
+   },
+   {
+    "title": "Loop is the future #coding #coding #claude",
+    "url": "https://www.youtube.com/watch?v=FW15ZEzFiQ4",
+    "why": [
+     "too short to teach a part (1:05)"
+    ]
+   },
+   {
+    "title": "Loops (cycles) | Iterative workflow in LangGraph Explained Simply in 60 Seconds #python #langgraph",
+    "url": "https://www.youtube.com/watch?v=5eQrART6zKs",
+    "why": [
+     "too short to teach a part (2:38)"
+    ]
+   },
+   {
+    "title": "Claude's Official Ralph Wiggum Plugin: Iterative Vibe Coding Explained",
+    "url": "https://www.youtube.com/watch?v=gwKDQ74zz3k",
+    "why": [
+     "too short to teach a part (0:48)"
+    ]
+   },
+   {
+    "title": "Loops in One Shot | C Programming | Lecture 3 | Complete C Course",
+    "url": "https://www.youtube.com/watch?v=wYvrBXUfFfw",
+    "why": [
+     "too long to find a clip in (3:57:25)"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 30,
+   "passed_checks": 4,
+   "rejected": 26,
+   "videos_used": 0
+  },
+  "clips": [],
+  "timeline": [
+   {
+    "component": "W07.L2.C1",
+    "title": "Iterative Loop Engineering Overview",
+    "minutes": 15,
+    "kind": "concept",
+    "segments": [],
+    "delivery": "notebooklm"
+   },
+   {
+    "component": "W07.L2.C2",
+    "title": "Execution Log Structure and Fields",
+    "minutes": 15,
+    "kind": "concept",
+    "segments": [],
+    "delivery": "notebooklm"
+   },
+   {
+    "component": "W07.L2.C3",
+    "title": "Control‑Flow Step Taxonomy",
+    "minutes": 15,
+    "kind": "mechanism",
+    "segments": [],
+    "delivery": "notebooklm"
+   },
+   {
+    "component": "W07.L2.C4",
+    "title": "Instrumentation and Logging Frameworks",
+    "minutes": 15,
+    "kind": "demo",
+    "segments": [],
+    "delivery": "notebooklm"
+   },
+   {
+    "component": "W07.L2.C5",
+    "title": "Worked Example: Simple Agent Loop Trace",
+    "minutes": 15,
+    "kind": "worked_example",
+    "segments": [],
+    "delivery": "notebooklm"
+   },
+   {
+    "component": "W07.L2.C6",
+    "title": "Activity: Instrument a Toy Agent",
+    "minutes": 15,
+    "kind": "activity",
+    "segments": [],
+    "delivery": "in_class"
+   },
+   {
+    "component": "W07.L2.C7",
+    "title": "Mapping Log Steps to Code Changes",
+    "minutes": 15,
+    "kind": "mechanism",
+    "segments": [],
+    "delivery": "notebooklm"
+   },
+   {
+    "component": "W07.L2.C8",
+    "title": "Pitfalls and Best Practices in Tracing",
+    "minutes": 15,
+    "kind": "comparison",
+    "segments": [],
+    "delivery": "notebooklm"
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W07.L2",
+    "title": "Iterative Loop Engineering Overview",
+    "teaches": "Students learn the definition of iterative loop engineering, its role in AI‑assisted coding, and the high‑level phases of a coding agent's generate‑test‑refactor cycle.",
+    "key_terms": [
+     "iterative loop engineering",
+     "coding agent",
+     "generate-test-refactor",
+     "AI-assisted coding"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W07.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W07.L2",
+    "title": "Execution Log Structure and Fields",
+    "teaches": "Students identify the standard schema of an execution log, including timestamp, event type, agent identifier, and payload, and understand how each field maps to a control‑flow step.",
+    "key_terms": [
+     "log schema",
+     "timestamp",
+     "event type",
+     "agent identifier",
+     "payload"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W07.L2.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W07.L2",
+    "title": "Control‑Flow Step Taxonomy",
+    "teaches": "Students categorize the distinct step types recorded in logs—function calls, loop iterations, conditional branches, and agent decision points—and explain how each appears in the log artifact.",
+    "key_terms": [
+     "function call",
+     "loop iteration",
+     "conditional branch",
+     "agent decision",
+     "step taxonomy"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W07.L2.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W07.L2",
+    "title": "Instrumentation and Logging Frameworks",
+    "teaches": "Students observe a live demo of adding instrumentation hooks to a coding agent using Python's logging module and OpenTelemetry, seeing how logs are emitted in real time.",
+    "key_terms": [
+     "instrumentation",
+     "logging framework",
+     "OpenTelemetry",
+     "hook",
+     "real‑time emission"
+    ],
+    "kind": "demo",
+    "bloom": 3,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W07.L2.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W07.L2",
+    "title": "Worked Example: Simple Agent Loop Trace",
+    "teaches": "Students follow a step‑by‑step trace of a toy generate‑test‑refactor agent, mapping each log entry to source‑code changes and identifying the control‑flow path.",
+    "key_terms": [
+     "toy agent",
+     "generate-test-refactor",
+     "trace mapping",
+     "source‑code change",
+     "control‑flow path"
+    ],
+    "kind": "worked_example",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W07.L2.C5",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W07.L2",
+    "title": "Activity: Instrument a Toy Agent",
+    "teaches": "Students modify a provided skeleton agent to emit structured logs, run it on a sample task, and verify that all control‑flow steps appear in the output log.",
+    "key_terms": [
+     "skeleton agent",
+     "structured log",
+     "sample task",
+     "verification",
+     "control‑flow coverage"
+    ],
+    "kind": "activity",
+    "bloom": 3,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W07.L2.C6",
+    "in_class": true
+   },
+   {
+    "lecture_id": "W07.L2",
+    "title": "Mapping Log Steps to Code Changes",
+    "teaches": "Students learn techniques to correlate log entries with diffs in the codebase, using timestamps and agent IDs to reconstruct the iterative development narrative.",
+    "key_terms": [
+     "log correlation",
+     "code diff",
+     "timestamp alignment",
+     "agent ID",
+     "development narrative"
+    ],
+    "kind": "mechanism",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W07.L2.C7",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W07.L2",
+    "title": "Pitfalls and Best Practices in Tracing",
+    "teaches": "Students compare common logging anti‑patterns—missing context, inconsistent granularity, and timestamp drift—with recommended practices for reliable traceability.",
+    "key_terms": [
+     "anti‑pattern",
+     "missing context",
+     "granularity",
+     "timestamp drift",
+     "best practice"
+    ],
+    "kind": "comparison",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W07.L2.C8",
+    "in_class": false
+   }
+  ],
+  "notebooklm": {
+   "pack": "notebooklm/W07.L2.md",
+   "components": [],
+   "sources": 5
+  },
+  "blocks": [],
+  "video_search": {
+   "funnel": {
+    "found": 38,
+    "usable": 24,
+    "shortlisted": 12,
+    "with_text": 8,
+    "read": 4,
+    "checked": 1,
+    "passed": 0
+   },
+   "videos": [
+    {
+     "video": "What Is Loop Engineering? Building Better AI Agents",
+     "url": "https://www.youtube.com/watch?v=DQBqh6gcx7U",
+     "channel": "IBM Technology",
+     "text": "captions",
+     "parts": {
+      "W07.L2.C1": {
+       "claim": "fully",
+       "start": "0:00",
+       "end": "10:48",
+       "result": "failed",
+       "why": [
+        "sufficiency 3 < 4"
+       ],
+       "coverage": 1.0,
+       "relevance": 5,
+       "sufficiency": 3,
+       "checker": "groq:openai/gpt-oss-120b",
+       "reader": "nvidia:nvidia/nemotron-3-ultra-550b-a55b"
+      }
+     }
+    },
+    {
+     "video": "You Can Learn AI Agent Harness & Loop Engineering In 19 Min | LLM Ops, Eval, Tracing, RAG",
+     "url": "https://www.youtube.com/watch?v=GrNbuWWJYiI",
+     "channel": "Sean‘s AI Stories",
+     "text": "captions",
+     "parts": {}
+    },
+    {
+     "video": "AI in the SDLC: Rethinking AI Coding Tools & AI Agents",
+     "url": "https://www.youtube.com/watch?v=4wMRXmLpdA8",
+     "channel": "IBM Technology",
+     "text": "captions",
+     "parts": {}
+    },
+    {
+     "video": "Agentic AI Frameworks Explained: Workflows, Multi-Agent, & Production",
+     "url": "https://www.youtube.com/watch?v=ZVPlLaehjLk",
+     "channel": "IBM Technology",
+     "text": "captions",
+     "parts": {}
+    }
+   ]
+  },
+  "notebooklm_sources": [
+   {
+    "kind": "video",
+    "id": "DQBqh6gcx7U",
+    "url": "https://www.youtube.com/watch?v=DQBqh6gcx7U",
+    "title": "What Is Loop Engineering? Building Better AI Agents",
+    "source": "IBM Technology",
+    "description": "Learn more about Loop Engineering here → https://ibm.biz/~LqlzZo42O\n\nAI agents need more than one perfectly written prompt. Martin Keen explains loop engineering and how AI agents act, observe, adjust, and repeat toward measurable goals. Learn how context, tools, subagents, and human oversight make agentic loops work.\n\n 00:00 – Understand Loop Engineering vs Prompt Engineering\n 01:18 – Build an AI Agent Loop Around a Goal\n 02:30 – Define Goals AI Agents Can Actually Verify\n 03:29 – Engineer Triggers, Schedules & Hooks\n 04:18 – Manage Agent Context, Skills & Persistent State\n 05:37 – Give AI Agents Tools with MCP & APIs\n 06:10 – Use Subagents to Check AI Agent Work\n 07:11 – Keep Humans Inside Agentic Loops\n 07:49 – Avoid Comprehension & Intent Debt\n 10:05 – Define the Human Role in Loop Engineering\n\nAI news moves fast. Sign up for a monthly newsletter for AI updates from IBM → https://ibm.biz/~FCnbZpRqy\n\nAI was used in the creation of the transcript and metadata for this video.\n\n#loopengineering #aiagents #agenticai #promptengineering #contextengineering \n---------------------------------------------------------------------------------------------------------\nFind us on YouTube:\n🔵 IBM Technology: https://www.youtube.com/@IBMTechnology\n🔵 IBM: https://www.youtube.com/@IBM \n🔵 IBM Developer: https://youtube.com/@IBMDeveloperAdvocates"
+   }
+  ],
+  "video_engine": 2,
+  "partial": {
+   "reason": "YouTube blocked transcript requests (from 05:51)",
+   "videos_without_transcript": [
+    "kRVXMVAH5H8",
+    "NweTzHYBgYU",
+    "AloUqnD7aPs",
+    "IOrAlTY639U",
+    "15_pppse4fY"
+   ]
+  }
+ },
+ "experts": {
+  "lecture_id": "W07.L2",
+  "topic": "Iterative development and loop engineering",
+  "experts": [
+   {
+    "name": "Christoph Treude",
+    "kind": "academic",
+    "role": "Associate Professor of Computer Science",
+    "affiliation": "Singapore Management University",
+    "affiliation_openalex": "Heidelberg University",
+    "country": "SG",
+    "links": {
+     "openalex": "https://openalex.org/A5134124070",
+     "orcid": "https://orcid.org/0000-0002-6919-2149",
+     "scholar": "https://scholar.google.com/citations?user=-ie8QFEAAAAJ"
+    },
+    "metrics": {
+     "cited_by": 12676,
+     "h_index": 59,
+     "works_count": 29,
+     "matching_works": 1,
+     "i10_index": 175,
+     "source": "Google Scholar"
+    },
+    "scores": {
+     "topical_fit": 0.8,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.82,
+     "recency": 1.0,
+     "feasibility": 0.722
+    },
+    "total": 0.696,
+    "rank": 1,
+    "verified_identity": "OpenAlex author record + ORCID + Google Scholar profile",
+    "latest_year": 2026,
+    "findings": [],
+    "interests": [
+     "Software Engineering",
+     "Empirical Software Engineering",
+     "Human-AI Interaction",
+     "AI for Science",
+     "AI4SE"
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Loop Engineering: Building Blocks, Adoption, and Impact",
+      "year": 2026,
+      "url": "https://doi.org/10.48550/arxiv.2608.21884",
+      "cited_by": 0,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored the paper \"Loop Engineering: Building Blocks, Adoption, and Impact\", directly addressing the lecture's core topic on loop engineering.",
+    "fit": "strong",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Jian Zhang",
+    "kind": "academic",
+    "affiliation": "Beihang University",
+    "country": "CN",
+    "links": {
+     "scholar": "https://scholar.google.com/citations?user=ki1y5TQAAAAJ"
+    },
+    "metrics": {
+     "h_index": 16,
+     "cited_by": 2425,
+     "i10_index": 20,
+     "source": "Google Scholar"
+    },
+    "scores": {
+     "topical_fit": 0.829,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.549,
+     "recency": 1.0,
+     "feasibility": 0.722
+    },
+    "total": 0.693,
+    "rank": 2,
+    "verified_identity": "Google Scholar profile (id from their paper)",
+    "latest_year": 2026,
+    "findings": [],
+    "interests": [
+     "Software Engineering"
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Tracecoder: A trace-driven multi-agent framework for automated debugging of llm-generated code",
+      "year": 2026,
+      "url": "https://dl.acm.org/doi/abs/10.1145/3744916.3773187",
+      "cited_by": 8
+     },
+     {
+      "kind": "paper",
+      "title": "AutoSaddler: Automatic harness optimization with durable updates from agent execution traces",
+      "year": 2026,
+      "url": "https://arxiv.org/abs/2608.23041",
+      "cited_by": 18
+     },
+     {
+      "kind": "paper",
+      "title": "From agent traces to trust: A survey of evidence tracing and execution provenance in LLM agents",
+      "year": 2026,
+      "url": "https://arxiv.org/abs/2606.04990",
+      "cited_by": 60
+     }
+    ],
+    "why": "Authored papers on agent execution traces, trace-driven debugging, and execution provenance (\"Tracecoder\", \"AutoSaddler\", and a survey on agent traces), matching the outcome on tracing coding agent execution logs.",
+    "fit": "strong",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Jai Lal Lulla",
+    "kind": "academic",
+    "affiliation": "Research Engineer",
+    "affiliation_openalex": "Singapore Management University",
+    "country": "SG",
+    "links": {
+     "openalex": "https://openalex.org/A5120727286",
+     "orcid": "https://orcid.org/0009-0005-0024-8238",
+     "scholar": "https://scholar.google.com/citations?user=U6GH2EMAAAAJ"
+    },
+    "metrics": {
+     "cited_by": 119,
+     "h_index": 5,
+     "works_count": 19,
+     "matching_works": 1,
+     "i10_index": 3,
+     "source": "Google Scholar"
+    },
+    "scores": {
+     "topical_fit": 0.8,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.549,
+     "recency": 1.0,
+     "feasibility": 0.722
+    },
+    "total": 0.682,
+    "rank": 3,
+    "verified_identity": "OpenAlex author record + ORCID + Google Scholar profile",
+    "latest_year": 2026,
+    "findings": [],
+    "interests": [
+     "Software Engineering",
+     "AI4SE",
+     "Agentic AI Coding Tools",
+     "Empirical Software Engineering"
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Loop Engineering: Building Blocks, Adoption, and Impact",
+      "year": 2026,
+      "url": "https://doi.org/10.48550/arxiv.2608.21884",
+      "cited_by": 0,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored the paper \"Loop Engineering: Building Blocks, Adoption, and Impact\", directly covering the lecture's core subject.",
+    "fit": "strong",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Sebastian Baltes",
+    "kind": "academic",
+    "affiliation": "Heidelberg University",
+    "country": "DE",
+    "links": {
+     "openalex": "https://openalex.org/A5033132966",
+     "orcid": "https://orcid.org/0000-0002-2442-7522",
+     "scholar": "https://scholar.google.com/citations?user=xO09KrYAAAAJ"
+    },
+    "metrics": {
+     "cited_by": 3893,
+     "h_index": 28,
+     "works_count": 115,
+     "matching_works": 1,
+     "i10_index": 43,
+     "source": "Google Scholar"
+    },
+    "scores": {
+     "topical_fit": 0.8,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.74,
+     "recency": 1.0,
+     "feasibility": 0.5
+    },
+    "total": 0.668,
+    "rank": 4,
+    "verified_identity": "OpenAlex author record + ORCID + Google Scholar profile",
+    "latest_year": 2026,
+    "findings": [],
+    "interests": [
+     "software engineering",
+     "empirical software engineering",
+     "software analytics"
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Loop Engineering: Building Blocks, Adoption, and Impact",
+      "year": 2026,
+      "url": "https://doi.org/10.48550/arxiv.2608.21884",
+      "cited_by": 0,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored the paper \"Loop Engineering: Building Blocks, Adoption, and Impact\", providing direct evidence of research on loop engineering.",
+    "fit": "strong",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Seyedmoein Mohsenimofidi",
+    "kind": "academic",
+    "role": "Doctoral researcher",
+    "affiliation": "Heidelberg University",
+    "country": "DE",
+    "links": {
+     "openalex": "https://openalex.org/A5095107558",
+     "orcid": "https://orcid.org/0009-0009-1620-2735",
+     "scholar": "https://scholar.google.com/citations?user=Ze83xwwAAAAJ"
+    },
+    "metrics": {
+     "cited_by": 173,
+     "h_index": 5,
+     "works_count": null,
+     "matching_works": 1,
+     "i10_index": 5,
+     "source": "Google Scholar"
+    },
+    "scores": {
+     "topical_fit": 0.8,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.557,
+     "recency": 1.0,
+     "feasibility": 0.5
+    },
+    "total": 0.658,
+    "rank": 5,
+    "verified_identity": "OpenAlex author record + ORCID + Google Scholar profile",
+    "latest_year": 2026,
+    "findings": [],
+    "interests": [
+     "Software_Engineering",
+     "Empirical software engineering",
+     "AI-assisted Software Engineering"
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Loop Engineering: Building Blocks, Adoption, and Impact",
+      "year": 2026,
+      "url": "https://doi.org/10.48550/arxiv.2608.21884",
+      "cited_by": 0,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored the paper \"Loop Engineering: Building Blocks, Adoption, and Impact\", demonstrating direct research involvement in loop engineering.",
+    "fit": "strong",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   }
+  ],
+  "reserve": [],
+  "rejected": [
+   {
+    "name": "Neely Dunlap",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.31 is below 0.5"
+    ]
+   },
+   {
+    "name": "Itamar Friedman",
+    "why": [
+     "topical fit 0.25 is below 0.5"
+    ]
+   },
+   {
+    "name": "Jay Parikh",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.24 is below 0.5"
+    ]
+   },
+   {
+    "name": "Raghava Mutharaju",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.36 is below 0.5"
+    ]
+   },
+   {
+    "name": "Vahram Nersesyan",
+    "why": [
+     "too little research record yet (h-index 0 on OpenAlex, below 5)"
+    ]
+   },
+   {
+    "name": "Vivek Kumar",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.37 is below 0.5"
+    ]
+   },
+   {
+    "name": "Arani Bhattacharya",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.19 is below 0.5"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 36,
+   "assessed": 12,
+   "passed_checks": 5
+  }
+ },
+ "partial": {
+  "reason": "YouTube blocked transcript requests (from 05:51)",
+  "videos_without_transcript": [
+   "kRVXMVAH5H8",
+   "NweTzHYBgYU",
+   "AloUqnD7aPs",
+   "IOrAlTY639U",
+   "15_pppse4fY"
+  ]
+ }
+}

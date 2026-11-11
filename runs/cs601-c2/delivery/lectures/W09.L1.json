@@ -1,0 +1,1536 @@
+{
+ "lecture_id": "W09.L1",
+ "topic": "Software factories and execution trace analysis",
+ "generated_at": "2026-11-02 22:20:22",
+ "components": [
+  {
+   "lecture_id": "W09.L1",
+   "title": "Execution traces in software factories",
+   "teaches": "Students learn what execution traces are, how coding agents emit them during iterative loop engineering, and why they are essential for diagnosing failures in software factories.",
+   "key_terms": [
+    "execution trace",
+    "software factory",
+    "coding agent",
+    "iterative loop",
+    "diagnostics"
+   ],
+   "kind": "concept",
+   "bloom": 2,
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "minutes": 15,
+   "id": "W09.L1.C1",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W09.L1",
+   "title": "Log structure and iteration markers",
+   "teaches": "Students examine the standardized format of iterative development logs, including timestamps, iteration IDs, tool calls, and error markers, enabling systematic navigation of up to 2000 lines.",
+   "key_terms": [
+    "log format",
+    "iteration ID",
+    "timestamp",
+    "tool call",
+    "error marker"
+   ],
+   "kind": "mechanism",
+   "bloom": 2,
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "minutes": 15,
+   "id": "W09.L1.C2",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W09.L1",
+   "title": "Typical failure patterns in agent traces",
+   "teaches": "Students identify three recurring failure categories—environment misconfiguration, dependency resolution errors, and logic regressions—and learn the trace signatures that distinguish each.",
+   "key_terms": [
+    "environment misconfiguration",
+    "dependency resolution",
+    "logic regression",
+    "trace signature",
+    "failure category"
+   ],
+   "kind": "concept",
+   "bloom": 3,
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "minutes": 15,
+   "id": "W09.L1.C3",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W09.L1",
+   "title": "Trace collection and parsing tooling",
+   "teaches": "Students watch a live demonstration of the factory's trace collector, log aggregator, and a Python script that parses raw logs into structured JSON for analysis.",
+   "key_terms": [
+    "trace collector",
+    "log aggregator",
+    "parser script",
+    "JSON output",
+    "automation"
+   ],
+   "kind": "demo",
+   "bloom": 2,
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "minutes": 15,
+   "id": "W09.L1.C4",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W09.L1",
+   "title": "Worked example: environment misconfiguration",
+   "teaches": "Students follow a step‑by‑step analysis of a 500‑line trace, locating missing environment variables, correlating error codes, and citing exact log lines as evidence for the first failure cause.",
+   "key_terms": [
+    "environment variable",
+    "error code",
+    "log evidence",
+    "correlation",
+    "step‑by‑step"
+   ],
+   "kind": "worked_example",
+   "bloom": 4,
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "minutes": 15,
+   "id": "W09.L1.C5",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W09.L1",
+   "title": "Worked example: dependency resolution failure",
+   "teaches": "Students trace a version conflict across iterations, observe repeated fetch retries, and extract the specific dependency graph lines that prove the second failure cause.",
+   "key_terms": [
+    "version conflict",
+    "fetch retry",
+    "dependency graph",
+    "iteration diff",
+    "evidence extraction"
+   ],
+   "kind": "worked_example",
+   "bloom": 4,
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "minutes": 15,
+   "id": "W09.L1.C6",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W09.L1",
+   "title": "Worked example: logic regression detection",
+   "teaches": "Students compare successive iteration outputs, spot a behavioral change in test results, and pinpoint the commit diff lines that constitute the third failure cause with supporting log excerpts.",
+   "key_terms": [
+    "behavioral change",
+    "test result diff",
+    "commit diff",
+    "log excerpt",
+    "regression"
+   ],
+   "kind": "worked_example",
+   "bloom": 4,
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "minutes": 15,
+   "id": "W09.L1.C7",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W09.L1",
+   "title": "Comparing failure causes across traces",
+   "teaches": "Students contrast the three failure signatures side‑by‑side, evaluate their frequency and impact, and practice ranking them by severity using a structured rubric.",
+   "key_terms": [
+    "signature comparison",
+    "frequency",
+    "impact",
+    "severity rubric",
+    "ranking"
+   ],
+   "kind": "comparison",
+   "bloom": 4,
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "minutes": 15,
+   "id": "W09.L1.C8",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W09.L1",
+   "title": "Activity: analyze full 2000‑line log",
+   "teaches": "In pairs, students receive a 2000‑line factory log, apply the parsing script, identify at least three distinct failure causes, and record supporting log line numbers for each.",
+   "key_terms": [
+    "pair work",
+    "2000‑line log",
+    "parsing script",
+    "failure identification",
+    "evidence recording"
+   ],
+   "kind": "activity",
+   "bloom": 4,
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "minutes": 15,
+   "id": "W09.L1.C9",
+   "in_class": true
+  },
+  {
+   "lecture_id": "W09.L1",
+   "title": "Discussion: reporting and best practices",
+   "teaches": "Students present their findings, critique evidence quality, discuss how to automate failure‑cause detection, and outline a checklist for future trace analyses.",
+   "key_terms": [
+    "findings presentation",
+    "evidence critique",
+    "automation ideas",
+    "checklist",
+    "continuous improvement"
+   ],
+   "kind": "discussion",
+   "bloom": 5,
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "minutes": 15,
+   "id": "W09.L1.C10",
+   "in_class": true
+  }
+ ],
+ "resources": {
+  "lecture_id": "W09.L1",
+  "topic": "Software factories and execution trace analysis",
+  "want": {
+   "want_videos": false,
+   "want_readings": true,
+   "want_practice": true,
+   "want_recorded_lecture": false,
+   "want_clips": false,
+   "want_guest": true,
+   "confidence": 2,
+   "note": "",
+   "choices": [
+    "own_material",
+    "generate_material",
+    "assistance",
+    "guest_lecture"
+   ]
+  },
+  "queries": {
+   "lecture_id": "W09.L1",
+   "video_queries": [
+    "execution trace analysis coding agents tutorial",
+    "diagnostic log analysis software factory lecture",
+    "debugging coding agent logs explained"
+   ],
+   "reading_queries": [
+    "diagnostic log analysis software factories documentation",
+    "execution trace failure analysis tutorial"
+   ],
+   "practice_queries": [
+    "execution trace analysis coding agent lab notebook"
+   ],
+   "recorded_lecture_query": "software factories and execution trace analysis lecture",
+   "research_queries": [
+    "execution trace analysis software agents",
+    "diagnostic log analysis AI systems"
+   ],
+   "practitioner_query": "AI systems reliability engineer"
+  },
+  "items": {
+   "video": [
+    {
+     "kind": "video",
+     "id": "oDTh2apD8TM",
+     "url": "https://www.youtube.com/watch?v=oDTh2apD8TM",
+     "title": "Luciq Bits: How to Utilize Execution Traces",
+     "source": "Luciq ",
+     "tier": 4,
+     "duration_s": 271,
+     "published": "2022-12-07T20:51:57Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 353,
+     "likes": 2,
+     "comments": 0,
+     "subscribers": 1710,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.011,
+      "segment": 0.23,
+      "clarity": 0.8,
+      "level_fit": 0.6,
+      "authority": 0.35,
+      "reception": 0.234
+     },
+     "total": 0.209,
+     "findings": [],
+     "rationale": "Teaches C1 Execution traces in software factories (0:24–3:27, partly) [checked on the transcript] · Luciq  · tier 4 · 4:31 · 353 views",
+     "components": [
+      {
+       "id": "W09.L1.C1",
+       "title": "Execution traces in software factories",
+       "start": "0:24",
+       "end": "3:27",
+       "start_s": 24.0,
+       "end_s": 207.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "what execution traces are (mobile app performance context)"
+       ],
+       "missing": [
+        "coding agents emitting traces",
+        "iterative loop engineering",
+        "software factory context",
+        "diagnosing failures in software factories"
+       ],
+       "note": "Clear demo of execution traces for mobile app monitoring; not software factories or coding agents.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.011,
+      "evidence": "transcript",
+      "per_target": {
+       "W09.L1.C1": {
+        "text": "Execution traces in software factories",
+        "covered": true,
+        "sim": 0.437,
+        "segments": [
+         {
+          "start": 24.0,
+          "end": 207.0,
+          "sim": 0.437
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Clear demo of execution traces for mobile app monitoring; not software factories or coding agents.",
+      "issues": [
+       "leaves out: coding agents emitting traces",
+       "leaves out: iterative loop engineering",
+       "leaves out: software factory context",
+       "leaves out: diagnosing failures in software factories"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Luciq (formerly Instabug) | A practical guide to using execution traces to diagnose performance issues in your mobile app.\n\nExecution traces show you exactly what your app is doing at a code level during a slow or failing session. In this video, we walk through how to read and use execution traces inside Luciq to get to the root cause faster.\n\nLuciq is the pioneer of Agentic Mobile Observability. Formerly known as Instabug, Luciq's AI agents proactively detect, diagnose, and resolve mobile app issues before they reach users.\n\nLearn more: https://luciq.ai\nBook a demo: https://luciq.ai/request-demo",
+     "rank": 1,
+     "status": "proposed"
+    }
+   ],
+   "practice": [
+    {
+     "kind": "practice",
+     "url": "https://huggingface.co/blog/phranzia/using-execution-traces-to-evaluate-agent-behavior",
+     "title": "Using Execution Traces to Evaluate AI Agent Behavior",
+     "source": "huggingface.co",
+     "tier": 3,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.816,
+      "quality": 0.85,
+      "authority": 0.65,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.743,
+     "rank": 1,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W09.L1.C1 ✓, W09.L1.C2 ✓, W09.L1.C3 ✓, W09.L1.C4 ✓, W09.L1.C5 ✓, W09.L1.C6 ✓, W09.L1.C7 ✓, W09.L1.C8 ✓, W09.L1.C9 ✓, W09.L1.C10 ✓ [from page text] · huggingface.co · tier 3",
+     "findings": [],
+     "review": {
+      "review": "Clear, practical overview of execution traces with good visuals; useful intro but light on deep analysis.",
+      "issues": [
+       "blog format lacks academic rigor",
+       "limited worked examples for failure patterns"
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 5,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 4,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.816,
+      "evidence": "text",
+      "per_target": {
+       "M6.T1": {
+        "covered": true,
+        "sim": 0.684,
+        "segments": []
+       },
+       "W09.L1.C1": {
+        "covered": true,
+        "sim": 0.652,
+        "segments": [],
+        "text": "Execution traces in software factories. Students learn what execution traces are, how coding agents emit them during ite"
+       },
+       "W09.L1.C2": {
+        "covered": true,
+        "sim": 0.534,
+        "segments": [],
+        "text": "Log structure and iteration markers. Students examine the standardized format of iterative development logs, including t"
+       },
+       "W09.L1.C3": {
+        "covered": true,
+        "sim": 0.553,
+        "segments": [],
+        "text": "Typical failure patterns in agent traces. Students identify three recurring failure categories—environment misconfigurat"
+       },
+       "W09.L1.C4": {
+        "covered": true,
+        "sim": 0.588,
+        "segments": [],
+        "text": "Trace collection and parsing tooling. Students watch a live demonstration of the factory's trace collector, log aggregat"
+       },
+       "W09.L1.C5": {
+        "covered": true,
+        "sim": 0.551,
+        "segments": [],
+        "text": "Worked example: environment misconfiguration. Students follow a step‑by‑step analysis of a 500‑line trace, locating miss"
+       },
+       "W09.L1.C6": {
+        "covered": true,
+        "sim": 0.449,
+        "segments": [],
+        "text": "Worked example: dependency resolution failure. Students trace a version conflict across iterations, observe repeated fet"
+       },
+       "W09.L1.C7": {
+        "covered": true,
+        "sim": 0.479,
+        "segments": [],
+        "text": "Worked example: logic regression detection. Students compare successive iteration outputs, spot a behavioral change in t"
+       },
+       "W09.L1.C8": {
+        "covered": true,
+        "sim": 0.481,
+        "segments": [],
+        "text": "Comparing failure causes across traces. Students contrast the three failure signatures side‑by‑side, evaluate their freq"
+       },
+       "W09.L1.C9": {
+        "covered": true,
+        "sim": 0.435,
+        "segments": [],
+        "text": "Activity: analyze full 2000‑line log. In pairs, students receive a 2000‑line factory log, apply the parsing script, iden"
+       },
+       "W09.L1.C10": {
+        "covered": true,
+        "sim": 0.526,
+        "segments": [],
+        "text": "Discussion: reporting and best practices. Students present their findings, critique evidence quality, discuss how to aut"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "reserve": {
+   "practice": [
+    {
+     "kind": "practice",
+     "url": "https://github.com/rohitg00/ai-engineering-from-scratch",
+     "title": "rohitg00/ai-engineering-from-scratch — Learn AI Engineering! Learn it. Build it. Ship it for others.",
+     "source": "GitHub",
+     "tier": 3,
+     "page_type": "repository",
+     "licence": "MIT",
+     "stars": 75215,
+     "scores": {
+      "coverage": 0.5,
+      "quality": 0.8,
+      "authority": 0.65,
+      "level_fit": 0.8,
+      "reception": 1.0,
+      "practicality": 1.0
+     },
+     "total": 0.713,
+     "rank": 2,
+     "status": "reserve",
+     "rationale": "Covers: topic ✗, W09.L1.C1 ✗, W09.L1.C2 ✓, W09.L1.C3 ✓, W09.L1.C4 ✓, W09.L1.C5 ✓, W09.L1.C6 ✓, W09.L1.C7 ✓, W09.L1.C8 ✓, W09.L1.C9 ✓, W09.L1.C10 ✓ [from page text] · GitHub · tier 3",
+     "findings": [],
+     "review": {
+      "review": "Hands-on lab for agent trace debugging with real tooling; excellent for practice but needs setup guidance.",
+      "issues": [
+       "assumes familiarity with repo setup and CLI",
+       "excerpts show commands but not full lab context"
+      ],
+      "use_as": "lab",
+      "explains": "explains",
+      "clarity": 3,
+      "correctness": 4,
+      "depth": 4,
+      "examples": 5,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.5,
+      "evidence": "text",
+      "per_target": {
+       "M6.T1": {
+        "covered": false,
+        "sim": 0.405,
+        "segments": []
+       },
+       "W09.L1.C1": {
+        "covered": false,
+        "sim": 0.359,
+        "segments": [],
+        "text": "Execution traces in software factories. Students learn what execution traces are, how coding agents emit them during ite"
+       },
+       "W09.L1.C2": {
+        "covered": true,
+        "sim": 0.438,
+        "segments": [],
+        "text": "Log structure and iteration markers. Students examine the standardized format of iterative development logs, including t"
+       },
+       "W09.L1.C3": {
+        "covered": true,
+        "sim": 0.45,
+        "segments": [],
+        "text": "Typical failure patterns in agent traces. Students identify three recurring failure categories—environment misconfigurat"
+       },
+       "W09.L1.C4": {
+        "covered": true,
+        "sim": 0.444,
+        "segments": [],
+        "text": "Trace collection and parsing tooling. Students watch a live demonstration of the factory's trace collector, log aggregat"
+       },
+       "W09.L1.C5": {
+        "covered": true,
+        "sim": 0.483,
+        "segments": [],
+        "text": "Worked example: environment misconfiguration. Students follow a step‑by‑step analysis of a 500‑line trace, locating miss"
+       },
+       "W09.L1.C6": {
+        "covered": true,
+        "sim": 0.519,
+        "segments": [],
+        "text": "Worked example: dependency resolution failure. Students trace a version conflict across iterations, observe repeated fet"
+       },
+       "W09.L1.C7": {
+        "covered": true,
+        "sim": 0.485,
+        "segments": [],
+        "text": "Worked example: logic regression detection. Students compare successive iteration outputs, spot a behavioral change in t"
+       },
+       "W09.L1.C8": {
+        "covered": true,
+        "sim": 0.432,
+        "segments": [],
+        "text": "Comparing failure causes across traces. Students contrast the three failure signatures side‑by‑side, evaluate their freq"
+       },
+       "W09.L1.C9": {
+        "covered": true,
+        "sim": 0.435,
+        "segments": [],
+        "text": "Activity: analyze full 2000‑line log. In pairs, students receive a 2000‑line factory log, apply the parsing script, iden"
+       },
+       "W09.L1.C10": {
+        "covered": true,
+        "sim": 0.482,
+        "segments": [],
+        "text": "Discussion: reporting and best practices. Students present their findings, critique evidence quality, discuss how to aut"
+       }
+      }
+     }
+    }
+   ],
+   "video": []
+  },
+  "rejected": [
+   {
+    "title": "Data factory Diagnostic settings - Microsoft Q&A",
+    "url": "https://learn.microsoft.com/en-nz/answers/questions/214414/data-factory-diagnostic-settings",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "What is log analysis?",
+    "url": "https://www.sumologic.com/glossary/log-analysis",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "What is log analysis?",
+    "url": "https://www.dynatrace.com/knowledge-base/log-analysis/",
+    "why": [
+     "score 0.48 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Log Analysis Best Practices and Tools | Loggly",
+    "url": "https://www.loggly.com/use-cases/log-analysis-best-practices-and-tools/",
+    "why": [
+     "score 0.49 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "What is Log Analysis? | CrowdStrike",
+    "url": "https://www.crowdstrike.com/en-us/cybersecurity-101/next-gen-siem/log-analysis/",
+    "why": [
+     "AI review: a general introduction to a broader concept, not this lecture's topic"
+    ]
+   },
+   {
+    "title": "Log Analysis: A Complete Introduction | Splunk",
+    "url": "https://www.splunk.com/en_us/blog/learn/log-analysis.html",
+    "why": [
+     "AI review: a general introduction to a broader concept, not this lecture's topic"
+    ]
+   },
+   {
+    "title": "What is Log Analysis? | IBM",
+    "url": "https://www.ibm.com/think/topics/log-analysis",
+    "why": [
+     "AI review: a general introduction to a broader concept, not this lecture's topic"
+    ]
+   },
+   {
+    "title": "Log Analysis Tool – Server Events Log Analysis | SolarWinds",
+    "url": "https://www.solarwinds.com/log-analyzer/use-cases/log-analysis",
+    "why": [
+     "AI review: a general introduction to a broader concept, not this lecture's topic"
+    ]
+   },
+   {
+    "title": "Global engineering, manufacturing and enterprise networks",
+    "url": "https://openlibrary.org/books/OL27041450M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "IMPACTS OF RURAL ELECTRIFICATION IN RWANDA",
+    "url": "https://openlibrary.org/works/OL17322617W",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "American Film",
+    "url": "https://openlibrary.org/works/OL17597290W",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Process mining usage in cybersecurity and software reliability analysis: A systematic literature review",
+    "url": "https://www.sciencedirect.com/science/article/pii/S2590005621000576/pdf",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "A SYSTEMATIC REVIEW OF DIGITAL TWIN SYSTEMS FOR IMPROVED PREDICTIVE MAINTENANCE OF EQUIPMENT IN SMART FACTORIES",
+    "url": "https://hal.science/hal-05520266/document",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Software Migration Frameworks for Software System Solutions: A Systematic Literature Review",
+    "url": "http://thesai.org/Downloads/Volume8No11/Paper_26-Software_Migration_Frameworks_for_Software_System.pdf",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "A systematic review of knowledge sharing challenges and practices in global software development",
+    "url": "https://researcher.itu.dk/ws/files/82348148/KnowledgeMgmt_GSD_IJIM.pdf",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "TraceLab: Characterizing Coding Agent Workloads for LLM Serving | SyFI Lab",
+    "url": "https://syfi.cs.washington.edu/blog/2026-06-25-tracelab",
+    "why": [
+     "page not readable (status None, ConnectTimeout: _ssl.c:1059: The handshake operation timed out)"
+    ]
+   },
+   {
+    "title": "TraceLab: Characterizing Coding Agent Workloads for LLM Serving | alphaXiv",
+    "url": "https://www.alphaxiv.org/abs/2606.30560",
+    "why": [
+     "score 0.46 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Open Source Tracing for Coding Agent Workflows",
+    "url": "https://arize.com/blog/open-source-coding-agent-tracing/",
+    "why": [
+     "score 0.54 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "CodeTracer: Towards Traceable Agent States",
+    "url": "https://arxiv.org/html/2604.11641v3",
+    "why": [
+     "a paper is not practice material"
+    ]
+   },
+   {
+    "title": "Agent Observability for AI Coding: How to Trace What Your Agents Actually Did | Augment Code",
+    "url": "https://www.augmentcode.com/guides/agent-observability-for-ai-coding",
+    "why": [
+     "score 0.51 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Introducing the Notebook Agent | Hex",
+    "url": "https://hex.tech/blog/introducing-notebook-agent/",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "AI Coding Agent Benchmarks & Leaderboard | Artificial Analysis",
+    "url": "https://artificialanalysis.ai/agents/coding-agents",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "public-apis/public-apis — A collective list of free APIs",
+    "url": "https://github.com/public-apis/public-apis",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "trimstray/the-book-of-secret-knowledge — A collection of inspiring lists, manuals, cheatsheets, blogs, hacks, one-liners, cli/web tools and more.",
+    "url": "https://github.com/trimstray/the-book-of-secret-knowledge",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "ripienaar/free-for-dev — A list of SaaS, PaaS and IaaS offerings that have free tiers of interest to devops and infradev",
+    "url": "https://github.com/ripienaar/free-for-dev",
+    "why": [
+     "score 0.50 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "punkpeye/awesome-mcp-servers — A collection of MCP servers.",
+    "url": "https://github.com/punkpeye/awesome-mcp-servers",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Luciq (formerly Instabug) | Mobile Observability",
+    "url": "https://www.luciq.ai/",
+    "why": [
+     "score 0.36 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Request a Demo | Luciq Mobile Observability",
+    "url": "https://www.luciq.ai/request-demo",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Agentic RAG vs RAGs",
+    "url": "https://www.youtube.com/watch?v=4jYZg6pkXyc",
+    "why": [
+     "too short to teach a component (0:05)"
+    ]
+   },
+   {
+    "title": "Build an Autonomous AI Task Agent Using LLMs & Tools | End-to-End Agentic AI Project",
+    "url": "https://www.youtube.com/watch?v=sWnoxrn67ng",
+    "why": [
+     "too short to teach a component (0:10)"
+    ]
+   },
+   {
+    "title": "4 Cursor Productivity Tips!! #cursor #ai #productivity #tips #coding",
+    "url": "https://www.youtube.com/watch?v=nWcEjZYeeVo",
+    "why": [
+     "too short to teach a component (0:35)"
+    ]
+   },
+   {
+    "title": "AI Agents explained in 3 steps",
+    "url": "https://www.youtube.com/watch?v=BF2k_fKuCVM",
+    "why": [
+     "too short to teach a component (0:52)"
+    ]
+   },
+   {
+    "title": "4 Levels of Using Claude AI — 99% Log Level 1 Par Atke Hain",
+    "url": "https://www.youtube.com/watch?v=D43pOTW_JAI",
+    "why": [
+     "too short to teach a component (0:53)"
+    ]
+   },
+   {
+    "title": "CLONE AND REVERSE ENGINEER ANY APP USING AI AGENTS",
+    "url": "https://www.youtube.com/watch?v=p1Ym5IeZvVQ",
+    "why": [
+     "too short to teach a component (0:11)"
+    ]
+   },
+   {
+    "title": "Claude code tricks #coding #claude #tricksandtips #programming",
+    "url": "https://www.youtube.com/watch?v=8qeqR97kVX8",
+    "why": [
+     "too short to teach a component (0:29)"
+    ]
+   },
+   {
+    "title": "Difference - agents.md vs skills.md (simply explained) #agent #skills #claude",
+    "url": "https://www.youtube.com/watch?v=DirBj_FOBiU",
+    "why": [
+     "too short to teach a component (1:00)"
+    ]
+   },
+   {
+    "title": "Medical Laboratory Week",
+    "url": "https://www.youtube.com/watch?v=VGllKrBRd9w",
+    "why": [
+     "too short to teach a component (0:14)"
+    ]
+   },
+   {
+    "title": "MaxiSYS Ultra S2: OEM-Level Diagnostics",
+    "url": "https://www.youtube.com/watch?v=hlFKUTGOabo",
+    "why": [
+     "too short to teach a component (0:23)"
+    ]
+   },
+   {
+    "title": "CAN BUS Diagnostic with a Budget Oscilloscope | Fnirsi Tablet Oscilloscope (DPOS350P) #canbus",
+    "url": "https://www.youtube.com/watch?v=QrJ2tTCZOj8",
+    "why": [
+     "too short to teach a component (0:50)"
+    ]
+   },
+   {
+    "title": "How to deliver a killer presentation",
+    "url": "https://www.youtube.com/watch?v=iH3M0GM5wOs",
+    "why": [
+     "too short to teach a component (0:36)"
+    ]
+   },
+   {
+    "title": "Aasani se Sikhe Table Typing (Data Entry) MS Excel mai.... #shorts #reels #anjalipatel #excel #live",
+    "url": "https://www.youtube.com/watch?v=qLWSs6iEtQs",
+    "why": [
+     "too short to teach a component (0:21)"
+    ]
+   },
+   {
+    "title": "Cosplay by b.tech final year at IIT Kharagpur",
+    "url": "https://www.youtube.com/watch?v=3OFWXtyY1xk",
+    "why": [
+     "too short to teach a component (0:15)"
+    ]
+   },
+   {
+    "title": "What is SCADA ?",
+    "url": "https://www.youtube.com/watch?v=buqv4q64fwk",
+    "why": [
+     "too short to teach a component (0:25)"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 30,
+   "passed_checks": 2,
+   "rejected": 28,
+   "videos_used": 1
+  },
+  "clips": [
+   {
+    "target": "Execution traces in software factories",
+    "target_ids": [
+     "W09.L1.C1"
+    ],
+    "component": "W09.L1.C1",
+    "video": "Luciq Bits: How to Utilize Execution Traces",
+    "source": "Luciq ",
+    "url": "https://www.youtube.com/watch?v=oDTh2apD8TM&t=24s",
+    "start": "0:24",
+    "end": "3:27",
+    "minutes": 3.0,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "what execution traces are (mobile app performance context)"
+    ],
+    "missing": [
+     "coding agents emitting traces",
+     "iterative loop engineering",
+     "software factory context",
+     "diagnosing failures in software factories"
+    ],
+    "note": "Clear demo of execution traces for mobile app monitoring; not software factories or coding agents."
+   }
+  ],
+  "timeline": [
+   {
+    "component": "W09.L1.C1",
+    "title": "Execution traces in software factories",
+    "minutes": 15,
+    "kind": "concept",
+    "delivery": "video",
+    "gap": {
+     "video_minutes": 3.0,
+     "missing": [
+      "coding agents emitting traces",
+      "iterative loop engineering",
+      "software factory context",
+      "diagnosing failures in software factories"
+     ]
+    },
+    "segments": [
+     {
+      "video": "Luciq Bits: How to Utilize Execution Traces",
+      "video_id": "oDTh2apD8TM",
+      "url": "https://www.youtube.com/watch?v=oDTh2apD8TM&t=24s",
+      "start": "0:24",
+      "end": "3:27",
+      "minutes": 3.0,
+      "verdict": "teaches_partly",
+      "score": 0.23
+     }
+    ]
+   },
+   {
+    "component": "W09.L1.C2",
+    "title": "Log structure and iteration markers",
+    "minutes": 15,
+    "kind": "mechanism",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W09.L1.C3",
+    "title": "Typical failure patterns in agent traces",
+    "minutes": 15,
+    "kind": "concept",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W09.L1.C4",
+    "title": "Trace collection and parsing tooling",
+    "minutes": 15,
+    "kind": "demo",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W09.L1.C5",
+    "title": "Worked example: environment misconfiguration",
+    "minutes": 15,
+    "kind": "worked_example",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W09.L1.C6",
+    "title": "Worked example: dependency resolution failure",
+    "minutes": 15,
+    "kind": "worked_example",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W09.L1.C7",
+    "title": "Worked example: logic regression detection",
+    "minutes": 15,
+    "kind": "worked_example",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W09.L1.C8",
+    "title": "Comparing failure causes across traces",
+    "minutes": 15,
+    "kind": "comparison",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W09.L1.C9",
+    "title": "Activity: analyze full 2000‑line log",
+    "minutes": 15,
+    "kind": "activity",
+    "delivery": "in_class",
+    "segments": []
+   },
+   {
+    "component": "W09.L1.C10",
+    "title": "Discussion: reporting and best practices",
+    "minutes": 15,
+    "kind": "discussion",
+    "delivery": "in_class",
+    "segments": []
+   }
+  ],
+  "partial": {
+   "reason": "YouTube blocked transcript requests (from 22:20)",
+   "videos_without_transcript": [
+    "_RL6wf7d81A",
+    "FwsApSTYbIY",
+    "x7e-HfifFoY",
+    "rnFNwwwq1D8",
+    "BXtcVnq9K5s",
+    "TGdpmZeXe6Y",
+    "vJB6Mie7Fcs",
+    "hfEczxdNyvU",
+    "-aM2EDTiaMs",
+    "CyLYY_xb5bQ",
+    "rurs7cdT5cc",
+    "j9QmMEWmcfo"
+   ]
+  },
+  "components": [
+   {
+    "lecture_id": "W09.L1",
+    "title": "Execution traces in software factories",
+    "teaches": "Students learn what execution traces are, how coding agents emit them during iterative loop engineering, and why they are essential for diagnosing failures in software factories.",
+    "key_terms": [
+     "execution trace",
+     "software factory",
+     "coding agent",
+     "iterative loop",
+     "diagnostics"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W09.L1",
+    "title": "Log structure and iteration markers",
+    "teaches": "Students examine the standardized format of iterative development logs, including timestamps, iteration IDs, tool calls, and error markers, enabling systematic navigation of up to 2000 lines.",
+    "key_terms": [
+     "log format",
+     "iteration ID",
+     "timestamp",
+     "tool call",
+     "error marker"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W09.L1",
+    "title": "Typical failure patterns in agent traces",
+    "teaches": "Students identify three recurring failure categories—environment misconfiguration, dependency resolution errors, and logic regressions—and learn the trace signatures that distinguish each.",
+    "key_terms": [
+     "environment misconfiguration",
+     "dependency resolution",
+     "logic regression",
+     "trace signature",
+     "failure category"
+    ],
+    "kind": "concept",
+    "bloom": 3,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W09.L1",
+    "title": "Trace collection and parsing tooling",
+    "teaches": "Students watch a live demonstration of the factory's trace collector, log aggregator, and a Python script that parses raw logs into structured JSON for analysis.",
+    "key_terms": [
+     "trace collector",
+     "log aggregator",
+     "parser script",
+     "JSON output",
+     "automation"
+    ],
+    "kind": "demo",
+    "bloom": 2,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W09.L1",
+    "title": "Worked example: environment misconfiguration",
+    "teaches": "Students follow a step‑by‑step analysis of a 500‑line trace, locating missing environment variables, correlating error codes, and citing exact log lines as evidence for the first failure cause.",
+    "key_terms": [
+     "environment variable",
+     "error code",
+     "log evidence",
+     "correlation",
+     "step‑by‑step"
+    ],
+    "kind": "worked_example",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C5",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W09.L1",
+    "title": "Worked example: dependency resolution failure",
+    "teaches": "Students trace a version conflict across iterations, observe repeated fetch retries, and extract the specific dependency graph lines that prove the second failure cause.",
+    "key_terms": [
+     "version conflict",
+     "fetch retry",
+     "dependency graph",
+     "iteration diff",
+     "evidence extraction"
+    ],
+    "kind": "worked_example",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C6",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W09.L1",
+    "title": "Worked example: logic regression detection",
+    "teaches": "Students compare successive iteration outputs, spot a behavioral change in test results, and pinpoint the commit diff lines that constitute the third failure cause with supporting log excerpts.",
+    "key_terms": [
+     "behavioral change",
+     "test result diff",
+     "commit diff",
+     "log excerpt",
+     "regression"
+    ],
+    "kind": "worked_example",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C7",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W09.L1",
+    "title": "Comparing failure causes across traces",
+    "teaches": "Students contrast the three failure signatures side‑by‑side, evaluate their frequency and impact, and practice ranking them by severity using a structured rubric.",
+    "key_terms": [
+     "signature comparison",
+     "frequency",
+     "impact",
+     "severity rubric",
+     "ranking"
+    ],
+    "kind": "comparison",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C8",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W09.L1",
+    "title": "Activity: analyze full 2000‑line log",
+    "teaches": "In pairs, students receive a 2000‑line factory log, apply the parsing script, identify at least three distinct failure causes, and record supporting log line numbers for each.",
+    "key_terms": [
+     "pair work",
+     "2000‑line log",
+     "parsing script",
+     "failure identification",
+     "evidence recording"
+    ],
+    "kind": "activity",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C9",
+    "in_class": true
+   },
+   {
+    "lecture_id": "W09.L1",
+    "title": "Discussion: reporting and best practices",
+    "teaches": "Students present their findings, critique evidence quality, discuss how to automate failure‑cause detection, and outline a checklist for future trace analyses.",
+    "key_terms": [
+     "findings presentation",
+     "evidence critique",
+     "automation ideas",
+     "checklist",
+     "continuous improvement"
+    ],
+    "kind": "discussion",
+    "bloom": 5,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C10",
+    "in_class": true
+   }
+  ],
+  "notebooklm": {
+   "pack": "notebooklm/W09.L1.md",
+   "components": [],
+   "sources": 3
+  }
+ },
+ "experts": {
+  "lecture_id": "W09.L1",
+  "topic": "Software factories and execution trace analysis",
+  "experts": [
+   {
+    "name": "Ludovic Apvrille",
+    "kind": "academic",
+    "affiliation": "Télécom Paris",
+    "country": "FR",
+    "links": {
+     "openalex": "https://openalex.org/A5058794408",
+     "orcid": "https://orcid.org/0000-0002-1167-4639",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Ludovic+Apvrille+T%C3%A9l%C3%A9com+Paris"
+    },
+    "metrics": {
+     "cited_by": 1772,
+     "h_index": 21,
+     "works_count": 258,
+     "matching_works": 2
+    },
+    "scores": {
+     "topical_fit": 0.838,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.687,
+     "recency": 0.6,
+     "feasibility": 0.5
+    },
+    "total": 0.52,
+    "rank": 1,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2023,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "works on a neighbouring area (latency violations)"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Execution trace analysis for a precise understanding of latency violations",
+      "year": 2023,
+      "url": "https://doi.org/10.1007/s10270-022-01076-z",
+      "cited_by": 2,
+      "venue": "Software & Systems Modeling",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Execution Trace Analysis for a Precise Understanding of Latency Violations",
+      "year": 2021,
+      "url": "https://doi.org/10.1109/models50736.2021.00021",
+      "cited_by": 3,
+      "venue": "ACM/IEEE International Conference on Model Driven Engineering Languages and Systems (MODELS)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Same 2023 and 2021 papers on execution trace analysis for latency violations; strong on trace analysis but focused on latency, not agentic loops.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": [
+     "works on a neighbouring area (latency violations)"
+    ]
+   },
+   {
+    "name": "Renaud Pacalet",
+    "kind": "academic",
+    "affiliation": "Télécom Paris",
+    "country": "FR",
+    "links": {
+     "openalex": "https://openalex.org/A5066041952",
+     "orcid": "https://orcid.org/0000-0002-6676-1123",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Renaud+Pacalet+T%C3%A9l%C3%A9com+Paris"
+    },
+    "metrics": {
+     "cited_by": 915,
+     "h_index": 16,
+     "works_count": 148,
+     "matching_works": 2
+    },
+    "scores": {
+     "topical_fit": 0.838,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.648,
+     "recency": 0.6,
+     "feasibility": 0.5
+    },
+    "total": 0.518,
+    "rank": 2,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2023,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "works on a neighbouring area (latency violations)"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Execution trace analysis for a precise understanding of latency violations",
+      "year": 2023,
+      "url": "https://doi.org/10.1007/s10270-022-01076-z",
+      "cited_by": 2,
+      "venue": "Software & Systems Modeling",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Execution Trace Analysis for a Precise Understanding of Latency Violations",
+      "year": 2021,
+      "url": "https://doi.org/10.1109/models50736.2021.00021",
+      "cited_by": 3,
+      "venue": "ACM/IEEE International Conference on Model Driven Engineering Languages and Systems (MODELS)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Same 2023 and 2021 papers on execution trace analysis for latency violations; strong on trace analysis but focused on latency, not agentic loops.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": [
+     "works on a neighbouring area (latency violations)"
+    ]
+   },
+   {
+    "name": "Hongdou He",
+    "kind": "academic",
+    "affiliation": "Yanshan University",
+    "country": "CN",
+    "links": {
+     "openalex": "https://openalex.org/A5077981451",
+     "orcid": "https://orcid.org/0000-0002-8801-8349",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Hongdou+He+Yanshan+University"
+    },
+    "metrics": {
+     "cited_by": 365,
+     "h_index": 11,
+     "works_count": 29,
+     "matching_works": 1
+    },
+    "scores": {
+     "topical_fit": 0.773,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.603,
+     "recency": 0.3,
+     "feasibility": 0.722
+    },
+    "total": 0.489,
+    "rank": 3,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2019,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "evidence is old (2019)"
+     },
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "works on a neighbouring area"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Mining of Probabilistic Controlling Behavior Model From Dynamic Software Execution Trace",
+      "year": 2019,
+      "url": "https://doi.org/10.1109/access.2019.2922998",
+      "cited_by": 5,
+      "venue": "IEEE Access",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Same 2019 paper on mining probabilistic behavior models from dynamic software execution traces; relevant but predates agentic coding agents.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": [
+     "evidence is old (2019)",
+     "works on a neighbouring area"
+    ]
+   },
+   {
+    "name": "Guyu Zhao",
+    "kind": "academic",
+    "affiliation": "Yanshan University",
+    "country": "CN",
+    "links": {
+     "openalex": "https://openalex.org/A5055957685",
+     "orcid": "https://orcid.org/0000-0002-1198-8662",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Guyu+Zhao+Yanshan+University"
+    },
+    "metrics": {
+     "cited_by": 309,
+     "h_index": 8,
+     "works_count": 21,
+     "matching_works": 1
+    },
+    "scores": {
+     "topical_fit": 0.773,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.585,
+     "recency": 0.3,
+     "feasibility": 0.722
+    },
+    "total": 0.488,
+    "rank": 4,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2019,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "evidence is old (2019)"
+     },
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "works on a neighbouring area"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Mining of Probabilistic Controlling Behavior Model From Dynamic Software Execution Trace",
+      "year": 2019,
+      "url": "https://doi.org/10.1109/access.2019.2922998",
+      "cited_by": 5,
+      "venue": "IEEE Access",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "2019 paper on mining probabilistic behavior models from dynamic software execution traces; relevant but predates agentic coding agents.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": [
+     "evidence is old (2019)",
+     "works on a neighbouring area"
+    ]
+   }
+  ],
+  "reserve": [],
+  "rejected": [
+   {
+    "name": "Alex Ewerlöf",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.22 is below 0.5"
+    ]
+   },
+   {
+    "name": "Rahul Mohananai",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.33 is below 0.5"
+    ]
+   },
+   {
+    "name": "Maysam Zoor",
+    "why": [
+     "too little research record yet (h-index 3 on OpenAlex, below 5)"
+    ]
+   },
+   {
+    "name": "Pankaj Jalote",
+    "why": [
+     "topical fit 0.25 is below 0.5"
+    ]
+   },
+   {
+    "name": "Christian Posta",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.27 is below 0.5"
+    ]
+   },
+   {
+    "name": "Naveen Prakash",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.23 is below 0.5"
+    ]
+   },
+   {
+    "name": "Shuyang Liu",
+    "why": [
+     "too little research record yet (h-index 1 on OpenAlex, below 5)"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 35,
+   "assessed": 11,
+   "passed_checks": 4
+  }
+ },
+ "partial": {
+  "reason": "YouTube blocked transcript requests (from 22:20)",
+  "videos_without_transcript": [
+   "_RL6wf7d81A",
+   "FwsApSTYbIY",
+   "x7e-HfifFoY",
+   "rnFNwwwq1D8",
+   "BXtcVnq9K5s",
+   "TGdpmZeXe6Y",
+   "vJB6Mie7Fcs",
+   "hfEczxdNyvU",
+   "-aM2EDTiaMs",
+   "CyLYY_xb5bQ",
+   "rurs7cdT5cc",
+   "j9QmMEWmcfo"
+  ]
+ }
+}

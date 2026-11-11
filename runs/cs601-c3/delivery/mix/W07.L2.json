@@ -1,0 +1,289 @@
+{
+ "lecture_id": "W07.L2",
+ "topic": "Iterative development and loop engineering",
+ "minutes": 120,
+ "status": "approved",
+ "preset": "slides_notebooklm",
+ "preset_by": "ai",
+ "course_style": "mix",
+ "parts": [
+  {
+   "component": "W07.L2.C1",
+   "title": "Iterative Loop Engineering Overview",
+   "minutes": 15,
+   "kind": "concept",
+   "bloom": 2,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "L",
+   "reason": "NotebookLM sources miss generate-test-refactor (75% covered); slides provide clear overview of the agent loop cycle.",
+   "alternative": {
+    "way": "notebooklm",
+    "reason": "first part taught live"
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "youtube_bridge",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 15,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.75,
+   "uncovered": [
+    "generate-test-refactor"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W07.L2.C2",
+   "title": "Execution Log Structure and Fields",
+   "minutes": 15,
+   "kind": "concept",
+   "bloom": 2,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "L",
+   "reason": "NotebookLM sources miss payload and agent identifier (60% covered); slides clearly present the standard log execution schema.",
+   "alternative": {
+    "way": "notebooklm",
+    "reason": "over the NotebookLM limit"
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 15,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.6,
+   "uncovered": [
+    "agent identifier",
+    "payload"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W07.L2.C3",
+   "title": "Control‑Flow Step Taxonomy",
+   "minutes": 15,
+   "kind": "mechanism",
+   "bloom": 3,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "L",
+   "reason": "NotebookLM sources cover 80% of terms but lack conditional branches; slides display the precise taxonomy of step types.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it."
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 15,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.8,
+   "uncovered": [
+    "conditional branch"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W07.L2.C4",
+   "title": "Instrumentation and Logging Frameworks",
+   "minutes": 5,
+   "kind": "demo",
+   "bloom": 3,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "Sources cover only 40% of key terms; slides enable step-by-step presentation of live Python logging and OpenTelemetry demo.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 5,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.4,
+   "uncovered": [
+    "instrumentation",
+    "logging framework",
+    "real‑time emission"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W07.L2.C5",
+   "title": "Worked Example: Simple Agent Loop Trace",
+   "minutes": 15,
+   "kind": "worked_example",
+   "bloom": 4,
+   "way": "in_class",
+   "when": "in_class",
+   "rule": "R1",
+   "reason": "Interactive in-class walkthrough allows students to actively map log entries to source-code changes during the step-by-step trace.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: videos teach only 23% of it."
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "youtube_bridge",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.8,
+   "uncovered": [
+    "generate-test-refactor"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W07.L2.C6",
+   "title": "Activity: Instrument a Toy Agent",
+   "minutes": 15,
+   "kind": "activity",
+   "bloom": 3,
+   "way": "in_class",
+   "when": "in_class",
+   "rule": "R1",
+   "reason": "Hands-on activity requires students to instrument a provided skeleton agent in class and verify live log emission.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it."
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.8,
+   "uncovered": [
+    "skeleton agent"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W07.L2.C7",
+   "title": "Mapping Log Steps to Code Changes",
+   "minutes": 15,
+   "kind": "mechanism",
+   "bloom": 4,
+   "way": "notebooklm",
+   "when": "in_class",
+   "rule": "R4",
+   "reason": "NotebookLM explainer audio covers key correlation techniques (60% term coverage in sources) for reconstructing development narratives.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it."
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 15,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.6,
+   "uncovered": [
+    "log correlation",
+    "timestamp alignment"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W07.L2.C8",
+   "title": "Pitfalls and Best Practices in Tracing",
+   "minutes": 10,
+   "kind": "comparison",
+   "bloom": 4,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "Slides cleanly compare logging anti-patterns like timestamp drift with best practices, compensating for weak 40% source coverage.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.4,
+   "uncovered": [
+    "missing context",
+    "granularity",
+    "timestamp drift"
+   ],
+   "simulation": null
+  }
+ ],
+ "recap_minutes": 5,
+ "quiz_minutes": 10,
+ "totals": {
+  "slides": 65.0,
+  "video_in_class": 10.0,
+  "video_pre_class": 0.0,
+  "notebooklm": 10.0,
+  "in_class": 30.0,
+  "simulation": 0.0,
+  "recap": 5,
+  "quiz": 10,
+  "video_share": 0.08
+ },
+ "prep_minutes": 95,
+ "checks": [
+  {
+   "code": "L-RESERVE",
+   "message": "the part plan was made before recap and quiz minutes were kept free; 15 min were taken from the longest parts"
+  }
+ ],
+ "note": "",
+ "proposed_by": "rules + D7",
+ "proposed_at": "2026-11-03 15:42:24",
+ "approved_at": "2026-11-03 15:42:24",
+ "approved_by": "CLI",
+ "materials": {
+  "notebooklm": "notebooklm/W07.L2.md",
+  "quiz": "quiz/W07.L2.json",
+  "quiz_questions": 8
+ }
+}

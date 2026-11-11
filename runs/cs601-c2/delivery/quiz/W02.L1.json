@@ -1,0 +1,125 @@
+{
+ "lecture_id": "W02.L1",
+ "topic": "Model context protocols and architecture",
+ "made_at": "2026-11-03 15:25:49",
+ "minutes": {
+  "recap": 5,
+  "quiz": 10
+ },
+ "recap": [],
+ "questions": [
+  {
+   "component": "W02.L1.C1",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 2,
+   "question": "How do resources differ from tools in Model Context Protocols (MCP)?",
+   "options": [
+    "Resources allow models to execute shell commands, whereas tools only provide static files.",
+    "Resources provide passive context data for reading, whereas tools enable dynamic side-effects and execution.",
+    "Resources are defined on the host client, whereas tools reside exclusively on external cloud services.",
+    "Resources require dynamic parameters, whereas tools do not accept input arguments."
+   ],
+   "answer": "B",
+   "explanation": "Resources act as passive data providers (like context or read-only files), while tools allow models to run dynamic operations and side-effects."
+  },
+  {
+   "component": "W02.L1.C2",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 2,
+   "question": "A developer wants to expose dynamic log streams where the log file URI changes based on a requested user ID parameter. Which MCP construct should they use?",
+   "options": [
+    "A parameterized Resource Template with a dynamic URI scheme",
+    "A static tool definition with hardcoded execution parameters",
+    "An environment variable override in the host workspace setting",
+    "A fixed text resource without dynamic URI mapping"
+   ],
+   "answer": "A",
+   "explanation": "Resource templates expose parameterized URI schemes, allowing clients to construct dynamic URIs to read specific dynamic context."
+  },
+  {
+   "component": "W02.L1.C3",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 2,
+   "question": "How does an MCP host validate arguments provided by an LLM before invoking a tool via `tools/call`?",
+   "options": [
+    "It validates arguments against the `inputSchema` declared in the server's `tools/list` response.",
+    "It converts all input values to strings automatically without schema checks.",
+    "It forwards the raw prompt to a manual host validation queue.",
+    "It relies on the server to bypass validation if the connection uses stdio."
+   ],
+   "answer": "A",
+   "explanation": "Tools define their input requirements via standard JSON Schema (`inputSchema`) during discovery (`tools/list`), which allows strict client/server argument validation."
+  },
+  {
+   "component": "W02.L1.C4",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 1,
+   "question": "Which mandatory fields are required in an `mcpServers` workspace configuration entry to launch a local subprocess context server?",
+   "options": [
+    "`command` and `args` to specify the executable binary and its launch arguments",
+    "`uriTemplate` and `mimeType` to specify context encoding formats",
+    "`promptInjection` and `sandboxMode` to set protocol execution boundaries",
+    "`toolsList` and `callResult` to map server callback functions"
+   ],
+   "answer": "A",
+   "explanation": "Subprocess server declarations in `mcpServers` require at minimum the executable `command` and optional command-line `args` (along with `env`) to start the server."
+  },
+  {
+   "component": "W02.L1.C5",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 2,
+   "question": "An external tool returns raw text output that contains malicious instructions designed to hijack the LLM context. What is the most effective mitigation strategy?",
+   "options": [
+    "Enforcing user-in-the-loop explicit approvals before executing sensitive downstream tools",
+    "Running the server in high-privilege administrator mode to override unexpected errors",
+    "Disabling all logging from stderr to suppress error messages",
+    "Hardcoding database secrets directly inside the shared client configuration file"
+   ],
+   "answer": "A",
+   "explanation": "Requiring explicit human approval (user-in-the-loop) for sensitive side-effects stops prompt injections contained in untrusted tool responses from executing unchecked actions."
+  },
+  {
+   "component": "W02.L1.C6",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 3,
+   "question": "A student configures an MCP server in `mcpServers` with `\"command\": \"python\"`, but the server immediately terminates because it lacks the script path and API key. Which part of the configuration template needs fixing?",
+   "options": [
+    "Adding the script path under `args` and the required API key key-values under `env`",
+    "Changing the server protocol registration from JSON-RPC to XML",
+    "Removing the `command` attribute and replacing it with a static `uri` scheme",
+    "Updating the tool's JSON Schema type definitions from string to boolean"
+   ],
+   "answer": "A",
+   "explanation": "Command-line arguments (like script files) must be passed via the `args` array and environment parameters (like API keys) must be set in the `env` dictionary of the configuration schema."
+  },
+  {
+   "component": "W02.L1.C7",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 2,
+   "question": "A local MCP server process fails during initialization without sending a JSON-RPC error response. Where should a developer look to diagnose the startup error?",
+   "options": [
+    "The subprocess `stderr` log stream of the context server",
+    "The server's public `resources/list` payload",
+    "The client host's static UI rendering logs",
+    "The `inputSchema` section of the prompt catalog"
+   ],
+   "answer": "A",
+   "explanation": "Runtime crashes, missing dependencies, or syntax errors in local server binaries output details directly to the subprocess standard error (`stderr`) stream."
+  }
+ ],
+ "problems": []
+}

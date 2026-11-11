@@ -1,0 +1,190 @@
+{
+ "lecture_id": "W07.L2",
+ "topic": "Iterative development and loop engineering",
+ "made_at": "2026-11-03 15:46:56",
+ "minutes": {
+  "recap": 5,
+  "quiz": 10
+ },
+ "recap": [
+  {
+   "component": "W07.L1.C1",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 2,
+   "question": "Why is it critical to validate specification completeness and parameter boundary conditions before running AI code generation?",
+   "options": [
+    "To prevent runtime syntax errors from occurring during executable spec compilation.",
+    "Because missing edge cases allow incorrect or unsafe code implementations to pass the test suite.",
+    "To ensure the LLM automatically generates unit test frameworks during pre-prompting.",
+    "Because executable specifications cannot run unless all public methods are converted into mocks."
+   ],
+   "answer": "B",
+   "explanation": "Incomplete specifications or omitted boundary checks allow incorrect AI-generated code to pass test suites while violating interface contracts."
+  },
+  {
+   "component": "W07.L1.C2",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 3,
+   "question": "An AI model generates a candidate implementation that fails two executable test cases with assertion stack traces. In an automated spec-guided feedback loop, what is the correct next action?",
+   "options": [
+    "Feed the test error traces back into the LLM context prompt to trigger automated code refinement.",
+    "Delete the failing test cases from the executable specification to force a passing state.",
+    "Regenerate code from scratch with a new framework without supplying the error logs.",
+    "Manually edit the generated source code while disabling failing test assertions."
+   ],
+   "answer": "A",
+   "explanation": "Automated feedback loops use error traces and test harness outputs as prompt context for the LLM to iteratively refine code until interface compliance is met."
+  },
+  {
+   "component": "W07.L1.C3",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 3,
+   "question": "During iterative code generation, your test harness shows 4 out of 5 tests passing, but the final test triggers a runtime assertion failure on null inputs. How should you guide the AI assistant?",
+   "options": [
+    "Provide the failed runtime stack trace and null input details to the assistant to iterate until 100% pass.",
+    "Modify the executable specification to stop testing null parameter boundary values.",
+    "Disable runtime assertion checks inside the execution harness to achieve green test results.",
+    "Accept the implementation because an 80% pass rate meets standard deployment criteria."
+   ],
+   "answer": "A",
+   "explanation": "Iterative spec-driven generation requires capturing runtime test outputs and feeding stack traces back into the assistant until 100% of specification steps pass."
+  }
+ ],
+ "questions": [
+  {
+   "component": "W07.L2.C1",
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "bloom": 2,
+   "question": "In AI-assisted coding, what is the primary function of the generate-test-refactor cycle within iterative loop engineering?",
+   "options": [
+    "To replace traditional test-driven development by delegating code review entirely to offline models",
+    "To iteratively generate candidate solutions, run tests to verify correctness, and refine the code based on execution feedback",
+    "To measure hardware resource consumption during model inference",
+    "To produce the complete production codebase in a single prompt execution without feedback"
+   ],
+   "answer": "B",
+   "explanation": "The generate-test-refactor cycle continuously improves code quality by emitting candidate code, verifying it against automated tests, and refactoring based on pass/fail signals."
+  },
+  {
+   "component": "W07.L2.C2",
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "bloom": 2,
+   "question": "In a standard agent execution log schema comprising timestamp, event type, agent identifier, and payload, which field holds the event-specific details necessary to reconstruct the step's operation?",
+   "options": [
+    "Timestamp",
+    "Payload",
+    "Agent identifier",
+    "Event type"
+   ],
+   "answer": "B",
+   "explanation": "The payload carries contextual data, arguments, and state outputs needed to analyze what occurred during that specific control-flow step."
+  },
+  {
+   "component": "W07.L2.C3",
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "bloom": 3,
+   "question": "An agent execution log displays the following entry sequence: `[DECISION] Evaluate test failure -> [BRANCH] Select patch strategy -> [CALL] execute_refactor()`. How should `[DECISION]` be categorized in the control-flow taxonomy?",
+   "options": [
+    "A repeated deterministic loop iteration",
+    "A target code conditional statement",
+    "A low-level system function invocation",
+    "An agent decision point where the model evaluates context to pick the next step"
+   ],
+   "answer": "D",
+   "explanation": "Agent decision points represent high-level reasoning steps where the agent analyzes past execution context to decide subsequent control flow."
+  },
+  {
+   "component": "W07.L2.C4",
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "bloom": 3,
+   "question": "You need to add real-time telemetry to a Python-based coding agent using OpenTelemetry. Which approach correctly captures control-flow steps across agent execution loops?",
+   "options": [
+    "Redirecting standard print output to a local text file at the end of execution",
+    "Injecting instrumentation hooks that create structured trace spans around key loop events and function calls",
+    "Configuring the agent to log event data only when an uncaught exception is thrown",
+    "Executing the agent inside a debugger and taking manual heap dumps after every loop"
+   ],
+   "answer": "B",
+   "explanation": "Instrumentation frameworks like OpenTelemetry use structured hooks and spans to emit execution steps in real time, enabling control-flow tracing."
+  },
+  {
+   "component": "W07.L2.C5",
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "bloom": 4,
+   "question": "While tracing an agent execution log, you observe three consecutive `[TEST_FAIL]` entries accompanied by `[PATCH_APPLIED]` logs, followed by a final `[TEST_PASS]` log. What does this path reveal about the agent's control flow?",
+   "options": [
+    "The test framework failed to run due to missing dependencies during the first three attempts",
+    "The agent modified three independent modules simultaneously in parallel threads",
+    "The agent completed three generate-test-refactor loop iterations before achieving a working solution",
+    "The agent experienced a runtime crash and restarted from scratch three times"
+   ],
+   "answer": "C",
+   "explanation": "Repeated test failure and patch entries indicate an iterative refactoring loop where the agent iteratively generates fixes until the test suite passes."
+  },
+  {
+   "component": "W07.L2.C6",
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "bloom": 3,
+   "question": "A student instruments a skeleton agent but forgets to add log statements inside the exception-handling branch of the refactoring loop. What issue will occur when verifying log coverage?",
+   "options": [
+    "The agent's LLM requests will be rejected by the API endpoint",
+    "The output log will lack control-flow steps whenever an exception occurs, creating missing gaps in the execution trace",
+    "The generated code diffs will automatically revert to their initial state",
+    "The agent will fail to compile in Python"
+   ],
+   "answer": "B",
+   "explanation": "Missing log statements in specific control-flow branches prevents full control-flow verification because execution steps through that branch remain unrecorded."
+  },
+  {
+   "component": "W07.L2.C7",
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "bloom": 4,
+   "question": "Two multi-agent workers generate overlapping code diffs on a repository. Which combination of log fields is required to correlate a specific code diff to the agent action that produced it?",
+   "options": [
+    "Agent identifier and precise timestamp aligned with the git commit metadata",
+    "Source file line count and linter severity score",
+    "Model token count and local system memory usage",
+    "Python library version and environment process ID"
+   ],
+   "answer": "A",
+   "explanation": "Correlating log entries with code diffs requires matching unique agent IDs and precise execution timestamps against version control commit timestamps."
+  },
+  {
+   "component": "W07.L2.C8",
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "bloom": 4,
+   "question": "An agent log displays entries like `[INFO] Task started` and `[INFO] Task completed`, but lacks detailed entries for intermediate decision points, test outcomes, or code diffs. Which anti-pattern does this illustrate?",
+   "options": [
+    "Timestamp drift",
+    "Excessive log verbosity",
+    "Missing context and inconsistent granularity",
+    "Agent ID collision"
+   ],
+   "answer": "C",
+   "explanation": "Logging only start/end markers without payload context or fine-grained step details is a classic anti-pattern of coarse granularity and missing context, rendering traces uninformative."
+  }
+ ],
+ "problems": []
+}

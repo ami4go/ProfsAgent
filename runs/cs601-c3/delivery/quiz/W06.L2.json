@@ -1,0 +1,142 @@
+{
+ "lecture_id": "W06.L2",
+ "topic": "Requirements to executable specifications and code generation",
+ "made_at": "2026-11-03 15:46:55",
+ "minutes": {
+  "recap": 5,
+  "quiz": 10
+ },
+ "recap": [
+  {
+   "component": "W06.L1.C1",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 3,
+   "question": "You need to convert an informal requirement—'Calculate discount based on user age and loyalty points, failing gracefully on invalid inputs'—into an unambiguous contract for an AI code generator. Which interface specification best achieves this?",
+   "options": [
+    "def calculate_discount(age: int, points: int) -> float (raises ValueError for negative inputs)",
+    "def calculate_discount(age: str, points: str) -> int",
+    "def calculate_discount(age, points)",
+    "def calculate_discount(user_info: dict) -> any"
+   ],
+   "answer": "A",
+   "explanation": "Specifying precise type annotations (`int -> float`) and explicit exception behavior (`raises ValueError`) eliminates ambiguity in method signatures, preventing runtime errors during AI code generation."
+  },
+  {
+   "component": "W06.L1.C2",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 3,
+   "question": "In a Design by Contract specification for a BankAccount class, a developer asserts that `balance >= 0` must evaluate to true before and after any public method execution. What type of contract constraint is this?",
+   "options": [
+    "Class Invariant",
+    "Precondition",
+    "Postcondition",
+    "Input Boundary Condition"
+   ],
+   "answer": "A",
+   "explanation": "A condition that must always remain true before and after the execution of every public method in a module is a class invariant."
+  },
+  {
+   "component": "W06.L1.C3",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 3,
+   "question": "An automated testing tool reads an executable contract and generates hundreds of randomized integer inputs to verify that a sorting method always returns a sorted list. Which technique is the framework demonstrating?",
+   "options": [
+    "Static Code Linting",
+    "Mock Server Simulation",
+    "Property-Based Test Generation",
+    "Manual Unit Testing"
+   ],
+   "answer": "C",
+   "explanation": "Executable specifications allow frameworks to automatically synthesize property-based tests that validate general rules across wide ranges of generated inputs."
+  }
+ ],
+ "questions": [
+  {
+   "component": "W06.L2.C1",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 2,
+   "question": "A requirement states: 'A user cannot withdraw an amount exceeding their current balance.' In contract-based design, how is this constraint formally classified for the withdraw method?",
+   "options": [
+    "As an implicit parameter signature definition",
+    "As a postcondition that guarantees the balance becomes zero after execution",
+    "As a precondition that must be satisfied by the caller before invoking withdraw",
+    "As a class invariant that applies only when the system shuts down"
+   ],
+   "answer": "C",
+   "explanation": "Preconditions specify the criteria and obligations that must be true prior to invoking a method, such as validating that the requested withdrawal amount does not exceed the balance."
+  },
+  {
+   "component": "W06.L2.C2",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 3,
+   "question": "You are defining a pytest-bdd scenario for an e-commerce checkout module. Which action correctly belongs in the step implementation of a 'Given' clause?",
+   "options": [
+    "Asserting that the database record status equals COMPLETED",
+    "Initializing a user account with an active balance and populating their shopping cart",
+    "Handling an exception thrown during payment processing",
+    "Calling the checkout() API method on the cart object"
+   ],
+   "answer": "B",
+   "explanation": "In spec-driven BDD frameworks, 'Given' steps set up the required initial context and state before any action or triggering event occurs."
+  },
+  {
+   "component": "W06.L2.C3",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 3,
+   "question": "A payment system requirement specifies that attempting to charge an expired credit card must raise an ExpiredCardException. How should an assertion harness systematically verify this requirement?",
+   "options": [
+    "By asserting that the method returns a null transaction ID",
+    "By updating the card expiration date inside the postcondition assertion block",
+    "By verifying that the account balance remains unchanged after calling a non-existent method",
+    "By executing the API call within an assertion harness configured to expect ExpiredCardException"
+   ],
+   "answer": "D",
+   "explanation": "Translating exception requirements into executable specifications requires wrapping the target method call in an assertion harness that validates the expected exception is raised."
+  },
+  {
+   "component": "W06.L2.C4",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 3,
+   "question": "An LLM tasked with generating executable BDD step definitions frequently invents non-existent method signatures. Which prompting strategy directly mitigates these interface hallucinations?",
+   "options": [
+    "Instructing the LLM to omit assertions from the generated test code",
+    "Asking the LLM to generate plain natural-language summaries before code generation",
+    "Removing key preconditions and postconditions from the prompt text",
+    "Anchoring the system prompt with explicit interface schemas and method signatures"
+   ],
+   "answer": "D",
+   "explanation": "Schema anchoring provides explicit method signatures and parameter contracts in the prompt, constraining the LLM to generate specs using real, verified interfaces."
+  },
+  {
+   "component": "W06.L2.C5",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 3,
+   "question": "Before the core logic of a SessionManager class is written, how can you confirm that your newly authored BDD executable specification suite correctly targets the public interface?",
+   "options": [
+    "Replace all Given-When-Then assertions with hardcoded passing booleans",
+    "Execute the spec suite against stub interfaces to confirm method binding and assertion failures",
+    "Disable step definition hooks until full implementation is deployed",
+    "Perform a static text code review without executing the spec framework"
+   ],
+   "answer": "B",
+   "explanation": "Running specifications against stub interfaces verifies that step definitions bind correctly to method signatures and fail appropriately before full development."
+  }
+ ],
+ "problems": []
+}

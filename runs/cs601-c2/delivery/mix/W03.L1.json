@@ -1,0 +1,163 @@
+{
+ "lecture_id": "W03.L1",
+ "topic": "Coding agents and context engineering",
+ "minutes": 60,
+ "status": "proposed",
+ "preset": "slides_notebooklm",
+ "preset_by": "ai",
+ "course_style": "mix",
+ "parts": [
+  {
+   "component": "W03.L1.C1",
+   "title": "Static analysis constraints on agent tool configurations",
+   "minutes": 10,
+   "kind": "concept",
+   "bloom": 2,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "L",
+   "reason": "Live slides explain schema validation rules since NotebookLM sources miss 20% of terms, specifically static analysers.",
+   "alternative": {
+    "way": "notebooklm",
+    "reason": "first part taught live"
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.8,
+   "uncovered": [
+    "static analyser"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W03.L1.C2",
+   "title": "Configuring custom MCP tool manifests and execution environments",
+   "minutes": 20,
+   "kind": "mechanism",
+   "bloom": 3,
+   "way": "notebooklm",
+   "when": "in_class",
+   "rule": "R4",
+   "reason": "NotebookLM explainer covers 67% of underlying terms; missing concepts like sandboxed execution and stdio transport are introduced separately.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it."
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 15,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.67,
+   "uncovered": [
+    "sandboxed execution",
+    "stdio transport"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W03.L1.C3",
+   "title": "Validating workspace tool configurations against test suites",
+   "minutes": 10,
+   "kind": "worked_example",
+   "bloom": 3,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "Slides walk through test execution steps, supplementing NotebookLM sources which cover 83% but lack remediation details.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.83,
+   "uncovered": [
+    "remediation"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W03.L1.C4",
+   "title": "Diagnosing runtime tool configuration failures in agent workflows",
+   "minutes": 10,
+   "kind": "case_study",
+   "bloom": 4,
+   "way": "in_class",
+   "when": "in_class",
+   "rule": "R1",
+   "reason": "In-class group discussion helps students examine real-world crash logs, filling the divergence gap missing in 80% covered NotebookLM sources.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it."
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.8,
+   "uncovered": [
+    "divergence"
+   ],
+   "simulation": null
+  }
+ ],
+ "recap_minutes": 5,
+ "quiz_minutes": 5,
+ "totals": {
+  "slides": 30.0,
+  "video_in_class": 10.0,
+  "video_pre_class": 0.0,
+  "notebooklm": 10.0,
+  "in_class": 10.0,
+  "simulation": 0.0,
+  "recap": 5,
+  "quiz": 5,
+  "video_share": 0.17
+ },
+ "prep_minutes": 45,
+ "checks": [
+  {
+   "code": "L-RESERVE",
+   "message": "the part plan was made before recap and quiz minutes were kept free; 10 min were taken from the longest parts"
+  },
+  {
+   "code": "L-FIRST",
+   "message": "W03.L1.C1: taught live (was a NotebookLM video)"
+  }
+ ],
+ "note": "",
+ "proposed_by": "rules + D7",
+ "proposed_at": "2026-11-03 15:29:12",
+ "approved_at": "",
+ "approved_by": "",
+ "materials": {}
+}

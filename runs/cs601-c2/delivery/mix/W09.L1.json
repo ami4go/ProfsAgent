@@ -1,0 +1,356 @@
+{
+ "lecture_id": "W09.L1",
+ "topic": "Software factories and execution trace analysis",
+ "minutes": 150,
+ "status": "proposed",
+ "preset": "slides_only",
+ "preset_by": "ai",
+ "course_style": "mix",
+ "parts": [
+  {
+   "component": "W09.L1.C1",
+   "title": "Execution traces in software factories",
+   "minutes": 10,
+   "kind": "concept",
+   "bloom": 2,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "Luciq Bits (0:24–3:27) covers 3 min; slides cover missing context on coding agents, iterative loops, and software factories.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class",
+    "youtube_bridge"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.4,
+   "uncovered": [
+    "software factory",
+    "iterative loop",
+    "diagnostics"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W09.L1.C2",
+   "title": "Log structure and iteration markers",
+   "minutes": 10,
+   "kind": "mechanism",
+   "bloom": 2,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "No video stretch; slides explain standardized log formats, iteration markers, and tool calls for navigating 2000-line logs.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.4,
+   "uncovered": [
+    "log format",
+    "iteration ID",
+    "error marker"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W09.L1.C3",
+   "title": "Typical failure patterns in agent traces",
+   "minutes": 10,
+   "kind": "concept",
+   "bloom": 3,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "No video available; slides detail three recurring agent failure categories including environment misconfiguration and logic regressions.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.0,
+   "uncovered": [
+    "environment misconfiguration",
+    "dependency resolution",
+    "logic regression",
+    "trace signature",
+    "failure category"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W09.L1.C4",
+   "title": "Trace collection and parsing tooling",
+   "minutes": 15,
+   "kind": "demo",
+   "bloom": 2,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "No video stretch; slides present the demonstration of trace collection tools, log aggregator, and Python JSON log parser.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 15,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.0,
+   "uncovered": [
+    "trace collector",
+    "log aggregator",
+    "parser script",
+    "JSON output",
+    "automation"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W09.L1.C5",
+   "title": "Worked example: environment misconfiguration",
+   "minutes": 15,
+   "kind": "worked_example",
+   "bloom": 4,
+   "way": "in_class",
+   "when": "in_class",
+   "rule": "R1",
+   "reason": "In-class hands-on analysis allows step-by-step tracing of 500-line logs to locate missing environment variables and error codes.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it."
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.6,
+   "uncovered": [
+    "environment variable",
+    "correlation"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W09.L1.C6",
+   "title": "Worked example: dependency resolution failure",
+   "minutes": 15,
+   "kind": "worked_example",
+   "bloom": 4,
+   "way": "in_class",
+   "when": "in_class",
+   "rule": "R1",
+   "reason": "In-class work lets students actively trace version conflicts across iterations and extract specific dependency graph lines.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it; the sources lack version conflict, dependency graph, iteration diff."
+   },
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.2,
+   "uncovered": [
+    "version conflict",
+    "dependency graph",
+    "iteration diff",
+    "evidence extraction"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W09.L1.C7",
+   "title": "Worked example: logic regression detection",
+   "minutes": 15,
+   "kind": "worked_example",
+   "bloom": 4,
+   "way": "in_class",
+   "when": "in_class",
+   "rule": "R1",
+   "reason": "In-class activity enables comparing successive iteration outputs to spot behavioral changes and commit diff lines.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it; the sources lack behavioral change, test result diff, commit diff."
+   },
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.0,
+   "uncovered": [
+    "behavioral change",
+    "test result diff",
+    "commit diff",
+    "log excerpt",
+    "regression"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W09.L1.C8",
+   "title": "Comparing failure causes across traces",
+   "minutes": 15,
+   "kind": "comparison",
+   "bloom": 4,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "No video stretch; slides present a side-by-side comparison matrix and severity ranking rubric for failure signatures.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 15,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.0,
+   "uncovered": [
+    "signature comparison",
+    "frequency",
+    "impact",
+    "severity rubric",
+    "ranking"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W09.L1.C9",
+   "title": "Activity: analyze full 2000‑line log",
+   "minutes": 15,
+   "kind": "activity",
+   "bloom": 4,
+   "way": "in_class",
+   "when": "in_class",
+   "rule": "R1",
+   "reason": "Pair activity engages students in running the parsing script on a 2000-line log to identify failure causes.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it; the sources lack pair work, 2000‑line log, parsing script."
+   },
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.0,
+   "uncovered": [
+    "pair work",
+    "2000‑line log",
+    "parsing script",
+    "failure identification",
+    "evidence recording"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W09.L1.C10",
+   "title": "Discussion: reporting and best practices",
+   "minutes": 15,
+   "kind": "discussion",
+   "bloom": 5,
+   "way": "in_class",
+   "when": "in_class",
+   "rule": "R1",
+   "reason": "In-class discussion lets student pairs present trace findings, critique evidence, and outline automated detection checklists.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it; the sources lack findings presentation, evidence critique, automation ideas."
+   },
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.0,
+   "uncovered": [
+    "findings presentation",
+    "evidence critique",
+    "automation ideas",
+    "checklist",
+    "continuous improvement"
+   ],
+   "simulation": null
+  }
+ ],
+ "recap_minutes": 5,
+ "quiz_minutes": 10,
+ "totals": {
+  "slides": 60.0,
+  "video_in_class": 0.0,
+  "video_pre_class": 0.0,
+  "notebooklm": 0.0,
+  "in_class": 75.0,
+  "simulation": 0.0,
+  "recap": 5,
+  "quiz": 10,
+  "video_share": 0.0
+ },
+ "prep_minutes": 110,
+ "checks": [
+  {
+   "code": "L-RESERVE",
+   "message": "the part plan was made before recap and quiz minutes were kept free; 15 min were taken from the longest parts"
+  }
+ ],
+ "note": "",
+ "proposed_by": "rules + D7",
+ "proposed_at": "2026-11-03 15:34:25",
+ "approved_at": "",
+ "approved_by": "",
+ "materials": {}
+}

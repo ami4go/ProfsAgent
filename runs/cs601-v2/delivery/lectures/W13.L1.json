@@ -1,0 +1,763 @@
+{
+ "lecture_id": "W13.L1",
+ "topic": "Deployment and reliability metric evaluation",
+ "generated_at": "2026-11-02 22:40:27",
+ "components": [
+  {
+   "lecture_id": "W13.L1",
+   "title": "Comparing scenario walkthroughs: lessons learned",
+   "teaches": "A brief recap of the first walkthrough is followed by a comparison with a second scenario (canary vs. blue‑green). Students analyse how metric patterns differ and what that implies for rollback decisions.",
+   "key_terms": [
+    "canary",
+    "blue‑green",
+    "metric comparison",
+    "rollback decision"
+   ],
+   "kind": "comparison",
+   "bloom": 4,
+   "lo_ids": [
+    "CO4.LO3"
+   ],
+   "minutes": 15,
+   "id": "W13.L1.C1",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W13.L1",
+   "title": "Scenario walkthrough 2: canary deployment evaluation",
+   "teaches": "The instructor demonstrates a live canary rollout, monitors the error budget in Grafana, makes a go/no‑go decision, and documents the evaluation for a post‑mortem. Students practice the full evaluation loop.",
+   "key_terms": [
+    "canary",
+    "gradual rollout",
+    "error budget",
+    "go/no‑go",
+    "post‑mortem"
+   ],
+   "kind": "worked_example",
+   "bloom": 5,
+   "lo_ids": [
+    "CO4.LO3"
+   ],
+   "minutes": 15,
+   "id": "W13.L1.C2",
+   "in_class": false
+  }
+ ],
+ "continues": "W12.L2",
+ "resources": {
+  "lecture_id": "W13.L1",
+  "topic": "Deployment and reliability metric evaluation",
+  "want": {
+   "want_videos": false,
+   "want_readings": true,
+   "want_practice": true,
+   "want_recorded_lecture": false,
+   "want_clips": false,
+   "want_guest": true,
+   "confidence": 2,
+   "note": "",
+   "choices": [
+    "own_material",
+    "generate_material",
+    "assistance",
+    "guest_lecture"
+   ]
+  },
+  "queries": {
+   "lecture_id": "W13.L1",
+   "video_queries": [
+    "deployment and reliability metrics tutorial",
+    "evaluating software reliability metrics lecture",
+    "AI system deployment metrics explained"
+   ],
+   "reading_queries": [
+    "Comparing scenario walkthroughs: lessons learned Deployment and reliability metric evaluation"
+   ],
+   "practice_queries": [
+    "Comparing scenario walkthroughs: lessons learned hands-on tutorial"
+   ],
+   "recorded_lecture_query": "software reliability metric evaluation lecture",
+   "research_queries": [
+    "software reliability evaluation metrics",
+    "AI deployment monitoring metrics"
+   ],
+   "practitioner_query": "site reliability engineer AI platform"
+  },
+  "items": {
+   "video": [
+    {
+     "kind": "video",
+     "id": "LiaBWWsplRI",
+     "url": "https://www.youtube.com/watch?v=LiaBWWsplRI",
+     "title": "Module 10: Optimizing Delivery Metrics & Deployment Queries | AZ-400 Certification | English",
+     "source": "QuickTechie Official",
+     "tier": 4,
+     "duration_s": 436,
+     "published": "2026-05-24T06:53:34Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 9,
+     "likes": 0,
+     "comments": 0,
+     "subscribers": 11100,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.092,
+      "segment": 0.316,
+      "clarity": 0.6,
+      "level_fit": 0.6,
+      "authority": 0.35,
+      "reception": 0.111
+     },
+     "total": 0.263,
+     "findings": [],
+     "rationale": "Teaches C2 Scenario walkthrough 2: canary deployment evaluation (1:08–6:08, partly) [checked on the transcript] · QuickTechie Official · tier 4 · 7:16 · 9 views",
+     "components": [
+      {
+       "id": "W13.L1.C2",
+       "title": "Scenario walkthrough 2: canary deployment evaluation",
+       "start": "1:08",
+       "end": "6:08",
+       "start_s": 68.2,
+       "end_s": 368.2,
+       "verdict": "teaches_partly",
+       "covered": [
+        "canary concept",
+        "gradual traffic shifting",
+        "error rate and latency comparison",
+        "automatic rollback on degradation"
+       ],
+       "missing": [
+        "error budget monitoring in Grafana",
+        "go/no-go decision process",
+        "post-mortem documentation"
+       ],
+       "note": "Explains canary theory and metrics but lacks live demo, error budget, go/no-go, post-mortem.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.092,
+      "evidence": "transcript",
+      "per_target": {
+       "W13.L1.C2": {
+        "text": "Scenario walkthrough 2: canary deployment evaluation",
+        "covered": true,
+        "sim": 0.436,
+        "segments": [
+         {
+          "start": 68.2,
+          "end": 368.2,
+          "sim": 0.436
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Explains canary theory and metrics but lacks live demo, error budget, go/no-go, post-mortem.",
+      "issues": [
+       "leaves out: error budget monitoring in Grafana",
+       "leaves out: go/no-go decision process",
+       "leaves out: post-mortem documentation"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Welcome to Module 10 of the AZ-400 Microsoft DevOps Engineer Expert Certification Training Course, where you’ll learn how to optimize delivery metrics, deployment analytics, and operational queries to improve software release performance and deployment reliability.\n\nThis module focuses on tracking deployment efficiency, monitoring release health, analyzing pipeline performance, and using data-driven insights to strengthen continuous delivery and DevOps operations.\n\nWhat You’ll Learn in This Module:\n\nUnderstanding delivery metrics and deployment performance indicators\nMeasuring deployment frequency, success rates, and recovery time\nMonitoring release pipelines and operational deployment healt",
+     "rank": 1,
+     "status": "proposed"
+    }
+   ],
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://sre.google/workbook/canarying-releases/",
+     "title": "Google SRE - Canary Release: Deployment Safety and Efficiency",
+     "source": "sre.google",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.901,
+      "quality": 0.9,
+      "authority": 0.35,
+      "level_fit": 1.0,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.758,
+     "rank": 1,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W13.L1.C1 ✓, W13.L1.C2 ✓ [from page text] · sre.google · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Authoritative Google SRE guide on canary evaluation with error budgets and SLOs; directly supports scenario walkthrough 2.",
+      "issues": [
+       "focuses on canary releases only; may not cover other deployment metrics or multi-component projects"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains",
+      "clarity": 5,
+      "correctness": 5,
+      "depth": 4,
+      "examples": 4,
+      "level_fit": 5
+     },
+     "coverage": {
+      "score": 0.901,
+      "evidence": "text",
+      "per_target": {
+       "M8.T2": {
+        "covered": true,
+        "sim": 0.58,
+        "segments": []
+       },
+       "W13.L1.C1": {
+        "covered": true,
+        "sim": 0.471,
+        "segments": [],
+        "text": "Comparing scenario walkthroughs: lessons learned. A brief recap of the first walkthrough is followed by a comparison wit"
+       },
+       "W13.L1.C2": {
+        "covered": true,
+        "sim": 0.624,
+        "segments": [],
+        "text": "Scenario walkthrough 2: canary deployment evaluation. The instructor demonstrates a live canary rollout, monitors the er"
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://www.enov8.com/blog/deployment-strategies-compared-and-explained/",
+     "title": "Deployment Strategies: 7 Methods for Successful Releases",
+     "source": "enov8.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.922,
+      "quality": 0.45,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.655,
+     "rank": 2,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W13.L1.C1 ✓, W13.L1.C2 ✓ [from page text] · enov8.com · tier 4",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "review": {
+      "review": "Clear article on deployment strategies (blue-green, canary); good for background but doesn't cover metric evaluation.",
+      "issues": [
+       "focuses on deployment strategies, not reliability metric evaluation; no scenario walkthroughs"
+      ],
+      "use_as": "pre_class",
+      "explains": "mentions",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.922,
+      "evidence": "text",
+      "per_target": {
+       "M8.T2": {
+        "covered": true,
+        "sim": 0.555,
+        "segments": []
+       },
+       "W13.L1.C1": {
+        "covered": true,
+        "sim": 0.521,
+        "segments": [],
+        "text": "Comparing scenario walkthroughs: lessons learned. A brief recap of the first walkthrough is followed by a comparison wit"
+       },
+       "W13.L1.C2": {
+        "covered": true,
+        "sim": 0.634,
+        "segments": [],
+        "text": "Scenario walkthrough 2: canary deployment evaluation. The instructor demonstrates a live canary rollout, monitors the er"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "reserve": {
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://www.checklyhq.com/blog/software-deployment-best-practices/",
+     "title": "Software Deployment Best Practices for Modern Engineering Teams",
+     "source": "checklyhq.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.911,
+      "quality": 0.45,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.651,
+     "rank": 3,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W13.L1.C1 ✓, W13.L1.C2 ✓ [from page text] · checklyhq.com · tier 4",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "review": {
+      "review": "Practical deployment best practices with canary example; mentions monitoring but not how to evaluate reliability metrics.",
+      "issues": [
+       "covers best practices and monitoring but not metric evaluation methodology; no scenario walkthroughs"
+      ],
+      "use_as": "pre_class",
+      "explains": "mentions",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.911,
+      "evidence": "text",
+      "per_target": {
+       "M8.T2": {
+        "covered": true,
+        "sim": 0.596,
+        "segments": []
+       },
+       "W13.L1.C1": {
+        "covered": true,
+        "sim": 0.481,
+        "segments": [],
+        "text": "Comparing scenario walkthroughs: lessons learned. A brief recap of the first walkthrough is followed by a comparison wit"
+       },
+       "W13.L1.C2": {
+        "covered": true,
+        "sim": 0.577,
+        "segments": [],
+        "text": "Scenario walkthrough 2: canary deployment evaluation. The instructor demonstrates a live canary rollout, monitors the er"
+       }
+      }
+     }
+    }
+   ],
+   "video": []
+  },
+  "rejected": [
+   {
+    "title": "Evaluating Federated Learning Beyond Simulation",
+    "url": "https://hal.science/hal-05477787v1/file/Eval_FL_Methodology.pdf",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Lessons Learned from the Real-world Deployment of a ...",
+    "url": "https://people.computing.clemson.edu/~jmarty/papers/LessonsLearnedFromTheRealWorldDeploymentOfACVTestbed.pdf",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Evaluation Methods and Techniques - FHWA Operations",
+    "url": "https://ops.fhwa.dot.gov/publications/fhwahop19053/fhwahop19053.pdf",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "10 Questions for Project Managers on Lessons Learned | Indeed.com",
+    "url": "https://www.indeed.com/career-advice/career-development/lessons-learned-questions",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Lessons Learned From Winning Prop Traders",
+    "url": "https://finance.yahoo.com/news/lessons-learned-winning-prop-traders-173011814.html",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Software Engineering",
+    "url": "https://openlibrary.org/books/OL28345690M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes",
+     "AI review: off topic (excerpts too short to judge; coverage indicates not relevant)",
+     "AI review: a general introduction to a broader concept, not this lecture's topic"
+    ]
+   },
+   {
+    "title": "ICACIEM 2017",
+    "url": "https://openlibrary.org/books/OL26457447M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Robot Performance Evaluation for Engineering Applications: A Systematic Review of Metrics, Methods and Practices",
+    "url": "https://doi.org/10.3390/technologies14050297",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "A Systematic Literature Review on Hardware Reliability Assessment Methods for Deep Neural Networks",
+    "url": "https://dl.acm.org/doi/pdf/10.1145/3638242",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Systematic Review of Key Performance Metrics in Modern DevOps and Software Reliability Engineering",
+    "url": "https://www.futureengineeringjournal.com/uploads/archives/20250509183635_FEI-2025-1-026.1.pdf",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Are LLM watermarks reliable in practice? A systematic review of evidence, robustness, threat models, and deployment assumptions",
+    "url": "https://www.sciencedirect.com/science/article/pii/S1574013726001826/pdf",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Scenario-Based Learning: The Complete Guide | Devlin Peck",
+    "url": "https://www.devlinpeck.com/content/scenario-based-learning",
+    "why": [
+     "score 0.40 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Lessons learned",
+    "url": "https://www.pmi.org/learning/library/lessons-learned-next-level-Communicating-7991",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Hands-On and Experiential Learning: A Practical Guide for Teachers",
+    "url": "https://instructionalstrategies.org/hands-on-experiential-learning/",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "How to Build a Lessons Learned Log: Step-by-Step",
+    "url": "https://www.youtube.com/watch?v=BRutpWdrBSI",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "How to Build an Effective Scenario-Based Learning Activity | ASC Office of Distance Education",
+    "url": "https://ascode.osu.edu/how-build-effective-scenario-based-learning-activity",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Creating Effective Scenarios, Case Studies and Role Plays | UNB",
+    "url": "https://www.unb.ca/fredericton/cetl/services/teaching-tips/instructional-methods/creating-effective-scenarios,-case-studies-and-role-plays.html",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Storytelling and Scenarios for Learning - Christy Tucker",
+    "url": "https://christytuckerlearning.com/storytelling-and-scenarios",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Study shows that students learn more when taking part in classrooms that employ active-learning strategies — Harvard Gazette",
+    "url": "https://news.harvard.edu/gazette/story/2019/09/study-shows-that-students-learn-more-when-taking-part-in-classrooms-that-employ-active-learning-strategies/",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "jwasham/coding-interview-university — A complete computer science study plan to become a software engineer.",
+    "url": "https://github.com/jwasham/coding-interview-university",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes",
+     "AI review: off topic (off-topic; coding interview preparation)",
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "charlax/professional-programming — A collection of learning resources for curious software engineers",
+    "url": "https://github.com/charlax/professional-programming",
+    "why": [
+     "AI review: a general introduction to a broader concept, not this lecture's topic",
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "ai-boost/awesome-harness-engineering — Awesome list for AI agent harness engineering: tools, patterns, evals, memory, MCP, permissions, observability, and orch",
+    "url": "https://github.com/ai-boost/awesome-harness-engineering",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "alvinreal/awesome-opensource-ai — Curated list of the best truly open-source AI projects, models, tools, and infrastructure. Daily updated.",
+    "url": "https://github.com/alvinreal/awesome-opensource-ai",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "networktocode/awesome-network-automation — Curated Awesome list about Network Automation",
+    "url": "https://github.com/networktocode/awesome-network-automation",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes",
+     "AI review: off topic (completely off-topic; network automation focus)",
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "DORA Metrics Explained — 4 Metrics That Measure DevOps Performance (Part-1)",
+    "url": "https://www.youtube.com/watch?v=8l3toAmExe4",
+    "why": [
+     "too short to teach a component (1:04)"
+    ]
+   },
+   {
+    "title": "How much does a BACKEND SOFTWARE ENGINEER make? #shorts #ytshorts #techjobsin2minutes",
+    "url": "https://www.youtube.com/watch?v=naKSTWu-z8I",
+    "why": [
+     "too short to teach a component (0:50)"
+    ]
+   },
+   {
+    "title": "Learn Observability in 5 hours | Tool wise Demo + Complete Demo using Open Telemetry",
+    "url": "https://www.youtube.com/watch?v=cYAE0ZhT43c",
+    "why": [
+     "too long to find a segment in (4:57:21)"
+    ]
+   },
+   {
+    "title": "Master Master #DORA Metrics for #DevOps Success!",
+    "url": "https://www.youtube.com/watch?v=PugyjDC6ffE",
+    "why": [
+     "too short to teach a component (0:56)"
+    ]
+   },
+   {
+    "title": "What is Deployment Frequency? - The Four Key Metrics of DORA (Part 4)",
+    "url": "https://www.youtube.com/watch?v=sNYxZPvGfNA",
+    "why": [
+     "too short to teach a component (2:42)"
+    ]
+   },
+   {
+    "title": "Roadmap to Become a Generative AI Expert for Beginners in 2025",
+    "url": "https://www.youtube.com/watch?v=39zbC_PrNQs",
+    "why": [
+     "too short to teach a component (0:05)"
+    ]
+   },
+   {
+    "title": "GPU Hosting Explained – Everything You Need to Know for AI Deployment | Cyfuture AI",
+    "url": "https://www.youtube.com/watch?v=bG9T9FKHIv4",
+    "why": [
+     "too short to teach a component (2:35)"
+    ]
+   },
+   {
+    "title": "The Four Pillars of AI Observability in 90 Seconds",
+    "url": "https://www.youtube.com/watch?v=CnopEhA6Khk",
+    "why": [
+     "too short to teach a component (1:31)"
+    ]
+   },
+   {
+    "title": "6 Steps to Build an AI Model: From Data to Deployment",
+    "url": "https://www.youtube.com/watch?v=9lGT-vvn7hI",
+    "why": [
+     "too short to teach a component (2:59)"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 27,
+   "passed_checks": 3,
+   "rejected": 24,
+   "videos_used": 1
+  },
+  "clips": [
+   {
+    "target": "Scenario walkthrough 2: canary deployment evaluation",
+    "target_ids": [
+     "W13.L1.C2"
+    ],
+    "component": "W13.L1.C2",
+    "video": "Module 10: Optimizing Delivery Metrics & Deployment Queries | AZ-400 Certification | English",
+    "source": "QuickTechie Official",
+    "url": "https://www.youtube.com/watch?v=LiaBWWsplRI&t=68s",
+    "start": "1:08",
+    "end": "6:08",
+    "minutes": 5.0,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "canary concept",
+     "gradual traffic shifting",
+     "error rate and latency comparison",
+     "automatic rollback on degradation"
+    ],
+    "missing": [
+     "error budget monitoring in Grafana",
+     "go/no-go decision process",
+     "post-mortem documentation"
+    ],
+    "note": "Explains canary theory and metrics but lacks live demo, error budget, go/no-go, post-mortem."
+   }
+  ],
+  "timeline": [
+   {
+    "component": "W13.L1.C1",
+    "title": "Comparing scenario walkthroughs: lessons learned",
+    "minutes": 15,
+    "kind": "comparison",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W13.L1.C2",
+    "title": "Scenario walkthrough 2: canary deployment evaluation",
+    "minutes": 15,
+    "kind": "worked_example",
+    "delivery": "video",
+    "gap": {
+     "video_minutes": 5.0,
+     "missing": [
+      "error budget monitoring in Grafana",
+      "go/no-go decision process",
+      "post-mortem documentation"
+     ]
+    },
+    "segments": [
+     {
+      "video": "Module 10: Optimizing Delivery Metrics & Deployment Queries | AZ-400 Certification | English",
+      "video_id": "LiaBWWsplRI",
+      "url": "https://www.youtube.com/watch?v=LiaBWWsplRI&t=68s",
+      "start": "1:08",
+      "end": "6:08",
+      "minutes": 5.0,
+      "verdict": "teaches_partly",
+      "score": 0.316
+     }
+    ]
+   }
+  ],
+  "partial": {
+   "reason": "YouTube blocked transcript requests (from 22:14)",
+   "videos_without_transcript": [
+    "cM8VErTzOr4",
+    "y2D7OzNZK5g",
+    "BQXnKpP2lrI",
+    "A7XEDU-ed_4",
+    "Gp9DhFWGgJQ",
+    "hLvwoow3XTk",
+    "ws_9sJvbIag",
+    "vTiIkdDwT-0",
+    "rmBd6R0W3kk",
+    "uz5BEadZwLc",
+    "FczbSauVvjw",
+    "Xs6E-MAJbfE"
+   ]
+  },
+  "components": [
+   {
+    "lecture_id": "W13.L1",
+    "title": "Comparing scenario walkthroughs: lessons learned",
+    "teaches": "A brief recap of the first walkthrough is followed by a comparison with a second scenario (canary vs. blue‑green). Students analyse how metric patterns differ and what that implies for rollback decisions.",
+    "key_terms": [
+     "canary",
+     "blue‑green",
+     "metric comparison",
+     "rollback decision"
+    ],
+    "kind": "comparison",
+    "bloom": 4,
+    "lo_ids": [
+     "CO4.LO3"
+    ],
+    "minutes": 15,
+    "id": "W13.L1.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W13.L1",
+    "title": "Scenario walkthrough 2: canary deployment evaluation",
+    "teaches": "The instructor demonstrates a live canary rollout, monitors the error budget in Grafana, makes a go/no‑go decision, and documents the evaluation for a post‑mortem. Students practice the full evaluation loop.",
+    "key_terms": [
+     "canary",
+     "gradual rollout",
+     "error budget",
+     "go/no‑go",
+     "post‑mortem"
+    ],
+    "kind": "worked_example",
+    "bloom": 5,
+    "lo_ids": [
+     "CO4.LO3"
+    ],
+    "minutes": 15,
+    "id": "W13.L1.C2",
+    "in_class": false
+   }
+  ],
+  "notebooklm": {
+   "pack": "notebooklm/W13.L1.md",
+   "components": [],
+   "sources": 4
+  }
+ },
+ "experts": {
+  "same_as": "W12.L2",
+  "experts": [],
+  "reserve": [],
+  "rejected": [],
+  "counts": {}
+ },
+ "partial": {
+  "reason": "YouTube blocked transcript requests (from 22:14)",
+  "videos_without_transcript": [
+   "cM8VErTzOr4",
+   "y2D7OzNZK5g",
+   "BQXnKpP2lrI",
+   "A7XEDU-ed_4",
+   "Gp9DhFWGgJQ",
+   "hLvwoow3XTk",
+   "ws_9sJvbIag",
+   "vTiIkdDwT-0",
+   "rmBd6R0W3kk",
+   "uz5BEadZwLc",
+   "FczbSauVvjw",
+   "Xs6E-MAJbfE"
+  ]
+ }
+}

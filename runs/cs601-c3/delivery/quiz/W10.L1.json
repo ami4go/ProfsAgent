@@ -1,0 +1,142 @@
+{
+ "lecture_id": "W10.L1",
+ "topic": "Testing and validation in iterative development",
+ "made_at": "2026-11-03 15:46:57",
+ "minutes": {
+  "recap": 5,
+  "quiz": 10
+ },
+ "recap": [
+  {
+   "component": "W09.L2.C1",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 2,
+   "question": "Why is consistent formatting of metadata (such as event types, timestamps, and error codes) critical in agent execution traces?",
+   "options": [
+    "It automatically fixes failed tool calls without human intervention.",
+    "It allows automated tools to reliably parse and map execution steps across iterative loops.",
+    "It compresses the log file size to reduce disk overhead.",
+    "It prevents the agent from making invalid syntax calls during execution."
+   ],
+   "answer": "B",
+   "explanation": "Consistent trace metadata formatting allows automated parsers to reliably extract step outputs, map iteration loops, and spot execution failures."
+  },
+  {
+   "component": "W09.L2.C2",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 4,
+   "question": "An execution trace shows an agent calling a file-write tool 10 times in a row, each returning an error code indicating the destination directory does not exist. What is the root cause shown by this trace?",
+   "options": [
+    "The file system permissions were revoked mid-execution.",
+    "The agent is misusing the tool by supplying an invalid path and failing to handle the returned error.",
+    "The system experienced an intermittent network timeout across iterations.",
+    "The trace logger dropped event records between iterations."
+   ],
+   "answer": "B",
+   "explanation": "Repeated tool calls with bad arguments yielding the same error code demonstrate tool misuse, where the agent repeatedly inputs an invalid path without interpreting the error return code."
+  }
+ ],
+ "questions": [
+  {
+   "component": "W10.L1.C1",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 3,
+   "question": "You need to quickly count how many times HTTP 500 error codes appear in a 2000-line JSON execution trace file. Which command-line approach is most appropriate?",
+   "options": [
+    "Use awk to replace all timestamps with text strings before scanning with grep.",
+    "Pass the raw trace into an LLM prompt to estimate error frequencies without parsing.",
+    "Use jq to parse the JSON logs, filter by the error code field, and count occurrences.",
+    "Manually scroll through the raw text file in an editor to count 500 error strings."
+   ],
+   "answer": "C",
+   "explanation": "Tools like jq allow structured parsing of JSON traces to accurately filter specific fields and count error codes without manual searching."
+  },
+  {
+   "component": "W10.L1.C2",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 4,
+   "question": "An engineer suspects an agent failed due to a missing permission in iteration 3, but modifies the source code without inspecting the log context. Which step of the systematic trace analysis workflow was skipped?",
+   "options": [
+    "Running initial setup scripts before trace collection.",
+    "Searching for signature patterns and collecting log evidence to validate the hypothesis.",
+    "Formulating initial failure hypotheses.",
+    "Segmenting the trace by iteration index."
+   ],
+   "answer": "B",
+   "explanation": "The workflow requires searching for signature patterns and collecting concrete log lines to validate failure hypotheses before altering the code context."
+  },
+  {
+   "component": "W10.L1.C3",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 4,
+   "question": "During log analysis, an agent repeatedly executes the exact same shell command without advancing state across multiple log segments. What failure type does this represent, and what log evidence confirms it?",
+   "options": [
+    "A version mismatch, confirmed by dynamic library load warnings.",
+    "A permission error, confirmed by EACCES denial flags in step outputs.",
+    "A hardware crash, confirmed by sudden termination of process IDs.",
+    "A logic loop, confirmed by repeating sequential log lines with identical step actions."
+   ],
+   "answer": "D",
+   "explanation": "Repeatedly executing identical commands without state progression indicates a logic loop, evidenced by repeating sequences in execution log traces."
+  },
+  {
+   "component": "W10.L1.C4",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 4,
+   "question": "When preparing a trace analysis report on a fresh 1500-line log file for peer review, which set of details makes the report verifiable?",
+   "options": [
+    "A general summary of agent behavior without line numbers or error codes.",
+    "The agent's initial prompt text combined with total execution time.",
+    "An unannotated copy of the entire trace file without identified root causes.",
+    "Identified failure causes paired with explicit log line numbers and error codes."
+   ],
+   "answer": "D",
+   "explanation": "Peer review requires concrete evidence, including explicit log line numbers and error codes, to support each identified failure cause."
+  },
+  {
+   "component": "W10.L1.C5",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 5,
+   "question": "A team needs to evaluate trace analysis strategies for high accuracy and low false-positive rates regarding exact error codes. How should they compare scripted querying with LLM-assisted summarisation?",
+   "options": [
+    "Manual inspection is faster and less prone to human error than both scripted queries and LLM summarisation.",
+    "Scripted querying should be avoided because it cannot count occurrence frequencies in large files.",
+    "LLM summarisation guarantees zero false positives when extracting specific error codes compared to scripted tools.",
+    "Scripted querying provides deterministic accuracy for specific codes, whereas LLM summarisation can introduce false positives."
+   ],
+   "answer": "D",
+   "explanation": "Scripted querying (e.g., grep, jq) offers precise code extraction without false positives, whereas LLM-assisted summarisation carries a risk of hallucinations despite being fast for high-level summaries."
+  },
+  {
+   "component": "W10.L1.C6",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 5,
+   "question": "You have identified a root cause from a trace log and are structuring a failure report for developers. Which approach ensures the findings are validated and actionable?",
+   "options": [
+    "Request developers to re-run the trace manually without providing cited line numbers.",
+    "Rely entirely on stakeholder opinions rather than log verification.",
+    "Validate the cause with a reproducing unit test and link actionable fixes to specific log evidence.",
+    "Provide high-level developer advice without linking back to specific log lines."
+   ],
+   "answer": "C",
+   "explanation": "Actionable reporting requires direct traceability back to log evidence combined with concrete validation methods such as reproducing unit tests."
+  }
+ ],
+ "problems": []
+}

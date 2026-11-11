@@ -1,0 +1,174 @@
+{
+ "lecture_id": "W05.L1",
+ "topic": "Software requirements and requirements engineering",
+ "made_at": "2026-11-03 15:46:54",
+ "minutes": {
+  "recap": 5,
+  "quiz": 10
+ },
+ "recap": [
+  {
+   "component": "W04.L3.C1",
+   "lo_ids": [
+    "CO2.LO1"
+   ],
+   "bloom": 2,
+   "question": "According to standard spec-driven guidelines and use case standards, which element is mandatory in a formal use case specification?",
+   "options": [
+    "Internal database schema design",
+    "Target programming language version",
+    "Hardware memory allocation limits",
+    "Primary actor and goal statement"
+   ],
+   "answer": "D",
+   "explanation": "Standard use case specifications mandate identifying functional elements such as the primary actor and their intended goal rather than technical implementation details."
+  },
+  {
+   "component": "W04.L3.C2",
+   "lo_ids": [
+    "CO2.LO1"
+   ],
+   "bloom": 3,
+   "question": "An e-commerce application sends transaction verification requests to an external payment gateway during checkout. How is the external payment gateway classified in this system's use case model?",
+   "options": [
+    "Primary actor inside the system boundary",
+    "Use case action within the system process",
+    "Secondary external actor outside the system boundary",
+    "Internal actor within the system boundary"
+   ],
+   "answer": "C",
+   "explanation": "External services that interface with the system to fulfill a request are categorized as secondary actors residing outside the system boundary."
+  }
+ ],
+ "questions": [
+  {
+   "component": "W05.L1.C1",
+   "lo_ids": [
+    "CO2.LO1"
+   ],
+   "bloom": 3,
+   "question": "You are parsing an unstructured product description for an e-commerce platform. Which requirement statement correctly represents a precondition in the functional template?",
+   "options": [
+    "The item stock count is decremented in the inventory database.",
+    "The user clicks the Submit Order button on the confirmation page.",
+    "The user must have an active account with a verified email address before initiating checkout.",
+    "The system sends a confirmation email after payment succeeds."
+   ],
+   "answer": "C",
+   "explanation": "A precondition defines the mandatory state that must hold true before the user goal or action can begin, such as having a verified active account."
+  },
+  {
+   "component": "W05.L1.C2",
+   "lo_ids": [
+    "CO2.LO1"
+   ],
+   "bloom": 3,
+   "question": "A developer writes the following step in a main success scenario: '3. System authenticates user credentials, generates a session token, and updates user profile statistics.' Why does this step violate spec guidelines?",
+   "options": [
+    "It combines multiple operations into one step instead of keeping steps atomic and observable.",
+    "Main success scenarios must only contain user actions, not system responses.",
+    "It references a database token which is forbidden in requirements.",
+    "It lacks an actor name in the sentence structure."
+   ],
+   "answer": "A",
+   "explanation": "Spec-driven guidelines require each step in a main success scenario to be atomic and observable rather than bundling multiple system actions into a single step."
+  },
+  {
+   "component": "W05.L1.C3",
+   "lo_ids": [
+    "CO2.LO1"
+   ],
+   "bloom": 3,
+   "question": "In a flight booking use case, step 4 of the main success scenario is 'User submits credit card details.' How should an expired card error be documented to maintain clear traceability?",
+   "options": [
+    "Add an extension branch tied to step 4, designated as '4a. Credit card is expired.'",
+    "List card expiration checks in the use case postconditions.",
+    "Create a completely independent use case titled 'Handle Expired Credit Card'.",
+    "Embed an IF-THEN conditional block directly inside step 4 of the main success scenario."
+   ],
+   "answer": "A",
+   "explanation": "Extensions use the numbering scheme of the main scenario step they branch from (e.g., 4a) to preserve traceability to the exact point of divergence."
+  },
+  {
+   "component": "W05.L1.C4",
+   "lo_ids": [
+    "CO2.LO1"
+   ],
+   "bloom": 3,
+   "question": "While drawing a UML context diagram for a course registration system, a student places the university's central OAuth identity provider inside the system boundary box. What is wrong with this placement?",
+   "options": [
+    "Context diagrams cannot include third-party integrations.",
+    "Software systems belong inside the boundary; only human users are drawn outside.",
+    "Identity providers should only be represented in database ER diagrams.",
+    "External services and identity providers must be drawn outside the system boundary as external actors."
+   ],
+   "answer": "D",
+   "explanation": "The system boundary separates the system being built from external systems and actors, which must be placed outside the boundary box."
+  },
+  {
+   "component": "W05.L1.C5",
+   "lo_ids": [
+    "CO2.LO1"
+   ],
+   "bloom": 4,
+   "question": "A software team is planning the first release of a healthcare app. A proposed use case allows users to customize the UI accent color scheme. Under MoSCoW prioritization for launch, how should this use case be classified?",
+   "options": [
+    "Should Have",
+    "Must Have",
+    "Could Have",
+    "Won't Have"
+   ],
+   "answer": "C",
+   "explanation": "A cosmetic feature like UI customization offers non-essential value and is classified as 'Could Have' (desirable but not critical for the first release)."
+  },
+  {
+   "component": "W05.L1.C6",
+   "lo_ids": [
+    "CO2.LO1"
+   ],
+   "bloom": 4,
+   "question": "During a use case review, an auditor flags the step: 'System processes the patient record fast and securely.' Which quality checklist criterion does this step fail?",
+   "options": [
+    "Precondition validity",
+    "Testability",
+    "Completeness",
+    "Actor identification"
+   ],
+   "answer": "B",
+   "explanation": "Ambiguous, subjective terms like 'fast' and 'securely' cannot be verified objectively, failing the testability check."
+  },
+  {
+   "component": "W05.L1.C7",
+   "lo_ids": [
+    "CO2.LO1"
+   ],
+   "bloom": 2,
+   "question": "In a spec-driven development pipeline, how does a use case main success scenario directly map to downstream testing artifacts?",
+   "options": [
+    "It maps to executable feature files containing Given-When-Then acceptance criteria.",
+    "It becomes infrastructure provisioning scripts.",
+    "It transforms into low-level architectural class diagrams.",
+    "It converts into database schema migration files."
+   ],
+   "answer": "A",
+   "explanation": "Use case scenarios map directly to feature files with acceptance criteria (Given-When-Then format) in spec-driven testing frameworks."
+  },
+  {
+   "component": "W05.L1.C9",
+   "lo_ids": [
+    "CO2.LO1"
+   ],
+   "bloom": 4,
+   "question": "A peer review of a banking application specification shows 'Junior Admin', 'Senior Admin', and 'System Lead' performing identical steps in the 'Reset Password' use case. What pitfall should be corrected?",
+   "options": [
+    "Vague step wording",
+    "Boundary leakage",
+    "Missing exception handling",
+    "Actor overload"
+   ],
+   "answer": "D",
+   "explanation": "Listing multiple separate actor titles for identical interactions creates actor overload; they should be consolidated into a single generalized actor role."
+  }
+ ],
+ "problems": []
+}

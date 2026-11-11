@@ -1,0 +1,77 @@
+{
+ "lecture_id": "W04.L1",
+ "topic": "Custom tool integrations using model context protocols",
+ "made_at": "2026-11-03 15:46:54",
+ "minutes": {
+  "recap": 0,
+  "quiz": 0
+ },
+ "recap": [],
+ "questions": [
+  {
+   "component": "W04.L1.C1",
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "bloom": 3,
+   "question": "A developer builds an MCP server function that receives payloads from an LLM call. The static analyzer throws a warning regarding untyped JSON schema bindings. Why is this flagged as a risk for production tool integration?",
+   "options": [
+    "Untyped bindings prevent the agent workspace from opening network connections.",
+    "Untyped bindings allow unexpected payload structures from the LLM to cause unhandled runtime errors.",
+    "The linter requires all JSON schema payloads to be encrypted prior to parsing.",
+    "Static analyzers cannot parse async functions unless parameters are strings."
+   ],
+   "answer": "B",
+   "explanation": "Untyped JSON bindings allow malformed or unexpected responses from the LLM to bypass type checks, potentially causing runtime crashes in the tool handler."
+  },
+  {
+   "component": "W04.L1.C1",
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "bloom": 3,
+   "question": "While writing an async tool handler for an MCP server, the static analyzer reports an 'unhandled promise' warning on a secondary network request. How should you resolve this warning to ensure code safety?",
+   "options": [
+    "Convert the entire tool execution context to synchronous code.",
+    "Explicitly await the promise or attach a catch block to handle potential rejections cleanly.",
+    "Suppress the linter warning using a broad rule suppression comment.",
+    "Move the request into an inline string evaluated at runtime."
+   ],
+   "answer": "B",
+   "explanation": "Explicitly awaiting promises or handling rejections ensures unhandled errors do not cause silent failures or unhandled promise rejections in production."
+  },
+  {
+   "component": "W04.L1.C2",
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "bloom": 3,
+   "question": "In an agent workspace pipeline, all functional integration tests for an MCP tool pass, yet the build fails static validation. What is the most likely cause based on production standards?",
+   "options": [
+    "The test harness requires manual user confirmation for each tool execution.",
+    "The server implementation contains unresolved static analysis warnings.",
+    "The agent workspace environment only supports synchronous tool integration.",
+    "Integration tests cannot run alongside linter checks."
+   ],
+   "answer": "B",
+   "explanation": "Production-grade tool configuration requires both all functional tests to pass and zero static analysis warnings from configured linters."
+  },
+  {
+   "component": "W04.L1.C2",
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "bloom": 3,
+   "question": "An integration test suite fails when passing null edge-case inputs to a newly configured MCP tool. How should you fix the tool setup to ensure all tests pass cleanly without warnings?",
+   "options": [
+    "Configure the LLM agent to automatically retry when a null input occurs.",
+    "Skip edge-case test execution inside the test harness configuration.",
+    "Hardcode fallback default strings inside the agent's system prompt.",
+    "Strictly define and validate missing/null fields within the tool's JSON schema and handler types."
+   ],
+   "answer": "D",
+   "explanation": "Aligning static type definitions and JSON schemas to handle optional or null values ensures edge-case inputs pass integration tests safely."
+  }
+ ],
+ "problems": []
+}

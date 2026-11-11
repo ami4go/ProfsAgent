@@ -1,0 +1,734 @@
+{
+ "lecture_id": "W10.L1",
+ "topic": "Testing and validation in iterative development",
+ "generated_at": "2026-11-02 22:24:25",
+ "components": [
+  {
+   "lecture_id": "W10.L1",
+   "title": "Log parsing and query techniques",
+   "teaches": "Students practice using grep, jq, and awk to filter a 2000-line trace for specific event types, extract timestamps, and count occurrences of error codes. They learn to build reusable one‑liners for rapid evidence gathering.",
+   "key_terms": [
+    "grep",
+    "jq",
+    "awk",
+    "filter",
+    "extraction",
+    "one-liner"
+   ],
+   "kind": "demo",
+   "bloom": 3,
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "minutes": 15,
+   "id": "W10.L1.C1",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W10.L1",
+   "title": "Systematic trace analysis workflow",
+   "teaches": "A step‑by‑step method is introduced: (1) segment the trace by iteration, (2) hypothesize failure categories, (3) search for signature patterns, (4) collect supporting lines, (5) validate each hypothesis against the code context. Students apply the workflow to a short trace.",
+   "key_terms": [
+    "segmentation",
+    "hypothesis",
+    "signature_pattern",
+    "validation",
+    "code_context"
+   ],
+   "kind": "mechanism",
+   "bloom": 4,
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "minutes": 15,
+   "id": "W10.L1.C2",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W10.L1",
+   "title": "Worked example: multi-failure trace analysis",
+   "teaches": "The instructor analyses a full 2000-line trace containing three distinct failures: a permission error, a version mismatch, and a logic loop. For each failure, the exact log lines are highlighted and linked to the underlying cause.",
+   "key_terms": [
+    "permission_error",
+    "version_mismatch",
+    "logic_loop",
+    "evidence_linking",
+    "distinct_failures"
+   ],
+   "kind": "worked_example",
+   "bloom": 4,
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "minutes": 15,
+   "id": "W10.L1.C3",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W10.L1",
+   "title": "Activity: pair analysis of new trace",
+   "teaches": "In pairs, students receive a fresh 1500-line trace and must identify at least three failure causes, citing line numbers and error codes. They prepare a brief report and present findings to the class for peer review.",
+   "key_terms": [
+    "pair_work",
+    "fresh_trace",
+    "line_numbers",
+    "error_codes",
+    "peer_review"
+   ],
+   "kind": "activity",
+   "bloom": 4,
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "minutes": 15,
+   "id": "W10.L1.C4",
+   "in_class": true
+  },
+  {
+   "lecture_id": "W10.L1",
+   "title": "Comparison of analysis strategies",
+   "teaches": "Students compare manual trace inspection, scripted querying, and LLM‑assisted summarisation. They evaluate speed, accuracy, and false‑positive rates on the same trace, discussing when each approach is preferable.",
+   "key_terms": [
+    "manual_inspection",
+    "scripted_query",
+    "LLM_assisted",
+    "false_positive",
+    "trade_off"
+   ],
+   "kind": "comparison",
+   "bloom": 5,
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "minutes": 15,
+   "id": "W10.L1.C5",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W10.L1",
+   "title": "Discussion: validation and reporting findings",
+   "teaches": "The class discusses how to validate identified causes (re‑run, unit test, stakeholder confirmation) and how to structure a concise failure report for developers. Emphasis is placed on actionable recommendations and traceability back to log evidence.",
+   "key_terms": [
+    "validation",
+    "re_run",
+    "unit_test",
+    "stakeholder_confirmation",
+    "failure_report",
+    "traceability"
+   ],
+   "kind": "discussion",
+   "bloom": 5,
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "minutes": 15,
+   "id": "W10.L1.C6",
+   "in_class": true
+  }
+ ],
+ "continues": "W09.L2",
+ "resources": {
+  "lecture_id": "W10.L1",
+  "topic": "Testing and validation in iterative development",
+  "want": {
+   "want_videos": false,
+   "want_readings": true,
+   "want_practice": true,
+   "want_recorded_lecture": false,
+   "want_clips": false,
+   "want_guest": true,
+   "confidence": 2,
+   "note": "",
+   "choices": [
+    "own_material",
+    "generate_material",
+    "assistance",
+    "guest_lecture"
+   ]
+  },
+  "queries": {
+   "lecture_id": "W10.L1",
+   "video_queries": [
+    "analyze execution traces coding agents lecture",
+    "debugging software agent execution logs tutorial",
+    "AI coding agent failure analysis explained"
+   ],
+   "reading_queries": [
+    "Log parsing and query techniques Testing and validation in iterative development"
+   ],
+   "practice_queries": [
+    "Log parsing and query techniques hands-on tutorial"
+   ],
+   "recorded_lecture_query": "debugging execution traces in iterative software development lecture",
+   "research_queries": [
+    "debugging AI coding agents",
+    "execution trace analysis LLM",
+    "software agent failure modes"
+   ],
+   "practitioner_query": "software engineer debugging LLM coding agents"
+  },
+  "items": {
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://azure.github.io/AI-in-Production-Guide/chapters/chapter_06_testing_waters_testing_iteration",
+     "title": "Chapter 6 - Testing and Iteration | AI in Production Guide",
+     "source": "azure.github.io",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.472,
+      "quality": 0.9,
+      "authority": 0.35,
+      "level_fit": 1.0,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.608,
+     "rank": 1,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W10.L1.C1 ✗, W10.L1.C2 ✓, W10.L1.C3 ✗, W10.L1.C4 ✗, W10.L1.C5 ✗, W10.L1.C6 ✓ [from page text] · azure.github.io · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Excellent chapter on testing and iteration in AI projects; aligns well with iterative development testing.",
+      "issues": [
+       "May not cover log analysis of coding agents specifically",
+       "Focuses on AI model testing, not necessarily coding agent traces"
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 5,
+      "correctness": 5,
+      "depth": 4,
+      "examples": 4,
+      "level_fit": 5
+     },
+     "coverage": {
+      "score": 0.472,
+      "evidence": "text",
+      "per_target": {
+       "M6.T2": {
+        "covered": true,
+        "sim": 0.667,
+        "segments": []
+       },
+       "W10.L1.C1": {
+        "covered": false,
+        "sim": 0.29,
+        "segments": [],
+        "text": "Log parsing and query techniques. Students practice using grep, jq, and awk to filter a 2000-line trace for specific eve"
+       },
+       "W10.L1.C2": {
+        "covered": true,
+        "sim": 0.422,
+        "segments": [],
+        "text": "Systematic trace analysis workflow. A step‑by‑step method is introduced: (1) segment the trace by iteration, (2) hypothe"
+       },
+       "W10.L1.C3": {
+        "covered": false,
+        "sim": 0.4,
+        "segments": [],
+        "text": "Worked example: multi-failure trace analysis. The instructor analyses a full 2000-line trace containing three distinct f"
+       },
+       "W10.L1.C4": {
+        "covered": false,
+        "sim": 0.282,
+        "segments": [],
+        "text": "Activity: pair analysis of new trace. In pairs, students receive a fresh 1500-line trace and must identify at least thre"
+       },
+       "W10.L1.C5": {
+        "covered": false,
+        "sim": 0.387,
+        "segments": [],
+        "text": "Comparison of analysis strategies. Students compare manual trace inspection, scripted querying, and LLM‑assisted summari"
+       },
+       "W10.L1.C6": {
+        "covered": true,
+        "sim": 0.515,
+        "segments": [],
+        "text": "Discussion: validation and reporting findings. The class discusses how to validate identified causes (re‑run, unit test,"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "reserve": {
+   "reading": [],
+   "video": []
+  },
+  "rejected": [
+   {
+    "title": "Logging BEST Practices in software development and automation testing",
+    "url": "https://medium.com/@rabiyireh/logging-best-practices-in-software-development-and-automation-testing-eb35e7130d8c",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Software Testing Methodologies: Each Explained | Inflectra",
+    "url": "https://www.inflectra.com/Ideas/Topic/Testing-Methodologies.aspx",
+    "why": [
+     "score 0.49 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "What Is Validation Testing In Software Development? | Indeed.com",
+    "url": "https://www.indeed.com/career-advice/starting-new-job/what-is-validation-testing",
+    "why": [
+     "score 0.48 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "What Is Log Parsing? How Modern Log Parsers Work | Grepr Blog | Grepr Blog",
+    "url": "https://www.grepr.ai/blog/what-is-log-parsing-how-modern-log-parsers-work",
+    "why": [
+     "score 0.45 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Data Validation Testing: Techniques, Examples, & Tools",
+    "url": "https://montecarlo.ai/blog-data-validation-testing",
+    "why": [
+     "score 0.53 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Agile Testing Guide: Methodology, Principles, Strategies & Life Cycle",
+    "url": "https://nextagile.ai/blogs/agile/agile-testing/",
+    "why": [
+     "score 0.49 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Trialon Testing & Validation Center",
+    "url": "https://www.mapquest.com/us/michigan/trialon-testing-validation-center-426883817",
+    "why": [
+     "page not readable (status 202, too short)"
+    ]
+   },
+   {
+    "title": "Learning JavaScript Design Pattern",
+    "url": "https://openlibrary.org/books/OL46075169M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Zero To Production In Rust",
+    "url": "https://openlibrary.org/works/OL34391195W",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Software Engineering",
+    "url": "https://openlibrary.org/books/OL28345690M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Testing, Validation, and Verification of Robotic and Autonomous Systems: A Systematic Review",
+    "url": "https://doi.org/10.1145/3542945",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Use of electronic medical records in development and validation of risk prediction models of hospital readmission: systematic review",
+    "url": "https://www.bmj.com/content/bmj/369/bmj.m958.full.pdf",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Identifying Frameworks for Validation and Monitoring of Consensual Behavioral Intervention Technologies: Narrative Review",
+    "url": "https://www.jmir.org/2019/10/e13606/PDF",
+    "why": [
+     "page not readable (status 202, too short)"
+    ]
+   },
+   {
+    "title": "Development and Validation of Echocardiography Artificial Intelligence Models: A Narrative Review",
+    "url": "https://www.mdpi.com/2077-0383/14/19/7066/pdf?version=1759825422",
+    "why": [
+     "page not readable (status 200, unsupported content-type )"
+    ]
+   },
+   {
+    "title": "guide to log parsing | Chronosphere",
+    "url": "https://chronosphere.io/learn/guide-to-log-parsing",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "What Is Log Parsing? Raw Logs to Fields | CyberDefenders",
+    "url": "https://cyberdefenders.org/cybersecurity-glossary/log-parsing",
+    "why": [
+     "score 0.46 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Introduction to Log Parsing: Definition and Best Practices",
+    "url": "https://www.sawmills.ai/blog/introduction-to-log-parsing-definition-and-best-practices",
+    "why": [
+     "score 0.42 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Log Parsing Scripts — Write simple scripts to parse logs...",
+    "url": "https://www.varsitytutors.com/practice/subjects/cyber-security/lessons/log-parsing-scripts",
+    "why": [
+     "score 0.47 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "The Data Engineer's Guide to Efficient Log Parsing with DuckDB/MotherDuck",
+    "url": "https://motherduck.com/blog/json-log-analysis-duckdb-motherduck/",
+    "why": [
+     "score 0.53 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Parsing log data | New Relic Documentation",
+    "url": "https://docs.newrelic.com/docs/logs/ui-data/parsing/",
+    "why": [
+     "score 0.44 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Stronger, Faster, and Cheaper Log Parsing with LLMs",
+    "url": "https://arxiv.org/html/2406.06156v1",
+    "why": [
+     "AI review: off topic (Excerpts only show paper abstract, not teaching content; Focuses on log parsing with LLMs, not testing/validation in iterative development)",
+     "a paper is not practice material"
+    ]
+   },
+   {
+    "title": "trimstray/the-book-of-secret-knowledge — A collection of inspiring lists, manuals, cheatsheets, blogs, hacks, one-liners, cli/web tools and more.",
+    "url": "https://github.com/trimstray/the-book-of-secret-knowledge",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "avelino/awesome-go — A curated list of awesome Go frameworks, libraries and software",
+    "url": "https://github.com/avelino/awesome-go",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "ripienaar/free-for-dev — A list of SaaS, PaaS and IaaS offerings that have free tiers of interest to devops and infradev",
+    "url": "https://github.com/ripienaar/free-for-dev",
+    "why": [
+     "AI review: off topic (List of free developer services; No content on testing/validation in iterative development)",
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "josephmisiti/awesome-machine-learning — A curated list of awesome Machine Learning frameworks, libraries and software.",
+    "url": "https://github.com/josephmisiti/awesome-machine-learning",
+    "why": [
+     "score 0.49 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "sindresorhus/awesome-nodejs — :zap: Delightful Node.js packages and resources [BECAUSE OF TOO MUCH SPAM AND LOW-QUALITY SUBMISSIONS, SUBMISSIONS ARE P",
+    "url": "https://github.com/sindresorhus/awesome-nodejs",
+    "why": [
+     "AI review: off topic (Just a list of Node.js packages; No explanation of testing/validation in iterative development)",
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "Artificial Intelligence Full Course for Beginners | Gen AI, ML, Deep Learning & AI Agents",
+    "url": "https://www.youtube.com/watch?v=Fxf28jaYVug",
+    "why": [
+     "too long to find a segment in (11:40:53)"
+    ]
+   },
+   {
+    "title": "Debugging Nodes: Master Execution Logs & Timestamps",
+    "url": "https://www.youtube.com/watch?v=97HTD2HiJx4",
+    "why": [
+     "too short to teach a component (0:22)"
+    ]
+   },
+   {
+    "title": "Debug AI Agents Visually with AgenticLens",
+    "url": "https://www.youtube.com/watch?v=C-2qhiZYyy4",
+    "why": [
+     "too short to teach a component (0:52)"
+    ]
+   },
+   {
+    "title": "CaseFile: Turn Software Failures Into Debugging Evidence | Kujo",
+    "url": "https://www.youtube.com/watch?v=A5MnqTTPVg0",
+    "why": [
+     "too short to teach a component (1:25)"
+    ]
+   },
+   {
+    "title": "The TRUE Impact of AI on Software Engineering (Complete Analysis)",
+    "url": "https://www.youtube.com/watch?v=WIhvfnjIxMc",
+    "why": [
+     "too short to teach a component (0:52)"
+    ]
+   },
+   {
+    "title": "AI Agents explained in 3 steps",
+    "url": "https://www.youtube.com/watch?v=BF2k_fKuCVM",
+    "why": [
+     "too short to teach a component (0:52)"
+    ]
+   },
+   {
+    "title": "How Compounding Errors Break AI Agents #ai #artificialintelligence #learningprogress",
+    "url": "https://www.youtube.com/watch?v=biAM7xKY8mU",
+    "why": [
+     "too short to teach a component (1:11)"
+    ]
+   },
+   {
+    "title": "Agentic RAG vs RAGs",
+    "url": "https://www.youtube.com/watch?v=4jYZg6pkXyc",
+    "why": [
+     "too short to teach a component (0:05)"
+    ]
+   },
+   {
+    "title": "What Is Test Failure Analysis? Find Why Your Tests Failed",
+    "url": "https://www.youtube.com/watch?v=91PdFFet-vQ",
+    "why": [
+     "too short to teach a component (0:58)"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 27,
+   "passed_checks": 1,
+   "rejected": 26,
+   "videos_used": 0
+  },
+  "clips": [],
+  "timeline": [
+   {
+    "component": "W10.L1.C1",
+    "title": "Log parsing and query techniques",
+    "minutes": 15,
+    "kind": "demo",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W10.L1.C2",
+    "title": "Systematic trace analysis workflow",
+    "minutes": 15,
+    "kind": "mechanism",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W10.L1.C3",
+    "title": "Worked example: multi-failure trace analysis",
+    "minutes": 15,
+    "kind": "worked_example",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W10.L1.C4",
+    "title": "Activity: pair analysis of new trace",
+    "minutes": 15,
+    "kind": "activity",
+    "delivery": "in_class",
+    "segments": []
+   },
+   {
+    "component": "W10.L1.C5",
+    "title": "Comparison of analysis strategies",
+    "minutes": 15,
+    "kind": "comparison",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W10.L1.C6",
+    "title": "Discussion: validation and reporting findings",
+    "minutes": 15,
+    "kind": "discussion",
+    "delivery": "in_class",
+    "segments": []
+   }
+  ],
+  "partial": {
+   "reason": "YouTube blocked transcript requests (from 22:20)",
+   "videos_without_transcript": [
+    "utNnPwmPBXw",
+    "WWEvrTi86Ls",
+    "R46SSEd_29M",
+    "bkMabn8ZgU0",
+    "mnJJPltybBM",
+    "vNDYUlxNIAA",
+    "EBeek7Ka0XU",
+    "_zvtTGsOBxA",
+    "sXABdGalFNg",
+    "ik3iaBKPW1U"
+   ]
+  },
+  "components": [
+   {
+    "lecture_id": "W10.L1",
+    "title": "Log parsing and query techniques",
+    "teaches": "Students practice using grep, jq, and awk to filter a 2000-line trace for specific event types, extract timestamps, and count occurrences of error codes. They learn to build reusable one‑liners for rapid evidence gathering.",
+    "key_terms": [
+     "grep",
+     "jq",
+     "awk",
+     "filter",
+     "extraction",
+     "one-liner"
+    ],
+    "kind": "demo",
+    "bloom": 3,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W10.L1.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W10.L1",
+    "title": "Systematic trace analysis workflow",
+    "teaches": "A step‑by‑step method is introduced: (1) segment the trace by iteration, (2) hypothesize failure categories, (3) search for signature patterns, (4) collect supporting lines, (5) validate each hypothesis against the code context. Students apply the workflow to a short trace.",
+    "key_terms": [
+     "segmentation",
+     "hypothesis",
+     "signature_pattern",
+     "validation",
+     "code_context"
+    ],
+    "kind": "mechanism",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W10.L1.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W10.L1",
+    "title": "Worked example: multi-failure trace analysis",
+    "teaches": "The instructor analyses a full 2000-line trace containing three distinct failures: a permission error, a version mismatch, and a logic loop. For each failure, the exact log lines are highlighted and linked to the underlying cause.",
+    "key_terms": [
+     "permission_error",
+     "version_mismatch",
+     "logic_loop",
+     "evidence_linking",
+     "distinct_failures"
+    ],
+    "kind": "worked_example",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W10.L1.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W10.L1",
+    "title": "Activity: pair analysis of new trace",
+    "teaches": "In pairs, students receive a fresh 1500-line trace and must identify at least three failure causes, citing line numbers and error codes. They prepare a brief report and present findings to the class for peer review.",
+    "key_terms": [
+     "pair_work",
+     "fresh_trace",
+     "line_numbers",
+     "error_codes",
+     "peer_review"
+    ],
+    "kind": "activity",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W10.L1.C4",
+    "in_class": true
+   },
+   {
+    "lecture_id": "W10.L1",
+    "title": "Comparison of analysis strategies",
+    "teaches": "Students compare manual trace inspection, scripted querying, and LLM‑assisted summarisation. They evaluate speed, accuracy, and false‑positive rates on the same trace, discussing when each approach is preferable.",
+    "key_terms": [
+     "manual_inspection",
+     "scripted_query",
+     "LLM_assisted",
+     "false_positive",
+     "trade_off"
+    ],
+    "kind": "comparison",
+    "bloom": 5,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W10.L1.C5",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W10.L1",
+    "title": "Discussion: validation and reporting findings",
+    "teaches": "The class discusses how to validate identified causes (re‑run, unit test, stakeholder confirmation) and how to structure a concise failure report for developers. Emphasis is placed on actionable recommendations and traceability back to log evidence.",
+    "key_terms": [
+     "validation",
+     "re_run",
+     "unit_test",
+     "stakeholder_confirmation",
+     "failure_report",
+     "traceability"
+    ],
+    "kind": "discussion",
+    "bloom": 5,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W10.L1.C6",
+    "in_class": true
+   }
+  ],
+  "notebooklm": {
+   "pack": "notebooklm/W10.L1.md",
+   "components": [],
+   "sources": 2
+  }
+ },
+ "experts": {
+  "same_as": "W09.L2",
+  "experts": [],
+  "reserve": [],
+  "rejected": [],
+  "counts": {}
+ },
+ "partial": {
+  "reason": "YouTube blocked transcript requests (from 22:20)",
+  "videos_without_transcript": [
+   "utNnPwmPBXw",
+   "WWEvrTi86Ls",
+   "R46SSEd_29M",
+   "bkMabn8ZgU0",
+   "mnJJPltybBM",
+   "vNDYUlxNIAA",
+   "EBeek7Ka0XU",
+   "_zvtTGsOBxA",
+   "sXABdGalFNg",
+   "ik3iaBKPW1U"
+  ]
+ }
+}

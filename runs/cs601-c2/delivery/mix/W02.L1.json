@@ -1,0 +1,261 @@
+{
+ "lecture_id": "W02.L1",
+ "topic": "Model context protocols and architecture",
+ "minutes": 120,
+ "status": "proposed",
+ "preset": "slides_notebooklm",
+ "preset_by": "ai",
+ "course_style": "mix",
+ "parts": [
+  {
+   "component": "W02.L1.C1",
+   "title": "Recap of Protocol Lifecycles and Core Primitives",
+   "minutes": 15,
+   "kind": "concept",
+   "bloom": 2,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "L",
+   "reason": "Slides explain the missing JSON-RPC handshake, as video clips cover only 2.8 of 15 minutes and NotebookLM misses passive context.",
+   "alternative": {
+    "way": "notebooklm",
+    "reason": "first part taught live"
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "youtube_bridge",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 15,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.8,
+   "uncovered": [
+    "passive context"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W02.L1.C2",
+   "title": "Defining Resources and Resource Templates in Context Schemas",
+   "minutes": 10,
+   "kind": "mechanism",
+   "bloom": 2,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "Slides detail context schema URI schemes and MIME types, which NotebookLM sources cover only 40% of and video clips lack.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.4,
+   "uncovered": [
+    "URI scheme",
+    "MIME type",
+    "readResource"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W02.L1.C3",
+   "title": "Tool Definitions and Dynamic Execution Callbacks",
+   "minutes": 20,
+   "kind": "mechanism",
+   "bloom": 2,
+   "way": "notebooklm",
+   "when": "in_class",
+   "rule": "R4",
+   "reason": "NotebookLM covers 80% of tool schema terms, giving a strong overview alongside 4.7 minutes from the MCP explained video.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: videos teach only 24% of it."
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "youtube_bridge",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 15,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.8,
+   "uncovered": [
+    "callToolResult"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W02.L1.C4",
+   "title": "Developer Workspace Configuration Schemas and Server Registration",
+   "minutes": 20,
+   "kind": "concept",
+   "bloom": 1,
+   "way": "notebooklm",
+   "when": "in_class",
+   "rule": "R4",
+   "reason": "NotebookLM audio explainer covers 80% of key workspace configuration terms, providing a solid introduction without video stretches.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it."
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 15,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.8,
+   "uncovered": [
+    "mcpServers"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W02.L1.C5",
+   "title": "Security Boundaries, Environment Isolation, and Access Control",
+   "minutes": 15,
+   "kind": "concept",
+   "bloom": 2,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "Slides clearly lay out sandboxing and security boundaries, which NotebookLM covers only 20% of with no matching video stretches.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 15,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.2,
+   "uncovered": [
+    "least privilege",
+    "user-in-the-loop",
+    "subprocess sandboxing",
+    "credential isolation"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W02.L1.C6",
+   "title": "Inspecting Configuration Templates for Model Context Protocols",
+   "minutes": 15,
+   "kind": "worked_example",
+   "bloom": 3,
+   "way": "in_class",
+   "when": "in_class",
+   "rule": "D7",
+   "reason": "An interactive in-class activity lets students directly inspect workspace templates to spot schema errors, better suited for this worked example.",
+   "alternative": {
+    "way": "slides",
+    "reason": "the rules chose slides"
+   },
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.2,
+   "uncovered": [
+    "schema verification",
+    "configuration audit",
+    "server declaration",
+    "parameter mapping"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W02.L1.C7",
+   "title": "Diagnosing Protocol Connection Failures and Logging Workflows",
+   "minutes": 10,
+   "kind": "demo",
+   "bloom": 2,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "Slides effectively walk through JSON-RPC error codes and diagnostic log analysis, where NotebookLM sources cover only 40% and videos are missing.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.4,
+   "uncovered": [
+    "JSON-RPC error codes",
+    "transport disconnect",
+    "runtime diagnostics"
+   ],
+   "simulation": null
+  }
+ ],
+ "recap_minutes": 5,
+ "quiz_minutes": 10,
+ "totals": {
+  "slides": 70.0,
+  "video_in_class": 20.0,
+  "video_pre_class": 0.0,
+  "notebooklm": 20.0,
+  "in_class": 15.0,
+  "simulation": 0.0,
+  "recap": 5,
+  "quiz": 10,
+  "video_share": 0.17
+ },
+ "prep_minutes": 90,
+ "checks": [
+  {
+   "code": "L-RESERVE",
+   "message": "the part plan was made before recap and quiz minutes were kept free; 15 min were taken from the longest parts"
+  },
+  {
+   "code": "L-FIRST",
+   "message": "W02.L1.C1: taught live (was a NotebookLM video)"
+  },
+  {
+   "code": "L-AI",
+   "message": "the AI changed 1 part(s) within the rules (see each reason)"
+  }
+ ],
+ "note": "",
+ "proposed_by": "rules + D7",
+ "proposed_at": "2026-11-03 15:29:11",
+ "approved_at": "",
+ "approved_by": "",
+ "materials": {}
+}

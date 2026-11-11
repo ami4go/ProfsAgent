@@ -1,0 +1,295 @@
+{
+ "lecture_id": "W08.L2",
+ "topic": "Iterative development logs and software factory outputs",
+ "minutes": 120,
+ "status": "proposed",
+ "preset": "slides_only",
+ "preset_by": "ai",
+ "course_style": "mix",
+ "parts": [
+  {
+   "component": "W08.L2.C1",
+   "title": "Structure of iterative development logs",
+   "minutes": 10,
+   "kind": "concept",
+   "bloom": 2,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "Teach live from slides because video 30:50–35:50 misses test results, tool invocations, and build schemas, while sources cover only 17%.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class",
+    "youtube_bridge"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.17,
+   "uncovered": [
+    "log sections",
+    "test results",
+    "tool invocations",
+    "build reports",
+    "artifact manifests"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W08.L2.C2",
+   "title": "Seeded defect taxonomy in factory outputs",
+   "minutes": 10,
+   "kind": "concept",
+   "bloom": 2,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "Teach live from slides since no video is available and sources cover 0% of terms like missing dependency and flaky tests.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.0,
+   "uncovered": [
+    "missing dependency",
+    "flaky test",
+    "configuration drift",
+    "resource leak",
+    "defect signatures"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W08.L2.C3",
+   "title": "Parsing and querying log data with CLI tools",
+   "minutes": 10,
+   "kind": "mechanism",
+   "bloom": 3,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "Present live from slides to demonstrate grep and jq log extraction commands, as sources cover 0% of key terms.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.0,
+   "uncovered": [
+    "grep",
+    "jq",
+    "log extraction",
+    "field projection",
+    "script automation"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W08.L2.C4",
+   "title": "Worked example: detecting a missing dependency defect",
+   "minutes": 15,
+   "kind": "worked_example",
+   "bloom": 4,
+   "way": "in_class",
+   "when": "in_class",
+   "rule": "R1",
+   "reason": "Walk through in class to analyze error traces in log samples collaboratively, as sources cover only 20% of terms.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it; the sources lack missing dependency, error trace, artifact manifest."
+   },
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.2,
+   "uncovered": [
+    "missing dependency",
+    "error trace",
+    "artifact manifest",
+    "fix proposal"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W08.L2.C5",
+   "title": "Activity: find two seeded defects in a provided log set",
+   "minutes": 15,
+   "kind": "activity",
+   "bloom": 4,
+   "way": "in_class",
+   "when": "in_class",
+   "rule": "R1",
+   "reason": "Conduct an in-class hands-on activity for log zip defect hunting and peer review, as sources cover 0% of terms.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it; the sources lack log set, defect identification, fix proposal."
+   },
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.0,
+   "uncovered": [
+    "log set",
+    "defect identification",
+    "fix proposal",
+    "peer review"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W08.L2.C6",
+   "title": "Comparing defect patterns across iterations",
+   "minutes": 15,
+   "kind": "comparison",
+   "bloom": 4,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "Teach live from slides to compare iteration log verbosity variations, since no video exists and sources cover 0% of terms.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 15,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.0,
+   "uncovered": [
+    "iteration comparison",
+    "defect manifestation",
+    "log verbosity",
+    "test flakiness",
+    "output anomalies"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W08.L2.C7",
+   "title": "Case study: real‑world factory log analysis",
+   "minutes": 15,
+   "kind": "case_study",
+   "bloom": 4,
+   "way": "in_class",
+   "when": "in_class",
+   "rule": "R1",
+   "reason": "Lead an in-class case study on an industry configuration drift defect, as sources cover 0% of terms.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it; the sources lack configuration drift, industry case, detection strategy."
+   },
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.0,
+   "uncovered": [
+    "configuration drift",
+    "industry case",
+    "detection strategy",
+    "impact assessment",
+    "remediation"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W08.L2.C8",
+   "title": "Discussion: best practices for proposing fixes",
+   "minutes": 15,
+   "kind": "discussion",
+   "bloom": 5,
+   "way": "in_class",
+   "when": "in_class",
+   "rule": "R1",
+   "reason": "Facilitate an in-class discussion to build a fix evaluation checklist, as sources cover 0% of key terms.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it; the sources lack fix completeness, testability, regression risk."
+   },
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.0,
+   "uncovered": [
+    "fix completeness",
+    "testability",
+    "regression risk",
+    "remediation checklist"
+   ],
+   "simulation": null
+  }
+ ],
+ "recap_minutes": 5,
+ "quiz_minutes": 10,
+ "totals": {
+  "slides": 45.0,
+  "video_in_class": 0.0,
+  "video_pre_class": 0.0,
+  "notebooklm": 0.0,
+  "in_class": 60.0,
+  "simulation": 0.0,
+  "recap": 5,
+  "quiz": 10,
+  "video_share": 0.0
+ },
+ "prep_minutes": 85,
+ "checks": [
+  {
+   "code": "L-RESERVE",
+   "message": "the part plan was made before recap and quiz minutes were kept free; 15 min were taken from the longest parts"
+  }
+ ],
+ "note": "",
+ "proposed_by": "rules + D7",
+ "proposed_at": "2026-11-03 15:34:16",
+ "approved_at": "",
+ "approved_by": "",
+ "materials": {}
+}

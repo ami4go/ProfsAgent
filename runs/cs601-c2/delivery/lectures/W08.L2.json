@@ -1,0 +1,1006 @@
+{
+ "lecture_id": "W08.L2",
+ "topic": "Iterative development logs and software factory outputs",
+ "generated_at": "2026-11-02 22:20:17",
+ "components": [
+  {
+   "lecture_id": "W08.L2",
+   "title": "Structure of iterative development logs",
+   "teaches": "Students will understand the standard sections of an iterative development log (commit metadata, test results, tool invocations) and the schema of software factory output artifacts (build reports, artifact manifests).",
+   "key_terms": [
+    "log sections",
+    "commit metadata",
+    "test results",
+    "tool invocations",
+    "build reports",
+    "artifact manifests"
+   ],
+   "kind": "concept",
+   "bloom": 2,
+   "lo_ids": [
+    "CO3.LO3"
+   ],
+   "minutes": 15,
+   "id": "W08.L2.C1",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W08.L2",
+   "title": "Seeded defect taxonomy in factory outputs",
+   "teaches": "Students will learn the four categories of seeded defects (missing dependency, flaky test, configuration drift, resource leak) and their characteristic signatures in logs and factory outputs.",
+   "key_terms": [
+    "missing dependency",
+    "flaky test",
+    "configuration drift",
+    "resource leak",
+    "defect signatures"
+   ],
+   "kind": "concept",
+   "bloom": 2,
+   "lo_ids": [
+    "CO3.LO3"
+   ],
+   "minutes": 15,
+   "id": "W08.L2.C2",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W08.L2",
+   "title": "Parsing and querying log data with CLI tools",
+   "teaches": "Students will be able to use grep, jq, and custom scripts to extract relevant log entries and factory output fields for defect hunting.",
+   "key_terms": [
+    "grep",
+    "jq",
+    "log extraction",
+    "field projection",
+    "script automation"
+   ],
+   "kind": "mechanism",
+   "bloom": 3,
+   "lo_ids": [
+    "CO3.LO3"
+   ],
+   "minutes": 15,
+   "id": "W08.L2.C3",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W08.L2",
+   "title": "Worked example: detecting a missing dependency defect",
+   "teaches": "Students will follow a step‑by‑step analysis of a sample log where a missing dependency causes a build failure, seeing how to locate the error trace, correlate with the artifact manifest, and formulate a fix.",
+   "key_terms": [
+    "missing dependency",
+    "error trace",
+    "artifact manifest",
+    "root cause",
+    "fix proposal"
+   ],
+   "kind": "worked_example",
+   "bloom": 4,
+   "lo_ids": [
+    "CO3.LO3"
+   ],
+   "minutes": 15,
+   "id": "W08.L2.C4",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W08.L2",
+   "title": "Activity: find two seeded defects in a provided log set",
+   "teaches": "Students will individually examine a zip of logs and factory outputs, identify at least two of the four seeded defects, and write a brief fix proposal for each, then submit for peer review.",
+   "key_terms": [
+    "log set",
+    "defect identification",
+    "fix proposal",
+    "peer review"
+   ],
+   "kind": "activity",
+   "bloom": 4,
+   "lo_ids": [
+    "CO3.LO3"
+   ],
+   "minutes": 15,
+   "id": "W08.L2.C5",
+   "in_class": true
+  },
+  {
+   "lecture_id": "W08.L2",
+   "title": "Comparing defect patterns across iterations",
+   "teaches": "Students will compare how the same defect type manifests differently across multiple iterations, noting variations in log verbosity, test flakiness, and factory output anomalies.",
+   "key_terms": [
+    "iteration comparison",
+    "defect manifestation",
+    "log verbosity",
+    "test flakiness",
+    "output anomalies"
+   ],
+   "kind": "comparison",
+   "bloom": 4,
+   "lo_ids": [
+    "CO3.LO3"
+   ],
+   "minutes": 15,
+   "id": "W08.L2.C6",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W08.L2",
+   "title": "Case study: real‑world factory log analysis",
+   "teaches": "Students will review a redacted industry case where iterative logs revealed a configuration drift defect, discussing detection strategy, impact assessment, and remediation steps.",
+   "key_terms": [
+    "configuration drift",
+    "industry case",
+    "detection strategy",
+    "impact assessment",
+    "remediation"
+   ],
+   "kind": "case_study",
+   "bloom": 4,
+   "lo_ids": [
+    "CO3.LO3"
+   ],
+   "minutes": 15,
+   "id": "W08.L2.C7",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W08.L2",
+   "title": "Discussion: best practices for proposing fixes",
+   "teaches": "Students will evaluate fix proposals for completeness, testability, and regression risk, and agree on a checklist for future defect remediation in iterative loops.",
+   "key_terms": [
+    "fix completeness",
+    "testability",
+    "regression risk",
+    "remediation checklist"
+   ],
+   "kind": "discussion",
+   "bloom": 5,
+   "lo_ids": [
+    "CO3.LO3"
+   ],
+   "minutes": 15,
+   "id": "W08.L2.C8",
+   "in_class": true
+  }
+ ],
+ "resources": {
+  "lecture_id": "W08.L2",
+  "topic": "Iterative development logs and software factory outputs",
+  "want": {
+   "want_videos": false,
+   "want_readings": true,
+   "want_practice": true,
+   "want_recorded_lecture": false,
+   "want_clips": false,
+   "want_guest": true,
+   "confidence": 2,
+   "note": "",
+   "choices": [
+    "own_material",
+    "generate_material",
+    "assistance",
+    "guest_lecture"
+   ]
+  },
+  "queries": {
+   "lecture_id": "W08.L2",
+   "video_queries": [
+    "software factory output debugging tutorial",
+    "iterative development log analysis lecture",
+    "debugging software factory execution traces explained"
+   ],
+   "reading_queries": [
+    "software factory debugging logs tutorial",
+    "defect identification in development logs documentation"
+   ],
+   "practice_queries": [
+    "software factory log debugging exercise notebook"
+   ],
+   "recorded_lecture_query": "iterative development logs software factory lecture",
+   "research_queries": [
+    "software factory output analysis",
+    "iterative development log debugging"
+   ],
+   "practitioner_query": "software factory architect"
+  },
+  "items": {
+   "video": [
+    {
+     "kind": "video",
+     "id": "0OvbSRoiR0Q",
+     "url": "https://www.youtube.com/watch?v=0OvbSRoiR0Q",
+     "title": "My Agentic Coding Workflow on a Real Feature, Start to Finish",
+     "source": "Damian Galarza",
+     "tier": 4,
+     "duration_s": 2527,
+     "published": "2026-10-29T16:00:22Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 2161,
+     "likes": 29,
+     "comments": 3,
+     "subscribers": 12900,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.023,
+      "segment": 0.316,
+      "clarity": 0.6,
+      "level_fit": 0.6,
+      "authority": 0.35,
+      "reception": 0.496
+     },
+     "total": 0.314,
+     "findings": [],
+     "rationale": "Teaches C1 Structure of iterative development logs (30:50–35:50, partly) [checked on the transcript] · Damian Galarza · tier 4 · 42:07 · 2,161 views",
+     "components": [
+      {
+       "id": "W08.L2.C1",
+       "title": "Structure of iterative development logs",
+       "start": "30:50",
+       "end": "35:50",
+       "start_s": 1850.2,
+       "end_s": 2150.2,
+       "verdict": "teaches_partly",
+       "covered": [
+        "commit metadata (conventional commits)"
+       ],
+       "missing": [
+        "test results in logs",
+        "tool invocations in logs",
+        "build reports schema",
+        "artifact manifests schema"
+       ],
+       "note": "Shows conventional commits for commit metadata; lacks log sections, test results, tool invocations, build reports, artifact manifests.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.023,
+      "evidence": "transcript",
+      "per_target": {
+       "W08.L2.C1": {
+        "text": "Structure of iterative development logs",
+        "covered": true,
+        "sim": 0.437,
+        "segments": [
+         {
+          "start": 1850.2,
+          "end": 2150.2,
+          "sim": 0.437
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Shows conventional commits for commit metadata; lacks log sections, test results, tool invocations, build reports, artifact manifests.",
+      "issues": [
+       "leaves out: test results in logs",
+       "leaves out: tool invocations in logs",
+       "leaves out: build reports schema",
+       "leaves out: artifact manifests schema"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "My agentic coding workflow with Claude Code, pstack and Herdr, shown on a real feature: replacing Attio with a CRM inside a Rails app.\n\nIn this video, I walk you through the loop I use on real work: shape the feature into a spec and issues, orchestrate agents across stacked pull requests, hand small slices to a local model, then review and ship. It runs on PraxisAgent, the Rails app behind my own company, Praxis Forward. The shaping session took about 36 rounds of questions, the build became a stack about 12 pull requests deep, and every review ran through six independent lenses. The written version is here: https://www.damiangalarza.com/posts/2026-10-21-agentic-coding-workflow/?utm_source=y",
+     "rank": 1,
+     "status": "proposed"
+    }
+   ]
+  },
+  "reserve": {
+   "video": []
+  },
+  "rejected": [
+   {
+    "title": "Build a software factory small enough to understand | LaunchDarkly",
+    "url": "https://launchdarkly.com/blog/build-a-software-factory-small-enough-to-understand/",
+    "why": [
+     "score 0.43 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Debug Logging: A Comprehensive Guide for Developers | Last9",
+    "url": "https://last9.io/blog/debug-logging/",
+    "why": [
+     "AI review: a general introduction to a broader concept, not this lecture's topic"
+    ]
+   },
+   {
+    "title": "What is Debug Logging? | CrowdStrike",
+    "url": "https://www.crowdstrike.com/en-us/cybersecurity-101/observability/debug-logging/",
+    "why": [
+     "AI review: a general introduction to a broader concept, not this lecture's topic"
+    ]
+   },
+   {
+    "title": "Debugging, Logging, and Development Workflow - Site Feedback - SST Guide Forums",
+    "url": "https://discourse.sst.dev/t/debugging-logging-and-development-workflow/256",
+    "why": [
+     "score 0.42 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Software factory: what it is and how to build one - CircleCI",
+    "url": "https://circleci.com/blog/software-factory/",
+    "why": [
+     "score 0.44 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Debug Smarter: How Logs and Traces Solve Production Issues Fast | FloQast Engineering Blog",
+    "url": "https://www.floqast.com/engineering-blog/debug-smarter-how-logs-and-traces-solve-production-issues-fast",
+    "why": [
+     "score 0.49 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Logging Best Practices: Kill the bug, not the rainforest | debug agent",
+    "url": "https://www.youtube.com/watch?v=53qCLRFcBSs",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "Your logs' final destination is in GA. You always end up here anyway",
+    "url": "https://posthog.com/blog/logs-ga",
+    "why": [
+     "score 0.46 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Data structures & algorithms in Java",
+    "url": "https://openlibrary.org/works/OL2036110W",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Objects first with Java",
+    "url": "https://openlibrary.org/books/OL49510582M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "A systematic review of knowledge sharing challenges and practices in global software development",
+    "url": "https://researcher.itu.dk/ws/files/82348148/KnowledgeMgmt_GSD_IJIM.pdf",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Approach in inputs & outputs selection of Data Envelopment Analysis (DEA) efficiency measurement in hospitals: A systematic review",
+    "url": "https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0293694&type=printable",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Evaluating logistics software quality: A systematic review and research agenda for ISO/IEC 25010 across supply chain digitalization research",
+    "url": "https://doi.org/10.1016/j.csi.2026.104187",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "New Development Direction of Underground Logistics from the Perspective of Public Transport: A Systematic Review Based on Scientometrics",
+    "url": "https://www.mdpi.com/2071-1050/14/6/3179/pdf?version=1646895699",
+    "why": [
+     "page not readable (status 200, unsupported content-type )"
+    ]
+   },
+   {
+    "title": "An Outline for Getting Up to Speed on the DoD Software Factory",
+    "url": "https://anchore.com/blog/an-outline-for-getting-up-to-speed-on-the-dod-software-factory/",
+    "why": [
+     "score 0.37 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "The Debugging Book",
+    "url": "https://www.debuggingbook.org",
+    "why": [
+     "score 0.41 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "The Training Notebook - 2026 Company Profile, Team & Competitors - Tracxn",
+    "url": "https://tracxn.com/d/companies/the-training-notebook/__7AhS3D1Nh_66OCL9TTtsUMnNBQlonDDy7Zwz89p1kEY",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Monster Notebook IT Department | Monster Notebook Engineering Department",
+    "url": "https://rocketreach.co/monster-notebook-it-department_b5d869eaf42e53ca",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Reporter's Notebook",
+    "url": "https://www.cnbc.com/reporters-notebook/",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Patient Notebook",
+    "url": "https://www.zoominfo.com/c/patient-notebook/412062803",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Debugging Competitors | Companies like Debugging",
+    "url": "https://rocketreach.co/debugging-competitors_b7d28d73c0e047ae",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "marcelscruz/public-apis — A collaborative list of public APIs for developers",
+    "url": "https://github.com/marcelscruz/public-apis",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "filipecalegario/awesome-generative-ai — A curated list of Generative AI tools, works, models, and references",
+    "url": "https://github.com/filipecalegario/awesome-generative-ai",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes",
+     "AI review: off topic (Generative AI tools repository, completely unrelated to lecture topic; No content on development logs, factory outputs, or defects)",
+     "AI review: a general introduction to a broader concept, not this lecture's topic",
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "ChHsiching/GitHub-Chinese-Top-Charts — 🇨🇳 GitHub中文排行榜，帮助你发现高分优秀中文项目。",
+    "url": "https://github.com/ChHsiching/GitHub-Chinese-Top-Charts",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "rohitg00/awesome-claude-code-toolkit — The most comprehensive toolkit for Claude Code -- 135 agents, 35 curated skills, 42 commands, 176+ plugins, 20 hooks, 15",
+    "url": "https://github.com/rohitg00/awesome-claude-code-toolkit",
+    "why": [
+     "AI review: off topic (No content on iterative development logs or seeded defects; Excerpts show only a tool/plugin listing for Claude Code)",
+     "AI review: a general introduction to a broader concept, not this lecture's topic",
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "PavelGrigoryevDS/awesome-data-analysis — 🚀 500+ curated resources for Data Analysis & Data Science: Python, SQL, Statistics, ML, AI, Visualization, Cheatsheets,",
+    "url": "https://github.com/PavelGrigoryevDS/awesome-data-analysis",
+    "why": [
+     "AI review: off topic (Curated list of data analysis tools, unrelated to software factory logs; Only tangential mention of CLI tools like jq for log parsing)",
+     "AI review: a general introduction to a broader concept, not this lecture's topic",
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "Agentic Coding Workflow: Claude Code, Codex, Pi",
+    "url": "https://www.damiangalarza.com/posts/2026-10-21-agentic-coding-workflow/",
+    "why": [
+     "score 0.40 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "how developers debug their code #coding #softwareengineer #developer #programming #code #ai #debug",
+    "url": "https://www.youtube.com/watch?v=QQOfHd43LfY",
+    "why": [
+     "too short to teach a component (0:17)"
+    ]
+   },
+   {
+    "title": "App Crashes Only in Production? Here's My Debugging Process 🐛",
+    "url": "https://www.youtube.com/watch?v=AYCjvHbrkPU",
+    "why": [
+     "too short to teach a component (1:07)"
+    ]
+   },
+   {
+    "title": "10 Ways to Debug Production Issues Every Developer Should Know",
+    "url": "https://www.youtube.com/watch?v=Qkj3_L88-o8",
+    "why": [
+     "too short to teach a component (0:12)"
+    ]
+   },
+   {
+    "title": "How to debug production API working slow interview question #interview #sde #api #hld",
+    "url": "https://www.youtube.com/watch?v=EdUVvTxaV9M",
+    "why": [
+     "too short to teach a component (1:10)"
+    ]
+   },
+   {
+    "title": "This is How Pro Developers Debug Production",
+    "url": "https://www.youtube.com/watch?v=0UvArwtdYUc",
+    "why": [
+     "too short to teach a component (0:34)"
+    ]
+   },
+   {
+    "title": "This Crazy Ai tool Will Debug and Fix Your Code",
+    "url": "https://www.youtube.com/watch?v=BuxezLdrt9Y",
+    "why": [
+     "too short to teach a component (0:31)"
+    ]
+   },
+   {
+    "title": "Data Structures & Algorithms is ♥️ #shorts #ytshorts #entertainment #jennyslectures #viralshorts",
+    "url": "https://www.youtube.com/watch?v=pXwwXC0DzLM",
+    "why": [
+     "too short to teach a component (0:10)"
+    ]
+   },
+   {
+    "title": "Explain Software Development Life Cycle (SDLC) : SDET Automation Testing Interview Question & Answer",
+    "url": "https://www.youtube.com/watch?v=mZGgFy5b6Bk",
+    "why": [
+     "too short to teach a component (0:07)"
+    ]
+   },
+   {
+    "title": "Students in first year.. 😂 | #shorts #jennyslectures #jayantikhatrilamba",
+    "url": "https://www.youtube.com/watch?v=EDnA5FnfeSA",
+    "why": [
+     "too short to teach a component (0:11)"
+    ]
+   },
+   {
+    "title": "Logical Operators of Programming Languages - Python | Java",
+    "url": "https://www.youtube.com/watch?v=u-CLv5-hbqk",
+    "why": [
+     "too short to teach a component (0:09)"
+    ]
+   },
+   {
+    "title": "Cosplay by b.tech final year at IIT Kharagpur",
+    "url": "https://www.youtube.com/watch?v=3OFWXtyY1xk",
+    "why": [
+     "too short to teach a component (0:15)"
+    ]
+   },
+   {
+    "title": "What is Iterative Incremental Model? | Software Testing Certification Training | CTFL Training",
+    "url": "https://www.youtube.com/watch?v=LFAK3QhdMrQ",
+    "why": [
+     "too short to teach a component (1:20)"
+    ]
+   },
+   {
+    "title": "Java Vs Python                                           #developer #python #java #developer #fyp",
+    "url": "https://www.youtube.com/watch?v=DKINa6DHeY0",
+    "why": [
+     "too short to teach a component (0:12)"
+    ]
+   },
+   {
+    "title": "I learned python so I can do this...",
+    "url": "https://www.youtube.com/watch?v=l5MlhRSpfSI",
+    "why": [
+     "too short to teach a component (0:13)"
+    ]
+   },
+   {
+    "title": "How Much A Python Developer Earn ? | Python Developer Salary In India #Shorts #simplilearn",
+    "url": "https://www.youtube.com/watch?v=o4F3G5g5H-Y",
+    "why": [
+     "too short to teach a component (0:46)"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 27,
+   "passed_checks": 0,
+   "rejected": 27,
+   "videos_used": 1
+  },
+  "clips": [
+   {
+    "target": "Structure of iterative development logs",
+    "target_ids": [
+     "W08.L2.C1"
+    ],
+    "component": "W08.L2.C1",
+    "video": "My Agentic Coding Workflow on a Real Feature, Start to Finish",
+    "source": "Damian Galarza",
+    "url": "https://www.youtube.com/watch?v=0OvbSRoiR0Q&t=1850s",
+    "start": "30:50",
+    "end": "35:50",
+    "minutes": 5.0,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "commit metadata (conventional commits)"
+    ],
+    "missing": [
+     "test results in logs",
+     "tool invocations in logs",
+     "build reports schema",
+     "artifact manifests schema"
+    ],
+    "note": "Shows conventional commits for commit metadata; lacks log sections, test results, tool invocations, build reports, artifact manifests."
+   }
+  ],
+  "timeline": [
+   {
+    "component": "W08.L2.C1",
+    "title": "Structure of iterative development logs",
+    "minutes": 15,
+    "kind": "concept",
+    "delivery": "video",
+    "gap": {
+     "video_minutes": 5.0,
+     "missing": [
+      "test results in logs",
+      "tool invocations in logs",
+      "build reports schema",
+      "artifact manifests schema"
+     ]
+    },
+    "segments": [
+     {
+      "video": "My Agentic Coding Workflow on a Real Feature, Start to Finish",
+      "video_id": "0OvbSRoiR0Q",
+      "url": "https://www.youtube.com/watch?v=0OvbSRoiR0Q&t=1850s",
+      "start": "30:50",
+      "end": "35:50",
+      "minutes": 5.0,
+      "verdict": "teaches_partly",
+      "score": 0.316
+     }
+    ]
+   },
+   {
+    "component": "W08.L2.C2",
+    "title": "Seeded defect taxonomy in factory outputs",
+    "minutes": 15,
+    "kind": "concept",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W08.L2.C3",
+    "title": "Parsing and querying log data with CLI tools",
+    "minutes": 15,
+    "kind": "mechanism",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W08.L2.C4",
+    "title": "Worked example: detecting a missing dependency defect",
+    "minutes": 15,
+    "kind": "worked_example",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W08.L2.C5",
+    "title": "Activity: find two seeded defects in a provided log set",
+    "minutes": 15,
+    "kind": "activity",
+    "delivery": "in_class",
+    "segments": []
+   },
+   {
+    "component": "W08.L2.C6",
+    "title": "Comparing defect patterns across iterations",
+    "minutes": 15,
+    "kind": "comparison",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W08.L2.C7",
+    "title": "Case study: real‑world factory log analysis",
+    "minutes": 15,
+    "kind": "case_study",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W08.L2.C8",
+    "title": "Discussion: best practices for proposing fixes",
+    "minutes": 15,
+    "kind": "discussion",
+    "delivery": "in_class",
+    "segments": []
+   }
+  ],
+  "partial": {
+   "reason": "YouTube blocked transcript requests (from 22:20)",
+   "videos_without_transcript": [
+    "VRbv6VlGm2Q"
+   ]
+  },
+  "components": [
+   {
+    "lecture_id": "W08.L2",
+    "title": "Structure of iterative development logs",
+    "teaches": "Students will understand the standard sections of an iterative development log (commit metadata, test results, tool invocations) and the schema of software factory output artifacts (build reports, artifact manifests).",
+    "key_terms": [
+     "log sections",
+     "commit metadata",
+     "test results",
+     "tool invocations",
+     "build reports",
+     "artifact manifests"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO3.LO3"
+    ],
+    "minutes": 15,
+    "id": "W08.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W08.L2",
+    "title": "Seeded defect taxonomy in factory outputs",
+    "teaches": "Students will learn the four categories of seeded defects (missing dependency, flaky test, configuration drift, resource leak) and their characteristic signatures in logs and factory outputs.",
+    "key_terms": [
+     "missing dependency",
+     "flaky test",
+     "configuration drift",
+     "resource leak",
+     "defect signatures"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO3.LO3"
+    ],
+    "minutes": 15,
+    "id": "W08.L2.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W08.L2",
+    "title": "Parsing and querying log data with CLI tools",
+    "teaches": "Students will be able to use grep, jq, and custom scripts to extract relevant log entries and factory output fields for defect hunting.",
+    "key_terms": [
+     "grep",
+     "jq",
+     "log extraction",
+     "field projection",
+     "script automation"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO3.LO3"
+    ],
+    "minutes": 15,
+    "id": "W08.L2.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W08.L2",
+    "title": "Worked example: detecting a missing dependency defect",
+    "teaches": "Students will follow a step‑by‑step analysis of a sample log where a missing dependency causes a build failure, seeing how to locate the error trace, correlate with the artifact manifest, and formulate a fix.",
+    "key_terms": [
+     "missing dependency",
+     "error trace",
+     "artifact manifest",
+     "root cause",
+     "fix proposal"
+    ],
+    "kind": "worked_example",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO3"
+    ],
+    "minutes": 15,
+    "id": "W08.L2.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W08.L2",
+    "title": "Activity: find two seeded defects in a provided log set",
+    "teaches": "Students will individually examine a zip of logs and factory outputs, identify at least two of the four seeded defects, and write a brief fix proposal for each, then submit for peer review.",
+    "key_terms": [
+     "log set",
+     "defect identification",
+     "fix proposal",
+     "peer review"
+    ],
+    "kind": "activity",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO3"
+    ],
+    "minutes": 15,
+    "id": "W08.L2.C5",
+    "in_class": true
+   },
+   {
+    "lecture_id": "W08.L2",
+    "title": "Comparing defect patterns across iterations",
+    "teaches": "Students will compare how the same defect type manifests differently across multiple iterations, noting variations in log verbosity, test flakiness, and factory output anomalies.",
+    "key_terms": [
+     "iteration comparison",
+     "defect manifestation",
+     "log verbosity",
+     "test flakiness",
+     "output anomalies"
+    ],
+    "kind": "comparison",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO3"
+    ],
+    "minutes": 15,
+    "id": "W08.L2.C6",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W08.L2",
+    "title": "Case study: real‑world factory log analysis",
+    "teaches": "Students will review a redacted industry case where iterative logs revealed a configuration drift defect, discussing detection strategy, impact assessment, and remediation steps.",
+    "key_terms": [
+     "configuration drift",
+     "industry case",
+     "detection strategy",
+     "impact assessment",
+     "remediation"
+    ],
+    "kind": "case_study",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO3"
+    ],
+    "minutes": 15,
+    "id": "W08.L2.C7",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W08.L2",
+    "title": "Discussion: best practices for proposing fixes",
+    "teaches": "Students will evaluate fix proposals for completeness, testability, and regression risk, and agree on a checklist for future defect remediation in iterative loops.",
+    "key_terms": [
+     "fix completeness",
+     "testability",
+     "regression risk",
+     "remediation checklist"
+    ],
+    "kind": "discussion",
+    "bloom": 5,
+    "lo_ids": [
+     "CO3.LO3"
+    ],
+    "minutes": 15,
+    "id": "W08.L2.C8",
+    "in_class": true
+   }
+  ],
+  "notebooklm": {
+   "pack": "notebooklm/W08.L2.md",
+   "components": [],
+   "sources": 2
+  }
+ },
+ "experts": {
+  "lecture_id": "W08.L2",
+  "topic": "Iterative development logs and software factory outputs",
+  "experts": [],
+  "reserve": [],
+  "rejected": [
+   {
+    "name": "Addy Osmani",
+    "why": [
+     "topical fit 0.39 is below 0.5"
+    ]
+   },
+   {
+    "name": "Pankaj Jalote",
+    "why": [
+     "topical fit 0.21 is below 0.5"
+    ]
+   },
+   {
+    "name": "Raghava Mutharaju",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.07 is below 0.5"
+    ]
+   },
+   {
+    "name": "Rahul Mohananai",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.10 is below 0.5"
+    ]
+   },
+   {
+    "name": "Pavle Subotić",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "AI fit check: weak"
+    ]
+   },
+   {
+    "name": "Joseph Breda",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.27 is below 0.5"
+    ]
+   },
+   {
+    "name": "Girish Narayanswamy",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.25 is below 0.5"
+    ]
+   },
+   {
+    "name": "Sonali Agarwal",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.41 is below 0.5"
+    ]
+   },
+   {
+    "name": "Nuno Machado",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.42 is below 0.5"
+    ]
+   },
+   {
+    "name": "Divya Tomar",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.37 is below 0.5"
+    ]
+   },
+   {
+    "name": "Bernhard Scholz",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.45 is below 0.5"
+    ]
+   },
+   {
+    "name": "Dilini Nissanka",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "too little research record yet (h-index 2 on OpenAlex, below 5)",
+     "topical fit 0.39 is below 0.5"
+    ]
+   },
+   {
+    "name": "Zhihan Zhang",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.30 is below 0.5"
+    ]
+   },
+   {
+    "name": "Peter Fritzson",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.35 is below 0.5"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 33,
+   "assessed": 14,
+   "passed_checks": 0
+  }
+ },
+ "partial": {
+  "reason": "YouTube blocked transcript requests (from 22:20)",
+  "videos_without_transcript": [
+   "VRbv6VlGm2Q"
+  ]
+ }
+}

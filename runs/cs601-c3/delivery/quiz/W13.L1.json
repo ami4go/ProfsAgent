@@ -1,0 +1,72 @@
+{
+ "lecture_id": "W13.L1",
+ "topic": "Deployment and reliability metric evaluation",
+ "made_at": "2026-11-03 15:46:59",
+ "minutes": {
+  "recap": 0,
+  "quiz": 0
+ },
+ "recap": [],
+ "questions": [
+  {
+   "component": "W13.L1.C1",
+   "lo_ids": [
+    "CO4.LO3"
+   ],
+   "bloom": 4,
+   "question": "During a deployment, an engineer observes an immediate spike in error rates after shifting 5% of traffic to a new version. How does this canary metric pattern alter the rollback decision compared to a blue-green switch?",
+   "options": [
+    "Canary limits the failure impact to 5% of users, enabling a low-risk rollback before full traffic cutover.",
+    "Blue-green allows rolling back only the failing 5% of pods while leaving the rest running.",
+    "Blue-green metric patterns isolate failures to individual canary pods, avoiding environment-wide rollbacks.",
+    "Canary requires draining all active user sessions across the entire cluster before rolling back."
+   ],
+   "answer": "A",
+   "explanation": "Canary deployments expose only a small fraction of traffic to the update, allowing engineers to make an early rollback decision while limiting the blast radius of potential failures."
+  },
+  {
+   "component": "W13.L1.C1",
+   "lo_ids": [
+    "CO4.LO3"
+   ],
+   "bloom": 4,
+   "question": "A monitoring dashboard shows System X suffering an immediate error spike across 100% of requests upon deployment, while System Y shows errors localized to a small percentage of requests. What deployment strategies do these metric patterns indicate?",
+   "options": [
+    "System X used a canary deployment; System Y used a blue-green deployment.",
+    "Both systems used canary deployments, but System X failed its traffic split configuration.",
+    "Both systems used blue-green deployments, but System Y triggered an automated rollback.",
+    "System X used a blue-green deployment; System Y used a canary deployment."
+   ],
+   "answer": "D",
+   "explanation": "Blue-green deployments perform an instant, full traffic cutover leading to system-wide metric changes, whereas canary deployments split traffic incrementally, localizing initial metric changes."
+  },
+  {
+   "component": "W13.L1.C2",
+   "lo_ids": [
+    "CO4.LO3"
+   ],
+   "bloom": 5,
+   "question": "During a live canary rollout, 10% of user traffic is shifted to the canary release. Monitoring in Grafana reveals that the canary's error rate exhausts 80% of the remaining monthly error budget in 10 minutes. What is the correct go/no-go decision and action?",
+   "options": [
+    "Issue a 'No-Go' decision, immediately abort/rollback the canary rollout, and document metrics for a post-mortem.",
+    "Issue a 'Go' decision and scale up canary traffic to see if error rates normalize under load.",
+    "Keep traffic at 10% indefinitely while increasing the error budget ceiling in Grafana.",
+    "Issue a 'Go' decision but disable error monitoring to prevent further budget consumption."
+   ],
+   "answer": "A",
+   "explanation": "When canary metrics rapidly consume the error budget, the correct evaluation outcome is a 'No-Go' decision to roll back immediately and preserve system reliability, followed by post-mortem analysis."
+  },
+  {
+   "component": "W13.L1.C2",
+   "lo_ids": [
+    "CO4.LO3"
+   ],
+   "bloom": 5,
+   "question": "Why is documenting error budget depletion during a canary evaluation crucial when conducting a post-mortem after a No-Go decision?",
+   "options": [],
+   "answer": "It provides metric evidence showing how rapidly reliability targets were breached, helping teams refine automated rollback thresholds and prevent similar failures in future rollouts.",
+   "explanation": "Documenting metric patterns and error budget burn during a failed canary deployment provides historical context for post-mortems, helping teams calibrate future go/no-go criteria."
+  }
+ ],
+ "problems": []
+}

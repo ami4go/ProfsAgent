@@ -1,0 +1,190 @@
+{
+ "lecture_id": "W08.L2",
+ "topic": "Iterative development logs and software factory outputs",
+ "made_at": "2026-11-03 15:46:56",
+ "minutes": {
+  "recap": 5,
+  "quiz": 10
+ },
+ "recap": [
+  {
+   "component": "W08.L1.C1",
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "bloom": 2,
+   "question": "Why is establishing a standardized log schema and step taxonomy essential before analyzing complex agent execution traces?",
+   "options": [
+    "It increases the LLM token generation speed during iterative loops.",
+    "It provides a shared vocabulary and consistent structure to correctly classify control-flow steps.",
+    "It automatically refactors source code whenever an execution error is logged.",
+    "It guarantees that the agent will never enter an infinite execution loop."
+   ],
+   "answer": "B",
+   "explanation": "A standardized log schema and step taxonomy establish a common structure and vocabulary, allowing developers to accurately identify and classify control-flow events across execution logs."
+  },
+  {
+   "component": "W08.L1.C2",
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "bloom": 4,
+   "question": "When tracing a log file containing concurrent agent executions, how can you correctly group interleaved execution steps into their respective logical loops?",
+   "options": [
+    "Sort all log entries purely by timestamp and assign them to sequential loops.",
+    "Filter and group log entries using their correlation IDs assigned to each execution context.",
+    "Combine all concurrent steps into a single main execution sequence.",
+    "Ignore parallel steps and only trace log entries containing syntax errors."
+   ],
+   "answer": "B",
+   "explanation": "Correlation IDs tag entries from the same logical execution context, allowing interleaved log steps from parallel or nested loops to be cleanly separated and traced."
+  },
+  {
+   "component": "W08.L1.C3",
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "bloom": 5,
+   "question": "While analyzing a production coding agent log, you observe that the agent repeatedly re-runs tests after a failure without applying any code edits. Which bottleneck or instrumentation gap does this reveal?",
+   "options": [
+    "The log analyzer failed to assign parallel loop correlation IDs.",
+    "The agent needs higher network bandwidth to execute tests faster.",
+    "The agent's log schema lacks compression for long trace outputs.",
+    "The generate-test-refactor loop is stuck because failure signals are not triggering code modifications."
+   ],
+   "answer": "D",
+   "explanation": "A repeated test loop without code edits indicates a broken generate-test-refactor cycle where failure states do not properly trigger or log refactoring actions."
+  }
+ ],
+ "questions": [
+  {
+   "component": "W08.L2.C1",
+   "lo_ids": [
+    "CO3.LO3"
+   ],
+   "bloom": 2,
+   "question": "Which software factory artifact should you inspect to verify the complete list of declared dependencies and output binary schemas for a specific build?",
+   "options": [
+    "Test execution summary",
+    "Tool invocation logs",
+    "Commit metadata",
+    "Artifact manifest"
+   ],
+   "answer": "D",
+   "explanation": "The artifact manifest defines the output schemas and declared dependencies of built artifacts, whereas logs capture runtime execution details."
+  },
+  {
+   "component": "W08.L2.C2",
+   "lo_ids": [
+    "CO3.LO3"
+   ],
+   "bloom": 2,
+   "question": "A test suite passes on the first run, fails on the second run without code changes, and passes on the third. Which seeded defect category does this signature indicate?",
+   "options": [
+    "Flaky test",
+    "Missing dependency",
+    "Resource leak",
+    "Configuration drift"
+   ],
+   "answer": "A",
+   "explanation": "Non-deterministic test failures occurring under identical code conditions are the characteristic signature of a flaky test defect."
+  },
+  {
+   "component": "W08.L2.C3",
+   "lo_ids": [
+    "CO3.LO3"
+   ],
+   "bloom": 3,
+   "question": "You need to extract failure messages specifically from JSON-formatted factory build logs. Which command line approach is most appropriate?",
+   "options": [
+    "sed -n '/ERROR/p' build.log",
+    "grep -i \"error\" build.log",
+    "tail -n 50 build.log",
+    "jq '.steps[] | select(.status==\"failed\") | .error' build.log"
+   ],
+   "answer": "D",
+   "explanation": "Using jq allows structural field projection and conditional filtering on structured JSON logs, which line-oriented tools like grep cannot reliably do."
+  },
+  {
+   "component": "W08.L2.C4",
+   "lo_ids": [
+    "CO3.LO3"
+   ],
+   "bloom": 4,
+   "question": "A build fails with `ClassNotFoundException: com.example.Utils`. The artifact manifest lists the library under `runtime_dependencies`, but it is missing from the compile classpath log. What is the root cause?",
+   "options": [
+    "Missing compile-time dependency configuration",
+    "Resource leak during compilation",
+    "Test execution flakiness",
+    "Configuration drift on the build runner"
+   ],
+   "answer": "A",
+   "explanation": "The error trace shows a missing dependency required at compile time because it was incorrectly categorized only as a runtime dependency."
+  },
+  {
+   "component": "W08.L2.C5",
+   "lo_ids": [
+    "CO3.LO3"
+   ],
+   "bloom": 4,
+   "question": "In a set of development logs, system memory usage increases monotonically across 20 consecutive test runs until an `OutOfMemoryError` occurs. What is the proper fix proposal?",
+   "options": [
+    "Lower the log verbosity level to conserve memory",
+    "Explicitly release unclosed file and database handles in test teardown hooks",
+    "Increase physical RAM allocated to the build agent",
+    "Add automated retries for tests failing with out-of-memory errors"
+   ],
+   "answer": "B",
+   "explanation": "Monotonic memory growth leading to out-of-memory errors across runs indicates a resource leak, requiring explicit cleanup of unclosed handles in code."
+  },
+  {
+   "component": "W08.L2.C6",
+   "lo_ids": [
+    "CO3.LO3"
+   ],
+   "bloom": 4,
+   "question": "Why might a timing-sensitive defect manifest as a hard stack trace under high log verbosity but as a non-deterministic timeout failure under low log verbosity?",
+   "options": [
+    "Higher verbosity changes the schema of artifact manifests",
+    "Low verbosity causes automatic configuration drift remediation",
+    "Additional logging I/O alters thread execution timing and race condition windows",
+    "Build artifacts strip memory allocation metadata when verbosity drops"
+   ],
+   "answer": "C",
+   "explanation": "Log verbosity affects system execution speed and I/O latency, which alters how non-deterministic timing defects manifest across iterations."
+  },
+  {
+   "component": "W08.L2.C7",
+   "lo_ids": [
+    "CO3.LO3"
+   ],
+   "bloom": 4,
+   "question": "A software factory build succeeds on staging build nodes but fails on production release nodes due to missing OS environment variables. Which strategy best prevents this configuration drift defect?",
+   "options": [
+    "Increase log verbosity on release nodes to capture environment variables",
+    "Enforce immutable containerized build environments defined in version-controlled configuration",
+    "Manually update release node environment variables before every run",
+    "Implement automatic retry steps when environment errors occur"
+   ],
+   "answer": "B",
+   "explanation": "Configuration drift between factory nodes is prevented by defining immutable container environments within version-controlled infrastructure code."
+  },
+  {
+   "component": "W08.L2.C8",
+   "lo_ids": [
+    "CO3.LO3"
+   ],
+   "bloom": 5,
+   "question": "A proposed defect fix catches all broad exceptions silently inside a shared data module to prevent build pipeline failures. How should this proposal be evaluated?",
+   "options": [
+    "Reject it due to high regression risk and poor testability from masking root errors",
+    "Reject it because data module fixes must always be applied via artifact manifests",
+    "Accept it because it successfully eliminates build step failures",
+    "Accept it provisionally after adding high-verbosity debug logs"
+   ],
+   "answer": "A",
+   "explanation": "Silent exception handling hides failure conditions rather than fixing the root cause, creating high regression risks and making future testing unreliable."
+  }
+ ],
+ "problems": []
+}

@@ -1,0 +1,190 @@
+{
+ "lecture_id": "W09.L1",
+ "topic": "Software factories and execution trace analysis",
+ "made_at": "2026-11-03 15:46:56",
+ "minutes": {
+  "recap": 5,
+  "quiz": 10
+ },
+ "recap": [
+  {
+   "component": "W08.L2.C1",
+   "lo_ids": [
+    "CO3.LO3"
+   ],
+   "bloom": 2,
+   "question": "Which software factory artifact should you inspect to verify the complete list of declared dependencies and output binary schemas for a specific build?",
+   "options": [
+    "Test execution summary",
+    "Tool invocation logs",
+    "Commit metadata",
+    "Artifact manifest"
+   ],
+   "answer": "D",
+   "explanation": "The artifact manifest defines the output schemas and declared dependencies of built artifacts, whereas logs capture runtime execution details."
+  },
+  {
+   "component": "W08.L2.C2",
+   "lo_ids": [
+    "CO3.LO3"
+   ],
+   "bloom": 2,
+   "question": "A test suite passes on the first run, fails on the second run without code changes, and passes on the third. Which seeded defect category does this signature indicate?",
+   "options": [
+    "Flaky test",
+    "Missing dependency",
+    "Resource leak",
+    "Configuration drift"
+   ],
+   "answer": "A",
+   "explanation": "Non-deterministic test failures occurring under identical code conditions are the characteristic signature of a flaky test defect."
+  },
+  {
+   "component": "W08.L2.C3",
+   "lo_ids": [
+    "CO3.LO3"
+   ],
+   "bloom": 3,
+   "question": "You need to extract failure messages specifically from JSON-formatted factory build logs. Which command line approach is most appropriate?",
+   "options": [
+    "sed -n '/ERROR/p' build.log",
+    "grep -i \"error\" build.log",
+    "tail -n 50 build.log",
+    "jq '.steps[] | select(.status==\"failed\") | .error' build.log"
+   ],
+   "answer": "D",
+   "explanation": "Using jq allows structural field projection and conditional filtering on structured JSON logs, which line-oriented tools like grep cannot reliably do."
+  }
+ ],
+ "questions": [
+  {
+   "component": "W09.L1.C1",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 2,
+   "question": "Why are execution traces essential when coding agents run in iterative software engineering loops?",
+   "options": [
+    "They provide diagnostic history to track agent actions and identify failure causes across iterations.",
+    "They encrypt API keys used during coding loop execution.",
+    "They eliminate the need for writing automated unit tests.",
+    "They directly edit source code when an agent makes a syntax error."
+   ],
+   "answer": "A",
+   "explanation": "Execution traces record the step-by-step history of agent operations and tool calls during iterative loops, making it possible to diagnose why and where a failure occurred."
+  },
+  {
+   "component": "W09.L1.C2",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 2,
+   "question": "When navigating a large development log, which structural element helps an engineer quickly isolate actions taken during a specific attempt by the coding agent?",
+   "options": [
+    "Memory address pointers",
+    "Iteration IDs",
+    "Source code line limits",
+    "Encrypted hash signatures"
+   ],
+   "answer": "B",
+   "explanation": "Iteration IDs partition standardized logs into distinct development cycles, allowing systematic navigation across high-line-count log files."
+  },
+  {
+   "component": "W09.L1.C3",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 3,
+   "question": "An agent trace shows repeated HTTP retries while fetching external packages, followed by a build failure. Which failure category does this trace signature indicate?",
+   "options": [
+    "Logic regression",
+    "Environment misconfiguration",
+    "Dependency resolution error",
+    "Memory leak"
+   ],
+   "answer": "C",
+   "explanation": "Repeated fetch retries and failure to resolve required package versions are characteristic trace signatures of dependency resolution errors."
+  },
+  {
+   "component": "W09.L1.C4",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 2,
+   "question": "How does using a custom parser script improve the analysis of raw software factory logs?",
+   "options": [
+    "It reduces the total line count of the codebase being generated.",
+    "It replaces the agent's LLM with a rule-based engine.",
+    "It converts unstructured raw logs into structured JSON for automated filtering and processing.",
+    "It automatically fixes broken code logic found within the execution trace."
+   ],
+   "answer": "C",
+   "explanation": "Parser scripts parse raw log files into structured JSON formats, enabling automated querying and systematic evidence extraction."
+  },
+  {
+   "component": "W09.L1.C5",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 4,
+   "question": "An agent's execution log terminates abruptly with an error indicating a missing environment variable. Which log excerpt provides direct evidence for an environment misconfiguration failure?",
+   "options": [
+    "`[Iteration 4] SyntaxError: unexpected indent at line 42`",
+    "`[Iteration 1] Fatal error: missing required key 'DB_PORT' in environment context`",
+    "`[Iteration 2] Executing command: pytest unit_tests/`",
+    "`[Iteration 3] Git diff: updated connection logic in db.py`"
+   ],
+   "answer": "B",
+   "explanation": "Citing explicit log lines showing missing system environment variables provides direct log evidence for environment misconfiguration failures."
+  },
+  {
+   "component": "W09.L1.C6",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 4,
+   "question": "You observe an agent retrying package installation multiple times with different version tags before failing. Which log evidence best proves a dependency resolution failure?",
+   "options": [
+    "The line count of the generated source file.",
+    "The dependency graph log lines detailing conflicting version requirements.",
+    "The timestamp difference between iteration starts.",
+    "The total CPU utilization reported by the host platform."
+   ],
+   "answer": "B",
+   "explanation": "Dependency graph lines showing version conflicts and failed fetch retries provide definitive evidence for dependency resolution failures."
+  },
+  {
+   "component": "W09.L1.C7",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 4,
+   "question": "During iteration 3, an agent's code change causes previously passing unit tests to fail. Which log artifacts should be correlated to verify a logic regression failure?",
+   "options": [
+    "The test result diff showing new test failures and the corresponding commit diff.",
+    "The agent's prompt history and external API response times.",
+    "Network trace packets captured during dependency download.",
+    "System uptime logs and disk I/O metrics."
+   ],
+   "answer": "A",
+   "explanation": "Detecting a logic regression requires correlating behavioral changes (test result diffs) with the specific commit diff lines introduced in that iteration."
+  },
+  {
+   "component": "W09.L1.C8",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 4,
+   "question": "When evaluating failure severity across trace logs using a rubric, why is an environment misconfiguration generally ranked as higher severity than a single logic regression?",
+   "options": [
+    "Severity rubrics evaluate trace length rather than failure impact.",
+    "Logic regressions are automatically repaired by the underlying operating system.",
+    "Environment misconfigurations block execution entirely across all iterations, preventing any progress.",
+    "Environment misconfigurations always require manual rewrites of core algorithms."
+   ],
+   "answer": "C",
+   "explanation": "Evaluating failure impact shows that environment failures halt execution completely across iterations, making them higher severity than localized logic regressions."
+  }
+ ],
+ "problems": []
+}

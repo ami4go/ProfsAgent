@@ -1,0 +1,193 @@
+{
+ "lecture_id": "W02.L2",
+ "topic": "Coding agents and context engineering",
+ "minutes": 60,
+ "status": "proposed",
+ "preset": "full_mix",
+ "preset_by": "ai",
+ "course_style": "mix",
+ "parts": [
+  {
+   "component": "W02.L2.C1",
+   "title": "Anatomy of coding agent workspaces and execution lifecycle",
+   "minutes": 15,
+   "kind": "concept",
+   "bloom": 2,
+   "way": "youtube_bridge",
+   "when": "in_class",
+   "rule": "R3",
+   "reason": "Videos (10:09–15:35 Cursor, 5:31–10:39 Agentic Engineering) cover 10.5 mins; professor bridges missing execution lifecycle and scratchpad concepts using slides.",
+   "alternative": {
+    "way": "notebooklm",
+    "reason": "No video teaches it fully; the notebook's sources cover 67% of its key terms, so a NotebookLM explainer can."
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "youtube_bridge",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 20,
+   "segments": [
+    {
+     "video": "Context Engineering & Coding Agents with Cursor",
+     "video_id": "3KAI__5dUn0",
+     "url": "https://www.youtube.com/watch?v=3KAI__5dUn0&t=609s",
+     "start": "10:09",
+     "end": "15:35",
+     "minutes": 5.4,
+     "verdict": "teaches_partly"
+    },
+    {
+     "video": "Agentic Engineering: 5 Terms Every AI Developer Should Know",
+     "video_id": "SIZsFGvtClM",
+     "url": "https://www.youtube.com/watch?v=SIZsFGvtClM&t=331s",
+     "start": "5:31",
+     "end": "10:39",
+     "minutes": 5.1,
+     "verdict": "teaches_partly"
+    }
+   ],
+   "video_minutes": 10.5,
+   "bridge": [
+    "formal execution lifecycle walkthrough from prompt ingestion to tool dispatch",
+    "architectural scratchpad management",
+    "scratchpad management",
+    "in-depth state tracking implementation"
+   ],
+   "coverage": 0.67,
+   "uncovered": [
+    "observation loop",
+    "scratchpad"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W02.L2.C2",
+   "title": "Context engineering strategies for constrained context windows",
+   "minutes": 15,
+   "kind": "mechanism",
+   "bloom": 2,
+   "way": "notebooklm",
+   "when": "in_class",
+   "rule": "R4",
+   "reason": "NotebookLM sources cover 67% of key terms to generate an explainer video, supplementing missing file tree pruning via lecture.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: videos teach only 46% of it."
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "youtube_bridge",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 15,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.67,
+   "uncovered": [
+    "relevance filtering",
+    "prompt caching"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W02.L2.C3",
+   "title": "Structuring MCP tool schemas and workspace descriptors",
+   "minutes": 10,
+   "kind": "mechanism",
+   "bloom": 3,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "No checked video exists and sources cover only 33% of terms, requiring slides to deliver exact MCP JSON schema specifications.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.33,
+   "uncovered": [
+    "tool schema",
+    "workspace descriptor",
+    "tool discovery",
+    "parameter validation"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W02.L2.C4",
+   "title": "Evaluating context pollution and tool discovery trade-offs",
+   "minutes": 10,
+   "kind": "comparison",
+   "bloom": 4,
+   "way": "in_class",
+   "when": "in_class",
+   "rule": "D7",
+   "reason": "An in-class trade-off discussion better suits analyzing context pollution failure modes and token cost trade-offs where video evidence is absent.",
+   "alternative": {
+    "way": "slides",
+    "reason": "the rules chose slides"
+   },
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.4,
+   "uncovered": [
+    "lazy tool registration",
+    "hallucinated invocation",
+    "tool selection accuracy"
+   ],
+   "simulation": null
+  }
+ ],
+ "recap_minutes": 5,
+ "quiz_minutes": 5,
+ "totals": {
+  "slides": 19.5,
+  "video_in_class": 20.5,
+  "video_pre_class": 0.0,
+  "notebooklm": 10.0,
+  "in_class": 10.0,
+  "simulation": 0.0,
+  "recap": 5,
+  "quiz": 5,
+  "video_share": 0.34
+ },
+ "prep_minutes": 56,
+ "checks": [
+  {
+   "code": "L-RESERVE",
+   "message": "the part plan was made before recap and quiz minutes were kept free; 10 min were taken from the longest parts"
+  },
+  {
+   "code": "L-AI",
+   "message": "the AI changed 1 part(s) within the rules (see each reason)"
+  }
+ ],
+ "note": "",
+ "proposed_by": "rules + D7",
+ "proposed_at": "2026-11-03 15:29:12",
+ "approved_at": "",
+ "approved_by": "",
+ "materials": {}
+}

@@ -1,0 +1,141 @@
+{
+ "lecture_id": "W01.L1",
+ "topic": "Developer workflows and AI-assisted coding",
+ "made_at": "2026-11-03 15:46:53",
+ "minutes": {
+  "recap": 0,
+  "quiz": 10
+ },
+ "recap": [],
+ "questions": [
+  {
+   "component": "W01.L1.C1",
+   "lo_ids": [
+    "CO1.LO3"
+   ],
+   "bloom": 1,
+   "question": "How does the developer workflow fundamentally shift when transitioning from traditional edit-compile-debug loops to AI-augmented development?",
+   "options": [
+    "Developers no longer need to write design specifications or document interfaces.",
+    "Developers replace manual testing entirely with automated model verifications.",
+    "Code compilation occurs automatically after every keystroke via remote inference servers.",
+    "The core routine shifts toward continuous speculative drafting and prompt refinement."
+   ],
+   "answer": "D",
+   "explanation": "AI-augmented workflows transform the traditional linear edit-compile-debug loop into continuous speculative drafting, where developers refine prompts and evaluate model suggestions iteratively."
+  },
+  {
+   "component": "W01.L1.C2",
+   "lo_ids": [
+    "CO1.LO3"
+   ],
+   "bloom": 1,
+   "question": "In the architecture of a modern AI code assistant, what is the primary role of the local IDE extension?",
+   "options": [
+    "Compiling code and checking type correctness remote endpoints.",
+    "Executing deep learning model inference locally on client hardware.",
+    "Generating synthetic datasets for model fine-tuning.",
+    "Gathering telemetry, local buffers, and cursor position to pass to the orchestrator."
+   ],
+   "answer": "D",
+   "explanation": "The local IDE extension collects real-time editor state such as local buffer snippets, cursor position, and telemetry before handing them off to an orchestrator for prompt assembly."
+  },
+  {
+   "component": "W01.L1.C3",
+   "lo_ids": [
+    "CO1.LO3"
+   ],
+   "bloom": 2,
+   "question": "What primary trade-off occurs when expanding the context window scope to include more surrounding file content in autocompletion prompts?",
+   "options": [
+    "Broader context increases generation latency while providing more accurate background.",
+    "Larger context budgets eliminate the possibility of model hallucinations.",
+    "A larger token budget speeds up model inference time.",
+    "Including open editor tabs automatically reduces memory usage on the client machine."
+   ],
+   "answer": "B",
+   "explanation": "Expanding the context scope gives the model useful ambient information, but processing more tokens increases prompt processing and overall inference latency."
+  },
+  {
+   "component": "W01.L1.C4",
+   "lo_ids": [
+    "CO1.LO3"
+   ],
+   "bloom": 2,
+   "question": "Which prompt contextualisation approach best ensures deterministic, correct code generation for a scoped task like a utility function?",
+   "options": [
+    "Providing concise prompts without explicit type annotations to allow model flexibility.",
+    "Including entire workspace repositories to maximize context budget usage.",
+    "Relying on open-ended conversational requests without structural constraints.",
+    "Supplying explicit type signatures, interfaces, and minimal input-output examples."
+   ],
+   "answer": "D",
+   "explanation": "Explicit type signatures, explicit interface boundaries, and minimal examples constrain the generative search space without exhausting context token limits."
+  },
+  {
+   "component": "W01.L1.C5",
+   "lo_ids": [
+    "CO1.LO3"
+   ],
+   "bloom": 2,
+   "question": "Why might a developer choose a docked chat interface over passive inline ghost text when designing complex new logic?",
+   "options": [
+    "Inline ghost text cannot generate multi-line completions.",
+    "Docked chat directly edits code buffers without developer approval.",
+    "Docked chat operates completely offline without inference latency.",
+    "Ghost text can create cognitive fatigue by continuously interrupting focus with immediate proposals."
+   ],
+   "answer": "D",
+   "explanation": "Inline ghost text can impose cognitive load and interrupt deep thought during complex architecture work, whereas conversational chat allows active, intentional elicitation when needed."
+  },
+  {
+   "component": "W01.L1.C6",
+   "lo_ids": [
+    "CO1.LO3"
+   ],
+   "bloom": 2,
+   "question": "During active development in an AI-assisted IDE, what happens to prompt payloads when a developer opens a relevant interface tab?",
+   "options": [
+    "The model pauses all code completion until manual prompt submission.",
+    "The assistant purges all recent language server diagnostic logs.",
+    "The ambient context dynamically incorporates the new tab's interfaces into model prompts.",
+    "The IDE re-initializes the extension client entirely."
+   ],
+   "answer": "C",
+   "explanation": "Modern AI IDEs dynamically observe editor state changes, such as opening new tabs or importing interfaces via LSP, updating the prompt payload sent to the model in real time."
+  },
+  {
+   "component": "W01.L1.C7",
+   "lo_ids": [
+    "CO1.LO3"
+   ],
+   "bloom": 2,
+   "question": "A developer switches git branches to an older codebase, but the assistant suggests methods from an API introduced only in the newer branch. What issue is demonstrated here?",
+   "options": [
+    "Over-contextualised prompt formatting.",
+    "Stale context carrying over across workspace environment state changes.",
+    "Context window token exhaustion.",
+    "Language Server Protocol diagnostic failure."
+   ],
+   "answer": "B",
+   "explanation": "Stale context occurs when an assistant retains cached snippets or file states from previous sessions or branches, causing suggestions that are invalid for the active workspace state."
+  },
+  {
+   "component": "W01.L1.C8",
+   "lo_ids": [
+    "CO1.LO3"
+   ],
+   "bloom": 2,
+   "question": "What combination of quality gates provides the most reliable guardrail before committing AI-assisted code to production?",
+   "options": [
+    "Automated static analysis, local test suites, and strict human code review.",
+    "Restricting AI usage exclusively to writing documentation and docstrings.",
+    "Disabling all inline code completion tools during refactoring.",
+    "Solely relying on model self-verification prompts before rendering code."
+   ],
+   "answer": "A",
+   "explanation": "Automated linting and test suites catch immediate syntax and runtime errors, while human code review ensures overall logic correctness and prevents silent quality degradation."
+  }
+ ],
+ "problems": []
+}

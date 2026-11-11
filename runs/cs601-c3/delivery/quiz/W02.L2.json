@@ -1,0 +1,126 @@
+{
+ "lecture_id": "W02.L2",
+ "topic": "Coding agents and context engineering",
+ "made_at": "2026-11-03 15:46:53",
+ "minutes": {
+  "recap": 5,
+  "quiz": 5
+ },
+ "recap": [
+  {
+   "component": "W02.L1.C1",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 2,
+   "question": "How do resources differ from tools in Model Context Protocols (MCP)?",
+   "options": [
+    "Resources provide passive context data for reading, whereas tools enable dynamic side-effects and execution.",
+    "Resources allow models to execute shell commands, whereas tools only provide static files.",
+    "Resources require dynamic parameters, whereas tools do not accept input arguments.",
+    "Resources are defined on the host client, whereas tools reside exclusively on external cloud services."
+   ],
+   "answer": "A",
+   "explanation": "Resources act as passive data providers (like context or read-only files), while tools allow models to run dynamic operations and side-effects."
+  },
+  {
+   "component": "W02.L1.C2",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 2,
+   "question": "A developer wants to expose dynamic log streams where the log file URI changes based on a requested user ID parameter. Which MCP construct should they use?",
+   "options": [
+    "An environment variable override in the host workspace setting",
+    "A fixed text resource without dynamic URI mapping",
+    "A static tool definition with hardcoded execution parameters",
+    "A parameterized Resource Template with a dynamic URI scheme"
+   ],
+   "answer": "D",
+   "explanation": "Resource templates expose parameterized URI schemes, allowing clients to construct dynamic URIs to read specific dynamic context."
+  },
+  {
+   "component": "W02.L1.C3",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 2,
+   "question": "How does an MCP host validate arguments provided by an LLM before invoking a tool via `tools/call`?",
+   "options": [
+    "It validates arguments against the `inputSchema` declared in the server's `tools/list` response.",
+    "It relies on the server to bypass validation if the connection uses stdio.",
+    "It converts all input values to strings automatically without schema checks.",
+    "It forwards the raw prompt to a manual host validation queue."
+   ],
+   "answer": "A",
+   "explanation": "Tools define their input requirements via standard JSON Schema (`inputSchema`) during discovery (`tools/list`), which allows strict client/server argument validation."
+  }
+ ],
+ "questions": [
+  {
+   "component": "W02.L2.C1",
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "bloom": 2,
+   "question": "What is the primary role of an architectural scratchpad during an autonomous coding agent's execution lifecycle?",
+   "options": [
+    "It tracks short-term state, intermediate reasoning steps, and tool observation outputs across loop iterations.",
+    "It automatically compiles static analysis binaries inside container sandboxes.",
+    "It bypasses permission checks when the agent executes shell commands.",
+    "It permanently stores global system environment variables across project sessions."
+   ],
+   "answer": "A",
+   "explanation": "The scratchpad functions as short-term memory within the agent lifecycle loop, enabling the model to retain intermediate context, track progress, and consume tool observations before taking the next action."
+  },
+  {
+   "component": "W02.L2.C2",
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "bloom": 2,
+   "question": "Why would a developer implement selective file tree pruning when building a prompt context for a coding agent?",
+   "options": [
+    "To allow MCP tools to run without requiring input parameter validation.",
+    "To guarantee that all unit tests pass before tool dispatch occurs.",
+    "To prevent model distraction and avoid exceeding context window token budgets by filtering out irrelevant directories.",
+    "To permanently delete legacy files from the local Git repository."
+   ],
+   "answer": "C",
+   "explanation": "Pruning irrelevant directories and files reduces context pollution and keeps token usage within limits, preventing the LLM from getting distracted by unrelated codebase noise."
+  },
+  {
+   "component": "W02.L2.C3",
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "bloom": 3,
+   "question": "A custom MCP tool for linting files frequently fails because the agent passes invalid parameter data types. How should the tool definition be updated to resolve this according to MCP specifications?",
+   "options": [
+    "Switch the workspace isolation model from container sandboxing to a local git worktree.",
+    "Define explicit JSON schema types and parameter validation rules in the tool's input descriptor.",
+    "Enable sliding context windows to prune past tool validation errors.",
+    "Inject the full static analysis output directly into the global prompt context."
+   ],
+   "answer": "B",
+   "explanation": "MCP tool discovery relies on structured JSON schemas; explicitly defining required parameters and data types ensures the harness validates inputs before invoking the tool."
+  },
+  {
+   "component": "W02.L2.C4",
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "bloom": 4,
+   "question": "A system loading 100+ verbose MCP tool definitions into every prompt suffers from high latency and hallucinated tool invocations. How does lazy tool registration mitigate this context pollution issue compared to global tool injection?",
+   "options": [
+    "By bypassing environment sandboxing to execute static analysis directly on the host.",
+    "By replacing JSON-RPC schemas with lightweight hardcoded shell scripts.",
+    "By dynamic-loading schema descriptors only when relevant sub-tasks are identified, lowering token overhead and tool confusion.",
+    "By running all tool executions in parallel without waiting for agent observation loops."
+   ],
+   "answer": "C",
+   "explanation": "Lazy tool registration avoids context pollution by presenting only relevant context or high-level summaries initially, providing full tool schemas on demand to keep token overhead low and improve tool selection accuracy."
+  }
+ ],
+ "problems": []
+}

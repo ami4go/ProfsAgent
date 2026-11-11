@@ -1,0 +1,268 @@
+{
+ "lecture_id": "W12.L2",
+ "topic": "Deployment and reliability metric evaluation",
+ "minutes": 90,
+ "status": "proposed",
+ "preset": "full_mix",
+ "preset_by": "ai",
+ "course_style": "mix",
+ "parts": [
+  {
+   "component": "W12.L2.C1",
+   "title": "Key deployment metrics overview",
+   "minutes": 15,
+   "kind": "concept",
+   "bloom": 2,
+   "way": "youtube_bridge",
+   "when": "in_class",
+   "rule": "R3",
+   "reason": "Video clips cover 9.2/15 min; professor supplements missing latency, error rate, and throughput using 1–3 slides.",
+   "alternative": {
+    "way": "notebooklm",
+    "reason": "No video teaches it fully; the notebook's sources cover 100% of its key terms, so a NotebookLM explainer can."
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "youtube_bridge",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 19,
+   "segments": [
+    {
+     "video": "DevOps Metrics Explained | DORA Metrics Every Engineer Must Know",
+     "video_id": "bFzVrx8zyFY",
+     "url": "https://www.youtube.com/watch?v=bFzVrx8zyFY&t=0s",
+     "start": "0:00",
+     "end": "4:39",
+     "minutes": 4.7,
+     "verdict": "teaches_partly"
+    },
+    {
+     "video": "DevOps Metrics",
+     "video_id": "yIB3bl9OGW0",
+     "url": "https://www.youtube.com/watch?v=yIB3bl9OGW0&t=0s",
+     "start": "0:00",
+     "end": "4:27",
+     "minutes": 4.5,
+     "verdict": "teaches_partly"
+    }
+   ],
+   "video_minutes": 9.2,
+   "bridge": [
+    "latency",
+    "error rate",
+    "throughput",
+    "rollback time"
+   ],
+   "coverage": 1.0,
+   "uncovered": [],
+   "simulation": null
+  },
+  {
+   "component": "W12.L2.C2",
+   "title": "Reliability metrics and SLOs",
+   "minutes": 15,
+   "kind": "concept",
+   "bloom": 2,
+   "way": "youtube_bridge",
+   "when": "in_class",
+   "rule": "R3",
+   "reason": "Video stretches cover 9.0/15 min; professor adds missing error budget and release decision rules with 1–3 slides.",
+   "alternative": {
+    "way": "notebooklm",
+    "reason": "No video teaches it fully; the notebook's sources cover 100% of its key terms, so a NotebookLM explainer can."
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "youtube_bridge",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 19,
+   "segments": [
+    {
+     "video": "DevOps Metrics That Matter | DORA, Reliability & Delivery Performance",
+     "video_id": "6dW7r7DyklY",
+     "url": "https://www.youtube.com/watch?v=6dW7r7DyklY&t=110s",
+     "start": "1:50",
+     "end": "6:50",
+     "minutes": 5.0,
+     "verdict": "teaches_partly"
+    },
+    {
+     "video": "DevOps Metrics",
+     "video_id": "yIB3bl9OGW0",
+     "url": "https://www.youtube.com/watch?v=yIB3bl9OGW0&t=226s",
+     "start": "3:46",
+     "end": "7:43",
+     "minutes": 4.0,
+     "verdict": "teaches_partly"
+    }
+   ],
+   "video_minutes": 9.0,
+   "bridge": [
+    "error budget",
+    "how metrics guide release decisions"
+   ],
+   "coverage": 1.0,
+   "uncovered": [],
+   "simulation": null
+  },
+  {
+   "component": "W12.L2.C3",
+   "title": "Instrumenting a multi-component system with OpenTelemetry",
+   "minutes": 5,
+   "kind": "mechanism",
+   "bloom": 3,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "Exact SDK configuration and exporter steps are best explained directly via slides due to low source coverage.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 5,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.17,
+   "uncovered": [
+    "OpenTelemetry",
+    "traces",
+    "logs",
+    "Prometheus exporter",
+    "context propagation"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W12.L2.C4",
+   "title": "Live dashboard walkthrough with Grafana",
+   "minutes": 10,
+   "kind": "demo",
+   "bloom": 3,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "Slides clearly display Grafana panel setups and alert rules on error-budget burn rate, compensating for low video coverage.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.4,
+   "uncovered": [
+    "Grafana",
+    "panels",
+    "alerting"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W12.L2.C5",
+   "title": "Scenario walkthrough 1: load‑test and failure injection",
+   "minutes": 15,
+   "kind": "worked_example",
+   "bloom": 4,
+   "way": "in_class",
+   "when": "in_class",
+   "rule": "R1",
+   "reason": "Live in-class demonstration lets students observe real-time metric shifts during k6 load testing and Chaos Mesh failure injection.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it; the sources lack k6, load test, failure injection."
+   },
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.0,
+   "uncovered": [
+    "k6",
+    "load test",
+    "failure injection",
+    "Chaos Mesh",
+    "SLO evaluation"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W12.L2.C6",
+   "title": "Student activity: evaluate metrics on supplied project",
+   "minutes": 15,
+   "kind": "activity",
+   "bloom": 5,
+   "way": "in_class",
+   "when": "in_class",
+   "rule": "R1",
+   "reason": "Paired in-class activity enables hands-on SLO evaluation and peer review of go/no-go release recommendations.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it; the sources lack presentation, peer review."
+   },
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.5,
+   "uncovered": [
+    "presentation",
+    "peer review"
+   ],
+   "simulation": null
+  }
+ ],
+ "recap_minutes": 5,
+ "quiz_minutes": 10,
+ "totals": {
+  "slides": 26.8,
+  "video_in_class": 18.2,
+  "video_pre_class": 0.0,
+  "notebooklm": 0.0,
+  "in_class": 30.0,
+  "simulation": 0.0,
+  "recap": 5,
+  "quiz": 10,
+  "video_share": 0.2
+ },
+ "prep_minutes": 73,
+ "checks": [
+  {
+   "code": "L-RESERVE",
+   "message": "the part plan was made before recap and quiz minutes were kept free; 15 min were taken from the longest parts"
+  }
+ ],
+ "note": "",
+ "proposed_by": "rules + D7",
+ "proposed_at": "2026-11-03 15:37:31",
+ "approved_at": "",
+ "approved_by": "",
+ "materials": {}
+}

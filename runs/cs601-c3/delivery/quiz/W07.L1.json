@@ -1,0 +1,126 @@
+{
+ "lecture_id": "W07.L1",
+ "topic": "Requirements to executable specifications and code generation",
+ "made_at": "2026-11-03 15:46:55",
+ "minutes": {
+  "recap": 5,
+  "quiz": 5
+ },
+ "recap": [
+  {
+   "component": "W06.L2.C1",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 2,
+   "question": "A requirement states: 'A user cannot withdraw an amount exceeding their current balance.' In contract-based design, how is this constraint formally classified for the withdraw method?",
+   "options": [
+    "As an implicit parameter signature definition",
+    "As a postcondition that guarantees the balance becomes zero after execution",
+    "As a precondition that must be satisfied by the caller before invoking withdraw",
+    "As a class invariant that applies only when the system shuts down"
+   ],
+   "answer": "C",
+   "explanation": "Preconditions specify the criteria and obligations that must be true prior to invoking a method, such as validating that the requested withdrawal amount does not exceed the balance."
+  },
+  {
+   "component": "W06.L2.C2",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 3,
+   "question": "You are defining a pytest-bdd scenario for an e-commerce checkout module. Which action correctly belongs in the step implementation of a 'Given' clause?",
+   "options": [
+    "Asserting that the database record status equals COMPLETED",
+    "Initializing a user account with an active balance and populating their shopping cart",
+    "Handling an exception thrown during payment processing",
+    "Calling the checkout() API method on the cart object"
+   ],
+   "answer": "B",
+   "explanation": "In spec-driven BDD frameworks, 'Given' steps set up the required initial context and state before any action or triggering event occurs."
+  },
+  {
+   "component": "W06.L2.C3",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 3,
+   "question": "A payment system requirement specifies that attempting to charge an expired credit card must raise an ExpiredCardException. How should an assertion harness systematically verify this requirement?",
+   "options": [
+    "By asserting that the method returns a null transaction ID",
+    "By updating the card expiration date inside the postcondition assertion block",
+    "By verifying that the account balance remains unchanged after calling a non-existent method",
+    "By executing the API call within an assertion harness configured to expect ExpiredCardException"
+   ],
+   "answer": "D",
+   "explanation": "Translating exception requirements into executable specifications requires wrapping the target method call in an assertion harness that validates the expected exception is raised."
+  }
+ ],
+ "questions": [
+  {
+   "component": "W07.L1.C1",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 2,
+   "question": "Why is it critical to validate specification completeness and parameter boundary conditions before running AI code generation?",
+   "options": [
+    "To prevent runtime syntax errors from occurring during executable spec compilation.",
+    "Because missing edge cases allow incorrect or unsafe code implementations to pass the test suite.",
+    "To ensure the LLM automatically generates unit test frameworks during pre-prompting.",
+    "Because executable specifications cannot run unless all public methods are converted into mocks."
+   ],
+   "answer": "B",
+   "explanation": "Incomplete specifications or omitted boundary checks allow incorrect AI-generated code to pass test suites while violating interface contracts."
+  },
+  {
+   "component": "W07.L1.C2",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 3,
+   "question": "An AI model generates a candidate implementation that fails two executable test cases with assertion stack traces. In an automated spec-guided feedback loop, what is the correct next action?",
+   "options": [
+    "Feed the test error traces back into the LLM context prompt to trigger automated code refinement.",
+    "Delete the failing test cases from the executable specification to force a passing state.",
+    "Regenerate code from scratch with a new framework without supplying the error logs.",
+    "Manually edit the generated source code while disabling failing test assertions."
+   ],
+   "answer": "A",
+   "explanation": "Automated feedback loops use error traces and test harness outputs as prompt context for the LLM to iteratively refine code until interface compliance is met."
+  },
+  {
+   "component": "W07.L1.C3",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 3,
+   "question": "During iterative code generation, your test harness shows 4 out of 5 tests passing, but the final test triggers a runtime assertion failure on null inputs. How should you guide the AI assistant?",
+   "options": [
+    "Provide the failed runtime stack trace and null input details to the assistant to iterate until 100% pass.",
+    "Modify the executable specification to stop testing null parameter boundary values.",
+    "Disable runtime assertion checks inside the execution harness to achieve green test results.",
+    "Accept the implementation because an 80% pass rate meets standard deployment criteria."
+   ],
+   "answer": "A",
+   "explanation": "Iterative spec-driven generation requires capturing runtime test outputs and feeding stack traces back into the assistant until 100% of specification steps pass."
+  },
+  {
+   "component": "W07.L1.C4",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 4,
+   "question": "A team suspects AI-generated code has overfitted to the test suite by returning hardcoded values matching test mocks rather than implementing actual business logic. Which technique best detects this issue?",
+   "options": [
+    "Running static code linters to check variable naming consistency.",
+    "Increasing the execution timeout threshold in the test runner harness.",
+    "Applying mutation testing to inject code changes and check if test suite failures are triggered.",
+    "Refactoring public methods into private helper methods."
+   ],
+   "answer": "C",
+   "explanation": "Mutation testing introduces small code perturbations; if modified or hardcoded logic still passes tests, it exposes spec overfitting and mock cheating."
+  }
+ ],
+ "problems": []
+}

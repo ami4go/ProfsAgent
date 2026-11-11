@@ -1,0 +1,72 @@
+{
+ "lecture_id": "W09.L2",
+ "topic": "Testing and validation in iterative development",
+ "made_at": "2026-11-03 15:46:56",
+ "minutes": {
+  "recap": 0,
+  "quiz": 0
+ },
+ "recap": [],
+ "questions": [
+  {
+   "component": "W09.L2.C1",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 2,
+   "question": "Why is consistent formatting of metadata (such as event types, timestamps, and error codes) critical in agent execution traces?",
+   "options": [
+    "It automatically fixes failed tool calls without human intervention.",
+    "It allows automated tools to reliably parse and map execution steps across iterative loops.",
+    "It compresses the log file size to reduce disk overhead.",
+    "It prevents the agent from making invalid syntax calls during execution."
+   ],
+   "answer": "B",
+   "explanation": "Consistent trace metadata formatting allows automated parsers to reliably extract step outputs, map iteration loops, and spot execution failures."
+  },
+  {
+   "component": "W09.L2.C1",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 2,
+   "question": "Which set of trace fields provides direct log evidence that a specific tool invoked by an agent failed during an iteration step?",
+   "options": [
+    "iteration number and timestamp",
+    "event_type and timestamp only",
+    "tool_call, return_value, and error_code",
+    "timestamp and iteration number"
+   ],
+   "answer": "C",
+   "explanation": "Correlating the tool_call with its returned output (return_value) and explicit error_code provides direct evidence of whether and why the tool execution failed."
+  },
+  {
+   "component": "W09.L2.C2",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 4,
+   "question": "An execution trace shows an agent calling a file-write tool 10 times in a row, each returning an error code indicating the destination directory does not exist. What is the root cause shown by this trace?",
+   "options": [
+    "The file system permissions were revoked mid-execution.",
+    "The agent is misusing the tool by supplying an invalid path and failing to handle the returned error.",
+    "The system experienced an intermittent network timeout across iterations.",
+    "The trace logger dropped event records between iterations."
+   ],
+   "answer": "B",
+   "explanation": "Repeated tool calls with bad arguments yielding the same error code demonstrate tool misuse, where the agent repeatedly inputs an invalid path without interpreting the error return code."
+  },
+  {
+   "component": "W09.L2.C2",
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "bloom": 4,
+   "question": "When analyzing a trace log to diagnose why an agent failed an editing task, how do you verify if tool misuse is the root cause?",
+   "options": [],
+   "answer": "Locate the repeated tool_call entries in the trace, check if the input arguments (such as file paths) are invalid, and confirm that the corresponding return_value or error_code shows a failure.",
+   "explanation": "Diagnosing tool misuse requires inspecting the invocation arguments within tool_call log entries and matching them against failing error_code or return_value outputs."
+  }
+ ],
+ "problems": []
+}

@@ -1,0 +1,126 @@
+{
+ "lecture_id": "W06.L1",
+ "topic": "Spec-driven development frameworks",
+ "made_at": "2026-11-03 15:46:55",
+ "minutes": {
+  "recap": 5,
+  "quiz": 10
+ },
+ "recap": [
+  {
+   "component": "W05.L2.C1",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 2,
+   "question": "How does Spec-Driven Development (SDD) fundamentally differ from traditional Test-Driven Development (TDD)?",
+   "options": [
+    "SDD eliminates the need for testing entirely by relying on static evaluation.",
+    "SDD decouples the interface contract from language-specific code using formal specs as the single source of truth.",
+    "TDD relies on machine-readable schemas, whereas SDD relies strictly on manual code reviews.",
+    "SDD requires implementation code to be written before defining interface contracts."
+   ],
+   "answer": "B",
+   "explanation": "SDD establishes formal, machine-readable specifications as the single source of truth prior to implementation, decoupling interface contracts from language-specific test scripts."
+  },
+  {
+   "component": "W05.L2.C2",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 2,
+   "question": "What is the primary benefit of defining input constraints and response schemas in frameworks like JSON Schema or TypeSpec before writing implementation code?",
+   "options": [
+    "It guarantees that database queries execute with optimal performance at runtime.",
+    "It eliminates the need for HTTP request handling in web frameworks.",
+    "It automatically deploys application code to production cloud servers.",
+    "It enables automated contract validation of public interfaces before any backend code is generated."
+   ],
+   "answer": "D",
+   "explanation": "Machine-readable schemas define public interface signatures and constraints upfront, allowing automated validation of contracts prior to writing implementation code."
+  }
+ ],
+ "questions": [
+  {
+   "component": "W06.L1.C1",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 3,
+   "question": "You need to convert an informal requirement—'Calculate discount based on user age and loyalty points, failing gracefully on invalid inputs'—into an unambiguous contract for an AI code generator. Which interface specification best achieves this?",
+   "options": [
+    "def calculate_discount(age: int, points: int) -> float (raises ValueError for negative inputs)",
+    "def calculate_discount(age: str, points: str) -> int",
+    "def calculate_discount(age, points)",
+    "def calculate_discount(user_info: dict) -> any"
+   ],
+   "answer": "A",
+   "explanation": "Specifying precise type annotations (`int -> float`) and explicit exception behavior (`raises ValueError`) eliminates ambiguity in method signatures, preventing runtime errors during AI code generation."
+  },
+  {
+   "component": "W06.L1.C2",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 3,
+   "question": "In a Design by Contract specification for a BankAccount class, a developer asserts that `balance >= 0` must evaluate to true before and after any public method execution. What type of contract constraint is this?",
+   "options": [
+    "Class Invariant",
+    "Precondition",
+    "Postcondition",
+    "Input Boundary Condition"
+   ],
+   "answer": "A",
+   "explanation": "A condition that must always remain true before and after the execution of every public method in a module is a class invariant."
+  },
+  {
+   "component": "W06.L1.C3",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 3,
+   "question": "An automated testing tool reads an executable contract and generates hundreds of randomized integer inputs to verify that a sorting method always returns a sorted list. Which technique is the framework demonstrating?",
+   "options": [
+    "Static Code Linting",
+    "Mock Server Simulation",
+    "Property-Based Test Generation",
+    "Manual Unit Testing"
+   ],
+   "answer": "C",
+   "explanation": "Executable specifications allow frameworks to automatically synthesize property-based tests that validate general rules across wide ranges of generated inputs."
+  },
+  {
+   "component": "W06.L1.C4",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 3,
+   "question": "When translating a multi-method payment gateway module into an executable specification file, how can a developer ensure complete requirement coverage across public interfaces?",
+   "options": [
+    "Combine all requirements into a single generic interface signature",
+    "Define request validation schemas, expected return types, and explicit error states for every public method",
+    "Write informal docstrings describing the business workflow inside the code file",
+    "Rely on the LLM to dynamically generate edge-case validation checks at runtime"
+   ],
+   "answer": "B",
+   "explanation": "Translating module requirements into executable specs requires mapping each business rule to concrete validation schemas, public signatures, and explicit error states for full coverage."
+  },
+  {
+   "component": "W06.L1.C5",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 4,
+   "question": "A development team notices that an LLM code generator frequently fails to produce working code because the executable specification defines exact private helper variable names and internal loop mechanics. What specification design mistake did the team make?",
+   "options": [
+    "Failing to handle contract drift across software versions",
+    "Omitting property-based compliance checks",
+    "Under-specifying public method boundary conditions",
+    "Over-specifying internal details, restricting LLM implementation flexibility"
+   ],
+   "answer": "D",
+   "explanation": "Over-specifying internal implementation details reduces the flexibility of AI codegen tools; specifications should focus on interface signatures, contracts, and boundary conditions."
+  }
+ ],
+ "problems": []
+}

@@ -1,0 +1,1067 @@
+{
+ "lecture_id": "W09.L2",
+ "topic": "Testing and validation in iterative development",
+ "generated_at": "2026-11-02 22:20:22",
+ "components": [
+  {
+   "lecture_id": "W09.L2",
+   "title": "Trace structure and metadata",
+   "teaches": "Students learn the standard fields of an agent execution trace: timestamps, event types, tool calls, return values, and error codes. They understand how these fields map to the iterative loop steps and why consistent formatting matters for automated parsing.",
+   "key_terms": [
+    "timestamp",
+    "event_type",
+    "tool_call",
+    "return_value",
+    "error_code",
+    "iteration"
+   ],
+   "kind": "concept",
+   "bloom": 2,
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "minutes": 15,
+   "id": "W09.L2.C1",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W09.L2",
+   "title": "Worked example: diagnosing tool misuse",
+   "teaches": "The instructor walks through a 500-line trace where the agent repeatedly calls a file‑write tool with an invalid path. Students see how to locate the offending calls, correlate error codes, and confirm the root cause with log evidence.",
+   "key_terms": [
+    "tool_misuse",
+    "invalid_path",
+    "error_code",
+    "root_cause",
+    "log_evidence"
+   ],
+   "kind": "worked_example",
+   "bloom": 4,
+   "lo_ids": [
+    "CO3.LO2"
+   ],
+   "minutes": 15,
+   "id": "W09.L2.C2",
+   "in_class": false
+  }
+ ],
+ "resources": {
+  "lecture_id": "W09.L2",
+  "topic": "Testing and validation in iterative development",
+  "want": {
+   "want_videos": false,
+   "want_readings": true,
+   "want_practice": true,
+   "want_recorded_lecture": false,
+   "want_clips": false,
+   "want_guest": true,
+   "confidence": 2,
+   "note": "",
+   "choices": [
+    "own_material",
+    "generate_material",
+    "assistance",
+    "guest_lecture"
+   ]
+  },
+  "queries": {
+   "lecture_id": "W09.L2",
+   "video_queries": [
+    "analyze execution traces coding agents lecture",
+    "debugging software agent execution logs tutorial",
+    "AI coding agent failure analysis explained"
+   ],
+   "reading_queries": [
+    "debugging and log analysis for AI coding agents",
+    "identifying failure causes in LLM agent execution traces"
+   ],
+   "practice_queries": [
+    "analyze agent execution logs exercise notebook"
+   ],
+   "recorded_lecture_query": "debugging execution traces in iterative software development lecture",
+   "research_queries": [
+    "debugging AI coding agents",
+    "execution trace analysis LLM",
+    "software agent failure modes"
+   ],
+   "practitioner_query": "software engineer debugging LLM coding agents"
+  },
+  "items": {
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://www.langchain.com/blog/agent-observability-powers-agent-evaluation",
+     "title": "How to Debug AI Agents",
+     "source": "langchain.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.801,
+      "quality": 0.85,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.693,
+     "rank": 1,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W09.L2.C1 ✓, W09.L2.C2 ✓ [from page text] · langchain.com · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Clear explanation of agent trace structure and debugging with a concrete example of tool misuse; good for pre-class reading.",
+      "issues": [
+       "LangChain-specific context",
+       "blog post not peer-reviewed",
+       "limited coverage of iterative development validation"
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 4,
+      "examples": 4,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.801,
+      "evidence": "text",
+      "per_target": {
+       "M6.T2": {
+        "covered": true,
+        "sim": 0.47,
+        "segments": []
+       },
+       "W09.L2.C1": {
+        "covered": true,
+        "sim": 0.617,
+        "segments": [],
+        "text": "Trace structure and metadata. Students learn the standard fields of an agent execution trace: timestamps, event types, t"
+       },
+       "W09.L2.C2": {
+        "covered": true,
+        "sim": 0.593,
+        "segments": [],
+        "text": "Worked example: diagnosing tool misuse. The instructor walks through a 500-line trace where the agent repeatedly calls a"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "reserve": {
+   "reading": [],
+   "video": []
+  },
+  "rejected": [
+   {
+    "title": "Integrating AI Agents Dedicated to Debugging in Your Engineering Workflow",
+    "url": "https://undo.io/resources/integrating-ai-agents-debugging-engineering-workflow/",
+    "why": [
+     "score 0.43 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "8 Best AI Agent Debugging & Root Cause Analysis Tools | Galileo",
+    "url": "https://galileo.ai/blog/best-ai-agent-debugging-root-cause-analysis-tools",
+    "why": [
+     "score 0.57 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Enabling AI Agents to Use a Real Debugger Instead of Logging",
+    "url": "https://medium.com/@brunoborges/enabling-ai-agents-to-use-a-real-debugger-instead-of-logging-7d8250940845",
+    "why": [
+     "page not readable (status None, ConnectError: [WinError 10054] An existing connection was forcibly closed by the remote host)"
+    ]
+   },
+   {
+    "title": "Debugging Production Issues with AI Agents",
+    "url": "https://www.youtube.com/watch?v=5ZsBbbtQCrA",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "Lightrun ‘Runtime Context’ Empowers AI Coding Agents to Build Software That Works in the Real World",
+    "url": "https://finance.yahoo.com/news/lightrun-runtime-context-empowers-ai-130000632.html",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "How to Debug AI Coding Agents When They Change the Wrong Thing | Towards Data Science",
+    "url": "https://towardsdatascience.com/how-to-debug-ai-coding-agents-when-they-change-the-wrong-thing",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Debug2Fix: Supercharging Coding Agents with Interactive Debugging Capabilities",
+    "url": "https://arxiv.org/html/2602.18571v1",
+    "why": [
+     "score 0.59 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Learning JavaScript Design Pattern",
+    "url": "https://openlibrary.org/books/OL46075169M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Zero To Production In Rust",
+    "url": "https://openlibrary.org/works/OL34391195W",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Software Engineering",
+    "url": "https://openlibrary.org/books/OL28345690M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Testing, Validation, and Verification of Robotic and Autonomous Systems: A Systematic Review",
+    "url": "https://doi.org/10.1145/3542945",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Use of electronic medical records in development and validation of risk prediction models of hospital readmission: systematic review",
+    "url": "https://www.bmj.com/content/bmj/369/bmj.m958.full.pdf",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Identifying Frameworks for Validation and Monitoring of Consensual Behavioral Intervention Technologies: Narrative Review",
+    "url": "https://www.jmir.org/2019/10/e13606/PDF",
+    "why": [
+     "page not readable (status 202, too short)"
+    ]
+   },
+   {
+    "title": "Development and Validation of Echocardiography Artificial Intelligence Models: A Narrative Review",
+    "url": "https://www.mdpi.com/2077-0383/14/19/7066/pdf?version=1759825422",
+    "why": [
+     "page not readable (status 200, unsupported content-type )"
+    ]
+   },
+   {
+    "title": "[PDF] AI Agents for Error Resolution in Computational Notebooks",
+    "url": "https://aclanthology.org/2024.emnlp-demo.38.pdf",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Log analysis is necessary for credible evaluationof AI agents",
+    "url": "https://arxiv.org/html/2605.08545v1",
+    "why": [
+     "a paper is not practice material"
+    ]
+   },
+   {
+    "title": "Zerve, the Agentic Data Workspace, Launches Its Notebook",
+    "url": "https://finance.yahoo.com/news/zerve-agentic-data-workspace-launches-160000572.html",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Notebook Agent best practices | Learn | Hex Technologies",
+    "url": "https://learn.hex.tech/tutorials/ai-best-practices/notebook-agent-best-practices",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Agent Logging 101: The Complete Guide to Knowing What Your AI Agents Are Actually Doing",
+    "url": "https://sidsaladi.substack.com/p/agent-logging-101-the-complete-guide",
+    "why": [
+     "score 0.45 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "AI Agents on ServiceNow: Evaluations, Analytics, Debugging",
+    "url": "https://www.servicenow.com/community/ceg-ai-coe-articles/a-field-guide-to-evaluating-analyzing-and-debugging-ai-agents-on/ta-p/3545229",
+    "why": [
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "AI Log Analyzer Deep Dive - timesketch",
+    "url": "https://timesketch.org/developers/log-analyzer-agent/",
+    "why": [
+     "score 0.37 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "bregman-arie/devops-exercises — Linux, Jenkins, AWS, SRE, Prometheus, Docker, Python, Ansible, Git, Kubernetes, Terraform, OpenStack, SQL, NoSQL, Azure,",
+    "url": "https://github.com/bregman-arie/devops-exercises",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "academic/awesome-datascience — :memo: An awesome Data Science repository to learn and apply for real world problems.",
+    "url": "https://github.com/academic/awesome-datascience",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes",
+     "AI review: off topic (Irrelevant to trace analysis; Just a list of tools)",
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "marcelscruz/public-apis — A collaborative list of public APIs for developers",
+    "url": "https://github.com/marcelscruz/public-apis",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "sacridini/Awesome-Geospatial — Long list of geospatial tools and resources",
+    "url": "https://github.com/sacridini/Awesome-Geospatial",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "filipecalegario/awesome-generative-ai — A curated list of Generative AI tools, works, models, and references",
+    "url": "https://github.com/filipecalegario/awesome-generative-ai",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Artificial Intelligence Full Course for Beginners | Gen AI, ML, Deep Learning & AI Agents",
+    "url": "https://www.youtube.com/watch?v=Fxf28jaYVug",
+    "why": [
+     "too long to find a segment in (11:40:53)"
+    ]
+   },
+   {
+    "title": "Debugging Nodes: Master Execution Logs & Timestamps",
+    "url": "https://www.youtube.com/watch?v=97HTD2HiJx4",
+    "why": [
+     "too short to teach a component (0:22)"
+    ]
+   },
+   {
+    "title": "Debug AI Agents Visually with AgenticLens",
+    "url": "https://www.youtube.com/watch?v=C-2qhiZYyy4",
+    "why": [
+     "too short to teach a component (0:52)"
+    ]
+   },
+   {
+    "title": "CaseFile: Turn Software Failures Into Debugging Evidence | Kujo",
+    "url": "https://www.youtube.com/watch?v=A5MnqTTPVg0",
+    "why": [
+     "too short to teach a component (1:25)"
+    ]
+   },
+   {
+    "title": "The TRUE Impact of AI on Software Engineering (Complete Analysis)",
+    "url": "https://www.youtube.com/watch?v=WIhvfnjIxMc",
+    "why": [
+     "too short to teach a component (0:52)"
+    ]
+   },
+   {
+    "title": "AI Agents explained in 3 steps",
+    "url": "https://www.youtube.com/watch?v=BF2k_fKuCVM",
+    "why": [
+     "too short to teach a component (0:52)"
+    ]
+   },
+   {
+    "title": "How Compounding Errors Break AI Agents #ai #artificialintelligence #learningprogress",
+    "url": "https://www.youtube.com/watch?v=biAM7xKY8mU",
+    "why": [
+     "too short to teach a component (1:11)"
+    ]
+   },
+   {
+    "title": "Agentic RAG vs RAGs",
+    "url": "https://www.youtube.com/watch?v=4jYZg6pkXyc",
+    "why": [
+     "too short to teach a component (0:05)"
+    ]
+   },
+   {
+    "title": "What Is Test Failure Analysis? Find Why Your Tests Failed",
+    "url": "https://www.youtube.com/watch?v=91PdFFet-vQ",
+    "why": [
+     "too short to teach a component (0:58)"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 27,
+   "passed_checks": 1,
+   "rejected": 26,
+   "videos_used": 0
+  },
+  "clips": [],
+  "timeline": [
+   {
+    "component": "W09.L2.C1",
+    "title": "Trace structure and metadata",
+    "minutes": 15,
+    "kind": "concept",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W09.L2.C2",
+    "title": "Worked example: diagnosing tool misuse",
+    "minutes": 15,
+    "kind": "worked_example",
+    "delivery": "notebooklm",
+    "segments": []
+   }
+  ],
+  "partial": {
+   "reason": "YouTube blocked transcript requests (from 22:20)",
+   "videos_without_transcript": [
+    "utNnPwmPBXw",
+    "WWEvrTi86Ls",
+    "R46SSEd_29M",
+    "bkMabn8ZgU0",
+    "mnJJPltybBM",
+    "vNDYUlxNIAA",
+    "EBeek7Ka0XU",
+    "_zvtTGsOBxA",
+    "sXABdGalFNg",
+    "ik3iaBKPW1U"
+   ]
+  },
+  "components": [
+   {
+    "lecture_id": "W09.L2",
+    "title": "Trace structure and metadata",
+    "teaches": "Students learn the standard fields of an agent execution trace: timestamps, event types, tool calls, return values, and error codes. They understand how these fields map to the iterative loop steps and why consistent formatting matters for automated parsing.",
+    "key_terms": [
+     "timestamp",
+     "event_type",
+     "tool_call",
+     "return_value",
+     "error_code",
+     "iteration"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W09.L2",
+    "title": "Worked example: diagnosing tool misuse",
+    "teaches": "The instructor walks through a 500-line trace where the agent repeatedly calls a file‑write tool with an invalid path. Students see how to locate the offending calls, correlate error codes, and confirm the root cause with log evidence.",
+    "key_terms": [
+     "tool_misuse",
+     "invalid_path",
+     "error_code",
+     "root_cause",
+     "log_evidence"
+    ],
+    "kind": "worked_example",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L2.C2",
+    "in_class": false
+   }
+  ],
+  "notebooklm": {
+   "pack": "notebooklm/W09.L2.md",
+   "components": [],
+   "sources": 2
+  }
+ },
+ "experts": {
+  "lecture_id": "W09.L2",
+  "topic": "Testing and validation in iterative development",
+  "experts": [
+   {
+    "name": "Timofey Bryksin",
+    "kind": "academic",
+    "affiliation": "JetBrains Research",
+    "links": {
+     "openalex": "https://openalex.org/A5065316896",
+     "orcid": "https://orcid.org/0000-0001-9022-3563",
+     "scholar": "https://scholar.google.com/citations?user=kcbdyR4AAAAJ"
+    },
+    "metrics": {
+     "cited_by": 2552,
+     "h_index": 27,
+     "works_count": 125,
+     "matching_works": 2,
+     "i10_index": 60,
+     "source": "Google Scholar"
+    },
+    "scores": {
+     "topical_fit": 0.658,
+     "teaching": 0.2,
+     "practical": 0.2,
+     "standing": 0.725,
+     "recency": 1.0,
+     "feasibility": 0.6
+    },
+    "total": 0.558,
+    "rank": 1,
+    "verified_identity": "OpenAlex author record + ORCID + Google Scholar profile",
+    "latest_year": 2024,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "Evidence from 2024, computational notebooks context"
+     }
+    ],
+    "interests": [
+     "Data-Driven Software Engineering",
+     "IDE",
+     "Tools",
+     "Machine Learning",
+     "Code Analysis"
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Debug Smarter, Not Harder: AI Agents for Error Resolution in Computational Notebooks",
+      "year": 2024,
+      "url": "https://doi.org/10.18653/v1/2024.emnlp-demo.38",
+      "cited_by": 3,
+      "venue": "Conference on Empirical Methods in Natural Language Processing: System Demonstrations (EMNLP)",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Debug Smarter, Not Harder: AI Agents for Error Resolution in Computational Notebooks",
+      "year": 2024,
+      "url": "https://doi.org/10.48550/arxiv.2410.14393",
+      "cited_by": 0,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored 'Debug Smarter, Not Harder' paper; research interests in data-driven SE and code analysis.",
+    "fit": "strong",
+    "suggested_format": "live_remote_60",
+    "concerns": [
+     "Evidence from 2024, computational notebooks context"
+    ]
+   },
+   {
+    "name": "Florent Avellaneda",
+    "kind": "academic",
+    "affiliation": "Université du Québec à Montréal",
+    "country": "CA",
+    "links": {
+     "openalex": "https://openalex.org/A5043879886",
+     "orcid": "https://orcid.org/0000-0003-1030-5388",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Florent+Avellaneda+Universit%C3%A9+du+Qu%C3%A9bec+%C3%A0+Montr%C3%A9al"
+    },
+    "metrics": {
+     "cited_by": 160,
+     "h_index": 7,
+     "works_count": 52,
+     "matching_works": 3
+    },
+    "scores": {
+     "topical_fit": 0.64,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.565,
+     "recency": 1.0,
+     "feasibility": 0.0
+    },
+    "total": 0.541,
+    "rank": 2,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2026,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "Android-specific, but execution traces general"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "DynamicsLLM: a Dynamic Analysis-based Tool for Generating Intelligent Execution Traces Using LLMs to Detect Android Behavioural Code Smells",
+      "year": 2026,
+      "url": "https://openalex.org/W7154539973",
+      "cited_by": 0,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "DynamicsLLM: a Dynamic Analysis-based Tool for Generating Intelligent Execution Traces Using LLMs to Detect Android Behavioural Code Smells",
+      "year": 2026,
+      "url": "https://doi.org/10.48550/arxiv.2604.10661",
+      "cited_by": 0,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "DynamicsLLM: a Dynamic Analysis-based Tool for Generating Intelligent Execution Traces Using LLMs to Detect Android Behavioural Code Smells",
+      "year": 2026,
+      "url": "https://doi.org/10.1145/3793655.3793720",
+      "cited_by": 0,
+      "venue": "IEEE/ACM International Conference on AI Foundation Models and Software Engineering (FORGE)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Authored 'DynamicsLLM: a Dynamic Analysis-based Tool for Generating Intelligent Execution Traces Using LLMs' on generating execution traces with LLMs.",
+    "fit": "strong",
+    "suggested_format": "recorded_talk",
+    "concerns": [
+     "Android-specific, but execution traces general",
+     "no shared working hours with India: a recorded talk or an evening (IST) session"
+    ]
+   },
+   {
+    "name": "Adam Fourney",
+    "kind": "industry",
+    "role": "Senior Principal Researcher",
+    "affiliation": "Microsoft Research",
+    "country": "US",
+    "links": {
+     "openalex": "https://openalex.org/A5071293344",
+     "orcid": "https://orcid.org/0000-0002-4986-7794",
+     "scholar": "https://scholar.google.com/citations?user=NBoXr9oAAAAJ"
+    },
+    "metrics": {
+     "cited_by": 8648,
+     "h_index": 34,
+     "works_count": 93,
+     "matching_works": 2,
+     "i10_index": 64,
+     "source": "Google Scholar"
+    },
+    "scores": {
+     "topical_fit": 0.556,
+     "teaching": 0.2,
+     "practical": 1.0,
+     "standing": 0.787,
+     "recency": 1.0,
+     "feasibility": 0.0
+    },
+    "total": 0.517,
+    "rank": 3,
+    "verified_identity": "OpenAlex author record + ORCID + Google Scholar profile",
+    "latest_year": 2024,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "Evidence from 2024, not specifically about iterative development testing"
+     }
+    ],
+    "interests": [
+     "Human Computer Interaction",
+     "Search and information retrieval"
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "AUTOGEN STUDIO: A No-Code Developer Tool for Building and Debugging Multi-Agent Systems",
+      "year": 2024,
+      "url": "https://doi.org/10.18653/v1/2024.emnlp-demo.8",
+      "cited_by": 27,
+      "venue": "Conference on Empirical Methods in Natural Language Processing: System Demonstrations (EMNLP)",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "AutoGen Studio: A No-Code Developer Tool for Building and Debugging Multi-Agent Systems",
+      "year": 2024,
+      "url": "https://doi.org/10.48550/arxiv.2408.15247",
+      "cited_by": 3,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored AutoGen Studio papers on no-code tool for building and debugging multi-agent systems.",
+    "fit": "moderate",
+    "suggested_format": "recorded_talk",
+    "concerns": [
+     "Evidence from 2024, not specifically about iterative development testing",
+     "no shared working hours with India: a recorded talk or an evening (IST) session"
+    ]
+   },
+   {
+    "name": "Jingya Chen",
+    "kind": "industry",
+    "affiliation": "Microsoft",
+    "country": "US",
+    "links": {
+     "openalex": "https://openalex.org/A5031477562",
+     "orcid": "https://orcid.org/0009-0004-4324-3456",
+     "scholar": "https://scholar.google.com/citations?user=KiNLNDgAAAAJ"
+    },
+    "metrics": {
+     "cited_by": 593,
+     "h_index": 9,
+     "works_count": 5,
+     "matching_works": 2,
+     "i10_index": 9,
+     "source": "Google Scholar"
+    },
+    "scores": {
+     "topical_fit": 0.556,
+     "teaching": 0.2,
+     "practical": 1.0,
+     "standing": 0.604,
+     "recency": 1.0,
+     "feasibility": 0.0
+    },
+    "total": 0.508,
+    "rank": 4,
+    "verified_identity": "OpenAlex author record + ORCID + Google Scholar profile",
+    "latest_year": 2024,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "Evidence from 2024, not specifically about iterative development testing"
+     }
+    ],
+    "interests": [
+     "Human Computer interaction",
+     "Human-centered AI"
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "AUTOGEN STUDIO: A No-Code Developer Tool for Building and Debugging Multi-Agent Systems",
+      "year": 2024,
+      "url": "https://doi.org/10.18653/v1/2024.emnlp-demo.8",
+      "cited_by": 27,
+      "venue": "Conference on Empirical Methods in Natural Language Processing: System Demonstrations (EMNLP)",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "AutoGen Studio: A No-Code Developer Tool for Building and Debugging Multi-Agent Systems",
+      "year": 2024,
+      "url": "https://doi.org/10.48550/arxiv.2408.15247",
+      "cited_by": 3,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored AutoGen Studio papers on no-code tool for building and debugging multi-agent systems.",
+    "fit": "moderate",
+    "suggested_format": "recorded_talk",
+    "concerns": [
+     "Evidence from 2024, not specifically about iterative development testing",
+     "no shared working hours with India: a recorded talk or an evening (IST) session"
+    ]
+   },
+   {
+    "name": "Victor C. Dibia",
+    "kind": "industry",
+    "affiliation": "Microsoft Research",
+    "affiliation_openalex": "Microsoft (United States)",
+    "country": "US",
+    "links": {
+     "openalex": "https://openalex.org/A5047676499",
+     "orcid": "https://orcid.org/0000-0002-1839-5632",
+     "scholar": "https://scholar.google.com/citations?user=CHloX8EAAAAJ"
+    },
+    "metrics": {
+     "cited_by": 1961,
+     "h_index": 16,
+     "works_count": 39,
+     "matching_works": 2,
+     "i10_index": 23,
+     "source": "Google Scholar"
+    },
+    "scores": {
+     "topical_fit": 0.537,
+     "teaching": 0.2,
+     "practical": 1.0,
+     "standing": 0.665,
+     "recency": 1.0,
+     "feasibility": 0.0
+    },
+    "total": 0.505,
+    "rank": 5,
+    "verified_identity": "OpenAlex author record + ORCID + Google Scholar profile",
+    "latest_year": 2024,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "Evidence from 2024, not specifically about iterative development testing"
+     }
+    ],
+    "interests": [
+     "AI Agents",
+     "Developer Tools",
+     "Human-AI Interaction"
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "AUTOGEN STUDIO: A No-Code Developer Tool for Building and Debugging Multi-Agent Systems",
+      "year": 2024,
+      "url": "https://doi.org/10.18653/v1/2024.emnlp-demo.8",
+      "cited_by": 27,
+      "venue": "Conference on Empirical Methods in Natural Language Processing: System Demonstrations (EMNLP)",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "AutoGen Studio: A No-Code Developer Tool for Building and Debugging Multi-Agent Systems",
+      "year": 2024,
+      "url": "https://doi.org/10.48550/arxiv.2408.15247",
+      "cited_by": 3,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored AutoGen Studio papers; research interests include AI agents and developer tools.",
+    "fit": "moderate",
+    "suggested_format": "recorded_talk",
+    "concerns": [
+     "Evidence from 2024, not specifically about iterative development testing",
+     "no shared working hours with India: a recorded talk or an evening (IST) session"
+    ]
+   }
+  ],
+  "reserve": [
+   {
+    "name": "Suff Syed",
+    "kind": "industry",
+    "affiliation": "Microsoft",
+    "country": "US",
+    "links": {
+     "openalex": "https://openalex.org/A5109786281",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Suff+Syed+Microsoft+%28United+States%29"
+    },
+    "metrics": {
+     "cited_by": 30,
+     "h_index": 2,
+     "works_count": 2,
+     "matching_works": 2
+    },
+    "scores": {
+     "topical_fit": 0.556,
+     "teaching": 0.2,
+     "practical": 1.0,
+     "standing": 0.505,
+     "recency": 1.0,
+     "feasibility": 0.0
+    },
+    "total": 0.504,
+    "verified_identity": "OpenAlex author record",
+    "latest_year": 2024,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "Low h-index, junior; evidence from 2024"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "AUTOGEN STUDIO: A No-Code Developer Tool for Building and Debugging Multi-Agent Systems",
+      "year": 2024,
+      "url": "https://doi.org/10.18653/v1/2024.emnlp-demo.8",
+      "cited_by": 27,
+      "venue": "Conference on Empirical Methods in Natural Language Processing: System Demonstrations (EMNLP)",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "AutoGen Studio: A No-Code Developer Tool for Building and Debugging Multi-Agent Systems",
+      "year": 2024,
+      "url": "https://doi.org/10.48550/arxiv.2408.15247",
+      "cited_by": 3,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored AutoGen Studio papers; low h-index suggests junior role.",
+    "fit": "moderate",
+    "suggested_format": "recorded_talk",
+    "concerns": [
+     "Low h-index, junior; evidence from 2024",
+     "no shared working hours with India: a recorded talk or an evening (IST) session"
+    ]
+   },
+   {
+    "name": "Konstantin Grotov",
+    "kind": "academic",
+    "affiliation": "JetBrains Research",
+    "affiliation_openalex": "Tel Aviv University",
+    "country": "IL",
+    "links": {
+     "openalex": "https://openalex.org/A5086046098",
+     "orcid": "https://orcid.org/0000-0001-8383-1894",
+     "scholar": "https://scholar.google.com/citations?user=_CvGAcQAAAAJ"
+    },
+    "metrics": {
+     "cited_by": 258,
+     "h_index": 9,
+     "works_count": 35,
+     "matching_works": 2,
+     "i10_index": 9,
+     "source": "Google Scholar"
+    },
+    "scores": {
+     "topical_fit": 0.628,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.586,
+     "recency": 1.0,
+     "feasibility": 0.611
+    },
+    "total": 0.495,
+    "verified_identity": "OpenAlex author record + ORCID + Google Scholar profile",
+    "latest_year": 2024,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "only one paper as evidence"
+     },
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "evidence from 2024"
+     }
+    ],
+    "interests": [
+     "AI Agents",
+     "Optimization methods",
+     "Data Science"
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Debug Smarter, Not Harder: AI Agents for Error Resolution in Computational Notebooks",
+      "year": 2024,
+      "url": "https://doi.org/10.18653/v1/2024.emnlp-demo.38",
+      "cited_by": 3,
+      "venue": "Conference on Empirical Methods in Natural Language Processing: System Demonstrations (EMNLP)",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Debug Smarter, Not Harder: AI Agents for Error Resolution in Computational Notebooks",
+      "year": 2024,
+      "url": "https://doi.org/10.48550/arxiv.2410.14393",
+      "cited_by": 0,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "JetBrains researcher with AI Agents interest; 2024 paper on AI agents for notebook error resolution relates to agent debugging.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": [
+     "only one paper as evidence",
+     "evidence from 2024"
+    ]
+   }
+  ],
+  "rejected": [
+   {
+    "name": "Shreyas Patil",
+    "why": [
+     "topical fit 0.39 is below 0.5"
+    ]
+   },
+   {
+    "name": "Pankaj Jalote",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.28 is below 0.5"
+    ]
+   },
+   {
+    "name": "Erkang Zhu",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "AI fit check: weak"
+    ]
+   },
+   {
+    "name": "Raghava Mutharaju",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.15 is below 0.5"
+    ]
+   },
+   {
+    "name": "Vivek Kumar",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.15 is below 0.5"
+    ]
+   },
+   {
+    "name": "Artem Borzilov",
+    "why": [
+     "overall score 0.45 is below 0.45"
+    ]
+   },
+   {
+    "name": "Yaroslav Zharov",
+    "why": [
+     "too little research record yet (h-index 3 on OpenAlex, below 5)",
+     "overall score 0.45 is below 0.45"
+    ]
+   },
+   {
+    "name": "Maksim Krivobok",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "too little research record yet (h-index 1 on OpenAlex, below 5)",
+     "AI fit check: weak"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 35,
+   "assessed": 15,
+   "passed_checks": 7
+  }
+ },
+ "partial": {
+  "reason": "YouTube blocked transcript requests (from 22:20)",
+  "videos_without_transcript": [
+   "utNnPwmPBXw",
+   "WWEvrTi86Ls",
+   "R46SSEd_29M",
+   "bkMabn8ZgU0",
+   "mnJJPltybBM",
+   "vNDYUlxNIAA",
+   "EBeek7Ka0XU",
+   "_zvtTGsOBxA",
+   "sXABdGalFNg",
+   "ik3iaBKPW1U"
+  ]
+ }
+}

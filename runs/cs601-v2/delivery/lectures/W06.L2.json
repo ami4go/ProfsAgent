@@ -1,0 +1,919 @@
+{
+ "lecture_id": "W06.L2",
+ "topic": "Requirements to executable specifications and code generation",
+ "generated_at": "2026-11-02 21:59:06",
+ "components": [
+  {
+   "lecture_id": "W06.L2",
+   "title": "Deconstructing Requirements into Public Method Contracts",
+   "teaches": "Students will learn how to analyze informal requirements to identify public module methods, parameter contracts, and class invariants. They will establish strict preconditions, postconditions, and interface signatures needed before writing formal specifications.",
+   "key_terms": [
+    "interface contract",
+    "precondition",
+    "postcondition",
+    "class invariant",
+    "method signature"
+   ],
+   "kind": "concept",
+   "bloom": 2,
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "minutes": 15,
+   "id": "W06.L2.C1",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W06.L2",
+   "title": "Structuring Executable Specifications in Spec-Driven Frameworks",
+   "teaches": "Students will learn the concrete syntax and structural conventions of spec-driven frameworks such as pytest-bdd or Behave. They will map high-level requirement statements into executable Given-When-Then scenario definitions tied directly to public API hooks.",
+   "key_terms": [
+    "executable specification",
+    "Gherkin",
+    "pytest-bdd",
+    "step definitions",
+    "scenario outline"
+   ],
+   "kind": "mechanism",
+   "bloom": 3,
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "minutes": 15,
+   "id": "W06.L2.C2",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W06.L2",
+   "title": "Step-by-Step Translation of Requirements to Executable Specs",
+   "teaches": "Students will follow a complete worked example translating a payment-processing requirement brief into an automated executable specification suite. They will observe how each requirement constraint is systematically formalized into assertion-backed test harnesses that cover all public methods.",
+   "key_terms": [
+    "step implementation",
+    "assertion harness",
+    "boundary specification",
+    "public API verification"
+   ],
+   "kind": "worked_example",
+   "bloom": 3,
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "minutes": 20,
+   "id": "W06.L2.C3",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W06.L2",
+   "title": "Prompt Patterns for Generating Executable Specifications",
+   "teaches": "Students will learn effective prompting architectures to instruct LLMs to synthesize spec-driven test suites from unstructured requirements documents. They will configure system instructions and interface schema definitions to eliminate hallucinations in method signatures and types.",
+   "key_terms": [
+    "prompt engineering",
+    "schema anchoring",
+    "interface schema",
+    "synthetic test generation",
+    "hallucination mitigation"
+   ],
+   "kind": "concept",
+   "bloom": 3,
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "minutes": 15,
+   "id": "W06.L2.C4",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W06.L2",
+   "title": "Hands-on Authoring of Executable Specs from Requirements",
+   "teaches": "Students will work in pairs to translate a natural-language requirement specification for a user session manager into an executable specification suite using a BDD framework. They will execute their specs against stub interfaces to confirm that every required public method is bounded by executable assertions.",
+   "key_terms": [
+    "BDD test suite",
+    "interface coverage",
+    "failing spec harness",
+    "stub interface"
+   ],
+   "kind": "activity",
+   "bloom": 3,
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "minutes": 25,
+   "id": "W06.L2.C5",
+   "in_class": true
+  }
+ ],
+ "resources": {
+  "lecture_id": "W06.L2",
+  "topic": "Requirements to executable specifications and code generation",
+  "want": {
+   "want_videos": false,
+   "want_readings": true,
+   "want_practice": true,
+   "want_recorded_lecture": false,
+   "want_clips": false,
+   "want_guest": true,
+   "confidence": 2,
+   "note": "",
+   "choices": [
+    "own_material",
+    "generate_material",
+    "assistance",
+    "guest_lecture"
+   ]
+  },
+  "queries": {
+   "lecture_id": "W06.L2",
+   "video_queries": [
+    "executable specifications code generation tutorial",
+    "spec driven development framework lecture",
+    "AI code generation public methods explained"
+   ],
+   "reading_queries": [
+    "executable specifications documentation spec driven development",
+    "code generation from requirements tutorial"
+   ],
+   "practice_queries": [
+    "spec driven development hands on exercise notebook"
+   ],
+   "recorded_lecture_query": "executable specifications and code generation lecture",
+   "research_queries": [
+    "executable specifications code generation",
+    "spec driven development framework"
+   ],
+   "practitioner_query": "AI code generation software engineer"
+  },
+  "items": {
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://specdriven.com/guides/executable-specs",
+     "title": "Making Specs Executable | Spec-Driven",
+     "source": "specdriven.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.896,
+      "quality": 0.8,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.716,
+     "rank": 1,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W06.L2.C1 ✗, W06.L2.C2 ✓, W06.L2.C3 ✓, W06.L2.C4 ✓, W06.L2.C5 ✓ [from page text] · specdriven.com · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Excellent explanation of executable specifications and BDD integration. Clearly articulates why specs must be verifiable and how step definitions bridge natural language specs to code.",
+      "issues": [],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 4,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.896,
+      "evidence": "text",
+      "per_target": {
+       "M4.T2": {
+        "covered": true,
+        "sim": 0.57,
+        "segments": []
+       },
+       "W06.L2.C1": {
+        "covered": false,
+        "sim": 0.389,
+        "segments": [],
+        "text": "Deconstructing Requirements into Public Method Contracts. Students will learn how to analyze informal requirements to id"
+       },
+       "W06.L2.C2": {
+        "covered": true,
+        "sim": 0.631,
+        "segments": [],
+        "text": "Structuring Executable Specifications in Spec-Driven Frameworks. Students will learn the concrete syntax and structural "
+       },
+       "W06.L2.C3": {
+        "covered": true,
+        "sim": 0.599,
+        "segments": [],
+        "text": "Step-by-Step Translation of Requirements to Executable Specs. Students will follow a complete worked example translating"
+       },
+       "W06.L2.C4": {
+        "covered": true,
+        "sim": 0.6,
+        "segments": [],
+        "text": "Prompt Patterns for Generating Executable Specifications. Students will learn effective prompting architectures to instr"
+       },
+       "W06.L2.C5": {
+        "covered": true,
+        "sim": 0.586,
+        "segments": [],
+        "text": "Hands-on Authoring of Executable Specs from Requirements. Students will work in pairs to translate a natural-language re"
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://github.com/github/spec-kit/blob/main/spec-driven.md",
+     "title": "spec-kit/spec-driven.md at main · github/spec-kit · GitHub",
+     "source": "github.com",
+     "tier": 3,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.808,
+      "quality": 0.7,
+      "authority": 0.65,
+      "level_fit": 0.6,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.69,
+     "rank": 2,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W06.L2.C1 ✓, W06.L2.C2 ✓, W06.L2.C3 ✓, W06.L2.C4 ✓, W06.L2.C5 ✓ [from page text] · github.com · tier 3",
+     "findings": [],
+     "review": {
+      "review": "Detailed look at spec-kit's TDD imperative and governance rules. Good for understanding how structured spec templates constrain LLM code generation in practice.",
+      "issues": [
+       "specific to spec-kit framework documentation"
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 3,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 3,
+      "level_fit": 3
+     },
+     "coverage": {
+      "score": 0.808,
+      "evidence": "text",
+      "per_target": {
+       "M4.T2": {
+        "covered": true,
+        "sim": 0.52,
+        "segments": []
+       },
+       "W06.L2.C1": {
+        "covered": true,
+        "sim": 0.496,
+        "segments": [],
+        "text": "Deconstructing Requirements into Public Method Contracts. Students will learn how to analyze informal requirements to id"
+       },
+       "W06.L2.C2": {
+        "covered": true,
+        "sim": 0.51,
+        "segments": [],
+        "text": "Structuring Executable Specifications in Spec-Driven Frameworks. Students will learn the concrete syntax and structural "
+       },
+       "W06.L2.C3": {
+        "covered": true,
+        "sim": 0.59,
+        "segments": [],
+        "text": "Step-by-Step Translation of Requirements to Executable Specs. Students will follow a complete worked example translating"
+       },
+       "W06.L2.C4": {
+        "covered": true,
+        "sim": 0.674,
+        "segments": [],
+        "text": "Prompt Patterns for Generating Executable Specifications. Students will learn effective prompting architectures to instr"
+       },
+       "W06.L2.C5": {
+        "covered": true,
+        "sim": 0.467,
+        "segments": [],
+        "text": "Hands-on Authoring of Executable Specs from Requirements. Students will work in pairs to translate a natural-language re"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "reserve": {
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html",
+     "title": "Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl",
+     "source": "martinfowler.com",
+     "tier": 2,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.579,
+      "quality": 0.8,
+      "authority": 0.8,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.673,
+     "rank": 3,
+     "status": "reserve",
+     "rationale": "Covers: topic ✗, W06.L2.C1 ✓, W06.L2.C2 ✓, W06.L2.C3 ✓, W06.L2.C4 ✓, W06.L2.C5 ✓ [from page text] · martinfowler.com · tier 2",
+     "findings": [],
+     "review": {
+      "review": "Thoughtful analysis comparing modern spec-driven development tools with historical Model-Driven Development. Provides strong context on how LLMs make executable specs practical.",
+      "issues": [],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 4,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.579,
+      "evidence": "text",
+      "per_target": {
+       "M4.T2": {
+        "covered": false,
+        "sim": 0.406,
+        "segments": []
+       },
+       "W06.L2.C1": {
+        "covered": true,
+        "sim": 0.425,
+        "segments": [],
+        "text": "Deconstructing Requirements into Public Method Contracts. Students will learn how to analyze informal requirements to id"
+       },
+       "W06.L2.C2": {
+        "covered": true,
+        "sim": 0.538,
+        "segments": [],
+        "text": "Structuring Executable Specifications in Spec-Driven Frameworks. Students will learn the concrete syntax and structural "
+       },
+       "W06.L2.C3": {
+        "covered": true,
+        "sim": 0.522,
+        "segments": [],
+        "text": "Step-by-Step Translation of Requirements to Executable Specs. Students will follow a complete worked example translating"
+       },
+       "W06.L2.C4": {
+        "covered": true,
+        "sim": 0.531,
+        "segments": [],
+        "text": "Prompt Patterns for Generating Executable Specifications. Students will learn effective prompting architectures to instr"
+       },
+       "W06.L2.C5": {
+        "covered": true,
+        "sim": 0.426,
+        "segments": [],
+        "text": "Hands-on Authoring of Executable Specs from Requirements. Students will work in pairs to translate a natural-language re"
+       }
+      }
+     }
+    }
+   ],
+   "video": []
+  },
+  "rejected": [
+   {
+    "title": "What Is Spec-Driven Development? A Complete Guide | Augment Code",
+    "url": "https://www.augmentcode.com/guides/what-is-spec-driven-development",
+    "why": [
+     "score 0.57 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Spec-Driven Development with GitHub Spec Kit - DEV Community",
+    "url": "https://dev.to/rosidotidev/spec-driven-development-with-github-spec-kit-3d2",
+    "why": [
+     "score 0.55 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Spec Driven Development: Meaning, Value, and Pitfalls | TechMagic",
+    "url": "https://www.techmagic.co/blog/spec-driven-development",
+    "why": [
+     "page not readable (status 429, too short)"
+    ]
+   },
+   {
+    "title": "Medium",
+    "url": "https://thoughtworks.medium.com/spec-driven-development-d85995a81387",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "What is Spec-Driven Development? | IBM",
+    "url": "https://www.ibm.com/think/topics/spec-driven-development",
+    "why": [
+     "AI review: a general introduction to a broader concept, not this lecture's topic"
+    ]
+   },
+   {
+    "title": "Code Complete",
+    "url": "https://openlibrary.org/books/OL24277991M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Clean Code: A Handbook of Agile Software Craftsmanship",
+    "url": "https://openlibrary.org/books/OL29220209M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "The web application hacker's handbook",
+    "url": "https://openlibrary.org/books/OL50509771M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Code Generation Using Machine Learning: A Systematic Review",
+    "url": "https://ieeexplore.ieee.org/ielx7/6287639/6514899/09849664.pdf",
+    "why": [
+     "page not readable (status 404, too short)"
+    ]
+   },
+   {
+    "title": "A systematic literature review of pre-requirements specification traceability",
+    "url": "https://link.springer.com/content/pdf/10.1007/s00766-023-00412-z.pdf",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Transcriptional selectors, masters, and combinatorial codes: regulatory principles of neural subtype specification",
+    "url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1002/wdev.191",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "A Systematic Review about Large Language Models (LLMs) applied to Code Generation",
+    "url": "https://ojs.upf.br/index.php/rbca/article/download/16310/114118552",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Spec-Driven Development - Hari Krishnan",
+    "url": "https://www.manning.com/books/spec-driven-development",
+    "why": [
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "Diving Into Spec-Driven Development With GitHub Spec Kit - Microsoft for Developers",
+    "url": "https://developer.microsoft.com/blog/spec-driven-development-spec-kit/",
+    "why": [
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "Hello, Spec Driven Development",
+    "url": "https://www.youtube.com/watch?v=it2PI_EwEYM",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "Spec-Driven Development:From Code to Contract in the Age of AI Coding Assistants",
+    "url": "https://arxiv.org/html/2602.00180v1",
+    "why": [
+     "a paper is not practice material"
+    ]
+   },
+   {
+    "title": "The Book I Didn’t Plan to Write: Why Spec-Driven Development Deserves Its Own Manual",
+    "url": "https://medium.com/@enrico.papalini/the-book-i-didnt-plan-to-write-why-spec-driven-development-deserves-its-own-manual-046c0543e838",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "My go-to Guide for Spec Driven Development : r/SpecDevs",
+    "url": "https://www.reddit.com/r/SpecDevs/comments/1o2b3zp/my_goto_guide_for_spec_driven_development",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "I Tested Three Spec-Driven AI Tools. Here’s My Honest Take.",
+    "url": "https://ranthebuilder.cloud/blog/i-tested-three-spec-driven-ai-tools-here-s-my-honest-take/",
+    "why": [
+     "score 0.48 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "bregman-arie/devops-exercises — Linux, Jenkins, AWS, SRE, Prometheus, Docker, Python, Ansible, Git, Kubernetes, Terraform, OpenStack, SQL, NoSQL, Azure,",
+    "url": "https://github.com/bregman-arie/devops-exercises",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "academic/awesome-datascience — :memo: An awesome Data Science repository to learn and apply for real world problems.",
+    "url": "https://github.com/academic/awesome-datascience",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "marcelscruz/public-apis — A collaborative list of public APIs for developers",
+    "url": "https://github.com/marcelscruz/public-apis",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "onnxsim/onnxsim — Simplify your onnx model",
+    "url": "https://github.com/onnxsim/onnxsim",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "dend/awesome-product-management — 🚀 A curated list of awesome resources for product/program managers to learn and grow.",
+    "url": "https://github.com/dend/awesome-product-management",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "How to turn your Python file (.py) into an .exe (Tutorial 2021)",
+    "url": "https://www.youtube.com/watch?v=bqNvkAfTvIc",
+    "why": [
+     "too short to teach a component (2:10)"
+    ]
+   },
+   {
+    "title": "How To Create An App With Claude AI #claudeai #webappdevelopment #software #tech #ai",
+    "url": "https://www.youtube.com/watch?v=mD7zSDPFrvI",
+    "why": [
+     "too short to teach a component (0:17)"
+    ]
+   },
+   {
+    "title": "How to create AI Apps for free #ai",
+    "url": "https://www.youtube.com/watch?v=AoKNh-77DD4",
+    "why": [
+     "too short to teach a component (0:13)"
+    ]
+   },
+   {
+    "title": "Create an App Without Coding in 2025! (No Code Tutorial)",
+    "url": "https://www.youtube.com/watch?v=9kOiA-rG2hA",
+    "why": [
+     "too short to teach a component (0:23)"
+    ]
+   },
+   {
+    "title": "Blackbox Ai future of coding #webdevelopment #blackbox #shorts",
+    "url": "https://www.youtube.com/watch?v=P03jybFehP0",
+    "why": [
+     "too short to teach a component (0:12)"
+    ]
+   },
+   {
+    "title": "Coding become easy after using Blackbox ai",
+    "url": "https://www.youtube.com/watch?v=iVbya_yxlRw",
+    "why": [
+     "too short to teach a component (0:15)"
+    ]
+   },
+   {
+    "title": "5 Steps to TRAIN Your OWN AI Model!",
+    "url": "https://www.youtube.com/watch?v=U0CHrFx2JyE",
+    "why": [
+     "too short to teach a component (0:41)"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 27,
+   "passed_checks": 3,
+   "rejected": 24,
+   "videos_used": 0
+  },
+  "clips": [],
+  "timeline": [
+   {
+    "component": "W06.L2.C1",
+    "title": "Deconstructing Requirements into Public Method Contracts",
+    "minutes": 15,
+    "kind": "concept",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W06.L2.C2",
+    "title": "Structuring Executable Specifications in Spec-Driven Frameworks",
+    "minutes": 15,
+    "kind": "mechanism",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W06.L2.C3",
+    "title": "Step-by-Step Translation of Requirements to Executable Specs",
+    "minutes": 20,
+    "kind": "worked_example",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W06.L2.C4",
+    "title": "Prompt Patterns for Generating Executable Specifications",
+    "minutes": 15,
+    "kind": "concept",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W06.L2.C5",
+    "title": "Hands-on Authoring of Executable Specs from Requirements",
+    "minutes": 25,
+    "kind": "activity",
+    "delivery": "in_class",
+    "segments": []
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W06.L2",
+    "title": "Deconstructing Requirements into Public Method Contracts",
+    "teaches": "Students will learn how to analyze informal requirements to identify public module methods, parameter contracts, and class invariants. They will establish strict preconditions, postconditions, and interface signatures needed before writing formal specifications.",
+    "key_terms": [
+     "interface contract",
+     "precondition",
+     "postcondition",
+     "class invariant",
+     "method signature"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 15,
+    "id": "W06.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W06.L2",
+    "title": "Structuring Executable Specifications in Spec-Driven Frameworks",
+    "teaches": "Students will learn the concrete syntax and structural conventions of spec-driven frameworks such as pytest-bdd or Behave. They will map high-level requirement statements into executable Given-When-Then scenario definitions tied directly to public API hooks.",
+    "key_terms": [
+     "executable specification",
+     "Gherkin",
+     "pytest-bdd",
+     "step definitions",
+     "scenario outline"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 15,
+    "id": "W06.L2.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W06.L2",
+    "title": "Step-by-Step Translation of Requirements to Executable Specs",
+    "teaches": "Students will follow a complete worked example translating a payment-processing requirement brief into an automated executable specification suite. They will observe how each requirement constraint is systematically formalized into assertion-backed test harnesses that cover all public methods.",
+    "key_terms": [
+     "step implementation",
+     "assertion harness",
+     "boundary specification",
+     "public API verification"
+    ],
+    "kind": "worked_example",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 20,
+    "id": "W06.L2.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W06.L2",
+    "title": "Prompt Patterns for Generating Executable Specifications",
+    "teaches": "Students will learn effective prompting architectures to instruct LLMs to synthesize spec-driven test suites from unstructured requirements documents. They will configure system instructions and interface schema definitions to eliminate hallucinations in method signatures and types.",
+    "key_terms": [
+     "prompt engineering",
+     "schema anchoring",
+     "interface schema",
+     "synthetic test generation",
+     "hallucination mitigation"
+    ],
+    "kind": "concept",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 15,
+    "id": "W06.L2.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W06.L2",
+    "title": "Hands-on Authoring of Executable Specs from Requirements",
+    "teaches": "Students will work in pairs to translate a natural-language requirement specification for a user session manager into an executable specification suite using a BDD framework. They will execute their specs against stub interfaces to confirm that every required public method is bounded by executable assertions.",
+    "key_terms": [
+     "BDD test suite",
+     "interface coverage",
+     "failing spec harness",
+     "stub interface"
+    ],
+    "kind": "activity",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 25,
+    "id": "W06.L2.C5",
+    "in_class": true
+   }
+  ],
+  "notebooklm": {
+   "pack": "notebooklm/W06.L2.md",
+   "components": [
+    "W06.L2.C2"
+   ],
+   "sources": 3
+  }
+ },
+ "experts": {
+  "lecture_id": "W06.L2",
+  "topic": "Requirements to executable specifications and code generation",
+  "experts": [
+   {
+    "name": "Raju Halder",
+    "kind": "academic",
+    "affiliation": "Indian Institute of Technology Patna",
+    "country": "IN",
+    "links": {
+     "openalex": "https://openalex.org/A5032316006",
+     "orcid": "https://orcid.org/0000-0002-8873-8258",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Raju+Halder+Indian+Institute+of+Technology+Patna"
+    },
+    "metrics": {
+     "cited_by": 991,
+     "h_index": 16,
+     "works_count": 117,
+     "matching_works": 2
+    },
+    "scores": {
+     "topical_fit": 0.577,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.8,
+     "recency": 1.0,
+     "feasibility": 1.0
+    },
+    "total": 0.524,
+    "rank": 1,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2025,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "focus is specialized on smart contracts"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "SolGen: Secure Smart Contract Code Generation Using Large Language Models Via Masked Prompting",
+      "year": 2025,
+      "url": "https://doi.org/10.1145/3717383.3717394",
+      "cited_by": 2,
+      "venue": "Innovations in Software Engineering Conference (ISEC)",
+      "venue_quality": 0.8
+     },
+     {
+      "kind": "paper",
+      "title": "Formal verification and code generation for solidity smart contracts",
+      "year": 2023,
+      "url": "https://doi.org/10.1016/b978-0-323-96146-2.00028-0",
+      "cited_by": 9,
+      "venue": "Elsevier eBooks",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Published papers on formal verification and code generation for Solidity smart contracts, connecting formal specifications to code generation.",
+    "fit": "moderate",
+    "suggested_format": "live_in_person",
+    "concerns": [
+     "focus is specialized on smart contracts"
+    ]
+   }
+  ],
+  "reserve": [],
+  "rejected": [
+   {
+    "name": "Robert Kunzelmann",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "AI check: the evidence is from another field that only shares words with this topic",
+     "AI fit check: weak"
+    ]
+   },
+   {
+    "name": "Wolfgang Ecker",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "AI check: the evidence is from another field that only shares words with this topic",
+     "AI fit check: weak"
+    ]
+   },
+   {
+    "name": "Rahul Mohananai",
+    "why": [
+     "topical fit 0.49 is below 0.5"
+    ]
+   },
+   {
+    "name": "Alex Gu",
+    "why": [
+     "topical fit 0.48 is below 0.5"
+    ]
+   },
+   {
+    "name": "Arun Shankar Iyer",
+    "why": [
+     "topical fit 0.42 is below 0.5"
+    ]
+   },
+   {
+    "name": "Raghava Mutharaju",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.39 is below 0.5"
+    ]
+   },
+   {
+    "name": "Pankaj Jalote",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.32 is below 0.5"
+    ]
+   },
+   {
+    "name": "Yunhao Liang",
+    "why": [
+     "too little research record yet (h-index 4 on Google Scholar, below 5)"
+    ]
+   },
+   {
+    "name": "Ramakrishna Bairi",
+    "why": [
+     "topical fit 0.28 is below 0.5"
+    ]
+   },
+   {
+    "name": "Senthilkumaran Ulaganathan",
+    "why": [
+     "too little research record yet (h-index 3 on OpenAlex, below 5)"
+    ]
+   },
+   {
+    "name": "R Ying",
+    "why": [
+     "identity not confirmed in any authoritative source"
+    ]
+   },
+   {
+    "name": "S Ni",
+    "why": [
+     "identity not confirmed in any authoritative source"
+    ]
+   },
+   {
+    "name": "Alexandru Mereacre",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "AI check: the evidence is from another field that only shares words with this topic",
+     "topical fit 0.46 is below 0.5"
+    ]
+   },
+   {
+    "name": "Chengguang Gan",
+    "why": [
+     "overall score 0.40 is below 0.45"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 34,
+   "assessed": 15,
+   "passed_checks": 1
+  }
+ }
+}

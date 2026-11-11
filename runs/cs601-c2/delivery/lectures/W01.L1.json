@@ -1,0 +1,1831 @@
+{
+ "lecture_id": "W01.L1",
+ "topic": "Developer workflows and AI-assisted coding",
+ "generated_at": "2026-11-02 22:50:24",
+ "components": [
+  {
+   "lecture_id": "W01.L1",
+   "title": "Evolution from Traditional to AI-Augmented Developer Workflows",
+   "teaches": "Understand how software development lifecycles transition from manual writing and manual searching to AI-augmented authoring. Identify the shift from linear edit-compile-debug loops to continuous speculative drafting and prompt refinement. Explain the fundamental expectations and boundaries of integrating language models into active development environments.",
+   "key_terms": [
+    "developer workflow",
+    "speculative drafting",
+    "edit-compile-debug",
+    "AI-assisted coding",
+    "augmented IDE"
+   ],
+   "kind": "concept",
+   "bloom": 1,
+   "lo_ids": [
+    "CO1.LO3"
+   ],
+   "minutes": 15,
+   "id": "W01.L1.C1",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W01.L1",
+   "title": "Core Architectural Components of Modern AI Code Assistants",
+   "teaches": "Identify the primary software building blocks connecting an editor to an underlying generative model. Detail how client-side plugins gather telemetry, local buffers, and cursor positions before transmitting them through an orchestrator to an inference engine. Recognize the responsibilities of the local extension versus remote inference endpoints.",
+   "key_terms": [
+    "IDE extension",
+    "inference client",
+    "orchestrator",
+    "telemetry",
+    "local buffer"
+   ],
+   "kind": "mechanism",
+   "bloom": 1,
+   "lo_ids": [
+    "CO1.LO3"
+   ],
+   "minutes": 15,
+   "id": "W01.L1.C2",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W01.L1",
+   "title": "Context Retrieval and Window Slicing in AI Assistants",
+   "teaches": "Understand how AI assistants extract active file snippets, open tabs, and recent terminal outputs to populate an inference prompt. Examine how context budgets limit input tokens and how sliding windows prioritize lines surrounding the current cursor position. Describe the trade-offs between local context breadth and token latency during autocomplete generation.",
+   "key_terms": [
+    "context window",
+    "prompt construction",
+    "cursor proximity",
+    "token budget",
+    "sliding window"
+   ],
+   "kind": "mechanism",
+   "bloom": 2,
+   "lo_ids": [
+    "CO1.LO3"
+   ],
+   "minutes": 20,
+   "id": "W01.L1.C3",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W01.L1",
+   "title": "Contextualisation Guidelines for Scoped Code Generation Tasks",
+   "teaches": "Identify and apply core contextualisation guidelines to constrain AI prompts for short coding items such as utility functions, docstrings, and unit tests. Explain why providing explicit type signatures, interfaces, and minimal reproducible input-output examples produces deterministic code. Distinguish between over-contextualised prompts that exhaust token limits and under-contextualised prompts that cause generic completions.",
+   "key_terms": [
+    "contextualisation guidelines",
+    "scoped prompt",
+    "type signatures",
+    "short items",
+    "few-shot examples"
+   ],
+   "kind": "concept",
+   "bloom": 2,
+   "lo_ids": [
+    "CO1.LO3"
+   ],
+   "minutes": 15,
+   "id": "W01.L1.C4",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W01.L1",
+   "title": "Interaction Modalities: Ghost Text, Chat, and Inline Edits",
+   "teaches": "Compare the operational patterns of in-line ghost-text autocompletion, docked conversational sidebars, and targeted in-line refactoring. Analyze when a developer should rely on passive inline completion versus active conversational elicitation for complex logic. Identify the cognitive load and interruption costs associated with each interaction modality.",
+   "key_terms": [
+    "ghost text",
+    "inline completion",
+    "docked chat",
+    "inline refactoring",
+    "interaction modality"
+   ],
+   "kind": "comparison",
+   "bloom": 2,
+   "lo_ids": [
+    "CO1.LO3"
+   ],
+   "minutes": 15,
+   "id": "W01.L1.C5",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W01.L1",
+   "title": "Demonstration of Context Feeding in an AI-Assisted IDE",
+   "teaches": "Observe how an AI coding assistant dynamically alters suggested code based on open editor tabs, language server protocol (LSP) diagnostics, and active comments. Follow the step-by-step transformation of a prompt payload when new files are opened or relevant interfaces are imported. Recognize how real-time IDE state changes directly manipulate model generation outcomes.",
+   "key_terms": [
+    "LSP integration",
+    "ambient context",
+    "prompt payload",
+    "code completion demo",
+    "editor state"
+   ],
+   "kind": "demo",
+   "bloom": 2,
+   "lo_ids": [
+    "CO1.LO3"
+   ],
+   "minutes": 15,
+   "id": "W01.L1.C6",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W01.L1",
+   "title": "Common Failure Modes: Hallucination and Stale Context in Workflows",
+   "teaches": "Examine concrete examples where AI assistants hallucinate deprecated API methods, fabricate package dependencies, or carry stale context across branch switches. Analyze how incomplete context retrieval leads to syntactically valid yet logically flawed code snippets. Identify the risks of silent degradation in code quality when developers accept completions without manual inspection.",
+   "key_terms": [
+    "hallucination",
+    "stale context",
+    "API hallucination",
+    "silent degradation",
+    "context poisoning"
+   ],
+   "kind": "case_study",
+   "bloom": 2,
+   "lo_ids": [
+    "CO1.LO3"
+   ],
+   "minutes": 10,
+   "id": "W01.L1.C7",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W01.L1",
+   "title": "Verification Strategies and Quality Gates for AI-Assisted Code",
+   "teaches": "Evaluate verification techniques necessary to safely assimilate AI-generated snippets into professional codebases. Discuss the role of automated linting, localized test suites, and strict human review protocols as immediate guardrails. Formulate guidelines for establishing developer responsibility when committing code drafted with generative models.",
+   "key_terms": [
+    "verification strategies",
+    "quality gates",
+    "automated linting",
+    "human-in-the-loop",
+    "code review"
+   ],
+   "kind": "discussion",
+   "bloom": 2,
+   "lo_ids": [
+    "CO1.LO3"
+   ],
+   "minutes": 15,
+   "id": "W01.L1.C8",
+   "in_class": true
+  }
+ ],
+ "resources": {
+  "lecture_id": "W01.L1",
+  "topic": "Developer workflows and AI-assisted coding",
+  "want": {
+   "want_videos": false,
+   "want_readings": true,
+   "want_practice": true,
+   "want_recorded_lecture": false,
+   "want_clips": false,
+   "want_guest": true,
+   "confidence": 2,
+   "note": "",
+   "choices": [
+    "own_material",
+    "generate_material",
+    "assistance",
+    "guest_lecture"
+   ]
+  },
+  "queries": {
+   "lecture_id": "W01.L1",
+   "video_queries": [
+    "AI assisted coding developer workflow lecture",
+    "AI coding assistants workflow explained",
+    "developer productivity generative AI tools talk"
+   ],
+   "reading_queries": [
+    "AI assisted software development workflow guide",
+    "developer workflows generative AI coding tools"
+   ],
+   "practice_queries": [
+    "AI coding assistant workflow hands on lab"
+   ],
+   "recorded_lecture_query": null,
+   "research_queries": [
+    "AI assisted software development",
+    "developer productivity coding agents"
+   ],
+   "practitioner_query": "AI coding tools developer workflow"
+  },
+  "items": {
+   "video": [
+    {
+     "kind": "video",
+     "id": "bs1qPy_CWkM",
+     "url": "https://www.youtube.com/watch?v=bs1qPy_CWkM",
+     "title": "Prompt to Production: The Future of AI Code Workflows",
+     "source": "IBM Technology",
+     "tier": 2,
+     "duration_s": 435,
+     "published": "2026-09-28T11:00:25Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 73588,
+     "likes": 907,
+     "comments": 77,
+     "subscribers": 1830000,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.02,
+      "segment": 0.361,
+      "clarity": 0.8,
+      "level_fit": 0.8,
+      "authority": 0.8,
+      "reception": 0.61
+     },
+     "total": 0.364,
+     "findings": [],
+     "rationale": "Teaches C1 Evolution from Traditional to AI-Augmented Developer Workflo (4:23–6:44, fully) [checked on the transcript] · IBM Technology · tier 2 · 7:15 · 73,588 views",
+     "components": [
+      {
+       "id": "W01.L1.C1",
+       "title": "Evolution from Traditional to AI-Augmented Developer Workflows",
+       "start": "4:23",
+       "end": "6:44",
+       "start_s": 263.0,
+       "end_s": 404.0,
+       "verdict": "teaches_fully",
+       "covered": [
+        "transition from manual to AI-augmented authoring",
+        "shift from linear edit-compile-debug to continuous validation",
+        "expectations and boundaries of LLM integration (verification bottleneck, evidence generation)"
+       ],
+       "missing": [],
+       "note": "Clear walkthrough of AI scaling execution vs verification; emphasizes evidence-based trust.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.02,
+      "evidence": "transcript",
+      "per_target": {
+       "W01.L1.C1": {
+        "text": "Evolution from Traditional to AI-Augmented Developer Workflows",
+        "covered": true,
+        "sim": 0.597,
+        "segments": [
+         {
+          "start": 263.0,
+          "end": 404.0,
+          "sim": 0.597
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Clear walkthrough of AI scaling execution vs verification; emphasizes evidence-based trust.",
+      "issues": [],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Learn more about Agentic Coding here → https://ibm.biz/~eVuLdAOOj\n\nWriting code is becoming the easy part. Sam Anthony explains why planning, execution, validation, and verification matter more as AI coding systems become increasingly capable. Learn how prompt-to-production workflows are reshaping modern software engineering.\n\n00:00 - Why Prompt‑to‑Production Feels So Easy\n00:25 - Planning: The New Core Skill in AI‑Driven Engineering\n01:08 - Choosing the Right AI‑Driven Approach\n01:31 - Why Implementation Is No Longer the Hard Part\n02:18 - Designing the Solution Before AI Executes\n02:48 - The Hidden Complexity Behind Code Changes\n03:11 - Agentic Coding Systems and Self‑Correcting Workflows\n0",
+     "rank": 1,
+     "status": "proposed"
+    },
+    {
+     "kind": "video",
+     "id": "wlpBCazAY9Q",
+     "url": "https://www.youtube.com/watch?v=wlpBCazAY9Q",
+     "title": "AI-Assisted Coding Tutorial – OpenClaw, GitHub Copilot, Claude Code, CodeRabbit, Gemini CLI",
+     "source": "freeCodeCamp.org",
+     "tier": 2,
+     "duration_s": 5126,
+     "published": "2026-03-31T10:01:00Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 296296,
+     "likes": 6665,
+     "comments": 154,
+     "subscribers": 12000000,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.011,
+      "segment": 0.2,
+      "clarity": 0.8,
+      "level_fit": 0.6,
+      "authority": 0.8,
+      "reception": 0.756
+     },
+     "total": 0.264,
+     "findings": [],
+     "rationale": "Teaches C5 Interaction Modalities: Ghost Text, Chat, and Inline Edits (10:13–12:42, partly) [checked on the transcript] · freeCodeCamp.org · tier 2 · 1:25:26 · 296,296 views",
+     "components": [
+      {
+       "id": "W01.L1.C5",
+       "title": "Interaction Modalities: Ghost Text, Chat, and Inline Edits",
+       "start": "10:13",
+       "end": "12:42",
+       "start_s": 613.0,
+       "end_s": 762.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "ghost text inline completion demonstration"
+       ],
+       "missing": [
+        "docked chat sidebar usage",
+        "inline refactoring",
+        "comparison of modalities",
+        "cognitive load analysis",
+        "when to use each modality"
+       ],
+       "note": "Shows ghost text completions clearly but lacks comparison with chat/refactoring and cognitive load discussion.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.011,
+      "evidence": "transcript",
+      "per_target": {
+       "W01.L1.C5": {
+        "text": "Interaction Modalities: Ghost Text, Chat, and Inline Edits",
+        "covered": true,
+        "sim": 0.421,
+        "segments": [
+         {
+          "start": 613.0,
+          "end": 762.0,
+          "sim": 0.421
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Shows ghost text completions clearly but lacks comparison with chat/refactoring and cognitive load discussion.",
+      "issues": [
+       "leaves out: docked chat sidebar usage",
+       "leaves out: inline refactoring",
+       "leaves out: comparison of modalities",
+       "leaves out: cognitive load analysis"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Learn how to use AI tools to become more productive as a developer.\n\nYou will master AI pair programming and agentic terminal workflows using top-tier tools like GitHub Copilot, Anthropic's Claude Code, and the Gemini CLI. The course also covers open-source automation with OpenClaw, teaching you how to set up a highly customizable, locally hosted AI assistant for your development environment. Finally, you will learn how to maintain high code quality and streamline your team's workflow by integrating CodeRabbit for automated, AI-driven pull request analysis.\n\nSome of this course is based on this article from Mrugesh Mohapatra:  https://www.freecodecamp.org/news/how-to-become-an-expert-in-ai-a",
+     "rank": 2,
+     "status": "proposed"
+    }
+   ],
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://addyosmani.com/blog/ai-coding-workflow/",
+     "title": "AddyOsmani.com - My LLM coding workflow going into 2026",
+     "source": "addyosmani.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.883,
+      "quality": 0.9,
+      "authority": 0.35,
+      "level_fit": 1.0,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.752,
+     "rank": 1,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W01.L1.C1 ✓, W01.L1.C2 ✓, W01.L1.C3 ✓, W01.L1.C4 ✓, W01.L1.C5 ✗, W01.L1.C6 ✓, W01.L1.C7 ✓, W01.L1.C8 ✓ [from page text] · addyosmani.com · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Expert practitioner's AI coding workflow emphasizing verification and engineering discipline, great real-world context.",
+      "issues": [
+       "Single perspective, not comprehensive",
+       "Missing interaction modalities coverage"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains",
+      "clarity": 5,
+      "correctness": 5,
+      "depth": 4,
+      "examples": 4,
+      "level_fit": 5
+     },
+     "coverage": {
+      "score": 0.883,
+      "evidence": "text",
+      "per_target": {
+       "M1.T1": {
+        "covered": true,
+        "sim": 0.683,
+        "segments": []
+       },
+       "W01.L1.C1": {
+        "covered": true,
+        "sim": 0.641,
+        "segments": [],
+        "text": "Evolution from Traditional to AI-Augmented Developer Workflows. Understand how software development lifecycles transitio"
+       },
+       "W01.L1.C2": {
+        "covered": true,
+        "sim": 0.574,
+        "segments": [],
+        "text": "Core Architectural Components of Modern AI Code Assistants. Identify the primary software building blocks connecting an "
+       },
+       "W01.L1.C3": {
+        "covered": true,
+        "sim": 0.552,
+        "segments": [],
+        "text": "Context Retrieval and Window Slicing in AI Assistants. Understand how AI assistants extract active file snippets, open t"
+       },
+       "W01.L1.C4": {
+        "covered": true,
+        "sim": 0.524,
+        "segments": [],
+        "text": "Contextualisation Guidelines for Scoped Code Generation Tasks. Identify and apply core contextualisation guidelines to c"
+       },
+       "W01.L1.C5": {
+        "covered": false,
+        "sim": 0.406,
+        "segments": [],
+        "text": "Interaction Modalities: Ghost Text, Chat, and Inline Edits. Compare the operational patterns of in-line ghost-text autoc"
+       },
+       "W01.L1.C6": {
+        "covered": true,
+        "sim": 0.548,
+        "segments": [],
+        "text": "Demonstration of Context Feeding in an AI-Assisted IDE. Observe how an AI coding assistant dynamically alters suggested "
+       },
+       "W01.L1.C7": {
+        "covered": true,
+        "sim": 0.527,
+        "segments": [],
+        "text": "Common Failure Modes: Hallucination and Stale Context in Workflows. Examine concrete examples where AI assistants halluc"
+       },
+       "W01.L1.C8": {
+        "covered": true,
+        "sim": 0.647,
+        "segments": [],
+        "text": "Verification Strategies and Quality Gates for AI-Assisted Code. Evaluate verification techniques necessary to safely ass"
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://www.ibm.com/think/topics/agentic-coding",
+     "title": "What is Agentic Coding? | IBM",
+     "source": "ibm.com",
+     "tier": 4,
+     "page_type": "linked by video",
+     "scores": {
+      "coverage": 0.902,
+      "quality": 0.85,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.728,
+     "rank": 2,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W01.L1.C1 ✓, W01.L1.C2 ✓, W01.L1.C3 ✓, W01.L1.C4 ✓, W01.L1.C5 ✓, W01.L1.C6 ✓, W01.L1.C7 ✓, W01.L1.C8 ✓ [from page text] · ibm.com · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Clear explanation of agentic coding and practical applications, good for advanced workflow discussion.",
+      "issues": [
+       "Focuses on agentic coding, may not cover basics like context retrieval",
+       "IBM promotional content"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 4,
+      "examples": 4,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.902,
+      "evidence": "text",
+      "per_target": {
+       "M1.T1": {
+        "covered": true,
+        "sim": 0.673,
+        "segments": []
+       },
+       "W01.L1.C1": {
+        "covered": true,
+        "sim": 0.645,
+        "segments": [],
+        "text": "Evolution from Traditional to AI-Augmented Developer Workflows. Understand how software development lifecycles transitio"
+       },
+       "W01.L1.C2": {
+        "covered": true,
+        "sim": 0.626,
+        "segments": [],
+        "text": "Core Architectural Components of Modern AI Code Assistants. Identify the primary software building blocks connecting an "
+       },
+       "W01.L1.C3": {
+        "covered": true,
+        "sim": 0.531,
+        "segments": [],
+        "text": "Context Retrieval and Window Slicing in AI Assistants. Understand how AI assistants extract active file snippets, open t"
+       },
+       "W01.L1.C4": {
+        "covered": true,
+        "sim": 0.554,
+        "segments": [],
+        "text": "Contextualisation Guidelines for Scoped Code Generation Tasks. Identify and apply core contextualisation guidelines to c"
+       },
+       "W01.L1.C5": {
+        "covered": true,
+        "sim": 0.441,
+        "segments": [],
+        "text": "Interaction Modalities: Ghost Text, Chat, and Inline Edits. Compare the operational patterns of in-line ghost-text autoc"
+       },
+       "W01.L1.C6": {
+        "covered": true,
+        "sim": 0.66,
+        "segments": [],
+        "text": "Demonstration of Context Feeding in an AI-Assisted IDE. Observe how an AI coding assistant dynamically alters suggested "
+       },
+       "W01.L1.C7": {
+        "covered": true,
+        "sim": 0.51,
+        "segments": [],
+        "text": "Common Failure Modes: Hallucination and Stale Context in Workflows. Examine concrete examples where AI assistants halluc"
+       },
+       "W01.L1.C8": {
+        "covered": true,
+        "sim": 0.642,
+        "segments": [],
+        "text": "Verification Strategies and Quality Gates for AI-Assisted Code. Evaluate verification techniques necessary to safely ass"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "reserve": {
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://www.sonarsource.com/resources/library/ai-assisted-software-development/",
+     "title": "AI-assisted Software Development: Developer's Guide | Sonar",
+     "source": "sonarsource.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.875,
+      "quality": 0.5,
+      "authority": 0.35,
+      "level_fit": 0.6,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.629,
+     "rank": 3,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W01.L1.C1 ✓, W01.L1.C2 ✓, W01.L1.C3 ✓, W01.L1.C4 ✓, W01.L1.C5 ✗, W01.L1.C6 ✓, W01.L1.C7 ✓, W01.L1.C8 ✓ [from page text] · sonarsource.com · tier 4",
+     "findings": [],
+     "coverage": {
+      "score": 0.875,
+      "evidence": "text",
+      "per_target": {
+       "M1.T1": {
+        "covered": true,
+        "sim": 0.717,
+        "segments": []
+       },
+       "W01.L1.C1": {
+        "covered": true,
+        "sim": 0.659,
+        "segments": [],
+        "text": "Evolution from Traditional to AI-Augmented Developer Workflows. Understand how software development lifecycles transitio"
+       },
+       "W01.L1.C2": {
+        "covered": true,
+        "sim": 0.621,
+        "segments": [],
+        "text": "Core Architectural Components of Modern AI Code Assistants. Identify the primary software building blocks connecting an "
+       },
+       "W01.L1.C3": {
+        "covered": true,
+        "sim": 0.509,
+        "segments": [],
+        "text": "Context Retrieval and Window Slicing in AI Assistants. Understand how AI assistants extract active file snippets, open t"
+       },
+       "W01.L1.C4": {
+        "covered": true,
+        "sim": 0.568,
+        "segments": [],
+        "text": "Contextualisation Guidelines for Scoped Code Generation Tasks. Identify and apply core contextualisation guidelines to c"
+       },
+       "W01.L1.C5": {
+        "covered": false,
+        "sim": 0.392,
+        "segments": [],
+        "text": "Interaction Modalities: Ghost Text, Chat, and Inline Edits. Compare the operational patterns of in-line ghost-text autoc"
+       },
+       "W01.L1.C6": {
+        "covered": true,
+        "sim": 0.626,
+        "segments": [],
+        "text": "Demonstration of Context Feeding in an AI-Assisted IDE. Observe how an AI coding assistant dynamically alters suggested "
+       },
+       "W01.L1.C7": {
+        "covered": true,
+        "sim": 0.499,
+        "segments": [],
+        "text": "Common Failure Modes: Hallucination and Stale Context in Workflows. Examine concrete examples where AI assistants halluc"
+       },
+       "W01.L1.C8": {
+        "covered": true,
+        "sim": 0.66,
+        "segments": [],
+        "text": "Verification Strategies and Quality Gates for AI-Assisted Code. Evaluate verification techniques necessary to safely ass"
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://devoxsoftware.com/blog/ai-assisted-software-development-the-ultimate-practical-guide/",
+     "title": "AI-Assisted Software Development: A Hands-On Guide to Building Smarter, Faster | Devox Software",
+     "source": "devoxsoftware.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.874,
+      "quality": 0.5,
+      "authority": 0.35,
+      "level_fit": 0.6,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.628,
+     "rank": 4,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W01.L1.C1 ✓, W01.L1.C2 ✓, W01.L1.C3 ✓, W01.L1.C4 ✓, W01.L1.C5 ✗, W01.L1.C6 ✓, W01.L1.C7 ✓, W01.L1.C8 ✓ [from page text] · devoxsoftware.com · tier 4",
+     "findings": [],
+     "coverage": {
+      "score": 0.874,
+      "evidence": "text",
+      "per_target": {
+       "M1.T1": {
+        "covered": true,
+        "sim": 0.738,
+        "segments": []
+       },
+       "W01.L1.C1": {
+        "covered": true,
+        "sim": 0.686,
+        "segments": [],
+        "text": "Evolution from Traditional to AI-Augmented Developer Workflows. Understand how software development lifecycles transitio"
+       },
+       "W01.L1.C2": {
+        "covered": true,
+        "sim": 0.566,
+        "segments": [],
+        "text": "Core Architectural Components of Modern AI Code Assistants. Identify the primary software building blocks connecting an "
+       },
+       "W01.L1.C3": {
+        "covered": true,
+        "sim": 0.517,
+        "segments": [],
+        "text": "Context Retrieval and Window Slicing in AI Assistants. Understand how AI assistants extract active file snippets, open t"
+       },
+       "W01.L1.C4": {
+        "covered": true,
+        "sim": 0.565,
+        "segments": [],
+        "text": "Contextualisation Guidelines for Scoped Code Generation Tasks. Identify and apply core contextualisation guidelines to c"
+       },
+       "W01.L1.C5": {
+        "covered": false,
+        "sim": 0.391,
+        "segments": [],
+        "text": "Interaction Modalities: Ghost Text, Chat, and Inline Edits. Compare the operational patterns of in-line ghost-text autoc"
+       },
+       "W01.L1.C6": {
+        "covered": true,
+        "sim": 0.55,
+        "segments": [],
+        "text": "Demonstration of Context Feeding in an AI-Assisted IDE. Observe how an AI coding assistant dynamically alters suggested "
+       },
+       "W01.L1.C7": {
+        "covered": true,
+        "sim": 0.515,
+        "segments": [],
+        "text": "Common Failure Modes: Hallucination and Stale Context in Workflows. Examine concrete examples where AI assistants halluc"
+       },
+       "W01.L1.C8": {
+        "covered": true,
+        "sim": 0.702,
+        "segments": [],
+        "text": "Verification Strategies and Quality Gates for AI-Assisted Code. Evaluate verification techniques necessary to safely ass"
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://www.frontiersin.org/journals/big-data/articles/10.3389/fdata.2024.1386720/full",
+     "title": "A systematic literature review on the impact of AI models on the security of code generation",
+     "source": "Frontiers in Big Data",
+     "tier": 4,
+     "page_type": "survey paper",
+     "year": 2024,
+     "authors": [
+      "Claudia Negri-Ribalta",
+      "Rémi Géraud",
+      "Anastasia Sergeeva",
+      "Gabriele Lenzini"
+     ],
+     "doi": "https://doi.org/10.3389/fdata.2024.1386720",
+     "cited_by": 53,
+     "scores": {
+      "coverage": 0.889,
+      "quality": 0.42,
+      "authority": 0.35,
+      "level_fit": 0.6,
+      "reception": 0.577,
+      "practicality": 1.0
+     },
+     "total": 0.665,
+     "rank": 5,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W01.L1.C1 ✓, W01.L1.C2 ✓, W01.L1.C3 ✓, W01.L1.C4 ✓, W01.L1.C5 ✗, W01.L1.C6 ✓, W01.L1.C7 ✓, W01.L1.C8 ✓ [from page text] · Frontiers in Big Data · tier 4",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "review": {
+      "review": "Systematic review on AI code generation security; relevant for verification strategies but not a tutorial on workflows.",
+      "issues": [
+       "Focuses on security of code generation, not core developer workflow components",
+       "No coverage of interaction modalities",
+       "Excerpts too short to assess pedagogical clarity"
+      ],
+      "use_as": "professor_prep",
+      "explains": "mentions",
+      "clarity": 3,
+      "correctness": 5,
+      "depth": 4,
+      "examples": 2,
+      "level_fit": 3
+     },
+     "coverage": {
+      "score": 0.889,
+      "evidence": "text",
+      "per_target": {
+       "M1.T1": {
+        "covered": true,
+        "sim": 0.609,
+        "segments": []
+       },
+       "W01.L1.C1": {
+        "covered": true,
+        "sim": 0.53,
+        "segments": [],
+        "text": "Evolution from Traditional to AI-Augmented Developer Workflows. Understand how software development lifecycles transitio"
+       },
+       "W01.L1.C2": {
+        "covered": true,
+        "sim": 0.517,
+        "segments": [],
+        "text": "Core Architectural Components of Modern AI Code Assistants. Identify the primary software building blocks connecting an "
+       },
+       "W01.L1.C3": {
+        "covered": true,
+        "sim": 0.588,
+        "segments": [],
+        "text": "Context Retrieval and Window Slicing in AI Assistants. Understand how AI assistants extract active file snippets, open t"
+       },
+       "W01.L1.C4": {
+        "covered": true,
+        "sim": 0.597,
+        "segments": [],
+        "text": "Contextualisation Guidelines for Scoped Code Generation Tasks. Identify and apply core contextualisation guidelines to c"
+       },
+       "W01.L1.C5": {
+        "covered": false,
+        "sim": 0.415,
+        "segments": [],
+        "text": "Interaction Modalities: Ghost Text, Chat, and Inline Edits. Compare the operational patterns of in-line ghost-text autoc"
+       },
+       "W01.L1.C6": {
+        "covered": true,
+        "sim": 0.56,
+        "segments": [],
+        "text": "Demonstration of Context Feeding in an AI-Assisted IDE. Observe how an AI coding assistant dynamically alters suggested "
+       },
+       "W01.L1.C7": {
+        "covered": true,
+        "sim": 0.551,
+        "segments": [],
+        "text": "Common Failure Modes: Hallucination and Stale Context in Workflows. Examine concrete examples where AI assistants halluc"
+       },
+       "W01.L1.C8": {
+        "covered": true,
+        "sim": 0.701,
+        "segments": [],
+        "text": "Verification Strategies and Quality Gates for AI-Assisted Code. Evaluate verification techniques necessary to safely ass"
+       }
+      }
+     }
+    }
+   ],
+   "video": [
+    {
+     "kind": "video",
+     "id": "45QmLivYv3k",
+     "url": "https://www.youtube.com/watch?v=45QmLivYv3k",
+     "title": "10 Developer Productivity Boosts from Generative AI",
+     "source": "IBM Technology",
+     "tier": 2,
+     "duration_s": 466,
+     "published": "2024-07-09T11:00:07Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 16296,
+     "likes": 505,
+     "comments": 18,
+     "subscribers": 1830000,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.022,
+      "segment": 0.331,
+      "clarity": 0.6,
+      "level_fit": 0.6,
+      "authority": 0.8,
+      "reception": 0.708
+     },
+     "total": 0.357,
+     "findings": [],
+     "rationale": "Teaches C1 Evolution from Traditional to AI-Augmented Developer Workflo (0:23–5:12, partly) [checked on the transcript] · IBM Technology · tier 2 · 7:46 · 16,296 views",
+     "components": [
+      {
+       "id": "W01.L1.C1",
+       "title": "Evolution from Traditional to AI-Augmented Developer Workflows",
+       "start": "0:23",
+       "end": "5:12",
+       "start_s": 23.0,
+       "end_s": 312.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "transition from manual to AI-augmented authoring (shows AI handling coding tasks)"
+       ],
+       "missing": [
+        "shift from linear edit-compile-debug to continuous speculative drafting and prompt refinement",
+        "expectations and boundaries of integrating LLMs into active development environments"
+       ],
+       "note": "Lists 10 productivity boosts; explains pre-training/inference but not workflow loop shift.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.022,
+      "evidence": "transcript",
+      "per_target": {
+       "W01.L1.C1": {
+        "text": "Evolution from Traditional to AI-Augmented Developer Workflows",
+        "covered": true,
+        "sim": 0.524,
+        "segments": [
+         {
+          "start": 23.0,
+          "end": 312.0,
+          "sim": 0.524
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Lists 10 productivity boosts; explains pre-training/inference but not workflow loop shift.",
+      "issues": [
+       "leaves out: shift from linear edit-compile-debug to continuous speculative drafting and prompt refinement",
+       "leaves out: expectations and boundaries of integrating LLMs into active development environments"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Want to play with the technology yourself? Explore our interactive demo → https://ibm.biz/BdKRwX\nLearn more about the technology → https://ibm.biz/BdKRwH\n\nCan AI really help speed up code development? In this video, Martin Keen discusses how generative AI enhances software development productivity with tasks like code generation, debugging, and more. Learn about the benefits and limitations of integrating AI into coding workflows.\n\nAI news moves fast. Sign up for a monthly newsletter for AI updates from IBM → https://ibm.biz/BdKRw4",
+     "rank": 3,
+     "status": "reserve"
+    },
+    {
+     "kind": "video",
+     "id": "4wMRXmLpdA8",
+     "url": "https://www.youtube.com/watch?v=4wMRXmLpdA8",
+     "title": "AI in the SDLC: Rethinking AI Coding Tools & AI Agents",
+     "source": "IBM Technology",
+     "tier": 2,
+     "duration_s": 568,
+     "published": "2026-06-22T11:00:22Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 195447,
+     "likes": 4446,
+     "comments": 108,
+     "subscribers": 1830000,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.015,
+      "segment": 0.251,
+      "clarity": 0.6,
+      "level_fit": 0.6,
+      "authority": 0.8,
+      "reception": 0.762
+     },
+     "total": 0.304,
+     "findings": [],
+     "rationale": "Teaches C1 Evolution from Traditional to AI-Augmented Developer Workflo (0:00–3:19, partly) [checked on the transcript] · IBM Technology · tier 2 · 9:28 · 195,447 views",
+     "components": [
+      {
+       "id": "W01.L1.C1",
+       "title": "Evolution from Traditional to AI-Augmented Developer Workflows",
+       "start": "0:00",
+       "end": "3:19",
+       "start_s": 0.0,
+       "end_s": 199.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "expectations and boundaries of LLM integration (over-delegation fails, review bottleneck)"
+       ],
+       "missing": [],
+       "note": "",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.015,
+      "evidence": "transcript",
+      "per_target": {
+       "W01.L1.C1": {
+        "text": "Evolution from Traditional to AI-Augmented Developer Workflows",
+        "covered": true,
+        "sim": 0.497,
+        "segments": [
+         {
+          "start": 0.0,
+          "end": 199.0,
+          "sim": 0.497
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "",
+      "issues": [],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Learn more about AI in the SDLC here → https://ibm.biz/~naNTyKNWO\n\nAI promises speed, but where are the real gains? Cedric Clyburn breaks down why productivity stalls across the software development lifecycle despite faster coding. Learn how redesigning SDLC workflows with AI agents improves outcomes, testing, and delivery.\n\nAI news moves fast. Sign up for a monthly newsletter for AI updates from IBM → https://ibm.biz/~nBt0HFgxR\n\n#aifordevelopers #sdlc #aicodingtools #softwaredevelopment",
+     "rank": 4,
+     "status": "reserve"
+    }
+   ]
+  },
+  "rejected": [
+   {
+    "title": "A Practical Guide to AI-Assisted Development",
+    "url": "https://medium.com/@gdsources.io/a-practical-guide-to-ai-assisted-development-a23c7cae3f0b",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "AI-assisted engineering: How AI is transforming software development",
+    "url": "https://getdx.com/blog/ai-assisted-engineering-hub/",
+    "why": [
+     "a social-media post (x.com/), not a reading"
+    ]
+   },
+   {
+    "title": "AI-Assisted Development Workflows - DEV Community",
+    "url": "https://dev.to/sunny7899/ai-assisted-development-workflows-3723",
+    "why": [
+     "score 0.59 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Full Walkthrough: Workflow for AI Coding — Matt Pocock",
+    "url": "https://www.youtube.com/watch?v=-QFHIoCo-Ko",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "DATAMYTE ANNOUNCES AI ASSISTED WORKFLOW CREATION IN DIGITAL CLIPBOARD",
+    "url": "https://finance.yahoo.com/news/datamyte-announces-ai-assisted-workflow-150000417.html",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Fragmented Markers, Mixed Results: A Systematic Review of AI Coding Assistants and Developer Productivity",
+    "url": "https://dl.acm.org/doi/pdf/10.1145/3832783.3834386?download=true",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Revamping medical coding with AI: a systematic review of interdisciplinary applications and perspectives for plastic surgery",
+    "url": "https://f.oaes.cc/xmlpdf/493ac986-adb2-456a-bfa7-bf5960c85ee7/ais4078.pdf",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Security in LLM-Assisted Coding: A Systematic Literature Review",
+    "url": "https://arxiv.org/pdf/2610.15482",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "My Workflow With AI: How I Code, Test, and Deploy Faster Than Ever",
+    "url": "https://www.youtube.com/watch?v=2E610yzqQwg",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "AI Workshops for Teams | AAI Labs | AAI Labs",
+    "url": "https://www.aai-labs.com/en/workshops",
+    "why": [
+     "score 0.60 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Building Better Workflows With AI-Powered Coding Help - DEV Community",
+    "url": "https://dev.to/leena_malhotra/building-better-workflows-with-ai-powered-coding-help-181",
+    "why": [
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "A minimal workflow for AI-assisted coding - by Jeff - JoT",
+    "url": "https://fffej.substack.com/p/a-minimal-workflow-for-ai-assisted",
+    "why": [
+     "score 0.58 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Medium",
+    "url": "https://medium.com/@addyosmani/my-llm-coding-workflow-going-into-2026-52fe1681325e",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "The guy who coined vibe coding says AI is making programming 'unrecognizable' | Business Insider Africa",
+    "url": "https://africa.businessinsider.com/news/the-guy-who-coined-vibe-coding-says-ai-is-making-programming-unrecognizable/skp34xt",
+    "why": [
+     "score 0.42 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "AI coding assistant Supermaven raises cash from OpenAI and Perplexity co-founders",
+    "url": "https://finance.yahoo.com/news/ai-coding-assistant-supermaven-raises-130011256.html",
+    "why": [
+     "score 0.46 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "public-apis/public-apis — A collective list of free APIs",
+    "url": "https://github.com/public-apis/public-apis",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "ripienaar/free-for-dev — A list of SaaS, PaaS and IaaS offerings that have free tiers of interest to devops and infradev",
+    "url": "https://github.com/ripienaar/free-for-dev",
+    "why": [
+     "score 0.58 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "punkpeye/awesome-mcp-servers — A collection of MCP servers.",
+    "url": "https://github.com/punkpeye/awesome-mcp-servers",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "mlabonne/llm-course — Course to get into Large Language Models (LLMs) with roadmaps and Colab notebooks.",
+    "url": "https://github.com/mlabonne/llm-course",
+    "why": [
+     "AI review: off topic (Focuses on LLM fundamentals and agent frameworks, not AI-assisted developer workflows; No coverage of interaction modalities)"
+    ]
+   },
+   {
+    "title": "cheaper-inference/OmniRoute — Never stop coding. Free MIT AI gateway: one endpoint, 375 providers (150+ free), 1,400+ models Kimi, Claude, GPT, Gemini",
+    "url": "https://github.com/cheaper-inference/OmniRoute",
+    "why": [
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "",
+    "url": "https://www.freecodecamp.org/news/how-to-become-an-expert-in-ai-a",
+    "why": [
+     "page not readable (status 404, too short)"
+    ]
+   },
+   {
+    "title": "The Best AI Coding Assistant in 2026?",
+    "url": "https://www.youtube.com/watch?v=TPZ_uTz8BJY",
+    "why": [
+     "too short to teach a component (2:44)"
+    ]
+   },
+   {
+    "title": "50+ Best AI Tools for Productivity in 2025 (ChatGPT, Canva, Notion & More!)",
+    "url": "https://www.youtube.com/watch?v=yFU003t-cTg",
+    "why": [
+     "too short to teach a component (0:11)"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 26,
+   "passed_checks": 5,
+   "rejected": 21,
+   "videos_used": 2
+  },
+  "clips": [
+   {
+    "target": "Evolution from Traditional to AI-Augmented Developer Workflows",
+    "target_ids": [
+     "W01.L1.C1"
+    ],
+    "component": "W01.L1.C1",
+    "video": "Prompt to Production: The Future of AI Code Workflows",
+    "source": "IBM Technology",
+    "url": "https://www.youtube.com/watch?v=bs1qPy_CWkM&t=263s",
+    "start": "4:23",
+    "end": "6:44",
+    "minutes": 2.4,
+    "component_minutes": 15,
+    "verdict": "teaches_fully",
+    "covered": [
+     "transition from manual to AI-augmented authoring",
+     "shift from linear edit-compile-debug to continuous validation",
+     "expectations and boundaries of LLM integration (verification bottleneck, evidence generation)"
+    ],
+    "missing": [],
+    "note": "Clear walkthrough of AI scaling execution vs verification; emphasizes evidence-based trust."
+   },
+   {
+    "target": "Interaction Modalities: Ghost Text, Chat, and Inline Edits",
+    "target_ids": [
+     "W01.L1.C5"
+    ],
+    "component": "W01.L1.C5",
+    "video": "AI-Assisted Coding Tutorial – OpenClaw, GitHub Copilot, Claude Code, CodeRabbit, Gemini CLI",
+    "source": "freeCodeCamp.org",
+    "url": "https://www.youtube.com/watch?v=wlpBCazAY9Q&t=613s",
+    "start": "10:13",
+    "end": "12:42",
+    "minutes": 2.5,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "ghost text inline completion demonstration"
+    ],
+    "missing": [
+     "docked chat sidebar usage",
+     "inline refactoring",
+     "comparison of modalities",
+     "cognitive load analysis",
+     "when to use each modality"
+    ],
+    "note": "Shows ghost text completions clearly but lacks comparison with chat/refactoring and cognitive load discussion."
+   }
+  ],
+  "timeline": [
+   {
+    "component": "W01.L1.C1",
+    "title": "Evolution from Traditional to AI-Augmented Developer Workflows",
+    "minutes": 15,
+    "kind": "concept",
+    "delivery": "video",
+    "gap": {
+     "video_minutes": 2.4,
+     "missing": []
+    },
+    "segments": [
+     {
+      "video": "Prompt to Production: The Future of AI Code Workflows",
+      "video_id": "bs1qPy_CWkM",
+      "url": "https://www.youtube.com/watch?v=bs1qPy_CWkM&t=263s",
+      "start": "4:23",
+      "end": "6:44",
+      "minutes": 2.4,
+      "verdict": "teaches_fully",
+      "score": 0.361
+     }
+    ]
+   },
+   {
+    "component": "W01.L1.C2",
+    "title": "Core Architectural Components of Modern AI Code Assistants",
+    "minutes": 15,
+    "kind": "mechanism",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W01.L1.C3",
+    "title": "Context Retrieval and Window Slicing in AI Assistants",
+    "minutes": 20,
+    "kind": "mechanism",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W01.L1.C4",
+    "title": "Contextualisation Guidelines for Scoped Code Generation Tasks",
+    "minutes": 15,
+    "kind": "concept",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W01.L1.C5",
+    "title": "Interaction Modalities: Ghost Text, Chat, and Inline Edits",
+    "minutes": 15,
+    "kind": "comparison",
+    "delivery": "video",
+    "gap": {
+     "video_minutes": 2.5,
+     "missing": [
+      "docked chat sidebar usage",
+      "inline refactoring",
+      "comparison of modalities",
+      "cognitive load analysis",
+      "when to use each modality"
+     ]
+    },
+    "segments": [
+     {
+      "video": "AI-Assisted Coding Tutorial – OpenClaw, GitHub Copilot, Claude Code, CodeRabbit, Gemini CLI",
+      "video_id": "wlpBCazAY9Q",
+      "url": "https://www.youtube.com/watch?v=wlpBCazAY9Q&t=613s",
+      "start": "10:13",
+      "end": "12:42",
+      "minutes": 2.5,
+      "verdict": "teaches_partly",
+      "score": 0.2
+     }
+    ]
+   },
+   {
+    "component": "W01.L1.C6",
+    "title": "Demonstration of Context Feeding in an AI-Assisted IDE",
+    "minutes": 15,
+    "kind": "demo",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W01.L1.C7",
+    "title": "Common Failure Modes: Hallucination and Stale Context in Workflows",
+    "minutes": 10,
+    "kind": "case_study",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W01.L1.C8",
+    "title": "Verification Strategies and Quality Gates for AI-Assisted Code",
+    "minutes": 15,
+    "kind": "discussion",
+    "delivery": "in_class",
+    "segments": []
+   }
+  ],
+  "partial": {
+   "reason": "YouTube blocked transcript requests (from 22:43)",
+   "videos_without_transcript": [
+    "_C57BxSXRbU",
+    "DsxrXLSHpKA",
+    "dDkynerzV-Q"
+   ]
+  },
+  "components": [
+   {
+    "lecture_id": "W01.L1",
+    "title": "Evolution from Traditional to AI-Augmented Developer Workflows",
+    "teaches": "Understand how software development lifecycles transition from manual writing and manual searching to AI-augmented authoring. Identify the shift from linear edit-compile-debug loops to continuous speculative drafting and prompt refinement. Explain the fundamental expectations and boundaries of integrating language models into active development environments.",
+    "key_terms": [
+     "developer workflow",
+     "speculative drafting",
+     "edit-compile-debug",
+     "AI-assisted coding",
+     "augmented IDE"
+    ],
+    "kind": "concept",
+    "bloom": 1,
+    "lo_ids": [
+     "CO1.LO3"
+    ],
+    "minutes": 15,
+    "id": "W01.L1.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W01.L1",
+    "title": "Core Architectural Components of Modern AI Code Assistants",
+    "teaches": "Identify the primary software building blocks connecting an editor to an underlying generative model. Detail how client-side plugins gather telemetry, local buffers, and cursor positions before transmitting them through an orchestrator to an inference engine. Recognize the responsibilities of the local extension versus remote inference endpoints.",
+    "key_terms": [
+     "IDE extension",
+     "inference client",
+     "orchestrator",
+     "telemetry",
+     "local buffer"
+    ],
+    "kind": "mechanism",
+    "bloom": 1,
+    "lo_ids": [
+     "CO1.LO3"
+    ],
+    "minutes": 15,
+    "id": "W01.L1.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W01.L1",
+    "title": "Context Retrieval and Window Slicing in AI Assistants",
+    "teaches": "Understand how AI assistants extract active file snippets, open tabs, and recent terminal outputs to populate an inference prompt. Examine how context budgets limit input tokens and how sliding windows prioritize lines surrounding the current cursor position. Describe the trade-offs between local context breadth and token latency during autocomplete generation.",
+    "key_terms": [
+     "context window",
+     "prompt construction",
+     "cursor proximity",
+     "token budget",
+     "sliding window"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO3"
+    ],
+    "minutes": 20,
+    "id": "W01.L1.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W01.L1",
+    "title": "Contextualisation Guidelines for Scoped Code Generation Tasks",
+    "teaches": "Identify and apply core contextualisation guidelines to constrain AI prompts for short coding items such as utility functions, docstrings, and unit tests. Explain why providing explicit type signatures, interfaces, and minimal reproducible input-output examples produces deterministic code. Distinguish between over-contextualised prompts that exhaust token limits and under-contextualised prompts that cause generic completions.",
+    "key_terms": [
+     "contextualisation guidelines",
+     "scoped prompt",
+     "type signatures",
+     "short items",
+     "few-shot examples"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO3"
+    ],
+    "minutes": 15,
+    "id": "W01.L1.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W01.L1",
+    "title": "Interaction Modalities: Ghost Text, Chat, and Inline Edits",
+    "teaches": "Compare the operational patterns of in-line ghost-text autocompletion, docked conversational sidebars, and targeted in-line refactoring. Analyze when a developer should rely on passive inline completion versus active conversational elicitation for complex logic. Identify the cognitive load and interruption costs associated with each interaction modality.",
+    "key_terms": [
+     "ghost text",
+     "inline completion",
+     "docked chat",
+     "inline refactoring",
+     "interaction modality"
+    ],
+    "kind": "comparison",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO3"
+    ],
+    "minutes": 15,
+    "id": "W01.L1.C5",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W01.L1",
+    "title": "Demonstration of Context Feeding in an AI-Assisted IDE",
+    "teaches": "Observe how an AI coding assistant dynamically alters suggested code based on open editor tabs, language server protocol (LSP) diagnostics, and active comments. Follow the step-by-step transformation of a prompt payload when new files are opened or relevant interfaces are imported. Recognize how real-time IDE state changes directly manipulate model generation outcomes.",
+    "key_terms": [
+     "LSP integration",
+     "ambient context",
+     "prompt payload",
+     "code completion demo",
+     "editor state"
+    ],
+    "kind": "demo",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO3"
+    ],
+    "minutes": 15,
+    "id": "W01.L1.C6",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W01.L1",
+    "title": "Common Failure Modes: Hallucination and Stale Context in Workflows",
+    "teaches": "Examine concrete examples where AI assistants hallucinate deprecated API methods, fabricate package dependencies, or carry stale context across branch switches. Analyze how incomplete context retrieval leads to syntactically valid yet logically flawed code snippets. Identify the risks of silent degradation in code quality when developers accept completions without manual inspection.",
+    "key_terms": [
+     "hallucination",
+     "stale context",
+     "API hallucination",
+     "silent degradation",
+     "context poisoning"
+    ],
+    "kind": "case_study",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO3"
+    ],
+    "minutes": 10,
+    "id": "W01.L1.C7",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W01.L1",
+    "title": "Verification Strategies and Quality Gates for AI-Assisted Code",
+    "teaches": "Evaluate verification techniques necessary to safely assimilate AI-generated snippets into professional codebases. Discuss the role of automated linting, localized test suites, and strict human review protocols as immediate guardrails. Formulate guidelines for establishing developer responsibility when committing code drafted with generative models.",
+    "key_terms": [
+     "verification strategies",
+     "quality gates",
+     "automated linting",
+     "human-in-the-loop",
+     "code review"
+    ],
+    "kind": "discussion",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO3"
+    ],
+    "minutes": 15,
+    "id": "W01.L1.C8",
+    "in_class": true
+   }
+  ],
+  "notebooklm": {
+   "pack": "notebooklm/W01.L1.md",
+   "components": [
+    "W01.L1.C5"
+   ],
+   "sources": 5
+  }
+ },
+ "experts": {
+  "lecture_id": "W01.L1",
+  "topic": "Developer workflows and AI-assisted coding",
+  "experts": [
+   {
+    "name": "Pankaj Jalote",
+    "kind": "iiitd",
+    "affiliation": "IIIT-Delhi",
+    "country": "IN",
+    "links": {
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Pankaj+Jalote+IIIT+Delhi",
+     "openalex": "https://openalex.org/A5057154526",
+     "orcid": "https://orcid.org/0009-0001-8552-8394"
+    },
+    "metrics": {
+     "cited_by": 3951,
+     "h_index": 32,
+     "works_count": 208
+    },
+    "scores": {
+     "topical_fit": 0.754,
+     "teaching": 1.0,
+     "practical": 0.2,
+     "standing": 0.76,
+     "recency": 1.0,
+     "feasibility": 1.0
+    },
+    "total": 0.847,
+    "rank": 1,
+    "verified_identity": "IIIT-D course directory + OpenAlex author record",
+    "latest_year": 2026,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "course",
+      "title": "Teaches CSE701 Topics in Software Engineering: AI in SE at IIIT-D",
+      "year": 2026,
+      "url": "https://techtree.iiitd.edu.in/viewDescription/filename?=CSE701"
+     },
+     {
+      "kind": "course",
+      "title": "Teaches CSE583 Software Development using Open Source at IIIT-D",
+      "year": 2026,
+      "url": "https://techtree.iiitd.edu.in/viewDescription/filename?=CSE583"
+     },
+     {
+      "kind": "paper",
+      "title": "Using LLMs in Software Requirements Specifications: An Empirical Evaluation",
+      "year": 2024,
+      "url": "https://doi.org/10.1109/re59067.2024.00056",
+      "cited_by": 80,
+      "venue": "IEEE International Requirements Engineering Conference (RE)",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "System Test Case Design from Requirements Specifications: Insights and Challenges of Using ChatGPT",
+      "year": 2024,
+      "url": "https://doi.org/10.48550/arxiv.2412.03693",
+      "cited_by": 2,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Perspectives on Computer Science Curricula 2023 (CS2023)",
+      "year": 2023,
+      "url": "https://doi.org/10.1145/3617650.3624928",
+      "cited_by": 2,
+      "venue": "ACM Conference on Global Computing Education (CompEd)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Teaches AI in SE course at IIIT-D; recent papers on LLMs for requirements and test case design.",
+    "fit": "strong",
+    "suggested_format": "live_in_person",
+    "concerns": []
+   },
+   {
+    "name": "Michael Sitarzewski",
+    "kind": "industry",
+    "role": "open-source maintainer",
+    "links": {
+     "github": "https://github.com/msitarzewski",
+     "website": "https://msitarzewski.com"
+    },
+    "metrics": {
+     "followers": 7407
+    },
+    "scores": {
+     "topical_fit": 0.609,
+     "teaching": 0.2,
+     "practical": 1.0,
+     "standing": 0.967,
+     "recency": 1.0,
+     "feasibility": 0.6
+    },
+    "total": 0.726,
+    "rank": 2,
+    "verified_identity": "GitHub account",
+    "latest_year": 2026,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "no academic publications, only repo"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "repo",
+      "title": "msitarzewski/AGENT-ZERO (288 stars): Operational framework and patterns for high-quality, AI-assisted software development. This reposito",
+      "year": 2026,
+      "url": "https://github.com/msitarzewski/AGENT-ZERO"
+     }
+    ],
+    "why": "Open-source framework for AI-assisted software development patterns shows practical workflow focus.",
+    "fit": "strong",
+    "suggested_format": "live_remote_60",
+    "concerns": [
+     "no academic publications, only repo"
+    ]
+   },
+   {
+    "name": "Valerie Chen",
+    "kind": "academic",
+    "affiliation": "Carnegie Mellon University",
+    "country": "US",
+    "links": {
+     "openalex": "https://openalex.org/A5088847857",
+     "orcid": "https://orcid.org/0009-0007-2783-0265",
+     "scholar": "https://scholar.google.com/citations?user=94yn2j0AAAAJ"
+    },
+    "metrics": {
+     "cited_by": 2073,
+     "h_index": 21,
+     "works_count": 70,
+     "matching_works": 2,
+     "i10_index": 33,
+     "source": "Google Scholar"
+    },
+    "scores": {
+     "topical_fit": 0.9,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.871,
+     "recency": 1.0,
+     "feasibility": 0.0
+    },
+    "total": 0.695,
+    "rank": 3,
+    "verified_identity": "OpenAlex author record + ORCID + Google Scholar profile",
+    "latest_year": 2026,
+    "findings": [],
+    "interests": [
+     "Machine Learning",
+     "Natural Language Processing",
+     "Human-AI Collaboration"
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Code with Me or for Me? How Increasing AI Automation Transforms Developer Workflows",
+      "year": 2026,
+      "url": "https://doi.org/10.1145/3772318.3790850",
+      "cited_by": 4,
+      "venue": "CHI Conference on Human Factors in Computing Systems",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "(Im)Paired Programming: Coding Agents Improve Productivity but Harm Understanding",
+      "year": 2026,
+      "url": "https://doi.org/10.48550/arxiv.2607.26375",
+      "cited_by": 0,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Two 2026 papers directly on AI automation transforming developer workflows and paired programming with agents.",
+    "fit": "strong",
+    "suggested_format": "recorded_talk",
+    "concerns": [
+     "no shared working hours with India: a recorded talk or an evening (IST) session"
+    ]
+   },
+   {
+    "name": "Matt Pocock",
+    "kind": "industry",
+    "role": "Developer and instructor",
+    "affiliation": "Matt Pocock",
+    "links": {
+     "page": "https://www.youtube.com/watch?v=-QFHIoCo-Ko"
+    },
+    "metrics": {},
+    "scores": {
+     "topical_fit": 0.8,
+     "teaching": 0.9,
+     "practical": 1.0,
+     "standing": 0.3,
+     "recency": 0.6,
+     "feasibility": 0.6
+    },
+    "total": 0.684,
+    "rank": 4,
+    "verified_identity": "named on https://www.youtube.com/watch?v=-QFHIoCo-Ko",
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "only one talk, no academic publications"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "talk",
+      "title": "Full Walkthrough: Workflow for AI Coding — Matt Pocock - YouTube",
+      "url": "https://www.youtube.com/watch?v=-QFHIoCo-Ko"
+     }
+    ],
+    "why": "YouTube walkthrough on AI coding workflow demonstrates practical industry experience.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": [
+     "only one talk, no academic publications"
+    ]
+   },
+   {
+    "name": "Qais Hweidi",
+    "kind": "industry",
+    "role": "open-source maintainer",
+    "links": {
+     "github": "https://github.com/Qais-Hweidi",
+     "website": "https://QaisHweidi.com"
+    },
+    "metrics": {
+     "followers": 13
+    },
+    "scores": {
+     "topical_fit": 0.738,
+     "teaching": 0.2,
+     "practical": 1.0,
+     "standing": 0.287,
+     "recency": 1.0,
+     "feasibility": 0.6
+    },
+    "total": 0.573,
+    "rank": 5,
+    "verified_identity": "GitHub account",
+    "latest_year": 2026,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "only a guide, not research"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "repo",
+      "title": "Qais-Hweidi/ai-assisted-development-guide (299 stars): Practical tips for effective AI-assisted software development",
+      "year": 2026,
+      "url": "https://github.com/Qais-Hweidi/ai-assisted-development-guide"
+     }
+    ],
+    "why": "Practical guide repository for AI-assisted development tips.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": [
+     "only a guide, not research"
+    ]
+   }
+  ],
+  "reserve": [],
+  "rejected": [
+   {
+    "name": "Olaproeis",
+    "why": [
+     "identity not confirmed in any authoritative source"
+    ]
+   },
+   {
+    "name": "Pradip Dhokare",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "too little research record yet (h-index 0 on OpenAlex, below 5)",
+     "AI fit check: weak"
+    ]
+   },
+   {
+    "name": "Kaushal Kumbhar",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "too little research record yet (h-index 0 on OpenAlex, below 5)",
+     "AI fit check: weak"
+    ]
+   },
+   {
+    "name": "Amritendu Mukherjee",
+    "why": [
+     "too little research record yet (h-index 2 on OpenAlex, below 5)"
+    ]
+   },
+   {
+    "name": "Vinish Kathuria",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.36 is below 0.5"
+    ]
+   },
+   {
+    "name": "Raghava Mutharaju",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.37 is below 0.5"
+    ]
+   },
+   {
+    "name": "Aman Motwani",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "too little research record yet (h-index 0 on OpenAlex, below 5)",
+     "AI fit check: weak"
+    ]
+   },
+   {
+    "name": "Sparsh Balodia",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "too little research record yet (h-index 0 on OpenAlex, below 5)",
+     "AI fit check: weak"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 37,
+   "assessed": 13,
+   "passed_checks": 5
+  }
+ },
+ "partial": {
+  "reason": "YouTube blocked transcript requests (from 22:43)",
+  "videos_without_transcript": [
+   "_C57BxSXRbU",
+   "DsxrXLSHpKA",
+   "dDkynerzV-Q"
+  ]
+ }
+}

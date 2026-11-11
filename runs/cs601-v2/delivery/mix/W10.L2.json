@@ -1,0 +1,221 @@
+{
+ "lecture_id": "W10.L2",
+ "topic": "Automated testing and evaluation mechanisms",
+ "minutes": 90,
+ "status": "proposed",
+ "preset": "slides_notebooklm",
+ "preset_by": "ai",
+ "course_style": "mix",
+ "parts": [
+  {
+   "component": "W10.L2.C1",
+   "title": "AI-native architectures and testing challenges",
+   "minutes": 10,
+   "kind": "concept",
+   "bloom": 2,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "Video 2.4/10 min; missing model drift, data‑driven behavior, test oracle; NotebookLM 40% coverage.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class",
+    "youtube_bridge"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.4,
+   "uncovered": [
+    "non-determinism",
+    "data dependency",
+    "test oracle problem"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W10.L2.C2",
+   "title": "Unit testing mechanisms for ML models",
+   "minutes": 10,
+   "kind": "mechanism",
+   "bloom": 3,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "No video; NotebookLM covers 20% terms, missing property‑based, metamorphic, behavior contracts.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.2,
+   "uncovered": [
+    "property-based testing",
+    "metamorphic testing",
+    "behavior contracts",
+    "test oracle"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W10.L2.C3",
+   "title": "Integration testing for AI pipelines",
+   "minutes": 15,
+   "kind": "mechanism",
+   "bloom": 3,
+   "way": "notebooklm",
+   "when": "in_class",
+   "rule": "R4",
+   "reason": "NotebookLM covers 60% terms; missing model versioning, schema evolution.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it."
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 15,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.6,
+   "uncovered": [
+    "model versioning",
+    "schema evolution"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W10.L2.C4",
+   "title": "Model quality evaluation metrics",
+   "minutes": 10,
+   "kind": "concept",
+   "bloom": 2,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "Video 1.6/10 min; missing fairness, robustness, calibration; NotebookLM 40% coverage.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class",
+    "youtube_bridge"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.4,
+   "uncovered": [
+    "fairness",
+    "robustness",
+    "disparate impact"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W10.L2.C5",
+   "title": "System-level evaluation metrics",
+   "minutes": 15,
+   "kind": "concept",
+   "bloom": 2,
+   "way": "notebooklm",
+   "when": "in_class",
+   "rule": "R4",
+   "reason": "NotebookLM covers 80% terms; only throughput missing.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it."
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 15,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.8,
+   "uncovered": [
+    "throughput"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W10.L2.C6",
+   "title": "Comparative framework for testing selection",
+   "minutes": 15,
+   "kind": "comparison",
+   "bloom": 4,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "Video 2.9/15 min; missing decision matrix, risk tolerance, resource constraints; NotebookLM 20% coverage.",
+   "alternative": null,
+   "allowed": [
+    "slides",
+    "in_class",
+    "youtube_bridge"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 15,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.2,
+   "uncovered": [
+    "decision matrix",
+    "risk assessment",
+    "resource constraints",
+    "trade‑off analysis"
+   ],
+   "simulation": null
+  }
+ ],
+ "recap_minutes": 5,
+ "quiz_minutes": 10,
+ "totals": {
+  "slides": 55.0,
+  "video_in_class": 20.0,
+  "video_pre_class": 0.0,
+  "notebooklm": 20.0,
+  "in_class": 0.0,
+  "simulation": 0.0,
+  "recap": 5,
+  "quiz": 10,
+  "video_share": 0.22
+ },
+ "prep_minutes": 75,
+ "checks": [
+  {
+   "code": "L-RESERVE",
+   "message": "the part plan was made before recap and quiz minutes were kept free; 15 min were taken from the longest parts"
+  }
+ ],
+ "note": "",
+ "proposed_by": "rules + D7",
+ "proposed_at": "2026-11-03 15:36:12",
+ "approved_at": "",
+ "approved_by": "",
+ "materials": {}
+}

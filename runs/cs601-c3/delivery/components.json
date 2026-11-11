@@ -1,0 +1,3120 @@
+{
+ "M1.T2": {
+  "topic_id": "M1.T2",
+  "topic": "Model context protocols and architecture",
+  "lectures": [
+   {
+    "lecture_id": "W01.L2",
+    "minutes": 60
+   },
+   {
+    "lecture_id": "W02.L1",
+    "minutes": 120
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W01.L2",
+    "title": "Motivation and Core Architecture of Model Context Protocols",
+    "teaches": "Explain why standardized context protocols are required to decouple LLM clients from disparate external tools and data sources. Students will understand the client-host-server topology and how it solves the M×N integration bottleneck compared to bespoke API integrations.",
+    "key_terms": [
+     "Model Context Protocol",
+     "Client-Host-Server topology",
+     "M×N integration problem",
+     "context injection",
+     "standardized interface"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO1"
+    ],
+    "minutes": 15,
+    "id": "W01.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W01.L2",
+    "title": "JSON-RPC Message Framing and Transport Layer Mechanisms",
+    "teaches": "Examine the transport mechanisms used to exchange messages between hosts and context servers, focusing on standard input/output (stdio) and Server-Sent Events (SSE) over HTTP. Students will identify how JSON-RPC 2.0 framing is used to structure requests, responses, and notifications across these transports.",
+    "key_terms": [
+     "JSON-RPC 2.0",
+     "stdio transport",
+     "Server-Sent Events (SSE)",
+     "framing",
+     "duplex communication"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO1"
+    ],
+    "minutes": 15,
+    "id": "W01.L2.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W01.L2",
+    "title": "Protocol Initialization Handshake and Capability Negotiation",
+    "teaches": "Trace the step-by-step lifecycle of protocol initialization, including the client 'initialize' request, server response, and initialized notification. Students will analyze how client and server negotiate supported capabilities such as tools, prompts, resources, and experimental extensions.",
+    "key_terms": [
+     "initialize handshake",
+     "capability negotiation",
+     "serverCapabilities",
+     "clientCapabilities",
+     "initialized notification"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO1"
+    ],
+    "minutes": 15,
+    "id": "W01.L2.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W01.L2",
+    "title": "Comparing Local stdio and Remote SSE Deployment Architectures",
+    "teaches": "Compare the operational and architectural trade-offs between local stdio subprocesses and remote SSE network services. Students will evaluate factors such as local process isolation, network latency, authentication challenges, and persistence requirements.",
+    "key_terms": [
+     "process lifecycle",
+     "remote execution",
+     "local subprocess",
+     "network latency",
+     "bearer authentication"
+    ],
+    "kind": "comparison",
+    "bloom": 4,
+    "lo_ids": [
+     "CO1.LO1"
+    ],
+    "minutes": 15,
+    "id": "W01.L2.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W02.L1",
+    "title": "Recap of Protocol Lifecycles and Core Primitives",
+    "teaches": "Summarize the JSON-RPC initialization handshake and introduce the three core MCP primitives: resources, prompts, and tools. Students will distinguish between passive data provision (resources) and dynamic model operations (tools).",
+    "key_terms": [
+     "primitives",
+     "passive context",
+     "dynamic execution",
+     "protocol state",
+     "resources vs tools"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO1"
+    ],
+    "minutes": 15,
+    "id": "W02.L1.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W02.L1",
+    "title": "Defining Resources and Resource Templates in Context Schemas",
+    "teaches": "Explain how context servers expose data via URI schemes and parameterized resource templates. Students will identify the schema fields used to define static text/binary content, MIME types, and dynamic URI-based subscription updates.",
+    "key_terms": [
+     "resource templates",
+     "URI scheme",
+     "MIME type",
+     "resource subscriptions",
+     "readResource"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO1"
+    ],
+    "minutes": 20,
+    "id": "W02.L1.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W02.L1",
+    "title": "Tool Definitions and Dynamic Execution Callbacks",
+    "teaches": "Examine how servers declare executable tools using JSON Schema for input argument validation. Students will follow the flow from tool discovery (`tools/list`) through host invocation (`tools/call`) to returning structured execution results or errors.",
+    "key_terms": [
+     "tools/list",
+     "tools/call",
+     "inputSchema",
+     "JSON Schema validation",
+     "callToolResult"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO1"
+    ],
+    "minutes": 20,
+    "id": "W02.L1.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W02.L1",
+    "title": "Developer Workspace Configuration Schemas and Server Registration",
+    "teaches": "Break down the structure of workspace configuration files, such as `mcpServers` sections in desktop or IDE configuration files. Students will identify mandatory fields including command, args, env variables, and transport settings required to launch context servers.",
+    "key_terms": [
+     "mcpServers",
+     "workspace configuration",
+     "environment variables",
+     "executable command",
+     "schema validation"
+    ],
+    "kind": "concept",
+    "bloom": 1,
+    "lo_ids": [
+     "CO1.LO1"
+    ],
+    "minutes": 20,
+    "id": "W02.L1.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W02.L1",
+    "title": "Security Boundaries, Environment Isolation, and Access Control",
+    "teaches": "Analyze security risks associated with granting language models access to local files and CLI execution via context protocols. Students will identify mitigation strategies, including sandboxed subprocess execution, prompt injection defense in tool outputs, and explicit user-in-the-loop approvals.",
+    "key_terms": [
+     "least privilege",
+     "user-in-the-loop",
+     "prompt injection",
+     "subprocess sandboxing",
+     "credential isolation"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO1"
+    ],
+    "minutes": 15,
+    "id": "W02.L1.C5",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W02.L1",
+    "title": "Inspecting Configuration Templates for Model Context Protocols",
+    "teaches": "Walk through a supplied developer workspace template to identify configured context servers, missing schema fields, and transport definitions. Students will pinpoint configuration discrepancies such as misconfigured PATHs, missing environment variables, or schema type mismatches.",
+    "key_terms": [
+     "workspace template",
+     "schema verification",
+     "configuration audit",
+     "server declaration",
+     "parameter mapping"
+    ],
+    "kind": "worked_example",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO1"
+    ],
+    "minutes": 20,
+    "id": "W02.L1.C6",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W02.L1",
+    "title": "Diagnosing Protocol Connection Failures and Logging Workflows",
+    "teaches": "Demonstrate how to detect and trace common protocol runtime errors using client diagnostic logs and server error codes. Students will evaluate stderr streams, malformed JSON-RPC payloads, and unhandled transport disconnects.",
+    "key_terms": [
+     "stderr logging",
+     "JSON-RPC error codes",
+     "transport disconnect",
+     "inspector tool",
+     "runtime diagnostics"
+    ],
+    "kind": "demo",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO1"
+    ],
+    "minutes": 10,
+    "id": "W02.L1.C7",
+    "in_class": false
+   }
+  ],
+  "via": "AI (D5)",
+  "problems": []
+ },
+ "M1.T1": {
+  "topic_id": "M1.T1",
+  "topic": "Developer workflows and AI-assisted coding",
+  "lectures": [
+   {
+    "lecture_id": "W01.L1",
+    "minutes": 120
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W01.L1",
+    "title": "Evolution from Traditional to AI-Augmented Developer Workflows",
+    "teaches": "Understand how software development lifecycles transition from manual writing and manual searching to AI-augmented authoring. Identify the shift from linear edit-compile-debug loops to continuous speculative drafting and prompt refinement. Explain the fundamental expectations and boundaries of integrating language models into active development environments.",
+    "key_terms": [
+     "developer workflow",
+     "speculative drafting",
+     "edit-compile-debug",
+     "AI-assisted coding",
+     "augmented IDE"
+    ],
+    "kind": "concept",
+    "bloom": 1,
+    "lo_ids": [
+     "CO1.LO3"
+    ],
+    "minutes": 15,
+    "id": "W01.L1.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W01.L1",
+    "title": "Core Architectural Components of Modern AI Code Assistants",
+    "teaches": "Identify the primary software building blocks connecting an editor to an underlying generative model. Detail how client-side plugins gather telemetry, local buffers, and cursor positions before transmitting them through an orchestrator to an inference engine. Recognize the responsibilities of the local extension versus remote inference endpoints.",
+    "key_terms": [
+     "IDE extension",
+     "inference client",
+     "orchestrator",
+     "telemetry",
+     "local buffer"
+    ],
+    "kind": "mechanism",
+    "bloom": 1,
+    "lo_ids": [
+     "CO1.LO3"
+    ],
+    "minutes": 15,
+    "id": "W01.L1.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W01.L1",
+    "title": "Context Retrieval and Window Slicing in AI Assistants",
+    "teaches": "Understand how AI assistants extract active file snippets, open tabs, and recent terminal outputs to populate an inference prompt. Examine how context budgets limit input tokens and how sliding windows prioritize lines surrounding the current cursor position. Describe the trade-offs between local context breadth and token latency during autocomplete generation.",
+    "key_terms": [
+     "context window",
+     "prompt construction",
+     "cursor proximity",
+     "token budget",
+     "sliding window"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO3"
+    ],
+    "minutes": 20,
+    "id": "W01.L1.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W01.L1",
+    "title": "Contextualisation Guidelines for Scoped Code Generation Tasks",
+    "teaches": "Identify and apply core contextualisation guidelines to constrain AI prompts for short coding items such as utility functions, docstrings, and unit tests. Explain why providing explicit type signatures, interfaces, and minimal reproducible input-output examples produces deterministic code. Distinguish between over-contextualised prompts that exhaust token limits and under-contextualised prompts that cause generic completions.",
+    "key_terms": [
+     "contextualisation guidelines",
+     "scoped prompt",
+     "type signatures",
+     "short items",
+     "few-shot examples"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO3"
+    ],
+    "minutes": 15,
+    "id": "W01.L1.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W01.L1",
+    "title": "Interaction Modalities: Ghost Text, Chat, and Inline Edits",
+    "teaches": "Compare the operational patterns of in-line ghost-text autocompletion, docked conversational sidebars, and targeted in-line refactoring. Analyze when a developer should rely on passive inline completion versus active conversational elicitation for complex logic. Identify the cognitive load and interruption costs associated with each interaction modality.",
+    "key_terms": [
+     "ghost text",
+     "inline completion",
+     "docked chat",
+     "inline refactoring",
+     "interaction modality"
+    ],
+    "kind": "comparison",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO3"
+    ],
+    "minutes": 15,
+    "id": "W01.L1.C5",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W01.L1",
+    "title": "Demonstration of Context Feeding in an AI-Assisted IDE",
+    "teaches": "Observe how an AI coding assistant dynamically alters suggested code based on open editor tabs, language server protocol (LSP) diagnostics, and active comments. Follow the step-by-step transformation of a prompt payload when new files are opened or relevant interfaces are imported. Recognize how real-time IDE state changes directly manipulate model generation outcomes.",
+    "key_terms": [
+     "LSP integration",
+     "ambient context",
+     "prompt payload",
+     "code completion demo",
+     "editor state"
+    ],
+    "kind": "demo",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO3"
+    ],
+    "minutes": 15,
+    "id": "W01.L1.C6",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W01.L1",
+    "title": "Common Failure Modes: Hallucination and Stale Context in Workflows",
+    "teaches": "Examine concrete examples where AI assistants hallucinate deprecated API methods, fabricate package dependencies, or carry stale context across branch switches. Analyze how incomplete context retrieval leads to syntactically valid yet logically flawed code snippets. Identify the risks of silent degradation in code quality when developers accept completions without manual inspection.",
+    "key_terms": [
+     "hallucination",
+     "stale context",
+     "API hallucination",
+     "silent degradation",
+     "context poisoning"
+    ],
+    "kind": "case_study",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO3"
+    ],
+    "minutes": 10,
+    "id": "W01.L1.C7",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W01.L1",
+    "title": "Verification Strategies and Quality Gates for AI-Assisted Code",
+    "teaches": "Evaluate verification techniques necessary to safely assimilate AI-generated snippets into professional codebases. Discuss the role of automated linting, localized test suites, and strict human review protocols as immediate guardrails. Formulate guidelines for establishing developer responsibility when committing code drafted with generative models.",
+    "key_terms": [
+     "verification strategies",
+     "quality gates",
+     "automated linting",
+     "human-in-the-loop",
+     "code review"
+    ],
+    "kind": "discussion",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO3"
+    ],
+    "minutes": 15,
+    "id": "W01.L1.C8",
+    "in_class": true
+   }
+  ],
+  "via": "AI (D5)",
+  "problems": []
+ },
+ "M2.T1": {
+  "topic_id": "M2.T1",
+  "topic": "Coding agents and context engineering",
+  "lectures": [
+   {
+    "lecture_id": "W02.L2",
+    "minutes": 60
+   },
+   {
+    "lecture_id": "W03.L1",
+    "minutes": 60
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W02.L2",
+    "title": "Anatomy of coding agent workspaces and execution lifecycle",
+    "teaches": "Students will understand the core architectural layers of an autonomous coding agent workspace, including environment virtualization, state tracking, and scratchpad management. They will trace how an agent transitions from prompt ingestion to planning, tool dispatch, and observation intake.",
+    "key_terms": [
+     "coding agent",
+     "agent workspace",
+     "execution lifecycle",
+     "state tracking",
+     "observation loop",
+     "scratchpad"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W02.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W02.L2",
+    "title": "Context engineering strategies for constrained context windows",
+    "teaches": "Students will learn context engineering mechanisms such as selective file tree pruning, sliding context windows, and dynamic relevance filtering. They will evaluate trade-offs between full repository indexing and lightweight context token budgets to prevent model distraction.",
+    "key_terms": [
+     "context engineering",
+     "context window",
+     "token budget",
+     "relevance filtering",
+     "context compaction",
+     "prompt caching"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W02.L2.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W02.L2",
+    "title": "Structuring MCP tool schemas and workspace descriptors",
+    "teaches": "Students will learn how to structure tool definitions using Model Context Protocol (MCP) JSON schemas so agents can discover and invoke workspace tools cleanly. They will specify required arguments, return payloads, and environment permissions according to MCP interface specifications.",
+    "key_terms": [
+     "Model Context Protocol",
+     "tool schema",
+     "JSON-RPC",
+     "workspace descriptor",
+     "tool discovery",
+     "parameter validation"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W02.L2.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W02.L2",
+    "title": "Evaluating context pollution and tool discovery trade-offs",
+    "teaches": "Students will analyse the failure modes caused by context pollution when exposing too many MCP tools or verbose tool definitions to a coding agent. They will compare lazy tool registration against global tool injection in terms of latency, token cost, and hallucinated invocations.",
+    "key_terms": [
+     "context pollution",
+     "lazy tool registration",
+     "hallucinated invocation",
+     "token overhead",
+     "tool selection accuracy"
+    ],
+    "kind": "comparison",
+    "bloom": 4,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W02.L2.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W03.L1",
+    "title": "Static analysis constraints on agent tool configurations",
+    "teaches": "Students will identify common static analyser warnings and strict schema violations that arise when registering MCP server endpoints. They will review rule sets for configuration linters, strict typing of input parameters, and required metadata tags.",
+    "key_terms": [
+     "static analyser",
+     "schema validation",
+     "linter warnings",
+     "strict typing",
+     "manifest configuration"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 10,
+    "id": "W03.L1.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W03.L1",
+    "title": "Configuring custom MCP tool manifests and execution environments",
+    "teaches": "Students will write and configure MCP server manifest files to expose custom tools (such as git, linters, or test runners) directly inside an agent workspace. They will configure environment variables, working directory permissions, and execution sandboxes to ensure deterministic agent actions.",
+    "key_terms": [
+     "manifest configuration",
+     "sandboxed execution",
+     "environment variables",
+     "stdio transport",
+     "custom tools",
+     "MCP server"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 20,
+    "id": "W03.L1.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W03.L1",
+    "title": "Validating workspace tool configurations against test suites",
+    "teaches": "Students will walk through setting up and running public integration test suites and static analysis tools against an MCP-integrated agent workspace. They will remediate schema mismatches and failing integration tests until the agent configuration passes cleanly without warnings.",
+    "key_terms": [
+     "test harness",
+     "public tests",
+     "static analysis checks",
+     "remediation",
+     "integration testing",
+     "tool verification"
+    ],
+    "kind": "worked_example",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 20,
+    "id": "W03.L1.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W03.L1",
+    "title": "Diagnosing runtime tool configuration failures in agent workflows",
+    "teaches": "Students will examine real-world case studies where subtle tool configuration errors—such as malformed error responses or improper argument defaults—caused an agent to enter infinite loops or crash. They will identify the root cause in the tool manifest and describe how robust configuration prevents runtime divergence.",
+    "key_terms": [
+     "runtime failure",
+     "divergence",
+     "infinite loop",
+     "error payload",
+     "root cause analysis"
+    ],
+    "kind": "case_study",
+    "bloom": 4,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 10,
+    "id": "W03.L1.C4",
+    "in_class": false
+   }
+  ],
+  "via": "AI (D5)",
+  "problems": []
+ },
+ "M2.T2": {
+  "topic_id": "M2.T2",
+  "topic": "Custom tool integrations using model context protocols",
+  "lectures": [
+   {
+    "lecture_id": "W03.L2",
+    "minutes": 120
+   },
+   {
+    "lecture_id": "W04.L1",
+    "minutes": 30
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W03.L2",
+    "title": "Architecture of Model Context Protocol (MCP) clients and servers",
+    "teaches": "Students will understand the client-server architecture of the Model Context Protocol (MCP) and how LLM agent workspaces communicate with external tools. They will identify the roles of host applications, MCP clients, and MCP servers during session initialization and tool exposure.",
+    "key_terms": [
+     "Model Context Protocol",
+     "MCP Client",
+     "MCP Server",
+     "Host Application",
+     "Transport Layer",
+     "Stdio Transport"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W03.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W03.L2",
+    "title": "JSON-RPC 2.0 protocol format for tool discovery and calls",
+    "teaches": "Students will learn how JSON-RPC 2.0 messages are structured for tools/list and tools/call requests in MCP. They will examine request IDs, method headers, parameter payloads, and response objects transmitted over standard streams.",
+    "key_terms": [
+     "JSON-RPC 2.0",
+     "tools/list",
+     "tools/call",
+     "Request Envelope",
+     "Response Payload",
+     "Stdio Messaging"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W03.L2.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W03.L2",
+    "title": "Defining strict input JSON schemas for MCP tools",
+    "teaches": "Students will learn how to write precise JSON Schema definitions for tool parameters to guide LLM tool calling. They will specify required fields, parameter data types, descriptions, and validation constraints that prevent ambiguous agent invocations.",
+    "key_terms": [
+     "JSON Schema",
+     "inputSchema",
+     "Type Constraints",
+     "Required Properties",
+     "Parameter Descriptions",
+     "Tool Metadata"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W03.L2.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W03.L2",
+    "title": "Implementing an MCP server using an official SDK",
+    "teaches": "Students will walk through building a lightweight MCP server using an official SDK. They will observe how decorated functions are exposed as callable tools and how incoming JSON arguments are parsed automatically.",
+    "key_terms": [
+     "MCP SDK",
+     "Server Initialization",
+     "Tool Handler",
+     "Decorator Syntax",
+     "Async Execution"
+    ],
+    "kind": "worked_example",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 20,
+    "id": "W03.L2.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W03.L2",
+    "title": "Activity: Writing and running a custom MCP server tool",
+    "teaches": "Students will write a custom tool function on an MCP server that executes local file or system operations and returns formatted content blocks. They will test the server execution using standard input streams to verify correct responses.",
+    "key_terms": [
+     "Tool Implementation",
+     "TextContent",
+     "CallToolResult",
+     "Stdio Execution",
+     "Local Tool Testing"
+    ],
+    "kind": "activity",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 25,
+    "id": "W03.L2.C5",
+    "in_class": true
+   },
+   {
+    "lecture_id": "W03.L2",
+    "title": "Configuring workspace settings to discover custom MCP servers",
+    "teaches": "Students will configure an agent workspace JSON configuration file to register their custom server executable and command-line arguments. They will verify that the agent successfully discovers and surfaces the new tool capabilities.",
+    "key_terms": [
+     "mcpServers Config",
+     "Workspace Configuration",
+     "Executable Path",
+     "Environment Variables",
+     "Server Discovery"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W03.L2.C6",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W03.L2",
+    "title": "Handling execution errors and returning structured MCP errors",
+    "teaches": "Students will learn how to catch internal tool execution failures and map them to structured MCP error responses using the isError flag. They will distinguish between runtime exceptions inside tool execution and protocol-level transport failures.",
+    "key_terms": [
+     "isError Flag",
+     "CallToolResult",
+     "Structured Error Messages",
+     "Exception Handling",
+     "Protocol Errors"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W03.L2.C7",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W04.L1",
+    "title": "Static analysis and linter rules for safe MCP server code",
+    "teaches": "Students will configure static analysis tools to validate type safety, async patterns, and error handling in custom MCP server implementations. They will identify common static analyser warnings related to untyped JSON schema bindings and unhandled promises.",
+    "key_terms": [
+     "Static Analysis",
+     "Type Checking",
+     "Linter Rules",
+     "Async Warnings",
+     "Strict Type Annotations"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W04.L1.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W04.L1",
+    "title": "Activity: Passing automated MCP tool test suites without warnings",
+    "teaches": "Students will run integration test suites against their configured MCP tool integration in an agent workspace environment. They will fix failing test cases and resolve all static analysis warnings to ensure production-grade tool configuration.",
+    "key_terms": [
+     "Integration Tests",
+     "Test Harness",
+     "Zero Warnings",
+     "Public Test Suite",
+     "Tool Validation"
+    ],
+    "kind": "activity",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W04.L1.C2",
+    "in_class": true
+   }
+  ],
+  "via": "AI (D5)",
+  "problems": []
+ },
+ "M3.T1": {
+  "topic_id": "M3.T1",
+  "topic": "Standards and specification guidelines for use cases",
+  "lectures": [
+   {
+    "lecture_id": "W04.L2",
+    "minutes": 120
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W04.L2",
+    "title": "The Need for Standardized Use Case Specifications",
+    "teaches": "Students will understand why unstructured product descriptions lead to scope creep and misinterpretation in software projects. They will identify standard use case components necessary for transforming raw ideas into precise functional specifications.",
+    "key_terms": [
+     "unstructured product description",
+     "use case specification",
+     "scope creep",
+     "system requirements",
+     "ISO/IEC/IEEE 29148"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO2.LO3"
+    ],
+    "minutes": 10,
+    "id": "W04.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W04.L2",
+    "title": "Defining System Boundaries and Primary vs. Secondary Actors",
+    "teaches": "Students will learn how to construct clear system boundaries that separate internal automated behaviors from external user actions. They will classify primary actors, secondary supporting actors, and external third-party systems from informal text.",
+    "key_terms": [
+     "system boundary",
+     "primary actor",
+     "secondary actor",
+     "external system",
+     "scope definition"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO2.LO3"
+    ],
+    "minutes": 15,
+    "id": "W04.L2.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W04.L2",
+    "title": "Standard Templates for Brief and Fully Dressed Use Cases",
+    "teaches": "Students will compare standard use case templates, including Cockburn's casual and fully dressed formats. They will learn the mandatory fields required to document a use case brief concisely and unambiguously.",
+    "key_terms": [
+     "Cockburn template",
+     "brief format",
+     "fully dressed format",
+     "use case goal",
+     "level of detail"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO2.LO3"
+    ],
+    "minutes": 15,
+    "id": "W04.L2.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W04.L2",
+    "title": "Extracting Use Cases from Unstructured Narrative Text",
+    "teaches": "Students will apply a step-by-step heuristic to extract actor-goal pairs from informal user feedback and feature requests. They will learn how to filter out UI implementation details while retaining core functional requirements.",
+    "key_terms": [
+     "actor-goal list",
+     "textual parsing",
+     "heuristics",
+     "domain interaction",
+     "narrative extraction"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO3"
+    ],
+    "minutes": 20,
+    "id": "W04.L2.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W04.L2",
+    "title": "Formulating Main Success Scenarios with Strict Writing Guidelines",
+    "teaches": "Students will learn standard grammatical rules for writing Main Success Scenario steps, such as using subject-verb-object structure, active voice, and explicit actor naming. They will convert informal step descriptions into standardized, sequential action steps.",
+    "key_terms": [
+     "Main Success Scenario",
+     "active voice",
+     "Subject-Verb-Object",
+     "step sequencing",
+     "specification guidelines"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO3"
+    ],
+    "minutes": 15,
+    "id": "W04.L2.C5",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W04.L2",
+    "title": "Worked Example: Converting a Raw Feature Prompt to Use Case Outlines",
+    "teaches": "Students will watch the step-by-step transformation of a multi-paragraph, messy product description for an e-commerce checkout into formal use case outlines. They will observe how to resolve ambiguous phrases, split compound goals, and establish system boundaries explicitly.",
+    "key_terms": [
+     "worked example",
+     "raw description",
+     "use case outline",
+     "boundary clarification",
+     "goal splitting"
+    ],
+    "kind": "worked_example",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO3"
+    ],
+    "minutes": 20,
+    "id": "W04.L2.C6",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W04.L2",
+    "title": "Specifying Preconditions, Guarantees, and Extension Branches",
+    "teaches": "Students will learn how to formalize entry preconditions, minimal and success guarantees, and exception handling branches in standard use case documentation. They will evaluate trade-offs between detail level and specification maintainability.",
+    "key_terms": [
+     "precondition",
+     "minimal guarantee",
+     "success guarantee",
+     "extension branch",
+     "exception flow"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO2.LO3"
+    ],
+    "minutes": 15,
+    "id": "W04.L2.C7",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W04.L2",
+    "title": "Evaluating Use Case Quality and Completeness Checklist",
+    "teaches": "Students will analyze sample use case outlines against a standard quality checklist to detect boundary leaks, missing actors, and untestable steps. They will discuss how standardized specifications reduce downstream errors in AI-assisted development.",
+    "key_terms": [
+     "quality checklist",
+     "testability",
+     "boundary leak",
+     "ambiguity detection",
+     "specification review"
+    ],
+    "kind": "discussion",
+    "bloom": 4,
+    "lo_ids": [
+     "CO2.LO3"
+    ],
+    "minutes": 10,
+    "id": "W04.L2.C8",
+    "in_class": true
+   }
+  ],
+  "via": "AI (D5)",
+  "problems": []
+ },
+ "M3.T2": {
+  "topic_id": "M3.T2",
+  "topic": "Software requirements and requirements engineering",
+  "lectures": [
+   {
+    "lecture_id": "W04.L3",
+    "minutes": 30
+   },
+   {
+    "lecture_id": "W05.L1",
+    "minutes": 150
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W04.L3",
+    "title": "Recap use case standards and spec guidelines",
+    "teaches": "Students review the IEEE 830 and UML use case standards, and the spec-driven development guidelines for structuring requirements. They identify the mandatory elements of a use case specification.",
+    "key_terms": [
+     "IEEE 830",
+     "UML use case",
+     "spec-driven guidelines",
+     "requirements structure",
+     "mandatory elements"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO2.LO1"
+    ],
+    "minutes": 15,
+    "id": "W04.L3.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W04.L3",
+    "title": "Identify actors and system boundaries",
+    "teaches": "Students learn a step‑by‑step method to extract actors, primary and secondary, and to draw the system boundary from a raw product description. They practice distinguishing internal vs. external actors.",
+    "key_terms": [
+     "actor identification",
+     "primary actor",
+     "secondary actor",
+     "system boundary",
+     "product description"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO1"
+    ],
+    "minutes": 15,
+    "id": "W04.L3.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W05.L1",
+    "title": "Extract functional requirements from description",
+    "teaches": "Using a worked example, students parse an unstructured product description to list functional requirements, grouping them by user goal. They apply a template to capture preconditions, postconditions, and triggers.",
+    "key_terms": [
+     "functional requirement",
+     "user goal",
+     "precondition",
+     "postcondition",
+     "trigger",
+     "template"
+    ],
+    "kind": "worked_example",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO1"
+    ],
+    "minutes": 15,
+    "id": "W05.L1.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W05.L1",
+    "title": "Write use case main success scenario",
+    "teaches": "Students construct the main success scenario for a use case, writing numbered steps that show actor–system interactions. They ensure each step is atomic, observable, and follows the spec guidelines.",
+    "key_terms": [
+     "main success scenario",
+     "actor–system interaction",
+     "atomic step",
+     "observable",
+     "spec guidelines"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO1"
+    ],
+    "minutes": 15,
+    "id": "W05.L1.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W05.L1",
+    "title": "Write use case extensions and alternate flows",
+    "teaches": "Students extend the main scenario with extension points, alternate flows, and exception handling, using the same numbering scheme. They learn to reference extension conditions and maintain traceability.",
+    "key_terms": [
+     "extension point",
+     "alternate flow",
+     "exception handling",
+     "traceability",
+     "numbering scheme"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO1"
+    ],
+    "minutes": 15,
+    "id": "W05.L1.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W05.L1",
+    "title": "Create system boundary context diagram",
+    "teaches": "In a live demo, the instructor builds a UML context diagram showing the system, actors, and external systems. Students see how the diagram validates the actor list and boundary decisions.",
+    "key_terms": [
+     "context diagram",
+     "UML",
+     "system boundary",
+     "external system",
+     "actor validation"
+    ],
+    "kind": "demo",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO1"
+    ],
+    "minutes": 15,
+    "id": "W05.L1.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W05.L1",
+    "title": "Prioritize use cases with MoSCoW",
+    "teaches": "Students compare MoSCoW, business value, and risk‑based prioritization techniques on a sample use case set. They decide which use cases belong to Must, Should, Could, Won't for the first release.",
+    "key_terms": [
+     "MoSCoW",
+     "business value",
+     "risk‑based",
+     "prioritization",
+     "release planning"
+    ],
+    "kind": "comparison",
+    "bloom": 4,
+    "lo_ids": [
+     "CO2.LO1"
+    ],
+    "minutes": 15,
+    "id": "W05.L1.C5",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W05.L1",
+    "title": "Validate use cases against spec guidelines",
+    "teaches": "Through guided discussion, students apply a checklist derived from spec‑driven guidelines to assess completeness, consistency, and testability of their use cases. They identify missing preconditions and ambiguous steps.",
+    "key_terms": [
+     "checklist",
+     "completeness",
+     "consistency",
+     "testability",
+     "ambiguity"
+    ],
+    "kind": "discussion",
+    "bloom": 4,
+    "lo_ids": [
+     "CO2.LO1"
+    ],
+    "minutes": 15,
+    "id": "W05.L1.C6",
+    "in_class": true
+   },
+   {
+    "lecture_id": "W05.L1",
+    "title": "Map use cases to spec-driven framework artifacts",
+    "teaches": "Students learn how each use case maps to downstream artifacts such as feature files, acceptance criteria, and test cases in a spec‑driven development framework. They trace a use case through the pipeline.",
+    "key_terms": [
+     "feature file",
+     "acceptance criteria",
+     "test case",
+     "traceability",
+     "pipeline"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO2.LO1"
+    ],
+    "minutes": 15,
+    "id": "W05.L1.C7",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W05.L1",
+    "title": "Case study: product description to use case model",
+    "teaches": "A full case study walks through transforming a realistic product description into a complete use case model, including actors, boundary, scenarios, and prioritization. Students analyse each transformation decision.",
+    "key_terms": [
+     "case study",
+     "transformation",
+     "use case model",
+     "decision analysis",
+     "realistic example"
+    ],
+    "kind": "case_study",
+    "bloom": 4,
+    "lo_ids": [
+     "CO2.LO1"
+    ],
+    "minutes": 15,
+    "id": "W05.L1.C8",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W05.L1",
+    "title": "Common pitfalls and quality checklist",
+    "teaches": "Discussion of frequent errors such as actor overload, vague steps, and missing extensions. Students use a quality checklist to review a peer's use case specification and suggest improvements.",
+    "key_terms": [
+     "actor overload",
+     "vague step",
+     "missing extension",
+     "quality checklist",
+     "peer review"
+    ],
+    "kind": "discussion",
+    "bloom": 4,
+    "lo_ids": [
+     "CO2.LO1"
+    ],
+    "minutes": 15,
+    "id": "W05.L1.C9",
+    "in_class": true
+   },
+   {
+    "lecture_id": "W05.L1",
+    "title": "Summary and transition to spec-driven frameworks",
+    "teaches": "Recap of the use case engineering process, emphasizing how the produced artifacts feed into spec‑driven development frameworks. Students outline next steps for automated test generation.",
+    "key_terms": [
+     "recap",
+     "spec‑driven framework",
+     "automated test generation",
+     "next steps",
+     "artifact flow"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO2.LO1"
+    ],
+    "minutes": 15,
+    "id": "W05.L1.C10",
+    "in_class": false
+   }
+  ],
+  "via": "AI (D5)",
+  "problems": []
+ },
+ "M4.T1": {
+  "topic_id": "M4.T1",
+  "topic": "Spec-driven development frameworks",
+  "lectures": [
+   {
+    "lecture_id": "W05.L2",
+    "minutes": 30
+   },
+   {
+    "lecture_id": "W06.L1",
+    "minutes": 90
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W05.L2",
+    "title": "Foundations of Spec-Driven Development Frameworks",
+    "teaches": "Students will understand the core workflow of spec-driven development (SDD) where formal specifications serve as the single source of truth prior to implementation. They will analyze how SDD differs from traditional Test-Driven Development (TDD) by decoupling interface contracts from language-specific test code. Students will also learn how LLMs and static analyzers leverage these frameworks to enforce architectural consistency.",
+    "key_terms": [
+     "Spec-Driven Development",
+     "Executable Specification",
+     "Interface Contract",
+     "Single Source of Truth",
+     "API-First"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 15,
+    "id": "W05.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W05.L2",
+    "title": "Anatomy of Executable Specifications and Schemas",
+    "teaches": "Students will examine the internal structural requirements of executable specifications using tools like OpenAPI, JSON Schema, or TypeSpec. They will learn how type definitions, input constraints, and response schemas define public interface signatures. Students will identify how machine-readable constraints enable automated contract validation before any code is generated.",
+    "key_terms": [
+     "JSON Schema",
+     "TypeSpec",
+     "Preconditions",
+     "Postconditions",
+     "Contract Validation",
+     "Schema Validation"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 15,
+    "id": "W05.L2.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W06.L1",
+    "title": "Mapping Natural Language Requirements to Interface Contracts",
+    "teaches": "Students will learn how to systematically convert informal, natural-language module requirements into structured interface contracts. The instructor demonstrates transforming ambiguous functional statements into unambiguous method signatures with specific parameters, return types, and exceptions. Students evaluate how precise specification bounds prevent runtime errors during code generation.",
+    "key_terms": [
+     "Requirement Decomposition",
+     "Interface Signature",
+     "Precondition Mapping",
+     "Postcondition Mapping",
+     "Type Annotations"
+    ],
+    "kind": "worked_example",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 15,
+    "id": "W06.L1.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W06.L1",
+    "title": "Specifying Preconditions, Postconditions, and Invariants",
+    "teaches": "Students will formulate explicit invariants, preconditions, and postconditions for every public method in a target module using contract specification frameworks. They will construct concrete validation constraints for input parameters and standard return states. This ensures AI codegen tools generate implementation logic that strictly adheres to the specified contract.",
+    "key_terms": [
+     "Design by Contract",
+     "Precondition",
+     "Postcondition",
+     "Class Invariant",
+     "Boundary Conditions",
+     "Validation Rules"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 20,
+    "id": "W06.L1.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W06.L1",
+    "title": "Automated Test Generation from Executable Specifications",
+    "teaches": "Students will observe how spec-driven frameworks automatically synthesize property-based tests and mock servers directly from specification definitions. The demonstration shows running executable specs against sample code to verify whether public methods conform to defined constraints. Students learn to interpret automated test failures resulting from specification violations.",
+    "key_terms": [
+     "Contract Testing",
+     "Property-Based Testing",
+     "Mock Generation",
+     "Executable Specs",
+     "Compliance Verification"
+    ],
+    "kind": "demo",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 20,
+    "id": "W06.L1.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W06.L1",
+    "title": "Translating Complex Module Requirements into Executable Specifications",
+    "teaches": "Students will follow a step-by-step translation of a multi-method business module's requirements into a complete, executable specification file. The worked example walks through defining request validation, error states, and public interface expectations for each method. Students see how to verify that every requirement maps directly to an executable check.",
+    "key_terms": [
+     "Module Requirements",
+     "Specification Synthesis",
+     "Public Method Coverage",
+     "Error State Specification",
+     "Schema Compliance"
+    ],
+    "kind": "worked_example",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 20,
+    "id": "W06.L1.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W06.L1",
+    "title": "Mitigating Spec Drift and Handling Edge Cases",
+    "teaches": "Students will analyze techniques for maintaining synchronization between evolving executable specifications and generated code over time. They will evaluate trade-offs in spec granularity, identifying when over-specifying hinders LLM code generation flexibility versus under-specifying causing contract breaches. Students discuss strategies to handle edge-case error scenarios within the spec framework.",
+    "key_terms": [
+     "Spec Drift",
+     "Specification Granularity",
+     "Edge Case Handling",
+     "Schema Evolution",
+     "Contract Drift"
+    ],
+    "kind": "discussion",
+    "bloom": 4,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 15,
+    "id": "W06.L1.C5",
+    "in_class": true
+   }
+  ],
+  "via": "AI (D5)",
+  "problems": []
+ },
+ "M4.T2": {
+  "topic_id": "M4.T2",
+  "topic": "Requirements to executable specifications and code generation",
+  "lectures": [
+   {
+    "lecture_id": "W06.L2",
+    "minutes": 90
+   },
+   {
+    "lecture_id": "W07.L1",
+    "minutes": 60
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W06.L2",
+    "title": "Deconstructing Requirements into Public Method Contracts",
+    "teaches": "Students will learn how to analyze informal requirements to identify public module methods, parameter contracts, and class invariants. They will establish strict preconditions, postconditions, and interface signatures needed before writing formal specifications.",
+    "key_terms": [
+     "interface contract",
+     "precondition",
+     "postcondition",
+     "class invariant",
+     "method signature"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 15,
+    "id": "W06.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W06.L2",
+    "title": "Structuring Executable Specifications in Spec-Driven Frameworks",
+    "teaches": "Students will learn the concrete syntax and structural conventions of spec-driven frameworks such as pytest-bdd or Behave. They will map high-level requirement statements into executable Given-When-Then scenario definitions tied directly to public API hooks.",
+    "key_terms": [
+     "executable specification",
+     "Gherkin",
+     "pytest-bdd",
+     "step definitions",
+     "scenario outline"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 15,
+    "id": "W06.L2.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W06.L2",
+    "title": "Step-by-Step Translation of Requirements to Executable Specs",
+    "teaches": "Students will follow a complete worked example translating a payment-processing requirement brief into an automated executable specification suite. They will observe how each requirement constraint is systematically formalized into assertion-backed test harnesses that cover all public methods.",
+    "key_terms": [
+     "step implementation",
+     "assertion harness",
+     "boundary specification",
+     "public API verification"
+    ],
+    "kind": "worked_example",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 20,
+    "id": "W06.L2.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W06.L2",
+    "title": "Prompt Patterns for Generating Executable Specifications",
+    "teaches": "Students will learn effective prompting architectures to instruct LLMs to synthesize spec-driven test suites from unstructured requirements documents. They will configure system instructions and interface schema definitions to eliminate hallucinations in method signatures and types.",
+    "key_terms": [
+     "prompt engineering",
+     "schema anchoring",
+     "interface schema",
+     "synthetic test generation",
+     "hallucination mitigation"
+    ],
+    "kind": "concept",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 15,
+    "id": "W06.L2.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W06.L2",
+    "title": "Hands-on Authoring of Executable Specs from Requirements",
+    "teaches": "Students will work in pairs to translate a natural-language requirement specification for a user session manager into an executable specification suite using a BDD framework. They will execute their specs against stub interfaces to confirm that every required public method is bounded by executable assertions.",
+    "key_terms": [
+     "BDD test suite",
+     "interface coverage",
+     "failing spec harness",
+     "stub interface"
+    ],
+    "kind": "activity",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 25,
+    "id": "W06.L2.C5",
+    "in_class": true
+   },
+   {
+    "lecture_id": "W07.L1",
+    "title": "Reviewing Spec Completeness and Interface Compliance",
+    "teaches": "Students review criteria for determining whether an executable specification suite is fully complete and airtight before running code generation. They will inspect common edge-case omissions and parameter boundary failures that allow incorrect code to pass specifications.",
+    "key_terms": [
+     "specification completeness",
+     "contract boundary",
+     "interface validation",
+     "edge-case coverage"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 10,
+    "id": "W07.L1.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W07.L1",
+    "title": "Spec-Guided AI Code Generation and Validation Loop",
+    "teaches": "Students will learn the automated feedback loop where LLMs consume executable specifications, generate implementation candidates, and refine code based on failing test traces. They will trace how automated test harness outputs act as prompt feedback to achieve zero interface violations.",
+    "key_terms": [
+     "test-driven prompt loop",
+     "feedback loop",
+     "automated refinement",
+     "error trace analysis"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 15,
+    "id": "W07.L1.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W07.L1",
+    "title": "Iterative Code Generation Against Executable Specifications",
+    "teaches": "Students will use an AI assistant to generate production code that satisfies the executable specifications authored in the previous session. They will capture runtime test outputs, pass stack traces back to the model, and iteratively guide code generation until 100% of specification steps pass.",
+    "key_terms": [
+     "code generation",
+     "automated self-correction",
+     "test-pass criteria",
+     "runtime assertion"
+    ],
+    "kind": "activity",
+    "bloom": 3,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 20,
+    "id": "W07.L1.C3",
+    "in_class": true
+   },
+   {
+    "lecture_id": "W07.L1",
+    "title": "Comparing Conforming Implementations Against Spec Overfitting",
+    "teaches": "Students will compare code that truly satisfies underlying business logic against code that overfits or cheats executable test mocks. They will evaluate techniques such as mutation testing and dynamic property checks to ensure generated code honors public method contracts.",
+    "key_terms": [
+     "test overfitting",
+     "mock cheating",
+     "mutation testing",
+     "contract fidelity",
+     "property-based validation"
+    ],
+    "kind": "comparison",
+    "bloom": 4,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 15,
+    "id": "W07.L1.C4",
+    "in_class": false
+   }
+  ],
+  "via": "AI (D5)",
+  "problems": []
+ },
+ "M5.T1": {
+  "topic_id": "M5.T1",
+  "topic": "Iterative development and loop engineering",
+  "lectures": [
+   {
+    "lecture_id": "W07.L2",
+    "minutes": 120
+   },
+   {
+    "lecture_id": "W08.L1",
+    "minutes": 60
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W07.L2",
+    "title": "Iterative Loop Engineering Overview",
+    "teaches": "Students learn the definition of iterative loop engineering, its role in AI‑assisted coding, and the high‑level phases of a coding agent's generate‑test‑refactor cycle.",
+    "key_terms": [
+     "iterative loop engineering",
+     "coding agent",
+     "generate-test-refactor",
+     "AI-assisted coding"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W07.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W07.L2",
+    "title": "Execution Log Structure and Fields",
+    "teaches": "Students identify the standard schema of an execution log, including timestamp, event type, agent identifier, and payload, and understand how each field maps to a control‑flow step.",
+    "key_terms": [
+     "log schema",
+     "timestamp",
+     "event type",
+     "agent identifier",
+     "payload"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W07.L2.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W07.L2",
+    "title": "Control‑Flow Step Taxonomy",
+    "teaches": "Students categorize the distinct step types recorded in logs—function calls, loop iterations, conditional branches, and agent decision points—and explain how each appears in the log artifact.",
+    "key_terms": [
+     "function call",
+     "loop iteration",
+     "conditional branch",
+     "agent decision",
+     "step taxonomy"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W07.L2.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W07.L2",
+    "title": "Instrumentation and Logging Frameworks",
+    "teaches": "Students observe a live demo of adding instrumentation hooks to a coding agent using Python's logging module and OpenTelemetry, seeing how logs are emitted in real time.",
+    "key_terms": [
+     "instrumentation",
+     "logging framework",
+     "OpenTelemetry",
+     "hook",
+     "real‑time emission"
+    ],
+    "kind": "demo",
+    "bloom": 3,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W07.L2.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W07.L2",
+    "title": "Worked Example: Simple Agent Loop Trace",
+    "teaches": "Students follow a step‑by‑step trace of a toy generate‑test‑refactor agent, mapping each log entry to source‑code changes and identifying the control‑flow path.",
+    "key_terms": [
+     "toy agent",
+     "generate-test-refactor",
+     "trace mapping",
+     "source‑code change",
+     "control‑flow path"
+    ],
+    "kind": "worked_example",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W07.L2.C5",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W07.L2",
+    "title": "Activity: Instrument a Toy Agent",
+    "teaches": "Students modify a provided skeleton agent to emit structured logs, run it on a sample task, and verify that all control‑flow steps appear in the output log.",
+    "key_terms": [
+     "skeleton agent",
+     "structured log",
+     "sample task",
+     "verification",
+     "control‑flow coverage"
+    ],
+    "kind": "activity",
+    "bloom": 3,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W07.L2.C6",
+    "in_class": true
+   },
+   {
+    "lecture_id": "W07.L2",
+    "title": "Mapping Log Steps to Code Changes",
+    "teaches": "Students learn techniques to correlate log entries with diffs in the codebase, using timestamps and agent IDs to reconstruct the iterative development narrative.",
+    "key_terms": [
+     "log correlation",
+     "code diff",
+     "timestamp alignment",
+     "agent ID",
+     "development narrative"
+    ],
+    "kind": "mechanism",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W07.L2.C7",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W07.L2",
+    "title": "Pitfalls and Best Practices in Tracing",
+    "teaches": "Students compare common logging anti‑patterns—missing context, inconsistent granularity, and timestamp drift—with recommended practices for reliable traceability.",
+    "key_terms": [
+     "anti‑pattern",
+     "missing context",
+     "granularity",
+     "timestamp drift",
+     "best practice"
+    ],
+    "kind": "comparison",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W07.L2.C8",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W08.L1",
+    "title": "Recap: Log Schema and Step Types",
+    "teaches": "Students quickly review the log schema and control‑flow taxonomy from the previous session to reinforce shared vocabulary before advanced topics.",
+    "key_terms": [
+     "recap",
+     "log schema",
+     "step taxonomy",
+     "shared vocabulary",
+     "reinforcement"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W08.L1.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W08.L1",
+    "title": "Advanced Tracing: Nested and Parallel Loops",
+    "teaches": "Students examine how nested iterative loops and concurrent agent executions appear in a single log, learning to disambiguate interleaved control‑flow steps using correlation IDs.",
+    "key_terms": [
+     "nested loop",
+     "parallel execution",
+     "correlation ID",
+     "interleaved steps",
+     "disambiguation"
+    ],
+    "kind": "mechanism",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W08.L1.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W08.L1",
+    "title": "Worked Example: Real‑World Agent Log Analysis",
+    "teaches": "Students walk through a full‑scale log from a production coding agent, extracting the generate‑test‑refactor cycles, identifying bottlenecks, and proposing instrumentation improvements.",
+    "key_terms": [
+     "production log",
+     "generate-test-refactor cycle",
+     "bottleneck detection",
+     "instrumentation improvement",
+     "log analysis"
+    ],
+    "kind": "worked_example",
+    "bloom": 5,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W08.L1.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W08.L1",
+    "title": "Activity: Group Log Trace Report",
+    "teaches": "In teams, students receive an anonymized iterative development log, produce a structured trace report linking each control‑flow step to code artifacts, and present findings.",
+    "key_terms": [
+     "team analysis",
+     "anonymized log",
+     "trace report",
+     "code artifact linking",
+     "presentation"
+    ],
+    "kind": "activity",
+    "bloom": 5,
+    "lo_ids": [
+     "CO3.LO1"
+    ],
+    "minutes": 15,
+    "id": "W08.L1.C4",
+    "in_class": true
+   }
+  ],
+  "via": "AI (D5)",
+  "problems": []
+ },
+ "M5.T2": {
+  "topic_id": "M5.T2",
+  "topic": "Iterative development logs and software factory outputs",
+  "lectures": [
+   {
+    "lecture_id": "W08.L2",
+    "minutes": 120
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W08.L2",
+    "title": "Structure of iterative development logs",
+    "teaches": "Students will understand the standard sections of an iterative development log (commit metadata, test results, tool invocations) and the schema of software factory output artifacts (build reports, artifact manifests).",
+    "key_terms": [
+     "log sections",
+     "commit metadata",
+     "test results",
+     "tool invocations",
+     "build reports",
+     "artifact manifests"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO3.LO3"
+    ],
+    "minutes": 15,
+    "id": "W08.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W08.L2",
+    "title": "Seeded defect taxonomy in factory outputs",
+    "teaches": "Students will learn the four categories of seeded defects (missing dependency, flaky test, configuration drift, resource leak) and their characteristic signatures in logs and factory outputs.",
+    "key_terms": [
+     "missing dependency",
+     "flaky test",
+     "configuration drift",
+     "resource leak",
+     "defect signatures"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO3.LO3"
+    ],
+    "minutes": 15,
+    "id": "W08.L2.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W08.L2",
+    "title": "Parsing and querying log data with CLI tools",
+    "teaches": "Students will be able to use grep, jq, and custom scripts to extract relevant log entries and factory output fields for defect hunting.",
+    "key_terms": [
+     "grep",
+     "jq",
+     "log extraction",
+     "field projection",
+     "script automation"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO3.LO3"
+    ],
+    "minutes": 15,
+    "id": "W08.L2.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W08.L2",
+    "title": "Worked example: detecting a missing dependency defect",
+    "teaches": "Students will follow a step‑by‑step analysis of a sample log where a missing dependency causes a build failure, seeing how to locate the error trace, correlate with the artifact manifest, and formulate a fix.",
+    "key_terms": [
+     "missing dependency",
+     "error trace",
+     "artifact manifest",
+     "root cause",
+     "fix proposal"
+    ],
+    "kind": "worked_example",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO3"
+    ],
+    "minutes": 15,
+    "id": "W08.L2.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W08.L2",
+    "title": "Activity: find two seeded defects in a provided log set",
+    "teaches": "Students will individually examine a zip of logs and factory outputs, identify at least two of the four seeded defects, and write a brief fix proposal for each, then submit for peer review.",
+    "key_terms": [
+     "log set",
+     "defect identification",
+     "fix proposal",
+     "peer review"
+    ],
+    "kind": "activity",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO3"
+    ],
+    "minutes": 15,
+    "id": "W08.L2.C5",
+    "in_class": true
+   },
+   {
+    "lecture_id": "W08.L2",
+    "title": "Comparing defect patterns across iterations",
+    "teaches": "Students will compare how the same defect type manifests differently across multiple iterations, noting variations in log verbosity, test flakiness, and factory output anomalies.",
+    "key_terms": [
+     "iteration comparison",
+     "defect manifestation",
+     "log verbosity",
+     "test flakiness",
+     "output anomalies"
+    ],
+    "kind": "comparison",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO3"
+    ],
+    "minutes": 15,
+    "id": "W08.L2.C6",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W08.L2",
+    "title": "Case study: real‑world factory log analysis",
+    "teaches": "Students will review a redacted industry case where iterative logs revealed a configuration drift defect, discussing detection strategy, impact assessment, and remediation steps.",
+    "key_terms": [
+     "configuration drift",
+     "industry case",
+     "detection strategy",
+     "impact assessment",
+     "remediation"
+    ],
+    "kind": "case_study",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO3"
+    ],
+    "minutes": 15,
+    "id": "W08.L2.C7",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W08.L2",
+    "title": "Discussion: best practices for proposing fixes",
+    "teaches": "Students will evaluate fix proposals for completeness, testability, and regression risk, and agree on a checklist for future defect remediation in iterative loops.",
+    "key_terms": [
+     "fix completeness",
+     "testability",
+     "regression risk",
+     "remediation checklist"
+    ],
+    "kind": "discussion",
+    "bloom": 5,
+    "lo_ids": [
+     "CO3.LO3"
+    ],
+    "minutes": 15,
+    "id": "W08.L2.C8",
+    "in_class": true
+   }
+  ],
+  "via": "AI (D5)",
+  "problems": []
+ },
+ "M6.T1": {
+  "topic_id": "M6.T1",
+  "topic": "Software factories and execution trace analysis",
+  "lectures": [
+   {
+    "lecture_id": "W09.L1",
+    "minutes": 150
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W09.L1",
+    "title": "Execution traces in software factories",
+    "teaches": "Students learn what execution traces are, how coding agents emit them during iterative loop engineering, and why they are essential for diagnosing failures in software factories.",
+    "key_terms": [
+     "execution trace",
+     "software factory",
+     "coding agent",
+     "iterative loop",
+     "diagnostics"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W09.L1",
+    "title": "Log structure and iteration markers",
+    "teaches": "Students examine the standardized format of iterative development logs, including timestamps, iteration IDs, tool calls, and error markers, enabling systematic navigation of up to 2000 lines.",
+    "key_terms": [
+     "log format",
+     "iteration ID",
+     "timestamp",
+     "tool call",
+     "error marker"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W09.L1",
+    "title": "Typical failure patterns in agent traces",
+    "teaches": "Students identify three recurring failure categories—environment misconfiguration, dependency resolution errors, and logic regressions—and learn the trace signatures that distinguish each.",
+    "key_terms": [
+     "environment misconfiguration",
+     "dependency resolution",
+     "logic regression",
+     "trace signature",
+     "failure category"
+    ],
+    "kind": "concept",
+    "bloom": 3,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W09.L1",
+    "title": "Trace collection and parsing tooling",
+    "teaches": "Students watch a live demonstration of the factory's trace collector, log aggregator, and a Python script that parses raw logs into structured JSON for analysis.",
+    "key_terms": [
+     "trace collector",
+     "log aggregator",
+     "parser script",
+     "JSON output",
+     "automation"
+    ],
+    "kind": "demo",
+    "bloom": 2,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W09.L1",
+    "title": "Worked example: environment misconfiguration",
+    "teaches": "Students follow a step‑by‑step analysis of a 500‑line trace, locating missing environment variables, correlating error codes, and citing exact log lines as evidence for the first failure cause.",
+    "key_terms": [
+     "environment variable",
+     "error code",
+     "log evidence",
+     "correlation",
+     "step‑by‑step"
+    ],
+    "kind": "worked_example",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C5",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W09.L1",
+    "title": "Worked example: dependency resolution failure",
+    "teaches": "Students trace a version conflict across iterations, observe repeated fetch retries, and extract the specific dependency graph lines that prove the second failure cause.",
+    "key_terms": [
+     "version conflict",
+     "fetch retry",
+     "dependency graph",
+     "iteration diff",
+     "evidence extraction"
+    ],
+    "kind": "worked_example",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C6",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W09.L1",
+    "title": "Worked example: logic regression detection",
+    "teaches": "Students compare successive iteration outputs, spot a behavioral change in test results, and pinpoint the commit diff lines that constitute the third failure cause with supporting log excerpts.",
+    "key_terms": [
+     "behavioral change",
+     "test result diff",
+     "commit diff",
+     "log excerpt",
+     "regression"
+    ],
+    "kind": "worked_example",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C7",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W09.L1",
+    "title": "Comparing failure causes across traces",
+    "teaches": "Students contrast the three failure signatures side‑by‑side, evaluate their frequency and impact, and practice ranking them by severity using a structured rubric.",
+    "key_terms": [
+     "signature comparison",
+     "frequency",
+     "impact",
+     "severity rubric",
+     "ranking"
+    ],
+    "kind": "comparison",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C8",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W09.L1",
+    "title": "Activity: analyze full 2000‑line log",
+    "teaches": "In pairs, students receive a 2000‑line factory log, apply the parsing script, identify at least three distinct failure causes, and record supporting log line numbers for each.",
+    "key_terms": [
+     "pair work",
+     "2000‑line log",
+     "parsing script",
+     "failure identification",
+     "evidence recording"
+    ],
+    "kind": "activity",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C9",
+    "in_class": true
+   },
+   {
+    "lecture_id": "W09.L1",
+    "title": "Discussion: reporting and best practices",
+    "teaches": "Students present their findings, critique evidence quality, discuss how to automate failure‑cause detection, and outline a checklist for future trace analyses.",
+    "key_terms": [
+     "findings presentation",
+     "evidence critique",
+     "automation ideas",
+     "checklist",
+     "continuous improvement"
+    ],
+    "kind": "discussion",
+    "bloom": 5,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L1.C10",
+    "in_class": true
+   }
+  ],
+  "via": "AI (D5)",
+  "problems": []
+ },
+ "M6.T2": {
+  "topic_id": "M6.T2",
+  "topic": "Testing and validation in iterative development",
+  "lectures": [
+   {
+    "lecture_id": "W09.L2",
+    "minutes": 30
+   },
+   {
+    "lecture_id": "W10.L1",
+    "minutes": 90
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W09.L2",
+    "title": "Trace structure and metadata",
+    "teaches": "Students learn the standard fields of an agent execution trace: timestamps, event types, tool calls, return values, and error codes. They understand how these fields map to the iterative loop steps and why consistent formatting matters for automated parsing.",
+    "key_terms": [
+     "timestamp",
+     "event_type",
+     "tool_call",
+     "return_value",
+     "error_code",
+     "iteration"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W09.L2",
+    "title": "Worked example: diagnosing tool misuse",
+    "teaches": "The instructor walks through a 500-line trace where the agent repeatedly calls a file‑write tool with an invalid path. Students see how to locate the offending calls, correlate error codes, and confirm the root cause with log evidence.",
+    "key_terms": [
+     "tool_misuse",
+     "invalid_path",
+     "error_code",
+     "root_cause",
+     "log_evidence"
+    ],
+    "kind": "worked_example",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W09.L2.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W10.L1",
+    "title": "Log parsing and query techniques",
+    "teaches": "Students practice using grep, jq, and awk to filter a 2000-line trace for specific event types, extract timestamps, and count occurrences of error codes. They learn to build reusable one‑liners for rapid evidence gathering.",
+    "key_terms": [
+     "grep",
+     "jq",
+     "awk",
+     "filter",
+     "extraction",
+     "one-liner"
+    ],
+    "kind": "demo",
+    "bloom": 3,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W10.L1.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W10.L1",
+    "title": "Systematic trace analysis workflow",
+    "teaches": "A step‑by‑step method is introduced: (1) segment the trace by iteration, (2) hypothesize failure categories, (3) search for signature patterns, (4) collect supporting lines, (5) validate each hypothesis against the code context. Students apply the workflow to a short trace.",
+    "key_terms": [
+     "segmentation",
+     "hypothesis",
+     "signature_pattern",
+     "validation",
+     "code_context"
+    ],
+    "kind": "mechanism",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W10.L1.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W10.L1",
+    "title": "Worked example: multi-failure trace analysis",
+    "teaches": "The instructor analyses a full 2000-line trace containing three distinct failures: a permission error, a version mismatch, and a logic loop. For each failure, the exact log lines are highlighted and linked to the underlying cause.",
+    "key_terms": [
+     "permission_error",
+     "version_mismatch",
+     "logic_loop",
+     "evidence_linking",
+     "distinct_failures"
+    ],
+    "kind": "worked_example",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W10.L1.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W10.L1",
+    "title": "Activity: pair analysis of new trace",
+    "teaches": "In pairs, students receive a fresh 1500-line trace and must identify at least three failure causes, citing line numbers and error codes. They prepare a brief report and present findings to the class for peer review.",
+    "key_terms": [
+     "pair_work",
+     "fresh_trace",
+     "line_numbers",
+     "error_codes",
+     "peer_review"
+    ],
+    "kind": "activity",
+    "bloom": 4,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W10.L1.C4",
+    "in_class": true
+   },
+   {
+    "lecture_id": "W10.L1",
+    "title": "Comparison of analysis strategies",
+    "teaches": "Students compare manual trace inspection, scripted querying, and LLM‑assisted summarisation. They evaluate speed, accuracy, and false‑positive rates on the same trace, discussing when each approach is preferable.",
+    "key_terms": [
+     "manual_inspection",
+     "scripted_query",
+     "LLM_assisted",
+     "false_positive",
+     "trade_off"
+    ],
+    "kind": "comparison",
+    "bloom": 5,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W10.L1.C5",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W10.L1",
+    "title": "Discussion: validation and reporting findings",
+    "teaches": "The class discusses how to validate identified causes (re‑run, unit test, stakeholder confirmation) and how to structure a concise failure report for developers. Emphasis is placed on actionable recommendations and traceability back to log evidence.",
+    "key_terms": [
+     "validation",
+     "re_run",
+     "unit_test",
+     "stakeholder_confirmation",
+     "failure_report",
+     "traceability"
+    ],
+    "kind": "discussion",
+    "bloom": 5,
+    "lo_ids": [
+     "CO3.LO2"
+    ],
+    "minutes": 15,
+    "id": "W10.L1.C6",
+    "in_class": true
+   }
+  ],
+  "via": "AI (D5)",
+  "problems": []
+ },
+ "M7.T1": {
+  "topic_id": "M7.T1",
+  "topic": "Automated testing and evaluation mechanisms",
+  "lectures": [
+   {
+    "lecture_id": "W10.L2",
+    "minutes": 90
+   },
+   {
+    "lecture_id": "W11.L1",
+    "minutes": 15
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W10.L2",
+    "title": "AI-native architectures and testing challenges",
+    "teaches": "Students will identify the distinctive characteristics of AI-native software (data‑driven behavior, non‑determinism, model drift) and explain why traditional testing approaches fall short. They will list at least three testing challenges unique to AI components.",
+    "key_terms": [
+     "AI-native",
+     "non-determinism",
+     "model drift",
+     "data dependency",
+     "test oracle problem"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W10.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W10.L2",
+    "title": "Unit testing mechanisms for ML models",
+    "teaches": "Students will describe property‑based testing, metamorphic testing, and model‑behavior contracts as unit‑level mechanisms for ML models. They will apply one mechanism to a sample classifier and articulate the trade‑off between coverage and oracle cost.",
+    "key_terms": [
+     "property-based testing",
+     "metamorphic testing",
+     "behavior contracts",
+     "test oracle",
+     "coverage"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W10.L2.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W10.L2",
+    "title": "Integration testing for AI pipelines",
+    "teaches": "Students will explain contract testing, data‑drift detection, and end‑to‑end pipeline validation as integration mechanisms. They will compare how each mechanism handles versioned models and evolving data schemas.",
+    "key_terms": [
+     "contract testing",
+     "data drift detection",
+     "pipeline validation",
+     "model versioning",
+     "schema evolution"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W10.L2.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W10.L2",
+    "title": "Model quality evaluation metrics",
+    "teaches": "Students will define accuracy, fairness, robustness, and calibration metrics and explain when each is appropriate for AI-native systems. They will compute a fairness disparity metric on a provided confusion matrix.",
+    "key_terms": [
+     "accuracy",
+     "fairness",
+     "robustness",
+     "calibration",
+     "disparate impact"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W10.L2.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W10.L2",
+    "title": "System-level evaluation metrics",
+    "teaches": "Students will describe latency, throughput, cost, and reliability metrics for deployed AI services. They will analyse a scenario to decide which system‑level metric dominates the testing budget.",
+    "key_terms": [
+     "latency",
+     "throughput",
+     "cost",
+     "reliability",
+     "SLA"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W10.L2.C5",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W10.L2",
+    "title": "Comparative framework for testing selection",
+    "teaches": "Students will use a decision matrix (mechanism vs. metric vs. risk) to compare and select appropriate testing mechanisms and evaluation metrics for a given AI-native architecture. They will justify their choices with respect to risk tolerance and resource constraints.",
+    "key_terms": [
+     "decision matrix",
+     "risk assessment",
+     "resource constraints",
+     "trade‑off analysis",
+     "selection criteria"
+    ],
+    "kind": "comparison",
+    "bloom": 4,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W10.L2.C6",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W11.L1",
+    "title": "Case study: applying comparison framework",
+    "teaches": "Students will walk through a realistic AI‑native service (e.g., a recommendation API) and apply the comparative framework to choose testing mechanisms and metrics. They will evaluate the completeness of their selection and suggest improvements.",
+    "key_terms": [
+     "recommendation API",
+     "framework application",
+     "gap analysis",
+     "improvement suggestions",
+     "evaluation"
+    ],
+    "kind": "case_study",
+    "bloom": 5,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W11.L1.C1",
+    "in_class": false
+   }
+  ],
+  "via": "AI (D5)",
+  "problems": []
+ },
+ "M7.T2": {
+  "topic_id": "M7.T2",
+  "topic": "Pipeline evaluation mechanisms and metrics",
+  "lectures": [
+   {
+    "lecture_id": "W11.L2",
+    "minutes": 105
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W11.L2",
+    "title": "AI-Native Testing Landscape Overview",
+    "teaches": "Students will identify the unique challenges of testing AI-native systems, including nondeterminism, data drift, and model versioning. They will distinguish between model-centric and system-centric testing concerns.",
+    "key_terms": [
+     "AI-native",
+     "nondeterminism",
+     "data drift",
+     "model versioning",
+     "testing challenges"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W11.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W11.L2",
+    "title": "Unit Testing ML Model Components",
+    "teaches": "Students will describe unit-level testing mechanisms such as property-based testing, metamorphic testing, and test oracle construction for individual model functions. They will explain how these mechanisms detect logic errors in preprocessing, inference, and postprocessing.",
+    "key_terms": [
+     "property-based testing",
+     "metamorphic testing",
+     "test oracle",
+     "preprocessing",
+     "inference"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W11.L2.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W11.L2",
+    "title": "Integration Testing of ML Pipelines",
+    "teaches": "Students will outline integration testing strategies for end-to-end ML pipelines, including contract testing, schema validation, and pipeline replay. They will compare static vs dynamic pipeline validation approaches.",
+    "key_terms": [
+     "contract testing",
+     "schema validation",
+     "pipeline replay",
+     "static validation",
+     "dynamic validation"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W11.L2.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W11.L2",
+    "title": "Model Performance Evaluation Metrics",
+    "teaches": "Students will define key model-centric metrics such as accuracy, F1, AUC, calibration error, and perplexity, and explain when each is appropriate. They will interpret metric trade-offs for classification, generation, and ranking tasks.",
+    "key_terms": [
+     "accuracy",
+     "F1",
+     "AUC",
+     "calibration error",
+     "perplexity",
+     "metric trade-offs"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W11.L2.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W11.L2",
+    "title": "System-Level Quality Metrics",
+    "teaches": "Students will describe system-level metrics including latency, throughput, memory footprint, robustness to adversarial inputs, and data freshness. They will relate these metrics to SLA requirements in production AI services.",
+    "key_terms": [
+     "latency",
+     "throughput",
+     "memory footprint",
+     "robustness",
+     "data freshness",
+     "SLA"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W11.L2.C5",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W11.L2",
+    "title": "Mapping Mechanisms to Metrics",
+    "teaches": "Students will apply a comparative framework that links each testing mechanism to the metrics it informs, highlighting coverage gaps. They will evaluate which combination of mechanisms yields comprehensive metric coverage for a given architecture.",
+    "key_terms": [
+     "comparative framework",
+     "coverage gaps",
+     "mechanism-metric mapping",
+     "comprehensive coverage",
+     "architecture"
+    ],
+    "kind": "comparison",
+    "bloom": 3,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W11.L2.C6",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W11.L2",
+    "title": "Case Study: RAG Pipeline Evaluation",
+    "teaches": "Students will walk through a retrieval-augmented generation pipeline, applying unit, integration, and system tests, and compute model and system metrics. They will critique the evaluation plan and suggest improvements.",
+    "key_terms": [
+     "RAG",
+     "retrieval-augmented generation",
+     "unit test",
+     "integration test",
+     "system metrics",
+     "critique"
+    ],
+    "kind": "case_study",
+    "bloom": 3,
+    "lo_ids": [
+     "CO4.LO1"
+    ],
+    "minutes": 15,
+    "id": "W11.L2.C7",
+    "in_class": false
+   }
+  ],
+  "via": "AI (D5)",
+  "problems": []
+ },
+ "M8.T1": {
+  "topic_id": "M8.T1",
+  "topic": "Reliable and safe trustworthy software architectures",
+  "lectures": [
+   {
+    "lecture_id": "W11.L3",
+    "minutes": 60
+   },
+   {
+    "lecture_id": "W12.L1",
+    "minutes": 90
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W11.L3",
+    "title": "AI-native factory pipeline architecture overview",
+    "teaches": "Students will understand the high-level structure of an AI-native software factory, identifying the major pipeline components such as data ingestion, model training, validation, and deployment. They will recognize how these components interact to form an end-to-end automated workflow.",
+    "key_terms": [
+     "pipeline",
+     "data ingestion",
+     "model training",
+     "validation",
+     "deployment",
+     "automation"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO4.LO2"
+    ],
+    "minutes": 15,
+    "id": "W11.L3.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W11.L3",
+    "title": "Automated testing stages in AI pipelines",
+    "teaches": "Students will learn the concrete testing stages used in AI-native pipelines: unit tests for code, integration tests for data flows, model validation tests (accuracy, fairness), and data drift detection. They will be able to describe the purpose and typical tooling for each stage.",
+    "key_terms": [
+     "unit testing",
+     "integration testing",
+     "model validation",
+     "data drift detection",
+     "test tooling"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO4.LO2"
+    ],
+    "minutes": 15,
+    "id": "W11.L3.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W11.L3",
+    "title": "Mapping reliability requirements to pipeline stages",
+    "teaches": "Students will analyse a set of reliability requirements (e.g., reproducibility, latency, fault tolerance) and map each requirement to specific pipeline stages and testing mechanisms. They will compare how different requirements influence test design choices.",
+    "key_terms": [
+     "reliability requirements",
+     "reproducibility",
+     "latency",
+     "fault tolerance",
+     "mapping"
+    ],
+    "kind": "comparison",
+    "bloom": 4,
+    "lo_ids": [
+     "CO4.LO2"
+    ],
+    "minutes": 15,
+    "id": "W11.L3.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W11.L3",
+    "title": "Worked example: assessing sample pipeline reliability",
+    "teaches": "Through a guided walkthrough, students will evaluate a provided sample AI pipeline against a list of reliability requirements, justifying each assessment decision with concrete evidence from the pipeline's test configuration. They will practice the evaluation criteria needed for the final assessment.",
+    "key_terms": [
+     "worked example",
+     "assessment",
+     "justification",
+     "evidence",
+     "criteria"
+    ],
+    "kind": "worked_example",
+    "bloom": 5,
+    "lo_ids": [
+     "CO4.LO2"
+    ],
+    "minutes": 15,
+    "id": "W11.L3.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W12.L1",
+    "title": "Recap: pipeline assessment criteria discussion",
+    "teaches": "Students will briefly revisit the assessment criteria and reliability requirement mappings covered previously, clarifying any gaps through instructor-led discussion. This sets the context for deeper analysis of a multi-component project.",
+    "key_terms": [
+     "recap",
+     "assessment criteria",
+     "reliability requirements",
+     "discussion"
+    ],
+    "kind": "discussion",
+    "bloom": 2,
+    "lo_ids": [
+     "CO4.LO2"
+    ],
+    "minutes": 10,
+    "id": "W12.L1.C1",
+    "in_class": true
+   },
+   {
+    "lecture_id": "W12.L1",
+    "title": "Defining reliability requirements for multi-component AI",
+    "teaches": "Students will learn how to elicit and formalize reliability requirements for a system composed of multiple AI services (e.g., service-level objectives, error budgets, cascade failure policies). They will apply a template to a supplied project description.",
+    "key_terms": [
+     "service-level objectives",
+     "error budgets",
+     "cascade failure",
+     "requirements elicitation",
+     "multi-component"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO4.LO2"
+    ],
+    "minutes": 15,
+    "id": "W12.L1.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W12.L1",
+    "title": "Case study: industry AI pipeline reliability",
+    "teaches": "Students will examine a real-world case study of an AI-native pipeline in production, focusing on how the organization defined reliability requirements, instrumented testing stages, and measured outcomes. They will analyse trade-offs made by the team.",
+    "key_terms": [
+     "case study",
+     "production pipeline",
+     "instrumentation",
+     "trade-offs",
+     "outcomes"
+    ],
+    "kind": "case_study",
+    "bloom": 4,
+    "lo_ids": [
+     "CO4.LO2"
+    ],
+    "minutes": 15,
+    "id": "W12.L1.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W12.L1",
+    "title": "Worked example: assessing supplied project pipeline",
+    "teaches": "The instructor demonstrates a full assessment of the supplied multi-component software project's testing pipeline, linking each design decision to a specific reliability requirement and showing how to document justifications. Students follow the reasoning step by step.",
+    "key_terms": [
+     "worked example",
+     "supplied project",
+     "design decisions",
+     "justification",
+     "documentation"
+    ],
+    "kind": "worked_example",
+    "bloom": 5,
+    "lo_ids": [
+     "CO4.LO2"
+    ],
+    "minutes": 20,
+    "id": "W12.L1.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W12.L1",
+    "title": "Group activity: assess pipeline and justify",
+    "teaches": "In small groups, students receive a different pipeline configuration for the same project and must assess it against the reliability requirements, producing a written justification for each design decision. Groups present findings for peer review.",
+    "key_terms": [
+     "group activity",
+     "assessment",
+     "justification",
+     "peer review",
+     "pipeline configuration"
+    ],
+    "kind": "activity",
+    "bloom": 5,
+    "lo_ids": [
+     "CO4.LO2"
+    ],
+    "minutes": 20,
+    "id": "W12.L1.C5",
+    "in_class": true
+   },
+   {
+    "lecture_id": "W12.L1",
+    "title": "Trade-offs: testing depth vs deployment speed",
+    "teaches": "Students will compare the impact of increasing test coverage and rigor on deployment latency and resource consumption. They will evaluate scenarios where faster deployment may be preferred over exhaustive testing, supporting arguments with metrics.",
+    "key_terms": [
+     "trade-offs",
+     "test coverage",
+     "deployment latency",
+     "resource consumption",
+     "metrics"
+    ],
+    "kind": "comparison",
+    "bloom": 4,
+    "lo_ids": [
+     "CO4.LO2"
+    ],
+    "minutes": 10,
+    "id": "W12.L1.C6",
+    "in_class": false
+   }
+  ],
+  "via": "AI (D5)",
+  "problems": []
+ },
+ "M8.T2": {
+  "topic_id": "M8.T2",
+  "topic": "Deployment and reliability metric evaluation",
+  "lectures": [
+   {
+    "lecture_id": "W12.L2",
+    "minutes": 90
+   },
+   {
+    "lecture_id": "W13.L1",
+    "minutes": 30
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W12.L2",
+    "title": "Key deployment metrics overview",
+    "teaches": "Students learn the definitions of latency, error rate, throughput, deployment frequency, and rollback time. They understand how each metric signals the health of a deployment pipeline.",
+    "key_terms": [
+     "latency",
+     "error rate",
+     "throughput",
+     "deployment frequency",
+     "rollback time"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO4.LO3"
+    ],
+    "minutes": 15,
+    "id": "W12.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W12.L2",
+    "title": "Reliability metrics and SLOs",
+    "teaches": "Students define availability, MTBF, MTTR, SLO, SLI, and error budget. They see how these metrics quantify system reliability and guide release decisions.",
+    "key_terms": [
+     "availability",
+     "MTBF",
+     "MTTR",
+     "SLO",
+     "SLI",
+     "error budget"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO4.LO3"
+    ],
+    "minutes": 15,
+    "id": "W12.L2.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W12.L2",
+    "title": "Instrumenting a multi-component system with OpenTelemetry",
+    "teaches": "Students follow the steps to add traces, metrics, and logs across services using OpenTelemetry SDKs. They configure exporters to Prometheus and verify that data flows correctly.",
+    "key_terms": [
+     "OpenTelemetry",
+     "traces",
+     "metrics",
+     "logs",
+     "Prometheus exporter",
+     "context propagation"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO4.LO3"
+    ],
+    "minutes": 15,
+    "id": "W12.L2.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W12.L2",
+    "title": "Live dashboard walkthrough with Grafana",
+    "teaches": "Students watch the creation of a Grafana dashboard that visualizes deployment and reliability metrics. They learn to set alert rules on error‑budget burn rate.",
+    "key_terms": [
+     "Grafana",
+     "dashboard",
+     "panels",
+     "alerting",
+     "error budget"
+    ],
+    "kind": "demo",
+    "bloom": 3,
+    "lo_ids": [
+     "CO4.LO3"
+    ],
+    "minutes": 15,
+    "id": "W12.L2.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W12.L2",
+    "title": "Scenario walkthrough 1: load‑test and failure injection",
+    "teaches": "The instructor runs a k6 load test against the sample project, injects a service failure with Chaos Mesh, and evaluates whether SLOs remain satisfied. Students observe metric shifts in real time.",
+    "key_terms": [
+     "k6",
+     "load test",
+     "failure injection",
+     "Chaos Mesh",
+     "SLO evaluation"
+    ],
+    "kind": "worked_example",
+    "bloom": 4,
+    "lo_ids": [
+     "CO4.LO3"
+    ],
+    "minutes": 15,
+    "id": "W12.L2.C5",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W12.L2",
+    "title": "Student activity: evaluate metrics on supplied project",
+    "teaches": "In pairs, students use the instrumented project to compute deployment and reliability metrics, decide if a release meets the defined SLOs, and present their go/no‑go recommendation for peer review.",
+    "key_terms": [
+     "metric calculation",
+     "release decision",
+     "presentation",
+     "peer review"
+    ],
+    "kind": "activity",
+    "bloom": 5,
+    "lo_ids": [
+     "CO4.LO3"
+    ],
+    "minutes": 15,
+    "id": "W12.L2.C6",
+    "in_class": true
+   },
+   {
+    "lecture_id": "W13.L1",
+    "title": "Comparing scenario walkthroughs: lessons learned",
+    "teaches": "A brief recap of the first walkthrough is followed by a comparison with a second scenario (canary vs. blue‑green). Students analyse how metric patterns differ and what that implies for rollback decisions.",
+    "key_terms": [
+     "canary",
+     "blue‑green",
+     "metric comparison",
+     "rollback decision"
+    ],
+    "kind": "comparison",
+    "bloom": 4,
+    "lo_ids": [
+     "CO4.LO3"
+    ],
+    "minutes": 15,
+    "id": "W13.L1.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W13.L1",
+    "title": "Scenario walkthrough 2: canary deployment evaluation",
+    "teaches": "The instructor demonstrates a live canary rollout, monitors the error budget in Grafana, makes a go/no‑go decision, and documents the evaluation for a post‑mortem. Students practice the full evaluation loop.",
+    "key_terms": [
+     "canary",
+     "gradual rollout",
+     "error budget",
+     "go/no‑go",
+     "post‑mortem"
+    ],
+    "kind": "worked_example",
+    "bloom": 5,
+    "lo_ids": [
+     "CO4.LO3"
+    ],
+    "minutes": 15,
+    "id": "W13.L1.C2",
+    "in_class": false
+   }
+  ],
+  "via": "AI (D5)",
+  "problems": []
+ }
+}

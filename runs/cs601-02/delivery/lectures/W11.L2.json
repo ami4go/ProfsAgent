@@ -1,0 +1,981 @@
+{
+ "lecture_id": "W11.L2",
+ "topic": "Pipeline evaluation mechanisms and metrics",
+ "generated_at": "2026-10-28 23:56:19",
+ "resources": {
+  "lecture_id": "W11.L2",
+  "topic": "Pipeline evaluation mechanisms and metrics",
+  "want": {
+   "want_videos": true,
+   "want_readings": true,
+   "want_practice": true,
+   "want_recorded_lecture": false,
+   "want_clips": true,
+   "want_guest": true,
+   "confidence": 2,
+   "note": "",
+   "choices": [
+    "own_material",
+    "generate_material",
+    "assistance",
+    "guest_lecture"
+   ]
+  },
+  "queries": {
+   "lecture_id": "W11.L2",
+   "video_queries": [
+    "pipeline evaluation mechanisms and metrics tutorial",
+    "ML pipeline testing and evaluation lecture",
+    "evaluating machine learning pipelines metrics explained"
+   ],
+   "reading_queries": [
+    "pipeline evaluation mechanisms for AI software",
+    "metrics for evaluating automated software pipelines"
+   ],
+   "practice_queries": [
+    "ML pipeline evaluation metrics exercise notebook"
+   ],
+   "recorded_lecture_query": "pipeline evaluation mechanisms and metrics lecture",
+   "research_queries": [
+    "pipeline evaluation metrics AI",
+    "testing machine learning pipelines"
+   ],
+   "practitioner_query": "MLOps engineer pipeline evaluation"
+  },
+  "items": {
+   "video": [
+    {
+     "kind": "video",
+     "id": "DcZ-XCk-O_M",
+     "url": "https://www.youtube.com/watch?v=DcZ-XCk-O_M",
+     "title": "Why Your AI Application Needs Multiple Eval Pipelines? | CampusX",
+     "source": "CampusX",
+     "tier": 4,
+     "duration_s": 1686,
+     "published": "2026-07-03T14:30:29Z",
+     "licence": "Creative Commons (CC BY)",
+     "captions": true,
+     "views": 35811,
+     "likes": 915,
+     "comments": 48,
+     "subscribers": 755000,
+     "transcript": true,
+     "scores": {
+      "coverage": 0.766,
+      "quality": 0.8,
+      "authority": 0.35,
+      "level_fit": 0.6,
+      "reception": 0.74,
+      "practicality": 0.925
+     },
+     "total": 0.707,
+     "rank": 1,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓ (15:16–17:31), CO4.LO1 ✗ [from transcript] · CampusX · tier 4 · 28:06 · 35,811 views · captions",
+     "findings": [],
+     "description": "In this lecture of the LLM Evaluation Masterclass, we break down why a robust AI system demands multiple, distinct evaluation pipelines operating in parallel.\n\nNotes: https://1drv.ms/o/c/85452F67DAA1111C/IgCIRXGQVQm8R7-eF2h5lZ4NAayeX_9R3V4XHDDmsXYMnrk\n\nThis lecture was taken live for insiders, join here: https://youtu.be/j_G30FLmCcw\n\n📱 Grow with us:\nCampusX' LinkedIn: https://www.linkedin.com/company/campusx-official\nCampusX on Instagram for daily tips: https://www.instagram.com/campusx.official\nMy LinkedIn: https://www.linkedin.com/in/nitish-singh-03412789\nDiscord: https://discord.gg/PsWu8R87Z8\nE-mail us at support@campusx.in\n\nChapters:\n\n00:00 - Recap: Why We Need Evals & Model vs. Applicat",
+     "review": {
+      "review": "Provides an intuitive walkthrough of why RAG applications need multiple evaluation pipelines at component levels. Good for introductory understanding of component vs system metrics.",
+      "issues": [
+       "Introductory tone, somewhat informal presentation style"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 4,
+      "level_fit": 3
+     },
+     "coverage": {
+      "score": 0.766,
+      "evidence": "transcript",
+      "per_target": {
+       "M7.T2": {
+        "covered": true,
+        "sim": 0.581,
+        "segments": [
+         {
+          "start": 916.5,
+          "end": 1051.9,
+          "sim": 0.581
+         },
+         {
+          "start": 92.2,
+          "end": 279.6,
+          "sim": 0.569
+         }
+        ]
+       },
+       "CO4.LO1": {
+        "covered": false,
+        "sim": 0.395,
+        "segments": []
+       }
+      }
+     }
+    },
+    {
+     "kind": "video",
+     "id": "o27XMu7Q8x0",
+     "url": "https://www.youtube.com/watch?v=o27XMu7Q8x0",
+     "title": "Evaluating Retrieval-Augmented Generation (RAG) Pipelines frameworks and metrics|LLM|AI|",
+     "source": "Vamaze Tech",
+     "tier": 4,
+     "duration_s": 383,
+     "published": "2024-05-22T03:46:49Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 34,
+     "likes": 0,
+     "comments": 0,
+     "subscribers": 3590,
+     "transcript": true,
+     "scores": {
+      "coverage": 0.694,
+      "quality": 0.65,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.098,
+      "practicality": 1.0
+     },
+     "total": 0.615,
+     "rank": 2,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓ (4:21–6:24), CO4.LO1 ✗ [from transcript] · Vamaze Tech · tier 4 · 6:23 · 34 views · captions",
+     "findings": [],
+     "description": "Evaluating Retrieval-Augmented Generation (RAG) Pipelines Pipeline  frameworks and metrics|LLM|AI",
+     "review": {
+      "review": "Introduces RAG evaluation frameworks and benchmark datasets (RGB, CRUD). Useful quick mention of specialized retrieval and generation testing mechanisms.",
+      "issues": [
+       "Brief video overview with slight audio clipping/pronunciation issues in transcript"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains",
+      "clarity": 3,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 2,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.694,
+      "evidence": "transcript",
+      "per_target": {
+       "M7.T2": {
+        "covered": true,
+        "sim": 0.665,
+        "segments": [
+         {
+          "start": 261.2,
+          "end": 384.9,
+          "sim": 0.665
+         }
+        ]
+       },
+       "CO4.LO1": {
+        "covered": false,
+        "sim": 0.341,
+        "segments": []
+       }
+      }
+     }
+    }
+   ],
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://www.confident-ai.com/knowledge-base/compare/best-ai-evaluation-tools-for-ci-cd",
+     "title": "9 Best AI Evaluation Tools for CI/CD Pipelines in 2026 - Confident AI",
+     "source": "confident-ai.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.946,
+      "quality": 0.9,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.754,
+     "rank": 1,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, CO4.LO1 ✓ [from page text] · confident-ai.com · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Excellent comparison of AI evaluation tools and CI/CD quality policies. Highly relevant for understanding automated testing mechanisms in AI-native architectures, though it reads partly like vendor curation.",
+      "issues": [],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 5,
+      "correctness": 5,
+      "depth": 4,
+      "examples": 4,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.946,
+      "evidence": "text",
+      "per_target": {
+       "M7.T2": {
+        "covered": true,
+        "sim": 0.55,
+        "segments": []
+       },
+       "CO4.LO1": {
+        "covered": true,
+        "sim": 0.62,
+        "segments": []
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://www.growthbook.io/insights/how-build-reliable-evaluation-pipelines-ai-systems",
+     "title": "How to build reliable evaluation pipelines for AI systems | Growthbook",
+     "source": "growthbook.io",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 1.0,
+      "quality": 0.8,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.753,
+     "rank": 2,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, CO4.LO1 ✓ [from page text] · growthbook.io · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Good conceptual overview of AI evaluation pipelines and avoiding single composite scores. Useful for understanding metric architectures, though light on specific automated testing tool comparisons.",
+      "issues": [
+       "Focuses heavily on general AI/LLM evaluation rather than comparative automation specifics"
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 4,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 1.0,
+      "evidence": "text",
+      "per_target": {
+       "M7.T2": {
+        "covered": true,
+        "sim": 0.678,
+        "segments": []
+       },
+       "CO4.LO1": {
+        "covered": true,
+        "sim": 0.58,
+        "segments": []
+       }
+      }
+     }
+    }
+   ]
+  },
+  "reserve": {
+   "video": [],
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://labelstud.io/learning-center/how-to-set-up-ai-evaluation-pipelines-in-a-machine-learning-workflow/",
+     "title": "Set Up AI Evaluation Pipelines in Machine Learning Workflows | Label Studio",
+     "source": "labelstud.io",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 1.0,
+      "quality": 0.7,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.732,
+     "rank": 3,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, CO4.LO1 ✓ [from page text] · labelstud.io · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Outlines setting up repeatable ML evaluation pipelines and continuous evaluation for drift detection. Good for foundational workflow design, but lacks code or concrete tool comparisons.",
+      "issues": [
+       "High-level workflow focus, lacks deep metric mathematical definitions"
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 2,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 1.0,
+      "evidence": "text",
+      "per_target": {
+       "M7.T2": {
+        "covered": true,
+        "sim": 0.687,
+        "segments": []
+       },
+       "CO4.LO1": {
+        "covered": true,
+        "sim": 0.598,
+        "segments": []
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://www.splunk.com/en_us/blog/learn/ai-system-evaluation.html",
+     "title": "How to Evaluate AI Systems | Splunk",
+     "source": "splunk.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.883,
+      "quality": 0.5,
+      "authority": 0.35,
+      "level_fit": 0.6,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.632,
+     "rank": 4,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, CO4.LO1 ✓ [from page text] · splunk.com · tier 4",
+     "findings": [],
+     "coverage": {
+      "score": 0.883,
+      "evidence": "text",
+      "per_target": {
+       "M7.T2": {
+        "covered": true,
+        "sim": 0.527,
+        "segments": []
+       },
+       "CO4.LO1": {
+        "covered": true,
+        "sim": 0.568,
+        "segments": []
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://arxiv.org/html/2602.18029v1",
+     "title": "Towards More Standardized AI Evaluation:From Models to Agents",
+     "source": "arxiv.org",
+     "tier": 2,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.782,
+      "quality": 0.42,
+      "authority": 0.8,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.668,
+     "rank": 5,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, CO4.LO1 ✓ [from page text] · arxiv.org · tier 2",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "review": {
+      "review": "Discusses shifting evaluation from static models to compound agents. Good perspective for advanced students, but offers limited practical examples for immediate pipeline implementation.",
+      "issues": [
+       "Academic paper focused on high-level standardization roadmap rather than direct mechanism comparisons"
+      ],
+      "use_as": "after_class",
+      "explains": "mentions",
+      "clarity": 3,
+      "correctness": 5,
+      "depth": 4,
+      "examples": 2,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.782,
+      "evidence": "text",
+      "per_target": {
+       "M7.T2": {
+        "covered": true,
+        "sim": 0.505,
+        "segments": []
+       },
+       "CO4.LO1": {
+        "covered": true,
+        "sim": 0.536,
+        "segments": []
+       }
+      }
+     }
+    }
+   ]
+  },
+  "rejected": [
+   {
+    "title": "Mastering LLM Chatbots And RAG Evaluation Crash Course",
+    "url": "https://www.youtube.com/watch?v=NebOSOTp-zA",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "13 - Cross-validation, Evaluation Metrics, Hyperparameter Tuning & Pipelines in Sklearn | Learn ML",
+    "url": "https://www.youtube.com/watch?v=NJTUbCoFwsM",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "How to evaluate ML models | Evaluation metrics for machine learning",
+    "url": "https://www.youtube.com/watch?v=LbX4X71-TFI",
+    "why": [
+     "score 0.43 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "RAG Retrieval Metrics Explained: Recall, Precision, MRR & NDCG",
+    "url": "https://www.youtube.com/watch?v=1M24UHWL41A",
+    "why": [
+     "score 0.44 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "How to Systematically Setup LLM Evals (Metrics, Unit Tests, LLM-as-a-Judge)",
+    "url": "https://www.youtube.com/watch?v=a3SMraZWNNs",
+    "why": [
+     "score 0.47 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Pipeline In Machine Learning | How to write pipeline in machine learning",
+    "url": "https://www.youtube.com/watch?v=XvxptZMUo2o",
+    "why": [
+     "score 0.50 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Every RAG Strategy Explained in 13 Minutes (No Fluff)",
+    "url": "https://www.youtube.com/watch?v=tLMViADvSNE",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "LLM as a Judge: Scaling AI Evaluation Strategies",
+    "url": "https://www.youtube.com/watch?v=trfUBIDeI1Y",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "How to evaluate AI agents #AI #AIagents #agenteval",
+    "url": "https://www.youtube.com/watch?v=DJrCDx1_TPY",
+    "why": [
+     "score 0.39 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Taking RAG Pipeline To Production With Caching And Observability",
+    "url": "https://www.youtube.com/watch?v=Wh3k3CelSbQ",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Evaluate AI Agents in  Python with Ragas",
+    "url": "https://www.youtube.com/watch?v=dOKHuw52YTA",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Linear Pipeline Processor | Asynchronous & Synchronous| Pipeline vs Non-Pipeline| Performance|PPC-24",
+    "url": "https://www.youtube.com/watch?v=y7QEd1I_4L8",
+    "why": [
+     "score 0.48 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "5.1. Introduction to data and ML pipeline testing.",
+    "url": "https://www.youtube.com/watch?v=v7YW97YJ5DA",
+    "why": [
+     "score 0.45 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Evaluation of vectorless RAG pipeline - why it's important LECTURE - 1",
+    "url": "https://www.youtube.com/watch?v=9X11mwHHl-0",
+    "why": [
+     "score 0.50 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Machine Learning Pipeline",
+    "url": "https://www.youtube.com/watch?v=RpRcEh1GOCE",
+    "why": [
+     "score 0.55 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "How to build a Machine Learning Pipeline | Data Science Lecture 35 by @techlearningwithRajat",
+    "url": "https://www.youtube.com/watch?v=292iYWHoqKM",
+    "why": [
+     "score 0.42 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Machine Learning Pipelines A-Z | Day 29 | 100 Days of Machine Learning",
+    "url": "https://www.youtube.com/watch?v=xOccYkgRV4Q",
+    "why": [
+     "score 0.51 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Machine Learning Pipeline for Beginners | Complete ML Workflow to Build Real-World Projects",
+    "url": "https://www.youtube.com/watch?v=87iyi9_Y3S8",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "ML Intro | Part 1 | Series 1 | Fundamentals Of Machine Learning | ML Models | Evaluation | Eng",
+    "url": "https://www.youtube.com/watch?v=2eveKSYXQrI",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Introduction to Machine Learning | Lecture 01 | Types, Applications & ML Pipeline | CS Gyan",
+    "url": "https://www.youtube.com/watch?v=v1Qce4eyuRA",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Machine Learning Interview Questions and Answers | ML Interview Questions and Answers",
+    "url": "https://www.youtube.com/watch?v=EJ9GLTePkmw",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "What is CI/CD Pipeline? | Simply Explained by Shradha Ma'am",
+    "url": "https://www.youtube.com/watch?v=gLptmcuCx6Q",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Tutorial-24:Pipelines in machine learning | Code implementation | Telugu | Machine Learning",
+    "url": "https://www.youtube.com/watch?v=SJMpfZS5-uo",
+    "why": [
+     "audio language is 'te'"
+    ]
+   },
+   {
+    "title": "Accuracy and Confusion Matrix | Type 1 and Type 2 Errors | Classification Metrics Part 1",
+    "url": "https://www.youtube.com/watch?v=c09drtuCS3c",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Scikit-Learn Pipelines: Evaluation & Hyperparameter Tuning | Machine Learning",
+    "url": "https://www.youtube.com/watch?v=TxguuYdWafw",
+    "why": [
+     "score 0.45 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "The Machine Learning Pipeline in 60 seconds",
+    "url": "https://www.youtube.com/watch?v=RhzKo4_Tlzo",
+    "why": [
+     "score 0.47 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Train/Test Splits, Data Leakage And Scikit-Learn Pipelines · Machine Learning",
+    "url": "https://www.youtube.com/watch?v=wAnnMm9n-ZA",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Episode 22 – Advanced MLlib: Pipelines & Model Evaluation | @DatabasePodcasts",
+    "url": "https://www.youtube.com/watch?v=McHhROGJ544",
+    "why": [
+     "score 0.57 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "What Is An Evaluation Pipeline | Arize AI",
+    "url": "https://arize.com/glossary/evaluation-pipeline/",
+    "why": [
+     "score 0.58 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "How to build a continuous evaluation pipeline for multi-agent systems with Gemini",
+    "url": "https://www.youtube.com/watch?v=WRU7-4bpZkg",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   }
+  ],
+  "clips": [
+   {
+    "target": "Pipeline evaluation mechanisms and metrics",
+    "target_ids": [
+     "M7.T2"
+    ],
+    "video": "Evaluating Retrieval-Augmented Generation (RAG) Pipelines  frameworks and metrics|LLM|AI|",
+    "source": "Vamaze Tech",
+    "url": "https://www.youtube.com/watch?v=o27XMu7Q8x0&t=261s",
+    "start": "4:21",
+    "end": "6:24",
+    "minutes": 2.1
+   }
+  ],
+  "counts": {
+   "candidates": 72,
+   "passed_checks": 7,
+   "rejected": 65
+  }
+ },
+ "experts": {
+  "lecture_id": "W11.L2",
+  "topic": "Pipeline evaluation mechanisms and metrics",
+  "experts": [
+   {
+    "name": "Aditya Parameswaran",
+    "kind": "academic",
+    "affiliation": "Shanghai Jiao Tong University",
+    "country": "CN",
+    "links": {
+     "openalex": "https://openalex.org/A5013608601",
+     "orcid": "https://orcid.org/0000-0002-4538-4752",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Aditya+Parameswaran+Shanghai+Jiao+Tong+University"
+    },
+    "metrics": {
+     "cited_by": 5489,
+     "h_index": 43,
+     "works_count": 249,
+     "matching_works": 2
+    },
+    "scores": {
+     "topical_fit": 0.635,
+     "teaching": 0.6,
+     "practical": 0.3,
+     "standing": 0.807,
+     "recency": 0.6,
+     "feasibility": 0.722
+    },
+    "total": 0.66,
+    "rank": 1,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2021,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Production Machine Learning Pipelines",
+      "year": 2021,
+      "url": "https://doi.org/10.1145/3448016.3457566",
+      "cited_by": 66,
+      "venue": "ACM SIGMOD International Conference on Management of Data (SIGMOD)",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Towards Observability for Machine Learning Pipelines",
+      "year": 2021,
+      "url": "https://openalex.org/W3198313108",
+      "cited_by": 7,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Papers \"Production Machine Learning Pipelines\" and \"Towards Observability for Machine Learning Pipelines\" (2021)",
+    "fit": "strong",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Yue Li",
+    "kind": "academic",
+    "affiliation": "Shandong University",
+    "country": "CN",
+    "links": {
+     "openalex": "https://openalex.org/A5100387780",
+     "orcid": "https://orcid.org/0000-0002-2654-1580",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Yue+Li+Shandong+University"
+    },
+    "metrics": {
+     "cited_by": 8669,
+     "h_index": 54,
+     "works_count": 339,
+     "matching_works": 1
+    },
+    "scores": {
+     "topical_fit": 0.538,
+     "teaching": 0.6,
+     "practical": 0.3,
+     "standing": 0.817,
+     "recency": 0.3,
+     "feasibility": 0.722
+    },
+    "total": 0.483,
+    "rank": 2,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2020,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "evidence is old (2020)"
+     },
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "works on physical pipelines not AI software pipelines"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Failure risk analysis of pipelines using data-driven machine learning algorithms",
+      "year": 2020,
+      "url": "https://doi.org/10.1016/j.strusafe.2020.102047",
+      "cited_by": 172,
+      "venue": "Structural Safety",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Paper on failure risk analysis of pipelines using data-driven ML algorithms (2020) relates to pipeline evaluation but for physical infrastructure.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": [
+     "evidence is old (2020)",
+     "works on physical pipelines not AI software pipelines"
+    ]
+   },
+   {
+    "name": "Yiming Liu",
+    "kind": "academic",
+    "affiliation": "Stevens Institute of Technology",
+    "country": "US",
+    "links": {
+     "openalex": "https://openalex.org/A5100449913",
+     "orcid": "https://orcid.org/0000-0002-5560-5109",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Yiming+Liu+Stevens+Institute+of+Technology"
+    },
+    "metrics": {
+     "cited_by": 1540,
+     "h_index": 21,
+     "works_count": 81,
+     "matching_works": 1
+    },
+    "scores": {
+     "topical_fit": 0.669,
+     "teaching": 0.6,
+     "practical": 0.3,
+     "standing": 0.684,
+     "recency": 0.6,
+     "feasibility": 0.0
+    },
+    "total": 0.475,
+    "rank": 3,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2022,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Review on automated condition assessment of pipelines with machine learning",
+      "year": 2022,
+      "url": "https://doi.org/10.1016/j.aei.2022.101687",
+      "cited_by": 149,
+      "venue": "Advanced Engineering Informatics",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Review paper \"Review on automated condition assessment of pipelines with machine learning\" (2022)",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Yi Bao",
+    "kind": "academic",
+    "affiliation": "Stevens Institute of Technology",
+    "country": "US",
+    "links": {
+     "openalex": "https://openalex.org/A5060686446",
+     "orcid": "https://orcid.org/0000-0002-2766-2077",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Yi+Bao+Stevens+Institute+of+Technology"
+    },
+    "metrics": {
+     "cited_by": 10998,
+     "h_index": 58,
+     "works_count": 296,
+     "matching_works": 1
+    },
+    "scores": {
+     "topical_fit": 0.618,
+     "teaching": 0.6,
+     "practical": 0.3,
+     "standing": 0.82,
+     "recency": 0.6,
+     "feasibility": 0.0
+    },
+    "total": 0.471,
+    "rank": 4,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2022,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Review on automated condition assessment of pipelines with machine learning",
+      "year": 2022,
+      "url": "https://doi.org/10.1016/j.aei.2022.101687",
+      "cited_by": 149,
+      "venue": "Advanced Engineering Informatics",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Review paper \"Review on automated condition assessment of pipelines with machine learning\" (2022)",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Ram Krishna Mazumder",
+    "kind": "academic",
+    "affiliation": "King Saud University",
+    "country": "SA",
+    "links": {
+     "openalex": "https://openalex.org/A5006001183",
+     "orcid": "https://orcid.org/0000-0002-9589-4654",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Ram+Krishna+Mazumder+King+Saud+University"
+    },
+    "metrics": {
+     "cited_by": 949,
+     "h_index": 15,
+     "works_count": 65,
+     "matching_works": 1
+    },
+    "scores": {
+     "topical_fit": 0.551,
+     "teaching": 0.6,
+     "practical": 0.3,
+     "standing": 0.644,
+     "recency": 0.3,
+     "feasibility": 0.6
+    },
+    "total": 0.461,
+    "rank": 5,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2020,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "evidence is old (2020)"
+     },
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "works on physical pipelines not AI software pipelines"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Failure risk analysis of pipelines using data-driven machine learning algorithms",
+      "year": 2020,
+      "url": "https://doi.org/10.1016/j.strusafe.2020.102047",
+      "cited_by": 172,
+      "venue": "Structural Safety",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Paper on failure risk analysis of pipelines using ML (2020) relates to pipeline evaluation but focuses on physical pipelines, not AI-native software architectures.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": [
+     "evidence is old (2020)",
+     "works on physical pipelines not AI software pipelines"
+    ]
+   }
+  ],
+  "reserve": [],
+  "rejected": [
+   {
+    "name": "Pankaj Jalote",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "AI fit check: weak"
+    ]
+   },
+   {
+    "name": "Riddam Jain",
+    "why": [
+     "topical fit 0.44 is below 0.5"
+    ]
+   },
+   {
+    "name": "Neoklis Polyzotis",
+    "why": [
+     "topical fit 0.49 is below 0.5"
+    ]
+   },
+   {
+    "name": "Vinish Kathuria",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.11 is below 0.5"
+    ]
+   },
+   {
+    "name": "Hui Miao",
+    "why": [
+     "topical fit 0.43 is below 0.5"
+    ]
+   },
+   {
+    "name": "Arani Bhattacharya",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.05 is below 0.5"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 28,
+   "assessed": 11,
+   "passed_checks": 5
+  }
+ }
+}

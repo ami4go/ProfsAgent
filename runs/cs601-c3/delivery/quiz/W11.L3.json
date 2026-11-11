@@ -1,0 +1,126 @@
+{
+ "lecture_id": "W11.L3",
+ "topic": "Reliable and safe trustworthy software architectures",
+ "made_at": "2026-11-03 15:46:58",
+ "minutes": {
+  "recap": 5,
+  "quiz": 5
+ },
+ "recap": [
+  {
+   "component": "W11.L2.C1",
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "bloom": 2,
+   "question": "Why are traditional assertion-based unit tests insufficient for evaluating AI-native systems?",
+   "options": [
+    "System-centric testing only measures underlying hardware usage rather than software behavior.",
+    "AI models do not use standard programming languages or software engineering pipelines.",
+    "AI-native systems exhibit nondeterminism and data drift, making fixed input-output assertions fragile.",
+    "Model training completely replaces all traditional software source code in production."
+   ],
+   "answer": "C",
+   "explanation": "AI-native systems introduce non-determinism, data drift, and model evolution, which makes fixed deterministic assertion testing inadequate."
+  },
+  {
+   "component": "W11.L2.C2",
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "bloom": 2,
+   "question": "When testing an ML model function without ground-truth labels (the oracle problem), which mechanism verifies logic by checking if relations between transformed inputs and outputs hold?",
+   "options": [
+    "Metamorphic testing",
+    "Pipeline replay",
+    "Schema validation",
+    "Static validation"
+   ],
+   "answer": "A",
+   "explanation": "Metamorphic testing addresses the test oracle problem by checking whether expected relations hold between outputs when specific transformations are applied to inputs."
+  },
+  {
+   "component": "W11.L2.C3",
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "bloom": 2,
+   "question": "Which integration testing technique ensures that data passing between components in an ML pipeline adheres to expected data types, values, and structural bounds?",
+   "options": [
+    "Metamorphic testing",
+    "Schema validation",
+    "Perplexity scoring",
+    "Calibration error checking"
+   ],
+   "answer": "B",
+   "explanation": "Schema validation inspects pipeline data flow to guarantee that inputs and outputs meet structural contracts before execution reaches downstream models."
+  }
+ ],
+ "questions": [
+  {
+   "component": "W11.L3.C1",
+   "lo_ids": [
+    "CO4.LO2"
+   ],
+   "bloom": 2,
+   "question": "In an automated AI-native software factory pipeline, what is the primary role of the model validation stage before deployment?",
+   "options": [
+    "To convert raw unstructured data into standardized formats for ingestion",
+    "To re-train base models using real-time production feedback",
+    "To evaluate model performance and safety metrics against defined thresholds before release",
+    "To run stress tests on infrastructure hardware to check server latency under load"
+   ],
+   "answer": "C",
+   "explanation": "The model validation stage ensures that a newly trained model meets accuracy, fairness, and safety thresholds before it is automatically promoted to deployment."
+  },
+  {
+   "component": "W11.L3.C2",
+   "lo_ids": [
+    "CO4.LO2"
+   ],
+   "bloom": 3,
+   "question": "A team notices their deployed ML system's accuracy degrades over time despite passing all code unit tests and initial validation. Which automated testing stage should be added to catch this issue early?",
+   "options": [
+    "Continuous data drift detection stage",
+    "Unit testing of feature engineering functions",
+    "Code syntax linting stage",
+    "Integration testing of data ingestion APIs"
+   ],
+   "answer": "A",
+   "explanation": "Continuous data drift detection monitors live input data distributions against training distributions, identifying shifts that degrade model accuracy in production."
+  },
+  {
+   "component": "W11.L3.C3",
+   "lo_ids": [
+    "CO4.LO2"
+   ],
+   "bloom": 4,
+   "question": "A team needs to satisfy a strict reproducibility requirement for a safety-critical AI system. How does this requirement alter pipeline test design compared to a system focused primarily on execution latency?",
+   "options": [
+    "Reproducibility requires replacing integration tests with unit tests across all stages.",
+    "Reproducibility is tested exclusively in post-deployment monitoring, whereas latency is tested pre-training.",
+    "Reproducibility requires adding automated checks for data versioning, fixed seeds, and pipeline environment hashing.",
+    "Reproducibility mandates disabling automated data drift detection to keep training fixed."
+   ],
+   "answer": "C",
+   "explanation": "Mapping reproducibility to test design requires validating deterministic execution (seeds, data split versions, environment hashing), whereas latency requirements focus on timing and throughput checks under load."
+  },
+  {
+   "component": "W11.L3.C4",
+   "lo_ids": [
+    "CO4.LO2"
+   ],
+   "bloom": 5,
+   "question": "An auditor reviews an AI deployment pipeline that runs unit tests and latency benchmarks, but lacks data drift monitoring and automated fairness checks. What is the correct assessment of this pipeline's reliability?",
+   "options": [
+    "The pipeline is flawed because it fails to run manual regression tests prior to model training.",
+    "The pipeline is highly reliable because unit tests and latency checks ensure code correctness and responsiveness.",
+    "The pipeline is deficient because missing drift monitoring and fairness checks leave it vulnerable to silent failure and biased outputs in production.",
+    "The pipeline meets software factory standards as long as code coverage metrics exceed 90%."
+   ],
+   "answer": "C",
+   "explanation": "Evaluating pipeline evidence shows that omitting continuous drift detection and fairness validation creates unmitigated risks of model decay and algorithmic bias in live environments."
+  }
+ ],
+ "problems": []
+}

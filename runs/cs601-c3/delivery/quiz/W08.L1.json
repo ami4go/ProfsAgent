@@ -1,0 +1,126 @@
+{
+ "lecture_id": "W08.L1",
+ "topic": "Iterative development and loop engineering",
+ "made_at": "2026-11-03 15:46:56",
+ "minutes": {
+  "recap": 5,
+  "quiz": 5
+ },
+ "recap": [
+  {
+   "component": "W07.L2.C1",
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "bloom": 2,
+   "question": "In AI-assisted coding, what is the primary function of the generate-test-refactor cycle within iterative loop engineering?",
+   "options": [
+    "To replace traditional test-driven development by delegating code review entirely to offline models",
+    "To iteratively generate candidate solutions, run tests to verify correctness, and refine the code based on execution feedback",
+    "To measure hardware resource consumption during model inference",
+    "To produce the complete production codebase in a single prompt execution without feedback"
+   ],
+   "answer": "B",
+   "explanation": "The generate-test-refactor cycle continuously improves code quality by emitting candidate code, verifying it against automated tests, and refactoring based on pass/fail signals."
+  },
+  {
+   "component": "W07.L2.C2",
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "bloom": 2,
+   "question": "In a standard agent execution log schema comprising timestamp, event type, agent identifier, and payload, which field holds the event-specific details necessary to reconstruct the step's operation?",
+   "options": [
+    "Timestamp",
+    "Payload",
+    "Agent identifier",
+    "Event type"
+   ],
+   "answer": "B",
+   "explanation": "The payload carries contextual data, arguments, and state outputs needed to analyze what occurred during that specific control-flow step."
+  },
+  {
+   "component": "W07.L2.C3",
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "bloom": 3,
+   "question": "An agent execution log displays the following entry sequence: `[DECISION] Evaluate test failure -> [BRANCH] Select patch strategy -> [CALL] execute_refactor()`. How should `[DECISION]` be categorized in the control-flow taxonomy?",
+   "options": [
+    "A repeated deterministic loop iteration",
+    "A target code conditional statement",
+    "A low-level system function invocation",
+    "An agent decision point where the model evaluates context to pick the next step"
+   ],
+   "answer": "D",
+   "explanation": "Agent decision points represent high-level reasoning steps where the agent analyzes past execution context to decide subsequent control flow."
+  }
+ ],
+ "questions": [
+  {
+   "component": "W08.L1.C1",
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "bloom": 2,
+   "question": "Why is establishing a standardized log schema and step taxonomy essential before analyzing complex agent execution traces?",
+   "options": [
+    "It increases the LLM token generation speed during iterative loops.",
+    "It provides a shared vocabulary and consistent structure to correctly classify control-flow steps.",
+    "It automatically refactors source code whenever an execution error is logged.",
+    "It guarantees that the agent will never enter an infinite execution loop."
+   ],
+   "answer": "B",
+   "explanation": "A standardized log schema and step taxonomy establish a common structure and vocabulary, allowing developers to accurately identify and classify control-flow events across execution logs."
+  },
+  {
+   "component": "W08.L1.C2",
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "bloom": 4,
+   "question": "When tracing a log file containing concurrent agent executions, how can you correctly group interleaved execution steps into their respective logical loops?",
+   "options": [
+    "Sort all log entries purely by timestamp and assign them to sequential loops.",
+    "Filter and group log entries using their correlation IDs assigned to each execution context.",
+    "Combine all concurrent steps into a single main execution sequence.",
+    "Ignore parallel steps and only trace log entries containing syntax errors."
+   ],
+   "answer": "B",
+   "explanation": "Correlation IDs tag entries from the same logical execution context, allowing interleaved log steps from parallel or nested loops to be cleanly separated and traced."
+  },
+  {
+   "component": "W08.L1.C3",
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "bloom": 5,
+   "question": "While analyzing a production coding agent log, you observe that the agent repeatedly re-runs tests after a failure without applying any code edits. Which bottleneck or instrumentation gap does this reveal?",
+   "options": [
+    "The log analyzer failed to assign parallel loop correlation IDs.",
+    "The agent needs higher network bandwidth to execute tests faster.",
+    "The agent's log schema lacks compression for long trace outputs.",
+    "The generate-test-refactor loop is stuck because failure signals are not triggering code modifications."
+   ],
+   "answer": "D",
+   "explanation": "A repeated test loop without code edits indicates a broken generate-test-refactor cycle where failure states do not properly trigger or log refactoring actions."
+  },
+  {
+   "component": "W08.L1.C4",
+   "lo_ids": [
+    "CO3.LO1"
+   ],
+   "bloom": 5,
+   "question": "In a trace report for an iterative development task, what is the primary objective of linking logged control-flow steps to specific code artifacts?",
+   "options": [
+    "To prevent the coding agent from editing files outside the root directory.",
+    "To establish clear traceability between log events, test outputs, and exact code changes made across iterations.",
+    "To eliminate the need for version control during agentic development.",
+    "To measure the network API latency of each model invocation."
+   ],
+   "answer": "B",
+   "explanation": "Linking log control-flow steps to code artifacts establishes concrete auditability, showing exactly which code changes and test results correspond to each step in the loop."
+  }
+ ],
+ "problems": []
+}

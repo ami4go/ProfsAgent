@@ -1,0 +1,72 @@
+{
+ "lecture_id": "W05.L2",
+ "topic": "Spec-driven development frameworks",
+ "made_at": "2026-11-03 15:46:55",
+ "minutes": {
+  "recap": 0,
+  "quiz": 0
+ },
+ "recap": [],
+ "questions": [
+  {
+   "component": "W05.L2.C1",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 2,
+   "question": "How does Spec-Driven Development (SDD) fundamentally differ from traditional Test-Driven Development (TDD)?",
+   "options": [
+    "SDD eliminates the need for testing entirely by relying on static evaluation.",
+    "SDD decouples the interface contract from language-specific code using formal specs as the single source of truth.",
+    "TDD relies on machine-readable schemas, whereas SDD relies strictly on manual code reviews.",
+    "SDD requires implementation code to be written before defining interface contracts."
+   ],
+   "answer": "B",
+   "explanation": "SDD establishes formal, machine-readable specifications as the single source of truth prior to implementation, decoupling interface contracts from language-specific test scripts."
+  },
+  {
+   "component": "W05.L2.C1",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 2,
+   "question": "Why are executable specifications particularly useful when integrating Large Language Models (LLMs) into the development workflow?",
+   "options": [
+    "They allow LLMs to automatically write documentation without checking data types.",
+    "They translate natural language requests directly into machine assembly without code.",
+    "They provide an unambiguous machine-readable benchmark for LLMs to enforce architectural and interface consistency.",
+    "They eliminate the need for prompt engineering by running code directly in the database."
+   ],
+   "answer": "C",
+   "explanation": "Executable specifications provide a clear, machine-readable single source of truth that LLMs and static analyzers use to validate and enforce API interface consistency."
+  },
+  {
+   "component": "W05.L2.C2",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 2,
+   "question": "What is the primary benefit of defining input constraints and response schemas in frameworks like JSON Schema or TypeSpec before writing implementation code?",
+   "options": [
+    "It guarantees that database queries execute with optimal performance at runtime.",
+    "It eliminates the need for HTTP request handling in web frameworks.",
+    "It automatically deploys application code to production cloud servers.",
+    "It enables automated contract validation of public interfaces before any backend code is generated."
+   ],
+   "answer": "D",
+   "explanation": "Machine-readable schemas define public interface signatures and constraints upfront, allowing automated validation of contracts prior to writing implementation code."
+  },
+  {
+   "component": "W05.L2.C2",
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "bloom": 2,
+   "question": "What role do preconditions and postconditions play within an executable specification schema?",
+   "options": [],
+   "answer": "They define structural input constraints and expected response signatures, enabling automated contract validation before code implementation.",
+   "explanation": "Preconditions and postconditions explicitly constrain allowed inputs and valid output structures within machine-readable specs, ensuring interface compliance automatedly."
+  }
+ ],
+ "problems": []
+}

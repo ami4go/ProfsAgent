@@ -1,0 +1,174 @@
+{
+ "lecture_id": "W02.L1",
+ "topic": "Model context protocols and architecture",
+ "made_at": "2026-11-03 15:46:53",
+ "minutes": {
+  "recap": 5,
+  "quiz": 10
+ },
+ "recap": [
+  {
+   "component": "W01.L2.C1",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 2,
+   "question": "How does adopting a Client-Host-Server topology with Model Context Protocol (MCP) solve the M×N integration problem for LLM applications?",
+   "options": [
+    "It removes the need for tool invocation by having the LLM directly execute local code.",
+    "It converts all tool communication payloads from JSON into binary protocols.",
+    "It replaces custom integrations with a standardized interface between host environments and external servers.",
+    "It mandates a single centralized database that all LLM clients and data sources must share."
+   ],
+   "answer": "C",
+   "explanation": "MCP introduces a standardized client-host-server interface, decoupling LLM clients from disparate external tools and reducing M×N bespoke integrations into an M+N architecture."
+  },
+  {
+   "component": "W01.L2.C2",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 2,
+   "question": "In local MCP communication using the stdio transport layer, how are requests and responses framed and transmitted?",
+   "options": [
+    "As raw binary streams sent across shared system memory",
+    "As protocol buffers transmitted via a WebSockets connection",
+    "As JSON-RPC 2.0 structured messages sent over standard input and output streams",
+    "As HTTP POST requests with Server-Sent Events headers"
+   ],
+   "answer": "C",
+   "explanation": "The stdio transport mechanism uses standard input/output streams to frame and exchange JSON-RPC 2.0 structured requests, responses, and notifications between host and subprocess."
+  },
+  {
+   "component": "W01.L2.C3",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 2,
+   "question": "During the MCP initialization handshake, what is the primary role of capability negotiation?",
+   "options": [
+    "To determine whether messages should switch from standard text to compressed binary format",
+    "To verify API keys and encrypt the stdio communication channel",
+    "To dynamically allocate hardware CPU and memory limits for the server process",
+    "To allow client and server to declare supported features like tools, resources, and prompts before starting operations"
+   ],
+   "answer": "D",
+   "explanation": "Capability negotiation occurs during initialization so both client and server can declare supported features (such as resources, prompts, and tools) and ensure compatibility before requests begin."
+  }
+ ],
+ "questions": [
+  {
+   "component": "W02.L1.C1",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 2,
+   "question": "How do resources differ from tools in Model Context Protocols (MCP)?",
+   "options": [
+    "Resources provide passive context data for reading, whereas tools enable dynamic side-effects and execution.",
+    "Resources allow models to execute shell commands, whereas tools only provide static files.",
+    "Resources require dynamic parameters, whereas tools do not accept input arguments.",
+    "Resources are defined on the host client, whereas tools reside exclusively on external cloud services."
+   ],
+   "answer": "A",
+   "explanation": "Resources act as passive data providers (like context or read-only files), while tools allow models to run dynamic operations and side-effects."
+  },
+  {
+   "component": "W02.L1.C2",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 2,
+   "question": "A developer wants to expose dynamic log streams where the log file URI changes based on a requested user ID parameter. Which MCP construct should they use?",
+   "options": [
+    "An environment variable override in the host workspace setting",
+    "A fixed text resource without dynamic URI mapping",
+    "A static tool definition with hardcoded execution parameters",
+    "A parameterized Resource Template with a dynamic URI scheme"
+   ],
+   "answer": "D",
+   "explanation": "Resource templates expose parameterized URI schemes, allowing clients to construct dynamic URIs to read specific dynamic context."
+  },
+  {
+   "component": "W02.L1.C3",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 2,
+   "question": "How does an MCP host validate arguments provided by an LLM before invoking a tool via `tools/call`?",
+   "options": [
+    "It validates arguments against the `inputSchema` declared in the server's `tools/list` response.",
+    "It relies on the server to bypass validation if the connection uses stdio.",
+    "It converts all input values to strings automatically without schema checks.",
+    "It forwards the raw prompt to a manual host validation queue."
+   ],
+   "answer": "A",
+   "explanation": "Tools define their input requirements via standard JSON Schema (`inputSchema`) during discovery (`tools/list`), which allows strict client/server argument validation."
+  },
+  {
+   "component": "W02.L1.C4",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 1,
+   "question": "Which mandatory fields are required in an `mcpServers` workspace configuration entry to launch a local subprocess context server?",
+   "options": [
+    "`uriTemplate` and `mimeType` to specify context encoding formats",
+    "`promptInjection` and `sandboxMode` to set protocol execution boundaries",
+    "`toolsList` and `callResult` to map server callback functions",
+    "`command` and `args` to specify the executable binary and its launch arguments"
+   ],
+   "answer": "D",
+   "explanation": "Subprocess server declarations in `mcpServers` require at minimum the executable `command` and optional command-line `args` (along with `env`) to start the server."
+  },
+  {
+   "component": "W02.L1.C5",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 2,
+   "question": "An external tool returns raw text output that contains malicious instructions designed to hijack the LLM context. What is the most effective mitigation strategy?",
+   "options": [
+    "Disabling all logging from stderr to suppress error messages",
+    "Running the server in high-privilege administrator mode to override unexpected errors",
+    "Hardcoding database secrets directly inside the shared client configuration file",
+    "Enforcing user-in-the-loop explicit approvals before executing sensitive downstream tools"
+   ],
+   "answer": "D",
+   "explanation": "Requiring explicit human approval (user-in-the-loop) for sensitive side-effects stops prompt injections contained in untrusted tool responses from executing unchecked actions."
+  },
+  {
+   "component": "W02.L1.C6",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 3,
+   "question": "A student configures an MCP server in `mcpServers` with `\"command\": \"python\"`, but the server immediately terminates because it lacks the script path and API key. Which part of the configuration template needs fixing?",
+   "options": [
+    "Changing the server protocol registration from JSON-RPC to XML",
+    "Removing the `command` attribute and replacing it with a static `uri` scheme",
+    "Updating the tool's JSON Schema type definitions from string to boolean",
+    "Adding the script path under `args` and the required API key key-values under `env`"
+   ],
+   "answer": "D",
+   "explanation": "Command-line arguments (like script files) must be passed via the `args` array and environment parameters (like API keys) must be set in the `env` dictionary of the configuration schema."
+  },
+  {
+   "component": "W02.L1.C7",
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "bloom": 2,
+   "question": "A local MCP server process fails during initialization without sending a JSON-RPC error response. Where should a developer look to diagnose the startup error?",
+   "options": [
+    "The server's public `resources/list` payload",
+    "The client host's static UI rendering logs",
+    "The subprocess `stderr` log stream of the context server",
+    "The `inputSchema` section of the prompt catalog"
+   ],
+   "answer": "C",
+   "explanation": "Runtime crashes, missing dependencies, or syntax errors in local server binaries output details directly to the subprocess standard error (`stderr`) stream."
+  }
+ ],
+ "problems": []
+}

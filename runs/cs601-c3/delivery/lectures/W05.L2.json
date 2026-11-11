@@ -1,0 +1,1847 @@
+{
+ "lecture_id": "W05.L2",
+ "topic": "Spec-driven development frameworks",
+ "generated_at": "2026-11-02 21:48:13",
+ "components": [
+  {
+   "lecture_id": "W05.L2",
+   "title": "Foundations of Spec-Driven Development Frameworks",
+   "teaches": "Students will understand the core workflow of spec-driven development (SDD) where formal specifications serve as the single source of truth prior to implementation. They will analyze how SDD differs from traditional Test-Driven Development (TDD) by decoupling interface contracts from language-specific test code. Students will also learn how LLMs and static analyzers leverage these frameworks to enforce architectural consistency.",
+   "key_terms": [
+    "Spec-Driven Development",
+    "Executable Specification",
+    "Interface Contract",
+    "Single Source of Truth",
+    "API-First"
+   ],
+   "kind": "concept",
+   "bloom": 2,
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "minutes": 15,
+   "id": "W05.L2.C1",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W05.L2",
+   "title": "Anatomy of Executable Specifications and Schemas",
+   "teaches": "Students will examine the internal structural requirements of executable specifications using tools like OpenAPI, JSON Schema, or TypeSpec. They will learn how type definitions, input constraints, and response schemas define public interface signatures. Students will identify how machine-readable constraints enable automated contract validation before any code is generated.",
+   "key_terms": [
+    "JSON Schema",
+    "TypeSpec",
+    "Preconditions",
+    "Postconditions",
+    "Contract Validation",
+    "Schema Validation"
+   ],
+   "kind": "mechanism",
+   "bloom": 2,
+   "lo_ids": [
+    "CO2.LO2"
+   ],
+   "minutes": 15,
+   "id": "W05.L2.C2",
+   "in_class": false
+  }
+ ],
+ "resources": {
+  "lecture_id": "W05.L2",
+  "topic": "Spec-driven development frameworks",
+  "want": {
+   "want_videos": false,
+   "want_readings": true,
+   "want_practice": true,
+   "want_recorded_lecture": false,
+   "want_clips": false,
+   "want_guest": true,
+   "confidence": 2,
+   "note": "",
+   "choices": [
+    "own_material",
+    "generate_material",
+    "assistance",
+    "guest_lecture"
+   ]
+  },
+  "queries": {
+   "lecture_id": "W05.L2",
+   "video_queries": [
+    "spec driven development framework tutorial",
+    "executable specifications code generation",
+    "interface specification public methods"
+   ],
+   "reading_queries": [
+    "executable specifications framework guide",
+    "spec driven development code generation"
+   ],
+   "practice_queries": [
+    "executable specifications testing exercise notebook"
+   ],
+   "recorded_lecture_query": "executable specifications code generation lecture",
+   "research_queries": [
+    "executable specifications frameworks",
+    "model driven code generation"
+   ],
+   "practitioner_query": "software architect specification driven development"
+  },
+  "items": {
+   "video": [
+    {
+     "kind": "video",
+     "id": "AlsWWmCkYJk",
+     "url": "https://www.youtube.com/watch?v=AlsWWmCkYJk",
+     "title": "Spec-Driven Development (SDD): Specifications as Primary Human Output",
+     "source": "Mirko Solutions Media",
+     "tier": 4,
+     "duration_s": 467,
+     "published": "2026-09-16T12:15:39Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 88,
+     "likes": 2,
+     "comments": 0,
+     "subscribers": 4,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.147,
+      "segment": 0.628,
+      "clarity": 1.0,
+      "level_fit": 0.8,
+      "authority": 0.35,
+      "reception": 0.496
+     },
+     "total": 0.56,
+     "findings": [],
+     "rationale": "Teaches C2 Anatomy of Executable Specifications and Schemas (1:21–5:46, fully) [checked on the transcript] · Mirko Solutions Media · tier 4 · 7:47 · 88 views",
+     "components": [
+      {
+       "id": "W05.L2.C2",
+       "title": "Anatomy of Executable Specifications and Schemas",
+       "start": "1:21",
+       "end": "5:46",
+       "start_s": 81.0,
+       "end_s": 346.0,
+       "verdict": "teaches_fully",
+       "covered": [
+        "Executable specs using OpenAPI and JSON Schema",
+        "Machine-parsable technical contracts and constraints",
+        "Automated contract validation in sandbox execution loops"
+       ],
+       "missing": [],
+       "note": "Comprehensive explanation of executable specification structure, OpenAPI/JSON schemas, and automated validation.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.147,
+      "evidence": "transcript",
+      "per_target": {
+       "W05.L2.C2": {
+        "text": "Anatomy of Executable Specifications and Schemas",
+        "covered": true,
+        "sim": 0.498,
+        "segments": [
+         {
+          "start": 81.0,
+          "end": 346.0,
+          "sim": 0.498
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Comprehensive explanation of executable specification structure, OpenAPI/JSON schemas, and automated validation.",
+      "issues": [],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "As AI coding agents automate syntax writing, human software engineering is shifting from writing code by hand to architecting precise technical specifications. Without unambiguous specs, autonomous agents waste cycles, hallucinate dependencies, and drift off-target.\n\nThis is a comprehensive look at Spec-Driven Development (SDD): structuring specification artifacts, eliminating ambiguity for AI agents, building executable specs, and setting up automated test rails.\n\nWHAT YOU GET OUT OF IT - The paradigm shift from manual coding to specification architecture - The 4 essential SDD artifacts: REQUIREMENTS.md, OpenAPI, AGENTS.md, and TESTS.md - How to draft unambiguous specs that eliminate agent ",
+     "rank": 1,
+     "status": "proposed"
+    },
+    {
+     "kind": "video",
+     "id": "mViFYTwWvcM",
+     "url": "https://www.youtube.com/watch?v=mViFYTwWvcM",
+     "title": "Spec-Driven Development: AI Assisted Coding Explained",
+     "source": "IBM Technology",
+     "tier": 2,
+     "duration_s": 540,
+     "published": "2026-02-28T12:01:30Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 559553,
+     "likes": 13316,
+     "comments": 543,
+     "subscribers": 1830000,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.073,
+      "segment": 0.31,
+      "clarity": 0.8,
+      "level_fit": 0.6,
+      "authority": 0.8,
+      "reception": 0.791
+     },
+     "total": 0.358,
+     "findings": [],
+     "rationale": "Teaches C1 Foundations of Spec-Driven Development Frameworks (3:22–7:22, partly) [checked on the transcript] · IBM Technology · tier 2 · 9:00 · 559,553 views",
+     "components": [
+      {
+       "id": "W05.L2.C1",
+       "title": "Foundations of Spec-Driven Development Frameworks",
+       "start": "3:22",
+       "end": "7:22",
+       "start_s": 202.0,
+       "end_s": 442.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "Core SDD workflow prior to implementation",
+        "Contrasting SDD with traditional TDD"
+       ],
+       "missing": [
+        "Decoupling interface contracts from language-specific test code",
+        "Role of static analyzers in enforcing consistency"
+       ],
+       "note": "Explains the high-level SDD workflow and compares it with TDD, but lacks detail on contract decoupling.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.073,
+      "evidence": "transcript",
+      "per_target": {
+       "W05.L2.C1": {
+        "text": "Foundations of Spec-Driven Development Frameworks",
+        "covered": true,
+        "sim": 0.567,
+        "segments": [
+         {
+          "start": 202.0,
+          "end": 442.0,
+          "sim": 0.567
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Explains the high-level SDD workflow and compares it with TDD, but lacks detail on contract decoupling.",
+      "issues": [
+       "leaves out: Decoupling interface contracts from language-specific test code",
+       "leaves out: Role of static analyzers in enforcing consistency"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Learn more about AI Code-Generation Software here → https://ibm.biz/BdpBwX\n\nIs AI-assisted coding the future? 🤔 Cedric Clyburn explores spec-driven development, a game-changing approach that combines LLMs with software development best practices. Learn how it differs from vibe coding, integrates SDLC principles, and improves coding workflows with requirements-driven precision. 🚀\n\nAI news moves fast. Sign up for a monthly newsletter for AI updates from IBM → https://ibm.biz/BdpBwH\n\n#aicoding #llms #aiassisted",
+     "rank": 2,
+     "status": "proposed"
+    },
+    {
+     "kind": "video",
+     "id": "hy8UstR2NEg",
+     "url": "https://www.youtube.com/watch?v=hy8UstR2NEg",
+     "title": "Full Course: Spec-Driven Development with Coding Agents",
+     "source": "DeepLearningAI",
+     "tier": 3,
+     "duration_s": 3694,
+     "published": "2026-09-22T19:32:17Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 380111,
+     "likes": 4410,
+     "comments": 138,
+     "subscribers": 737000,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.071,
+      "segment": 0.313,
+      "clarity": 0.8,
+      "level_fit": 0.8,
+      "authority": 0.65,
+      "reception": 0.645
+     },
+     "total": 0.339,
+     "findings": [],
+     "rationale": "Teaches C1 Foundations of Spec-Driven Development Frameworks (0:24–4:17, partly) [checked on the transcript] · DeepLearningAI · tier 3 · 1:01:34 · 380,111 views",
+     "components": [
+      {
+       "id": "W05.L2.C1",
+       "title": "Foundations of Spec-Driven Development Frameworks",
+       "start": "0:24",
+       "end": "4:17",
+       "start_s": 24.0,
+       "end_s": 257.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "Core workflow of spec-driven development",
+        "LLMs leveraging specifications to preserve context"
+       ],
+       "missing": [
+        "Comparison between SDD and TDD",
+        "Decoupling interface contracts from test code",
+        "Static analyzers"
+       ],
+       "note": "Good overview of agentic SDD workflows and feature loops, but misses TDD comparison and static analyzers.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.071,
+      "evidence": "transcript",
+      "per_target": {
+       "W05.L2.C1": {
+        "text": "Foundations of Spec-Driven Development Frameworks",
+        "covered": true,
+        "sim": 0.579,
+        "segments": [
+         {
+          "start": 24.0,
+          "end": 257.0,
+          "sim": 0.579
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Good overview of agentic SDD workflows and feature loops, but misses TDD comparison and static analyzers.",
+      "issues": [
+       "leaves out: Comparison between SDD and TDD",
+       "leaves out: Decoupling interface contracts from test code",
+       "leaves out: Static analyzers"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Vibe coding is fast, but it often produces code that doesn't match what you asked for. Spec-driven development is the disciplined alternative: write a clear markdown spec defining what to build, and let your coding agent implement it.\n\nEarn your certificate here: https://bit.ly/4hmJc2K\n\nYou'll learn to:\n- Write a project constitution defining mission, tech stack, and roadmap\n- Plan, implement, and validate features using a spec as the agent's guide\n- Introduce SDD to a legacy codebase\n- Package your workflow into an agent skill that's portable across agents and IDEs\n\nSpec-Driven Development with Coding Agents is built in partnership with JetBrains and taught by Paul Everitt, Developer Advoca",
+     "rank": 3,
+     "status": "proposed"
+    }
+   ],
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://specdriven.com/guides/executable-specs",
+     "title": "Making Specs Executable | Spec-Driven",
+     "source": "specdriven.com",
+     "tier": 3,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.985,
+      "quality": 0.75,
+      "authority": 0.65,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.782,
+     "rank": 1,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W05.L2.C1 ✓, W05.L2.C2 ✓ [from page text] · specdriven.com · tier 3",
+     "findings": [],
+     "review": {
+      "review": "Clear explanation of executable specifications and how BDD tools bridge specs and tests. Excellent pre-class reading, though excerpts lack concrete implementation code.",
+      "issues": [
+       "excerpts lack full step-by-step code examples"
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.985,
+      "evidence": "text",
+      "per_target": {
+       "M4.T1": {
+        "covered": true,
+        "sim": 0.605,
+        "segments": []
+       },
+       "W05.L2.C1": {
+        "covered": true,
+        "sim": 0.666,
+        "segments": [],
+        "text": "Foundations of Spec-Driven Development Frameworks. Students will understand the core workflow of spec-driven development"
+       },
+       "W05.L2.C2": {
+        "covered": true,
+        "sim": 0.555,
+        "segments": [],
+        "text": "Anatomy of Executable Specifications and Schemas. Students will examine the internal structural requirements of executab"
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://www.testmuai.com/blog/executable-specifications/",
+     "title": "Executable Specifications in Software Development & Testing",
+     "source": "testmuai.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.852,
+      "quality": 0.75,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.691,
+     "rank": 2,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W05.L2.C1 ✓, W05.L2.C2 ✓ [from page text] · testmuai.com · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Provides a solid conceptual background on executable specifications, BDD origins, and supporting frameworks like Cucumber and Behave. Useful pre-class preparation.",
+      "issues": [
+       "brief excerpts with limited code examples"
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.852,
+      "evidence": "text",
+      "per_target": {
+       "M4.T1": {
+        "covered": true,
+        "sim": 0.496,
+        "segments": []
+       },
+       "W05.L2.C1": {
+        "covered": true,
+        "sim": 0.599,
+        "segments": [],
+        "text": "Foundations of Spec-Driven Development Frameworks. Students will understand the core workflow of spec-driven development"
+       },
+       "W05.L2.C2": {
+        "covered": true,
+        "sim": 0.599,
+        "segments": [],
+        "text": "Anatomy of Executable Specifications and Schemas. Students will examine the internal structural requirements of executab"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "reserve": {
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://www.kinde.com/learn/ai-for-software-engineering/best-practice/executable-specs-turning-plain-english-into-running-systems/",
+     "title": "Kinde Executable Specs: Turning Plain English into Running Systems",
+     "source": "kinde.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.898,
+      "quality": 0.65,
+      "authority": 0.35,
+      "level_fit": 0.6,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.667,
+     "rank": 3,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W05.L2.C1 ✓, W05.L2.C2 ✓ [from page text] · kinde.com · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Accessible overview of executable specs as living documentation. Good introductory pre-class material, though it lacks technical detail on framework usage.",
+      "issues": [
+       "high-level conceptual overview lacking technical detail"
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 2,
+      "examples": 2,
+      "level_fit": 3
+     },
+     "coverage": {
+      "score": 0.898,
+      "evidence": "text",
+      "per_target": {
+       "M4.T1": {
+        "covered": true,
+        "sim": 0.519,
+        "segments": []
+       },
+       "W05.L2.C1": {
+        "covered": true,
+        "sim": 0.611,
+        "segments": [],
+        "text": "Foundations of Spec-Driven Development Frameworks. Students will understand the core workflow of spec-driven development"
+       },
+       "W05.L2.C2": {
+        "covered": true,
+        "sim": 0.615,
+        "segments": [],
+        "text": "Anatomy of Executable Specifications and Schemas. Students will examine the internal structural requirements of executab"
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://arxiv.org/html/2607.26777v1",
+     "title": "CodeSpec: Dual Executable Specifications for Agentic Long-Horizon Feature Development",
+     "source": "arxiv.org",
+     "tier": 2,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.875,
+      "quality": 0.42,
+      "authority": 0.8,
+      "level_fit": 0.4,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.66,
+     "rank": 4,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W05.L2.C1 ✓, W05.L2.C2 ✓ [from page text] · arxiv.org · tier 2",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "review": {
+      "review": "Academic research paper discussing dual executable specifications for LLM code agents. Too specialized for general undergraduate instruction, but useful for professor background.",
+      "issues": [
+       "specialized research paper on AI code agents rather than standard frameworks"
+      ],
+      "use_as": "professor_prep",
+      "explains": "mentions",
+      "clarity": 3,
+      "correctness": 5,
+      "depth": 4,
+      "examples": 2,
+      "level_fit": 2
+     },
+     "coverage": {
+      "score": 0.875,
+      "evidence": "text",
+      "per_target": {
+       "M4.T1": {
+        "covered": true,
+        "sim": 0.511,
+        "segments": []
+       },
+       "W05.L2.C1": {
+        "covered": true,
+        "sim": 0.562,
+        "segments": [],
+        "text": "Foundations of Spec-Driven Development Frameworks. Students will understand the core workflow of spec-driven development"
+       },
+       "W05.L2.C2": {
+        "covered": true,
+        "sim": 0.572,
+        "segments": [],
+        "text": "Anatomy of Executable Specifications and Schemas. Students will examine the internal structural requirements of executab"
+       }
+      }
+     }
+    }
+   ],
+   "video": [
+    {
+     "kind": "video",
+     "id": "oWh69rNlH_k",
+     "url": "https://www.youtube.com/watch?v=oWh69rNlH_k",
+     "title": "Is Your OpenAPI Spec Actually Executable? | Specmatic Linter",
+     "source": "Specmatic",
+     "tier": 4,
+     "duration_s": 618,
+     "published": "2026-06-30T12:43:48Z",
+     "licence": "Creative Commons (CC BY)",
+     "captions": true,
+     "views": 133,
+     "likes": 3,
+     "comments": 0,
+     "subscribers": 82,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.09,
+      "segment": 0.351,
+      "clarity": 0.8,
+      "level_fit": 0.8,
+      "authority": 0.35,
+      "reception": 0.498
+     },
+     "total": 0.347,
+     "findings": [],
+     "rationale": "Teaches C2 Anatomy of Executable Specifications and Schemas (2:53–7:48, partly) [checked on the transcript] · Specmatic · tier 4 · 10:18 · 133 views",
+     "components": [
+      {
+       "id": "W05.L2.C2",
+       "title": "Anatomy of Executable Specifications and Schemas",
+       "start": "2:53",
+       "end": "7:48",
+       "start_s": 173.0,
+       "end_s": 468.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "OpenAPI executable spec inconsistencies",
+        "Automated contract validation using linters",
+        "Input and response constraint conflicts"
+       ],
+       "missing": [
+        "JSON Schema and TypeSpec syntax",
+        "Explicit definitions of preconditions and postconditions"
+       ],
+       "note": "Clear demonstration of executable OpenAPI spec errors and validation tools, but lacks structured instruction on TypeSpec or JSON Schema syntax.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.09,
+      "evidence": "transcript",
+      "per_target": {
+       "W05.L2.C2": {
+        "text": "Anatomy of Executable Specifications and Schemas",
+        "covered": true,
+        "sim": 0.459,
+        "segments": [
+         {
+          "start": 173.0,
+          "end": 468.0,
+          "sim": 0.459
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Clear demonstration of executable OpenAPI spec errors and validation tools, but lacks structured instruction on TypeSpec or JSON Schema syntax.",
+      "issues": [
+       "leaves out: JSON Schema and TypeSpec syntax",
+       "leaves out: Explicit definitions of preconditions and postconditions"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Your OpenAPI specification passes Spectral, Redocly or Vacuum...\n\nBut is it actually executable?\n\nTraditional OpenAPI linters focus on syntax, style and structural correctness. They tell you whether your specification is valid.\n\nSpecmatic goes a step further.\n\nIt validates whether your OpenAPI specification is semantically correct, internally consistent and actually executable.\n\nIn this video you'll see:\n\n✅ Why syntactically valid OpenAPI specs can still fail at runtime\n✅ Real examples that traditional linters miss\n✅ A comparison of Spectral, Redocly, Vacuum and Specmatic\n✅ How Specmatic detects semantic and runtime inconsistencies\n✅ Enterprise API governance features including Maturity Leve",
+     "rank": 4,
+     "status": "reserve"
+    },
+    {
+     "kind": "video",
+     "id": "yH-qzlkzPbs",
+     "url": "https://www.youtube.com/watch?v=yH-qzlkzPbs",
+     "title": "Spec-Driven Development with Claude Code: A Practical Guide",
+     "source": "SaM Solutions",
+     "tier": 4,
+     "duration_s": 578,
+     "published": "2026-09-08T07:36:17Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 9525,
+     "likes": 73,
+     "comments": 1,
+     "subscribers": 961,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.048,
+      "segment": 0.221,
+      "clarity": 1.0,
+      "level_fit": 0.8,
+      "authority": 0.35,
+      "reception": 0.478
+     },
+     "total": 0.242,
+     "findings": [],
+     "rationale": "Teaches C1 Foundations of Spec-Driven Development Frameworks (0:51–3:28, partly) [checked on the transcript] · SaM Solutions · tier 4 · 9:38 · 9,525 views",
+     "components": [
+      {
+       "id": "W05.L2.C1",
+       "title": "Foundations of Spec-Driven Development Frameworks",
+       "start": "0:51",
+       "end": "3:28",
+       "start_s": 51.0,
+       "end_s": 208.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "Core SDD workflow",
+        "Specifications as single source of truth prior to implementation",
+        "LLMs enforcing architectural consistency"
+       ],
+       "missing": [
+        "How SDD differs from TDD by decoupling interface contracts from test code"
+       ],
+       "note": "Clear breakdown of SDD workflow and specs as single source of truth, but lacks TDD comparison.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.048,
+      "evidence": "transcript",
+      "per_target": {
+       "W05.L2.C1": {
+        "text": "Foundations of Spec-Driven Development Frameworks",
+        "covered": true,
+        "sim": 0.632,
+        "segments": [
+         {
+          "start": 51.0,
+          "end": 208.0,
+          "sim": 0.632
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Clear breakdown of SDD workflow and specs as single source of truth, but lacks TDD comparison.",
+      "issues": [
+       "leaves out: How SDD differs from TDD by decoupling interface contracts from test code"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "The video based on our blog article explains how spec-driven development, combined with Claude Code, helps teams turn detailed requirements into structured, reliable software implementations. It outlines a workflow in which developers define specifications first, use AI to generate and refine code, and validate the results through testing and review. This approach can improve development speed, consistency, and collaboration while reducing ambiguity and rework.\n\nhttps://sam-solutions.com/blog/spec-driven-development-with-claude-code/\n\n0:00 - Intro\n0:56 - What is spec-driven development (SDD)?\n1:45 - Specification as the source of truth for Claude Code\n2:26 - Human review in spec-driven devel",
+     "rank": 5,
+     "status": "reserve"
+    },
+    {
+     "kind": "video",
+     "id": "7aUEjRw0yzk",
+     "url": "https://www.youtube.com/watch?v=7aUEjRw0yzk",
+     "title": "Spec Kit Guide: Spec-Driven AI Development",
+     "source": "Joe Maddalone",
+     "tier": 4,
+     "duration_s": 473,
+     "published": "2026-09-21T13:00:19Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 19967,
+     "likes": 279,
+     "comments": 25,
+     "subscribers": 13100,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.046,
+      "segment": 0.2,
+      "clarity": 0.8,
+      "level_fit": 0.8,
+      "authority": 0.35,
+      "reception": 0.583
+     },
+     "total": 0.242,
+     "findings": [],
+     "rationale": "Teaches C1 Foundations of Spec-Driven Development Frameworks (0:24–2:55, partly) [checked on the transcript] · Joe Maddalone · tier 4 · 7:53 · 19,967 views",
+     "components": [
+      {
+       "id": "W05.L2.C1",
+       "title": "Foundations of Spec-Driven Development Frameworks",
+       "start": "0:24",
+       "end": "2:55",
+       "start_s": 24.0,
+       "end_s": 175.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "SpecKit CLI workflow for spec-driven development",
+        "LLM integration via specs and constitutions"
+       ],
+       "missing": [
+        "Comparison between SDD and TDD",
+        "Decoupling interface contracts from test code",
+        "Static analyzer integration"
+       ],
+       "note": "Clear terminal walkthrough of SpecKit workflow with an LLM agent, but lacks comparison to TDD and formal theoretical contract details.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.046,
+      "evidence": "transcript",
+      "per_target": {
+       "W05.L2.C1": {
+        "text": "Foundations of Spec-Driven Development Frameworks",
+        "covered": true,
+        "sim": 0.543,
+        "segments": [
+         {
+          "start": 24.0,
+          "end": 175.0,
+          "sim": 0.543
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Clear terminal walkthrough of SpecKit workflow with an LLM agent, but lacks comparison to TDD and formal theoretical contract details.",
+      "issues": [
+       "leaves out: Comparison between SDD and TDD",
+       "leaves out: Decoupling interface contracts from test code",
+       "leaves out: Static analyzer integration"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Turn vague ideas into fully working applications with Spec Kit — the spec-driven development tool from GitHub that keeps your AI coding agents in check. Whether you're using GitHub Copilot, Claude, Gemini, or another coding agent, learn how to write clear specifications that prevent assumptions from becoming buggy code, while maintaining full control over your project's direction and documentation.\n\nAll of the specs I used in the demo app: https://gist.github.com/joemaddalone/6f65ee75aaddf958c6a1763b9f3cb6c6\n\n━━━━━━━━━━━━━\n🔥 WHAT YOU'LL LEARN\n━━━━━━━━━━━━━\n✅ Install SpecKit via the Specify CLI\n✅ Walk through the full SpecKit workflow: clarify, plan, tasks, implement, and converge\n✅ Explore t",
+     "rank": 6,
+     "status": "reserve"
+    },
+    {
+     "kind": "video",
+     "id": "j64v9T6XI2Y",
+     "url": "https://www.youtube.com/watch?v=j64v9T6XI2Y",
+     "title": "Spec Driven Development Explained for Beginners | How Professionals Build Software with AI",
+     "source": "Faiz Codes AI",
+     "tier": 4,
+     "duration_s": 200,
+     "published": "2026-01-12T15:04:25Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 301,
+     "likes": 8,
+     "comments": 0,
+     "subscribers": 162,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.053,
+      "segment": 0.205,
+      "clarity": 0.8,
+      "level_fit": 0.4,
+      "authority": 0.35,
+      "reception": 0.547
+     },
+     "total": 0.241,
+     "findings": [],
+     "rationale": "Teaches C1 Foundations of Spec-Driven Development Frameworks (0:03–2:56, partly) [checked on the transcript] · Faiz Codes AI · tier 4 · 3:20 · 301 views",
+     "components": [
+      {
+       "id": "W05.L2.C1",
+       "title": "Foundations of Spec-Driven Development Frameworks",
+       "start": "0:03",
+       "end": "2:56",
+       "start_s": 3.0,
+       "end_s": 176.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "High-level core workflow of spec-driven development",
+        "Using specifications to guide AI coding"
+       ],
+       "missing": [
+        "Comparison of SDD with TDD",
+        "Decoupling interface contracts",
+        "Role of static analyzers"
+       ],
+       "note": "High-level beginner conceptual overview of SDD steps; lacks technical depth on TDD comparison and static analysis for Level 3.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.053,
+      "evidence": "transcript",
+      "per_target": {
+       "W05.L2.C1": {
+        "text": "Foundations of Spec-Driven Development Frameworks",
+        "covered": true,
+        "sim": 0.448,
+        "segments": [
+         {
+          "start": 3.0,
+          "end": 176.0,
+          "sim": 0.448
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "High-level beginner conceptual overview of SDD steps; lacks technical depth on TDD comparison and static analysis for Level 3.",
+      "issues": [
+       "leaves out: Comparison of SDD with TDD",
+       "leaves out: Decoupling interface contracts",
+       "leaves out: Role of static analyzers"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Most beginners use AI randomly while coding — and that’s why projects break.\n\nIn this video, I explain Spec Driven Development in very simple and beginner-friendly language.\nYou will learn how to work with AI step by step, just like professional developers and AI agents do.\n\n🔹 What you’ll learn in this video:\n • What Spec Driven Development really means\n • Why random AI prompting fails\n • How to define rules before writing code\n • Step-by-step AI agent workflow\n • Real project example (AI Task Manager)\n • Difference between Prompt-Driven vs Spec-Driven development\n\nThis approach is used in modern AI-powered software engineering and is essential if you want to build clean, scalable, and profe",
+     "rank": 7,
+     "status": "reserve"
+    }
+   ]
+  },
+  "rejected": [
+   {
+    "title": "Engineering the Specification: How Teams Actually Write Executable Intent",
+    "url": "https://www.bairesdev.com/blog/executable-specification",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Executable Specifications in software development",
+    "url": "https://bluefruit.co.uk/processes/executable-specifications-software-development/",
+    "why": [
+     "score 0.59 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Executable specifications - HitchDev",
+    "url": "https://hitchdev.com/hitchstory/approach/executable-specifications/",
+    "why": [
+     "score 0.56 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Executable Specifications: An Agile Core Practice",
+    "url": "https://agilemodeling.com/essays/executablespecifications.htm",
+    "why": [
+     "score 0.54 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Zero To Production In Rust",
+    "url": "https://openlibrary.org/works/OL34391195W",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Penetration Frameworks and Development Issues in Secure Mobile Application Development: A Systematic Literature Review",
+    "url": "https://ieeexplore.ieee.org/ielx7/6287639/9312710/09450725.pdf",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "AI-Driven Arabic Linguistics for Autism Spectrum Disorder: A Systematic Review and Conceptual Framework",
+    "url": "https://journal.nuc.edu.iq/cgi/viewcontent.cgi?article=1179&context=home",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Domain-Driven Design in software development: A systematic literature review on implementation, challenges, and effectiveness",
+    "url": "https://doi.org/10.1016/j.jss.2025.112537",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "Information-driven modeling of biomolecular complexes",
+    "url": "https://www.sciencedirect.com/science/article/pii/S0959440X21000658/pdf",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Tests Are An Executable Specification",
+    "url": "https://wiki.c2.com?TestsAreAnExecutableSpecification=",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "Discover 200 Exercise Testing Jobs and Work Opportunities in Ontario | Indeed",
+    "url": "https://ca.indeed.com/q-exercise-testing-l-ontario-jobs.html",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "6 Ways To Open Executable Files Like .exe, .app and .ipa - Indeed",
+    "url": "https://www.indeed.com/career-advice/career-development/open-executable-files",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Monster Notebook IT Department | Monster Notebook Engineering Department",
+    "url": "https://rocketreach.co/monster-notebook-it-department_b5d869eaf42e53ca",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Memory Price Surge to Persist in 1Q26; Smartphone and Notebook Brands Begin Raising Prices and Downgrading Specs, Says TrendForce",
+    "url": "https://finance.yahoo.com/news/memory-price-surge-persist-1q26-135500163.html",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "What Are xNFTs (Executable NFTs)?",
+    "url": "https://coinmarketcap.com/academy/article/what-are-xnfts-executable-nfts",
+    "why": [
+     "page not readable (status None, ConnectTimeout: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has fa)"
+    ]
+   },
+   {
+    "title": "bregman-arie/devops-exercises — Linux, Jenkins, AWS, SRE, Prometheus, Docker, Python, Ansible, Git, Kubernetes, Terraform, OpenStack, SQL, NoSQL, Azure,",
+    "url": "https://github.com/bregman-arie/devops-exercises",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes",
+     "AI review: off topic (off-topic general DevOps interview questions)",
+     "AI review: a general introduction to a broader concept, not this lecture's topic",
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "stefan-jansen/machine-learning-for-trading — Code for Machine Learning for Trading, 3rd edition — from data sourcing to live execution.",
+    "url": "https://github.com/stefan-jansen/machine-learning-for-trading",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes",
+     "AI review: off topic (off-topic repository on machine learning for trading)",
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "marcelscruz/public-apis — A collaborative list of public APIs for developers",
+    "url": "https://github.com/marcelscruz/public-apis",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "sacridini/Awesome-Geospatial — Long list of geospatial tools and resources",
+    "url": "https://github.com/sacridini/Awesome-Geospatial",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes",
+     "AI review: off topic (off-topic list of geospatial software tools)",
+     "AI review: a general introduction to a broader concept, not this lecture's topic",
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "songguoxs/gpt4o-image-prompts — Nano Banana(nanobanana),GPT-5(GPT5),GPT-4o(GPT4o) Image Prompts，Nanobanana Prompts，nanobanana提示词",
+    "url": "https://github.com/songguoxs/gpt4o-image-prompts",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "What is AI code generation? | IBM",
+    "url": "https://www.ibm.com/think/topics/ai-code-generation",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "",
+    "url": "https://ibm.biz/BdpBwH",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "100% Abstraction: The Power of Interfaces! ⚡",
+    "url": "https://www.youtube.com/watch?v=bGM5jT9zaY4",
+    "why": [
+     "too short to teach a component (0:11)"
+    ]
+   },
+   {
+    "title": "Conventional Visibility in Java Interfaces #java #shorts",
+    "url": "https://www.youtube.com/watch?v=JJ8Fi1iZzNw",
+    "why": [
+     "too short to teach a component (0:56)"
+    ]
+   },
+   {
+    "title": "Commenting the Public Interface, Part 1 - Intro to Java Programming",
+    "url": "https://www.youtube.com/watch?v=qYai77mdHc4",
+    "why": [
+     "too short to teach a component (1:58)"
+    ]
+   },
+   {
+    "title": "Spec driven development can get boring quick. When you get bored you get sloppy. #aicoding",
+    "url": "https://www.youtube.com/watch?v=Cp9v-tbvjdQ",
+    "why": [
+     "too short to teach a component (1:46)"
+    ]
+   },
+   {
+    "title": "This Is A Game Changer",
+    "url": "https://www.youtube.com/watch?v=M-VU0fLjIUU",
+    "why": [
+     "too short to teach a component (0:43)"
+    ]
+   },
+   {
+    "title": "RoadMap to learn Agentic AI #ai #agenticai #education",
+    "url": "https://www.youtube.com/watch?v=a-1lZvvTNOs",
+    "why": [
+     "too short to teach a component (0:07)"
+    ]
+   },
+   {
+    "title": "GitHub Spec Kit will change how you think about AI coding ✨",
+    "url": "https://www.youtube.com/watch?v=gULb2MuuQnU",
+    "why": [
+     "too short to teach a component (2:30)"
+    ]
+   },
+   {
+    "title": "Master Kiro in One Post | From Prompt to Production | Rakesh Gohel",
+    "url": "https://www.youtube.com/watch?v=LSEgmaVfXsg",
+    "why": [
+     "too short to teach a component (0:12)"
+    ]
+   },
+   {
+    "title": "AI is writing 90% of your code?",
+    "url": "https://www.youtube.com/watch?v=howz8BKRUQM",
+    "why": [
+     "too short to teach a component (0:19)"
+    ]
+   },
+   {
+    "title": "Code first, spec second — inverting spec-driven development",
+    "url": "https://www.youtube.com/watch?v=HklycHJ1JKM",
+    "why": [
+     "too short to teach a component (0:46)"
+    ]
+   },
+   {
+    "title": "99% of Claude Code users waste hours rebuilding context when their conversations fill up!",
+    "url": "https://www.youtube.com/watch?v=ypaZDsJqv34",
+    "why": [
+     "too short to teach a component (0:54)"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 26,
+   "passed_checks": 4,
+   "rejected": 22,
+   "videos_used": 3
+  },
+  "clips": [
+   {
+    "target": "Foundations of Spec-Driven Development Frameworks",
+    "target_ids": [
+     "W05.L2.C1"
+    ],
+    "component": "W05.L2.C1",
+    "video": "Full Course: Spec-Driven Development with Coding Agents",
+    "source": "DeepLearningAI",
+    "url": "https://www.youtube.com/watch?v=hy8UstR2NEg&t=24s",
+    "start": "0:24",
+    "end": "4:17",
+    "minutes": 3.9,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "Core workflow of spec-driven development",
+     "LLMs leveraging specifications to preserve context"
+    ],
+    "missing": [
+     "Comparison between SDD and TDD",
+     "Decoupling interface contracts from test code",
+     "Static analyzers"
+    ],
+    "note": "Good overview of agentic SDD workflows and feature loops, but misses TDD comparison and static analyzers."
+   },
+   {
+    "target": "Foundations of Spec-Driven Development Frameworks",
+    "target_ids": [
+     "W05.L2.C1"
+    ],
+    "component": "W05.L2.C1",
+    "video": "Spec-Driven Development: AI Assisted Coding Explained",
+    "source": "IBM Technology",
+    "url": "https://www.youtube.com/watch?v=mViFYTwWvcM&t=202s",
+    "start": "3:22",
+    "end": "7:22",
+    "minutes": 4.0,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "Core SDD workflow prior to implementation",
+     "Contrasting SDD with traditional TDD"
+    ],
+    "missing": [
+     "Decoupling interface contracts from language-specific test code",
+     "Role of static analyzers in enforcing consistency"
+    ],
+    "note": "Explains the high-level SDD workflow and compares it with TDD, but lacks detail on contract decoupling."
+   },
+   {
+    "target": "Anatomy of Executable Specifications and Schemas",
+    "target_ids": [
+     "W05.L2.C2"
+    ],
+    "component": "W05.L2.C2",
+    "video": "Spec-Driven Development (SDD): Specifications as Primary Human Output",
+    "source": "Mirko Solutions Media",
+    "url": "https://www.youtube.com/watch?v=AlsWWmCkYJk&t=81s",
+    "start": "1:21",
+    "end": "5:46",
+    "minutes": 4.4,
+    "component_minutes": 15,
+    "verdict": "teaches_fully",
+    "covered": [
+     "Executable specs using OpenAPI and JSON Schema",
+     "Machine-parsable technical contracts and constraints",
+     "Automated contract validation in sandbox execution loops"
+    ],
+    "missing": [],
+    "note": "Comprehensive explanation of executable specification structure, OpenAPI/JSON schemas, and automated validation."
+   }
+  ],
+  "timeline": [
+   {
+    "component": "W05.L2.C1",
+    "title": "Foundations of Spec-Driven Development Frameworks",
+    "minutes": 15,
+    "kind": "concept",
+    "delivery": "video",
+    "gap": {
+     "video_minutes": 7.9,
+     "missing": [
+      "Comparison between SDD and TDD",
+      "Decoupling interface contracts from test code",
+      "Static analyzers",
+      "Decoupling interface contracts from language-specific test code",
+      "Role of static analyzers in enforcing consistency"
+     ]
+    },
+    "segments": [
+     {
+      "video": "Full Course: Spec-Driven Development with Coding Agents",
+      "video_id": "hy8UstR2NEg",
+      "url": "https://www.youtube.com/watch?v=hy8UstR2NEg&t=24s",
+      "start": "0:24",
+      "end": "4:17",
+      "minutes": 3.9,
+      "verdict": "teaches_partly",
+      "score": 0.313
+     },
+     {
+      "video": "Spec-Driven Development: AI Assisted Coding Explained",
+      "video_id": "mViFYTwWvcM",
+      "url": "https://www.youtube.com/watch?v=mViFYTwWvcM&t=202s",
+      "start": "3:22",
+      "end": "7:22",
+      "minutes": 4.0,
+      "verdict": "teaches_partly",
+      "score": 0.31
+     }
+    ]
+   },
+   {
+    "component": "W05.L2.C2",
+    "title": "Anatomy of Executable Specifications and Schemas",
+    "minutes": 15,
+    "kind": "mechanism",
+    "delivery": "video",
+    "gap": {
+     "video_minutes": 4.4,
+     "missing": []
+    },
+    "segments": [
+     {
+      "video": "Spec-Driven Development (SDD): Specifications as Primary Human Output",
+      "video_id": "AlsWWmCkYJk",
+      "url": "https://www.youtube.com/watch?v=AlsWWmCkYJk&t=81s",
+      "start": "1:21",
+      "end": "5:46",
+      "minutes": 4.4,
+      "verdict": "teaches_fully",
+      "score": 0.628
+     }
+    ]
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W05.L2",
+    "title": "Foundations of Spec-Driven Development Frameworks",
+    "teaches": "Students will understand the core workflow of spec-driven development (SDD) where formal specifications serve as the single source of truth prior to implementation. They will analyze how SDD differs from traditional Test-Driven Development (TDD) by decoupling interface contracts from language-specific test code. Students will also learn how LLMs and static analyzers leverage these frameworks to enforce architectural consistency.",
+    "key_terms": [
+     "Spec-Driven Development",
+     "Executable Specification",
+     "Interface Contract",
+     "Single Source of Truth",
+     "API-First"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 15,
+    "id": "W05.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W05.L2",
+    "title": "Anatomy of Executable Specifications and Schemas",
+    "teaches": "Students will examine the internal structural requirements of executable specifications using tools like OpenAPI, JSON Schema, or TypeSpec. They will learn how type definitions, input constraints, and response schemas define public interface signatures. Students will identify how machine-readable constraints enable automated contract validation before any code is generated.",
+    "key_terms": [
+     "JSON Schema",
+     "TypeSpec",
+     "Preconditions",
+     "Postconditions",
+     "Contract Validation",
+     "Schema Validation"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO2.LO2"
+    ],
+    "minutes": 15,
+    "id": "W05.L2.C2",
+    "in_class": false
+   }
+  ],
+  "notebooklm": {
+   "pack": "notebooklm/W05.L2.md",
+   "components": [],
+   "sources": 6
+  }
+ },
+ "experts": {
+  "lecture_id": "W05.L2",
+  "topic": "Spec-driven development frameworks",
+  "experts": [
+   {
+    "name": "Paul Everitt",
+    "kind": "industry",
+    "role": "Developer Advocate",
+    "affiliation": "JetBrains",
+    "links": {
+     "page": "https://www.youtube.com/watch?v=hy8UstR2NEg"
+    },
+    "metrics": {},
+    "scores": {
+     "topical_fit": 0.827,
+     "teaching": 0.9,
+     "practical": 1.0,
+     "standing": 0.5,
+     "recency": 0.6,
+     "feasibility": 0.6
+    },
+    "total": 0.868,
+    "rank": 1,
+    "verified_identity": "named in the talk video https://www.youtube.com/watch?v=hy8UstR2NEg",
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "talk",
+      "title": "Spec-Driven Development with Coding Agents - DeepLearning.AI",
+      "url": "https://learn.deeplearning.ai/courses/spec-driven-development-with-coding-agents/lesson/8bhg0p/introduction"
+     },
+     {
+      "kind": "talk",
+      "title": "Full Course: Spec-Driven Development with Coding Agents",
+      "url": "https://www.youtube.com/watch?v=hy8UstR2NEg"
+     }
+    ],
+    "why": "Delivered talks and a full course on Spec-Driven Development with Coding Agents.",
+    "fit": "strong",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Matt Laver",
+    "kind": "industry",
+    "role": "Senior Specialist Solutions Architect",
+    "affiliation": "AWS",
+    "links": {
+     "page": "https://www.youtube.com/watch?v=OJ6DiiSoUuQ"
+    },
+    "metrics": {},
+    "scores": {
+     "topical_fit": 0.823,
+     "teaching": 0.9,
+     "practical": 1.0,
+     "standing": 0.5,
+     "recency": 0.6,
+     "feasibility": 0.6
+    },
+    "total": 0.867,
+    "rank": 2,
+    "verified_identity": "named on https://www.youtube.com/watch?v=OJ6DiiSoUuQ",
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "talk",
+      "title": "How AWS thinks about spec-driven development — XConf Europe 2026 - YouTube",
+      "url": "https://www.youtube.com/watch?v=OJ6DiiSoUuQ"
+     },
+     {
+      "kind": "talk",
+      "title": "How AWS thinks about spec-driven development — XConf Europe 2026",
+      "url": "https://www.youtube.com/watch?v=OJ6DiiSoUuQ"
+     }
+    ],
+    "why": "Presented a talk at XConf Europe 2026 on how AWS approaches spec-driven development.",
+    "fit": "strong",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Simon Martinelli",
+    "kind": "industry",
+    "role": "Software Architect and Creator of the AI Unified Process",
+    "affiliation": "Martinelli LLC",
+    "links": {
+     "page": "https://unifiedprocess.ai/publications.html"
+    },
+    "metrics": {},
+    "scores": {
+     "topical_fit": 0.8,
+     "teaching": 0.9,
+     "practical": 1.0,
+     "standing": 0.3,
+     "recency": 0.6,
+     "feasibility": 0.6
+    },
+    "total": 0.836,
+    "rank": 3,
+    "verified_identity": "named on https://unifiedprocess.ai/publications.html",
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "talk",
+      "title": "Publications: The Spec-Driven Development Book and the Free Use Case Guide",
+      "url": "https://unifiedprocess.ai/publications.html"
+     }
+    ],
+    "why": "Authored The Spec-Driven Development Book and associated use case guides.",
+    "fit": "strong",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Den Delimarsky",
+    "kind": "industry",
+    "role": "Principal Product Engineer",
+    "affiliation": "GitHub",
+    "links": {
+     "page": "https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/"
+    },
+    "metrics": {},
+    "scores": {
+     "topical_fit": 0.8,
+     "teaching": 0.9,
+     "practical": 1.0,
+     "standing": 0.3,
+     "recency": 0.6,
+     "feasibility": 0.6
+    },
+    "total": 0.836,
+    "rank": 4,
+    "verified_identity": "named on https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/",
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "talk",
+      "title": "Spec-driven development with AI: Get started with a new open source toolkit - The GitHub Blog",
+      "url": "https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/"
+     }
+    ],
+    "why": "Authored a GitHub Blog article introducing an open-source toolkit for spec-driven development with AI.",
+    "fit": "strong",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Birgitta Böckeler",
+    "kind": "industry",
+    "role": "Distinguished Engineer and AI-assisted delivery expert",
+    "affiliation": "Thoughtworks",
+    "links": {
+     "page": "https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html"
+    },
+    "metrics": {},
+    "scores": {
+     "topical_fit": 0.8,
+     "teaching": 0.9,
+     "practical": 1.0,
+     "standing": 0.3,
+     "recency": 0.6,
+     "feasibility": 0.6
+    },
+    "total": 0.836,
+    "rank": 5,
+    "verified_identity": "named on https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html",
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "talk",
+      "title": "Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl",
+      "url": "https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html"
+     }
+    ],
+    "why": "Gave a talk explaining spec-driven development frameworks and tools such as Kiro, spec-kit, and Tessl.",
+    "fit": "strong",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Sam Hatoum",
+    "kind": "industry",
+    "role": "Publisher and Founder",
+    "affiliation": "SpecDriven",
+    "links": {
+     "page": "https://specdriven.com/people"
+    },
+    "metrics": {},
+    "scores": {
+     "topical_fit": 0.8,
+     "teaching": 0.9,
+     "practical": 1.0,
+     "standing": 0.3,
+     "recency": 0.6,
+     "feasibility": 0.6
+    },
+    "total": 0.684,
+    "rank": 6,
+    "verified_identity": "named on https://specdriven.com/people",
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "evidence is a published directory page rather than a technical framework talk or paper"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "talk",
+      "title": "Notable People in Spec-Driven Development | Spec-Driven",
+      "url": "https://specdriven.com/people"
+     }
+    ],
+    "why": "Founder of SpecDriven with published material listing notable figures in spec-driven development.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": [
+     "evidence is a published directory page rather than a technical framework talk or paper"
+    ]
+   },
+   {
+    "name": "David Harel",
+    "kind": "academic",
+    "affiliation": "Weizmann Institute of Science",
+    "country": "IL",
+    "links": {
+     "openalex": "https://openalex.org/A5088778612",
+     "orcid": "https://orcid.org/0000-0001-7240-3931",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=David+Harel+Weizmann+Institute+of+Science"
+    },
+    "metrics": {
+     "cited_by": 30630,
+     "h_index": 76,
+     "works_count": 648,
+     "matching_works": 2
+    },
+    "scores": {
+     "topical_fit": 0.658,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.82,
+     "recency": 1.0,
+     "feasibility": 0.611
+    },
+    "total": 0.663,
+    "rank": 7,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2025,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "An infrastructure software perspective toward computation offloading between executable specifications and foundation models",
+      "year": 2025,
+      "url": "https://doi.org/10.1007/s11432-025-4311-9",
+      "cited_by": 2,
+      "venue": "Science China Information Sciences",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Categorizing methods for integrating machine learning with executable specifications",
+      "year": 2023,
+      "url": "https://doi.org/10.1007/s11432-022-3826-6",
+      "cited_by": 7,
+      "venue": "Science China Information Sciences",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Published papers on integrating machine learning and foundation models with executable specifications.",
+    "fit": "strong",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   }
+  ],
+  "reserve": [
+   {
+    "name": "Nabendu Chaki",
+    "kind": "academic",
+    "affiliation": "University of Calcutta",
+    "country": "IN",
+    "links": {
+     "openalex": "https://openalex.org/A5001172312",
+     "orcid": "https://orcid.org/0000-0003-3242-680X",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Nabendu+Chaki+University+of+Calcutta"
+    },
+    "metrics": {
+     "cited_by": 3006,
+     "h_index": 30,
+     "works_count": 389,
+     "matching_works": 2
+    },
+    "scores": {
+     "topical_fit": 0.739,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.744,
+     "recency": 1.0,
+     "feasibility": 1.0
+    },
+    "total": 0.597,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2026,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Editorial: Software specification and verification: models and tools",
+      "year": 2026,
+      "url": "https://doi.org/10.3389/fcomp.2026.1845840",
+      "cited_by": 0,
+      "venue": "Frontiers in Computer Science",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Extracting goal models from natural language requirement specifications",
+      "year": 2024,
+      "url": "https://doi.org/10.1016/j.jss.2024.111981",
+      "cited_by": 16,
+      "venue": "Journal of Systems and Software",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Published editorial work on software specification models and tools, as well as extracting goal models from requirement specifications.",
+    "fit": "moderate",
+    "suggested_format": "live_in_person",
+    "concerns": []
+   },
+   {
+    "name": "Agostino Cortesi",
+    "kind": "academic",
+    "affiliation": "Ca' Foscari University of Venice",
+    "country": "IT",
+    "links": {
+     "openalex": "https://openalex.org/A5015116587",
+     "orcid": "https://orcid.org/0000-0002-0946-5440",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Agostino+Cortesi+Ca%27+Foscari+University+of+Venice"
+    },
+    "metrics": {
+     "cited_by": 2936,
+     "h_index": 30,
+     "works_count": 338,
+     "matching_works": 2
+    },
+    "scores": {
+     "topical_fit": 0.749,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.743,
+     "recency": 1.0,
+     "feasibility": 0.5
+    },
+    "total": 0.554,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2026,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Editorial: Software specification and verification: models and tools",
+      "year": 2026,
+      "url": "https://doi.org/10.3389/fcomp.2026.1845840",
+      "cited_by": 0,
+      "venue": "Frontiers in Computer Science",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Extracting goal models from natural language requirement specifications",
+      "year": 2024,
+      "url": "https://doi.org/10.1016/j.jss.2024.111981",
+      "cited_by": 16,
+      "venue": "Journal of Systems and Software",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored works on software specification models and tools, and extracting goal models from requirements.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Aritra Hazra",
+    "kind": "academic",
+    "affiliation": "Indian Institute of Technology Kharagpur",
+    "country": "IN",
+    "links": {
+     "openalex": "https://openalex.org/A5022880201",
+     "orcid": "https://orcid.org/0000-0003-2076-3577",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Aritra+Hazra+Indian+Institute+of+Technology+Kharagpur"
+    },
+    "metrics": {
+     "cited_by": 415,
+     "h_index": 12,
+     "works_count": 79,
+     "matching_works": 2
+    },
+    "scores": {
+     "topical_fit": 0.534,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.761,
+     "recency": 1.0,
+     "feasibility": 1.0
+    },
+    "total": 0.534,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2024,
+    "findings": [
+     {
+      "code": "X-CONCERN",
+      "severity": "warning",
+      "message": "focuses on formal specifications for embedded systems rather than spec-driven development frameworks"
+     }
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Formal Methods for Characterization and Analysis of Quality Specifications in Component-Based Systems",
+      "year": 2024,
+      "url": "https://doi.org/10.1142/s021853932450044x",
+      "cited_by": 2,
+      "venue": "International Journal of Reliability Quality and Safety Engineering",
+      "venue_quality": 0.8
+     },
+     {
+      "kind": "paper",
+      "title": "Formal assessment of reliability specifications in embedded cyber-physical systems",
+      "year": 2016,
+      "url": "https://doi.org/10.1016/j.jal.2016.09.001",
+      "cited_by": 9,
+      "venue": "Journal of Applied Logic",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Authored papers on formal specifications for component-based systems and reliability specifications.",
+    "fit": "moderate",
+    "suggested_format": "live_in_person",
+    "concerns": [
+     "focuses on formal specifications for embedded systems rather than spec-driven development frameworks"
+    ]
+   },
+   {
+    "name": "Assaf Marron",
+    "kind": "academic",
+    "affiliation": "Weizmann Institute of Science",
+    "country": "IL",
+    "links": {
+     "openalex": "https://openalex.org/A5068704563",
+     "orcid": "https://orcid.org/0000-0001-5904-5105",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Assaf+Marron+Weizmann+Institute+of+Science"
+    },
+    "metrics": {
+     "cited_by": 955,
+     "h_index": 16,
+     "works_count": 103,
+     "matching_works": 2
+    },
+    "scores": {
+     "topical_fit": 0.658,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.649,
+     "recency": 1.0,
+     "feasibility": 0.611
+    },
+    "total": 0.645,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2025,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "An infrastructure software perspective toward computation offloading between executable specifications and foundation models",
+      "year": 2025,
+      "url": "https://doi.org/10.1007/s11432-025-4311-9",
+      "cited_by": 2,
+      "venue": "Science China Information Sciences",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Categorizing methods for integrating machine learning with executable specifications",
+      "year": 2023,
+      "url": "https://doi.org/10.1007/s11432-022-3826-6",
+      "cited_by": 7,
+      "venue": "Science China Information Sciences",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored research on executable specifications and their integration with foundation models and machine learning.",
+    "fit": "strong",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   }
+  ],
+  "rejected": [
+   {
+    "name": "Pankaj Jalote",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.37 is below 0.5"
+    ]
+   },
+   {
+    "name": "Rahul Mohananai",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.49 is below 0.5"
+    ]
+   },
+   {
+    "name": "Arani Bhattacharya",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.23 is below 0.5"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 34,
+   "assessed": 15,
+   "passed_checks": 12
+  }
+ }
+}

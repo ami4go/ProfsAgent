@@ -1,0 +1,2018 @@
+{
+ "lecture_id": "W03.L2",
+ "topic": "Custom tool integrations using model context protocols",
+ "generated_at": "2026-11-02 21:20:28",
+ "components": [
+  {
+   "lecture_id": "W03.L2",
+   "title": "Architecture of Model Context Protocol (MCP) clients and servers",
+   "teaches": "Students will understand the client-server architecture of the Model Context Protocol (MCP) and how LLM agent workspaces communicate with external tools. They will identify the roles of host applications, MCP clients, and MCP servers during session initialization and tool exposure.",
+   "key_terms": [
+    "Model Context Protocol",
+    "MCP Client",
+    "MCP Server",
+    "Host Application",
+    "Transport Layer",
+    "Stdio Transport"
+   ],
+   "kind": "concept",
+   "bloom": 2,
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "minutes": 15,
+   "id": "W03.L2.C1",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W03.L2",
+   "title": "JSON-RPC 2.0 protocol format for tool discovery and calls",
+   "teaches": "Students will learn how JSON-RPC 2.0 messages are structured for tools/list and tools/call requests in MCP. They will examine request IDs, method headers, parameter payloads, and response objects transmitted over standard streams.",
+   "key_terms": [
+    "JSON-RPC 2.0",
+    "tools/list",
+    "tools/call",
+    "Request Envelope",
+    "Response Payload",
+    "Stdio Messaging"
+   ],
+   "kind": "mechanism",
+   "bloom": 2,
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "minutes": 15,
+   "id": "W03.L2.C2",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W03.L2",
+   "title": "Defining strict input JSON schemas for MCP tools",
+   "teaches": "Students will learn how to write precise JSON Schema definitions for tool parameters to guide LLM tool calling. They will specify required fields, parameter data types, descriptions, and validation constraints that prevent ambiguous agent invocations.",
+   "key_terms": [
+    "JSON Schema",
+    "inputSchema",
+    "Type Constraints",
+    "Required Properties",
+    "Parameter Descriptions",
+    "Tool Metadata"
+   ],
+   "kind": "mechanism",
+   "bloom": 3,
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "minutes": 15,
+   "id": "W03.L2.C3",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W03.L2",
+   "title": "Implementing an MCP server using an official SDK",
+   "teaches": "Students will walk through building a lightweight MCP server using an official SDK. They will observe how decorated functions are exposed as callable tools and how incoming JSON arguments are parsed automatically.",
+   "key_terms": [
+    "MCP SDK",
+    "Server Initialization",
+    "Tool Handler",
+    "Decorator Syntax",
+    "Async Execution"
+   ],
+   "kind": "worked_example",
+   "bloom": 3,
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "minutes": 20,
+   "id": "W03.L2.C4",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W03.L2",
+   "title": "Activity: Writing and running a custom MCP server tool",
+   "teaches": "Students will write a custom tool function on an MCP server that executes local file or system operations and returns formatted content blocks. They will test the server execution using standard input streams to verify correct responses.",
+   "key_terms": [
+    "Tool Implementation",
+    "TextContent",
+    "CallToolResult",
+    "Stdio Execution",
+    "Local Tool Testing"
+   ],
+   "kind": "activity",
+   "bloom": 3,
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "minutes": 25,
+   "id": "W03.L2.C5",
+   "in_class": true
+  },
+  {
+   "lecture_id": "W03.L2",
+   "title": "Configuring workspace settings to discover custom MCP servers",
+   "teaches": "Students will configure an agent workspace JSON configuration file to register their custom server executable and command-line arguments. They will verify that the agent successfully discovers and surfaces the new tool capabilities.",
+   "key_terms": [
+    "mcpServers Config",
+    "Workspace Configuration",
+    "Executable Path",
+    "Environment Variables",
+    "Server Discovery"
+   ],
+   "kind": "mechanism",
+   "bloom": 3,
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "minutes": 15,
+   "id": "W03.L2.C6",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W03.L2",
+   "title": "Handling execution errors and returning structured MCP errors",
+   "teaches": "Students will learn how to catch internal tool execution failures and map them to structured MCP error responses using the isError flag. They will distinguish between runtime exceptions inside tool execution and protocol-level transport failures.",
+   "key_terms": [
+    "isError Flag",
+    "CallToolResult",
+    "Structured Error Messages",
+    "Exception Handling",
+    "Protocol Errors"
+   ],
+   "kind": "mechanism",
+   "bloom": 3,
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "minutes": 15,
+   "id": "W03.L2.C7",
+   "in_class": false
+  }
+ ],
+ "resources": {
+  "lecture_id": "W03.L2",
+  "topic": "Custom tool integrations using model context protocols",
+  "want": {
+   "want_videos": false,
+   "want_readings": true,
+   "want_practice": true,
+   "want_recorded_lecture": false,
+   "want_clips": false,
+   "want_guest": true,
+   "confidence": 2,
+   "note": "",
+   "choices": [
+    "own_material",
+    "generate_material",
+    "assistance",
+    "guest_lecture"
+   ]
+  },
+  "queries": {
+   "lecture_id": "W03.L2",
+   "video_queries": [
+    "custom tool integrations model context protocol tutorial",
+    "building MCP tools for AI agents",
+    "model context protocol custom tools lecture"
+   ],
+   "reading_queries": [
+    "model context protocol custom tool documentation",
+    "agent workspace custom integrations guide"
+   ],
+   "practice_queries": [
+    "model context protocol custom tools hands on lab"
+   ],
+   "recorded_lecture_query": "custom tool integrations using model context protocols lecture",
+   "research_queries": [
+    "model context protocols tools",
+    "agent tool integration frameworks"
+   ],
+   "practitioner_query": "MCP protocol engineer integration expert"
+  },
+  "items": {
+   "video": [
+    {
+     "kind": "video",
+     "id": "jwquMzKkxo4",
+     "url": "https://www.youtube.com/watch?v=jwquMzKkxo4",
+     "title": "Model Context Protocol (MCP) Explained | The Standard Connecting AI to Your Tools",
+     "source": "Ahmed Al-Imaad",
+     "tier": 4,
+     "duration_s": 858,
+     "published": "2026-09-08T08:58:07Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 57,
+     "likes": 0,
+     "comments": 0,
+     "subscribers": 792,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.023,
+      "segment": 0.242,
+      "clarity": 0.7,
+      "level_fit": 0.6,
+      "authority": 0.35,
+      "reception": 0.197
+     },
+     "total": 0.213,
+     "findings": [],
+     "rationale": "Teaches C2 JSON-RPC 2.0 protocol format for tool discovery and calls (6:49–9:19, partly); C6 Configuring workspace settings to discover custom MCP server (11:10–13:43, partly) [checked on the transcript] · Ahmed Al-Imaad · tier 4 · 14:18 · 57 views",
+     "components": [
+      {
+       "id": "W03.L2.C2",
+       "title": "JSON-RPC 2.0 protocol format for tool discovery and calls",
+       "start": "6:49",
+       "end": "9:19",
+       "start_s": 409.0,
+       "end_s": 559.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "High-level mention of JSON-RPC 2.0",
+        "Conceptual tools/list and call tool methods"
+       ],
+       "missing": [
+        "Detailed JSON-RPC 2.0 message structure",
+        "Request IDs and method headers",
+        "Parameter payloads and response objects",
+        "Stdio stream transmission details"
+       ],
+       "note": "Mentions JSON-RPC 2.0 and list/call methods conceptually, but lacks message payloads and structural details.",
+       "chapter": null
+      },
+      {
+       "id": "W03.L2.C6",
+       "title": "Configuring workspace settings to discover custom MCP servers",
+       "start": "11:10",
+       "end": "13:43",
+       "start_s": 670.0,
+       "end_s": 823.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "navigating to settings to edit configuration",
+        "verifying discovered tool execution in host"
+       ],
+       "missing": [
+        "writing the JSON configuration syntax",
+        "setting executable path and command-line arguments"
+       ],
+       "note": "Shows host UI settings and demonstrates tool execution verification, but does not show how to edit the underlying JSON file.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.023,
+      "evidence": "transcript",
+      "per_target": {
+       "W03.L2.C2": {
+        "text": "JSON-RPC 2.0 protocol format for tool discovery and calls",
+        "covered": true,
+        "sim": 0.426,
+        "segments": [
+         {
+          "start": 409.0,
+          "end": 559.0,
+          "sim": 0.426
+         }
+        ]
+       },
+       "W03.L2.C6": {
+        "text": "Configuring workspace settings to discover custom MCP servers",
+        "covered": true,
+        "sim": 0.544,
+        "segments": [
+         {
+          "start": 670.0,
+          "end": 823.0,
+          "sim": 0.544
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Mentions JSON-RPC 2.0 and list/call methods conceptually, but lacks message payloads and structural details.; Shows host UI settings and demonstrates tool execution verification, but does not show how to edit the underlying JSON file.",
+      "issues": [
+       "leaves out: Detailed JSON-RPC 2.0 message structure",
+       "leaves out: Request IDs and method headers",
+       "leaves out: Parameter payloads and response objects",
+       "leaves out: Stdio stream transmission details"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "MCP is an open standard for connecting AI models to external tools and data sources without writing a custom integration for every one. This session covers what it is, how it works, and why it matters.\n\nYou will learn:\n\nThe integration problem MCP was designed to solve\nClient, server, and host roles in the architecture\nTools, resources, and prompts as MCP primitives\nHow an MCP server exposes capabilities to a model\nComparing MCP to traditional function calling\nWhere MCP fits in an agent stack\n\nOne of the most important developments in AI tooling right now.\n\nHashtags:\n#MCP #ModelContextProtocol #AIAgents #Anthropic #GenerativeAI #LLM #AIEngineering #ToolCalling #AgenticAI #GenAI #AITraining",
+     "rank": 1,
+     "status": "proposed"
+    },
+    {
+     "kind": "video",
+     "id": "cGuyrANVi4A",
+     "url": "https://www.youtube.com/watch?v=cGuyrANVi4A",
+     "title": "How Model Context Protocol (MCP) actually works",
+     "source": "Google Cloud Tech",
+     "tier": 2,
+     "duration_s": 478,
+     "published": "2026-06-24T16:00:39Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 415672,
+     "likes": 9773,
+     "comments": 129,
+     "subscribers": 1460000,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.02,
+      "segment": 0.354,
+      "clarity": 0.8,
+      "level_fit": 0.8,
+      "authority": 0.8,
+      "reception": 0.794
+     },
+     "total": 0.387,
+     "findings": [],
+     "rationale": "Teaches C1 Architecture of Model Context Protocol (MCP) clients and ser (2:09–6:36, partly) [checked on the transcript] · Google Cloud Tech · tier 2 · 7:58 · 415,672 views",
+     "components": [
+      {
+       "id": "W03.L2.C1",
+       "title": "Architecture of Model Context Protocol (MCP) clients and servers",
+       "start": "2:09",
+       "end": "6:36",
+       "start_s": 129.0,
+       "end_s": 396.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "Client-server architecture overview",
+        "Roles of MCP client and MCP server",
+        "Tool exposure and dynamic discovery"
+       ],
+       "missing": [
+        "Role of Host Application vs MCP Client",
+        "Transport layer mechanisms (Stdio/SSE)",
+        "Session initialization process"
+       ],
+       "note": "Clear conceptual explanation of client-server architecture and tool exposure, but misses transport layer and host app details.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.02,
+      "evidence": "transcript",
+      "per_target": {
+       "W03.L2.C1": {
+        "text": "Architecture of Model Context Protocol (MCP) clients and servers",
+        "covered": true,
+        "sim": 0.679,
+        "segments": [
+         {
+          "start": 129.0,
+          "end": 396.0,
+          "sim": 0.679
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Clear conceptual explanation of client-server architecture and tool exposure, but misses transport layer and host app details.",
+      "issues": [
+       "leaves out: Role of Host Application vs MCP Client",
+       "leaves out: Transport layer mechanisms (Stdio/SSE)",
+       "leaves out: Session initialization process"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Google MCPs → https://goo.gle/3PYkjky \nBuild an ADK agent with Google MCPs → https://goo.gle/4o6h8DP \nConnect an MCP server to an AI agent → https://goo.gle/4uk7YW2 \n\nAPIs were built for deterministic programs, but AI models reason probabilistically. So how do you get your AI agents to talk to your tools and data without writing messy, custom integration code every time? Enter the Model Context Protocol (MCP). In this video, Smitha Kolan explains what MCP is, how it standardizes the way AI models discover and interact with external resources, and why it's becoming the new standard over traditional APIs for AI-powered applications\n\nChapters:\n0:00 - Intro: The problem with APIs and AI \n0:48 - ",
+     "rank": 2,
+     "status": "proposed"
+    },
+    {
+     "kind": "video",
+     "id": "tzrwxLNHtRY",
+     "url": "https://www.youtube.com/watch?v=tzrwxLNHtRY",
+     "title": "Model Context Protocol Clearly Explained | MCP Beyond the Hype",
+     "source": "codebasics",
+     "tier": 2,
+     "duration_s": 904,
+     "published": "2025-03-20T07:00:06Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 636856,
+     "likes": 7879,
+     "comments": 224,
+     "subscribers": 1580000,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.009,
+      "segment": 0.192,
+      "clarity": 0.8,
+      "level_fit": 0.8,
+      "authority": 0.8,
+      "reception": 0.621
+     },
+     "total": 0.238,
+     "findings": [],
+     "rationale": "Teaches C3 Defining strict input JSON schemas for MCP tools (10:19–12:17, partly) [checked on the transcript] · codebasics · tier 2 · 15:04 · 636,856 views",
+     "components": [
+      {
+       "id": "W03.L2.C3",
+       "title": "Defining strict input JSON schemas for MCP tools",
+       "start": "10:19",
+       "end": "12:17",
+       "start_s": 619.0,
+       "end_s": 737.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "Overview of inputSchema in MCP tools",
+        "Required fields and parameter descriptions in code"
+       ],
+       "missing": [
+        "Step-by-step writing of JSON Schema definitions",
+        "Validation constraint rules",
+        "Data type specification details"
+       ],
+       "note": "Shows real code examples of tool inputSchema and required properties, but passes over schema writing details quickly.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.009,
+      "evidence": "transcript",
+      "per_target": {
+       "W03.L2.C3": {
+        "text": "Defining strict input JSON schemas for MCP tools",
+        "covered": true,
+        "sim": 0.549,
+        "segments": [
+         {
+          "start": 619.0,
+          "end": 737.0,
+          "sim": 0.549
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Shows real code examples of tool inputSchema and required properties, but passes over schema writing details quickly.",
+      "issues": [
+       "leaves out: Step-by-step writing of JSON Schema definitions",
+       "leaves out: Validation constraint rules",
+       "leaves out: Data type specification details"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "This video contains a very simple explanation of MCP, also known as Model Context Protocol. We will first understand what exactly is MCP and how it easing up the development of AI applications and then we will go into the technical details of how the actual protocol looks like. We will look into the code of MCP client and Server both.\n\nSample MCP client: https://github.com/modelcontextprotocol/python-sdk/blob/main/examples/clients/simple-chatbot/mcp_simple_chatbot/main.py\nGoogle maps MCP server: https://github.com/modelcontextprotocol/servers/blob/main/src/google-maps/index.ts#L297\nMCP Schema: https://github.com/modelcontextprotocol/specification/blob/main/schema/2024-11-05/schema.ts\nSimple ",
+     "rank": 3,
+     "status": "proposed"
+    },
+    {
+     "kind": "video",
+     "id": "b9daqQNSLSU",
+     "url": "https://www.youtube.com/watch?v=b9daqQNSLSU",
+     "title": "MCP (Model Context Protocol)Error Handling - model context protocol (mcp) (Ep-014)",
+     "source": "Tech Sharmit",
+     "tier": 4,
+     "duration_s": 674,
+     "published": "2026-08-14T15:30:00Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 34,
+     "likes": 1,
+     "comments": 0,
+     "subscribers": 15500,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.006,
+      "segment": 0.169,
+      "clarity": 0.6,
+      "level_fit": 0.8,
+      "authority": 0.35,
+      "reception": 0.546
+     },
+     "total": 0.209,
+     "findings": [],
+     "rationale": "Teaches C7 Handling execution errors and returning structured MCP error (1:24–2:46, partly) [checked on the transcript] · Tech Sharmit · tier 4 · 11:14 · 34 views",
+     "components": [
+      {
+       "id": "W03.L2.C7",
+       "title": "Handling execution errors and returning structured MCP errors",
+       "start": "1:24",
+       "end": "2:46",
+       "start_s": 84.0,
+       "end_s": 166.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "Importing and raising ToolError in FastMCP",
+        "Explanation of automatic isError flag setting"
+       ],
+       "missing": [
+        "Complete code example/demo",
+        "Catching execution exceptions",
+        "CallToolResult structure",
+        "Distinction between execution and transport failures"
+       ],
+       "note": "Introduces FastMCP's ToolError and the isError flag, but cuts off mid-explanation before demonstrating complete error handling.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.006,
+      "evidence": "transcript",
+      "per_target": {
+       "W03.L2.C7": {
+        "text": "Handling execution errors and returning structured MCP errors",
+        "covered": true,
+        "sim": 0.633,
+        "segments": [
+         {
+          "start": 84.0,
+          "end": 166.0,
+          "sim": 0.633
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Introduces FastMCP's ToolError and the isError flag, but cuts off mid-explanation before demonstrating complete error handling.",
+      "issues": [
+       "leaves out: Complete code example/demo",
+       "leaves out: Catching execution exceptions",
+       "leaves out: CallToolResult structure",
+       "leaves out: Distinction between execution and transport failures"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "1. How to Handle Errors in MCP (Model Context Protocol) Using `ToolError` (Learn how to implement proper error handling in MCP using `ToolError`) – Explained in English\n\n2. How to Raise `ToolError` in an MCP (Model Context Protocol) Tool (Learn how to raise `ToolError` in an MCP tool to return protocol-level errors) – Explained in English\n\n3. How to Check the `isError` Flag After Calling an MCP (Model Context Protocol) Tool (Learn how to use the `result.isError` flag to determine whether a tool call succeeded or failed) – Explained in English\n\n4. Difference Between Returning an Error Message and Raising `ToolError` in MCP (Model Context Protocol) (Understand the difference between returning ",
+     "rank": 4,
+     "status": "proposed"
+    }
+   ],
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://docs.langchain.com/oss/python/langchain/mcp",
+     "title": "Model Context Protocol (MCP) - Docs by LangChain",
+     "source": "docs.langchain.com",
+     "tier": 3,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.738,
+      "quality": 0.85,
+      "authority": 0.65,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.716,
+     "rank": 1,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W03.L2.C1 ✓, W03.L2.C2 ✓, W03.L2.C3 ✓, W03.L2.C4 ✓, W03.L2.C5 ✓, W03.L2.C6 ✓, W03.L2.C7 ✗ [from page text] · docs.langchain.com · tier 3",
+     "findings": [],
+     "review": {
+      "review": "Clear, technical documentation demonstrating how to connect MCP tools using LangChain code snippets (FastMCP, stdio, HTTP). Excellent practical reference for students implementing tool integrations.",
+      "issues": [],
+      "use_as": "after_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 4,
+      "examples": 4,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.738,
+      "evidence": "text",
+      "per_target": {
+       "M2.T2": {
+        "covered": true,
+        "sim": 0.501,
+        "segments": []
+       },
+       "W03.L2.C1": {
+        "covered": true,
+        "sim": 0.741,
+        "segments": [],
+        "text": "Architecture of Model Context Protocol (MCP) clients and servers. Students will understand the client-server architectur"
+       },
+       "W03.L2.C2": {
+        "covered": true,
+        "sim": 0.46,
+        "segments": [],
+        "text": "JSON-RPC 2.0 protocol format for tool discovery and calls. Students will learn how JSON-RPC 2.0 messages are structured "
+       },
+       "W03.L2.C3": {
+        "covered": true,
+        "sim": 0.486,
+        "segments": [],
+        "text": "Defining strict input JSON schemas for MCP tools. Students will learn how to write precise JSON Schema definitions for t"
+       },
+       "W03.L2.C4": {
+        "covered": true,
+        "sim": 0.581,
+        "segments": [],
+        "text": "Implementing an MCP server using an official SDK. Students will walk through building a lightweight MCP server using an "
+       },
+       "W03.L2.C5": {
+        "covered": true,
+        "sim": 0.545,
+        "segments": [],
+        "text": "Activity: Writing and running a custom MCP server tool. Students will write a custom tool function on an MCP server that"
+       },
+       "W03.L2.C6": {
+        "covered": true,
+        "sim": 0.538,
+        "segments": [],
+        "text": "Configuring workspace settings to discover custom MCP servers. Students will configure an agent workspace JSON configura"
+       },
+       "W03.L2.C7": {
+        "covered": false,
+        "sim": 0.372,
+        "segments": [],
+        "text": "Handling execution errors and returning structured MCP errors. Students will learn how to catch internal tool execution "
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+     "title": "Tools - Model Context Protocol",
+     "source": "modelcontextprotocol.io",
+     "tier": 3,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.714,
+      "quality": 0.5,
+      "authority": 0.65,
+      "level_fit": 0.6,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.617,
+     "rank": 2,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W03.L2.C1 ✓, W03.L2.C2 ✓, W03.L2.C3 ✓, W03.L2.C4 ✓, W03.L2.C5 ✗, W03.L2.C6 ✓, W03.L2.C7 ✓ [from page text] · modelcontextprotocol.io · tier 3",
+     "findings": [],
+     "coverage": {
+      "score": 0.714,
+      "evidence": "text",
+      "per_target": {
+       "M2.T2": {
+        "covered": true,
+        "sim": 0.693,
+        "segments": []
+       },
+       "W03.L2.C1": {
+        "covered": true,
+        "sim": 0.655,
+        "segments": [],
+        "text": "Architecture of Model Context Protocol (MCP) clients and servers. Students will understand the client-server architectur"
+       },
+       "W03.L2.C2": {
+        "covered": true,
+        "sim": 0.466,
+        "segments": [],
+        "text": "JSON-RPC 2.0 protocol format for tool discovery and calls. Students will learn how JSON-RPC 2.0 messages are structured "
+       },
+       "W03.L2.C3": {
+        "covered": true,
+        "sim": 0.675,
+        "segments": [],
+        "text": "Defining strict input JSON schemas for MCP tools. Students will learn how to write precise JSON Schema definitions for t"
+       },
+       "W03.L2.C4": {
+        "covered": true,
+        "sim": 0.422,
+        "segments": [],
+        "text": "Implementing an MCP server using an official SDK. Students will walk through building a lightweight MCP server using an "
+       },
+       "W03.L2.C5": {
+        "covered": false,
+        "sim": 0.401,
+        "segments": [],
+        "text": "Activity: Writing and running a custom MCP server tool. Students will write a custom tool function on an MCP server that"
+       },
+       "W03.L2.C6": {
+        "covered": true,
+        "sim": 0.45,
+        "segments": [],
+        "text": "Configuring workspace settings to discover custom MCP servers. Students will configure an agent workspace JSON configura"
+       },
+       "W03.L2.C7": {
+        "covered": true,
+        "sim": 0.467,
+        "segments": [],
+        "text": "Handling execution errors and returning structured MCP errors. Students will learn how to catch internal tool execution "
+       }
+      }
+     }
+    }
+   ]
+  },
+  "reserve": {
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://www.synvestable.com/model-context-protocol.html",
+     "title": "Model Context Protocol for Enterprise: 2026 Deployment Guide",
+     "source": "synvestable.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.952,
+      "quality": 0.42,
+      "authority": 0.35,
+      "level_fit": 0.6,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.64,
+     "rank": 3,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W03.L2.C1 ✓, W03.L2.C2 ✓, W03.L2.C3 ✓, W03.L2.C4 ✓, W03.L2.C5 ✓, W03.L2.C6 ✓, W03.L2.C7 ✓ [from page text] · synvestable.com · tier 4",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "review": {
+      "review": "A solid high-level overview of enterprise MCP architecture and host-client roles. Good context for background reading, but lacks the practical code needed to implement custom tool integrations.",
+      "issues": [
+       "excerpts focus on high-level enterprise adoption and architecture, missing practical tool code and workspace configuration"
+      ],
+      "use_as": "pre_class",
+      "explains": "mentions",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 2,
+      "level_fit": 3
+     },
+     "coverage": {
+      "score": 0.952,
+      "evidence": "text",
+      "per_target": {
+       "M2.T2": {
+        "covered": true,
+        "sim": 0.625,
+        "segments": []
+       },
+       "W03.L2.C1": {
+        "covered": true,
+        "sim": 0.785,
+        "segments": [],
+        "text": "Architecture of Model Context Protocol (MCP) clients and servers. Students will understand the client-server architectur"
+       },
+       "W03.L2.C2": {
+        "covered": true,
+        "sim": 0.559,
+        "segments": [],
+        "text": "JSON-RPC 2.0 protocol format for tool discovery and calls. Students will learn how JSON-RPC 2.0 messages are structured "
+       },
+       "W03.L2.C3": {
+        "covered": true,
+        "sim": 0.562,
+        "segments": [],
+        "text": "Defining strict input JSON schemas for MCP tools. Students will learn how to write precise JSON Schema definitions for t"
+       },
+       "W03.L2.C4": {
+        "covered": true,
+        "sim": 0.571,
+        "segments": [],
+        "text": "Implementing an MCP server using an official SDK. Students will walk through building a lightweight MCP server using an "
+       },
+       "W03.L2.C5": {
+        "covered": true,
+        "sim": 0.566,
+        "segments": [],
+        "text": "Activity: Writing and running a custom MCP server tool. Students will write a custom tool function on an MCP server that"
+       },
+       "W03.L2.C6": {
+        "covered": true,
+        "sim": 0.559,
+        "segments": [],
+        "text": "Configuring workspace settings to discover custom MCP servers. Students will configure an agent workspace JSON configura"
+       },
+       "W03.L2.C7": {
+        "covered": true,
+        "sim": 0.496,
+        "segments": [],
+        "text": "Handling execution errors and returning structured MCP errors. Students will learn how to catch internal tool execution "
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://stytch.com/blog/model-context-protocol-introduction/",
+     "title": "Model Context Protocol (MCP): A comprehensive introduction for developers",
+     "source": "stytch.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.947,
+      "quality": 0.39,
+      "authority": 0.35,
+      "level_fit": 0.6,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.632,
+     "rank": 4,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W03.L2.C1 ✓, W03.L2.C2 ✓, W03.L2.C3 ✓, W03.L2.C4 ✓, W03.L2.C5 ✓, W03.L2.C6 ✓, W03.L2.C7 ✓ [from page text] · stytch.com · tier 4",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "review": {
+      "review": "Clear introductory reading explaining the core concepts of MCP using helpful analogies. Useful as pre-class background, though it does not provide step-by-step technical instructions for custom tool integration.",
+      "issues": [
+       "high-level conceptual introduction without specific code examples or workspace setup steps"
+      ],
+      "use_as": "pre_class",
+      "explains": "mentions",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 2,
+      "examples": 2,
+      "level_fit": 3
+     },
+     "coverage": {
+      "score": 0.947,
+      "evidence": "text",
+      "per_target": {
+       "M2.T2": {
+        "covered": true,
+        "sim": 0.525,
+        "segments": []
+       },
+       "W03.L2.C1": {
+        "covered": true,
+        "sim": 0.781,
+        "segments": [],
+        "text": "Architecture of Model Context Protocol (MCP) clients and servers. Students will understand the client-server architectur"
+       },
+       "W03.L2.C2": {
+        "covered": true,
+        "sim": 0.589,
+        "segments": [],
+        "text": "JSON-RPC 2.0 protocol format for tool discovery and calls. Students will learn how JSON-RPC 2.0 messages are structured "
+       },
+       "W03.L2.C3": {
+        "covered": true,
+        "sim": 0.643,
+        "segments": [],
+        "text": "Defining strict input JSON schemas for MCP tools. Students will learn how to write precise JSON Schema definitions for t"
+       },
+       "W03.L2.C4": {
+        "covered": true,
+        "sim": 0.671,
+        "segments": [],
+        "text": "Implementing an MCP server using an official SDK. Students will walk through building a lightweight MCP server using an "
+       },
+       "W03.L2.C5": {
+        "covered": true,
+        "sim": 0.641,
+        "segments": [],
+        "text": "Activity: Writing and running a custom MCP server tool. Students will write a custom tool function on an MCP server that"
+       },
+       "W03.L2.C6": {
+        "covered": true,
+        "sim": 0.635,
+        "segments": [],
+        "text": "Configuring workspace settings to discover custom MCP servers. Students will configure an agent workspace JSON configura"
+       },
+       "W03.L2.C7": {
+        "covered": true,
+        "sim": 0.541,
+        "segments": [],
+        "text": "Handling execution errors and returning structured MCP errors. Students will learn how to catch internal tool execution "
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://aibuzz.blog/model-context-protocol-explained/",
+     "title": "Model Context Protocol (MCP): Specification, Security & Enterprise (2026)",
+     "source": "aibuzz.blog",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.869,
+      "quality": 0.42,
+      "authority": 0.35,
+      "level_fit": 0.6,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.611,
+     "rank": 5,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W03.L2.C1 ✓, W03.L2.C2 ✓, W03.L2.C3 ✓, W03.L2.C4 ✓, W03.L2.C5 ✓, W03.L2.C6 ✓, W03.L2.C7 ✓ [from page text] · aibuzz.blog · tier 4",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "review": {
+      "review": "Provides useful context on MCP architectural roles and enterprise security risks. Good background reading before class, but lacks specific technical guidance on configuring custom workspace tools.",
+      "issues": [
+       "focuses on enterprise security and host/client concepts without code or step-by-step configuration instructions"
+      ],
+      "use_as": "pre_class",
+      "explains": "mentions",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 3,
+      "examples": 2,
+      "level_fit": 3
+     },
+     "coverage": {
+      "score": 0.869,
+      "evidence": "text",
+      "per_target": {
+       "M2.T2": {
+        "covered": true,
+        "sim": 0.55,
+        "segments": []
+       },
+       "W03.L2.C1": {
+        "covered": true,
+        "sim": 0.743,
+        "segments": [],
+        "text": "Architecture of Model Context Protocol (MCP) clients and servers. Students will understand the client-server architectur"
+       },
+       "W03.L2.C2": {
+        "covered": true,
+        "sim": 0.468,
+        "segments": [],
+        "text": "JSON-RPC 2.0 protocol format for tool discovery and calls. Students will learn how JSON-RPC 2.0 messages are structured "
+       },
+       "W03.L2.C3": {
+        "covered": true,
+        "sim": 0.637,
+        "segments": [],
+        "text": "Defining strict input JSON schemas for MCP tools. Students will learn how to write precise JSON Schema definitions for t"
+       },
+       "W03.L2.C4": {
+        "covered": true,
+        "sim": 0.61,
+        "segments": [],
+        "text": "Implementing an MCP server using an official SDK. Students will walk through building a lightweight MCP server using an "
+       },
+       "W03.L2.C5": {
+        "covered": true,
+        "sim": 0.553,
+        "segments": [],
+        "text": "Activity: Writing and running a custom MCP server tool. Students will write a custom tool function on an MCP server that"
+       },
+       "W03.L2.C6": {
+        "covered": true,
+        "sim": 0.603,
+        "segments": [],
+        "text": "Configuring workspace settings to discover custom MCP servers. Students will configure an agent workspace JSON configura"
+       },
+       "W03.L2.C7": {
+        "covered": true,
+        "sim": 0.436,
+        "segments": [],
+        "text": "Handling execution errors and returning structured MCP errors. Students will learn how to catch internal tool execution "
+       }
+      }
+     }
+    }
+   ],
+   "video": []
+  },
+  "rejected": [
+   {
+    "title": "MCP Explained: The Model Context Protocol in 2026",
+    "url": "https://nicchin.com/blog/model-context-protocol-mcp-guide",
+    "why": [
+     "score 0.53 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Cloudinary Introduces Cloudinary Model Context Protocol (MCP) Server and AI-ready Documentation",
+    "url": "https://finance.yahoo.com/news/cloudinary-introduces-cloudinary-model-context-123000944.html",
+    "why": [
+     "score 0.41 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "GitHub - modelcontextprotocol/modelcontextprotocol: Specification and documentation for the Model Context Protocol · GitHub",
+    "url": "https://github.com/modelcontextprotocol/modelcontextprotocol",
+    "why": [
+     "score 0.57 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Introduction to making very big books",
+    "url": "https://openlibrary.org/works/OL15901078W",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "The web application hacker's handbook",
+    "url": "https://openlibrary.org/books/OL50509771M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "ICACIEM 2017",
+    "url": "https://openlibrary.org/books/OL26457447M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Model Context Protocol Servers: A Systematic Review of Designs, Use Cases and Future Directions",
+    "url": "https://doi.org/10.35444/ijana.2026.17605",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Systematic review of bankruptcy prediction models: Towards a framework for tool selection",
+    "url": "https://eprints.leedsbeckett.ac.uk/id/eprint/4197/1/SystematicReviewofBankruptcyAM_AJAYI.pdf",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Tools Integration for Supporting Software Measurement: A Systematic Literature Review",
+    "url": "https://sol.sbc.org.br/journals/index.php/isys/article/download/295/293",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "A META-ANALYSIS OF ERP AND CRM INTEGRATION TOOLS IN BUSINESS PROCESS OPTIMIZATION",
+    "url": "https://global.asrcconference.com/index.php/asrc/article/download/14/15",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Using the Model Context Protocol with Open WebUI - DevCentral",
+    "url": "https://community.f5.com/t/using-the-model-context-protocol-with-open-webui/76797",
+    "why": [
+     "score 0.55 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "MCP in 10 Minutes (Model Context Protocol + Free Lab)",
+    "url": "https://www.youtube.com/watch?v=dyt-bhxrrbk",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "GitHub - microsoft/mcp-for-beginners: This open-source curriculum introduces the fundamentals of Model Context Protocol (MCP) through real-world, cross-language examples in .NET, Java, TypeScript, JavaScript, Rust and Python. Designed for developers, it focuses on practical techniques for building modular, scalable, and secure AI workflows from session setup to service orchestration. · GitHub",
+    "url": "https://github.com/microsoft/mcp-for-beginners",
+    "why": [
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "What Is MCP (Model Context Protocol)? | Solo.io | Solo.io",
+    "url": "https://www.solo.io/topics/ai-infrastructure/what-is-mcp",
+    "why": [
+     "AI review: a general introduction to a broader concept, not this lecture's topic",
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "Model Context Protocol (MCP)",
+    "url": "https://www.pluralsight.com/paths/model-context-protocol-mcp",
+    "why": [
+     "blocked or paywalled source (pluralsight.com)"
+    ]
+   },
+   {
+    "title": "What is MCP (Model Context Protocol)? SMB Guide",
+    "url": "https://hyperleap.ai/blog/what-is-model-context-protocol-mcp-guide",
+    "why": [
+     "AI review: a general introduction to a broader concept, not this lecture's topic",
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "public-apis/public-apis — A collective list of free APIs",
+    "url": "https://github.com/public-apis/public-apis",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "ripienaar/free-for-dev — A list of SaaS, PaaS and IaaS offerings that have free tiers of interest to devops and infradev",
+    "url": "https://github.com/ripienaar/free-for-dev",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "paperclipai/paperclip — The open-source app everyone uses to manage agents at work",
+    "url": "https://github.com/paperclipai/paperclip",
+    "why": [
+     "score 0.53 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "punkpeye/awesome-mcp-servers — A collection of MCP servers.",
+    "url": "https://github.com/punkpeye/awesome-mcp-servers",
+    "why": [
+     "score 0.54 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "mlabonne/llm-course — Course to get into Large Language Models (LLMs) with roadmaps and Colab notebooks.",
+    "url": "https://github.com/mlabonne/llm-course",
+    "why": [
+     "score 0.58 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "python-sdk/examples/clients/simple-chatbot/mcp_simple_chatbot/main.py at main · modelcontextprotocol/python-sdk · GitHub",
+    "url": "https://github.com/modelcontextprotocol/python-sdk/blob/main/examples/clients/simple-chatbot/mcp_simple_chatbot/main.py",
+    "why": [
+     "score 0.48 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "",
+    "url": "https://github.com/modelcontextprotocol/servers/blob/main/src/google-maps/index.ts#L297",
+    "why": [
+     "page not readable (status 404, too short)"
+    ]
+   },
+   {
+    "title": "modelcontextprotocol/schema/2024-11-05/schema.ts at main · modelcontextprotocol/modelcontextprotocol · GitHub",
+    "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/schema/2024-11-05/schema.ts",
+    "why": [
+     "score 0.55 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "GitHub - google/mcp: Google 💚 MCP · GitHub",
+    "url": "https://github.com/google/mcp",
+    "why": [
+     "score 0.42 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Build and Deploy a Pet Passport Agent on Cloud Run  |  Google Codelabs",
+    "url": "https://codelabs.developers.google.com/next26/build-adk-agent-google-mcps?hl=en",
+    "why": [
+     "score 0.35 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Build and deploy an ADK agent that uses an MCP server on Cloud Run  |  Google Codelabs",
+    "url": "https://codelabs.developers.google.com/codelabs/cloud-run/use-mcp-server-on-cloud-run-with-an-adk-agent",
+    "why": [
+     "score 0.47 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "MCP Full Course For Beginners (With Deployment)",
+    "url": "https://www.youtube.com/watch?v=io02ZM0ADqM",
+    "why": [
+     "too long to find a segment in (3:46:07)"
+    ]
+   },
+   {
+    "title": "MCP Explained | Model Context Protocol  #agenticai",
+    "url": "https://www.youtube.com/watch?v=I8Xf2jewMhQ",
+    "why": [
+     "too short to teach a component (1:49)"
+    ]
+   },
+   {
+    "title": "How does MCP work? How to use Model Context Protocol Server #mcp",
+    "url": "https://www.youtube.com/watch?v=Y0ZuxSqJIvQ",
+    "why": [
+     "too short to teach a component (0:43)"
+    ]
+   },
+   {
+    "title": "MCP Explained Right | Why MCP Is NOT About Adding Tools (Think Like an Architect)",
+    "url": "https://www.youtube.com/watch?v=7gQntKsRqTM",
+    "why": [
+     "audio language is 'ta'"
+    ]
+   },
+   {
+    "title": "MCP for Beginners | Model Context Protocol Explained in Tamil | Karthik's Show",
+    "url": "https://www.youtube.com/watch?v=9iv76EqaWuY",
+    "why": [
+     "audio language is 'ta'"
+    ]
+   },
+   {
+    "title": "MCP Explained in 2 Minutes (Model Context Protocol)",
+    "url": "https://www.youtube.com/watch?v=taeX8tgpPRQ",
+    "why": [
+     "too short to teach a component (2:28)"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 32,
+   "passed_checks": 5,
+   "rejected": 27,
+   "videos_used": 4
+  },
+  "clips": [
+   {
+    "target": "Architecture of Model Context Protocol (MCP) clients and servers",
+    "target_ids": [
+     "W03.L2.C1"
+    ],
+    "component": "W03.L2.C1",
+    "video": "How Model Context Protocol (MCP) actually works",
+    "source": "Google Cloud Tech",
+    "url": "https://www.youtube.com/watch?v=cGuyrANVi4A&t=129s",
+    "start": "2:09",
+    "end": "6:36",
+    "minutes": 4.5,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "Client-server architecture overview",
+     "Roles of MCP client and MCP server",
+     "Tool exposure and dynamic discovery"
+    ],
+    "missing": [
+     "Role of Host Application vs MCP Client",
+     "Transport layer mechanisms (Stdio/SSE)",
+     "Session initialization process"
+    ],
+    "note": "Clear conceptual explanation of client-server architecture and tool exposure, but misses transport layer and host app details."
+   },
+   {
+    "target": "JSON-RPC 2.0 protocol format for tool discovery and calls",
+    "target_ids": [
+     "W03.L2.C2"
+    ],
+    "component": "W03.L2.C2",
+    "video": "Model Context Protocol (MCP) Explained | The Standard Connecting AI to Your Tools",
+    "source": "Ahmed Al-Imaad",
+    "url": "https://www.youtube.com/watch?v=jwquMzKkxo4&t=409s",
+    "start": "6:49",
+    "end": "9:19",
+    "minutes": 2.5,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "High-level mention of JSON-RPC 2.0",
+     "Conceptual tools/list and call tool methods"
+    ],
+    "missing": [
+     "Detailed JSON-RPC 2.0 message structure",
+     "Request IDs and method headers",
+     "Parameter payloads and response objects",
+     "Stdio stream transmission details"
+    ],
+    "note": "Mentions JSON-RPC 2.0 and list/call methods conceptually, but lacks message payloads and structural details."
+   },
+   {
+    "target": "Defining strict input JSON schemas for MCP tools",
+    "target_ids": [
+     "W03.L2.C3"
+    ],
+    "component": "W03.L2.C3",
+    "video": "Model Context Protocol Clearly Explained | MCP Beyond the Hype",
+    "source": "codebasics",
+    "url": "https://www.youtube.com/watch?v=tzrwxLNHtRY&t=619s",
+    "start": "10:19",
+    "end": "12:17",
+    "minutes": 2.0,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "Overview of inputSchema in MCP tools",
+     "Required fields and parameter descriptions in code"
+    ],
+    "missing": [
+     "Step-by-step writing of JSON Schema definitions",
+     "Validation constraint rules",
+     "Data type specification details"
+    ],
+    "note": "Shows real code examples of tool inputSchema and required properties, but passes over schema writing details quickly."
+   },
+   {
+    "target": "Configuring workspace settings to discover custom MCP servers",
+    "target_ids": [
+     "W03.L2.C6"
+    ],
+    "component": "W03.L2.C6",
+    "video": "Model Context Protocol (MCP) Explained | The Standard Connecting AI to Your Tools",
+    "source": "Ahmed Al-Imaad",
+    "url": "https://www.youtube.com/watch?v=jwquMzKkxo4&t=670s",
+    "start": "11:10",
+    "end": "13:43",
+    "minutes": 2.5,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "navigating to settings to edit configuration",
+     "verifying discovered tool execution in host"
+    ],
+    "missing": [
+     "writing the JSON configuration syntax",
+     "setting executable path and command-line arguments"
+    ],
+    "note": "Shows host UI settings and demonstrates tool execution verification, but does not show how to edit the underlying JSON file."
+   },
+   {
+    "target": "Handling execution errors and returning structured MCP errors",
+    "target_ids": [
+     "W03.L2.C7"
+    ],
+    "component": "W03.L2.C7",
+    "video": "MCP (Model Context Protocol)Error Handling - model context protocol (mcp) (Ep-014)",
+    "source": "Tech Sharmit",
+    "url": "https://www.youtube.com/watch?v=b9daqQNSLSU&t=84s",
+    "start": "1:24",
+    "end": "2:46",
+    "minutes": 1.4,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "Importing and raising ToolError in FastMCP",
+     "Explanation of automatic isError flag setting"
+    ],
+    "missing": [
+     "Complete code example/demo",
+     "Catching execution exceptions",
+     "CallToolResult structure",
+     "Distinction between execution and transport failures"
+    ],
+    "note": "Introduces FastMCP's ToolError and the isError flag, but cuts off mid-explanation before demonstrating complete error handling."
+   }
+  ],
+  "timeline": [
+   {
+    "component": "W03.L2.C1",
+    "title": "Architecture of Model Context Protocol (MCP) clients and servers",
+    "minutes": 15,
+    "kind": "concept",
+    "delivery": "video",
+    "gap": {
+     "video_minutes": 4.5,
+     "missing": [
+      "Role of Host Application vs MCP Client",
+      "Transport layer mechanisms (Stdio/SSE)",
+      "Session initialization process"
+     ]
+    },
+    "segments": [
+     {
+      "video": "How Model Context Protocol (MCP) actually works",
+      "video_id": "cGuyrANVi4A",
+      "url": "https://www.youtube.com/watch?v=cGuyrANVi4A&t=129s",
+      "start": "2:09",
+      "end": "6:36",
+      "minutes": 4.5,
+      "verdict": "teaches_partly",
+      "score": 0.354
+     }
+    ]
+   },
+   {
+    "component": "W03.L2.C2",
+    "title": "JSON-RPC 2.0 protocol format for tool discovery and calls",
+    "minutes": 15,
+    "kind": "mechanism",
+    "delivery": "video",
+    "gap": {
+     "video_minutes": 2.5,
+     "missing": [
+      "Detailed JSON-RPC 2.0 message structure",
+      "Request IDs and method headers",
+      "Parameter payloads and response objects",
+      "Stdio stream transmission details"
+     ]
+    },
+    "segments": [
+     {
+      "video": "Model Context Protocol (MCP) Explained | The Standard Connecting AI to Your Tools",
+      "video_id": "jwquMzKkxo4",
+      "url": "https://www.youtube.com/watch?v=jwquMzKkxo4&t=409s",
+      "start": "6:49",
+      "end": "9:19",
+      "minutes": 2.5,
+      "verdict": "teaches_partly",
+      "score": 0.177
+     }
+    ]
+   },
+   {
+    "component": "W03.L2.C3",
+    "title": "Defining strict input JSON schemas for MCP tools",
+    "minutes": 15,
+    "kind": "mechanism",
+    "delivery": "video",
+    "gap": {
+     "video_minutes": 2.0,
+     "missing": [
+      "Step-by-step writing of JSON Schema definitions",
+      "Validation constraint rules",
+      "Data type specification details"
+     ]
+    },
+    "segments": [
+     {
+      "video": "Model Context Protocol Clearly Explained | MCP Beyond the Hype",
+      "video_id": "tzrwxLNHtRY",
+      "url": "https://www.youtube.com/watch?v=tzrwxLNHtRY&t=619s",
+      "start": "10:19",
+      "end": "12:17",
+      "minutes": 2.0,
+      "verdict": "teaches_partly",
+      "score": 0.192
+     }
+    ]
+   },
+   {
+    "component": "W03.L2.C4",
+    "title": "Implementing an MCP server using an official SDK",
+    "minutes": 20,
+    "kind": "worked_example",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W03.L2.C5",
+    "title": "Activity: Writing and running a custom MCP server tool",
+    "minutes": 25,
+    "kind": "activity",
+    "delivery": "in_class",
+    "segments": []
+   },
+   {
+    "component": "W03.L2.C6",
+    "title": "Configuring workspace settings to discover custom MCP servers",
+    "minutes": 15,
+    "kind": "mechanism",
+    "delivery": "video",
+    "gap": {
+     "video_minutes": 2.5,
+     "missing": [
+      "writing the JSON configuration syntax",
+      "setting executable path and command-line arguments"
+     ]
+    },
+    "segments": [
+     {
+      "video": "Model Context Protocol (MCP) Explained | The Standard Connecting AI to Your Tools",
+      "video_id": "jwquMzKkxo4",
+      "url": "https://www.youtube.com/watch?v=jwquMzKkxo4&t=670s",
+      "start": "11:10",
+      "end": "13:43",
+      "minutes": 2.5,
+      "verdict": "teaches_partly",
+      "score": 0.242
+     }
+    ]
+   },
+   {
+    "component": "W03.L2.C7",
+    "title": "Handling execution errors and returning structured MCP errors",
+    "minutes": 15,
+    "kind": "mechanism",
+    "delivery": "video",
+    "gap": {
+     "video_minutes": 1.4,
+     "missing": [
+      "Complete code example/demo",
+      "Catching execution exceptions",
+      "CallToolResult structure",
+      "Distinction between execution and transport failures"
+     ]
+    },
+    "segments": [
+     {
+      "video": "MCP (Model Context Protocol)Error Handling - model context protocol (mcp) (Ep-014)",
+      "video_id": "b9daqQNSLSU",
+      "url": "https://www.youtube.com/watch?v=b9daqQNSLSU&t=84s",
+      "start": "1:24",
+      "end": "2:46",
+      "minutes": 1.4,
+      "verdict": "teaches_partly",
+      "score": 0.169
+     }
+    ]
+   }
+  ],
+  "components": [
+   {
+    "lecture_id": "W03.L2",
+    "title": "Architecture of Model Context Protocol (MCP) clients and servers",
+    "teaches": "Students will understand the client-server architecture of the Model Context Protocol (MCP) and how LLM agent workspaces communicate with external tools. They will identify the roles of host applications, MCP clients, and MCP servers during session initialization and tool exposure.",
+    "key_terms": [
+     "Model Context Protocol",
+     "MCP Client",
+     "MCP Server",
+     "Host Application",
+     "Transport Layer",
+     "Stdio Transport"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W03.L2.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W03.L2",
+    "title": "JSON-RPC 2.0 protocol format for tool discovery and calls",
+    "teaches": "Students will learn how JSON-RPC 2.0 messages are structured for tools/list and tools/call requests in MCP. They will examine request IDs, method headers, parameter payloads, and response objects transmitted over standard streams.",
+    "key_terms": [
+     "JSON-RPC 2.0",
+     "tools/list",
+     "tools/call",
+     "Request Envelope",
+     "Response Payload",
+     "Stdio Messaging"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W03.L2.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W03.L2",
+    "title": "Defining strict input JSON schemas for MCP tools",
+    "teaches": "Students will learn how to write precise JSON Schema definitions for tool parameters to guide LLM tool calling. They will specify required fields, parameter data types, descriptions, and validation constraints that prevent ambiguous agent invocations.",
+    "key_terms": [
+     "JSON Schema",
+     "inputSchema",
+     "Type Constraints",
+     "Required Properties",
+     "Parameter Descriptions",
+     "Tool Metadata"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W03.L2.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W03.L2",
+    "title": "Implementing an MCP server using an official SDK",
+    "teaches": "Students will walk through building a lightweight MCP server using an official SDK. They will observe how decorated functions are exposed as callable tools and how incoming JSON arguments are parsed automatically.",
+    "key_terms": [
+     "MCP SDK",
+     "Server Initialization",
+     "Tool Handler",
+     "Decorator Syntax",
+     "Async Execution"
+    ],
+    "kind": "worked_example",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 20,
+    "id": "W03.L2.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W03.L2",
+    "title": "Activity: Writing and running a custom MCP server tool",
+    "teaches": "Students will write a custom tool function on an MCP server that executes local file or system operations and returns formatted content blocks. They will test the server execution using standard input streams to verify correct responses.",
+    "key_terms": [
+     "Tool Implementation",
+     "TextContent",
+     "CallToolResult",
+     "Stdio Execution",
+     "Local Tool Testing"
+    ],
+    "kind": "activity",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 25,
+    "id": "W03.L2.C5",
+    "in_class": true
+   },
+   {
+    "lecture_id": "W03.L2",
+    "title": "Configuring workspace settings to discover custom MCP servers",
+    "teaches": "Students will configure an agent workspace JSON configuration file to register their custom server executable and command-line arguments. They will verify that the agent successfully discovers and surfaces the new tool capabilities.",
+    "key_terms": [
+     "mcpServers Config",
+     "Workspace Configuration",
+     "Executable Path",
+     "Environment Variables",
+     "Server Discovery"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W03.L2.C6",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W03.L2",
+    "title": "Handling execution errors and returning structured MCP errors",
+    "teaches": "Students will learn how to catch internal tool execution failures and map them to structured MCP error responses using the isError flag. They will distinguish between runtime exceptions inside tool execution and protocol-level transport failures.",
+    "key_terms": [
+     "isError Flag",
+     "CallToolResult",
+     "Structured Error Messages",
+     "Exception Handling",
+     "Protocol Errors"
+    ],
+    "kind": "mechanism",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO2"
+    ],
+    "minutes": 15,
+    "id": "W03.L2.C7",
+    "in_class": false
+   }
+  ],
+  "notebooklm": {
+   "pack": "notebooklm/W03.L2.md",
+   "components": [
+    "W03.L2.C7"
+   ],
+   "sources": 7
+  }
+ },
+ "experts": {
+  "lecture_id": "W03.L2",
+  "topic": "Custom tool integrations using model context protocols",
+  "experts": [
+   {
+    "name": "Rishabh Kumar",
+    "kind": "industry",
+    "role": "Author",
+    "affiliation": "Independent",
+    "links": {
+     "page": "https://medium.com/@rishabhkr954/model-context-protocol-mcp-the-complete-engineering-guide-architecture-internals-and-0d7b5d988b08"
+    },
+    "metrics": {},
+    "scores": {
+     "topical_fit": 0.714,
+     "teaching": 0.9,
+     "practical": 1.0,
+     "standing": 0.3,
+     "recency": 0.6,
+     "feasibility": 0.6
+    },
+    "total": 0.689,
+    "rank": 1,
+    "verified_identity": "named on https://medium.com/@rishabhkr954/model-context-protocol-mcp-the-complete-engineering-guide-architecture-internals-and-0d7b5d988b08",
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "talk",
+      "title": "Model Context Protocol (MCP): The Complete Engineering Guide — Architecture, Internals, and Real-World Use Cases | by Ri",
+      "url": "https://medium.com/@rishabhkr954/model-context-protocol-mcp-the-complete-engineering-guide-architecture-internals-and-0d7b5d988b08"
+     }
+    ],
+    "why": "Delivered an engineering talk titled 'Model Context Protocol (MCP): The Complete Engineering Guide — Architecture, Internals, and Real-World Use Cases', which directly addresses MCP architecture and implementation.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Iwo Szapar",
+    "kind": "industry",
+    "role": "Author, Production MCP Practitioner",
+    "affiliation": "Independent",
+    "links": {
+     "page": "https://www.iwoszapar.com/p/context-engineering-mcp"
+    },
+    "metrics": {},
+    "scores": {
+     "topical_fit": 0.518,
+     "teaching": 0.9,
+     "practical": 1.0,
+     "standing": 0.3,
+     "recency": 0.6,
+     "feasibility": 0.6
+    },
+    "total": 0.626,
+    "rank": 2,
+    "verified_identity": "named on https://www.iwoszapar.com/p/context-engineering-mcp",
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "talk",
+      "title": "Context Engineering with MCP: Practitioner's Guide",
+      "url": "https://www.iwoszapar.com/p/context-engineering-mcp"
+     }
+    ],
+    "why": "Gave a practitioner talk titled 'Context Engineering with MCP: Practitioner's Guide', offering direct practical insights on model context protocols.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Parthasarathi Mukhopadhyay",
+    "kind": "academic",
+    "role": "Professor",
+    "affiliation": "Department of Library and Information Science, University of Kalyani",
+    "country": "IN",
+    "links": {
+     "openalex": "https://openalex.org/A5063466662",
+     "orcid": "https://orcid.org/0000-0003-0717-9413",
+     "scholar": "https://scholar.google.com/citations?user=VOxKJ2sAAAAJ"
+    },
+    "metrics": {
+     "cited_by": 1096,
+     "h_index": 16,
+     "works_count": 100,
+     "matching_works": 3,
+     "i10_index": 39,
+     "source": "Google Scholar"
+    },
+    "scores": {
+     "topical_fit": 0.789,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 0.652,
+     "recency": 1.0,
+     "feasibility": 1.0
+    },
+    "total": 0.584,
+    "rank": 3,
+    "verified_identity": "OpenAlex author record + ORCID + Google Scholar profile",
+    "latest_year": 2025,
+    "findings": [],
+    "interests": [
+     "AI in library",
+     "Community information",
+     "Library discovery",
+     "Library automation",
+     "Moodle"
+    ],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Enhancing Dspace with Large Language Models: Designing an Integration Framework Using the Model Context Protocol",
+      "year": 2025,
+      "url": "https://doi.org/10.5281/zenodo.17698958",
+      "cited_by": 0,
+      "venue": "Zenodo (CERN European Organization for Nuclear Research)",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Enhancing Dspace with Large Language Models: Designing an Integration Framework Using the Model Context Protocol",
+      "year": 2025,
+      "url": "https://doi.org/10.5281/zenodo.17598559",
+      "cited_by": 0,
+      "venue": "Zenodo (CERN European Organization for Nuclear Research)",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Searching the Library Through Commands: Implementing an Open Source Command Line-Based Conversational Library Search System Using Model Context Protocol",
+      "year": 2025,
+      "url": "https://doi.org/10.5281/zenodo.17971765",
+      "cited_by": 0,
+      "venue": "Zenodo (CERN European Organization for Nuclear Research)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Published papers on integrating LLMs using Model Context Protocols for digital library systems and command-line conversational search.",
+    "fit": "moderate",
+    "suggested_format": "live_in_person",
+    "concerns": []
+   },
+   {
+    "name": "Roger P. Wattenhofer",
+    "kind": "academic",
+    "affiliation": "ETH Zurich",
+    "country": "CH",
+    "links": {
+     "openalex": "https://openalex.org/A5078339613",
+     "orcid": "https://orcid.org/0000-0002-6339-3134",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Roger+P.+Wattenhofer+ETH+Zurich"
+    },
+    "metrics": {
+     "cited_by": 29827,
+     "h_index": 84,
+     "works_count": 1243,
+     "matching_works": 3
+    },
+    "scores": {
+     "topical_fit": 0.772,
+     "teaching": 0.5,
+     "practical": 0.2,
+     "standing": 1.0,
+     "recency": 1.0,
+     "feasibility": 0.5
+    },
+    "total": 0.549,
+    "rank": 4,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2026,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Information Fidelity in Tool-Using LLM Agents: A Martingale Analysis of the Model Context Protocol",
+      "year": 2026,
+      "url": "https://doi.org/10.65109/gmhb4353",
+      "cited_by": 0,
+      "venue": "Adaptive Agents and Multi-Agents Systems",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Information Fidelity in Tool-Using LLM Agents: A Martingale Analysis of the Model Context Protocol",
+      "year": 2026,
+      "url": "https://openalex.org/W7130236760",
+      "cited_by": 0,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Information Fidelity in Tool-Using LLM Agents: A Martingale Analysis of the Model Context Protocol",
+      "year": 2026,
+      "url": "https://doi.org/10.48550/arxiv.2602.13320",
+      "cited_by": 0,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored a paper providing theoretical martingale analysis of information fidelity in tool-using LLM agents under the Model Context Protocol.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   },
+   {
+    "name": "Yew-Soon Ong",
+    "kind": "academic",
+    "affiliation": "Agency for Science, Technology and Research",
+    "country": "SG",
+    "links": {
+     "openalex": "https://openalex.org/A5068243197",
+     "orcid": "https://orcid.org/0000-0002-4480-169X",
+     "scholar_search": "https://scholar.google.com/citations?view_op=search_authors&mauthors=Yew-Soon+Ong+Agency+for+Science%2C+Technology+and+Research"
+    },
+    "metrics": {
+     "cited_by": 28515,
+     "h_index": 81,
+     "works_count": 698,
+     "matching_works": 3
+    },
+    "scores": {
+     "topical_fit": 0.772,
+     "teaching": 0.2,
+     "practical": 0.2,
+     "standing": 0.82,
+     "recency": 1.0,
+     "feasibility": 0.722
+    },
+    "total": 0.507,
+    "rank": 5,
+    "verified_identity": "OpenAlex author record + ORCID",
+    "latest_year": 2026,
+    "findings": [],
+    "evidence": [
+     {
+      "kind": "paper",
+      "title": "Information Fidelity in Tool-Using LLM Agents: A Martingale Analysis of the Model Context Protocol",
+      "year": 2026,
+      "url": "https://doi.org/10.65109/gmhb4353",
+      "cited_by": 0,
+      "venue": "Adaptive Agents and Multi-Agents Systems",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Information Fidelity in Tool-Using LLM Agents: A Martingale Analysis of the Model Context Protocol",
+      "year": 2026,
+      "url": "https://openalex.org/W7130236760",
+      "cited_by": 0,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     },
+     {
+      "kind": "paper",
+      "title": "Information Fidelity in Tool-Using LLM Agents: A Martingale Analysis of the Model Context Protocol",
+      "year": 2026,
+      "url": "https://doi.org/10.48550/arxiv.2602.13320",
+      "cited_by": 0,
+      "venue": "arXiv (Cornell University)",
+      "venue_quality": 1.0
+     }
+    ],
+    "why": "Co-authored research analyzing information fidelity in tool-using agents using the Model Context Protocol.",
+    "fit": "moderate",
+    "suggested_format": "live_remote_60",
+    "concerns": []
+   }
+  ],
+  "reserve": [],
+  "rejected": [
+   {
+    "name": "Narek Maloyan",
+    "why": [
+     "too little research record yet (h-index 4 on OpenAlex, below 5)"
+    ]
+   },
+   {
+    "name": "Tirtharaj Dasgupta",
+    "why": [
+     "too little research record yet (h-index 2 on Google Scholar, below 5)"
+    ]
+   },
+   {
+    "name": "Yimin Tian",
+    "why": [
+     "topical fit 0.49 is below 0.5"
+    ]
+   },
+   {
+    "name": "Madhumita Neogi",
+    "why": [
+     "too little research record yet (h-index 0 on OpenAlex, below 5)"
+    ]
+   },
+   {
+    "name": "David Soria Parra",
+    "why": [
+     "topical fit 0.37 is below 0.5"
+    ]
+   },
+   {
+    "name": "Kyle Stratis",
+    "why": [
+     "topical fit 0.06 is below 0.5"
+    ]
+   },
+   {
+    "name": "Stephen Akinyemi",
+    "why": [
+     "topical fit 0.26 is below 0.5"
+    ]
+   },
+   {
+    "name": "Rahul Mohananai",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.18 is below 0.5"
+    ]
+   },
+   {
+    "name": "Arani Bhattacharya",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.10 is below 0.5"
+    ]
+   },
+   {
+    "name": "Naveen Prakash",
+    "why": [
+     "AI check: evidence is only weakly related to this lecture",
+     "topical fit 0.12 is below 0.5"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 42,
+   "assessed": 15,
+   "passed_checks": 5
+  }
+ }
+}

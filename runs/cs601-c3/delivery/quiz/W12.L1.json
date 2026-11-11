@@ -1,0 +1,158 @@
+{
+ "lecture_id": "W12.L1",
+ "topic": "Reliable and safe trustworthy software architectures",
+ "made_at": "2026-11-03 15:46:58",
+ "minutes": {
+  "recap": 5,
+  "quiz": 10
+ },
+ "recap": [
+  {
+   "component": "W11.L3.C1",
+   "lo_ids": [
+    "CO4.LO2"
+   ],
+   "bloom": 2,
+   "question": "In an automated AI-native software factory pipeline, what is the primary role of the model validation stage before deployment?",
+   "options": [
+    "To convert raw unstructured data into standardized formats for ingestion",
+    "To re-train base models using real-time production feedback",
+    "To evaluate model performance and safety metrics against defined thresholds before release",
+    "To run stress tests on infrastructure hardware to check server latency under load"
+   ],
+   "answer": "C",
+   "explanation": "The model validation stage ensures that a newly trained model meets accuracy, fairness, and safety thresholds before it is automatically promoted to deployment."
+  },
+  {
+   "component": "W11.L3.C2",
+   "lo_ids": [
+    "CO4.LO2"
+   ],
+   "bloom": 3,
+   "question": "A team notices their deployed ML system's accuracy degrades over time despite passing all code unit tests and initial validation. Which automated testing stage should be added to catch this issue early?",
+   "options": [
+    "Continuous data drift detection stage",
+    "Unit testing of feature engineering functions",
+    "Code syntax linting stage",
+    "Integration testing of data ingestion APIs"
+   ],
+   "answer": "A",
+   "explanation": "Continuous data drift detection monitors live input data distributions against training distributions, identifying shifts that degrade model accuracy in production."
+  },
+  {
+   "component": "W11.L3.C3",
+   "lo_ids": [
+    "CO4.LO2"
+   ],
+   "bloom": 4,
+   "question": "A team needs to satisfy a strict reproducibility requirement for a safety-critical AI system. How does this requirement alter pipeline test design compared to a system focused primarily on execution latency?",
+   "options": [
+    "Reproducibility requires replacing integration tests with unit tests across all stages.",
+    "Reproducibility is tested exclusively in post-deployment monitoring, whereas latency is tested pre-training.",
+    "Reproducibility requires adding automated checks for data versioning, fixed seeds, and pipeline environment hashing.",
+    "Reproducibility mandates disabling automated data drift detection to keep training fixed."
+   ],
+   "answer": "C",
+   "explanation": "Mapping reproducibility to test design requires validating deterministic execution (seeds, data split versions, environment hashing), whereas latency requirements focus on timing and throughput checks under load."
+  }
+ ],
+ "questions": [
+  {
+   "component": "W12.L1.C1",
+   "lo_ids": [
+    "CO4.LO2"
+   ],
+   "bloom": 2,
+   "question": "Why is it necessary to map automated testing pipeline stages back to explicit reliability requirements before evaluating a pipeline?",
+   "options": [
+    "It eliminates the need for manual code reviews in multi-component software factories.",
+    "It replaces the need for defining Service-Level Objectives across AI services.",
+    "It ensures every test stage directly validates at least one target reliability objective rather than testing arbitrarily.",
+    "It automatically guarantees zero downstream production failures regardless of test quality."
+   ],
+   "answer": "C",
+   "explanation": "Mapping pipeline stages to explicit reliability requirements ensures that test design decisions directly serve specific system reliability objectives rather than performing redundant or unaligned testing."
+  },
+  {
+   "component": "W12.L1.C2",
+   "lo_ids": [
+    "CO4.LO2"
+   ],
+   "bloom": 3,
+   "question": "An AI-native application relies on three cascading microservices. If upstream Service A fails, it triggers downstream failures in Services B and C. Which mechanism should be incorporated into the reliability specification to mitigate this?",
+   "options": [
+    "Increase the error budget of Service C to absorb model drift.",
+    "Increase the test coverage threshold of Service B's unit tests to 100%.",
+    "Replace all automated integration tests with manual end-to-end checks.",
+    "Define a cascade failure policy such as circuit breaking or fallback responses between services."
+   ],
+   "answer": "D",
+   "explanation": "Formalizing a cascade failure policy (e.g., using circuit breakers or fallbacks) prevents an upstream failure in a multi-component AI system from causing dependent downstream services to fail."
+  },
+  {
+   "component": "W12.L1.C3",
+   "lo_ids": [
+    "CO4.LO2"
+   ],
+   "bloom": 4,
+   "question": "An engineering team instrumented their production AI pipeline with real-time dynamic data profiling, but observed a significant increase in pipeline execution cost and latency. What trade-off is demonstrated in this case study?",
+   "options": [
+    "Deterministic output generation vs. stochastic model training speed.",
+    "High test coverage vs. zero security vulnerability detection.",
+    "Deep operational observability vs. resource consumption and execution latency.",
+    "Automated integration testing vs. manual test writing effort."
+   ],
+   "answer": "C",
+   "explanation": "Instrumenting deep observability in production pipelines often improves visibility into reliability failures, but comes at the expense of higher resource utilization and execution delays."
+  },
+  {
+   "component": "W12.L1.C4",
+   "lo_ids": [
+    "CO4.LO2"
+   ],
+   "bloom": 5,
+   "question": "In assessing a pipeline design decision to run heavy end-to-end model validation on every git commit, an evaluator finds developer delivery speed has dropped significantly. How should this design decision be re-justified against reliability requirements?",
+   "options": [
+    "Move heavy model validation to a pre-release or nightly trigger while keeping fast unit tests on every commit.",
+    "Lower the accuracy thresholds of the heavy validation tests so they finish running faster.",
+    "Retain the heavy test stage on every commit to maintain maximum theoretical test rigor regardless of velocity cost.",
+    "Remove all end-to-end model validation entirely from the deployment pipeline."
+   ],
+   "answer": "A",
+   "explanation": "Aligning pipeline design decisions with reliability goals requires balancing feedback speed and rigor; tiering expensive validation tests to pre-release triggers preserves developer feedback loops while meeting reliability requirements."
+  },
+  {
+   "component": "W12.L1.C5",
+   "lo_ids": [
+    "CO4.LO2"
+   ],
+   "bloom": 5,
+   "question": "During peer review of a multi-component AI pipeline, Group A notices that Group B justified skipping integration testing between the parser and recommender services because both pass unit tests. Why is this justification inadequate?",
+   "options": [
+    "Peer review guidelines require every single component to have identical deployment scripts.",
+    "Skipping integration testing violates the system's error budget tracking rules.",
+    "Unit tests run slower than integration tests in multi-component pipelines.",
+    "Isolated unit tests cannot verify cross-component contract failures, schema mismatches, or cascading errors between AI services."
+   ],
+   "answer": "D",
+   "explanation": "In multi-component AI factories, passing unit tests in isolation fails to validate inter-service interactions, data drift handling, and contract compatibility, making integration testing necessary for reliability justification."
+  },
+  {
+   "component": "W12.L1.C6",
+   "lo_ids": [
+    "CO4.LO2"
+   ],
+   "bloom": 4,
+   "question": "A team needs to lower deployment latency for critical security hotfixes in an AI service. When comparing exhaustive model regression testing against high deployment speed, which strategy best manages this trade-off for urgent fixes?",
+   "options": [
+    "Bypass all pipeline checks and deploy directly to production without testing.",
+    "Double the error budget so that broken deployments do not count against service level objectives.",
+    "Run full synthetic model evaluation suites before deploying any hotfix.",
+    "Execute a targeted subset of regression tests for affected components, deferring full model suites to post-deployment staging."
+   ],
+   "answer": "D",
+   "explanation": "To balance deployment speed against testing depth during urgent hotfixes, teams run targeted test suites focused on impacted components while scheduling full, resource-intensive validation suites post-deployment."
+  }
+ ],
+ "problems": []
+}

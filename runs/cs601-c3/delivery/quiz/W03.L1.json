@@ -1,0 +1,126 @@
+{
+ "lecture_id": "W03.L1",
+ "topic": "Coding agents and context engineering",
+ "made_at": "2026-11-03 15:46:53",
+ "minutes": {
+  "recap": 5,
+  "quiz": 5
+ },
+ "recap": [
+  {
+   "component": "W02.L2.C1",
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "bloom": 2,
+   "question": "What is the primary role of an architectural scratchpad during an autonomous coding agent's execution lifecycle?",
+   "options": [
+    "It tracks short-term state, intermediate reasoning steps, and tool observation outputs across loop iterations.",
+    "It automatically compiles static analysis binaries inside container sandboxes.",
+    "It bypasses permission checks when the agent executes shell commands.",
+    "It permanently stores global system environment variables across project sessions."
+   ],
+   "answer": "A",
+   "explanation": "The scratchpad functions as short-term memory within the agent lifecycle loop, enabling the model to retain intermediate context, track progress, and consume tool observations before taking the next action."
+  },
+  {
+   "component": "W02.L2.C2",
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "bloom": 2,
+   "question": "Why would a developer implement selective file tree pruning when building a prompt context for a coding agent?",
+   "options": [
+    "To allow MCP tools to run without requiring input parameter validation.",
+    "To guarantee that all unit tests pass before tool dispatch occurs.",
+    "To prevent model distraction and avoid exceeding context window token budgets by filtering out irrelevant directories.",
+    "To permanently delete legacy files from the local Git repository."
+   ],
+   "answer": "C",
+   "explanation": "Pruning irrelevant directories and files reduces context pollution and keeps token usage within limits, preventing the LLM from getting distracted by unrelated codebase noise."
+  },
+  {
+   "component": "W02.L2.C3",
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "bloom": 3,
+   "question": "A custom MCP tool for linting files frequently fails because the agent passes invalid parameter data types. How should the tool definition be updated to resolve this according to MCP specifications?",
+   "options": [
+    "Switch the workspace isolation model from container sandboxing to a local git worktree.",
+    "Define explicit JSON schema types and parameter validation rules in the tool's input descriptor.",
+    "Enable sliding context windows to prune past tool validation errors.",
+    "Inject the full static analysis output directly into the global prompt context."
+   ],
+   "answer": "B",
+   "explanation": "MCP tool discovery relies on structured JSON schemas; explicitly defining required parameters and data types ensures the harness validates inputs before invoking the tool."
+  }
+ ],
+ "questions": [
+  {
+   "component": "W03.L1.C1",
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "bloom": 2,
+   "question": "A static analyzer flags a warning on an MCP server manifest because a registered tool's input parameter lacks an explicit schema type. Why is strict typing enforced in tool manifests?",
+   "options": [
+    "It removes the requirement for sandboxed execution environments.",
+    "It prevents the stdio transport layer from dropping requests silently.",
+    "It ensures the agent receives unambiguous parameter schemas to generate correctly structured tool calls.",
+    "It allows static analyzers to automatically execute unit tests on the tool binary."
+   ],
+   "answer": "C",
+   "explanation": "Strict typing in manifests prevents schema ambiguity, ensuring LLM agents construct valid, correctly typed arguments when invoking registered tools."
+  },
+  {
+   "component": "W03.L1.C2",
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "bloom": 3,
+   "question": "You are configuring an MCP server manifest to expose a custom test runner in an agent workspace, but the tool fails because it cannot locate installed system binaries. How should you fix the manifest configuration?",
+   "options": [
+    "Explicitly define the execution environment variables (such as PATH) and directory permissions in the manifest.",
+    "Disable sandboxed execution to give the agent host-level root access.",
+    "Increase the log level of the static analyzer to bypass missing binary warnings.",
+    "Switch the communication transport from stdio to HTTP REST."
+   ],
+   "answer": "A",
+   "explanation": "Configuring execution environment variables like PATH within the tool manifest ensures deterministic execution by granting the tool access to required system binaries within its sandbox."
+  },
+  {
+   "component": "W03.L1.C3",
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "bloom": 3,
+   "question": "During integration testing of a workspace tool configuration, all static analysis checks pass, but the public test suite fails due to a schema mismatch between expected and actual tool response structures. How should this failure be remediated?",
+   "options": [
+    "Update the tool manifest's response schema to accurately match the tool's actual output payload.",
+    "Bypass static analysis checks so the pipeline ignores output verification.",
+    "Replace stdio transport with manual human-in-the-loop validation.",
+    "Suppress the failing integration assertions in the test harness."
+   ],
+   "answer": "A",
+   "explanation": "Remediating schema mismatches requires updating the manifest definitions so that actual tool outputs cleanly align with the expected response schema validated by integration tests."
+  },
+  {
+   "component": "W03.L1.C4",
+   "lo_ids": [
+    "CO1.LO2"
+   ],
+   "bloom": 4,
+   "question": "An agent enters an infinite loop repeatedly calling a custom git tool. Log analysis shows that whenever an execution fails, the tool returns a generic non-zero exit status without an explicit error payload. What is the root cause of this divergence?",
+   "options": [
+    "The stdio transport buffer overflowed from unbuffered binary logs.",
+    "The tool manifest lacked explicit timeout configurations for sandboxed execution.",
+    "Missing structured error details prevent the agent from understanding the failure context, causing repetitive retry attempts.",
+    "The static analyzer failed to inspect working directory permissions at startup."
+   ],
+   "answer": "C",
+   "explanation": "Subtle configuration flaws like missing or malformed error payloads prevent the agent from diagnosing execution failures, causing runtime divergence such as infinite retry loops."
+  }
+ ],
+ "problems": []
+}

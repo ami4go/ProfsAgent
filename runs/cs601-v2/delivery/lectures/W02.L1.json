@@ -1,0 +1,1540 @@
+{
+ "lecture_id": "W02.L1",
+ "topic": "Model context protocols and architecture",
+ "generated_at": "2026-11-02 23:23:27",
+ "components": [
+  {
+   "lecture_id": "W02.L1",
+   "title": "Recap of Protocol Lifecycles and Core Primitives",
+   "teaches": "Summarize the JSON-RPC initialization handshake and introduce the three core MCP primitives: resources, prompts, and tools. Students will distinguish between passive data provision (resources) and dynamic model operations (tools).",
+   "key_terms": [
+    "primitives",
+    "passive context",
+    "dynamic execution",
+    "protocol state",
+    "resources vs tools"
+   ],
+   "kind": "concept",
+   "bloom": 2,
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "minutes": 15,
+   "id": "W02.L1.C1",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W02.L1",
+   "title": "Defining Resources and Resource Templates in Context Schemas",
+   "teaches": "Explain how context servers expose data via URI schemes and parameterized resource templates. Students will identify the schema fields used to define static text/binary content, MIME types, and dynamic URI-based subscription updates.",
+   "key_terms": [
+    "resource templates",
+    "URI scheme",
+    "MIME type",
+    "resource subscriptions",
+    "readResource"
+   ],
+   "kind": "mechanism",
+   "bloom": 2,
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "minutes": 20,
+   "id": "W02.L1.C2",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W02.L1",
+   "title": "Tool Definitions and Dynamic Execution Callbacks",
+   "teaches": "Examine how servers declare executable tools using JSON Schema for input argument validation. Students will follow the flow from tool discovery (`tools/list`) through host invocation (`tools/call`) to returning structured execution results or errors.",
+   "key_terms": [
+    "tools/list",
+    "tools/call",
+    "inputSchema",
+    "JSON Schema validation",
+    "callToolResult"
+   ],
+   "kind": "mechanism",
+   "bloom": 2,
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "minutes": 20,
+   "id": "W02.L1.C3",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W02.L1",
+   "title": "Developer Workspace Configuration Schemas and Server Registration",
+   "teaches": "Break down the structure of workspace configuration files, such as `mcpServers` sections in desktop or IDE configuration files. Students will identify mandatory fields including command, args, env variables, and transport settings required to launch context servers.",
+   "key_terms": [
+    "mcpServers",
+    "workspace configuration",
+    "environment variables",
+    "executable command",
+    "schema validation"
+   ],
+   "kind": "concept",
+   "bloom": 1,
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "minutes": 20,
+   "id": "W02.L1.C4",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W02.L1",
+   "title": "Security Boundaries, Environment Isolation, and Access Control",
+   "teaches": "Analyze security risks associated with granting language models access to local files and CLI execution via context protocols. Students will identify mitigation strategies, including sandboxed subprocess execution, prompt injection defense in tool outputs, and explicit user-in-the-loop approvals.",
+   "key_terms": [
+    "least privilege",
+    "user-in-the-loop",
+    "prompt injection",
+    "subprocess sandboxing",
+    "credential isolation"
+   ],
+   "kind": "concept",
+   "bloom": 2,
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "minutes": 15,
+   "id": "W02.L1.C5",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W02.L1",
+   "title": "Inspecting Configuration Templates for Model Context Protocols",
+   "teaches": "Walk through a supplied developer workspace template to identify configured context servers, missing schema fields, and transport definitions. Students will pinpoint configuration discrepancies such as misconfigured PATHs, missing environment variables, or schema type mismatches.",
+   "key_terms": [
+    "workspace template",
+    "schema verification",
+    "configuration audit",
+    "server declaration",
+    "parameter mapping"
+   ],
+   "kind": "worked_example",
+   "bloom": 3,
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "minutes": 20,
+   "id": "W02.L1.C6",
+   "in_class": false
+  },
+  {
+   "lecture_id": "W02.L1",
+   "title": "Diagnosing Protocol Connection Failures and Logging Workflows",
+   "teaches": "Demonstrate how to detect and trace common protocol runtime errors using client diagnostic logs and server error codes. Students will evaluate stderr streams, malformed JSON-RPC payloads, and unhandled transport disconnects.",
+   "key_terms": [
+    "stderr logging",
+    "JSON-RPC error codes",
+    "transport disconnect",
+    "inspector tool",
+    "runtime diagnostics"
+   ],
+   "kind": "demo",
+   "bloom": 2,
+   "lo_ids": [
+    "CO1.LO1"
+   ],
+   "minutes": 10,
+   "id": "W02.L1.C7",
+   "in_class": false
+  }
+ ],
+ "continues": "W01.L2",
+ "resources": {
+  "lecture_id": "W02.L1",
+  "topic": "Model context protocols and architecture",
+  "want": {
+   "want_videos": false,
+   "want_readings": true,
+   "want_practice": true,
+   "want_recorded_lecture": false,
+   "want_clips": false,
+   "want_guest": true,
+   "confidence": 2,
+   "note": "",
+   "choices": [
+    "own_material",
+    "generate_material",
+    "assistance",
+    "guest_lecture"
+   ]
+  },
+  "queries": {
+   "lecture_id": "W02.L1",
+   "video_queries": [
+    "Model Context Protocol MCP explained",
+    "MCP server configuration tutorial",
+    "Model Context Protocol architecture lecture"
+   ],
+   "reading_queries": [
+    "Recap of Protocol Lifecycles and Core Primitives Model context protocols and architecture"
+   ],
+   "practice_queries": [
+    "Recap of Protocol Lifecycles and Core Primitives hands-on tutorial"
+   ],
+   "recorded_lecture_query": null,
+   "research_queries": [
+    "Model Context Protocol",
+    "context aware language model tools"
+   ],
+   "practitioner_query": "Model Context Protocol integration"
+  },
+  "items": {
+   "video": [
+    {
+     "kind": "video",
+     "id": "tzrwxLNHtRY",
+     "url": "https://www.youtube.com/watch?v=tzrwxLNHtRY",
+     "title": "Model Context Protocol Clearly Explained | MCP Beyond the Hype",
+     "source": "codebasics",
+     "tier": 2,
+     "duration_s": 904,
+     "published": "2025-03-20T07:00:06Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 636856,
+     "likes": 7879,
+     "comments": 224,
+     "subscribers": 1580000,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.022,
+      "segment": 0.297,
+      "clarity": 0.8,
+      "level_fit": 0.8,
+      "authority": 0.8,
+      "reception": 0.621
+     },
+     "total": 0.318,
+     "findings": [],
+     "rationale": "Teaches C3 Tool Definitions and Dynamic Execution Callbacks (9:26–14:08, partly) [checked on the transcript] · codebasics · tier 2 · 15:04 · 636,856 views",
+     "components": [
+      {
+       "id": "W02.L1.C3",
+       "title": "Tool Definitions and Dynamic Execution Callbacks",
+       "start": "9:26",
+       "end": "14:08",
+       "start_s": 566.0,
+       "end_s": 848.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "tool discovery via tools/list",
+        "JSON Schema input validation (inputSchema)",
+        "tool implementation callback"
+       ],
+       "missing": [
+        "tools/call invocation flow",
+        "structured execution results (callToolResult)",
+        "error handling"
+       ],
+       "note": "Shows tool definition with input schema and list tools; omits call protocol details.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.022,
+      "evidence": "transcript",
+      "per_target": {
+       "W02.L1.C3": {
+        "text": "Tool Definitions and Dynamic Execution Callbacks",
+        "covered": true,
+        "sim": 0.443,
+        "segments": [
+         {
+          "start": 566.0,
+          "end": 848.0,
+          "sim": 0.443
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Shows tool definition with input schema and list tools; omits call protocol details.",
+      "issues": [
+       "leaves out: tools/call invocation flow",
+       "leaves out: structured execution results (callToolResult)",
+       "leaves out: error handling"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "This video contains a very simple explanation of MCP, also known as Model Context Protocol. We will first understand what exactly is MCP and how it easing up the development of AI applications and then we will go into the technical details of how the actual protocol looks like. We will look into the code of MCP client and Server both.\n\nSample MCP client: https://github.com/modelcontextprotocol/python-sdk/blob/main/examples/clients/simple-chatbot/mcp_simple_chatbot/main.py\nGoogle maps MCP server: https://github.com/modelcontextprotocol/servers/blob/main/src/google-maps/index.ts#L297\nMCP Schema: https://github.com/modelcontextprotocol/specification/blob/main/schema/2024-11-05/schema.ts\nSimple ",
+     "rank": 1,
+     "status": "proposed"
+    },
+    {
+     "kind": "video",
+     "id": "7j1t3UZA1TY",
+     "url": "https://www.youtube.com/watch?v=7j1t3UZA1TY",
+     "title": "MCP vs API: Simplifying AI Agent Integration with External Data",
+     "source": "IBM Technology",
+     "tier": 2,
+     "duration_s": 791,
+     "published": "2025-05-05T11:00:12Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 1274687,
+     "likes": 22157,
+     "comments": 734,
+     "subscribers": 1830000,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.008,
+      "segment": 0.192,
+      "clarity": 0.8,
+      "level_fit": 0.8,
+      "authority": 0.8,
+      "reception": 0.712
+     },
+     "total": 0.252,
+     "findings": [],
+     "rationale": "Teaches C1 Recap of Protocol Lifecycles and Core Primitives (3:44–5:28, partly) [checked on the transcript] · IBM Technology · tier 2 · 13:11 · 1,274,687 views",
+     "components": [
+      {
+       "id": "W02.L1.C1",
+       "title": "Recap of Protocol Lifecycles and Core Primitives",
+       "start": "3:44",
+       "end": "5:28",
+       "start_s": 224.0,
+       "end_s": 328.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "introduces three primitives (tools, resources, prompt templates)",
+        "distinguishes resources (read-only data) vs tools (actions)"
+       ],
+       "missing": [
+        "JSON-RPC initialization handshake"
+       ],
+       "note": "Clear primitives overview with discovery mechanism; no handshake coverage.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.008,
+      "evidence": "transcript",
+      "per_target": {
+       "W02.L1.C1": {
+        "text": "Recap of Protocol Lifecycles and Core Primitives",
+        "covered": true,
+        "sim": 0.505,
+        "segments": [
+         {
+          "start": 224.0,
+          "end": 328.0,
+          "sim": 0.505
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Clear primitives overview with discovery mechanism; no handshake coverage.",
+      "issues": [
+       "leaves out: JSON-RPC initialization handshake"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Ready to become a certified Solution Implementer? Register now and use code IBMTechYT20 for 20% off of your exam → https://ibm.biz/BdnPFQ\n\nLearn more about API here → https://ibm.biz/BdnPFT\n\nMCP or API: Which transforms AI integration? Martin Keen explains how the Model Context Protocol (MCP) revolutionizes AI agents by enabling dynamic discovery, tool execution, and seamless external data retrieval. Discover how MCP simplifies LLM workflows and outpaces traditional APIs. 🚀\n\nAI news moves fast. Sign up for a monthly newsletter for AI updates from IBM → https://ibm.biz/BdnPFw\n\n#modelcontextprotocol #api #aiintegration",
+     "rank": 2,
+     "status": "proposed"
+    },
+    {
+     "kind": "video",
+     "id": "cGuyrANVi4A",
+     "url": "https://www.youtube.com/watch?v=cGuyrANVi4A",
+     "title": "How Model Context Protocol (MCP) actually works",
+     "source": "Google Cloud Tech",
+     "tier": 2,
+     "duration_s": 478,
+     "published": "2026-06-24T16:00:39Z",
+     "licence": "Standard YouTube licence",
+     "captions": true,
+     "views": 415672,
+     "likes": 9773,
+     "comments": 129,
+     "subscribers": 1460000,
+     "transcript": true,
+     "scores": {
+      "teaches": 0.005,
+      "segment": 0.192,
+      "clarity": 0.8,
+      "level_fit": 0.8,
+      "authority": 0.8,
+      "reception": 0.794
+     },
+     "total": 0.264,
+     "findings": [],
+     "rationale": "Teaches C1 Recap of Protocol Lifecycles and Core Primitives (3:45–4:53, partly) [checked on the transcript] · Google Cloud Tech · tier 2 · 7:58 · 415,672 views",
+     "components": [
+      {
+       "id": "W02.L1.C1",
+       "title": "Recap of Protocol Lifecycles and Core Primitives",
+       "start": "3:45",
+       "end": "4:53",
+       "start_s": 225.0,
+       "end_s": 293.0,
+       "verdict": "teaches_partly",
+       "covered": [
+        "introduces three core primitives (tools, prompts, resources)",
+        "distinguishes passive resources vs dynamic tools"
+       ],
+       "missing": [
+        "JSON-RPC initialization handshake"
+       ],
+       "note": "Clear explanation of primitives and client-server model; omits JSON-RPC handshake details.",
+       "chapter": null
+      }
+     ],
+     "coverage": {
+      "score": 0.005,
+      "evidence": "transcript",
+      "per_target": {
+       "W02.L1.C1": {
+        "text": "Recap of Protocol Lifecycles and Core Primitives",
+        "covered": true,
+        "sim": 0.597,
+        "segments": [
+         {
+          "start": 225.0,
+          "end": 293.0,
+          "sim": 0.597
+         }
+        ]
+       }
+      }
+     },
+     "review": {
+      "review": "Clear explanation of primitives and client-server model; omits JSON-RPC handshake details.",
+      "issues": [
+       "leaves out: JSON-RPC initialization handshake"
+      ],
+      "use_as": "in_class_clip",
+      "explains": "explains"
+     },
+     "description": "Google MCPs → https://goo.gle/3PYkjky \nBuild an ADK agent with Google MCPs → https://goo.gle/4o6h8DP \nConnect an MCP server to an AI agent → https://goo.gle/4uk7YW2 \n\nAPIs were built for deterministic programs, but AI models reason probabilistically. So how do you get your AI agents to talk to your tools and data without writing messy, custom integration code every time? Enter the Model Context Protocol (MCP). In this video, Smitha Kolan explains what MCP is, how it standardizes the way AI models discover and interact with external resources, and why it's becoming the new standard over traditional APIs for AI-powered applications\n\nChapters:\n0:00 - Intro: The problem with APIs and AI \n0:48 - ",
+     "rank": 3,
+     "status": "proposed"
+    }
+   ],
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture",
+     "title": "Architecture overview - Model Context Protocol",
+     "source": "modelcontextprotocol.io",
+     "tier": 3,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.832,
+      "quality": 0.8,
+      "authority": 0.65,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.739,
+     "rank": 1,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W02.L1.C1 ✓, W02.L1.C2 ✓, W02.L1.C3 ✓, W02.L1.C4 ✓, W02.L1.C5 ✗, W02.L1.C6 ✓, W02.L1.C7 ✓ [from page text] · modelcontextprotocol.io · tier 3",
+     "findings": [],
+     "review": {
+      "review": "Official documentation covering MCP architecture, JSON-RPC primitives, and discovery lifecycle. Excellent authoritative reading for understanding protocol concepts before configuring workspaces.",
+      "issues": [
+       "Official architecture documentation, light on complete end-to-end template schemas"
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 4,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.832,
+      "evidence": "text",
+      "per_target": {
+       "M1.T2": {
+        "covered": true,
+        "sim": 0.741,
+        "segments": []
+       },
+       "W02.L1.C1": {
+        "covered": true,
+        "sim": 0.702,
+        "segments": [],
+        "text": "Recap of Protocol Lifecycles and Core Primitives. Summarize the JSON-RPC initialization handshake and introduce the thre"
+       },
+       "W02.L1.C2": {
+        "covered": true,
+        "sim": 0.541,
+        "segments": [],
+        "text": "Defining Resources and Resource Templates in Context Schemas. Explain how context servers expose data via URI schemes an"
+       },
+       "W02.L1.C3": {
+        "covered": true,
+        "sim": 0.579,
+        "segments": [],
+        "text": "Tool Definitions and Dynamic Execution Callbacks. Examine how servers declare executable tools using JSON Schema for inp"
+       },
+       "W02.L1.C4": {
+        "covered": true,
+        "sim": 0.488,
+        "segments": [],
+        "text": "Developer Workspace Configuration Schemas and Server Registration. Break down the structure of workspace configuration f"
+       },
+       "W02.L1.C5": {
+        "covered": false,
+        "sim": 0.407,
+        "segments": [],
+        "text": "Security Boundaries, Environment Isolation, and Access Control. Analyze security risks associated with granting language"
+       },
+       "W02.L1.C6": {
+        "covered": true,
+        "sim": 0.52,
+        "segments": [],
+        "text": "Inspecting Configuration Templates for Model Context Protocols. Walk through a supplied developer workspace template to "
+       },
+       "W02.L1.C7": {
+        "covered": true,
+        "sim": 0.515,
+        "segments": [],
+        "text": "Diagnosing Protocol Connection Failures and Logging Workflows. Demonstrate how to detect and trace common protocol runti"
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://www.bolderapps.com/blog-posts/model-context-protocol",
+     "title": "A Complete Guide to the Model Context Protocol | Bolder Apps Blog",
+     "source": "bolderapps.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.876,
+      "quality": 0.85,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.719,
+     "rank": 2,
+     "status": "proposed",
+     "rationale": "Covers: topic ✓, W02.L1.C1 ✓, W02.L1.C2 ✓, W02.L1.C3 ✓, W02.L1.C4 ✓, W02.L1.C5 ✓, W02.L1.C6 ✓, W02.L1.C7 ✓ [from page text] · bolderapps.com · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Clear, accessible breakdown of core MCP primitives (tools, resources, prompts) and their JSON schemas. Great overview for students learning protocol requirements.",
+      "issues": [
+       "Blog post format, lacks live template validation exercises"
+      ],
+      "use_as": "after_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 4,
+      "examples": 4,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.876,
+      "evidence": "text",
+      "per_target": {
+       "M1.T2": {
+        "covered": true,
+        "sim": 0.831,
+        "segments": []
+       },
+       "W02.L1.C1": {
+        "covered": true,
+        "sim": 0.681,
+        "segments": [],
+        "text": "Recap of Protocol Lifecycles and Core Primitives. Summarize the JSON-RPC initialization handshake and introduce the thre"
+       },
+       "W02.L1.C2": {
+        "covered": true,
+        "sim": 0.568,
+        "segments": [],
+        "text": "Defining Resources and Resource Templates in Context Schemas. Explain how context servers expose data via URI schemes an"
+       },
+       "W02.L1.C3": {
+        "covered": true,
+        "sim": 0.491,
+        "segments": [],
+        "text": "Tool Definitions and Dynamic Execution Callbacks. Examine how servers declare executable tools using JSON Schema for inp"
+       },
+       "W02.L1.C4": {
+        "covered": true,
+        "sim": 0.492,
+        "segments": [],
+        "text": "Developer Workspace Configuration Schemas and Server Registration. Break down the structure of workspace configuration f"
+       },
+       "W02.L1.C5": {
+        "covered": true,
+        "sim": 0.593,
+        "segments": [],
+        "text": "Security Boundaries, Environment Isolation, and Access Control. Analyze security risks associated with granting language"
+       },
+       "W02.L1.C6": {
+        "covered": true,
+        "sim": 0.565,
+        "segments": [],
+        "text": "Inspecting Configuration Templates for Model Context Protocols. Walk through a supplied developer workspace template to "
+       },
+       "W02.L1.C7": {
+        "covered": true,
+        "sim": 0.455,
+        "segments": [],
+        "text": "Diagnosing Protocol Connection Failures and Logging Workflows. Demonstrate how to detect and trace common protocol runti"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "reserve": {
+   "reading": [
+    {
+     "kind": "reading",
+     "url": "https://www.comet.com/site/blog/model-context-protocol/",
+     "title": "Model Context Protocol (MCP)",
+     "source": "comet.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.869,
+      "quality": 0.8,
+      "authority": 0.35,
+      "level_fit": 0.8,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.707,
+     "rank": 3,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W02.L1.C1 ✓, W02.L1.C2 ✓, W02.L1.C3 ✓, W02.L1.C4 ✓, W02.L1.C5 ✓, W02.L1.C6 ✓, W02.L1.C7 ✓ [from page text] · comet.com · tier 4",
+     "findings": [],
+     "review": {
+      "review": "Solid technical article detailing JSON-RPC 2.0 communication, stdio transports, and security isolation for MCP. Helpful contextual reading for architecture and security boundaries.",
+      "issues": [
+       "High-level conceptual overview with limited schema code snippets"
+      ],
+      "use_as": "pre_class",
+      "explains": "explains",
+      "clarity": 4,
+      "correctness": 5,
+      "depth": 4,
+      "examples": 3,
+      "level_fit": 4
+     },
+     "coverage": {
+      "score": 0.869,
+      "evidence": "text",
+      "per_target": {
+       "M1.T2": {
+        "covered": true,
+        "sim": 0.67,
+        "segments": []
+       },
+       "W02.L1.C1": {
+        "covered": true,
+        "sim": 0.69,
+        "segments": [],
+        "text": "Recap of Protocol Lifecycles and Core Primitives. Summarize the JSON-RPC initialization handshake and introduce the thre"
+       },
+       "W02.L1.C2": {
+        "covered": true,
+        "sim": 0.547,
+        "segments": [],
+        "text": "Defining Resources and Resource Templates in Context Schemas. Explain how context servers expose data via URI schemes an"
+       },
+       "W02.L1.C3": {
+        "covered": true,
+        "sim": 0.576,
+        "segments": [],
+        "text": "Tool Definitions and Dynamic Execution Callbacks. Examine how servers declare executable tools using JSON Schema for inp"
+       },
+       "W02.L1.C4": {
+        "covered": true,
+        "sim": 0.454,
+        "segments": [],
+        "text": "Developer Workspace Configuration Schemas and Server Registration. Break down the structure of workspace configuration f"
+       },
+       "W02.L1.C5": {
+        "covered": true,
+        "sim": 0.631,
+        "segments": [],
+        "text": "Security Boundaries, Environment Isolation, and Access Control. Analyze security risks associated with granting language"
+       },
+       "W02.L1.C6": {
+        "covered": true,
+        "sim": 0.485,
+        "segments": [],
+        "text": "Inspecting Configuration Templates for Model Context Protocols. Walk through a supplied developer workspace template to "
+       },
+       "W02.L1.C7": {
+        "covered": true,
+        "sim": 0.498,
+        "segments": [],
+        "text": "Diagnosing Protocol Connection Failures and Logging Workflows. Demonstrate how to detect and trace common protocol runti"
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://www.truefoundry.com/blog/mcp",
+     "title": "What Is MCP? Use Cases & Benefits Explained",
+     "source": "truefoundry.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.844,
+      "quality": 0.42,
+      "authority": 0.35,
+      "level_fit": 0.6,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.602,
+     "rank": 4,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W02.L1.C1 ✓, W02.L1.C2 ✓, W02.L1.C3 ✓, W02.L1.C4 ✓, W02.L1.C5 ✓, W02.L1.C6 ✓, W02.L1.C7 ✓ [from page text] · truefoundry.com · tier 4",
+     "findings": [
+      {
+       "code": "R-REVIEW",
+       "severity": "warning",
+       "message": "AI review: mentions the topic but does not really teach it"
+      }
+     ],
+     "review": {
+      "review": "A readable high-level introduction to MCP primitives and session transport over JSON-RPC. Best for a quick introductory glance rather than in-depth schema inspection.",
+      "issues": [
+       "Vendor blog post with high-level introductory focus",
+       "Claims JSON-RPC layer is stateful despite protocol design"
+      ],
+      "use_as": "pre_class",
+      "explains": "mentions",
+      "clarity": 4,
+      "correctness": 4,
+      "depth": 3,
+      "examples": 3,
+      "level_fit": 3
+     },
+     "coverage": {
+      "score": 0.844,
+      "evidence": "text",
+      "per_target": {
+       "M1.T2": {
+        "covered": true,
+        "sim": 0.722,
+        "segments": []
+       },
+       "W02.L1.C1": {
+        "covered": true,
+        "sim": 0.657,
+        "segments": [],
+        "text": "Recap of Protocol Lifecycles and Core Primitives. Summarize the JSON-RPC initialization handshake and introduce the thre"
+       },
+       "W02.L1.C2": {
+        "covered": true,
+        "sim": 0.467,
+        "segments": [],
+        "text": "Defining Resources and Resource Templates in Context Schemas. Explain how context servers expose data via URI schemes an"
+       },
+       "W02.L1.C3": {
+        "covered": true,
+        "sim": 0.657,
+        "segments": [],
+        "text": "Tool Definitions and Dynamic Execution Callbacks. Examine how servers declare executable tools using JSON Schema for inp"
+       },
+       "W02.L1.C4": {
+        "covered": true,
+        "sim": 0.46,
+        "segments": [],
+        "text": "Developer Workspace Configuration Schemas and Server Registration. Break down the structure of workspace configuration f"
+       },
+       "W02.L1.C5": {
+        "covered": true,
+        "sim": 0.588,
+        "segments": [],
+        "text": "Security Boundaries, Environment Isolation, and Access Control. Analyze security risks associated with granting language"
+       },
+       "W02.L1.C6": {
+        "covered": true,
+        "sim": 0.479,
+        "segments": [],
+        "text": "Inspecting Configuration Templates for Model Context Protocols. Walk through a supplied developer workspace template to "
+       },
+       "W02.L1.C7": {
+        "covered": true,
+        "sim": 0.523,
+        "segments": [],
+        "text": "Diagnosing Protocol Connection Failures and Logging Workflows. Demonstrate how to detect and trace common protocol runti"
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://www.databricks.com/blog/what-is-model-context-protocol",
+     "title": "What is the Model Context Protocol (MCP)? | Databricks",
+     "source": "databricks.com",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.816,
+      "quality": 0.5,
+      "authority": 0.35,
+      "level_fit": 0.6,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.608,
+     "rank": 5,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W02.L1.C1 ✓, W02.L1.C2 ✓, W02.L1.C3 ✓, W02.L1.C4 ✓, W02.L1.C5 ✓, W02.L1.C6 ✓, W02.L1.C7 ✓ [from page text] · databricks.com · tier 4",
+     "findings": [],
+     "coverage": {
+      "score": 0.816,
+      "evidence": "text",
+      "per_target": {
+       "M1.T2": {
+        "covered": true,
+        "sim": 0.721,
+        "segments": []
+       },
+       "W02.L1.C1": {
+        "covered": true,
+        "sim": 0.635,
+        "segments": [],
+        "text": "Recap of Protocol Lifecycles and Core Primitives. Summarize the JSON-RPC initialization handshake and introduce the thre"
+       },
+       "W02.L1.C2": {
+        "covered": true,
+        "sim": 0.497,
+        "segments": [],
+        "text": "Defining Resources and Resource Templates in Context Schemas. Explain how context servers expose data via URI schemes an"
+       },
+       "W02.L1.C3": {
+        "covered": true,
+        "sim": 0.51,
+        "segments": [],
+        "text": "Tool Definitions and Dynamic Execution Callbacks. Examine how servers declare executable tools using JSON Schema for inp"
+       },
+       "W02.L1.C4": {
+        "covered": true,
+        "sim": 0.44,
+        "segments": [],
+        "text": "Developer Workspace Configuration Schemas and Server Registration. Break down the structure of workspace configuration f"
+       },
+       "W02.L1.C5": {
+        "covered": true,
+        "sim": 0.479,
+        "segments": [],
+        "text": "Security Boundaries, Environment Isolation, and Access Control. Analyze security risks associated with granting language"
+       },
+       "W02.L1.C6": {
+        "covered": true,
+        "sim": 0.527,
+        "segments": [],
+        "text": "Inspecting Configuration Templates for Model Context Protocols. Walk through a supplied developer workspace template to "
+       },
+       "W02.L1.C7": {
+        "covered": true,
+        "sim": 0.553,
+        "segments": [],
+        "text": "Diagnosing Protocol Connection Failures and Logging Workflows. Demonstrate how to detect and trace common protocol runti"
+       }
+      }
+     }
+    },
+    {
+     "kind": "reading",
+     "url": "https://tetrate.io/learn/ai/mcp/what-is-model-context-protocol",
+     "title": "What is Model Context Protocol (MCP)? Complete Guide",
+     "source": "tetrate.io",
+     "tier": 4,
+     "page_type": "article",
+     "scores": {
+      "coverage": 0.803,
+      "quality": 0.5,
+      "authority": 0.35,
+      "level_fit": 0.6,
+      "reception": 0.5,
+      "practicality": 0.6
+     },
+     "total": 0.604,
+     "rank": 6,
+     "status": "reserve",
+     "rationale": "Covers: topic ✓, W02.L1.C1 ✓, W02.L1.C2 ✓, W02.L1.C3 ✓, W02.L1.C4 ✓, W02.L1.C5 ✓, W02.L1.C6 ✓, W02.L1.C7 ✓ [from page text] · tetrate.io · tier 4",
+     "findings": [],
+     "coverage": {
+      "score": 0.803,
+      "evidence": "text",
+      "per_target": {
+       "M1.T2": {
+        "covered": true,
+        "sim": 0.667,
+        "segments": []
+       },
+       "W02.L1.C1": {
+        "covered": true,
+        "sim": 0.697,
+        "segments": [],
+        "text": "Recap of Protocol Lifecycles and Core Primitives. Summarize the JSON-RPC initialization handshake and introduce the thre"
+       },
+       "W02.L1.C2": {
+        "covered": true,
+        "sim": 0.582,
+        "segments": [],
+        "text": "Defining Resources and Resource Templates in Context Schemas. Explain how context servers expose data via URI schemes an"
+       },
+       "W02.L1.C3": {
+        "covered": true,
+        "sim": 0.495,
+        "segments": [],
+        "text": "Tool Definitions and Dynamic Execution Callbacks. Examine how servers declare executable tools using JSON Schema for inp"
+       },
+       "W02.L1.C4": {
+        "covered": true,
+        "sim": 0.467,
+        "segments": [],
+        "text": "Developer Workspace Configuration Schemas and Server Registration. Break down the structure of workspace configuration f"
+       },
+       "W02.L1.C5": {
+        "covered": true,
+        "sim": 0.51,
+        "segments": [],
+        "text": "Security Boundaries, Environment Isolation, and Access Control. Analyze security risks associated with granting language"
+       },
+       "W02.L1.C6": {
+        "covered": true,
+        "sim": 0.456,
+        "segments": [],
+        "text": "Inspecting Configuration Templates for Model Context Protocols. Walk through a supplied developer workspace template to "
+       },
+       "W02.L1.C7": {
+        "covered": true,
+        "sim": 0.478,
+        "segments": [],
+        "text": "Diagnosing Protocol Connection Failures and Logging Workflows. Demonstrate how to detect and trace common protocol runti"
+       }
+      }
+     }
+    }
+   ],
+   "video": []
+  },
+  "rejected": [
+   {
+    "title": "Introducing the Model Context Protocol \\ Anthropic",
+    "url": "https://www.anthropic.com/news/model-context-protocol",
+    "why": [
+     "score 0.55 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Model Context Protocol (MCP) Architecture Deep Dive & ...",
+    "url": "https://www.youtube.com/watch?v=dWAdk3O6-cM&vl=en-US",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "Context-Aware Systems and Applications",
+    "url": "https://openlibrary.org/books/OL51578809M",
+    "why": [
+     "score 0.50 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Statistical Atlases and Computational Models of the Heart. Imaging and Modelling Challenges",
+    "url": "https://openlibrary.org/books/OL34529204M",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "The web application hacker's handbook",
+    "url": "https://openlibrary.org/books/OL50509771M",
+    "why": [
+     "score 0.39 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "A Systematic Review of the Application of the Model Context Protocol (MCP) in Systems Integration Environments",
+    "url": "https://cdn.atenaeditora.com.br/atenaeditora/artigos_anexos/202507/TfX0mzvkfcRHRazDMrBqdeCtqmAHD3fPTO1LpQkV.pdf",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Model Context Protocol Servers: A Systematic Review of Designs, Use Cases and Future Directions",
+    "url": "https://doi.org/10.35444/ijana.2026.17605",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Model-driven architecture based testing: A systematic literature review",
+    "url": "https://edepot.wur.nl/453261",
+    "why": [
+     "page not readable (status 200, unsupported content-type application/pdf)"
+    ]
+   },
+   {
+    "title": "Context-Aware Systems Architecture in Industry 4.0: A Systematic Literature Review",
+    "url": "https://www.mdpi.com/2076-3417/15/11/5863/pdf?version=1747994903",
+    "why": [
+     "page not readable (status 200, unsupported content-type )"
+    ]
+   },
+   {
+    "title": "Primitives, Communication and Practical Usage",
+    "url": "https://www.dailydoseofds.com/model-context-protocol-crash-course-part-2/",
+    "why": [
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "The Model Context Protocol (MCP): A Complete Guide Series",
+    "url": "https://ai.plainenglish.io/the-model-context-protocol-mcp-a-complete-guide-series-db4fc70a5e5a",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Roadmap - Model Context Protocol",
+    "url": "https://modelcontextprotocol.io/development/roadmap",
+    "why": [
+     "page not readable (status None, ReadTimeout: The read operation timed out)"
+    ]
+   },
+   {
+    "title": "The MCP Protocol: Transports, Primitives, and the Message Lifecycle",
+    "url": "https://www.getmaxim.ai/articles/the-mcp-protocol-transports-primitives-and-the-message-lifecycle/",
+    "why": [
+     "score 0.58 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Protocol Upgrade - Guide to Nearcore Development",
+    "url": "https://nomicon.io/practices/protocol_upgrade.html",
+    "why": [
+     "score 0.41 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "Model Context Protocol (MCP): An End-To-End Tutorial With Hands-On Project with Python",
+    "url": "https://medium.com/data-science-collective/model-context-protocol-mcp-an-end-to-end-tutorial-with-hands-on-project-c6b9ffee03d7",
+    "why": [
+     "page not readable (status 403, too short)"
+    ]
+   },
+   {
+    "title": "Vertex Protocol Team to Join Ink Foundation, Build New DeFi Primitives on Ink Layer-2",
+    "url": "https://finance.yahoo.com/news/vertex-protocol-team-join-ink-140000297.html",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Core concepts, architecture and lifecycle | gRPC",
+    "url": "https://grpc.io/docs/what-is-grpc/core-concepts/",
+    "why": [
+     "score 0.47 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "tnfe/TNT-Weekly — 🙈 🙉 🙊 为您甄选国内外前端领域的优质资讯，洞悉行业最新进展，助力技术成长之旅。",
+    "url": "https://github.com/tnfe/TNT-Weekly",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "alvinreal/awesome-opensource-ai — Curated list of the best truly open-source AI projects, models, tools, and infrastructure. Daily updated.",
+    "url": "https://github.com/alvinreal/awesome-opensource-ai",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "VILA-Lab/Dive-into-Claude-Code — A Systematic Analysis and Discussion of Claude Code for Designing Today's and Future AI Agent Systems",
+    "url": "https://github.com/VILA-Lab/Dive-into-Claude-Code",
+    "why": [
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "Picrew/awesome-agent-harness — An awesome list of Agent Harness engineering resources, including GitHub projects, tools, benchmarks, and practical guid",
+    "url": "https://github.com/Picrew/awesome-agent-harness",
+    "why": [
+     "AI review: a general introduction to a broader concept, not this lecture's topic",
+     "AI review: nothing for students to do (no exercises, notebook, code or lab)"
+    ]
+   },
+   {
+    "title": "mikeroyal/Unreal-Engine-Guide — Unreal Engine 5 Guide. Learn to develop games for Windows, Linux, macOS, iOS, Android, Xbox Series X|S, PlayStation  5,",
+    "url": "https://github.com/mikeroyal/Unreal-Engine-Guide",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "",
+    "url": "https://ibm.biz/BdnPFQ",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "What Is an API (Application Programming Interface)? | IBM",
+    "url": "https://www.ibm.com/think/topics/api",
+    "why": [
+     "score 0.55 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "",
+    "url": "https://ibm.biz/BdnPFw",
+    "why": [
+     "page not readable (status 200, too short)"
+    ]
+   },
+   {
+    "title": "python-sdk/examples/clients/simple-chatbot/mcp_simple_chatbot/main.py at main · modelcontextprotocol/python-sdk · GitHub",
+    "url": "https://github.com/modelcontextprotocol/python-sdk/blob/main/examples/clients/simple-chatbot/mcp_simple_chatbot/main.py",
+    "why": [
+     "score 0.44 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "",
+    "url": "https://github.com/modelcontextprotocol/servers/blob/main/src/google-maps/index.ts#L297",
+    "why": [
+     "page not readable (status 404, too short)"
+    ]
+   },
+   {
+    "title": "modelcontextprotocol/schema/2024-11-05/schema.ts at main · modelcontextprotocol/modelcontextprotocol · GitHub",
+    "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/schema/2024-11-05/schema.ts",
+    "why": [
+     "score 0.57 is below the quality floor 0.6"
+    ]
+   },
+   {
+    "title": "GitHub - google/mcp: Google 💚 MCP · GitHub",
+    "url": "https://github.com/google/mcp",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "Build and Deploy a Pet Passport Agent on Cloud Run  |  Google Codelabs",
+    "url": "https://codelabs.developers.google.com/next26/build-adk-agent-google-mcps?hl=en",
+    "why": [
+     "covers neither the lecture topic nor any of its learning outcomes"
+    ]
+   },
+   {
+    "title": "MCP Explained in 2 Minutes (Model Context Protocol)",
+    "url": "https://www.youtube.com/watch?v=taeX8tgpPRQ",
+    "why": [
+     "too short to teach a component (2:28)"
+    ]
+   },
+   {
+    "title": "MCP Full Course For Beginners (With Deployment)",
+    "url": "https://www.youtube.com/watch?v=io02ZM0ADqM",
+    "why": [
+     "too long to find a segment in (3:46:07)"
+    ]
+   },
+   {
+    "title": "MCP Explained | Model Context Protocol  #agenticai",
+    "url": "https://www.youtube.com/watch?v=I8Xf2jewMhQ",
+    "why": [
+     "too short to teach a component (1:49)"
+    ]
+   },
+   {
+    "title": "What is MCP? Model Context Protocol Explained | How Does MCP Work?",
+    "url": "https://www.youtube.com/watch?v=29EQIURIyU0",
+    "why": [
+     "too short to teach a component (2:59)"
+    ]
+   }
+  ],
+  "counts": {
+   "candidates": 37,
+   "passed_checks": 6,
+   "rejected": 31,
+   "videos_used": 3
+  },
+  "clips": [
+   {
+    "target": "Recap of Protocol Lifecycles and Core Primitives",
+    "target_ids": [
+     "W02.L1.C1"
+    ],
+    "component": "W02.L1.C1",
+    "video": "How Model Context Protocol (MCP) actually works",
+    "source": "Google Cloud Tech",
+    "url": "https://www.youtube.com/watch?v=cGuyrANVi4A&t=225s",
+    "start": "3:45",
+    "end": "4:53",
+    "minutes": 1.1,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "introduces three core primitives (tools, prompts, resources)",
+     "distinguishes passive resources vs dynamic tools"
+    ],
+    "missing": [
+     "JSON-RPC initialization handshake"
+    ],
+    "note": "Clear explanation of primitives and client-server model; omits JSON-RPC handshake details."
+   },
+   {
+    "target": "Recap of Protocol Lifecycles and Core Primitives",
+    "target_ids": [
+     "W02.L1.C1"
+    ],
+    "component": "W02.L1.C1",
+    "video": "MCP vs API: Simplifying AI Agent Integration with External Data",
+    "source": "IBM Technology",
+    "url": "https://www.youtube.com/watch?v=7j1t3UZA1TY&t=224s",
+    "start": "3:44",
+    "end": "5:28",
+    "minutes": 1.7,
+    "component_minutes": 15,
+    "verdict": "teaches_partly",
+    "covered": [
+     "introduces three primitives (tools, resources, prompt templates)",
+     "distinguishes resources (read-only data) vs tools (actions)"
+    ],
+    "missing": [
+     "JSON-RPC initialization handshake"
+    ],
+    "note": "Clear primitives overview with discovery mechanism; no handshake coverage."
+   },
+   {
+    "target": "Tool Definitions and Dynamic Execution Callbacks",
+    "target_ids": [
+     "W02.L1.C3"
+    ],
+    "component": "W02.L1.C3",
+    "video": "Model Context Protocol Clearly Explained | MCP Beyond the Hype",
+    "source": "codebasics",
+    "url": "https://www.youtube.com/watch?v=tzrwxLNHtRY&t=566s",
+    "start": "9:26",
+    "end": "14:08",
+    "minutes": 4.7,
+    "component_minutes": 20,
+    "verdict": "teaches_partly",
+    "covered": [
+     "tool discovery via tools/list",
+     "JSON Schema input validation (inputSchema)",
+     "tool implementation callback"
+    ],
+    "missing": [
+     "tools/call invocation flow",
+     "structured execution results (callToolResult)",
+     "error handling"
+    ],
+    "note": "Shows tool definition with input schema and list tools; omits call protocol details."
+   }
+  ],
+  "timeline": [
+   {
+    "component": "W02.L1.C1",
+    "title": "Recap of Protocol Lifecycles and Core Primitives",
+    "minutes": 15,
+    "kind": "concept",
+    "delivery": "video",
+    "gap": {
+     "video_minutes": 2.9,
+     "missing": [
+      "JSON-RPC initialization handshake"
+     ]
+    },
+    "segments": [
+     {
+      "video": "How Model Context Protocol (MCP) actually works",
+      "video_id": "cGuyrANVi4A",
+      "url": "https://www.youtube.com/watch?v=cGuyrANVi4A&t=225s",
+      "start": "3:45",
+      "end": "4:53",
+      "minutes": 1.1,
+      "verdict": "teaches_partly",
+      "score": 0.192
+     },
+     {
+      "video": "MCP vs API: Simplifying AI Agent Integration with External Data",
+      "video_id": "7j1t3UZA1TY",
+      "url": "https://www.youtube.com/watch?v=7j1t3UZA1TY&t=224s",
+      "start": "3:44",
+      "end": "5:28",
+      "minutes": 1.7,
+      "verdict": "teaches_partly",
+      "score": 0.192
+     }
+    ]
+   },
+   {
+    "component": "W02.L1.C2",
+    "title": "Defining Resources and Resource Templates in Context Schemas",
+    "minutes": 20,
+    "kind": "mechanism",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W02.L1.C3",
+    "title": "Tool Definitions and Dynamic Execution Callbacks",
+    "minutes": 20,
+    "kind": "mechanism",
+    "delivery": "video",
+    "gap": {
+     "video_minutes": 4.7,
+     "missing": [
+      "tools/call invocation flow",
+      "structured execution results (callToolResult)",
+      "error handling"
+     ]
+    },
+    "segments": [
+     {
+      "video": "Model Context Protocol Clearly Explained | MCP Beyond the Hype",
+      "video_id": "tzrwxLNHtRY",
+      "url": "https://www.youtube.com/watch?v=tzrwxLNHtRY&t=566s",
+      "start": "9:26",
+      "end": "14:08",
+      "minutes": 4.7,
+      "verdict": "teaches_partly",
+      "score": 0.297
+     }
+    ]
+   },
+   {
+    "component": "W02.L1.C4",
+    "title": "Developer Workspace Configuration Schemas and Server Registration",
+    "minutes": 20,
+    "kind": "concept",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W02.L1.C5",
+    "title": "Security Boundaries, Environment Isolation, and Access Control",
+    "minutes": 15,
+    "kind": "concept",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W02.L1.C6",
+    "title": "Inspecting Configuration Templates for Model Context Protocols",
+    "minutes": 20,
+    "kind": "worked_example",
+    "delivery": "notebooklm",
+    "segments": []
+   },
+   {
+    "component": "W02.L1.C7",
+    "title": "Diagnosing Protocol Connection Failures and Logging Workflows",
+    "minutes": 10,
+    "kind": "demo",
+    "delivery": "notebooklm",
+    "segments": []
+   }
+  ],
+  "partial": {
+   "reason": "YouTube blocked transcript requests (from 22:43)",
+   "videos_without_transcript": [
+    "ZQ9wmN_oLXg",
+    "sPtTDDXsew0",
+    "nQa31xdXbGk",
+    "hu_c1-LWWNI",
+    "Ng4bshD4Q7o"
+   ]
+  },
+  "components": [
+   {
+    "lecture_id": "W02.L1",
+    "title": "Recap of Protocol Lifecycles and Core Primitives",
+    "teaches": "Summarize the JSON-RPC initialization handshake and introduce the three core MCP primitives: resources, prompts, and tools. Students will distinguish between passive data provision (resources) and dynamic model operations (tools).",
+    "key_terms": [
+     "primitives",
+     "passive context",
+     "dynamic execution",
+     "protocol state",
+     "resources vs tools"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO1"
+    ],
+    "minutes": 15,
+    "id": "W02.L1.C1",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W02.L1",
+    "title": "Defining Resources and Resource Templates in Context Schemas",
+    "teaches": "Explain how context servers expose data via URI schemes and parameterized resource templates. Students will identify the schema fields used to define static text/binary content, MIME types, and dynamic URI-based subscription updates.",
+    "key_terms": [
+     "resource templates",
+     "URI scheme",
+     "MIME type",
+     "resource subscriptions",
+     "readResource"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO1"
+    ],
+    "minutes": 20,
+    "id": "W02.L1.C2",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W02.L1",
+    "title": "Tool Definitions and Dynamic Execution Callbacks",
+    "teaches": "Examine how servers declare executable tools using JSON Schema for input argument validation. Students will follow the flow from tool discovery (`tools/list`) through host invocation (`tools/call`) to returning structured execution results or errors.",
+    "key_terms": [
+     "tools/list",
+     "tools/call",
+     "inputSchema",
+     "JSON Schema validation",
+     "callToolResult"
+    ],
+    "kind": "mechanism",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO1"
+    ],
+    "minutes": 20,
+    "id": "W02.L1.C3",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W02.L1",
+    "title": "Developer Workspace Configuration Schemas and Server Registration",
+    "teaches": "Break down the structure of workspace configuration files, such as `mcpServers` sections in desktop or IDE configuration files. Students will identify mandatory fields including command, args, env variables, and transport settings required to launch context servers.",
+    "key_terms": [
+     "mcpServers",
+     "workspace configuration",
+     "environment variables",
+     "executable command",
+     "schema validation"
+    ],
+    "kind": "concept",
+    "bloom": 1,
+    "lo_ids": [
+     "CO1.LO1"
+    ],
+    "minutes": 20,
+    "id": "W02.L1.C4",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W02.L1",
+    "title": "Security Boundaries, Environment Isolation, and Access Control",
+    "teaches": "Analyze security risks associated with granting language models access to local files and CLI execution via context protocols. Students will identify mitigation strategies, including sandboxed subprocess execution, prompt injection defense in tool outputs, and explicit user-in-the-loop approvals.",
+    "key_terms": [
+     "least privilege",
+     "user-in-the-loop",
+     "prompt injection",
+     "subprocess sandboxing",
+     "credential isolation"
+    ],
+    "kind": "concept",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO1"
+    ],
+    "minutes": 15,
+    "id": "W02.L1.C5",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W02.L1",
+    "title": "Inspecting Configuration Templates for Model Context Protocols",
+    "teaches": "Walk through a supplied developer workspace template to identify configured context servers, missing schema fields, and transport definitions. Students will pinpoint configuration discrepancies such as misconfigured PATHs, missing environment variables, or schema type mismatches.",
+    "key_terms": [
+     "workspace template",
+     "schema verification",
+     "configuration audit",
+     "server declaration",
+     "parameter mapping"
+    ],
+    "kind": "worked_example",
+    "bloom": 3,
+    "lo_ids": [
+     "CO1.LO1"
+    ],
+    "minutes": 20,
+    "id": "W02.L1.C6",
+    "in_class": false
+   },
+   {
+    "lecture_id": "W02.L1",
+    "title": "Diagnosing Protocol Connection Failures and Logging Workflows",
+    "teaches": "Demonstrate how to detect and trace common protocol runtime errors using client diagnostic logs and server error codes. Students will evaluate stderr streams, malformed JSON-RPC payloads, and unhandled transport disconnects.",
+    "key_terms": [
+     "stderr logging",
+     "JSON-RPC error codes",
+     "transport disconnect",
+     "inspector tool",
+     "runtime diagnostics"
+    ],
+    "kind": "demo",
+    "bloom": 2,
+    "lo_ids": [
+     "CO1.LO1"
+    ],
+    "minutes": 10,
+    "id": "W02.L1.C7",
+    "in_class": false
+   }
+  ],
+  "notebooklm": {
+   "pack": "notebooklm/W02.L1.md",
+   "components": [
+    "W02.L1.C3",
+    "W02.L1.C4"
+   ],
+   "sources": 6
+  }
+ },
+ "experts": {
+  "same_as": "W01.L2",
+  "experts": [],
+  "reserve": [],
+  "rejected": [],
+  "counts": {}
+ },
+ "partial": {
+  "reason": "YouTube blocked transcript requests (from 22:43)",
+  "videos_without_transcript": [
+   "ZQ9wmN_oLXg",
+   "sPtTDDXsew0",
+   "nQa31xdXbGk",
+   "hu_c1-LWWNI",
+   "Ng4bshD4Q7o"
+  ]
+ }
+}

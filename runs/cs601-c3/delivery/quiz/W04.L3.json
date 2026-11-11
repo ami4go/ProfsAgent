@@ -1,0 +1,77 @@
+{
+ "lecture_id": "W04.L3",
+ "topic": "Software requirements and requirements engineering",
+ "made_at": "2026-11-03 15:46:54",
+ "minutes": {
+  "recap": 0,
+  "quiz": 0
+ },
+ "recap": [],
+ "questions": [
+  {
+   "component": "W04.L3.C1",
+   "lo_ids": [
+    "CO2.LO1"
+   ],
+   "bloom": 2,
+   "question": "According to standard spec-driven guidelines and use case standards, which element is mandatory in a formal use case specification?",
+   "options": [
+    "Internal database schema design",
+    "Target programming language version",
+    "Hardware memory allocation limits",
+    "Primary actor and goal statement"
+   ],
+   "answer": "D",
+   "explanation": "Standard use case specifications mandate identifying functional elements such as the primary actor and their intended goal rather than technical implementation details."
+  },
+  {
+   "component": "W04.L3.C1",
+   "lo_ids": [
+    "CO2.LO1"
+   ],
+   "bloom": 2,
+   "question": "Why do requirements engineering standards like IEEE 830 emphasize separating behavioral specifications from implementation details?",
+   "options": [
+    "To focus on functional external behaviors and system interactions",
+    "To hide requirement documents from non-technical stakeholders",
+    "To eliminate the need for software testing",
+    "To mandate a specific programming language for developers"
+   ],
+   "answer": "A",
+   "explanation": "IEEE 830 guidelines focus on defining software requirements in terms of external interactions and functional behaviors without locking the design into specific low-level coding implementations."
+  },
+  {
+   "component": "W04.L3.C2",
+   "lo_ids": [
+    "CO2.LO1"
+   ],
+   "bloom": 3,
+   "question": "An e-commerce application sends transaction verification requests to an external payment gateway during checkout. How is the external payment gateway classified in this system's use case model?",
+   "options": [
+    "Primary actor inside the system boundary",
+    "Use case action within the system process",
+    "Secondary external actor outside the system boundary",
+    "Internal actor within the system boundary"
+   ],
+   "answer": "C",
+   "explanation": "External services that interface with the system to fulfill a request are categorized as secondary actors residing outside the system boundary."
+  },
+  {
+   "component": "W04.L3.C2",
+   "lo_ids": [
+    "CO2.LO1"
+   ],
+   "bloom": 3,
+   "question": "A developer modeling an automated library system labels an internal database update script as an external primary actor. Is this classification accurate?",
+   "options": [
+    "Yes, because all background processes are treated as primary actors",
+    "No, because database scripts must always be classified as human secondary actors",
+    "No, because internal components reside within the system boundary and are not actors",
+    "Yes, because automated scripts alter database state"
+   ],
+   "answer": "C",
+   "explanation": "Actors must be external entities interacting with the system across its boundary; internal software modules or automated scripts are part of the system itself."
+  }
+ ],
+ "problems": []
+}

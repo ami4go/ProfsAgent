@@ -1,0 +1,198 @@
+{
+ "lecture_id": "W07.L1",
+ "topic": "Requirements to executable specifications and code generation",
+ "minutes": 60,
+ "status": "approved",
+ "preset": "slides_clips",
+ "preset_by": "ai",
+ "course_style": "mix",
+ "parts": [
+  {
+   "component": "W07.L1.C1",
+   "title": "Reviewing Spec Completeness and Interface Compliance",
+   "minutes": 10,
+   "kind": "concept",
+   "bloom": 2,
+   "way": "youtube_bridge",
+   "when": "in_class",
+   "rule": "R3",
+   "reason": "Clips 0:00–3:00 and 13:43–17:05 cover 6.4 mins; slides bridge missing completeness criteria and boundary validation.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: videos teach only 64% of it; the sources lack specification completeness, contract boundary, interface validation."
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "youtube_bridge"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 16,
+   "segments": [
+    {
+     "video": "Spec-Driven Development Explained: The Workflow That Keeps AI Agents Aligned",
+     "video_id": "2XI-lO7ANYw",
+     "url": "https://www.youtube.com/watch?v=2XI-lO7ANYw&t=0s",
+     "start": "0:00",
+     "end": "3:00",
+     "minutes": 3.0,
+     "verdict": "teaches_partly"
+    },
+    {
+     "video": "Spec-Driven Development: The Discipline Behind Reliable AI Coding",
+     "video_id": "Gv4hd49lI4E",
+     "url": "https://www.youtube.com/watch?v=Gv4hd49lI4E&t=823s",
+     "start": "13:43",
+     "end": "17:05",
+     "minutes": 3.4,
+     "verdict": "teaches_partly"
+    }
+   ],
+   "video_minutes": 6.4,
+   "bridge": [
+    "specification completeness criteria",
+    "contract boundary validation",
+    "interface validation",
+    "edge-case coverage",
+    "parameter boundary failures"
+   ],
+   "coverage": 0.0,
+   "uncovered": [
+    "specification completeness",
+    "contract boundary",
+    "interface validation",
+    "edge-case coverage"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W07.L1.C2",
+   "title": "Spec-Guided AI Code Generation and Validation Loop",
+   "minutes": 10,
+   "kind": "mechanism",
+   "bloom": 3,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "Video covers only 2.9 mins; slides directly explain missing test-driven prompt loops and harness error trace feedback.",
+   "alternative": {
+    "way": "youtube_bridge",
+    "reason": "0:00–2:54 of \"Spec-Driven Development Explained: The Workflow That Keeps A\" teach 19% of it; 1–3 slides add test-driven prompt loop; automated test harness feedback; error trace analysis for refinement."
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "youtube_bridge"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.25,
+   "uncovered": [
+    "feedback loop",
+    "automated refinement",
+    "error trace analysis"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W07.L1.C3",
+   "title": "Iterative Code Generation Against Executable Specifications",
+   "minutes": 20,
+   "kind": "activity",
+   "bloom": 3,
+   "way": "in_class",
+   "when": "in_class",
+   "rule": "R1",
+   "reason": "Hands-on exercise allows students to iteratively feed stack traces to AI models until specification steps pass.",
+   "alternative": {
+    "way": "slides",
+    "reason": "Taught live: no checked video teaches it."
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "notebooklm"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.75,
+   "uncovered": [
+    "runtime assertion"
+   ],
+   "simulation": null
+  },
+  {
+   "component": "W07.L1.C4",
+   "title": "Comparing Conforming Implementations Against Spec Overfitting",
+   "minutes": 10,
+   "kind": "comparison",
+   "bloom": 4,
+   "way": "slides",
+   "when": "in_class",
+   "rule": "R5",
+   "reason": "Video covers 4.9 mins; slides clearly detail missing analytical concepts like mutation testing and mock cheating detection.",
+   "alternative": {
+    "way": "youtube_bridge",
+    "reason": "4:13–9:07 of \"Spec-Driven Development with Claude Code: A Practical Guide\" teach 33% of it; 1–3 slides add mutation testing; property-based validation; mock cheating detection."
+   },
+   "allowed": [
+    "slides",
+    "in_class",
+    "youtube_bridge"
+   ],
+   "locked": false,
+   "set_by": "ai",
+   "prep_minutes": 10,
+   "segments": [],
+   "video_minutes": 0.0,
+   "bridge": [],
+   "coverage": 0.2,
+   "uncovered": [
+    "test overfitting",
+    "mock cheating",
+    "mutation testing",
+    "property-based validation"
+   ],
+   "simulation": null
+  }
+ ],
+ "recap_minutes": 5,
+ "quiz_minutes": 5,
+ "totals": {
+  "slides": 23.6,
+  "video_in_class": 6.4,
+  "video_pre_class": 0.0,
+  "notebooklm": 0.0,
+  "in_class": 20.0,
+  "simulation": 0.0,
+  "recap": 5,
+  "quiz": 5,
+  "video_share": 0.11
+ },
+ "prep_minutes": 46,
+ "checks": [
+  {
+   "code": "L-RESERVE",
+   "message": "the part plan was made before recap and quiz minutes were kept free; 10 min were taken from the longest parts"
+  }
+ ],
+ "note": "",
+ "proposed_by": "rules + D7",
+ "proposed_at": "2026-11-03 15:42:10",
+ "approved_at": "2026-11-03 15:42:10",
+ "approved_by": "CLI",
+ "materials": {
+  "notebooklm": "notebooklm/W07.L1.md",
+  "quiz": "quiz/W07.L1.json",
+  "quiz_questions": 4
+ }
+}

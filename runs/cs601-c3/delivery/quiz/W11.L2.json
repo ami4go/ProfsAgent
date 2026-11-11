@@ -1,0 +1,142 @@
+{
+ "lecture_id": "W11.L2",
+ "topic": "Pipeline evaluation mechanisms and metrics",
+ "made_at": "2026-11-03 15:46:57",
+ "minutes": {
+  "recap": 5,
+  "quiz": 10
+ },
+ "recap": [
+  {
+   "component": "W11.L1.C1",
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "bloom": 5,
+   "question": "You are auditing an AI-native recommendation API that currently relies only on static unit tests and offline Precision@K metrics. Your gap analysis reveals that the system frequently fails when real users request rare categories. Which improvement best addresses this evaluation gap?",
+   "options": [
+    "Increase code coverage of the API route handlers to 100%.",
+    "Integrate behavioral test suites using edge-case inputs alongside online slice-based evaluation metrics.",
+    "Measure latency using load testing tools without changing model evaluation metrics.",
+    "Switch the recommendation algorithm database from PostgreSQL to Redis."
+   ],
+   "answer": "B",
+   "explanation": "Addressing coverage gaps in AI services requires behavioral testing targeted at edge cases and slice-based metrics to evaluate sub-population performance beyond aggregate precision."
+  }
+ ],
+ "questions": [
+  {
+   "component": "W11.L2.C1",
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "bloom": 2,
+   "question": "Why are traditional assertion-based unit tests insufficient for evaluating AI-native systems?",
+   "options": [
+    "System-centric testing only measures underlying hardware usage rather than software behavior.",
+    "AI models do not use standard programming languages or software engineering pipelines.",
+    "AI-native systems exhibit nondeterminism and data drift, making fixed input-output assertions fragile.",
+    "Model training completely replaces all traditional software source code in production."
+   ],
+   "answer": "C",
+   "explanation": "AI-native systems introduce non-determinism, data drift, and model evolution, which makes fixed deterministic assertion testing inadequate."
+  },
+  {
+   "component": "W11.L2.C2",
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "bloom": 2,
+   "question": "When testing an ML model function without ground-truth labels (the oracle problem), which mechanism verifies logic by checking if relations between transformed inputs and outputs hold?",
+   "options": [
+    "Metamorphic testing",
+    "Pipeline replay",
+    "Schema validation",
+    "Static validation"
+   ],
+   "answer": "A",
+   "explanation": "Metamorphic testing addresses the test oracle problem by checking whether expected relations hold between outputs when specific transformations are applied to inputs."
+  },
+  {
+   "component": "W11.L2.C3",
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "bloom": 2,
+   "question": "Which integration testing technique ensures that data passing between components in an ML pipeline adheres to expected data types, values, and structural bounds?",
+   "options": [
+    "Metamorphic testing",
+    "Schema validation",
+    "Perplexity scoring",
+    "Calibration error checking"
+   ],
+   "answer": "B",
+   "explanation": "Schema validation inspects pipeline data flow to guarantee that inputs and outputs meet structural contracts before execution reaches downstream models."
+  },
+  {
+   "component": "W11.L2.C4",
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "bloom": 2,
+   "question": "A diagnostic AI outputs probability scores. Which metric measures how closely these predicted confidence probabilities reflect the true frequency of outcomes?",
+   "options": [
+    "Throughput",
+    "Perplexity",
+    "Calibration error",
+    "F1 score"
+   ],
+   "answer": "C",
+   "explanation": "Calibration error evaluates whether a model's predicted confidence probabilities accurately match observed empirical frequencies."
+  },
+  {
+   "component": "W11.L2.C5",
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "bloom": 2,
+   "question": "An online AI service must meet an SLA requirement of serving 100 requests per second with response times under 50ms. Which pair of system metrics monitors this?",
+   "options": [
+    "Latency and Throughput",
+    "F1 score and Perplexity",
+    "AUC and Calibration Error",
+    "Data Freshness and Metamorphic Ratio"
+   ],
+   "answer": "A",
+   "explanation": "Latency measures per-request response time while throughput tracks request handling capacity, directly mapping to production operational SLAs."
+  },
+  {
+   "component": "W11.L2.C6",
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "bloom": 3,
+   "question": "A team implements integration schema validation and model calibration checks for an NLP system. Which quality gap remains unaddressed by this evaluation setup?",
+   "options": [
+    "Alignment of model confidence probabilities",
+    "Structural compliance of input payloads",
+    "Data type correctness between pipeline stages",
+    "Robustness against perturbed or adversarial inputs"
+   ],
+   "answer": "D",
+   "explanation": "Schema checks cover pipeline integration and calibration checks cover model confidence, but neither tests model behavior against adversarial perturbations."
+  },
+  {
+   "component": "W11.L2.C7",
+   "lo_ids": [
+    "CO4.LO1"
+   ],
+   "bloom": 3,
+   "question": "A RAG pipeline shows good retrieval accuracy but slow overall response times. Which evaluation strategy best isolates whether the delay comes from the retrieval component or the generator model?",
+   "options": [
+    "Compute overall corpus perplexity instead of F1 score.",
+    "Benchmark latency independently for vector retrieval versus LLM token generation.",
+    "Add schema validation to the generator output parser.",
+    "Apply metamorphic transformations to the vector database index."
+   ],
+   "answer": "D",
+   "explanation": "Separating system metrics (retrieval latency) from model generation latency isolates component-level performance bottlenecks in a multi-stage RAG architecture."
+  }
+ ],
+ "problems": []
+}

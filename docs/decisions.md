@@ -8,6 +8,37 @@ Mark anything still waiting for someone as **Open**.
 
 ---
 
+## 2026-11-07: the professor app redesigned with the Hallmark design skill
+
+### 38. One calm system for every screen: fewer boxes, shorter screens, the same buttons and routes
+- **Decision (Amit, 7 Nov):** redesign the app's UI with the Hallmark skill (github.com/Nutlope/hallmark, MIT), following the HCI rules agreed earlier: low cognitive load, one main action per screen, very short text, calm minimalism, no sideways scrolling.
+- **Why:** a Hallmark lint of the old screens found 43 hard failures (colours written outside the shared colour settings, a disabled state shown only by fading, a width animation) and 127 spacing values off the 4px scale. On top of that, every section was the same white box, there were about 50 " · " lists and labels in spaced capitals, and the long screens ran to 900+ words.
+- **Changed (only `src/profsagent/app/static/index.html`; no other file, route or API):**
+  - **The system:**
+    - colours are OKLCH tokens tinted toward the IIIT-D navy (`#0A2F5C` kept exactly);
+    - spacing uses a 4px scale, and the type scale steps at 1.2× from a 16px body;
+    - the bundled fonts stay (Bricolage for headings, Atkinson Hyperlegible for text, JetBrains Mono only for code);
+    - every control has its hover, focus, pressed and disabled states; motion follows the reduced-motion setting.
+  - **The surfaces:**
+    - page sections are separated by a rule and space, not boxed;
+    - status messages and the lecture's side panel sit in tinted wells;
+    - only things you act on (resources, outcomes, slides, choices) are cards.
+  - **The screens:**
+    - "Your courses" and "Lecture delivery" are single lists with one row per course;
+    - "New course" puts each section's name beside its fields;
+    - the finished course opens with the approved design; the rating form follows it, and the review record is folded;
+    - on the lecture page, the long summary and each part's description show two lines with "More";
+    - the course's figures (weeks, hours, assessment, books) form a row parted by hairlines;
+    - the simulations are rows.
+  - **Text:** no " · " lists (commas or separate facts instead) and no spaced-capital labels. Arrows in text became icons. Wording is otherwise unchanged; folded text is still one click away.
+- **Kept:** every `data-act`, `id`, `data-*` hook, route and API call. Old CSS variable names (`--ink2`, `--red`, …) still work.
+- **Checked:**
+  - the Hallmark lint went from 43 FAIL / 127 REFLEX / 3 WARN to 0 / 0 / 0 (1 finish note answered);
+  - QA click-throughs pass with 0 problems on desktop and phone: `qa_app`, `qa_edit_ui`, `qa_delivery` and `qa_sims_ui` (66 checks);
+  - `tests/test_app*.py`: 57 pass.
+- **Agreed by:** Amit (7 Nov).
+- **For Vihan and Parth:** nothing in the pipeline or delivery code changed. If you add a screen, use the CSS tokens (`--color-*`, `--space-*`, `--text-*`) and the classes `.card` (a section), `.well`, `.rcard` (something you act on) and `.clist` / `.crow` (a list).
+
 ## 2026-11-04: Vihan's delivery mix in the app (the Lecture plan tab is its editor)
 
 ### 37. The professor sees, changes and approves how each part of a lecture is taught, in the app

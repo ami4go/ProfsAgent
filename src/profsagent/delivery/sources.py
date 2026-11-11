@@ -63,6 +63,7 @@ def _get(url: str, params: dict, tries: int = 3, headers: dict | None = None):
 # ------------------------------------------------------------------ YouTube
 class YouTube:
     API = "https://www.googleapis.com/youtube/v3"
+    skipped = 0                                       # searches this process could not make (quota used up, API error)
 
     def __init__(self):
         self.key = os.environ.get("YOUTUBE_API_KEY", "")
@@ -78,6 +79,7 @@ class YouTube:
         key = f"{query}|{n}|{long}"
         p = _cache_path("yt_search", key)
         if read_json(p) is None and not (self.ok and self.quota.can(100)):
+            YouTube.skipped += 1                      # the lecture is saved as partial and redone when quota is back
             return []
 
         def run():
@@ -88,10 +90,52 @@ class YouTube:
                 params["videoDuration"] = "long"
             r = _get(f"{self.API}/search", params)
             self.quota.spend(100)
-            if r is None or r.status_code != 200:
-                return []
+            if r is None or r.status_code != 200:     # a failure is not "no videos": it must not be cached as an empty list
+                YouTube.skipped += 1
+                return {"error": f"HTTP {getattr(r, 'status_code', '?')}"}
             return [i["id"]["videoId"] for i in r.json().get("items", []) if i.get("id", {}).get("videoId")]
-        return _cached("yt_search", key, 21, run)
+        v = _cached("yt_search", key, 21, run)
+        return [] if isinstance(v, dict) else v
+
+    def playlists(self, query: str, n: int = 10) -> list[dict]:
+        """[{id, title, channel}] (100 units unless cached for 21 days): how a university's lecture series is found."""
+        key = f"playlists|{query}|{n}"
+        if read_json(_cache_path("yt_search", key)) is None and not (self.ok and self.quota.can(100)):
+            YouTube.skipped += 1
+            return []
+
+        def run():
+            r = _get(f"{self.API}/search", {"part": "snippet", "q": query, "type": "playlist", "maxResults": n, "key": self.key,
+                                            "safeSearch": "strict", "relevanceLanguage": rcfg()["youtube"]["language"],
+                                            "regionCode": rcfg()["youtube"]["region"]})
+            self.quota.spend(100)
+            if r is None or r.status_code != 200:
+                YouTube.skipped += 1
+                return {"error": f"HTTP {getattr(r, 'status_code', '?')}"}
+            return [{"id": i["id"]["playlistId"], "title": i["snippet"].get("title", ""), "channel": i["snippet"].get("channelTitle", "")}
+                    for i in r.json().get("items", []) if i.get("id", {}).get("playlistId")]
+        v = _cached("yt_search", key, 21, run)
+        return [] if isinstance(v, dict) else v
+
+    def playlist_items(self, playlist_id: str, n: int = 50) -> list[dict]:
+        """[{id, title}] of a playlist's first videos (1 unit, cached 21 days)."""
+        if read_json(_cache_path("yt_playlist", playlist_id)) is None and not (self.ok and self.quota.can(1)):
+            return []
+
+        def run():
+            r = _get(f"{self.API}/playlistItems", {"part": "snippet", "playlistId": playlist_id, "maxResults": min(n, 50), "key": self.key})
+            self.quota.spend(1)
+            if r is None or r.status_code != 200:
+                return {"error": f"HTTP {getattr(r, 'status_code', '?')}"}
+            out = []
+            for i in r.json().get("items", []):
+                sn = i.get("snippet") or {}
+                vid = (sn.get("resourceId") or {}).get("videoId")
+                if vid and sn.get("title") not in ("Private video", "Deleted video"):
+                    out.append({"id": vid, "title": sn.get("title", "")})
+            return out
+        v = _cached("yt_playlist", playlist_id, 21, run)
+        return [] if isinstance(v, dict) else v
 
     def videos(self, ids: list[str]) -> dict[str, dict]:
         """Details for video ids (1 unit per 50), cached 7 days per video."""
@@ -159,6 +203,7 @@ class YouTube:
 # requests are spaced out, and after the first block none are sent for the rest of the process.
 _tx = {"blocked": None, "last": 0.0, "times": []}
 BLOCKED = ("IpBlocked", "RequestBlocked", "TooManyRequests")
+NO_CAPTIONS = ("TranscriptsDisabled", "NoTranscriptFound", "VideoUnavailable", "VideoUnplayable", "AgeRestricted", "InvalidVideoId")
 
 
 def transcripts_blocked() -> str | None:
@@ -187,11 +232,93 @@ def transcript(video_id: str) -> list[dict] | None:
             t = YouTubeTranscriptApi().fetch(video_id, languages=["en", "en-US", "en-GB", "en-IN"])
             return [{"start": s.start, "dur": s.duration, "text": s.text} for s in t]
         except Exception as e:  # noqa: BLE001 — no captions, disabled, blocked: the caller falls back to metadata
-            if type(e).__name__ in BLOCKED:
+            name = type(e).__name__
+            if name in BLOCKED:
                 _tx["blocked"] = time.strftime("%H:%M")
-            return {"error": f"{type(e).__name__}"}
+            if name in NO_CAPTIONS:                   # an answer, not a failure: not asked again for 90 days (each ask counts
+                return {"none": name}                 # against the hourly cap, and a video like this was re-asked on every run)
+            return {"error": name}
     v = _cached("transcript", video_id, 90, run)
     return None if isinstance(v, dict) else v
+
+
+def transcript_known(video_id: str) -> bool:
+    """True when asking for this transcript sends nothing to YouTube (its text, or "no captions", is in the cache)."""
+    d = read_json(_cache_path("transcript", video_id))
+    return bool(d) and time.time() - d.get("_at", 0) < 90 * 86400 and not (isinstance(d["v"], dict) and "error" in d["v"])
+
+
+NOTES_PROMPT = ("Make detailed teaching notes of this video for a professor. One line for about every 30 seconds of the video, "
+                "each line starting with the time marker in square brackets, like [4:30], then, in your own words, exactly what is "
+                "being explained or shown in those seconds (concepts, steps, examples, what appears on screen). 20-40 words per "
+                "line. Say so when it is an intro, advert or outro. No other text.")
+
+
+def video_notes(video_id: str, duration_s: float | None) -> list[dict] | None:
+    """Timestamped notes written by Gemini from the public video: [{start, dur, text}] in the shape of a transcript, or None.
+    The fallback for a worthwhile video with no captions or while YouTube blocks them (no download, no local model; Gemini
+    refuses a word-for-word transcript as recitation, 10 Nov). Cached 90 days. Notes are a paraphrase: see `evidence` in videos.py."""
+    cfg = rcfg()["notes"]
+    keys = [k.strip() for k in os.environ.get("GEMINI_API_KEYS", "").split(",") if k.strip()]
+    if not keys or (duration_s or 0) > cfg["max_video_s"]:
+        return None
+
+    def run():
+        body = {"contents": [{"role": "user", "parts": [{"fileData": {"fileUri": f"https://www.youtube.com/watch?v={video_id}"}},
+                                                        {"text": NOTES_PROMPT}]}],
+                "generationConfig": {"temperature": 0.0, "mediaResolution": "MEDIA_RESOLUTION_LOW"}}
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{cfg['model']}:generateContent"
+        last = "no key answered"
+        for k in random.sample(keys, min(cfg["tries"], len(keys))):
+            try:
+                r = httpx.post(url, json=body, headers={"x-goog-api-key": k}, timeout=cfg["timeout_s"])
+            except httpx.HTTPError as e:
+                last = type(e).__name__
+                continue
+            if r.status_code != 200:
+                last = f"HTTP {r.status_code}"
+                continue
+            parts = ((r.json().get("candidates") or [{}])[0].get("content") or {}).get("parts") or []
+            got = parse_notes("".join(x.get("text", "") for x in parts), duration_s)
+            if got:
+                return got
+            last = "notes did not pass the checks"
+        return {"error": last}
+    v = _cached("video_notes", video_id, 90, run)
+    return None if isinstance(v, dict) else v
+
+
+def parse_notes(text: str, duration_s: float | None) -> list[dict] | None:
+    """Lines '[m:ss] what happens' -> transcript rows. None unless the times rise, stay inside the video and fill it."""
+    rows = []
+    for line in (text or "").splitlines():
+        m = re.match(r"\s*\[((?:\d{1,2}:)?\d{1,2}:\d{2})\]\s*(.+)", line)
+        if m:
+            t = 0.0
+            for x in m.group(1).split(":"):
+                t = t * 60 + int(x)
+            rows.append((t, m.group(2).strip()))
+    if len(rows) < 3 or any(b[0] <= a[0] for a, b in zip(rows, rows[1:])):
+        return None
+    dur = float(duration_s or rows[-1][0] + 30)
+    if rows[-1][0] > dur + 30 or rows[-1][0] < 0.7 * dur:     # invented times, or notes that stop early
+        return None
+    ends = [r[0] for r in rows[1:]] + [dur]
+    return [{"start": t, "dur": max(1.0, e - t), "text": x} for (t, x), e in zip(rows, ends)]
+
+
+def web_videos(query: str, n: int = 20) -> list[str]:
+    """YouTube ids from DuckDuckGo's video search: no key and no YouTube quota, so every part can have its own search."""
+    def run():
+        try:
+            from ddgs import DDGS
+            time.sleep(1.0)
+            rows = DDGS().videos(query, max_results=n)
+        except Exception as e:  # noqa: BLE001 — not installed, rate-limited, nothing found: the other channels still run
+            return {"error": type(e).__name__}
+        return [m.group(1) for x in rows for m in [re.search(r"(?:youtube\.com/watch\?v=|youtu\.be/)([\w-]{11})", x.get("content") or "")] if m]
+    v = _cached("ddg_video", f"{query}|{n}", 21, run)
+    return [] if isinstance(v, dict) else list(dict.fromkeys(v))
 
 
 # ------------------------------------------------------------------ web pages (readings, practice, practitioners)

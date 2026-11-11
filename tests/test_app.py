@@ -97,6 +97,21 @@ class FakeKG:
                 "prereq_text": None, "assessment": [{"type": "project", "weight_pct": 40}], "catalogue_url": None}
 
 
+def test_a_held_out_course_is_not_shown_to_the_filler():
+    from profsagent.app.filler import DetailsFiller
+
+    class KG(FakeKG):
+        def search_courses(self, text, k=15, exclude=frozenset()):
+            return [{"uid": u, "score": 1.0, "hits": []} for u in ("AI501", "CSE594A") if u not in exclude]
+
+        def course(self, uid, exclude=frozenset()):
+            return None if uid in exclude else {**super().course(uid), "aliases": ["CSE343"] if uid == "AI501" else []}
+    form = {"name": "Machine Learning", "description": "ML"}
+    assert [c["code"] for c in DetailsFiller.similar_courses(KG(), form)] == ["AI501", "CSE594A"]
+    assert [c["code"] for c in DetailsFiller.similar_courses(KG(), {**form, "hold_out": ["CSE343"]})] == ["CSE594A"]   # by an alias too
+    assert [c["code"] for c in DetailsFiller.similar_courses(KG(), {**form, "hold_out": ["ai501"]})] == ["CSE594A"]
+
+
 class FakeLLM:
     def __init__(self):
         self.calls = []

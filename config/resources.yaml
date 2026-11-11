@@ -29,26 +29,64 @@ components:
   round_to: 5               # minutes are whole multiples of this
   in_class_kinds: [activity, discussion]   # taught live with the slides, never assigned a video
 
-segments:
-  window_s: 30              # transcript window for locating where a component is taught
-  smooth: 3                 # moving average over this many windows: a stretch must stay on the component, not one mention
-  sim_floor: 0.40           # smoothed similarity a stretch must reach (all-MiniLM-L6-v2; on-topic peaks ~0.5–0.7)
-  drop_from_peak: 0.10      # a stretch extends while the smoothed similarity is within this of its peak
-  min_s: 300                # the stretch shown to the AI check is at least 5 min around the peak (2 min was too narrow:
-                            # it rarely held a whole explanation, 2026-11-01); the AI then sets the exact start and end
-  max_s: 1500               # ... and at most 25 min
-  min_segment_s: 60         # a checked segment shorter than this is not used
-  per_component: 4          # candidate stretches per component sent to the AI check (D6)
-  gap_share: 0.6            # a part only "partly" taught, or whose video minutes are under this share of its time, also
-                            # gets a NotebookLM prompt for what the video leaves out
-  max_words_per_stretch: 1600   # transcript words per stretch in the D6 prompt (longer stretches are sampled evenly)
-  max_words_per_call: 5000  # one D6 call checks stretches until this many transcript words (9000 timed out on
-                            # gemini-3.8-flash at 180 s, 2026-11-01)
-  min_video_s: 180          # YouTube Shorts and clips under 3 min are not used to teach a component
-  transcripts_per_topic: 10 # transcripts fetched per topic (best pre-scored videos first; 14 helped trigger a block)
-  component_searches_per_topic: 4   # extra YouTube searches (100 units each) for parts no video teaches, then those only
-                                    # partly taught (most topic searches are cached, so a full run stays under 9,000 units)
-  pad_s: 5                  # a segment starts this many seconds before the AI's start (context for the first sentence)
+# Videos for a lecture (decided 10 Nov, docs/decisions.md 38): find -> filter on metadata -> captions for a shortlist -> AI reads
+# which parts each video teaches and where -> a second AI checks each clip -> one plan for the lecture. Nothing else is suggested.
+videos:
+  # finding
+  part_web_search: true       # every part gets a DuckDuckGo video search (no YouTube quota)
+  series_max_playlists: 3     # playlists of tier 1-2 channels opened per topic (1 unit each; the playlist search is 100 units)
+  series_videos_per_lecture: 4   # lectures of those series kept, by how well their titles match the lecture's parts
+  series_min_sim: 0.35        # title similarity they need
+  series_bonus: 0.12          # shortlist and reading: a university lecture is preferred over a similar-looking web result
+  part_searches_per_lecture: 2   # YouTube searches (100 units) for parts still without a checked clip, longest first
+  skip_titles: "#shorts|\\bshorts\\b|\\btrailer\\b|\\bteaser\\b|\\bpromo\\b|\\breaction\\b|course overview|course introduction"
+  # shortlist (metadata only; transcripts are the scarce resource: 40 new ones an hour)
+  transcripts_per_lecture: 6  # new transcripts a lecture may ask for; ones already cached do not count
+  max_shortlist: 12           # videos with a transcript a lecture looks at
+  transcripts_per_part_search: 2
+  # notes instead of captions (Gemini watches the public video)
+  notes_per_lecture: 2        # only for shortlisted videos with no captions
+  notes_when_blocked: 4       # ... more while YouTube is blocking caption requests, when notes are the only new evidence
+  notes_min_score: 0.45       # ... whose title and chapters match a part at least this well, from a tier 1-2 channel
+  # reading (D9)
+  read_per_lecture: 4         # videos the AI reads per lecture, picked so that together they reach the most parts
+  window_s: 30                # transcript window: what the AI's time markers point at
+  smooth: 3                   # windows of moving average: a passage must stay on the part, not one mention
+  sim_floor: 0.40             # a video is read for a part only if some passage is this similar (all-MiniLM-L6-v2)
+  read_whole_words: 4500      # a transcript this short is read whole; a longer one is cut to the passages closest to the parts
+  max_words_per_read: 4500    # (9000 words timed out on gemini-3.8-flash, 1 Nov), from anywhere in the video
+  # checking (D10)
+  verify_per_part: 2          # clips checked per part, best first
+  max_words_per_clip: 5000    # the checker reads the whole clip, never a sample; a longer clip is not used
+  min_s: 60                   # a clip is 1-25 minutes
+  max_s: 1500
+  pad_s: 5                    # a clip starts this many seconds before the first line that teaches the part
+  snap_s: 25                  # a clip edge this close to a chapter edge moves to it
+  min_video_s: 180            # no Shorts
+  # the gate: all must hold (to calibrate on the team's hand-rated parts; starting values)
+  gate:
+    relevance: 4
+    sufficiency: 4
+    coverage: 0.66            # share of the part's checklist (sentences of `teaches` + key terms) taught, with a quote that is really in the clip
+    clean_start: 2            # 1 = padded or cut mid-idea. A slightly loose edge is shown to the professor, not a reason to lose the clip
+    clean_end: 2
+    stands_alone: 3
+    clarity: 4
+    level_fit: 4
+    min_share: 0.5            # clip minutes / part minutes, for one part; for a block, its minutes / the block's minutes
+    max_share: 1.5
+    min_share_in_block: 0.25  # no part of a block may be a token few seconds of it
+  # the plan for the lecture (one video across consecutive parts beats a different video for each)
+  block_gap_s: 180            # the next part's clip starts at most this long after the last one ended: one continuous watch
+  continue_bonus: 0.15
+  switch_penalty: 0.08
+  reuse_overlap: 0.5          # the same minutes are not given to two separate parts (share of the shorter clip)
+
+notes:
+  model: gemini-3.6-flash     # only 3.6 / 3.8 flash are used; 3.8 timed out on YouTube input (504, 9 Nov)
+  max_video_s: 2400           # about 240K input tokens at low resolution
+  tries: 5                    # keys tried (a key may have used its daily quota)
+  timeout_s: 170
 
 coverage:
   window_s: 45              # transcript window length (seconds) for topic matching

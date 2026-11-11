@@ -5,6 +5,8 @@
   python scripts/run_delivery.py survey    --run-id cs601-02 --ask         # answer them in the terminal
   python scripts/run_delivery.py survey    --run-id cs601-02 --defaults    # test defaults for unanswered questions
   python scripts/run_delivery.py recommend --run-id cs601-02 [--lectures W02.L1,W03.L1] [--limit 3] [--refresh]
+  python scripts/run_delivery.py videos    --run-id cs601-02 [--lectures W03.L2] [--limit 3] [--refresh]
+                                                                            # redo only the videos (old or partial lectures)
   python scripts/run_delivery.py mix       --run-id cs601-02 [--lectures W03.L2] [--note "..."] [--no-ai] [--approve]
                                                                             # delivery mix per lecture (+ quiz when approved)
   python scripts/run_delivery.py mix       --run-id cs601-02 --style flipped   # course style: slides | mix | flipped
@@ -36,7 +38,7 @@ from profsagent.delivery import survey as sv  # noqa: E402
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["briefs", "survey", "recommend", "mix", "review", "feedback", "health", "graph", "all"])
+    ap.add_argument("cmd", choices=["briefs", "survey", "recommend", "videos", "mix", "review", "feedback", "health", "graph", "all"])
     ap.add_argument("--run-id", required=True)
     ap.add_argument("--init", action="store_true")
     ap.add_argument("--ask", action="store_true")
@@ -69,6 +71,9 @@ def main() -> None:
     if a.cmd in ("recommend", "all"):
         r = pipeline.recommend(a.run_id, lectures=lect, refresh=a.refresh, limit=a.limit)
         print(f"report: {r['report']} ({r['lectures']} lectures)")
+    if a.cmd == "videos":
+        r = pipeline.refresh_videos(a.run_id, lectures=lect, limit=a.limit, refresh=a.refresh)
+        print(f"videos redone for {len(r['lectures'])} lectures")
     if a.cmd == "mix":
         from profsagent.delivery import mix
         if a.style:

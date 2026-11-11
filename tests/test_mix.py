@@ -294,3 +294,45 @@ def test_editing_an_approved_mix_marks_its_quiz_outdated_and_a_dropped_part_does
     run(L, [comp(L, 1, minutes=20), comp(L, 2, minutes=30)])                         # plan redone: C3 left the lecture
     qz = mix.make_quiz("r", L, mix.load("r", L), log=lambda *_: None)
     assert [q["component"] for q in qz["questions"]] == [f"{L}.C1", f"{L}.C2"]      # no KeyError; the checker drops C3's question
+
+
+# ------------------------------------------------------------------ clips that passed the independent check (10 Nov)
+def vseg(block, a, z, m):
+    return {"video": "V", "video_id": "v1", "url": "https://www.youtube.com/watch?v=v1", "start": a, "end": z, "minutes": m, "verdict": "teaches_fully",
+            "verified": True, "block": block, "coverage": 0.8, "clarity": 3, "level_fit": 3}
+
+
+def test_a_video_teaching_the_opening_parts_is_watched_before_class_and_not_broken_up(run):
+    L = "W01.L2"
+    cs = [comp(L, 1, minutes=10), comp(L, 2, minutes=10), comp(L, 3, minutes=20)]
+    run(L, cs, timeline={f"{L}.C1": [vseg("b1", "0:10", "8:00", 7.8)], f"{L}.C2": [vseg("b1", "8:00", "15:00", 7.0)]})
+    m = mix.propose("r", L, use_ai=False)
+    assert ways(m)[:2] == ["youtube", "youtube"] and [p["when"] for p in m["parts"][:2]] == ["pre_class", "pre_class"]
+    assert any(x["code"] == "L-BLOCK" for x in m["checks"]) and not any(x["code"] == "L-FIRST" for x in m["checks"])
+    assert m["parts"][0]["segments"][0]["verified"] is True and m["parts"][0]["segments"][0]["block"] == "b1"
+
+
+def test_a_checked_clip_on_the_first_part_is_kept_and_watched_before_class(run):
+    L = "W01.L2"
+    cs = [comp(L, 1, minutes=15), comp(L, 2, minutes=20), comp(L, 3, minutes=15)]
+    run(L, cs, timeline={f"{L}.C1": [vseg("b1", "7:54", "23:24", 15.5)]})
+    m = mix.propose("r", L, use_ai=False)
+    assert ways(m)[0] == "youtube" and m["parts"][0]["when"] == "pre_class"
+    assert any(x["code"] == "L-BLOCK" for x in m["checks"]) and not any(x["code"] == "L-FIRST" for x in m["checks"])
+
+
+def test_a_checked_clip_needs_no_second_opinion_on_length_or_scores_and_offers_no_bridge(run):
+    L = "W01.L2"
+    cs = [comp(L, 1, minutes=20), comp(L, 2, minutes=20), comp(L, 3, minutes=10)]
+    run(L, cs, timeline={f"{L}.C2": [vseg("b1", "1:00", "7:00", 6.0)]})      # would fail R2's old 0.6 x length and clarity 4
+    m = mix.propose("r", L, use_ai=False)
+    p = m["parts"][1]
+    assert p["way"] == "youtube" and p["rule"] == "R2" and "youtube_bridge" not in p["allowed"] and "second AI" in p["reason"]
+
+
+def test_a_long_block_moves_before_class_as_a_whole(run):
+    L = "W01.L2"
+    cs = [comp(L, 1, minutes=10), comp(L, 2, minutes=10), comp(L, 3, minutes=10), comp(L, 4, minutes=20)]
+    run(L, cs, timeline={f"{L}.C2": [vseg("b1", "0:10", "6:00", 5.8)], f"{L}.C3": [vseg("b1", "6:00", "12:00", 6.0)]})   # 11.8 min together
+    m = mix.propose("r", L, use_ai=False)
+    assert [p["when"] for p in m["parts"][1:3]] == ["pre_class", "pre_class"]

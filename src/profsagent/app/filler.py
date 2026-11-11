@@ -91,10 +91,12 @@ class DetailsFiller:
     @staticmethod
     def similar_courses(kg, form: dict, k: int = 6) -> list[dict]:
         query = f"{formmap._s(form.get('name'))}. {formmap._s(form.get('description'))} {formmap._s(form.get('topics'))}"
+        # a course being re-created for comparison (form hold_out) is never shown, here or later in the pipeline
+        held = {re.sub(r"\s+", "", str(x)).upper() for x in (form.get("hold_out") or []) if str(x).strip()}
         out = []
-        for hit in kg.search_courses(query, k=k):
-            c = kg.course(hit["uid"])
-            if not c:
+        for hit in kg.search_courses(query, k=k, exclude=held):
+            c = kg.course(hit["uid"], exclude=held) if held else kg.course(hit["uid"])
+            if not c or str(c.get("uid", "")).upper() in held or held & {str(a).upper() for a in c.get("aliases") or []}:
                 continue
             ref = views.course_ref(c["uid"])
             out.append({"code": c["uid"], "name": c.get("name"), "credits": c.get("credits"), "level": c.get("level"),

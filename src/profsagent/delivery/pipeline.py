@@ -114,16 +114,9 @@ def recommend(run_id: str, lectures: list[str] | None = None, refresh: bool = Fa
                     q["practice_queries"] = [f"{comps[0]['title']} hands-on tutorial"]
                 r = recommend_lecture(llm, st, b, want, q, run_id, log, components=comps, videos=v.get("videos", []), exclude=shown)
                 if v:
-                    if v["videos"]:
-                        r["items"] = {"video": v["videos"], **{k: x for k, x in r["items"].items() if k != "video"}}
-                    r["reserve"]["video"] = v["reserve"]
-                    r["clips"], r["timeline"] = v["clips"], v["timeline"]
-                    r["rejected"] = (r.get("rejected") or []) + v["rejected"]
-                    r["counts"]["videos_used"] = len(v["videos"])
-                    if v.get("partial"):
-                        r["partial"] = v["partial"]
+                    _apply_videos(r, v)
                 r["components"] = comps
-                srcs = {k: r["items"].get(k, []) for k in ("video", "reading", "practice")}
+                srcs = _pack_sources(r)
                 md, summary = pack(st, b, comps, earlier, v.get("timeline") or [], srcs)
                 (d / "notebooklm").mkdir(exist_ok=True)
                 (d / "notebooklm" / f"{lid}.md").write_text(md, encoding="utf-8")
@@ -162,6 +155,93 @@ def recommend(run_id: str, lectures: list[str] | None = None, refresh: bool = Fa
         log(f"partial lectures ({len(part)}), redone by the next run: {', '.join(part)}")
     log(f"AI calls this session: {llm.totals['calls']}")
     return render(run_id)
+
+
+def _apply_videos(r: dict, v: dict) -> None:
+    """Put a lecture's video results (videos.deliver_topic) into its resources. Only checked videos are listed: when none
+    passed there is no video item at all."""
+    r["items"] = {"video": v["videos"], **{k: x for k, x in r["items"].items() if k != "video"}} if v["videos"] else {k: x for k, x in r["items"].items() if k != "video"}
+    r.setdefault("reserve", {})["video"] = v["reserve"]
+    r["clips"], r["timeline"], r["blocks"], r["video_search"] = v["clips"], v["timeline"], v["blocks"], v["search"]
+    r["notebooklm_sources"] = v["sources"]
+    r["rejected"] = [x for x in (r.get("rejected") or []) if "youtube.com" not in (x.get("url") or "")] + v["rejected"]
+    r.setdefault("counts", {})["videos_used"] = len(v["videos"])
+    r["video_engine"] = 2
+    r.pop("partial", None)
+    if v.get("partial"):
+        r["partial"] = v["partial"]
+
+
+def _pack_sources(r: dict) -> dict:
+    """What a NotebookLM notebook may use: the checked videos, the partly useful ones, the readings and practice."""
+    srcs = {k: r["items"].get(k, []) for k in ("video", "reading", "practice")}
+    srcs["video"] = list(srcs["video"]) + list(r.get("notebooklm_sources") or [])
+    return srcs
+
+
+def refresh_videos(run_id: str, lectures: list[str] | None = None, limit: int | None = None, refresh: bool = False) -> dict:
+    """Redo only the videos of lectures that already have results (no new plans, readings or guests): those from before the
+    10 Nov engine, and those saved as partial. Safe to run again after a block or when the quota is back."""
+    from profsagent.delivery import mix
+    from profsagent.delivery.components import topic_groups
+    from profsagent.delivery.notebooklm import pack
+    from profsagent.delivery.resources import plan_queries
+    from profsagent.delivery.videos import deliver_topic
+    from profsagent.llm.client import LLMClient
+
+    log = Log(run_id)
+    st, d = load_state(run_id), out_dir(run_id)
+    briefs = {b["lecture_id"]: b for b in read_json(d / "briefs.json")}
+    plans = read_json(d / "components.json", {})
+    reqs = sv.requests(sv.load(run_id))
+    lecs = {p.stem: read_json(p) for p in sorted((d / "lectures").glob("*.json"))}
+
+    def todo(k, lec):
+        res = lec.get("resources") or {}
+        if not (res and lec.get("components")) or not (reqs.get(k, {}).get("want_videos") or reqs.get(k, {}).get("want_clips")):
+            return False
+        if lectures is not None:
+            return k in lectures
+        return refresh or res.get("video_engine") != 2 or bool(res.get("partial"))
+    ids = [k for k, lec in lecs.items() if todo(k, lec)]
+    if limit:
+        ids = ids[:limit]
+    log(f"videos for {run_id}: {len(ids)} lectures to do · YouTube units used today: {YouTube().quota.used()}")
+    if not ids:
+        return {"lectures": []}
+    llm = LLMClient(d / "llm_calls.jsonl")
+    qpath = d / "queries.json"
+    queries = read_json(qpath, {})
+    missing = {k: reqs[k] for k in ids if k not in queries}
+    if missing:
+        queries.update(plan_queries(llm, st, briefs, missing, run_id, log))
+        write_json(qpath, queries)
+    groups = topic_groups(briefs)
+    for tid in dict.fromkeys(briefs[k]["topic_id"] for k in ids):
+        lids = [b["lecture_id"] for b in groups[tid] if b["lecture_id"] in ids]
+        plan = plans[tid]
+        log(f"topic {tid} · {plan['topic']} · lectures {', '.join(lids)}")
+        vres = deliver_topic(llm, st, plan, briefs, lids, queries, run_id, log)
+        for lid in lids:
+            lec, b = lecs[lid], briefs[lid]
+            comps = lec["components"]
+            r = lec["resources"]
+            _apply_videos(r, vres[lid])
+            earlier = [c for c in plan["components"] if c["lecture_id"] < lid]
+            md, r["notebooklm"] = pack(st, b, comps, earlier, r["timeline"], _pack_sources(r))
+            (d / "notebooklm").mkdir(exist_ok=True)
+            (d / "notebooklm" / f"{lid}.md").write_text(md, encoding="utf-8")
+            lec.pop("partial", None)
+            if r.get("partial"):
+                lec["partial"] = r["partial"]
+            write_json(d / "lectures" / f"{lid}.json", lec)
+            try:
+                mix.propose(run_id, lid, log=log, keep_approved=True)
+            except Exception as e:  # noqa: BLE001
+                log(f"  mix {lid}: not made ({type(e).__name__}: {str(e)[:120]})")
+            log(f"  saved {lid} · YouTube units used today: {YouTube().quota.used()}")
+    render(run_id)
+    return {"lectures": ids, "calls": llm.totals["calls"]}
 
 
 def _links(lec: dict) -> set[str]:
@@ -207,7 +287,8 @@ def render(run_id: str) -> dict:
                 how = row.get("delivery") or ("in class" if c.get("in_class") else "—")
                 if how == "video":
                     how = " + ".join(f"[{s['video'][:45]}]({s['url']}) {s['start']}–{s['end']} "
-                                     f"({'fully' if s['verdict'] == 'teaches_fully' else 'partly'})" for s in row["segments"])
+                                     + (f"(covers {round(100 * s['coverage'])}% of its points; {s.get('block')})" if s.get("verified")
+                                        else f"({'fully' if s['verdict'] == 'teaches_fully' else 'partly'})") for s in row["segments"])
                     if row.get("gap"):
                         how += " + NotebookLM" + (f" for: {'; '.join(row['gap']['missing'][:3])}" if row["gap"].get("missing") else "")
                 elif how == "notebooklm":

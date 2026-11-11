@@ -412,6 +412,24 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True, del
         out = dv.bulk(rid, lecture_id(body.get("lid", "")), "module" if body.get("scope") == "module" else "week")
         return JSONResponse(out, status_code=409) if out.get("problem") else out
 
+    @app.post("/api/delivery/{rid}/weeks")
+    def delivery_weeks(rid: str, body: dict = Body(...)):
+        """Make the learning material for chosen weeks only: slides and/or the resource search for each of their lectures."""
+        course_dir(rid)
+        out = dv.for_weeks(rid, list(body.get("weeks") or [])[:20], bool(body.get("material")), bool(body.get("resources")))
+        if out.get("problem"):
+            return JSONResponse(out, status_code=409)
+        c = [x["id"] for x in out["lectures"] if x["start_c"]]
+        if c:
+            dmgr.queue_recommend(rid, c, refresh=any(x["refresh"] for x in out["lectures"] if x["start_c"]))
+        ai = {"review": "ai"} if body.get("ai_review") else {}
+        from profsagent.delivery import survey as sv
+        saved = sv.load(rid).get("lectures") or {}
+        for x in out["lectures"]:
+            if x["start_b"]:
+                dmgr.queue_material(rid, x["id"], {"note": str((saved.get(x["id"]) or {}).get("note") or ""), **ai})
+        return {**out, "started_resources": c, "started_slides": [x["id"] for x in out["lectures"] if x["start_b"]]}
+
     @app.get("/api/delivery/{rid}/previous/{lid}")
     def delivery_previous(rid: str, lid: str):
         course_dir(rid)

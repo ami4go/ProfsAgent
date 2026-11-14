@@ -18,7 +18,7 @@
 #   OpenRouter ":free" models: 20 requests/min, 50 requests/DAY in total (1000/day after a one-time $10 top-up).
 #           The free roster changes often: run scripts/check_llm.py to see which configured models answer.  OPENROUTER_API_KEYS
 #   Not used: Cerebras (now a $5 trial that needs a card), GitHub Models (reported retired 2026-07-30).
-#   Ollama: local gemma4 (8B Q4) ~10 tok/s, qwen3.5:9b ~7 tok/s on this CPU (no GPU) — last resort only.
+#   Ollama: not used (local fallback endpoints removed, 2026-11-14).
 providers:             # OpenAI-compatible chat endpoints besides Groq; several comma-separated keys per variable are fine
   mistral:    {base_url: "https://api.mistral.ai/v1", keys_env: MISTRAL_API_KEYS, min_interval_s: 1.2}
   nvidia:     {base_url: "https://integrate.api.nvidia.com/v1", keys_env: NVIDIA_API_KEYS, min_interval_s: 1.6, max_tokens: 8192,
@@ -37,8 +37,6 @@ roles:
     - {provider: mistral, model: mistral-large-latest}
     - {provider: openrouter, model: "nvidia/nemotron-3.5-super-vl:free"}
     - {provider: openrouter, model: "google/gemma-4-31b-it:free"}
-    - {provider: ollama, model: "gemma4:latest"}      # LOCAL last resort (CPU, ~10 tok/s): minutes per call, no quota
-    - {provider: ollama, model: "qwen3.5:9b"}
   extract:             # X2 page reading, X3/D1 queries: Gemini -> NVIDIA -> Groq gpt-oss -> the rest
     - {provider: gemini, model: gemini-3.6-flash}
     - {provider: gemini, model: gemini-3.8-flash}
@@ -50,8 +48,6 @@ roles:
     - {provider: groq,   model: qwen/qwen3.8-27b, max_prompt_tokens: 5500}
     - {provider: mistral, model: mistral-small-latest}
     - {provider: openrouter, model: "nvidia/nemotron-3.5-super-vl:free"}
-    - {provider: ollama, model: "gemma4:latest"}
-    - {provider: ollama, model: "qwen3.5:9b"}
   search: []          # Google-Search grounding: free tier only works on 2.5-flash (3.6/3.8 grounding quota = 0, checked
                        # 2026-11-01), and only 3.6/3.8 flash may be used (user, 2026-11-01). Every caller falls back to
                        # Tavily -> DuckDuckGo (delivery) or skips search (research X1).

@@ -1,6 +1,6 @@
 ---
 id: B1
-version: 0.6.0
+version: 0.12.0
 stage: Phase 2 · B · lecture slides
 model_class: generate
 temperature: 0.3
@@ -12,7 +12,8 @@ inputs:
             outline: [{id, title, teaches, key_terms, kind, minutes, delivered_by, clip, way, when, bridge, simulation}]
                      (deliverable C's plan and the professor's delivery mix, when made),
             professor_material (the text of the professor's own files, parts marked [P1] …, when attached),
-            style (how this professor writes slides, when learned from their decks)}
+            style (how this professor writes slides, when learned from their decks),
+            example (the running example: {title, story, values: [{name, meaning, value}]}, from B6, when numeric)}
   sources: [{id, kind, title, year, url}]
   slides: {min, max}
   problems: findings of the checks on a previous attempt (repair only)
@@ -21,7 +22,7 @@ inputs:
 You write the content slides for ONE university lecture. A professor will teach from them and edit them before class.
 
 What to write:
-- Between {{ slides.min }} and {{ slides.max }} content slides that together fill the lecture's time. Code adds the
+- {% if slides.min == slides.max %}Exactly {{ slides.min }} content slides (the professor's count){% else %}Between {{ slides.min }} and {{ slides.max }} content slides{% endif %} that together fill the lecture's time. Code adds the
   title, objectives and references slides: do not write those.
 - Teach the lecture's learning outcomes, in an order a student can follow: start from what students already know
   (builds_on, prerequisites), introduce one idea per slide, then use it.
@@ -57,22 +58,16 @@ What to write:
 - Slide kinds: concept, example, worked_problem, activity, check, summary; with an outline also recap, watch,
   debrief, bridge, simulation and quiz.
 
-How to write a slide:
-- Title: a short statement or question (at most 10 words).
-- Bullets: 2-6, each at most 20 words, in plain words. No paragraphs, no filler ("In this slide we will…").
-- `figure` (optional, at most one): `flow` for a process or pipeline (2-6 short box labels), `code` for a short snippet
-  (at most 14 lines, real and runnable in spirit), `table` for a comparison (header row + at most 5 rows, 4 columns).
-  Use `none` when a figure would not help.
-- `notes`: what the professor says, 90-150 words: the explanation, an example, a common misconception. (The notes
-  are also read aloud for the narrated video, so write them as speech.)
-- `minutes`: teaching time for the slide; all slides together ≈ the lecture length ({{ lecture.minutes }} minutes).
-- `sources`: ids of the given sources the slide draws on. Cite only ids from the list; cite nothing rather than guess.
+{% include "_teaching.md" %}
+{% include "_depth.md" %}
 
-Accuracy: write only what you are confident is correct for this course level. Do not invent statistics, dates,
-benchmark numbers, quotes or URLs. If a source is needed for a claim, cite a given source or leave the claim out.
+{% include "_slide_rules.md" %}
 
 Output one JSON object only:
 {"lecture_id": "...", "title": "...", "slides": [{"kind": "concept", "title": "...", "bullets": ["..."],
+"blocks": [{"kind": "definition", "term": "Relaxation", "text": "replacing \\(d(v)\\) by \\(d(u) + w(u, v)\\) when that is smaller"},
+{"kind": "steps", "steps": [{"latex": "d(C) = \\min([[d_C_before]],\\ [[d_B]] + [[w_BC]])", "why": ""},
+{"latex": "d(C) = [[d_C_after]]", "why": "the shorter path goes through B"}]}],
 "figure": {"kind": "none", "caption": "", "steps": [], "code": "", "language": "", "rows": []}, "quiz": null,
 "notes": "...", "los": ["CO1.LO1"], "sources": ["C1"], "minutes": 4, "component": ""},
 {"kind": "check", "title": "...", "bullets": [], "figure": {"kind": "none"}, "quiz": {"question": "...",

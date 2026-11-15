@@ -78,6 +78,12 @@ def main() -> None:
     ap.add_argument("--note", default="", help="what the professor wants emphasised")
     ap.add_argument("--force", action="store_true", help="generate: replace a deck the professor approved")
     ap.add_argument("--auto-review", action="store_true", help="generate: a different AI model checks each deck (1-2 more calls)")
+    ap.add_argument("--slides", type=int, default=None,
+                    help="generate: total slides in each deck, title and objectives (and references) included; the AI writes "
+                         "the rest, exactly that many (default: a range from the lecture's hours and --depth)")
+    ap.add_argument("--depth", choices=["basic", "standard", "high"], default=None,
+                    help="generate: content depth (default config/content.yaml deck.depth): high derives every result in "
+                         "full, with the other standard views, conditions and bounds; basic keeps to intuition and examples")
     ap.add_argument("--apply", action="store_true", help="review: apply the decisions in review.yaml")
     ap.add_argument("--video", action="store_true", help="narrate: also export an MP4 through PowerPoint")
     ap.add_argument("--animate", action="store_true", help="narrate: flow figures become Manim animations (pip install manim)")
@@ -113,11 +119,19 @@ def main() -> None:
         for lid in ids:
             b = briefs[lid]
             src = G.gather_sources(st, a.run_id, b, pending, c["sources"]["max_external"])
-            lo, hi = content_range(b["hours"], c)
+            lo, hi = content_range(b["hours"], c, a.depth or c["deck"].get("depth", "standard"))
+            if a.slides:
+                lo = hi = max(3, a.slides - G.frame_slides(src))
             print(f"{lid}  {b['topic']}  ({round(b['hours'] * 60)} min, {len(b['learning_outcomes'])} LOs)  content slides {lo}–{hi}  "
                   f"sources {list(src)}")
-        per = 1 + c["deck"]["repair_rounds"] + (2 if a.auto_review else 0)
-        print(f"AI calls: {len(ids) * (2 if a.auto_review else 1)} (up to {len(ids) * per} with repairs)")
+        if c["deck"].get("mode", "per_slide") == "per_slide":   # B6 example + B7 plan + one B8 call per content slide
+            n = sum(max(3, a.slides - G.frame_slides(G.gather_sources(st, a.run_id, briefs[lid], pending, c["sources"]["max_external"])))
+                    if a.slides else content_range(briefs[lid]["hours"], c, a.depth or c["deck"].get("depth", "standard"))[1]
+                    for lid in ids)
+            print(f"AI calls: about {2 * len(ids) + n}, plus a few slide repairs" + (" and 1-2 review calls per lecture" if a.auto_review else ""))
+        else:
+            per = 1 + c["deck"]["repair_rounds"] + (2 if a.auto_review else 0)
+            print(f"AI calls: {len(ids) * (2 if a.auto_review else 1)} (up to {len(ids) * per} with repairs)")
     elif a.cmd == "teach":
         from profsagent.content.lesson import teach_class
         for lid in ids:
@@ -157,7 +171,8 @@ def main() -> None:
             try:
                 m = G.generate_material(a.run_id, lid, {"include_pending": pending, "note": a.note, "force": a.force,
                                                         "feedback": feedback.get(lid),
-                                                        "review": "ai" if a.auto_review else None})
+                                                        "review": "ai" if a.auto_review else None,
+                                                        "slides": a.slides, "depth": a.depth})
             except Exception as e:                  # e.g. no model or quota left: the other lectures still run
                 failed[lid] = f"{type(e).__name__}: {e}"[:300]
                 print(f"{lid}: FAILED {failed[lid]}")
@@ -176,7 +191,7 @@ def main() -> None:
             deck, b = LectureDeck.model_validate(read_json(d / "deck.json")), briefs[lid]
             more, man["code_checks"] = verify(deck, man["sources"], c)
             # the code checks are redone; the AI review's findings are kept (re-reviewing would need a call)
-            found = (check_deck(deck, G.lecture_input(b), set(man["sources"]), c) + more
+            found = (check_deck(deck, G.lecture_input(b), set(man["sources"]), c, G.example_values(d)) + more
                      + [x for x in man["findings"] if x.get("stage") == "ai-review"])
             man["slides"], found = G.write_outputs(d, deck, G.frame(st, b), man["sources"], apply_look(c, load_style(a.run_id)), found)
             man.update(findings=found, errors=len(errors(found)), warnings=len(found) - len(errors(found)))

@@ -200,6 +200,12 @@ python scripts/run_content.py generate --run-id cs601-02 --lectures W01.L2 --aut
    and fonts become the look of every new deck; their bullet length, title case and voice guide B1.
 4g. **Student mode** (`student.html` beside every deck, `content/student.py`): the class for students on any device:
    slides without notes or answer keys, recap, clickable check questions, watch/simulation links, the review quiz.
+4i. **Maths and measured layout** (`slides.html` + `slides.pdf` beside every deck, `content/slides_html.py`): slides can
+   carry blocks (a formula, a derivation as numbered steps each with its reason, a definition, a think question, a note)
+   and inline maths `\( ... \)`, typeset with KaTeX (inlined, works offline). The deck is opened in Chrome (Playwright)
+   during the checks: a slide that does not fit even at 80% text size (D-OVERFLOW) or a formula KaTeX cannot typeset
+   (D-MATH) is an error B1 repairs. In `slides.pptx` a slide with maths carries its typeset body as a picture.
+   Without Chrome the deck is still written (D-RENDER warning: no PDF, maths as LaTeX text).
 4h. **Narration voice and animation:** Piper (offline neural voice, `data/voices/`) replaces the Windows voice when
    installed; `narrate --animate` turns flow figures into Manim clips that build up while they are explained.
 5. **Professor review** (`content/review.py`): `material/review.yaml` lists every deck; `approve` freezes it (a new

@@ -5,8 +5,8 @@
 What students get, in the class's order: a "before class" list (videos marked pre-class, readings), every content slide
 WITHOUT the speaker notes or answer keys, recap questions with answers to reveal, in-class check questions answered by
 clicking (right / wrong and the explanation), the watch and simulation panels as links, and the review quiz at the end
-(C's D8 quiz for the lecture when it exists, else the deck's check questions) with a score. One HTML file: no internet,
-no libraries; works on a phone; light and dark. No AI calls: it is rendered from deck.json each time the deck is written.
+(C's D8 quiz for the lecture when it exists, else the deck's check questions) with a score. One HTML file: no internet;
+when the deck has maths, KaTeX is inlined (content/slides_html.py) to typeset it; works on a phone; light and dark. No AI calls: it is rendered from deck.json each time the deck is written.
 """
 from __future__ import annotations
 
@@ -16,6 +16,8 @@ import re
 
 from profsagent.content.models import FIRST_CONTENT_SLIDE, LectureDeck
 from profsagent.content.render import ref_line
+from profsagent.content.slides_html import MATH, RENDER_MATH, block_html, figure_html, has_math, katex_assets
+from profsagent.content.slides_html import esc as rich
 
 esc = html.escape
 
@@ -43,13 +45,15 @@ def _question(qid: str, q: dict) -> str:
             f'<p class="why" hidden>{esc(q.get("explanation") or "")}</p></div>')
 
 
-def student_page(deck: LectureDeck, frame: dict, sources: dict[str, dict], quiz: list[dict] | None = None) -> str:
+def student_page(deck: LectureDeck, frame: dict, sources: dict[str, dict], quiz: list[dict] | None = None,
+                 values: dict | None = None) -> str:
+    """`values`: the running example's computed values, which plots are drawn from."""
     cards, before, checks = [], [], []
     for i, s in enumerate(deck.slides, FIRST_CONTENT_SLIDE):
         kind = s.kind.replace("_", " ")
         body = ""
         if s.kind == "recap":
-            body += "<ol class='recap'>" + "".join(f"<li>{esc(b)}</li>" for b in s.bullets) + "</ol>"
+            body += "<ol class='recap'>" + "".join(f"<li>{rich(b)}</li>" for b in s.bullets) + "</ol>"
             body += f'<details><summary>Show the answers</summary><p>{esc(s.notes)}</p></details>' if s.notes else ""
         else:
             if s.clip or s.link:
@@ -58,8 +62,9 @@ def student_page(deck: LectureDeck, frame: dict, sources: dict[str, dict], quiz:
                 if s.kind == "watch" and s.clip:
                     before.append(f"{esc(s.title)}: {_link(s.clip)}")
             if s.bullets and s.kind != "check":
-                body += "<ul>" + "".join(f"<li>{esc(b)}</li>" for b in s.bullets) + "</ul>"
-            body += _figure(s.figure)
+                body += "<ul>" + "".join(f"<li>{rich(b)}</li>" for b in s.bullets) + "</ul>"
+            body += "".join(block_html(b) for b in s.blocks)
+            body += figure_html(s.figure, values) if s.figure.kind == "plot" else _figure(s.figure)
             if s.quiz:
                 q = {"question": s.quiz.question, "options": s.quiz.options, "answer": s.quiz.answer, "explanation": s.quiz.explanation}
                 body += _question(f"s{i}", q)
@@ -74,9 +79,23 @@ def student_page(deck: LectureDeck, frame: dict, sources: dict[str, dict], quiz:
     refs = "".join(f"<li>[{esc(sid)}] {_link(ref_line(sources[sid]))}</li>" for sid in cited)
     before_html = ("<ul>" + "".join(f"<li>{x}</li>" for x in before) + "</ul>") if before else "<p>Nothing to do before class.</p>"
     objectives = "".join(f"<li>{esc(re.sub(r' [(]CO[0-9.LO]+[)]$', '', o))}</li>" for o in frame["objectives"])
-    return TEMPLATE.format(title=esc(deck.title), course=esc(frame["course"]), subtitle=esc(frame["subtitle"]),
+    page = TEMPLATE.format(title=esc(deck.title), course=esc(frame["course"]), subtitle=esc(frame["subtitle"]),
                            objectives=objectives, before=before_html, cards="".join(cards), quiz=quiz_html,
                            n_quiz=len(final), refs=f"<ol>{refs}</ol>" if refs else "", data=json.dumps(len(final)))
+    if any(has_math(s) for s in deck.slides) or any(MATH.search(q["question"] + " ".join(q["options"])) for q in final):
+        page = page.replace("</head>", katex_assets() + MATH_CSS + "</head>", 1).replace(
+            "</body>", f"<script>{RENDER_MATH}</script></body>", 1)
+    elif any(s.figure.kind == "plot" for s in deck.slides):
+        page = page.replace("</head>", MATH_CSS + "</head>", 1)
+    return page
+
+
+MATH_CSS = """<style>.plot{width:100%;height:auto;background:#fff;border-radius:8px}.legend{display:flex;flex-wrap:wrap;gap:4px 14px;
+font-size:.85em}.legend .sw{display:inline-block;width:12px;height:12px;margin-right:5px}.dm{overflow-x:auto}.steps{margin:.5em 0}.st{display:grid;grid-template-columns:1.6em 1fr;gap:.2em .6em;
+align-items:center;border-bottom:1px dashed var(--line)}.st .why{grid-column:2;color:var(--muted);font-size:.85em;font-style:italic;
+margin-top:-.4em;padding-bottom:.3em}.st .n{color:var(--accent);font-weight:700}.st .f{overflow-x:auto}
+.def,.think,.note{border-left:4px solid var(--accent);background:var(--soft);border-radius:6px;padding:8px 12px;margin:.6em 0}
+.def b{margin-right:.5em}.think{border-color:#d97706}</style>"""
 
 
 TEMPLATE = """<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">

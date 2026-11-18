@@ -727,7 +727,7 @@ def good_plan(lecture: dict, n: int = 16) -> DeckPlan:
     roles = (["opening", "derivation", "worked_example"] + ["intuition"] * (n - 8)
              + ["failure", "worked_example", "check", "check", "summary"])
     kinds = {"worked_example": "worked_problem", "check": "check", "summary": "summary"}
-    return DeckPlan(title="T", opening_question="What mark for 2.5 hours?", slides=[
+    return DeckPlan(title="T", opening_question="What mark for 2.5 hours?", key_results=["the central result"], slides=[
         PlanSlide(kind=kinds.get(r, "concept"), title=f"Planned {k}", role=r, teaches=f"idea {k}", los=los,
                   values=["x"] if r == "worked_example" else [], answers_opening=(k == n - 2), minutes=lecture["minutes"] / n)
         for k, r in enumerate(roles)])
@@ -757,6 +757,38 @@ def test_the_plan_is_checked_before_any_slide_is_written(lecture):
     for want in ["must be the opening", "not followed by a worked_example", "no limits or misconception slide", "answers the opening",
                  "does not have: ['nope']", "is taught by no slide"]:
         assert want in msgs, want
+
+
+def test_the_plan_has_key_results_and_one_summary(lecture):
+    from profsagent.content.plan import plan_problems
+    v = {"x": [1, 2]}
+    p = good_plan(lecture)
+    p.key_results = []                                            # decided nothing before planning the slides
+    p.slides[-3].role = "summary"                                 # a second summary before the last one
+    msgs = " | ".join(x["message"] for x in plan_problems(p, lecture, CFG, v))
+    assert "no key_results" in msgs and "2 summary slides" in msgs
+    p = good_plan(lecture)
+    p.key_results = []
+    assert plan_problems(p, {**lecture, "depth": "basic"}, CFG, v) == []   # an introduction need not list them
+
+
+def test_the_deck_prompts_carry_the_professors_note(lecture):
+    from profsagent.llm.prompts import load_prompt
+    src = [{"id": "C1", "kind": "book", "title": "T", "year": 2020, "url": ""}]
+    lec = {**lecture, "minutes": 90, "depth": "high", "professor_note": "focus on the maths"}
+    plan = {"title": "T", "opening_question": "q", "slides": []}
+    slide = {"n": 3, "kind": "concept", "title": "t", "role": "intuition", "teaches": "x", "los": [], "values": [],
+             "visual": "none", "answers_opening": False, "minutes": 3, "component": "", "material": ""}
+    ctx = {"course": {"course_name": "C", "level": "4xx"}, "lecture": lec, "sources": src, "slides": {"min": 9, "max": 9},
+           "problems": [], "plan": plan, "slide": slide, "before": [], "previous": None}
+    for pid in ("B6", "B7", "B8"):
+        system, _ = load_prompt(pid).render(**ctx)
+        assert "professor_note" in system, pid                        # the note is named as the priority, not just passed
+        if pid != "B6":                                               # B6 has its own depth line, not _depth.md
+            assert "standard treatment of this topic" in system, pid  # the high-depth coverage rule
+        quiet, _ = load_prompt(pid).render(**{**ctx, "lecture": {**lec, "professor_note": ""}})
+        assert "professor_note" not in quiet, pid                     # and left out when there is no note
+    assert "key_results" in load_prompt("B7").render(**ctx)[0]
 
 
 def test_per_slide_mode_plans_then_writes_each_slide_with_what_came_before(run, lecture, monkeypatch):

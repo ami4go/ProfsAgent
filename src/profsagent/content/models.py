@@ -179,6 +179,8 @@ class PlanSlide(BaseModel):
 class DeckPlan(BaseModel):
     title: str
     opening_question: str = Field("", description="the concrete question the first content slide poses")
+    key_results: list[str] = Field(default_factory=list, description="what a standard treatment of the topic must "
+                                   "teach, decided before the slides; an item left out says '(not covered: why)'")
     slides: list[PlanSlide]
 
 

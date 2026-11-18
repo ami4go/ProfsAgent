@@ -132,6 +132,8 @@ class LLMClient:
         self.no_json_mode: set[str] = set()       # OpenAI-compatible models that rejected response_format
         self.strong_only = os.environ.get("PROFSAGENT_STRONG_ONLY", "").lower() in ("1", "true", "yes", "on")
         self._turn = 0                            # which lead Gemini key goes first on the next call
+        self._tl = threading.local()              # per-thread: the current endpoint's own timeout (role entry `timeout_s`)
+        self._log_lock = threading.Lock()         # callers may use one client from several threads
 
     # ------------------------------------------------------------------ slots
     def _gemini_order(self) -> list[str]:
@@ -159,6 +161,10 @@ class LLMClient:
                 yield ep, i, k, f"{ep['provider']}:{ep['model']}:{_fp(k)}"
 
     # ------------------------------------------------------------------ raw calls
+    def _tmo(self, default: float) -> float:
+        """The timeout for this call: a role entry's own `timeout_s` (set per thread in _raw_once), else the default."""
+        return getattr(self._tl, "tmo", None) or default
+
     def _gemini(self, model: str, key: str, system: str, user: str, temperature: float, json_mode: bool,
                 tools: list | None = None, response_schema: dict | None = None) -> tuple[str, dict, dict]:
         body: dict = {
@@ -173,7 +179,7 @@ class LLMClient:
                 body["generationConfig"]["responseJsonSchema"] = response_schema
         if tools:
             body["tools"] = tools
-        r = self._post_deadline(f"{GEMINI}/{model}:generateContent", {"x-goog-api-key": key}, body, self.lim["timeout_s"])
+        r = self._post_deadline(f"{GEMINI}/{model}:generateContent", {"x-goog-api-key": key}, body, self._tmo(self.lim["timeout_s"]))
         if r.status_code != 200:
             raise _HTTPError(r.status_code, r.text)
         j = r.json()
@@ -194,7 +200,7 @@ class LLMClient:
         }
         if json_mode:
             body["response_format"] = {"type": "json_object"}
-        r = self.http.post(GROQ, headers={"Authorization": f"Bearer {key}"}, json=body)
+        r = self.http.post(GROQ, headers={"Authorization": f"Bearer {key}"}, json=body, timeout=self._tmo(self.lim["timeout_s"]))
         if r.status_code != 200:
             raise _HTTPError(r.status_code, r.text)
         j = r.json()
@@ -213,7 +219,7 @@ class LLMClient:
         if json_mode and model not in self.no_json_mode:
             body["response_format"] = {"type": "json_object"}
         hdr = {"Authorization": f"Bearer {key}", **(p.get("headers") or {})}
-        tmo = p.get("timeout_s", self.lim["timeout_s"])
+        tmo = self._tmo(p.get("timeout_s", self.lim["timeout_s"]))
         r = self._post_deadline(p["base_url"].rstrip("/") + "/chat/completions", hdr, body, tmo)
         if r.status_code in (400, 422) and "response_format" in body and re.search(r"response_format|json", r.text, re.I):
             self.no_json_mode.add(model)
@@ -288,7 +294,7 @@ class LLMClient:
         """Try every eligible slot; if all are cooling down, wait for the soonest one (bounded by max_wait_s).
         skip_models: "provider:model" entries to leave out; response_schema: JSON Schema for Gemini's constrained output."""
         waited = 0.0
-        max_wait = self.lim.get("max_wait_s", 600)
+        max_wait = (self.lim.get("max_wait_s_by_role") or {}).get(role, self.lim.get("max_wait_s", 600))
         while True:
             try:
                 return self._raw_once(role, system, user, temperature, json_mode, tools, record, skip_models, response_schema)
@@ -317,6 +323,7 @@ class LLMClient:
                 continue
             self.slots.wait_interval(slot, self.extra.get(ep["provider"], {}).get("min_interval_s", self.lim["min_interval_s"]))
             self.slots.touch(slot)
+            self._tl.tmo = ep.get("timeout_s")
             t0 = time.time()
             try:
                 if ep["provider"] == "gemini":
@@ -522,17 +529,19 @@ class LLMClient:
 
     # ------------------------------------------------------------------ logging
     def _log(self, rec: CallRecord, system: str, user: str, output: str, run_id: str | None) -> None:
-        self.totals["calls"] += 1
-        self.totals["prompt_tokens"] += rec.prompt_tokens
-        self.totals["output_tokens"] += rec.output_tokens
+        with self._log_lock:
+            self.totals["calls"] += 1
+            self.totals["prompt_tokens"] += rec.prompt_tokens
+            self.totals["output_tokens"] += rec.output_tokens
         if not self.run_log_path:
             return
         self.run_log_path.parent.mkdir(parents=True, exist_ok=True)
         entry = {**rec.__dict__, "ts": time.time(), "run_id": run_id,
                  "prompt_sha": hashlib.sha256((system + user).encode()).hexdigest()[:16],
                  "user_prompt": user, "output": output}
-        with self.run_log_path.open("a", encoding="utf-8") as f:
-            f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+        line = json.dumps(entry, ensure_ascii=False) + "\n"
+        with self._log_lock, self.run_log_path.open("a", encoding="utf-8") as f:
+            f.write(line)
 
 
 class _HTTPError(Exception):

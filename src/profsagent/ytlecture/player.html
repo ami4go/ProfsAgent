@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lecture Video Player</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: lecture rail on top, player left, the clip queue (grouped by teaching part) right; one column on phones. */
+:root {
+  --bg: #F5F6F9; --panel: #FFFFFF; --ink: #161A26; --muted: #5C6478; --line: #DEE2EB;
+  --accent: #2F4FD8; --accent-soft: #E6EBFC; --warn: #9A5B00; --warn-soft: #FBF0DC; --done: #8A91A3;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #10131B; --panel: #181C27; --ink: #E8EAF1; --muted: #9AA2B6; --line: #2A3040;
+  --accent: #8EA4FF; --accent-soft: #232C4D; --warn: #F0B65A; --warn-soft: #33281A; --done: #636B80; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #10131B; --panel: #181C27; --ink: #E8EAF1; --muted: #9AA2B6; --line: #2A3040;
+  --accent: #8EA4FF; --accent-soft: #232C4D; --warn: #F0B65A; --warn-soft: #33281A; --done: #636B80; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--sans);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 40px; }
+.wrap { max-width: 1440px; margin: 0 auto; display: grid; gap: 20px; }
+header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; }
+h1 { font-size: 22px; font-weight: 600; margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+.sub { color: var(--muted); font-size: 14px; }
+
+nav.lectures { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+nav.lectures button { flex: 0 0 auto; text-align: left; border: 1px solid var(--line); background: var(--panel); color: var(--ink);
+  border-radius: 8px; padding: 8px 12px; font: inherit; cursor: pointer; display: grid; gap: 2px; min-width: 150px; }
+nav.lectures button .id { font: 500 13px var(--mono); color: var(--accent); }
+nav.lectures button .t { font-size: 13px; color: var(--muted); max-width: 22ch; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+nav.lectures button[aria-current="true"] { border-color: var(--accent); background: var(--accent-soft); }
+nav.lectures button:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+main { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 20px; align-items: start; }
+@media (max-width: 980px) { main { grid-template-columns: minmax(0, 1fr); } }
+
+.stage { display: grid; gap: 14px; min-width: 0; }
+.screen { position: relative; aspect-ratio: 16 / 9; width: 100%; max-width: 100%; background: #000; border-radius: 10px; overflow: hidden; }
+.screen > div, .screen iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.now { display: grid; gap: 6px; }
+.now .part { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+.now h2 { margin: 0; font-size: 19px; font-weight: 600; text-wrap: balance; }
+.now .meta { color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.now .meta .tc { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.now .why { margin: 4px 0 0; max-width: 72ch; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn { border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 8px; padding: 8px 14px; font: 500 14px var(--sans); cursor: pointer; text-decoration: none; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--panel); }
+.btn:disabled { opacity: .45; cursor: default; }
+label.toggle { display: inline-flex; gap: 6px; align-items: center; color: var(--muted); font-size: 14px; margin-left: 4px; }
+.progress { display: grid; gap: 6px; }
+.bar { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; display: flex; }
+.bar span { height: 100%; background: var(--accent); border-right: 1px solid var(--panel); }
+.bar span.todo { background: transparent; }
+.progress .nums { display: flex; justify-content: space-between; font: 13px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+
+aside { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; min-width: 0; max-height: calc(100vh - 140px); overflow-y: auto; }
+@media (max-width: 980px) { aside { max-height: none; } }
+.lo { padding: 14px 16px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+.lo b { color: var(--ink); font-weight: 600; }
+.grp { border-bottom: 1px solid var(--line); }
+.grp:last-child { border-bottom: 0; }
+.grp h3 { margin: 0; padding: 12px 16px 4px; font-size: 13px; font-weight: 600; color: var(--ink); }
+ol.clips { list-style: none; margin: 0; padding: 0 8px 10px; display: grid; gap: 2px; }
+ol.clips button { width: 100%; text-align: left; border: 0; background: transparent; color: var(--ink); font: inherit; cursor: pointer;
+  border-radius: 6px; padding: 8px; display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 2px 10px; align-items: baseline; }
+ol.clips button:hover { background: var(--bg); }
+ol.clips button[aria-current="true"] { background: var(--accent-soft); }
+ol.clips .n { font: 500 12px var(--mono); color: var(--muted); }
+ol.clips .tt { font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+ol.clips .len { font: 12px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+ol.clips .src { grid-column: 2 / 4; font-size: 12px; color: var(--muted); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+ol.clips .src .tc { font-family: var(--mono); }
+ol.clips button.done .tt, ol.clips button.done .n { color: var(--done); }
+.badge { font-size: 11px; font-weight: 600; letter-spacing: .03em; border-radius: 4px; padding: 1px 6px; background: var(--warn-soft); color: var(--warn); }
+.note { font-size: 13px; color: var(--muted); max-width: 90ch; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1 id="heading">YouTube lectures</h1>
+      <div class="sub">Delivery mode 2: each lecture is a sequence of clips, played back to back. Clips stop at their end time and the next one starts.</div>
+    </div>
+    <div class="sub" id="totals"></div>
+  </header>
+
+  <nav class="lectures" id="lectures" aria-label="Lectures"></nav>
+
+  <main>
+    <section class="stage">
+      <div class="screen"><div id="player"></div></div>
+      <div class="progress" aria-label="Lecture progress">
+        <div class="bar" id="bar"></div>
+        <div class="nums"><span id="elapsed">0:00</span><span id="remaining"></span></div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="prev" type="button">◀ Previous clip</button>
+        <button class="btn primary" id="play" type="button">Play lecture</button>
+        <button class="btn" id="next" type="button">Next clip ▶</button>
+        <label class="toggle"><input type="checkbox" id="auto" checked> Continue to the next clip</label>
+        <a class="btn" id="yt" target="_blank" rel="noopener">Open this clip on YouTube</a>
+      </div>
+      <div class="now" id="now"></div>
+      <p class="note">Clips marked <span class="badge">preview</span> were placed from chapter markers or AI notes, not the spoken words. Watch them once before class. Keyboard: <b>N</b> next clip, <b>P</b> previous clip.</p>
+    </section>
+    <aside id="queue" aria-label="Clips in this lecture"></aside>
+  </main>
+</div>
+
+<script src="playlists.js"></script>
+<script>
+const L = (window.PLAYLISTS || []).filter(l => l.parts.some(p => p.clips.length));
+const $ = id => document.getElementById(id);
+const hms = s => { s = Math.round(s); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60;
+  return h ? `${h}:${String(m).padStart(2, "0")}:${String(x).padStart(2, "0")}` : `${m}:${String(x).padStart(2, "0")}`; };
+const sec = t => t.split(":").reduce((a, b) => a * 60 + +b, 0);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+let lec = 0, idx = 0, player = null, ready = false, started = false, watch = null;
+const clipsOf = l => L[l].parts.flatMap((p, pi) => p.clips.map(c => ({ ...c, part: p.part, pi, a: c.a ?? sec(c.start), b: c.b ?? sec(c.end) })));
+let clips = [];
+
+function store(k, v) { try { localStorage.setItem(location.pathname + k, JSON.stringify(v)); } catch (e) {} }
+function load(k, d) { try { const v = JSON.parse(localStorage.getItem(location.pathname + k)); return v == null ? d : v; } catch (e) { return d; } }
+
+function renderLectures() {
+  $("lectures").innerHTML = L.map((l, i) => `<button type="button" data-i="${i}" aria-current="${i === lec}">
+    <span class="id">${l.id} · ${hms(l.video_total_s)}</span><span class="t">${esc(l.topic)}</span></button>`).join("");
+  $("lectures").querySelectorAll("button").forEach(b => b.onclick = () => selectLecture(+b.dataset.i, 0, started));
+  const all = L.reduce((a, l) => a + l.video_total_s, 0), n = L.reduce((a, l) => a + clipsOf(L.indexOf(l)).length, 0);
+  $("totals").textContent = `${L.length} lectures · ${n} clips · ${hms(all)} of video`;
+}
+
+function renderQueue() {
+  const l = L[lec];
+  let k = 0;
+  $("queue").innerHTML = `<div class="lo"><b>${l.id}</b> · ${esc(l.topic)}<br>${esc(l.lo)}<br>Video ${hms(l.video_total_s)} of a ${l.slot_min}-minute slot</div>` +
+    l.parts.map(p => `<div class="grp"><h3>${esc(p.part)}</h3><ol class="clips">` + p.clips.map(c => {
+      const i = k++;
+      return `<li><button type="button" data-k="${i}" aria-current="${i === idx}" class="${i < idx ? "done" : ""}">
+        <span class="n">${String(i + 1).padStart(2, "0")}</span><span class="tt">${esc(c.title)}</span><span class="len">${hms(c.clip_s)}</span>
+        <span class="src">${esc(c.channel)} · <span class="tc">${c.start}–${c.end}</span>${(c.check === "chapters" || c.check === "notes") ? ' <span class="badge">preview</span>' : ""}</span></button></li>`;
+    }).join("") + `</ol></div>`).join("");
+  $("queue").querySelectorAll("button[data-k]").forEach(b => b.onclick = () => go(+b.dataset.k, true));
+  $("queue").querySelector('button[aria-current="true"]')?.scrollIntoView({ block: "nearest" });
+}
+
+function renderNow() {
+  const c = clips[idx];
+  $("now").innerHTML = `<div class="part">${esc(c.part)} · clip ${idx + 1} of ${clips.length}</div>
+    <h2>${esc(c.title)}</h2>
+    <div class="meta"><span>${esc(c.channel)}, ${c.published.slice(0, 4)}</span><span class="tc">${c.start} → ${c.end} (${hms(c.clip_s)})</span>
+    <span>${c.check === "chapters" ? '<span class="badge">preview</span> placed from chapters' : c.check === "notes" ? '<span class="badge">preview</span> read in AI notes' : "checked in transcript"}</span></div>
+    <p class="why">${esc(c.why)}</p>`;
+  $("yt").href = c.watch_url;
+  $("prev").disabled = idx === 0;
+  $("next").disabled = idx === clips.length - 1;
+  $("bar").innerHTML = clips.map((x, i) => `<span class="${i < idx ? "" : "todo"}" style="flex:${x.clip_s}"></span>`).join("");
+  updateTime(0);
+}
+
+function updateTime(within) {
+  const before = clips.slice(0, idx).reduce((a, c) => a + c.clip_s, 0), total = L[lec].video_total_s, el = before + within;
+  $("elapsed").textContent = `${hms(el)} watched`;
+  $("remaining").textContent = `${hms(total - el)} left in ${L[lec].id}`;
+}
+
+function go(k, play) {
+  idx = Math.max(0, Math.min(clips.length - 1, k));
+  store("cs601-pos", { lec, idx });
+  renderQueue(); renderNow();
+  if (!ready) return;
+  const c = clips[idx];
+  loadedAt = Date.now(); advancedFrom = -1;
+  if (play) { started = true; $("play").textContent = "Pause"; player.loadVideoById({ videoId: c.video, startSeconds: c.a, endSeconds: c.b }); }
+  else { started = false; $("play").textContent = "Play lecture"; player.cueVideoById({ videoId: c.video, startSeconds: c.a, endSeconds: c.b }); }
+}
+
+function selectLecture(i, k, play) {
+  lec = i; clips = clipsOf(lec);
+  try { history.replaceState(null, "", "#" + L[lec].id.replace(".", "-")); } catch (e) {}
+  renderLectures(); go(k, play);
+}
+
+/* Advance once per clip: the ENDED event and the timer backstop can both fire for the same clip end, and a just-loaded
+   video can report the previous one's state for a moment. Only the clip that is actually at its end may advance. */
+let loadedAt = 0, advancedFrom = -1;
+function atEnd() {
+  const c = clips[idx];
+  return player.getVideoData?.().video_id === c.video && player.getCurrentTime() >= c.b - 1.5 && Date.now() - loadedAt > 1500;
+}
+function advance() {
+  if (advancedFrom === idx || !atEnd()) return;
+  advancedFrom = idx;
+  if (idx < clips.length - 1 && $("auto").checked) go(idx + 1, true);
+  else if (idx === clips.length - 1) { $("play").textContent = "Play lecture"; started = false; updateTime(clips[idx].clip_s); }
+}
+
+/* YouTube IFrame API. endSeconds makes the player stop and report ENDED at the clip end; the timer below is a backstop
+   (and drives the progress numbers) in case a seek skips past the end event. */
+window.onYouTubeIframeAPIReady = () => {
+  const c = clips[idx];
+  player = new YT.Player("player", {
+    videoId: c.video, playerVars: { start: c.a, end: c.b, rel: 0, playsinline: 1, modestbranding: 1 },
+    events: {
+      onReady: () => { ready = true; },
+      onStateChange: e => {
+        if (e.data === YT.PlayerState.ENDED && started) advance();
+        if (e.data === YT.PlayerState.PLAYING) { started = true; $("play").textContent = "Pause"; }
+        if (e.data === YT.PlayerState.PAUSED) $("play").textContent = "Resume";
+      }
+    }
+  });
+  clearInterval(watch);
+  watch = setInterval(() => {
+    if (!ready || !player.getCurrentTime) return;
+    const c = clips[idx], t = player.getCurrentTime();
+    if (player.getVideoData?.().video_id === c.video && t >= c.a - 1) {
+      updateTime(Math.min(c.clip_s, Math.max(0, t - c.a)));
+      if (t >= c.b + 0.5 && player.getPlayerState() === YT.PlayerState.PLAYING) { player.pauseVideo(); advance(); }
+    }
+  }, 500);
+};
+
+$("play").onclick = () => {
+  if (!ready) return;
+  const s = player.getPlayerState();
+  if (s === YT.PlayerState.PLAYING) player.pauseVideo();
+  else if (s === YT.PlayerState.PAUSED) player.playVideo();
+  else go(idx, true);
+};
+$("prev").onclick = () => go(idx - 1, true);
+$("next").onclick = () => go(idx + 1, true);
+$("auto").onchange = () => store("cs601-auto", $("auto").checked);
+document.addEventListener("keydown", e => {
+  if (e.target.closest("input, textarea")) return;
+  if (e.key === "n" || e.key === "N") go(idx + 1, true);
+  if (e.key === "p" || e.key === "P") go(idx - 1, true);
+});
+window.addEventListener("hashchange", () => {
+  const i = L.findIndex(l => "#" + l.id.replace(".", "-") === location.hash);
+  if (i >= 0 && i !== lec) selectLecture(i, 0, false);
+});
+
+// start where the viewer left off (or at the lecture in the link)
+const fromHash = L.findIndex(l => "#" + l.id.replace(".", "-") === location.hash);
+const pos = load("cs601-pos", { lec: 0, idx: 0 });
+$("auto").checked = load("cs601-auto", true);
+lec = fromHash >= 0 ? fromHash : Math.min(pos.lec || 0, L.length - 1);
+clips = clipsOf(lec);
+idx = fromHash >= 0 && fromHash !== pos.lec ? 0 : Math.min(pos.idx || 0, clips.length - 1);
+renderLectures(); renderQueue(); renderNow();
+const s = document.createElement("script"); s.src = "https://www.youtube.com/iframe_api"; document.head.appendChild(s);
+</script>
+</body>
+</html>

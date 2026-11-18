@@ -160,7 +160,7 @@ class YouTube:
                 rr = cd.get("regionRestriction") or {}
                 got[it["id"]] = {
                     "id": it["id"], "url": f"https://www.youtube.com/watch?v={it['id']}", "title": sn.get("title", ""),
-                    "description": (sn.get("description") or "")[:3000], "channel": sn.get("channelTitle", ""),
+                    "description": (sn.get("description") or "")[:5000], "channel": sn.get("channelTitle", ""),
                     "channel_id": sn.get("channelId"), "published": sn.get("publishedAt"), "language": sn.get("defaultAudioLanguage") or sn.get("defaultLanguage"),
                     "duration_s": iso_duration_s(cd.get("duration")), "captions": cd.get("caption") == "true",
                     "licence": "Creative Commons (CC BY)" if st.get("license") == "creativeCommon" else "Standard YouTube licence",

@@ -488,6 +488,30 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True, del
             raise HTTPException(404, "No NotebookLM pack for this lecture yet")
         return {"md": p.read_text(encoding="utf-8")}
 
+    # ---- delivery mode 2: whole lectures taught by YouTube clips (src/profsagent/ytlecture, docs/ytlecture.md)
+    @app.get("/api/delivery/{rid}/videos")
+    def ytl_view(rid: str):
+        from profsagent.ytlecture import app as ytl
+        course_dir(rid)
+        return nocache(ytl.view(rid, mgr.runs))
+
+    @app.post("/api/delivery/{rid}/videos/run")
+    def ytl_run(rid: str, body: dict = Body(default={})):
+        from profsagent.ytlecture import app as ytl
+        course_dir(rid)
+        lids = [lecture_id(x) for x in (body.get("lectures") or [])]
+        out = ytl.start(rid, lids, bool(body.get("refresh")), mgr.runs)
+        return out if out["started"] else JSONResponse(out, status_code=409)
+
+    @app.get("/api/delivery/{rid}/videos/player/{name}")
+    def ytl_player(rid: str, name: str):
+        from profsagent.ytlecture import app as ytl
+        course_dir(rid)
+        p = ytl.player_file(rid, name, mgr.runs)
+        if p is None:
+            raise HTTPException(404, "No playlist yet")
+        return FileResponse(p, headers=NO_CACHE)
+
     @app.get("/api/delivery/{rid}/report")
     def delivery_report(rid: str):
         import markdown

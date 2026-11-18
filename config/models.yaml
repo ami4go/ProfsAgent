@@ -89,6 +89,46 @@ roles:
     - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 6500}
   judge_d:             # was gemini-3.5-flash-lite (below 3.6, not allowed since 2026-11-01): a fourth model family instead
     - {provider: nvidia, model: nvidia/nemotron-3-ultra-550b-a55b}
+  # Delivery mode 2 (src/profsagent/ytlecture, prompts Y1-Y7). Measured 15 Nov on the first CS601 run (136 calls, 130 min):
+  # gemini-3.6-flash ~18 s a call, groq gpt-oss-120b 2-5 s, minimax ~20-40 s, gemini-3.8-flash 96-200 s,
+  # nemotron-ultra 60-100 s (up to 300). So fast models first, short per-call timeouts, nemotron-ultra last.
+  ytl_generate:        # Y1 planner, Y2 scout, Y7 gaps
+    - {provider: gemini, model: gemini-3.6-flash, timeout_s: 120}
+    - {provider: gemini, model: gemini-3.8-flash, timeout_s: 150}
+    - {provider: nvidia, model: minimaxai/minimax-m3.1-flash, timeout_s: 150}
+    - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 5500, timeout_s: 60}
+    - {provider: nvidia, model: nvidia/nemotron-3-ultra-550b-a55b, timeout_s: 240}
+  ytl_extract:         # Y3 triage (a long list of candidates)
+    - {provider: gemini, model: gemini-3.6-flash, timeout_s: 90}
+    - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 5500, timeout_s: 60}
+    - {provider: nvidia, model: minimaxai/minimax-m3.1-flash, timeout_s: 120}
+    - {provider: gemini, model: gemini-3.8-flash, timeout_s: 120}
+    - {provider: nvidia, model: nvidia/nemotron-3-ultra-550b-a55b, timeout_s: 240}
+  ytl_grade:           # Y3N nominator + Y3G grader: ~4K-token calls, 2 per part (17 Nov). Groq's one key allows ~2 of
+                       # them a minute, so Gemini 3.6 flash (26 keys) comes next, before the slow models
+    - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 5500, timeout_s: 45}
+    - {provider: gemini, model: gemini-3.6-flash, timeout_s: 75}
+    - {provider: groq,   model: qwen/qwen3.8-27b, max_prompt_tokens: 5500, timeout_s: 45}
+    - {provider: gemini, model: gemini-3.8-flash, timeout_s: 120}
+    - {provider: nvidia, model: minimaxai/minimax-m3.1-flash, timeout_s: 90}
+    - {provider: nvidia, model: nvidia/nemotron-3-ultra-550b-a55b, timeout_s: 180}
+  ytl_read:            # Y4 skim, Y5 zoom (read in parallel, so each model's own pace matters less)
+    - {provider: gemini, model: gemini-3.6-flash, timeout_s: 75}
+    - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 5500, timeout_s: 60}
+    - {provider: nvidia, model: minimaxai/minimax-m3.1-flash, timeout_s: 90}
+    - {provider: groq,   model: qwen/qwen3.8-27b, max_prompt_tokens: 5500, timeout_s: 60}
+    - {provider: gemini, model: gemini-3.8-flash, timeout_s: 120}
+    - {provider: mistral, model: mistral-small-latest, timeout_s: 90}
+    - {provider: nvidia, model: nvidia/nemotron-3-ultra-550b-a55b, timeout_s: 180}
+  ytl_verify:          # Y6: the reader's model is excluded per call
+    - {provider: groq,   model: openai/gpt-oss-120b, max_prompt_tokens: 5500, timeout_s: 60}
+    - {provider: gemini, model: gemini-3.6-flash, timeout_s: 75}
+    - {provider: nvidia, model: minimaxai/minimax-m3.1-flash, timeout_s: 90}
+    - {provider: groq,   model: qwen/qwen3.8-27b, max_prompt_tokens: 5500, timeout_s: 60}
+    - {provider: gemini, model: gemini-3.8-flash, timeout_s: 120}
+    - {provider: mistral, model: mistral-small-latest, timeout_s: 90}   # 17 Nov: reader was nemotron, Gemini used up,
+    - {provider: openrouter, model: "google/gemma-4-31b-it:free", timeout_s: 120}   # so no verifier was left
+    - {provider: nvidia, model: nvidia/nemotron-3-ultra-550b-a55b, timeout_s: 180}
 embedding:
   model: gemini-embedding-001
   dim: 768
@@ -106,6 +146,11 @@ limits:
   native_json_schema: false  # send the Pydantic JSON Schema to Gemini (responseJsonSchema, constrained decoding);
                              # off until a live call confirms the models accept it (a rejected schema falls back to plain JSON)
   max_wait_s: 600            # when every slot is cooling down, wait up to this long for the soonest
+  max_wait_s_by_role:        # ytlecture (16 Nov): one verifier call waited 885 s in cooldowns; its clips can stay unverified
+    ytl_read: 120
+    ytl_verify: 120
+    ytl_extract: 120
+    ytl_grade: 120
   repair_stall_rounds: 2     # stop R1 after this many rejected patches in a row (each round is one call)
   regenerate_on_stall: 0     # 1: when repair stalls with errors left that R1 could fix, call the generator once more with
                              # the open errors as evidence; kept only if it has fewer errors. Off: it costs a call per stage

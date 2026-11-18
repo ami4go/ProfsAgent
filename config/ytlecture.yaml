@@ -1,0 +1,175 @@
+# Delivery mode 2: a whole lecture taught by a playlist of YouTube clips (src/profsagent/ytlecture).
+# Built from the manual study in outputs/yt_research/cs601_first6/METHODS.md; the "why" comments cite its sections.
+
+lecture:
+  fill_min: 0.65          # video time must reach this share of the slot (else the lecture is flagged for mode 1 or 3)
+  fill_target: 0.85       # parts are planned to fill this share; the rest is for a quiz / discussion (METHODS §7)
+  fill_max: 0.95
+  parts_min: 3
+  parts_max: 8
+  clip_min_s: 60          # 15 Nov: fast readers cut many usable 1-2 min explanations; neighbouring pieces are stitched first
+  clip_max_s: 1500        # 25 minutes
+  part_fill_min: 0.5      # a part's clips must reach this share of its planned minutes to count as covered
+  part_fill_max: 1.6
+  max_clips_per_part: 3
+  topup_part_max: 2.0      # under fill_target after extras: a well-taught part may grow to this x its planned minutes
+  topup_min_gain: 0.1      # a top-up clip from another video must add this share of the part's points (no repeats)
+  topup_repeat_min_score: 0.6   # ...except ONE second explanation per part from another teacher, scoring at least this
+  topup_repeats_short: 2        # ...and while the lecture is under fill_min, a 2nd repeat if it teaches differently
+                                # (a demo after two explanations; never a third explanation of the same points)
+  max_share_one_video: 0.6   # no lecture may be more than 60% one video (METHODS §6.7: mix voices)
+
+innertube:                            # free YouTube search (src/profsagent/ytlecture/innertube.py, 18 Nov study)
+  enabled: true                       # false: back to the YouTube API + DuckDuckGo + SerpApi for every search
+  client_version: "2.20261116.00.00"  # the WEB client version youtube.com sent on 17 Nov
+  min_interval_s: 1.0
+  jitter_s: 0.5
+  timeout_s: 20
+  max_fails: 3                        # failures in a row before the same request goes through yt-dlp
+  cache_days: 14
+
+search:
+  tool_deadline_s: 60
+  free_queries_per_part: 3            # with the free search: scout queries + search phrases per part (API: 1)
+  authority_queries_free: 8           # named-authority queries per topic (API: 4)
+  channel_expansion_free: 8           # channels searched by their own search tab (API: 3)       # hard wall-clock limit on one DuckDuckGo call (the library has no overall timeout)
+  ddg_max_empty: 4          # DuckDuckGo videos is skipped for 30 min after this many empty answers in a row
+  # Budgets per lecture. YouTube search costs 100 of the 10,000 free units a day, so most per-part searching is done by
+  # the free channels (DuckDuckGo videos, Tavily restricted to youtube.com) and the YouTube API is kept for the queries
+  # that matter most: named authorities and per-part lecture queries.
+  yt_searches_per_lecture: 8
+  yt_results: 12
+  yt_playlist_searches_per_topic: 1
+  yt_playlists_opened: 3
+  serpapi_youtube_per_lecture: 2      # SerpApi plan is ~250 searches a month, shared with Scholar lookups
+  serpapi_keep: 40                    # never spend the plan below this many searches
+  tavily_per_lecture: 6
+  ddg_per_lecture: 12
+  scout_web_queries: 4                # "who teaches this" web searches per topic (METHODS §2)
+  scout_pages_read: 4                 # course pages opened to pull out their YouTube links
+  channel_expansion: 3                # round 2: channels searched by channelId (METHODS §2, "two rounds of queries")
+  region: IN
+  language: en
+
+filter:
+  min_video_s: 240
+  max_video_s: 14400
+  languages: [en]                     # audio language; unknown is allowed (most uploads do not declare it)
+  skip_titles: "#shorts|\\bshorts\\b|\\btrailer\\b|\\bteaser\\b|\\bpromo\\b|\\breaction\\b|in \\d+ seconds|learn \\d+% of|\\bhindi\\b|\\btamil\\b|\\btelugu\\b|in hindi|in tamil"
+  fast_moving_min_year: 2024          # for topics the planner marks fast-moving (tools, protocols that change yearly)
+
+triage:
+  prefilter_per_lecture: 45           # candidates sent to the triage agent, after a local-embedding pre-rank
+  shortlist_per_lecture: 10           # default; the triage agent scales it to ~1 video per 10 min of slot, within:
+  shortlist_min: 8
+  shortlist_max: 14
+  shortlist_per_part: 3
+  # 17 Nov audit: the best sources (plain titles) never reached triage. Pre-rank bonuses, channel cap and the roster:
+  tier1_bonus: 0.10
+  tier2_bonus: 0.06
+  authority_bonus: 0.08               # channel or title names an authority the scout found
+  per_channel_in_part: 2              # one channel cannot fill a part's list (Microsoft Developer had 8 of the top 14)
+  roster_max: 100                     # tier 1, then tier 2, then named authorities outside the pool: title + length only
+  roster_per_channel: 6
+  roster_min_sim: 0.25
+  course_pool: true                   # later topics also see candidates found for the course's other topics
+
+shortlist:                            # step 5 since 17 Nov (src/profsagent/ytlecture/shortlist.py); "list" = the old one call
+  mode: grade                         # grade | list
+  watch_pages: true                   # key moments, full description, most replayed: one plain GET per video, cached 90 days
+  pages_per_lecture: 60               # for the strongest candidates only
+  chapter_margin: 0.03                # a single chapter's match counts this much less than the whole video's
+  cross_encoder: cross-encoder/ms-marco-MiniLM-L6-v2   # local re-ranker (~90 MB); "" turns it off
+  cross_top: 40                       # pairs per part it re-ranks
+  cross_weight: 0.3
+  popularity_bonus: 0.06              # views per year, log scale: 1k → 0, 1M → full
+  likes_bonus: 0.02                   # likes at least 3% of views
+  subscriber_bonus: 0.04              # channel subscribers, log scale: 10k → 0, 1M → full (fetched with the details)
+  edu_bonus: 0.06                     # university / course / educator channel (tiers.tier1 words), not a vendor brand
+  reputation_weight: 0.25             # x (channel's smoothed mean verified outcome - prior), from all earlier runs
+  reputation: {prior: 0.5, prior_weight: 3, no_clip_outcome: 0.35}
+  nominees: 150                       # strong-source titles the nominator sees (one call per lecture, one line each) ...
+  nominee_per_channel: 8              # (at 4, Anthropic's most-watched talk was cut by its own channel's other uploads)
+  nominee_min_sim: 0.28
+  nominee_pop_weight: 0.1
+  nominations: 8                      # ... and names at most this many
+  nominated_cards: 4                  # nominated videos added to a part's cards
+  cards_per_part: 12                  # cards each part's grader sees ...
+  card_chapters: 12                   # chapters per card (the ones nearest the part)
+  anchor_cards: 3                     # ... plus long videos from strong sources that rank next
+  anchor_min_s: 1800
+  per_channel_in_part: 2
+  grade_orders: 2                     # each part graded twice, cards reversed: averages out position bias
+  grade_workers: 4
+  min_grade: 1.5                      # mean grade a video needs for a part to count
+  rank_weights: [1.0, 0.55, 0.3]      # a part's 1st, 2nd, 3rd source
+  min_gain: 0.04
+  prior_weight: 0.15
+  per_channel: 3
+  budget_factor: 1.6                  # reading units = this x the shortlist size (1 unit ≤ 20 min, 1.5 ≤ 45, 2 ≤ 75, 2.5 longer)
+  first_wave: 0.7                     # share of the units read first; the rest goes to the thin parts after verifying
+  second_min_units: 3.0
+
+watch_page:
+  min_interval_s: 1.5
+  jitter_s: 1.0
+  timeout_s: 25
+  max_fails: 5                        # no page data this many times in a row (consent or bot check): skip for this run
+
+evidence:
+  # METHODS §4: chapters first; the caption API blocks an IP after ~25 quick requests; the watch page's own
+  # transcript panel keeps working when the API is blocked; Gemini notes are the paraphrase of last resort.
+  order: [captions, browser, notes]
+  # Caption pacing (interval, jitter, hourly cap) is config/resources.yaml `transcripts`, shared with delivery mode 1:
+  # 40 new requests an hour (18 Nov: 55 fetched in ~5 min without a block; the 1 Nov block came after ~90 in an hour).
+  # The 20-an-hour cap that stood here was never read.
+  browser_timeout_s: 45
+  notes_max_video_s: 5400
+
+reading:
+  short_video_s: 1200                 # videos up to 20 min skip the skim and are read in full (cheaper overall)
+  skim_every_s: 45                    # METHODS §5: one line per ~45 s, first 28 words
+  skim_words: 28
+  zoom_margin_s: 75                   # context shown around a skim window when setting exact boundaries
+  zoom_max_chars: 12000               # per reader call (fits Groq's ~5.5K-token prompt limit, so Groq can take reads)
+  zoom_max_chunks: 4                  # a long video is read in up to 4 consecutive chunks (~48 min of speech)
+  workers: 4                          # videos read at the same time (AI calls spread over providers; 15 Nov: ~3x faster)
+  chapter_regions: 2                  # a long video WITH chapters skips the skim call: its 2 chapters closest to each
+                                      # focus part (local embeddings, free) are read instead
+  second_read_videos: 6               # empty or thin parts' next-best unread candidates, read before any new search
+  gap_round_videos: 3
+  gap_min_sim: 0.35                   # a gap-round video's title + description must match its gap part this well
+  read_retries: 2                     # a read that failed (network, every provider down) is retried by the next run
+  verify_max_chars: 14000             # per verifier call; clips are batched up to this size
+
+scoring:                              # METHODS §6, in order of weight
+  coverage: 0.35                      # share of the part's must-cover points the verifier found taught
+  rating: 0.25                        # reader's 1-5 teaching-quality rating
+  tier: 0.20                          # source authority: 1 primary/university ... 4 unknown
+  standalone: 0.10
+  not_standalone_penalty: 0.06        # on top: a clip the reader or verifier says needs earlier context (17 Nov audit)
+  recency: 0.05
+  continuity: 0.05                    # same video continues into the next part (fewer switches)
+  chapters_only_penalty: 0.15         # placed without reading the words: still usable, flagged "preview"
+  notes_penalty: 0.08
+  gate_min_coverage: 0.34
+  extra_min_score: 0.55               # an EXTRA clip (on-topic, no planned part) must score at least this to be added
+  gate_min_rating: 3
+
+tiers:                                # added to the channel tiers in config/resources.yaml
+  # Whole-word match in the channel title. Brand names are in exact1/exact2 instead: they must BE the channel title
+  # (17 Nov audit: "Claude", "OpenAI", "Java" as words made any "Claude Code Tips ..." or "Java dev to AI" tier 1).
+  exact1: ["Anthropic", "Claude", "OpenAI", "GitHub", "Google for Developers", "Google Developers", "Visual Studio Code",
+           "Microsoft Developer", "Chrome for Developers", "Mozilla Developer", "Oracle", "Java", "DeepLearningAI",
+           "Hugging Face", "Google DeepMind", "AI Engineer", "Agentic AI Foundation", "freeCodeCamp.org"]
+  exact2: ["LangChain", "Chroma", "Y Combinator", "Sequoia Capital", "Latent Space", "IBM Technology", "Google Cloud Tech"]
+  tier1: ["Missing Semester", "MIT OpenCourseWare", "Stanford Online", "stanfordonline", "CMU", "Berkeley",
+          "3Blue1Brown", "NPTEL", "NPTEL-NOC IITM",
+          # universities across courses (added 16 Nov for ML, transformers, Java, web dev)
+          "CS50", "Harvard", "MIT", "Stanford", "Caltech", "IIT", "Andrej Karpathy"]
+  tier2: ["TechWorld with Nana", "KodeKloud", "codebasics", "Tech With Tim", "Gaurav Sen",
+          "Fireship", "Net Ninja", "Web Dev Simplified", "Computerphile", "Corey Schafer", "StatQuest", "Two Minute Papers", "ByteByteGo", "Hussein Nasser",
+          "Umar Jamil", "Yannic Kilcher", "Sebastian Raschka", "Manning Publications", "Serrano.Academy", "Steve Brunton", "Welch Labs", "AI Coffee Break", "Alexander Amini",
+          "sentdex", "Jeremy Howard", "Kevin Powell", "Traversy Media", "Fireship", "Programming with Mosh", "Coding with John",
+          "Telusko", "Bro Code", "Derek Banas", "Neso Academy", "Abdul Bari", "Kunal Kushwaha", "Amigoscode", "Dave Gray",
+          "The Coding Train", "Jonas Schmedtmann", "Academind", "NetNinja", "Brad Traversy"]

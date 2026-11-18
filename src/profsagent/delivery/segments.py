@@ -25,7 +25,8 @@ from profsagent.delivery.coverage import windows_from_transcript
 from profsagent.delivery.models import ClipVerdict, VideoReading
 from profsagent.llm.prompts import load_prompt
 
-TS = re.compile(r"^\s*[\[(]?((?:\d{1,2}:)?\d{1,2}:\d{2})[\])]?\s*[-–—:|]?\s*(.+?)\s*$")
+# 17 Nov: a bullet or emoji may come first ("- 0:00:00 Intro" is freeCodeCamp's format, "⌨️ (0:00:00) Intro" its older one)
+TS = re.compile(r"^\s*(?:[^\w\s(\[]{1,3}\s*)?[\[(]?((?:\d{1,2}:)?\d{1,2}:\d{2})[\])]?\s*[-–—:|]?\s*(.+?)\s*$")
 
 
 def vcfg() -> dict:

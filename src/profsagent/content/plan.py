@@ -67,6 +67,12 @@ def plan_problems(plan: DeckPlan, lecture: dict, cfg: dict, values: dict | None)
     tail = [s.kind for s in slides[-2:]]
     if slides and "summary" not in tail:
         err("plan", "the deck does not end with a summary slide")
+    summaries = [k for k, s in enumerate(slides, FIRST_CONTENT_SLIDE) if s.kind == "summary" or s.role == "summary"]
+    if len(summaries) > 1:
+        err(f"plan slide {summaries[0]}", f"{len(summaries)} summary slides (plan slides {summaries}): plan one and use the "
+                                          "others for what the lecture has not taught yet")
+    if (lecture.get("depth") or "standard") != "basic" and not plan.key_results:
+        err("plan", "no key_results: list what a standard treatment of this topic must teach before planning the slides")
     first = next((s for s in slides if s.kind != "recap"), None)
     if first is not None and first.role != "opening":
         err(f"plan slide {FIRST_CONTENT_SLIDE + slides.index(first)}", "the first content slide must be the opening: a "

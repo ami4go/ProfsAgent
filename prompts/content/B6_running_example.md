@@ -1,6 +1,6 @@
 ---
 id: B6
-version: 0.4.0
+version: 0.5.0
 stage: Phase 2 · B · the lecture's running example, its numbers computed by code
 model_class: generate
 temperature: 0.2
@@ -63,6 +63,11 @@ When numeric:
   {"name": "d_C_round2", "meaning": "tentative distance of C after relaxing B's edges: min(d(C), d(B) + w(B, C))"}.
   Usually 15-60 values.
 {% if (lecture.get("depth") or "standard") == "high" %}- Content depth is HIGH: also compute what the deeper parts need on the example: the quantities behind each condition, assumption or bound and the bound itself, the pieces of the other views or approaches, and a case where a condition fails.
+- When a property the lecture teaches only shows at a size too large to work by hand (a trend over many steps, a
+  spread over scales, a limit, an average over many cases), compute that larger case as well, from the same code and
+  conventions, for plots and for stating the property; keep the hand-sized case for the step-by-step slides. Say in
+  `names` which values belong to which case.
+{% endif %}{% if lecture.get("professor_note") %}- The professor's note, `lecture.professor_note`, is their priority: compute what the slides that serve it will need.
 {% endif %}
 
 Output one JSON object only. Numeric:

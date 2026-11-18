@@ -174,6 +174,8 @@ class Deck:
 
     def _flow(self, slide, steps: list[str], x, y, w, h):
         steps = [s for s in steps if s.strip()]
+        if not steps:                              # an empty flow figure: nothing to draw (was ZeroDivisionError)
+            return
         gap = Inches(0.35)
         bh = Emu(int(min(Inches(0.95), (h - gap * (len(steps) - 1)) / len(steps))))
         top = y + (h - (bh * len(steps) + gap * (len(steps) - 1))) // 2
@@ -211,7 +213,12 @@ class Deck:
             r.font.color.rgb, r.font.size = self.c["accent_soft"], Pt(11)
 
     def _table(self, slide, rows: list[list[str]], x, y, w, h):
-        t = slide.shapes.add_table(len(rows), len(rows[0]), x, y, w, min(h, Inches(0.55) * len(rows))).table
+        rows = [r for r in rows if r]
+        if not rows:                               # an empty table figure: nothing to draw (was IndexError)
+            return
+        cols = max(len(r) for r in rows)           # ragged rows: pad to the widest
+        rows = [list(r) + [""] * (cols - len(r)) for r in rows]
+        t = slide.shapes.add_table(len(rows), cols, x, y, w, min(h, Inches(0.55) * len(rows))).table
         for i, row in enumerate(rows):
             for j, val in enumerate(row):
                 cell = t.cell(i, j)
@@ -361,7 +368,7 @@ def render_markdown(deck: LectureDeck, frame: dict, sources: dict[str, dict]) ->
             L += ["", " → ".join(f.steps)]
         elif f.kind == "code":
             L += ["", f"```{f.language}", f.code.rstrip(), "```"]
-        elif f.kind == "table":
+        elif f.kind == "table" and f.rows:          # an empty table has nothing to write (was IndexError)
             L += ["", "| " + " | ".join(f.rows[0]) + " |", "|" + "---|" * len(f.rows[0])] + ["| " + " | ".join(r) + " |" for r in f.rows[1:]]
         elif f.kind == "plot" and f.plot:
             L += ["", f"*Plot ({f.plot.y_label or 'y'} against {f.plot.x_label or 'x'}): "

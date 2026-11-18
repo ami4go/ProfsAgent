@@ -24,7 +24,7 @@ from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.oxml.ns import qn
 from pptx.util import Emu, Inches, Pt
 
-from profsagent.content.models import FIRST_CONTENT_SLIDE, Figure, LectureDeck, Quiz, Slide
+from profsagent.content.models import FIRST_CONTENT_SLIDE, Block, Figure, LectureDeck, Quiz, Slide
 
 BADGE = {"example": "Example", "worked_problem": "Worked problem", "activity": "Activity", "check": "Check", "summary": "Summary",
          "recap": "Recap", "watch": "Watch", "debrief": "Debrief", "bridge": "Bridge", "simulation": "Try it", "quiz": "Review quiz", "answer": "Answer"}
@@ -167,6 +167,8 @@ class Deck:
             self._code(slide, f, x, y, w, h - cap_h)
         elif f.kind == "table":
             self._table(slide, f.rows, x, y, w, h - cap_h)
+        elif f.kind == "plot":                     # only without the browser: the plot is in slides.html / .pdf
+            self._text(slide, x, y, w, Inches(0.8), "[Plot: see slides.pdf]", 16, "muted", align=PP_ALIGN.CENTER)
         if f.caption:
             self._text(slide, x, y + h - cap_h, w, cap_h, f.caption, 12, "muted", align=PP_ALIGN.CENTER)
 
@@ -254,7 +256,17 @@ class Deck:
             r.runs[0].font.color.rgb = self.c["accent_soft"]
             self._text(slide, x + Inches(0.85), oy, w - Inches(1.1), oh, opt, size, anchor=MSO_ANCHOR.MIDDLE)
 
-    def content_slide(self, sl: Slide):
+    def _picture(self, slide, png: Path, x, y, w, h):
+        """A slide body typeset in the browser (content/slides_html.py), scaled to fit the box and centred across it."""
+        from PIL import Image
+        with Image.open(png) as im:
+            pw, ph = im.size
+        k = min(w / pw, h / ph)
+        slide.shapes.add_picture(str(png), x + int((w - pw * k) / 2), y, int(pw * k), int(ph * k))
+
+    def content_slide(self, sl: Slide, picture: Path | None = None):
+        """`picture`: the slide's body as rendered with typeset maths (slides_html.measure); without it, formulas and
+        derivation steps are written as LaTeX source text."""
         notes = sl.notes
         if sl.quiz:
             q = sl.quiz
@@ -263,6 +275,9 @@ class Deck:
         self._chrome(s, sl.title, BADGE.get(sl.kind), sl.sources)
         m, top = Inches(0.6), Inches(1.6)
         body_h = self.H - top - Inches(0.75)
+        if picture:                                    # the browser's body includes the watch / open panel
+            self._picture(s, picture, m, top, self.W - 2 * m, body_h)
+            return
         show = sl.clip if sl.kind == "watch" else sl.link if sl.kind == "simulation" else ""
         if show:                                       # what students watch or open, above the bullets
             ph = Inches(0.9)
@@ -272,30 +287,44 @@ class Deck:
             self._text(s, m + Inches(1.55), top, tw, ph, show, self._fitted("panel", [show], tw, ph, 18, 12), anchor=MSO_ANCHOR.MIDDLE)
             top, body_h = top + ph + Inches(0.25), body_h - ph - Inches(0.25)
         has_fig = sl.figure.kind != "none"
+        bullets = sl.bullets + [line for b in sl.blocks for line in block_lines(b)]
         if sl.quiz:
             self._quiz(s, sl.quiz, m + Inches(0.8), top, self.W - 2 * m - Inches(1.6), body_h)
-        elif has_fig and sl.bullets:
+        elif has_fig and bullets:
             left_w = int((self.W - 2 * m) * TEXT_SHARE.get(sl.figure.kind, 0.52))
-            self._bullets(s, m, top, left_w, body_h, sl.bullets)
+            self._bullets(s, m, top, left_w, body_h, bullets)
             self._figure(s, sl.figure, m + left_w + Inches(0.4), top, self.W - 2 * m - left_w - Inches(0.4), body_h)
         elif has_fig:
             self._figure(s, sl.figure, m + Inches(1.2), top, self.W - 2 * m - Inches(2.4), body_h)
         else:
-            self._bullets(s, m, top, self.W - 2 * m, body_h, sl.bullets)
+            self._bullets(s, m, top, self.W - 2 * m, body_h, bullets)
 
     def save(self, path: Path) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         self.prs.save(path)
 
 
-def render_pptx(deck: LectureDeck, frame: dict, sources: dict[str, dict], cfg: dict, path: Path) -> tuple[int, list[dict]]:
-    """`frame`: title-slide and objectives text decided by code (generate.frame). Returns the number of slides and the
-    overflows ({slide, what}: text that does not fit even at the smallest size)."""
+def block_lines(b: Block) -> list[str]:
+    """A teaching block as plain lines (the .pptx without a browser, and the handout's fallback)."""
+    if b.kind == "math":
+        return [b.latex]
+    if b.kind == "steps":
+        return [f"{s.latex}" + (f"   ({s.why})" if s.why else "") for s in b.steps]
+    if b.kind == "definition":
+        return [f"{b.term}: {b.text}"]
+    return [("Think: " if b.kind == "think" else "") + b.text]
+
+
+def render_pptx(deck: LectureDeck, frame: dict, sources: dict[str, dict], cfg: dict, path: Path,
+                pictures: dict[int, Path] | None = None) -> tuple[int, list[dict]]:
+    """`frame`: title-slide and objectives text decided by code (generate.frame). `pictures`: {slide number: png} of
+    slide bodies typeset in the browser (slides with maths). Returns the number of slides and the overflows ({slide,
+    what}: text that does not fit even at the smallest size; not estimated for a slide drawn as a picture)."""
     d = Deck(cfg, frame["footer"])
     d.title_slide(frame["course"], deck.title, frame["subtitle"], frame["draft_note"])
     d.list_slide("By the end of this lecture you can", frame["objectives"], frame["objectives_notes"])
-    for sl in deck.slides:
-        d.content_slide(sl)
+    for n, sl in enumerate(deck.slides, FIRST_CONTENT_SLIDE):
+        d.content_slide(sl, (pictures or {}).get(n))
     cited = [sid for sid in sources if any(sid in sl.sources for sl in deck.slides)]
     if cited:
         d.list_slide("References", [f"[{sid}] {ref_line(sources[sid])}" for sid in cited], start=18)
@@ -318,6 +347,15 @@ def render_markdown(deck: LectureDeck, frame: dict, sources: dict[str, dict]) ->
         if sl.clip or sl.link:
             L += [f"> **{PANEL.get(sl.kind, 'SEE')}:** {sl.clip or sl.link}", ""]
         L += [f"- {b}" for b in sl.bullets]
+        for b in sl.blocks:
+            if b.kind == "math":
+                L += ["", f"$$ {b.latex} $$"]
+            elif b.kind == "steps":
+                L += [""] + [f"{i}. $ {st.latex} $" + (f"  *({st.why})*" if st.why else "") for i, st in enumerate(b.steps, 1)]
+            elif b.kind == "definition":
+                L += ["", f"**{b.term}**: {b.text}"]
+            else:
+                L += ["", f"> {'**Think:** ' if b.kind == 'think' else ''}{b.text}"]
         f = sl.figure
         if f.kind == "flow":
             L += ["", " → ".join(f.steps)]
@@ -325,6 +363,9 @@ def render_markdown(deck: LectureDeck, frame: dict, sources: dict[str, dict]) ->
             L += ["", f"```{f.language}", f.code.rstrip(), "```"]
         elif f.kind == "table":
             L += ["", "| " + " | ".join(f.rows[0]) + " |", "|" + "---|" * len(f.rows[0])] + ["| " + " | ".join(r) + " |" for r in f.rows[1:]]
+        elif f.kind == "plot" and f.plot:
+            L += ["", f"*Plot ({f.plot.y_label or 'y'} against {f.plot.x_label or 'x'}): "
+                      + "; ".join(sr.label or sr.kind for sr in f.plot.series) + " — drawn in slides.pdf*"]
         if f.caption:
             L += ["", f"*{f.caption}*"]
         if sl.quiz:

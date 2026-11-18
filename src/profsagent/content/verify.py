@@ -133,7 +133,8 @@ def check_code(deck: LectureDeck) -> tuple[list[dict], list[dict]]:
         f = s.figure
         if f.kind != "code" or not f.code.strip():
             continue
-        lang, sid = LANG.get(f.language.strip().lower()), f"slide {i}"
+        guess = "python" if not f.language.strip() and re.search(r"^\s*(import |from \w+ import |def )", f.code, re.M) else ""
+        lang, sid = LANG.get((f.language or guess).strip().lower()), f"slide {i}"
         available, checker = CHECKERS.get(lang, (lambda: False, None))
         if not available():
             why = f"no checker for '{f.language or 'unnamed'}' on this machine" + ("; install a JDK to check Java" if lang == "java" else "")
@@ -154,7 +155,7 @@ def check_grounding(deck: LectureDeck, sources: dict[str, dict], floor: float, e
     if not keys or not cites:
         return []
     src = embed([f"{sources[k]['title']}" for k in keys])
-    slides = embed([f"{s.title}. {' '.join(s.bullets)}" for _, s in cites])
+    slides = embed([f"{s.title}. {' '.join(s.bullets + [b.term + ' ' + b.text for b in s.blocks])}" for _, s in cites])
     out = []
     for (i, s), e in zip(cites, slides):
         sims = src @ e

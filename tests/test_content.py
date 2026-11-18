@@ -1,6 +1,7 @@
 """Phase 2 deliverable B (content/): deck checks, rendering and generate_material, offline with a fake LLM and the
 committed clean CS-601 design (writes only to a temporary folder)."""
 import json
+import re
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -13,7 +14,7 @@ from pptx import Presentation
 
 from profsagent.content import generate as G
 from profsagent.content.checks import check_deck
-from profsagent.content.models import Figure, LectureDeck, Quiz, Slide
+from profsagent.content.models import Block, DeckPlan, Example, Figure, LectureDeck, Plot, Quiz, Series, Slide, Step, ValueName
 from profsagent.content.render import fit
 from profsagent.delivery.brief import build_briefs
 
@@ -108,11 +109,25 @@ def test_fit_shrinks_long_text_and_reports_what_cannot_fit():
 # ------------------------------------------------------------------ generate_material
 class FakeLLM:
     """Returns the given decks (B1) and reviews (B2) in order; records each prompt and the models it was told to avoid."""
-    def __init__(self, decks, reviews=()):
+    def __init__(self, decks, reviews=(), examples=(), plans=(), slides=()):
         self.decks, self.reviews, self.calls, self.excluded = decks, list(reviews), [], []
+        self.examples, self.example_calls = list(examples), []
+        self.plans, self.slides, self.plan_calls, self.slide_calls = list(plans), list(slides), [], []
 
     def structured(self, *, system, user, model_cls, role, temperature, prompt_id, prompt_version, run_id=None,
                    exclude_models=frozenset()):
+        rec = SimpleNamespace(endpoint="fake:model:k1", prompt_tokens=5, output_tokens=5, latency_s=0.1)
+        if prompt_id == "B7":
+            self.plan_calls.append(user)
+            return self.plans.pop(0), rec
+        if prompt_id == "B8":
+            self.slide_calls.append(user)
+            s = self.slides.pop(0)
+            return (s(user) if callable(s) else s), rec
+        if prompt_id == "B6":                      # the running example: none unless a test gives one
+            self.example_calls.append(user)
+            ex = self.examples.pop(0) if self.examples else Example(numeric=False)
+            return ex, SimpleNamespace(endpoint="fake:model:k1", prompt_tokens=5, output_tokens=5, latency_s=0.1)
         self.calls.append(user)
         self.excluded.append(set(exclude_models))
         if prompt_id == "B2":
@@ -129,6 +144,9 @@ def run(st, tmp_path, monkeypatch):
     monkeypatch.setattr(G, "out_dir", lambda run_id: tmp_path)
     monkeypatch.setattr("profsagent.content.review.out_dir", lambda run_id: tmp_path)
     monkeypatch.setattr(G, "verify", lambda deck, sources, cfg: ([], []))      # no embedding model in these tests
+    monkeypatch.setattr(G, "measure", lambda path, cfg, pdf=None, shots=None: {"slides": []})   # no browser here
+    real = G.cfg()
+    monkeypatch.setattr(G, "cfg", lambda: {**real, "deck": {**real["deck"], "mode": "deck"}})   # one-call decks (B1)
     return tmp_path
 
 
@@ -499,6 +517,338 @@ def test_a_style_is_learned_from_a_deck_and_used_as_the_template(tmp_path, monke
     assert len(out.slides) == n and "How We Build" not in " ".join(sh.text_frame.text for s in out.slides for sh in s.shapes if sh.has_text_frame)
 
 
+# ------------------------------------------------------------------ maths and the HTML deck (content/slides_html.py)
+def maths_deck(lecture: dict) -> LectureDeck:
+    deck = good_deck(lecture)
+    deck.slides[0].bullets = [r"The model \(\hat{y} = w_0 + w_1 x\) predicts marks"]
+    deck.slides[0].blocks = [
+        Block(kind="definition", term="Residual", text=r"\(e_i = y_i - \hat{y}_i\)"),
+        Block(kind="steps", steps=[Step(latex=r"J = \frac{1}{n}\sum_i (y_i - w_0 - w_1 x_i)^2"),
+                                   Step(latex=r"\frac{\partial J}{\partial w_0} = -\frac{2}{n}\sum_i (y_i - w_0 - w_1 x_i)",
+                                        why="chain rule")]),
+        Block(kind="think", text="Why square the residuals?")]
+    return deck
+
+
+def test_maths_blocks_are_checked_and_latex_braces_are_not_template_holes(lecture):
+    deck = maths_deck(lecture)
+    assert codes(check_deck(deck, lecture, {"C1"}, CFG), "error") == set()           # \hat{y}, \frac{1}{n}: not holes
+    deck.slides[1].blocks = [Block(kind="steps", steps=[Step(latex="a = b")])]                       # one step
+    deck.slides[2].blocks = [Block(kind="steps", steps=[Step(latex="a = b"), Step(latex="b = c")])]  # no reason
+    deck.slides[3].blocks = [Block(kind="math", latex=r"\frac{1}{2")]                               # unbalanced
+    deck.slides[4].bullets = [r"the mean \(\bar{x}"]                                                 # unclosed \(
+    deck.slides[5].bullets = [r"for {n} items, \(\sum_{i} x_i\)"]                                  # a real hole
+    deck.slides[6].figure = Figure(kind="table", rows=[["x", r"Predicted \hat{y}"], ["1", "2"]])  # LaTeX without \( \)
+    found = check_deck(deck, lecture, {"C1"}, CFG)
+    by = lambda code, sev: {x["nodes"][0] for x in found if x["code"] == code and x["severity"] == sev}  # noqa: E731
+    assert by("D-BLOCK", "error") == {"slide 4"} and by("D-BLOCK", "warning") == {"slide 5"}
+    assert by("D-MATH", "error") == {"slide 6", "slide 7", "slide 9"} and by("D-TEMPLATE", "error") == {"slide 8"}
+
+
+def test_latex_backslashes_the_model_left_unescaped_in_json_are_restored():
+    raw = '{"kind": "concept", "title": "T", "bullets": ["maps \\\\(\\\\mathbb{R} \\to (0,1)\\\\)", "line one\\nline two"],' \
+          ' "blocks": [{"kind": "steps", "steps": [{"latex": "\\frac{1}{2} \\beta"}, {"latex": "\\nabla J \\rho", "why": "x"}]}]}'
+    s = Slide.model_validate_json(raw)
+    assert s.bullets == [r"maps \(\mathbb{R} \to (0,1)\)", "line one\nline two"]      # a real newline in text stays
+    assert [st.latex for st in s.blocks[0].steps] == [r"\frac{1}{2} \beta", r"\nabla J \rho"]
+
+
+def test_the_html_deck_inlines_katex_only_when_the_deck_has_maths(lecture):
+    from profsagent.content.slides_html import deck_html
+    fr = {"course": "C", "subtitle": "s", "draft_note": "d", "objectives": ["o"], "footer": "f"}
+    plain = deck_html(good_deck(lecture), fr, {"C1": {"title": "Book", "year": 2020, "url": None}}, CFG)
+    assert "renderMathInElement" not in plain and 'id="s21"' in plain and "References" in plain   # 2 + 18 + refs
+    page = deck_html(maths_deck(lecture), fr, {}, CFG)
+    assert "renderMathInElement" in page and "data:font/woff2;base64," in page and "url(fonts/" not in page
+    assert r"\[J = \frac{1}{n}" in page and '<span class="why">chain rule</span>' in page and "Think:" in page
+
+
+def test_layout_findings_turn_measurements_into_errors():
+    from profsagent.content.slides_html import layout_findings
+    rep = {"slides": [{"slide": 3, "scale": 0.8, "overflow_px": 40, "title_lines": 3,
+                       "math_errors": [{"tex": r"\frac{1}{2", "message": "Expected '}'"}]},
+                      {"slide": 4, "scale": 0.9, "overflow_px": 0, "title_lines": 1, "math_errors": []}]}
+    found = layout_findings(rep)
+    assert {(x["code"], x["severity"]) for x in found} == {("D-MATH", "error"), ("D-OVERFLOW", "error"), ("D-OVERFLOW", "warning")}
+    assert all(x["nodes"] == ["slide 3"] and x["stage"] == "render" for x in found)
+
+
+def test_measured_overflow_goes_back_to_b1_and_maths_slides_become_pictures_in_the_pptx(run, lecture, monkeypatch):
+    from PIL import Image
+    seen = []
+
+    def fake_measure(path, cfg, pdf=None, shots=None):
+        seen.append(dict(shots or {}))
+        over = 0 if len(seen) > 1 else 50                          # the first draft overflows on slide 3
+        for png in (shots or {}).values():
+            png.parent.mkdir(parents=True, exist_ok=True)
+            Image.new("RGB", (1164, 562), "white").save(png)
+        return {"slides": [{"slide": 3, "scale": 0.8, "overflow_px": over, "title_lines": 1, "math_errors": []}],
+                **({"shots": {n: str(p) for n, p in shots.items()}} if shots else {})}
+    monkeypatch.setattr(G, "measure", fake_measure)
+    llm = FakeLLM([maths_deck(lecture), maths_deck(lecture)])
+    m = G.generate_material("cs601", lecture["lecture_id"], llm=llm, log=lambda _: None)
+    assert len(llm.calls) == 2 and "D-OVERFLOW" in llm.calls[1] and m["errors"] == 0
+    assert list(seen[-1]) == [3]                                    # only the slide with maths is cut out
+    d = run / "material" / lecture["lecture_id"]
+    prs = Presentation(str(d / "slides.pptx"))
+    assert any(sh.shape_type == 13 for sh in prs.slides[2].shapes)  # 13: a picture
+    assert "slides_html" in m["files"] and (d / "slides.html").exists()
+    notes = (d / "notes.md").read_text(encoding="utf-8")
+    assert r"$ \frac{\partial J}{\partial w_0}" in notes and "*(chain rule)*" in notes
+
+
+def test_without_a_browser_the_deck_is_still_written_and_the_gap_is_reported(run, lecture, monkeypatch):
+    monkeypatch.setattr(G, "measure", lambda path, cfg, pdf=None, shots=None: {"error": "no Chrome"})
+    m = G.generate_material("cs601", lecture["lecture_id"], llm=FakeLLM([maths_deck(lecture)]), log=lambda _: None)
+    assert m["errors"] == 0 and any(x["code"] == "D-RENDER" and "no Chrome" in x["message"] for x in m["findings"])
+    prs = Presentation(str(run / "material" / lecture["lecture_id"] / "slides.pptx"))
+    text = " ".join(sh.text_frame.text for sh in prs.slides[2].shapes if sh.has_text_frame)
+    assert "chain rule" in text and "Residual:" in text            # the blocks as text
+
+
+def test_chrome_typesets_the_maths_and_measures_the_slides(tmp_path, lecture):
+    """The real browser (skipped where Playwright or Chrome is missing)."""
+    from profsagent.content.slides_html import deck_html, layout_findings, measure
+    deck = maths_deck(lecture)
+    deck.slides[1].blocks = [Block(kind="math", latex=r"\frac{1}{2")]                        # KaTeX cannot finish it
+    deck.slides[2].bullets = ["word " * 45] * 14                                              # far too much text
+    fr = {"course": "C", "subtitle": "s", "draft_note": "d", "objectives": ["o"], "footer": "f"}
+    (tmp_path / "slides.html").write_text(deck_html(deck, fr, {}, CFG), encoding="utf-8")
+    rep = measure(tmp_path / "slides.html", CFG, pdf=tmp_path / "slides.pdf", shots={3: tmp_path / "s3.png"})
+    if rep.get("error"):
+        pytest.skip(rep["error"])
+    found = {(x["code"], x["nodes"][0]) for x in layout_findings(rep) if x["severity"] == "error"}
+    assert found == {("D-MATH", "slide 4"), ("D-OVERFLOW", "slide 5")}
+    assert (tmp_path / "slides.pdf").stat().st_size > 10_000 and (tmp_path / "s3.png").exists()
+
+
+# ------------------------------------------------------------------ the running example (content/example.py)
+EX_CODE = """import numpy as np
+x = np.array([1, 2, 3, 4]); y = np.array([2, 3, 5, 6])
+X = np.column_stack([np.ones(4), x])
+w = np.linalg.solve(X.T @ X, X.T @ y)
+values = {"x": x, "y": y, "xtx": X.T @ X, "w0": w[0], "w1": w[1], "pred": X @ w}"""
+
+
+def test_example_code_runs_isolated_and_unsafe_code_is_refused():
+    from profsagent.content.example import run_code
+    v = run_code(EX_CODE)
+    assert v["x"] == [1, 2, 3, 4] and v["xtx"] == [[4, 10], [10, 30]] and abs(v["w1"] - 1.4) < 1e-9
+    eig = run_code("import numpy as np\nvalues = {'eig': np.linalg.eig(np.array([[2.0, 5.0], [5.0, 15.0]]))[0].astype(complex)}")
+    assert sorted(round(x, 3) for x in eig["eig"]) == [0.299, 16.701]             # real values typed as complex
+    for bad, why in [("import os\nvalues = {}", "import of os"), ("values = open('f').read()", "`open`"),
+                     ("v = (1).__class__\nvalues = {}", "__class__"), ("x = 1", "assign a dict"),
+                     ("values = {'a': float('inf')}", "bad values"), ("values = {'A b': 1}", "not a plain name"),
+                     ("raise RuntimeError('boom')\nvalues = {}", "boom")]:
+        with pytest.raises(ValueError, match=re.escape(why)):
+            run_code(bad, timeout_s=10)
+
+
+def test_values_are_filled_as_text_or_maths_and_unknown_names_are_reported(lecture):
+    from profsagent.content.example import fill_values, fmt, run_code
+    v = run_code(EX_CODE)
+    assert fmt(0.49999999999999856) == "0.5" and fmt([1.0, 2.5]) == "(1, 2.5)" and fmt(1234567.0) == "1234567"
+    deck = good_deck(lecture)
+    deck.slides[0].bullets = [r"slope \(w_1 = [[w1]]\), predictions [[pred]]", "[[nope]] marks"]
+    deck.slides[0].blocks = [Block(kind="steps", steps=[Step(latex="X^T X = [[xtx]]"), Step(latex="w_0 = [[w0]]", why="solve")])]
+    filled, unknown = fill_values(deck, v)
+    s = filled.slides[0]
+    assert s.bullets == [r"slope \(w_1 = 1.4\), predictions (1.9, 3.3, 4.7, 6.1)", "[[nope]] marks"] and unknown == {"nope"}
+    assert s.blocks[0].steps[0].latex == r"X^T X = \begin{bmatrix}4 & 10 \\ 10 & 30\end{bmatrix}"
+    found = check_deck(filled, lecture, {"C1"}, CFG, v)
+    assert [x["nodes"] for x in found if x["code"] == "D-VALUE"] == [["slide 3"]]
+
+
+def test_plots_name_the_examples_lists_and_are_drawn_by_code(lecture):
+    from profsagent.content.example import run_code
+    from profsagent.content.slides_html import deck_html, plot_problems
+    v = run_code(EX_CODE)
+    good = Plot(x_label="hours", y_label="marks", series=[Series(kind="segments", x="x", y="y", y2="pred"),
+                                                         Series(kind="points", x="x", y="y", label="students")])
+    assert plot_problems(good, v) == []
+    flat = Figure.model_validate({"kind": "plot", "x_label": "hours", "series": [{"kind": "points", "x": "x", "y": "y"}]})
+    assert flat.plot.x_label == "hours" and flat.plot.series[0].y == "y"          # a flattened plot is kept
+    assert "w1 is not a list" in plot_problems(Plot(series=[Series(kind="line", x="x", y="w1")]), v)[0]
+    assert "different lengths" in plot_problems(Plot(series=[Series(kind="line", x="x", y="pred")]), {**v, "pred": [1, 2]})[0]
+    deck = good_deck(lecture)
+    deck.slides[0].figure = Figure(kind="plot", plot=good)
+    deck.slides[1].figure = Figure(kind="plot", plot=Plot(series=[Series(kind="points", x="x", y="missing")]))
+    errs = {x["nodes"][0] for x in check_deck(deck, lecture, {"C1"}, CFG, v) if x["code"] == "D-FIGURE"}
+    assert errs == {"slide 4"}
+    fr = {"course": "C", "subtitle": "s", "draft_note": "d", "objectives": ["o"], "footer": "f"}
+    page = deck_html(deck, fr, {}, CFG, v)
+    assert page.count('<svg class="plot"') == 1 and page.count("<circle") == 4 and "students</span>" in page
+
+
+def test_generate_runs_the_example_first_and_fills_its_numbers_into_the_slides(run, lecture):
+    ex = Example(numeric=True, title="Study hours", story="Four students.", code=EX_CODE,
+                 names=[ValueName(name=n, meaning=n) for n in ("x", "y", "xtx", "w0", "w1", "pred")])
+    deck = good_deck(lecture)
+    deck.slides[0].bullets = [r"The fitted slope is \([[w1]]\)"]
+    deck.slides[1].figure = Figure(kind="plot", plot=Plot(series=[Series(kind="points", x="x", y="y")]))
+    llm = FakeLLM([deck], examples=[ex])
+    m = G.generate_material("cs601", lecture["lecture_id"], llm=llm, log=lambda _: None)
+    d = run / "material" / lecture["lecture_id"]
+    assert len(llm.example_calls) == 1 and '"name": "w1"' in llm.calls[0] and '"value": "1.4"' in llm.calls[0]
+    assert m["errors"] == 0 and m["example"] == {"title": "Study hours", "values": 6}
+    assert json.loads((d / "deck.json").read_text(encoding="utf-8"))["slides"][0]["bullets"] == [r"The fitted slope is \(1.4\)"]
+    assert json.loads((d / "example.json").read_text(encoding="utf-8"))["values"]["w0"] == pytest.approx(0.5)
+    assert '<svg class="plot"' in (d / "slides.html").read_text(encoding="utf-8")
+
+
+def test_failing_example_code_is_repaired_twice_then_the_deck_goes_on_without_it(run, lecture):
+    broken = Example(numeric=True, title="t", story="s", code="import os\nvalues = {}", names=[])
+    llm = FakeLLM([good_deck(lecture)], examples=[broken, broken, broken])
+    m = G.generate_material("cs601", lecture["lecture_id"], llm=llm, log=lambda _: None)
+    assert len(llm.example_calls) == 3 and "import of os" in llm.example_calls[2]
+    assert m["example"] is None and any(x["code"] == "D-EXAMPLE" for x in m["findings"]) and m["errors"] == 0
+
+
+def test_arithmetic_the_model_did_itself_is_checked(lecture):
+    from profsagent.content.arith import wrong_parts
+    assert wrong_parts(r"SS = 0.2^2 + (-0.3)^2 + 0.2^2 + (-0.3)^2 + 0.2^2 = 0.6")[2] == pytest.approx(0.3)
+    assert wrong_parts(r"R^2 = 1 - \frac{0.6}{22.8} = 1 - 0.0263 = 0.9868")[0] == "0.9868"
+    for ok in [r"w_1 = \frac{S_{xy}}{S_{xx}} = \frac{15}{10} = 1.5", r"w_0 = 6.8 - 1.5 \times 3 = 2.3",
+               r"w^{(1)} = 0 - 0.01(-13.6) = 0.136", r"\eta < \frac{2}{16.701} = 0.12", r"x = (1, 2, 3)",
+               r"\frac{2}{16.701} \approx 0.12", r"2^{100000} = 1", r"J = \frac{1}{n}\sum_i e_i^2"]:
+        assert wrong_parts(ok) is None, ok
+    deck = good_deck(lecture)
+    deck.slides[0].blocks = [Block(kind="steps", steps=[Step(latex="MSE = SS/n"), Step(latex=r"= \frac{0.6}{5} = 0.06", why="n = 5")])]
+    deck.slides[1].bullets = [r"so \(R^2 = 1 - \frac{0.2}{10} = 0.98\)"]
+    found = [x for x in check_deck(deck, lecture, {"C1"}, CFG) if x["code"] == "D-ARITH"]
+    assert [x["nodes"] for x in found] == [["slide 3"]] and "is 0.12" in found[0]["message"]
+
+
+# ------------------------------------------------------------------ plan, then one slide per call (content/plan.py)
+def good_plan(lecture: dict, n: int = 16) -> DeckPlan:
+    from profsagent.content.models import DeckPlan, PlanSlide
+    los = [lo["id"] for lo in lecture["learning_outcomes"]]
+    roles = (["opening", "derivation", "worked_example"] + ["intuition"] * (n - 8)
+             + ["failure", "worked_example", "check", "check", "summary"])
+    kinds = {"worked_example": "worked_problem", "check": "check", "summary": "summary"}
+    return DeckPlan(title="T", opening_question="What mark for 2.5 hours?", slides=[
+        PlanSlide(kind=kinds.get(r, "concept"), title=f"Planned {k}", role=r, teaches=f"idea {k}", los=los,
+                  values=["x"] if r == "worked_example" else [], answers_opening=(k == n - 2), minutes=lecture["minutes"] / n)
+        for k, r in enumerate(roles)])
+
+
+def written(user: str) -> Slide:
+    """What B8 returns for the slide its prompt asks for: a quiz on a check slide, else two bullets."""
+    n = int(re.search(r"Write slide (\d+)\.", user).group(1))
+    if '"kind": "check"' in user.split('<context name="slide">')[1]:
+        return Slide(kind="check", title="x", quiz=Quiz(question="Which?", options=["a", "b", "c"], answer=0, explanation="a"), notes="n")
+    return Slide(kind="concept", title="ignored: the plan's title is kept", bullets=[f"point of slide {n}", "more"], notes="n")
+
+
+def test_the_plan_is_checked_before_any_slide_is_written(lecture):
+    from profsagent.content.plan import plan_problems
+    v = {"x": [1, 2]}
+    assert plan_problems(good_plan(lecture), lecture, CFG, v) == []
+    p = good_plan(lecture)
+    p.slides[0].role = "definition"                               # starts with a definition, not the question
+    p.slides[2].role = "intuition"                                # the derivation has no worked example after it
+    p.slides[-5].role = "intuition"                               # no failure slide
+    p.slides[-2].answers_opening = False                          # the opening question is never answered
+    p.slides[3].values = ["nope"]
+    for s in p.slides:
+        s.los = []                                                # the outcome is taught nowhere
+    msgs = " | ".join(x["message"] for x in plan_problems(p, lecture, CFG, v))
+    for want in ["must be the opening", "not followed by a worked_example", "no limits or misconception slide", "answers the opening",
+                 "does not have: ['nope']", "is taught by no slide"]:
+        assert want in msgs, want
+
+
+def test_per_slide_mode_plans_then_writes_each_slide_with_what_came_before(run, lecture, monkeypatch):
+    real = G.cfg()
+    monkeypatch.setattr(G, "cfg", lambda: {**real, "deck": {**real["deck"], "mode": "per_slide"}, "example": {"enabled": False}})
+    plan = good_plan(lecture)
+    llm = FakeLLM([], plans=[plan], slides=[written] * len(plan.slides))
+    m = G.generate_material("cs601", lecture["lecture_id"], llm=llm, log=lambda _: None)
+    d = run / "material" / lecture["lecture_id"]
+    assert m["mode"] == "per_slide" and m["errors"] == 0 and len(llm.plan_calls) == 1 and llm.calls == []
+    assert len(llm.slide_calls) == len(plan.slides) == m["content_slides"]
+    assert '"title": "Planned 0"' in llm.slide_calls[1] and "point of slide 3" in llm.slide_calls[1]   # sees slide 3
+    deck = json.loads((d / "deck.json").read_text(encoding="utf-8"))
+    assert [s["title"] for s in deck["slides"]][:2] == ["Planned 0", "Planned 1"]                    # the plan's titles
+    assert json.loads((d / "plan.json").read_text(encoding="utf-8"))["opening_question"] == "What mark for 2.5 hours?"
+
+
+def test_only_the_faulty_slide_is_rewritten(run, lecture, monkeypatch):
+    real = G.cfg()
+    monkeypatch.setattr(G, "cfg", lambda: {**real, "deck": {**real["deck"], "mode": "per_slide"}, "example": {"enabled": False}})
+    plan = good_plan(lecture)
+    wrong = Slide(kind="concept", title="x", notes="n", blocks=[Block(kind="steps", steps=[
+        Step(latex="SS = 0.2^2 + 0.3^2 = 0.6"), Step(latex="MSE = SS/2", why="divide by n")])])
+    fixed = Slide(kind="concept", title="x", notes="n", bullets=["SS is the sum of squared residuals"])
+    slides = [written] * len(plan.slides)
+    slides[1] = wrong
+    llm = FakeLLM([], plans=[plan], slides=slides + [fixed])
+    m = G.generate_material("cs601", lecture["lecture_id"], llm=llm, log=lambda _: None)
+    assert m["errors"] == 0 and len(llm.slide_calls) == len(plan.slides) + 1          # one rewrite, of slide 4 only
+    assert "Write slide 4." in llm.slide_calls[-1] and "D-ARITH" in llm.slide_calls[-1] and "0.6" in llm.slide_calls[-1]
+
+
+def test_the_professor_sets_the_slide_count_and_the_content_depth(run, lecture, monkeypatch):
+    from profsagent.content.checks import content_range, slide_range
+    assert content_range(2, CFG, "high") == (28, 40) and content_range(2, CFG) == (16, 28)      # 2 h at each depth
+    assert slide_range({**lecture, "content_slides": 20}, CFG) == (20, 20)
+    real = G.cfg()
+    monkeypatch.setattr(G, "cfg", lambda: {**real, "deck": {**real["deck"], "mode": "per_slide"}, "example": {"enabled": False}})
+    monkeypatch.setattr(G, "gather_sources", lambda *a, **k: {})                                # no references slide
+    plan = good_plan(lecture, n=18)
+    llm = FakeLLM([], plans=[plan], slides=[written] * 18)
+    m = G.generate_material("cs601", lecture["lecture_id"], {"slides": 20, "depth": "high"}, llm=llm, log=lambda _: None)
+    assert '"content_slides": 18' in llm.plan_calls[0] and '"depth": "high"' in llm.plan_calls[0]
+    assert m["slides"] == 20 and m["content_slides"] == 18 and m["depth"] == "high" and m["slides_asked"] == 20
+    assert m["errors"] == 0
+    plan_short = good_plan(lecture, n=16)                                  # 16 planned, 18 asked: the plan is sent back
+    llm = FakeLLM([], plans=[plan_short, plan], slides=[written] * 18)
+    m = G.generate_material("cs601", lecture["lecture_id"], {"slides": 20}, llm=llm, log=lambda _: None)
+    assert len(llm.plan_calls) == 2 and "exactly 18" in llm.plan_calls[1] and m["content_slides"] == 18
+
+
+def test_any_subject_an_algorithm_trace_a_case_without_numbers_and_a_basic_deck(run, lecture, monkeypatch):
+    from profsagent.content.example import run_code
+    from profsagent.content.plan import plan_problems
+    trace = run_code("import heapq\nfrom collections import defaultdict\nq = [(0, 'A')]\nheapq.heappush(q, (2, 'B'))\n"
+                     "values = {'first': heapq.heappop(q)[1], 'left': len(q), 'order': 'A → B'}")
+    assert trace == {"first": "A", "left": 1, "order": "A → B"}                   # algorithm traces can use heapq
+    p = good_plan(lecture)
+    p.slides[-5].role = "limits"                                                  # limits counts like failure did
+    assert plan_problems(p, lecture, CFG, {"x": [1]}) == []
+    p.slides[-5].role = "intuition"
+    assert plan_problems(p, {**lecture, "depth": "basic"}, CFG, {"x": [1]}) == []   # basic depth: no limits slide needed
+    real = G.cfg()
+    monkeypatch.setattr(G, "cfg", lambda: {**real, "deck": {**real["deck"], "mode": "per_slide"}})
+    case = Example(numeric=False, title="The loan algorithm", story="A bank's model refuses a loan; who is responsible?")
+    llm = FakeLLM([], examples=[case], plans=[good_plan(lecture)], slides=[written] * 16)
+    m = G.generate_material("cs601", lecture["lecture_id"], llm=llm, log=lambda _: None)
+    assert m["example"] == {"title": "The loan algorithm", "values": 0} and m["errors"] == 0
+    assert "who is responsible" in llm.plan_calls[0] and "who is responsible" in llm.slide_calls[0]   # the case runs through
+
+
+def test_content_maths_errors_survive_the_render_and_reach_the_manifest(run, lecture):
+    deck = good_deck(lecture)
+    deck.slides[0].blocks = [Block(kind="steps", steps=[Step(latex="a = b"), Step(latex="b = c", why=r"substitute \bar{y}")])]
+    m = G.generate_material("cs601", lecture["lecture_id"], llm=FakeLLM([deck, deck]), log=lambda _: None)
+    assert any(x["code"] == "D-MATH" and x["nodes"] == ["slide 3"] for x in m["findings"]) and m["errors"] == 1
+
+
+def test_a_failed_plan_falls_back_to_one_call_for_the_whole_deck(run, lecture, monkeypatch):
+    real = G.cfg()
+    monkeypatch.setattr(G, "cfg", lambda: {**real, "deck": {**real["deck"], "mode": "per_slide"}, "example": {"enabled": False}})
+
+    class Boom(FakeLLM):
+        def structured(self, **k):
+            if k["prompt_id"] == "B7":
+                raise RuntimeError("no model left")
+            return super().structured(**k)
+    llm = Boom([good_deck(lecture)])
+    m = G.generate_material("cs601", lecture["lecture_id"], llm=llm, log=lambda _: None)
+    assert m["mode"] == "deck" and len(llm.calls) == 1 and m["errors"] == 0
+
+
 # ------------------------------------------------------------------ student mode (content/student.py)
 def test_the_student_page_has_the_questions_but_not_the_notes_or_answer_keys(lecture):
     from profsagent.content.student import student_page
@@ -508,6 +858,9 @@ def test_the_student_page_has_the_questions_but_not_the_notes_or_answer_keys(lec
     page = student_page(deck, fr, {"C1": {"title": "Book", "year": 2020, "url": "https://x.org"}})
     assert "SECRET" not in page and "Answer:" not in page and "Which?" in page and 'data-answer="1"' in page
     assert "Explain things</li>" in page and "https://x.org" in page and "score: 0 / 2" in page
+    assert "renderMathInElement" not in page                       # no maths: no KaTeX in the page
+    page = student_page(maths_deck(lecture), fr, {})
+    assert "renderMathInElement" in page and '<span class="why">chain rule</span>' in page
 
 
 # ------------------------------------------------------------------ animation (content/animate.py, needs manim)

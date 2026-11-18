@@ -5,15 +5,21 @@
 Flow, one lecture at a time:
   1. inputs   the lecture brief (delivery/brief.py), the course's verified Phase 1 resources and C's resources for the
               lecture (approved only, unless options.include_pending), each given a short id the slides can cite
-  2. B1       one AI call writes the content slides (content/models.LectureDeck)
-  3. checks   content/checks.py (structure) and content/verify.py (code syntax, citation match); with errors, B1 is
+  2. B6       the running example (content/example.py): the AI writes small data and Python that computes every number
+              the lecture shows; code runs it (checked, sandboxed) and keeps the values (example.json). None for a topic
+              without a numeric example; if the code still fails after a repair, a D-EXAMPLE warning
+  3. B1       one AI call writes the content slides (content/models.LectureDeck), writing [[name]] for the example's
+              numbers (code fills them in) and plots that name the example's values (code draws them)
+  4. checks   content/checks.py (structure) and content/verify.py (code syntax, citation match); with errors, B1 is
               asked again with the findings (kept only if errors drop)
-  4. B2       only when options.review == "ai" (a professor who wants the system to check the slides): a different
+  5. B2       only when options.review == "ai" (a professor who wants the system to check the slides): a different
               model reviews the deck and answers its quiz blind (content/ai_review.py); its errors get one B1 repair
-  5. frame    code writes the title, objectives and references slides from the brief and the cited sources
-  6. render   slides.pptx (with speaker notes) and notes.md
-Output: runs/<id>/delivery/material/<lecture_id>/{deck.json, slides.pptx, notes.md, quiz.json, material.json}; the AI
-calls are logged in material/llm_calls.jsonl. material.json `status` starts as draft (ai-reviewed after B2); the
+  6. frame    code writes the title, objectives and references slides from the brief and the cited sources
+  7. render   slides.html with typeset maths and plots, measured in Chrome (content/slides_html.py; with checks, so an
+              overflowing slide or a formula KaTeX cannot parse goes back to B1 like any other error), slides.pdf from
+              it, slides.pptx (with speaker notes; a slide with maths or a plot carries its body as a picture), notes.md
+Output: runs/<id>/delivery/material/<lecture_id>/{deck.json, example.json, slides.html, slides.pdf, slides.pptx,
+notes.md, quiz.json, material.json}; the AI calls are logged in material/llm_calls.jsonl. material.json `status` starts as draft (ai-reviewed after B2); the
 professor's decision (content/review.py) sets approved | redo | rejected.
 """
 from __future__ import annotations
@@ -23,10 +29,14 @@ from typing import Callable
 
 from profsagent.config import load_yaml
 from profsagent.content.ai_review import after_repair, model_of, review_deck
-from profsagent.content.checks import check_deck, content_range
+from profsagent.content.checks import check_deck, content_range, slide_range  # noqa: F401  (content_range: run_content)
 from profsagent.content.models import FIRST_CONTENT_SLIDE, LectureDeck
 from profsagent.content.render import render_markdown, render_pptx
 from profsagent.content.sessions import build_sessions
+from profsagent.content.example import fill_values, make_example
+from profsagent.content.plan import make_plan, repair_slides, write_deck
+from profsagent.content.example import for_b1 as example_for_b1
+from profsagent.content.slides_html import deck_html, layout_findings, measure, needs_picture
 from profsagent.content.student import student_page
 from profsagent.content.style import apply_look, for_b1, load_style
 from profsagent.content.verify import verify
@@ -151,6 +161,11 @@ def _link(identifier: dict | None) -> str | None:
             or (f"https://arxiv.org/abs/{i['arxiv']}" if i.get("arxiv") else None) or (f"ISBN {i['isbn']}" if i.get("isbn") else None))
 
 
+def frame_slides(sources: dict) -> int:
+    """Slides code adds around the content: title and objectives, and references when the lecture has sources."""
+    return 2 + (1 if sources else 0)
+
+
 def frame(st: dict, brief: dict) -> dict:
     """Text of the slides code writes itself."""
     course = st["cco_compact"]["course_name"]
@@ -196,17 +211,48 @@ def c_quiz(d: Path) -> list[dict] | None:
     return out or None
 
 
+RENDER_CODES = ("D-OVERFLOW", "D-MATH", "D-RENDER")
+
+
+def example_values(d: Path) -> dict:
+    """The running example's computed values (example.json beside the deck), {} when the lecture has none."""
+    return (read_json(d / "example.json") or {}).get("values") or {}
+
+
+def browser_check(d: Path, deck: LectureDeck, fr: dict, sources: dict, c: dict, values: dict | None = None) -> list[dict]:
+    """Write slides.html and measure it in Chrome: D-OVERFLOW and D-MATH errors for the repair loop. [] when the browser
+    check is off or cannot run (write_outputs then reports D-RENDER)."""
+    if not (c.get("html") or {}).get("measure", True):
+        return []
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "slides.html").write_text(deck_html(deck, fr, sources, c, values), encoding="utf-8")
+    rep = measure(d / "slides.html", c)
+    return [] if rep.get("error") else layout_findings(rep)
+
+
 def write_outputs(d: Path, deck: LectureDeck, fr: dict, sources: dict, c: dict, found: list[dict]) -> tuple[int, list[dict]]:
-    """deck.json, slides.pptx, notes.md and quiz.json; returns the slide count and the findings with the renderer's
-    D-OVERFLOW warnings (replacing any from an earlier render)."""
+    """deck.json, slides.html, slides.pdf, slides.pptx, notes.md and quiz.json; returns the slide count and the findings
+    with the renderer's D-OVERFLOW / D-MATH / D-RENDER findings (replacing any from an earlier render)."""
     write_json(d / "deck.json", deck.model_dump())
-    n, overflows = render_pptx(deck, fr, sources, c, d / "slides.pptx")
+    values = example_values(d)
+    (d / "slides.html").write_text(deck_html(deck, fr, sources, c, values), encoding="utf-8")
+    shots = {n: d / "shots" / f"slide_{n:02d}.png" for n, s in enumerate(deck.slides, FIRST_CONTENT_SLIDE) if needs_picture(s)}
+    if (c.get("html") or {}).get("measure", True):
+        rep = measure(d / "slides.html", c, pdf=d / "slides.pdf", shots=shots)
+    else:
+        rep = {"error": "the browser check is off (config/content.yaml html.measure)"}
+    pictures = {n: Path(x) for n, x in (rep.get("shots") or {}).items()}
+    rendered = layout_findings(rep) if not rep.get("error") else [
+        {**v("D-RENDER", WARN, [], f"slides.pdf was not made and maths shows as LaTeX source in slides.pptx: {rep['error']}"),
+         "stage": "render"}]
+    n, overflows = render_pptx(deck, fr, sources, c, d / "slides.pptx", pictures)
     (d / "notes.md").write_text(render_markdown(deck, fr, sources), encoding="utf-8")
     write_json(d / "quiz.json", [{"slide": i, "los": s.los, **s.quiz.model_dump()} for i, s in enumerate(deck.slides, FIRST_CONTENT_SLIDE) if s.quiz])
-    (d / "student.html").write_text(student_page(deck, fr, sources, c_quiz(d)), encoding="utf-8")
+    (d / "student.html").write_text(student_page(deck, fr, sources, c_quiz(d), values), encoding="utf-8")
     over = [{**v("D-OVERFLOW", WARN, [f"slide {o['slide']}"], f"slide {o['slide']}: the {o['what']} text may not fit its "
                                                                 "box; shorten it in PowerPoint"), "stage": "render"} for o in overflows]
-    return n, [x for x in found if x["code"] != "D-OVERFLOW"] + over
+    keep = [x for x in found if not (x["code"] in RENDER_CODES and x.get("stage") == "render")]   # content-stage D-MATH stays
+    return n, keep + rendered + over
 
 
 # ------------------------------------------------------------------ generation
@@ -220,7 +266,7 @@ def _ask(llm, ctx: dict, run_id: str, log) -> tuple[LectureDeck, dict]:
     return deck, {"endpoint": rec.endpoint, "prompt_tokens": rec.prompt_tokens, "output_tokens": rec.output_tokens}
 
 
-def _ai_review(llm, deck, found, code, ctx, lecture, calls, author, check, run_id, log):
+def _ai_review(llm, deck, found, code, ctx, lecture, calls, author, check, run_id, log, prep=None):
     """B2 on the checked deck by any model but its `author` (the endpoint of the B1 call that wrote the kept deck; a
     rejected repair by another model does not bar that model), then one B1 repair when the reviewer reports errors
     (kept unless the code checks find more errors than before). A failed review leaves the deck as it was, recorded in
@@ -237,7 +283,8 @@ def _ai_review(llm, deck, found, code, ctx, lecture, calls, author, check, run_i
                            + [p for p in ctx["problems"] if p["code"] == "PROFESSOR"])
         deck2, call = _ask(llm, ctx, run_id, log)
         calls.append(call)
-        found2, code2 = check(fill_from_outline(deck2, lecture.get("outline") or []))
+        deck2 = prep(deck2) if prep else fill_from_outline(deck2, lecture.get("outline") or [])
+        found2, code2 = check(deck2)
         keep = len(errors(found2)) <= len(errors(found))
         log(f"  [{PID} after review] code-check errors {len(errors(found))} → {len(errors(found2))} {'ACCEPT' if keep else 'REJECT'}")
         if keep:
@@ -250,8 +297,11 @@ def generate_material(run_id: str, lecture_id: str, options: dict | None = None,
     """Slides and notes for one lecture. options: include_pending (bool); note (str: what the professor wants
     emphasised); feedback (str: the professor's redo instructions, given to B1 as a problem to fix); force (bool: replace
     an approved deck); review ("ai": a different model checks the deck, see content/ai_review.py); material ({text, parts}:
-    the professor's own material, from content/attach.py: the deck is built from it and cites it as P1…). Returns the
-    manifest written to material.json."""
+    the professor's own material, from content/attach.py: the deck is built from it and cites it as P1…); slides (int: the
+    deck's total slide count, code's title and objectives slides, and references when there are sources, included; the AI
+    writes the rest, exactly); depth ("basic" | "standard" | "high": how deep the content goes, config deck.depth by
+    default; without `slides` it also sets the slide range, config deck.slides_per_hour_by_depth). Returns the manifest
+    written to material.json."""
     o, c = options or {}, cfg()
     old = read_json(material_dir(run_id, lecture_id) / "material.json") or {}
     if old.get("status") == "approved" and not o.get("force"):
@@ -273,48 +323,119 @@ def generate_material(run_id: str, lecture_id: str, options: dict | None = None,
         lecture["professor_material"] = mat["text"]
         sources.update({p["id"]: {"title": f"Professor's material: {p['name']}", "year": None, "url": None,
                                   "kind": "professor material", "approved": True} for p in mat["parts"]})
-    lo_min, lo_max = content_range(brief["hours"], c)
+    lecture["depth"] = o.get("depth") or c["deck"].get("depth", "standard")
+    if o.get("slides"):                            # the professor's total; code adds title, objectives (and references)
+        lecture["content_slides"] = max(3, int(o["slides"]) - frame_slides(sources))
+    lo_min, lo_max = slide_range(lecture, c)
     ctx = {"course": {"course_name": st["cco_compact"]["course_name"], "level": st.get("level")}, "lecture": lecture,
            "sources": [{"id": k, **{f: s[f] for f in ("kind", "title", "year", "url")}} for k, s in sources.items()],
            "slides": {"min": lo_min, "max": lo_max},
            "problems": [{"code": "PROFESSOR", "where": [], "problem": o["feedback"]}] if o.get("feedback") else []}
 
+    fr = frame(st, brief)
+    d.mkdir(parents=True, exist_ok=True)
+    log(f"B lecture material {run_id} {lecture_id}: {brief['topic']} ({brief['hours']:g} h, {len(sources)} sources)")
+
+    calls, example_note = [], ""                   # B6: the running example, its numbers computed by code
+    ex = None
+    if (c.get("example") or {}).get("enabled", True):
+        ex, ex_calls, example_note = make_example(llm, {"course": ctx["course"], "lecture": lecture}, c, run_id, log)
+        calls += ex_calls
+    if ex:
+        write_json(d / "example.json", ex)
+        lecture["example"] = example_for_b1(ex)
+    elif (d / "example.json").exists():
+        (d / "example.json").unlink()                # an older example would no longer match the deck
+    values = (ex or {}).get("values") or {}
+    outline_parts = lecture.get("outline") or []
+
+    def prep(dk: LectureDeck) -> LectureDeck:
+        """What code adds to B1's deck: clips and links from the outline, the example's numbers for [[name]]."""
+        return fill_values(fill_from_outline(dk, outline_parts), values)[0]
+
     def check(dk: LectureDeck) -> tuple[list[dict], list[dict]]:
         more, code = verify(dk, sources, c)
-        return check_deck(dk, lecture, set(sources), c) + more, code
+        return (check_deck(dk, lecture, set(sources), c, values) + more
+                + browser_check(d, dk, fr, sources, c_render, values)), code
 
-    log(f"B lecture material {run_id} {lecture_id}: {brief['topic']} ({brief['hours']:g} h, {len(sources)} sources)")
-    deck, call = _ask(llm, ctx, run_id, log)
-    calls, author = [call], call["endpoint"]           # author: who wrote the deck that is kept
-    outline_parts = lecture.get("outline") or []
-    fill_from_outline(deck, outline_parts)
-    found, code = check(deck)
-    log(f"  [{PID}] checks: {len(errors(found))} errors, {len(found) - len(errors(found))} warnings")
-    for rnd in range(1, c["deck"]["repair_rounds"] + 1):
+    mode, plan, plan_left = c["deck"].get("mode", "per_slide"), None, []
+    if mode == "per_slide":                            # B7 plan, checked; B8 one slide per call (content/plan.py)
+        try:
+            plan, pcalls, plan_left = make_plan(llm, ctx, c, values if ex else None, run_id, log)
+            calls += pcalls
+        except Exception as e:  # noqa: BLE001  (no usable plan: write the deck in one call instead)
+            log(f"  [B7] plan failed ({type(e).__name__}: {str(e)[:160]}); writing the deck in one call (B1)")
+    if plan is not None:
+        write_json(d / "plan.json", plan.model_dump())
+        deck, wcalls = write_deck(llm, ctx, plan, lecture_id, run_id, log)
+        calls += wcalls
+        author = wcalls[-1]["endpoint"]
+        deck = prep(deck)
+        found, code = check(deck)
+        log(f"  [B8] checks: {len(errors(found))} errors, {len(found) - len(errors(found))} warnings")
+        deck, found, code, rcalls = repair_slides(llm, ctx, plan, deck, found, code, check, prep,
+                                                  int(c["deck"].get("slide_repair_rounds", 2)), run_id, log)
+        calls += rcalls
+    else:
+        deck, call = _ask(llm, ctx, run_id, log)
+        calls.append(call)
+        author = call["endpoint"]                      # author: who wrote the deck that is kept
+        deck = prep(deck)
+        found, code = check(deck)
+        log(f"  [{PID}] checks: {len(errors(found))} errors, {len(found) - len(errors(found))} warnings")
+    for rnd in range(1, (c["deck"]["repair_rounds"] if plan is None else 0) + 1):
         if not errors(found):
             break
         ctx["problems"] = [{"code": x["code"], "where": x["nodes"], "problem": x["message"]} for x in found
                            if x["severity"] == "error"] + [p for p in ctx["problems"] if p["code"] == "PROFESSOR"]
         deck2, call = _ask(llm, ctx, run_id, log)
         calls.append(call)
-        found2, code2 = check(fill_from_outline(deck2, outline_parts))
+        deck2 = prep(deck2)
+        found2, code2 = check(deck2)
         keep = len(errors(found2)) < len(errors(found))
         log(f"  [{PID} repair {rnd}] errors {len(errors(found))} → {len(errors(found2))} {'ACCEPT' if keep else 'REJECT'}")
         if keep:
             deck, found, code, author = deck2, found2, code2, call["endpoint"]
 
     ai = None
-    if o.get("review") == "ai":
-        deck, found, code, ai = _ai_review(llm, deck, found, code, ctx, lecture, calls, author, check, run_id, log)
+    if o.get("review") == "ai" and plan is not None:   # the reviewer's errors are repaired on their own slides
+        try:
+            ai_found, ai = review_deck(llm, deck, ctx["course"], lecture, {model_of(author)}, run_id, log)
+            calls.append({k: ai[k] for k in ("endpoint", "prompt_tokens", "output_tokens")})
+            ai["repaired"] = False
+            if errors(ai_found):
+                deck2, found2, code2, rc = repair_slides(llm, ctx, plan, deck, found + ai_found, code, check, prep, 1, run_id, log)
+                calls += rc
+                if deck2 is not deck:
+                    deck, found, code, ai_found, ai["repaired"] = deck2, found2, code2, after_repair(ai_found), True
+            found = [x for x in found if x.get("stage") != "ai-review"] + ai_found
+        except Exception as e:  # noqa: BLE001  (no reviewer model or quota left: keep the draft, say so)
+            log(f"  [B2] review failed: {e}")
+            ai = {"error": str(e)[:300]}
+    elif o.get("review") == "ai":
+        deck, found, code, ai = _ai_review(llm, deck, found, code, ctx, lecture, calls, author, check, run_id, log, prep)
+    if plan_left:
+        found = found + [{**x, "severity": WARN, "message": "plan: " + x["message"]} for x in plan_left]
 
+    if example_note and not example_note.startswith("B6: no numeric"):
+        found = found + [{**v("D-EXAMPLE", WARN, [], f"no running example: {example_note}; the slides' numbers are the "
+                                                      "AI's own, not computed"), "stage": "content"}]
     deck.lecture_id = lecture_id
-    n, found = write_outputs(d, deck, frame(st, brief), sources, c_render, found)
-    manifest = {"lecture_id": lecture_id, "topic": brief["topic"], "generated_at": now(), "prompt": f"{PID} {load_prompt(PID).version}",
+    n, found = write_outputs(d, deck, fr, sources, c_render, found)
+    prompts = (f"B7 {load_prompt('B7').version} + B8 {load_prompt('B8').version}" if plan is not None
+               else f"{PID} {load_prompt(PID).version}")
+    manifest = {"lecture_id": lecture_id, "topic": brief["topic"], "generated_at": now(), "prompt": prompts,
+                "depth": lecture["depth"], **({"slides_asked": int(o["slides"])} if o.get("slides") else {}),
+                "mode": "per_slide" if plan is not None else "deck",
                 "files": {"slides": str((d / "slides.pptx").relative_to(out_dir(run_id))),
                           "notes": str((d / "notes.md").relative_to(out_dir(run_id))),
                           "deck": str((d / "deck.json").relative_to(out_dir(run_id))),
                           "quiz": str((d / "quiz.json").relative_to(out_dir(run_id))),
-                          "student": str((d / "student.html").relative_to(out_dir(run_id)))},
+                          "student": str((d / "student.html").relative_to(out_dir(run_id))),
+                          "slides_html": str((d / "slides.html").relative_to(out_dir(run_id))),
+                          **({"slides_pdf": str((d / "slides.pdf").relative_to(out_dir(run_id)))} if (d / "slides.pdf").exists() else {}),
+                          **({"example": str((d / "example.json").relative_to(out_dir(run_id)))} if ex else {})},
+                "example": {"title": ex["title"], "values": len(values)} if ex else None,
                 "slides": n, "content_slides": len(deck.slides), "minutes": sum(s.minutes for s in deck.slides),
                 "errors": len(errors(found)), "warnings": len(found) - len(errors(found)), "findings": found,
                 "code_checks": code, "sources": sources, "cited": sorted({s for sl in deck.slides for s in sl.sources}),

@@ -39,7 +39,9 @@ def review_input(deck: LectureDeck) -> tuple[list[dict], list[dict]]:
         f = s.figure
         fig = {"kind": f.kind, "caption": f.caption, "steps": f.steps, "code": f.code, "language": f.language,
                "rows": f.rows} if f.kind != "none" else None
-        slides.append({"slide": i, "kind": s.kind, "title": s.title, "bullets": s.bullets, "figure": fig, "notes": s.notes})
+        slides.append({"slide": i, "kind": s.kind, "title": s.title, "bullets": s.bullets,
+                       **({"blocks": [b.model_dump(exclude_defaults=True) for b in s.blocks]} if s.blocks else {}),
+                       "figure": fig, "notes": s.notes})
         if s.quiz:
             questions.append({"slide": i, "question": s.quiz.question, "options": s.quiz.options})
     return slides, questions

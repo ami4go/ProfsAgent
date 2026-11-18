@@ -243,9 +243,12 @@ class LLMClient:
 
     @staticmethod
     def _until_pacific_midnight() -> float:
-        from datetime import datetime, timedelta
-        from zoneinfo import ZoneInfo
-        now = datetime.now(ZoneInfo("America/Los_Angeles"))
+        from datetime import datetime, timedelta, timezone
+        try:
+            from zoneinfo import ZoneInfo
+            now = datetime.now(ZoneInfo("America/Los_Angeles"))
+        except Exception:  # noqa: BLE001  (Windows without the tzdata package: Pacific standard time is close enough)
+            now = datetime.now(timezone(timedelta(hours=-8)))
         nxt = (now + timedelta(days=1)).replace(hour=0, minute=5, second=0, microsecond=0)
         return (nxt - now).total_seconds()
 

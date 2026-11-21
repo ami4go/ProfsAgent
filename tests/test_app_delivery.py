@@ -103,26 +103,32 @@ def test_own_links_ratings_and_bulk(runs, rid):
     for lid in ("W05.L1", "W05.L2"):
         s["lectures"][lid].update({k: None for k in dv.CHOICES})
     (runs / rid / "delivery" / "survey.yaml").write_text(yaml.safe_dump(s, allow_unicode=True), encoding="utf-8")
-    dv.save_choices(rid, "W05.L1", {"own_material": "yes", "guest_lecture": "yes"})
-    assert dv.bulk(rid, "W05.L1", "week")["applied"] == ["W05.L2"]
-    assert dv.view(rid, runs)["survey"]["W05.L2"]["guest_lecture"] == "yes"
+    dv.save_choices(rid, "W05.L1", {"mode": "slides", "depth": "basic"})
+    assert "W05.L2" in dv.bulk(rid, "W05.L1")["applied"]                            # every undecided lecture, no weeks
+    assert dv.view(rid, runs)["survey"]["W05.L2"]["generate_material"] == "yes" and dv.view(rid, runs)["survey"]["W05.L2"]["depth"] == "basic"
 
 
-def test_material_for_chosen_weeks_only(runs, rid):
-    s = yaml.safe_load((runs / rid / "delivery" / "survey.yaml").read_text(encoding="utf-8"))
-    for lid in ("W05.L1", "W05.L2", "W06.L1"):
-        s["lectures"][lid].update({k: None for k in dv.CHOICES + dv.WANTS})        # (old-format want_* answers count as choices)
-    s["lectures"]["W05.L2"].update(own_material="yes", guest_lecture="yes")       # saved choices: kept, only added to
-    (runs / rid / "delivery" / "survey.yaml").write_text(yaml.safe_dump(s, allow_unicode=True), encoding="utf-8")
-    assert dv.for_weeks(rid, [5], False, False)["problem"] and dv.for_weeks(rid, [99], True, False)["problem"]
-    out = dv.for_weeks(rid, [5], material=True, resources=False)
-    assert [x["id"] for x in out["lectures"]] == ["W05.L1", "W05.L2"] and all(x["start_b"] for x in out["lectures"])
-    v = dv.view(rid, runs)["survey"]
-    assert v["W05.L1"]["generate_material"] == "yes" and v["W05.L1"]["assistance"] == "no"
-    assert v["W05.L2"]["own_material"] == "yes" and v["W05.L2"]["guest_lecture"] == "yes" and v["W05.L2"]["generate_material"] == "yes"
-    assert not v.get("W06.L1")                                                         # other weeks untouched
-    both = dv.for_weeks(rid, [5], material=True, resources=True)
-    assert all(x["start_c"] for x in both["lectures"]) and dv.view(rid, runs)["survey"]["W05.L1"]["want_videos"] == "yes"
+def test_three_delivery_modes_and_slide_options(runs, rid):
+    """One choice per lecture (only slides / only videos / my own slides); slides carry Parth's count and depth."""
+    assert dv.validate_choices({"mode": "nope"})["none"]
+    assert dv.validate_choices({"mode": "own"})["attach"]                              # own slides need a file or link
+    assert not dv.validate_choices({"mode": "own", "attachments": ["https://example.org/deck"]})
+    assert dv.validate_choices({"mode": "slides", "slides": 3})["slides"] and dv.validate_choices({"mode": "slides", "depth": "x"})["depth"]
+    out = dv.save_choices(rid, "W05.L1", {"mode": "slides", "slides": 18, "depth": "high", "note": "shapes"})
+    assert out["start_b"] and not out["start_c"]
+    a = dv.view(rid, runs)["survey"]["W05.L1"]
+    assert a["mode"] == "slides" and a["generate_material"] == "yes" and a["assistance"] == "no" and a["guest_lecture"] == "no"
+    assert dv.material_options(a) == {"note": "shapes", "slides": 18, "depth": "high"}
+    out = dv.save_choices(rid, "W05.L2", {"mode": "videos", "want_readings": "yes", "guest_lecture": "yes"})
+    assert out["start_c"] and not out["start_b"]
+    a = dv.view(rid, runs)["survey"]["W05.L2"]
+    assert a["assistance"] == "yes" and a["want_videos"] == "yes" and a["want_readings"] == "no" and a["guest_lecture"] == "no"
+    assert a["slides"] is None and a["depth"] is None                                  # slide options only for slides
+    out = dv.save_choices(rid, "W06.L1", {"mode": "own", "attachments": ["https://example.org/deck"]})
+    assert not out["start_b"] and not out["start_c"] and dv.mode_of(dv.view(rid, runs)["survey"]["W06.L1"]) == "own"
+    assert dv.bulk(rid, "W06.L1")["problem"]                                           # own slides are not copied
+    assert dv.mode_of({"generate_material": "yes"}) == "slides" and dv.mode_of({"assistance": "yes"}) == "videos"   # old answers
+    assert [l["n"] for l in dv.view(rid, runs)["lectures"]][:3] == [1, 2, 3]
 
 
 def test_a_held_out_course_is_hidden_and_used_as_the_reference():

@@ -963,6 +963,14 @@ const D_CHOICES = [
   ['generate_material', 'Make the slides for me', 'Slides, speaker notes and a quiz.', ''],
   ['assistance', 'Find learning resources for me', 'Videos, readings and practice.', ''],
   ['guest_lecture', 'Suggest a guest speaker to invite', 'With an invitation draft.', '']];
+const D_MODES = [
+  ['slides', 'Only slides', 'Slides, speaker notes and a quiz, written for this lecture.'],
+  ['videos', 'Only videos', 'YouTube clips checked against their transcripts, stitched part by part into one watch plan.'],
+  ['own', 'My own slides', 'Upload the slides you already teach from.']];
+const D_MODE_SHORT = { slides: 'Slides', videos: 'Videos', own: 'Own slides' };
+const D_DEPTHS = [['basic', 'Basic', 'intuition and examples'], ['standard', 'Standard', ''], ['high', 'Deep', 'every result derived']];
+const dmode = a => a ? a.mode || (yes(a, 'generate_material') ? 'slides' : yes(a, 'assistance') ? 'videos' : (yes(a, 'own_material') || yes(a, 'attach_material')) ? 'own' : null) : null;
+const lecName = l => 'Lecture ' + (l.n || '');
 const D_LONG = { own_material: 'Your own material', attach_material: 'Your files, worked on', generate_material: 'Slides made for you', assistance: 'Learning resources', guest_lecture: 'A guest speaker' };
 const D_SHORT = { own_material: 'Own', attach_material: 'Attach', generate_material: 'Generate', assistance: 'Resources', guest_lecture: 'Guest' };
 const D_WANTS = [['want_videos', 'Videos (short explainers, talks)'], ['want_readings', 'Readings (articles, docs, book chapters)'], ['want_practice', 'Practice (notebooks, exercises, datasets)'],
@@ -980,7 +988,8 @@ const hms = s => { if (s == null) return ''; s = Math.round(s); const h = Math.f
 const yes = (a, k) => !!a && a[k] === 'yes';
 const clone = o => JSON.parse(JSON.stringify(o));
 const dblank = () => ({ own_material: null, attach_material: null, generate_material: null, assistance: null, guest_lecture: null, attachments: [], attach_tasks: [],
-  want_videos: 'yes', want_readings: 'yes', want_practice: 'no', want_recorded_lecture: 'no', want_clips: 'no', confidence: null, note: '' });
+  want_videos: 'yes', want_readings: 'yes', want_practice: 'no', want_recorded_lecture: 'no', want_clips: 'no', confidence: null, note: '',
+  mode: null, slides: null, depth: null });
 let DV = null, DRID = null, DLID = null, DCOURSES = null, dpoll = null, dPendingRender = false;
 // the class-time bar (docs/10 §5): how a lecture's minutes are spent, from the lecture plan (parts and how each is taught)
 const WAY = { slides: 'Slides', video: 'Video', nlm: 'NotebookLM', inclass: 'In class', sim: 'Simulation', quiz: 'Recap and quiz' };
@@ -1020,7 +1029,7 @@ function ctBar(parts, big) {
 const dlegend = ways => '<div class="legend">' + (ways || Object.keys(WAY)).map(w => '<span><i class="w-' + w + '"></i>' + WAY[w] + '</span>').join('') + '</div>';
 const dmatJob = lid => ((((DV || {}).jobs || {}).material) || {})[lid] || null;
 const MSTATUS = { draft: ['Draft: not reviewed yet', 'amber'], 'ai-reviewed': ['Checked by a second AI, not by you', 'teal'], approved: ['Approved by you', 'green'], redo: ['Being redone', 'navy'], rejected: ['Rejected', 'grey'] };
-let PUI = { filter: { week: 'all', module: 'all', novel: false, status: 'all' }, draft: {}, errs: {}, tab: {}, show: {}, openReason: null, ownForm: null, kit: null, report: null, logOpen: {}, mat: {}, matLoading: {}, mAi: {}, mReason: null, simReason: null, editChoices: {}, mixNote: {}, wk: null };
+let PUI = { filter: { module: 'all', novel: false, status: 'all' }, draft: {}, errs: {}, tab: {}, show: {}, openReason: null, ownForm: null, kit: null, report: null, logOpen: {}, mat: {}, matLoading: {}, mAi: {}, mReason: null, simReason: null, editChoices: {}, mixNote: {}, wk: null };
 const dapi = p => '/api/delivery/' + encodeURIComponent(DRID) + p;
 const dhref = (...parts) => '#/delivery/' + [DRID].concat(parts).map(encodeURIComponent).join('/');
 function crumbs(parts) { return '<div class="crumbs">' + parts.map((p, i) => (i ? '<span>›</span>' : '') + (p[1] ? '<a href="' + esc(p[1]) + '">' + esc(p[0]) + '</a>' : '<span>' + esc(p[0]) + '</span>')).join('') + '</div>'; }
@@ -1054,8 +1063,7 @@ function dstatus(lid) {
     if (m) return m.status === 'approved' ? ['Slides approved', 'green'] : m.status === 'rejected' ? ['Slides rejected', 'grey'] : ['Slides ready for review', 'amber'];
     return ['Not started', 'grey'];
   }
-  if (wantsB) return ['Saved; working with files comes later', 'grey'];
-  return ['Covered: your own material', 'green'];
+  return ['Your slides', 'green'];
 }
 function keysBanner() {
   if (!DV || DV.keys.youtube) return '';
@@ -1084,60 +1092,26 @@ function dlist() {
   const f = PUI.filter, L = LECS(), mods = [...new Set(L.map(l => l.module))];
   const isReview = l => dstatus(l.id)[0].startsWith('Ready');
   const counts = { all: L.length, undecided: L.filter(l => !DV.survey[l.id]).length, review: L.filter(isReview).length, decided: L.filter(l => DV.survey[l.id]).length };
-  const list = L.filter(l => (f.week === 'all' || String(l.week) === f.week) && (f.module === 'all' || l.module === f.module) && (!f.novel || l.novel) &&
+  const list = L.filter(l => (f.module === 'all' || l.module === f.module) && (!f.novel || l.novel) &&
     (f.status === 'all' || (f.status === 'undecided' ? !DV.survey[l.id] : f.status === 'review' ? isReview(l) : f.status === 'decided' ? !!DV.survey[l.id] : true)));
-  const weeks = [...new Set(list.map(l => l.week))];
   const hj = (DV.jobs || {}).health || {};
   const used = Object.keys(WAY).filter(w => L.some(l => (ctParts(l.id) || []).some(x => x.way === w)));   // the legend names only what the bars show
   return header() + '<div class="wrap wide">' + crumbs([['Your courses', '#/'], ['Lecture delivery', '#/delivery'], [DV.run.course]]) +
     '<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:var(--space-sm);flex-wrap:wrap;margin-top:var(--space-sm)"><div style="min-width:0"><h1>' + esc(DV.run.course) + '</h1>' +
     '</div>' +
-    '<div style="display:flex;gap:var(--space-xs);flex-wrap:wrap"><button class="btn primary" data-act="d-wkopen" aria-expanded="' + !!PUI.wk + '">Make material for chosen weeks</button><a class="btn" href="' + dhref('student') + '">Preview as a student</a>' +
+    '<div style="display:flex;gap:var(--space-xs);flex-wrap:wrap"><a class="btn" href="' + dhref('student') + '">Preview as a student</a>' +
     '<button class="btn quiet" data-act="d-health"' + (['queued', 'running'].includes(hj.state) ? ' disabled' : '') + '>' + (['queued', 'running'].includes(hj.state) ? '<span class="spin"></span> Checking links…' : 'Check approved links') + '</button>' +
     '<button class="btn quiet" data-act="d-report">' + (PUI.report ? 'Hide' : 'Show') + ' the course report</button>' +
-    '<label class="small" style="display:flex;gap:var(--space-xs);align-items:center;color:var(--ink2)">Teaching style <select data-mixstyle aria-label="Teaching style for this course" style="width:auto">' +
-      [['slides', 'Slides'], ['mix', 'Mix'], ['flipped', 'Flipped']].map(([k, t]) => '<option value="' + k + '"' + (((DV.mix || {}).style || 'mix') === k ? ' selected' : '') + '>' + t + '</option>').join('') + '</select></label></div></div>' +
-    keysBanner() + dhealthSummary() + dweeksPanel() + (PUI.report ? '<div class="card proposal">' + PUI.report + '</div>' : '') +
+    '</div></div>' +
+    keysBanner() + dhealthSummary() + (PUI.report ? '<div class="card proposal">' + PUI.report + '</div>' : '') +
     '<div class="filters">' +
     '<div class="seg" role="group" aria-label="Show lectures">' + [['all', 'All'], ['undecided', 'Needs a decision'], ['review', 'Ready to review'], ['decided', 'Decided']].map(([v, t]) =>
       '<button type="button" data-fstatus="' + v + '" class="' + (f.status === v ? 'on' : '') + '" aria-pressed="' + (f.status === v) + '">' + t + '<span class="n">' + counts[v] + '</span></button>').join('') + '</div>' +
-    '<select data-filter="week" aria-label="Week" style="width:auto"><option value="all">All weeks</option>' + [...new Set(L.map(l => l.week))].map(w => '<option value="' + w + '"' + (f.week === String(w) ? ' selected' : '') + '>Week ' + w + '</option>').join('') + '</select>' +
     (mods.length > 1 ? '<select data-filter="module" aria-label="Module" style="width:auto;max-width:280px"><option value="all">All modules</option>' + mods.map(m => '<option' + (f.module === m ? ' selected' : '') + '>' + esc(m) + '</option>').join('') + '</select>' : '') +
     (mostlyNovel() ? '' : '<label><input type="checkbox" data-filter="novel"' + (f.novel ? ' checked' : '') + '> ★ New topics only</label>') +
     (used.length ? '<div style="margin-left:auto">' + dlegend(used) + '</div>' : '') + '</div>' +
-    (list.length ? weeks.map(w => '<div class="week"><h2>Week ' + w + '</h2>' + list.filter(l => l.week === w).map(l => dlectureRow(l, used.length > 0)).join('') + '</div>').join('')
+    (list.length ? '<div class="week">' + list.map(l => dlectureRow(l, used.length > 0)).join('') + '</div>'
       : '<div class="card"><p class="muted">No lectures match these filters.</p></div>') + '</div>';
-}
-// make the material for chosen weeks only: slides (B) and/or the resource search (C) for every lecture of those weeks
-function dweeksPanel() {
-  const w = PUI.wk; if (!w) return '';
-  const L = LECS(), weeks = [...new Set(L.map(l => l.week))];
-  const row = (k, t) => '<label style="flex-direction:row;align-items:center;gap:var(--space-xs);font-size:var(--text-sm);color:var(--ink)"><input type="checkbox" data-wkopt="' + k + '"' + (w[k] ? ' checked' : '') + '> ' + t + '</label>';
-  const n = L.filter(l => w.weeks.includes(l.week)).length;
-  return '<div class="card"><h2>Make material for chosen weeks</h2>' +
-    '<p class="small muted" style="margin-top:var(--space-2xs)">Every lecture in the weeks you tick gets what you choose below. Choices already saved for a lecture are kept; this only adds to them. Slides already made are not made again.</p>' +
-    '<div style="display:flex;flex-wrap:wrap;gap:var(--space-xs) var(--space-md);margin-top:var(--space-sm)">' + weeks.map(k => {
-      const ls = L.filter(l => l.week === k), made = ls.filter(l => (DV.material || {})[l.id]).length;
-      return '<label style="flex-direction:row;align-items:center;gap:var(--space-xs);font-size:var(--text-sm);color:var(--ink)"><input type="checkbox" data-wk="' + k + '"' + (w.weeks.includes(k) ? ' checked' : '') + '> Week ' + k +
-        ' <span class="tiny muted">' + ls.length + ' lecture' + (ls.length === 1 ? '' : 's') + (made ? ', ' + made + ' with slides' : '') + '</span></label>'; }).join('') + '</div>' +
-    '<div style="display:flex;gap:var(--space-xs);margin-top:var(--space-xs)"><button class="btn quiet sm" data-act="d-wkall">All weeks</button><button class="btn quiet sm" data-act="d-wknone">None</button></div>' +
-    '<div style="display:flex;flex-direction:column;gap:var(--space-xs);margin-top:var(--space-md)">' + row('material', 'Slides, notes and quiz <span class="tiny muted">(about 2–3 minutes a lecture)</span>') +
-      row('resources', 'Videos and readings, and the lecture plan <span class="tiny muted">(about 3–6 minutes a lecture)</span>') +
-      (w.material ? row('ai', 'Have a second AI check the slides') : '') + '</div>' +
-    (w.err ? '<p class="small" style="color:var(--color-error-ink);margin-top:var(--space-sm)">' + esc(w.err) + '</p>' : '') +
-    '<div style="display:flex;gap:var(--space-xs);margin-top:var(--space-md)"><button class="btn primary" data-act="d-wkgo"' + (!n || w.busy || !(w.material || w.resources) ? ' disabled' : '') + '>' +
-      (w.busy ? '<span class="spin"></span> Starting…' : 'Start for ' + n + ' lecture' + (n === 1 ? '' : 's')) + '</button><button class="btn quiet" data-act="d-wkclose">Cancel</button></div></div>';
-}
-async function dweeksGo() {
-  const w = PUI.wk; w.busy = true; w.err = null; render();
-  const r = await post(dapi('/weeks'), { weeks: w.weeks, material: w.material, resources: w.resources, ai_review: w.material && w.ai });
-  w.busy = false;
-  if (!r.ok) { w.err = (r.data && r.data.problem) || 'Could not start'; render(); return; }
-  const s = r.data.started_slides.length, c = r.data.started_resources.length, sk = r.data.skipped.length;
-  PUI.wk = null;
-  toast((s || c ? 'Started: ' + [s ? 'slides for ' + s : '', c ? 'resources for ' + c : ''].filter(Boolean).join(', ') + ' lecture' + (s + c === 1 ? '' : 's') + '.'
-    : 'Nothing new to start: those lectures already have it.') + (sk ? ' Skipped ' + sk + '.' : ''));
-  return loadDelivery(false);
 }
 function dslidesChip(lid) {
   const a = DV.survey[lid]; if (!yes(a, 'generate_material')) return '';
@@ -1152,9 +1126,9 @@ function dlectureRow(l, bar) {
   const a = DV.survey[l.id], st = dstatus(l.id);
   const status = a ? '<span class="chip ' + st[1] + '">' + esc(st[0]) + '</span>' : '<span class="plan">Plan ' + ICON.arrow + '</span>';
   const novel = l.novel && !mostlyNovel() ? ' <span class="chip star" title="No IIIT-D course teaches a close match, so it likely needs the most preparation">★ New topic</span>' : '';
-  return '<a class="lec' + (bar ? '' : ' nobar') + '" href="' + dhref(l.id) + '"><span class="lid">' + esc(l.id) + '</span><span style="min-width:0"><b style="font-weight:600">' + esc(l.topic) + '</b>' +
+  return '<a class="lec' + (bar ? '' : ' nobar') + '" href="' + dhref(l.id) + '"><span class="lid" title="' + esc(l.id) + '">' + lecName(l) + '</span><span style="min-width:0"><b style="font-weight:600">' + esc(l.topic) + '</b>' +
     '<span class="meta"><span class="small muted">' + esc(l.module) + (l.continues ? ', continues in the next lecture' : '') + '</span>' + novel + '</span></span>' +
-    '<span class="mins">' + Math.round(l.hours * 60) + ' min</span>' + (bar ? ctBar(ctParts(l.id)) : '') + '<span class="right">' + status + (a && (yes(a, 'assistance') || yes(a, 'guest_lecture')) ? dslidesChip(l.id) : '') + dsimChip(l.id) + '</span></a>';
+    '<span class="mins">' + Math.round(l.hours * 60) + ' min</span>' + (bar ? ctBar(ctParts(l.id)) : '') + '<span class="right">' + (dmode(a) ? '<span class="chip grey">' + D_MODE_SHORT[dmode(a)] + '</span>' : '') + status + '</span></a>';
 }
 function dhealthSummary() {
   const dead = (DV.health || {}).dead || [], hj = (DV.jobs || {}).health || {};
@@ -1173,11 +1147,11 @@ function dlec() {
   const parts = ctParts(l.id), editing = !a || !!PUI.editChoices[l.id];
   return header() + '<div class="wrap wide">' + crumbs([['Your courses', '#/'], ['Lecture delivery', '#/delivery'], [DV.run.course, dhref()], [l.id]]) +
     '<div class="lechead"><div class="lechead-t">' +
-    '<p class="facts small muted"><span>Week ' + l.week + ', lecture ' + l.slot + '</span><span>' + Math.round(l.hours * 60) + ' min</span><span>' + esc(l.module) + '</span></p><h1>' + esc(l.topic) + '</h1>' +
+    '<p class="facts small muted"><span>' + lecName(l) + ' of ' + L.length + '</span><span>' + Math.round(l.hours * 60) + ' min</span><span>' + esc(l.module) + '</span></p><h1>' + esc(l.topic) + '</h1>' +
     '<div class="chips" style="margin-top:var(--space-xs)">' + (l.novel && !mostlyNovel() ? '<span class="chip star">★ New topic</span>' : '') + (l.continues ? '<span class="chip grey">Continues in the next lecture</span>' : '') +
     (r && r.continuation_of ? '<span class="chip grey">Continues ' + esc(r.continuation_of) + '</span>' : '') + '</div></div>' +
-    '<nav aria-label="Lectures">' + (prev ? '<a class="btn sm" href="' + dhref(prev.id) + '" aria-label="Previous lecture, ' + esc(prev.id) + '">' + ICON.back + esc(prev.id) + '</a>' : '<button class="btn sm" disabled>Previous</button>') +
-    (next ? '<a class="btn sm" href="' + dhref(next.id) + '" aria-label="Next lecture, ' + esc(next.id) + '">' + esc(next.id) + ICON.arrow + '</a>' : '<button class="btn sm" disabled>Next</button>') + '</nav></div>' +
+    '<nav aria-label="Lectures">' + (prev ? '<a class="btn sm" href="' + dhref(prev.id) + '" aria-label="Previous lecture">' + ICON.back + lecName(prev) + '</a>' : '<button class="btn sm" disabled>Previous</button>') +
+    (next ? '<a class="btn sm" href="' + dhref(next.id) + '" aria-label="Next lecture">' + lecName(next) + ICON.arrow + '</a>' : '<button class="btn sm" disabled>Next</button>') + '</nav></div>' +
     '<div class="summary">' + clampd(l.summary, 'sum:' + l.id) + '</div>' + dhealthAlert(l.id) +
     '<div class="lp"><div style="min-width:0">' +
     (parts ? dbarCard(l, parts) : '') + (editing ? dchoicesCard(l, d, !!a) : dhowCard(l, a)) +
@@ -1191,13 +1165,14 @@ function dbarCard(l, parts) {
     ctBar(parts, true) + '<div class="legend">' + Object.keys(WAY).filter(w => by[w]).map(w => '<span><i class="w-' + w + '"></i>' + WAY[w] + ' ' + by[w] + ' min</span>').join('') + '</div></div>';
 }
 function dhowCard(l, a) {
-  const st = dstatus(l.id), chosen = D_CHOICES.filter(([k]) => yes(a, k)).map(([k]) => D_LONG[k]);
+  const st = dstatus(l.id), m = dmode(a), opt = [];
+  if (m === 'slides') { if (a.slides) opt.push(a.slides + ' slides'); if (a.depth) opt.push((D_DEPTHS.find(x => x[0] === a.depth) || [, a.depth])[1] + ' depth'); }
   return '<div class="card"><div class="howcard"><div style="flex:1;min-width:0"><h2 style="margin:0 0 var(--space-xs)">How you’ll teach it</h2><div class="chips">' +
-    chosen.map(x => '<span class="chip navy">' + esc(x) + '</span>').join('') + '</div>' +
+    '<span class="chip navy">' + esc((D_MODES.find(x => x[0] === m) || [, 'Not decided'])[1]) + '</span>' + opt.map(x => '<span class="chip grey">' + esc(x) + '</span>').join('') + '</div>' +
     '<p class="small muted" style="margin-top:var(--space-sm);display:flex;gap:var(--space-xs);align-items:center;flex-wrap:wrap"><span class="chip ' + st[1] + '">' + esc(st[0]) + '</span>' +
     (a.note ? '<span>Note: “' + esc(a.note) + '”</span>' : '') + '</p></div>' +
     '<div style="display:flex;gap:var(--space-xs);flex-wrap:wrap;align-items:center"><button class="btn sm" data-act="d-editchoices">Change</button>' +
-    '<button class="btn quiet sm" data-act="d-bulk" data-scope="week">Apply to week ' + l.week + '</button><button class="btn quiet sm" data-act="d-bulk" data-scope="module">Apply to this module</button></div></div></div>';
+    (m !== 'own' ? '<button class="btn quiet sm" data-act="d-bulk">Use for all undecided lectures</button>' : '') + '</div></div></div>';
 }
 function dneedsProgress(l) {
   const a = DV.survey[l.id] || {}, j = djob(l.id), r = DV.results[l.id], mj = dmatJob(l.id), m = (DV.material || {})[l.id];
@@ -1221,45 +1196,35 @@ function daside(l) {
     '</details></div>';
 }
 function dchoicesCard(l, d, saved) {
-  const e = PUI.errs, dis = k => d[k] === 'yes' ? '' : ' off', mc = DV.material_connected || {};
+  const e = PUI.errs, m = d.mode || dmode(d);
   const sub = k => {
-    if (k === 'attach_material') return '<div class="sub' + dis(k) + '"><label class="small muted" for="attfile">Files or links</label>' +
-      '<div class="subrow"><input type="file" id="attfile" multiple style="max-width:260px"><input type="url" id="attlink" placeholder="https://… (paste a link)" style="flex:1;min-width:180px"><button class="btn sm" data-act="d-addlink">Add link</button></div>' +
+    if (k === 'slides') return '<div class="sub"><div class="subrow" style="align-items:flex-end;gap:var(--space-md)">' +
+      '<div><label class="small muted" for="dslides">Number of slides <span class="opt">(optional)</span></label><input type="number" id="dslides" min="5" max="60" step="1" style="width:110px" placeholder="Auto" value="' + (d.slides || '') + '"></div>' +
+      '<div><span class="small muted">Depth</span><div class="seg" role="group" aria-label="Depth">' + D_DEPTHS.map(([v, t, h]) =>
+        '<button type="button" data-depth="' + v + '" class="' + ((d.depth || 'standard') === v ? 'on' : '') + '" aria-pressed="' + ((d.depth || 'standard') === v) + '"' + (h ? ' title="' + h + '"' : '') + '>' + t + '</button>').join('') + '</div></div></div>' +
+      (e.slides ? '<p class="err">' + esc(e.slides) + '</p>' : '') + (e.depth ? '<p class="err">' + esc(e.depth) + '</p>' : '') +
+      '<label class="check small"><input type="checkbox" data-mai="first"' + (d._ai_review ? ' checked' : '') + '> Have a second AI check them</label></div>';
+    if (k === 'own') return '<div class="sub"><div class="subrow"><input type="file" id="attfile" multiple accept=".pptx,.ppt,.pdf,.key,.odp" style="max-width:260px"><input type="url" id="attlink" placeholder="or paste a link (Google Slides, Drive…)" style="flex:1;min-width:180px"><button class="btn sm" data-act="d-addlink">Add link</button></div>' +
       (d.attachments.length ? '<div class="chips" style="margin-top:var(--space-xs)">' + d.attachments.map((x, i) => '<span class="chip grey">' + esc(x.split('/').pop()) + ' <button class="link tiny" data-act="d-rmatt" data-i="' + i + '" aria-label="Remove">✕</button></span>').join('') + '</div>' : '') +
-      (e.attach ? '<p class="err">' + esc(e.attach) + '</p>' : '') +
-      '<p class="small muted" style="margin-top:var(--space-sm)">What should be done with it?</p><div class="subrow">' + D_TASKS.map(([t, n]) => '<label><input type="checkbox" data-task="' + t + '"' + (d.attach_tasks.includes(t) ? ' checked' : '') + '>' + n + '</label>').join('') + '</div>' +
-      (e.tasks ? '<p class="err">' + esc(e.tasks) + '</p>' : '') + '</div>';
-    if (k === 'generate_material') return '<div class="sub' + dis(k) + '"><label class="check small" style="margin-top:0"><input type="checkbox" data-mai="first"' + (d._ai_review ? ' checked' : '') + '> Also have a second AI check the slides and its quiz (1–2 more AI calls)</label>' +
-      '<p class="tiny muted" style="margin-top:var(--space-2xs)">Slides cite only resources you have approved when they are made; approve resources first if you want them cited, or press Generate again later.</p></div>';
-    if (k === 'assistance') return '<div class="sub' + dis(k) + '"><p class="small muted">What kind of resources?</p><div class="subrow">' +
-      D_WANTS.map(([w, n]) => '<label><input type="checkbox" data-want="' + w + '"' + (d[w] === 'yes' ? ' checked' : '') + '>' + n + '</label>').join('') + '</div>' + (e.wants ? '<p class="err">' + esc(e.wants) + '</p>' : '') + '</div>';
+      (e.attach ? '<p class="err">' + esc(e.attach) + '</p>' : '') + '</div>';
     return '';
   };
-  const box = (k, label, help, owner) => '<div class="choice' + (d[k] === 'yes' ? ' on' : '') + '"><label><input type="checkbox" data-choice="' + k + '"' + (d[k] === 'yes' ? ' checked' : '') + '>' +
-    '<span style="flex:1"><b style="font-weight:600">' + label + '</b>' + (help ? '<br><span class="small muted">' + help + (k === 'attach_material' && !mc.attach ? ' Not connected yet.' : '') + '</span>' : '') + '</span><span class="who-owns">' + owner + '</span></label>' + sub(k) + '</div>';
-  const L = LECS(), prev = L[L.indexOf(l) - 1];
-  const j = djob(l.id), hasRun = !!(j || DV.results[l.id]);
+  const card = ([k, label, help]) => '<div class="choice' + (m === k ? ' on' : '') + '"><label><input type="radio" name="dmode" data-mode="' + k + '"' + (m === k ? ' checked' : '') + '>' +
+    '<span style="flex:1"><b style="font-weight:600">' + label + '</b><br><span class="small muted">' + help + '</span></span></label>' + (m === k ? sub(k) : '') + '</div>';
+  const L = LECS(), prev = L[L.indexOf(l) - 1], j = djob(l.id), hasRun = !!(j || DV.results[l.id] || (DV.material || {})[l.id]);
   return '<div class="card"><div style="display:flex;justify-content:space-between;gap:var(--space-sm);align-items:baseline;flex-wrap:wrap"><h2 style="margin:0">How will you teach this lecture?</h2>' +
-    (saved ? '<span class="chip green">' + ICON.check + 'Choices saved</span>' : '<span class="chip amber">Not decided yet</span>') + '</div>' +
-    D_CHOICES.map(c => box(...c)).join('') + (e.none ? '<p class="err" style="margin-top:var(--space-xs)">' + esc(e.none) + '</p>' : '') +
-    '<div class="grid2x" style="margin-top:var(--space-md)"><div><label class="f" style="margin-top:0">How confident are you teaching this topic?</label><div class="seg" role="group" aria-label="Confidence from 1 to 5">' +
-    [1, 2, 3, 4, 5].map(n => '<button type="button" data-conf="' + n + '" class="' + (d.confidence === n ? 'on' : '') + '" aria-pressed="' + (d.confidence === n) + '">' + n + '</button>').join('') + '</div>' +
-    '<p class="tiny muted" style="margin-top:var(--space-2xs)">1 = not at all, 5 = fully</p></div>' +
-    '<div><label class="f" style="margin-top:0" for="dnote">Anything we should know? <span class="opt">(optional)</span></label><textarea id="dnote" rows="2" placeholder="Students struggle with configuring tool permissions">' + esc(d.note || '') + '</textarea>' +
-    '</div></div>' +
-    '<div style="display:flex;gap:var(--space-xs);flex-wrap:wrap;margin-top:var(--space-md);justify-content:space-between"><div style="display:flex;gap:var(--space-xs);flex-wrap:wrap">' +
-    (prev ? '<button class="btn" data-act="d-sameprev"' + (DV.survey[prev.id] ? '' : ' disabled title="The previous lecture has no saved choices yet"') + '>Same as previous lecture</button>' : '') +
-    (saved ? '<button class="btn" data-act="d-bulk" data-scope="week">Apply to week ' + l.week + '</button><button class="btn" data-act="d-bulk" data-scope="module">Apply to this module</button>' : '') +
+    (saved ? '<span class="chip green">' + ICON.check + 'Saved</span>' : '') + '</div>' +
+    D_MODES.map(card).join('') + (e.none ? '<p class="err" style="margin-top:var(--space-xs)">' + esc(e.none) + '</p>' : '') +
+    (m && m !== 'own' ? '<label class="f" for="dnote">Anything to stress? <span class="opt">(optional)</span></label><textarea id="dnote" rows="2" placeholder="e.g. students struggle with matrix shapes">' + esc(d.note || '') + '</textarea>' : '') +
+    '<div style="display:flex;gap:var(--space-xs);flex-wrap:wrap;margin-top:var(--space-md);justify-content:space-between"><div>' +
+    (prev ? '<button class="btn quiet" data-act="d-sameprev"' + (DV.survey[prev.id] ? '' : ' disabled') + '>Same as previous lecture</button>' : '') +
     '</div><div style="display:flex;gap:var(--space-xs)">' + (saved ? '<button class="btn" data-act="d-canceledit">Cancel</button>' : '') +
-    '<button class="btn primary" data-act="d-save"' + (PUI.saving ? ' disabled' : '') + '>' + (saved && hasRun ? 'Save changes' : 'Save and start') + ' ' + ICON.arrow + '</button></div></div>' +
-    (saved ? '<p class="tiny muted" style="margin-top:var(--space-xs)">"Apply to" copies these choices to lectures that have none yet (files are not copied). Their searches start when you open each one and press Save and start.</p>' : '') + '</div>';
+    '<button class="btn primary" data-act="d-save"' + (PUI.saving || !m ? ' disabled' : '') + '>' + (saved && hasRun ? 'Save changes' : m === 'own' ? 'Save' : 'Save and start') + ' ' + ICON.arrow + '</button></div></div></div>';
 }
 
 // ---------------------------------- S3: progress ----------------------------------
 function dprogressCard(l) {
   const a = DV.survey[l.id], rows = [], j = djob(l.id), r = DV.results[l.id];
-  if (yes(a, 'own_material')) rows.push(['Own material', '<span class="chip green">' + ICON.check + 'Covered</span>', '']);
-  if (yes(a, 'attach_material')) rows.push(['Working with your material', '<span class="chip grey">Not connected yet</span>', 'Working with your files is not connected yet. Your files and tasks are saved for it.']);
   if (yes(a, 'generate_material')) {
     const mj = dmatJob(l.id), m = (DV.material || {})[l.id], mlab = 'Making slides and notes';
     const mlast = ((DV.log || {})[l.id] || []).filter(x => /lecture material|slides:/.test(x)).slice(-1)[0] || '';
@@ -1271,7 +1236,7 @@ function dprogressCard(l) {
     if (mlast && mj && mj.state === 'running') rows[rows.length - 1][2] += ' <span class="tiny">' + esc(mlast.replace(/^\d\d:\d\d:\d\d\s+/, '')) + '</span>';
   }
   if (yes(a, 'assistance') || yes(a, 'guest_lecture')) {
-    const label = [yes(a, 'assistance') ? 'Finding resources' : '', yes(a, 'guest_lecture') ? 'finding guest speakers' : ''].filter(Boolean).join(' and ').replace(/^./, x => x.toUpperCase());
+    const label = dmode(a) === 'videos' ? 'Finding and checking videos' : [yes(a, 'assistance') ? 'Finding resources' : '', yes(a, 'guest_lecture') ? 'finding guest speakers' : ''].filter(Boolean).join(' and ').replace(/^./, x => x.toUpperCase());
     const last = ((DV.log || {})[l.id] || []).slice(-1)[0] || '';
     if (j && j.state === 'running') rows.push([label, '<span class="spin" aria-hidden="true"></span>', esc(last.replace(/^\d\d:\d\d:\d\d\s+/, '')) || 'Starting…']);
     else if (j && j.state === 'queued') rows.push([label, '<span class="chip grey">Waiting to start</span>', 'Another search is running; this one starts after it.']);
@@ -1290,12 +1255,11 @@ function dprogressCard(l) {
 // ---------------------------------- S4 / S5: results and review ----------------------------------
 function dresultsCard(l) {
   const a = DV.survey[l.id], r = DV.results[l.id], j = djob(l.id), tabs = [];
-  if (yes(a, 'own_material')) tabs.push(['own', 'My material']);
-  if (yes(a, 'attach_material')) tabs.push(['attach', 'Attached material']);
+  if (dmode(a) === 'own') tabs.push(['attach', 'Your slides']);
   if (yes(a, 'generate_material') || (DV.material || {})[l.id]) tabs.push(['gen', 'Generated slides']);
   const hasPlan = (r && (r.components || []).length) || dmix(l.id);
-  if ((yes(a, 'assistance') && hasPlan) || dmix(l.id)) tabs.push(['plan', 'Lecture plan']);
-  if (yes(a, 'assistance')) tabs.push(['res', 'Resources']);
+  if ((yes(a, 'assistance') && hasPlan) || dmix(l.id)) tabs.push(['plan', dmode(a) === 'videos' ? 'Watch plan' : 'Lecture plan']);
+  if (yes(a, 'assistance')) tabs.push(['res', dmode(a) === 'videos' ? 'Videos' : 'Resources']);
   if (yes(a, 'assistance') && yes(a, 'want_clips') && !hasPlan) tabs.push(['clips', 'Clip playlist']);
   if (yes(a, 'guest_lecture')) tabs.push(['guest', 'Guest speakers']);
   if (!tabs.length) return '';
@@ -1303,8 +1267,7 @@ function dresultsCard(l) {
   const running = j && ['queued', 'running'].includes(j.state);
   let body = '';
   if (cur === 'own') body = '<p style="margin-top:var(--space-sm)">Covered by your own material.</p>' + downLinks(l.id);
-  else if (cur === 'attach') body = '<div style="margin-top:var(--space-sm)"><p><b style="font-weight:600">Your material:</b> ' + (a.attachments.length ? a.attachments.map(x => esc(x.split('/').pop())).join(', ') : 'none yet') + '</p><p style="margin-top:var(--space-2xs)"><b style="font-weight:600">Tasks:</b> ' +
-    esc(a.attach_tasks.map(t => (D_TASKS.find(x => x[0] === t) || [t, t])[1]).join(', ') || 'none') + '</p><div class="banner navy">' + ICON.alert + '<div>Working with your files is not connected yet. When it is, its slides, summary, quiz or gap report appear here. Your files are kept in this course\'s delivery folder.</div></div></div>';
+  else if (cur === 'attach') body = '<div style="margin-top:var(--space-sm)">' + (a.attachments.length ? '<ul>' + a.attachments.map(x => '<li>' + (/^https?:/.test(x) ? '<a href="' + esc(x) + '" target="_blank" rel="noopener">' + esc(x) + '</a>' : esc(x.split('/').pop())) + '</li>').join('') + '</ul>' : '<p class="muted">No slides attached yet. Press Change to add them.</p>') + '</div>';
   else if (cur === 'gen') body = dmaterialTab(l);
   else if (running && cur !== 'gen') body = '<p class="muted" style="margin-top:var(--space-md)"><span class="spin"></span> Still searching. The results appear here when the search is done; the page stays usable meanwhile.</p>';
   else if (!r) body = '<p class="muted" style="margin-top:var(--space-md)">No results yet. ' + (j && j.state === 'error' ? 'The last search stopped; see Progress above.' : 'Start the search under Progress.') + '</p>';
@@ -1366,9 +1329,9 @@ function dmaterialTab(l) {
   const stale = d && (d.generated_at !== m.generated_at || d.status !== m.status);      // regenerated, or reviewed since loaded
   if (!d || d.error || stale) { if (!d || !d.error || stale) dloadMat(l.id); return '<p class="muted" style="margin-top:var(--space-md)">Loading the slides…</p>'; }
   const st = MSTATUS[d.status] || [d.status, 'grey'], errs = d.findings.filter(f => f.severity === 'error'), warns = d.findings.filter(f => f.severity !== 'error');
-  const files = { 'slides.pptx': 'Slides (.pptx)', 'notes.md': 'Speaker notes and handout (.md)', 'quiz.json': 'Quiz (.json)' };
+  const files = { 'slides.pdf': 'Slides with typeset maths (.pdf)', 'slides.html': 'Slides to present in the browser (.html)', 'slides.pptx': 'Slides (.pptx, editable)', 'notes.md': 'Speaker notes and handout (.md)', 'quiz.json': 'Quiz (.json)' };
   return '<div style="margin-top:var(--space-sm);display:flex;justify-content:space-between;gap:var(--space-sm);align-items:center;flex-wrap:wrap"><span><span class="chip ' + st[1] + '">' + esc(st[0]) + '</span> <span class="small muted">' + d.slides_total + ' slides (' + d.slides.length + ' with content), about ' + Math.round(d.minutes || 0) + ' min, made ' + esc(String(d.generated_at || '').replace('T', ' ').slice(0, 16)) + '</span></span>' +
-    '<span style="display:flex;gap:var(--space-xs);flex-wrap:wrap">' + d.files.map(f => '<a class="btn sm" href="' + dapi('/material/' + encodeURIComponent(l.id) + '/file/' + f) + '">' + ICON.down + ' ' + files[f] + '</a>').join('') + '</span></div>' +
+    '<span style="display:flex;gap:var(--space-xs);flex-wrap:wrap">' + d.files.map(f => '<a class="btn sm" href="' + dapi('/material/' + encodeURIComponent(l.id) + '/file/' + f) + '"' + (/\.(pdf|html)$/.test(f) ? ' target="_blank" rel="noopener"' : '') + '>' + ICON.down + ' ' + files[f] + '</a>').join('') + '</span></div>' +
     (d.ai_review && d.ai_review.verdict ? '<div class="banner navy">' + ICON.check + '<div><b style="font-weight:600">A second AI checked these slides</b> (not you): ' + esc(d.ai_review.verdict) + '</div></div>' : '') +
     (d.feedback ? '<p class="small muted" style="margin-top:var(--space-xs)">Made with your instructions: “' + esc(d.feedback) + '”</p>' : '') +
     dmatActions(l.id, d) +
@@ -1446,8 +1409,7 @@ function dmixTab(l, r) {
   ((r && r.components) || []).forEach(c => { comps[c.id] = c; });
   if (!m) return '<p class="small" style="margin-top:var(--space-md);display:flex;gap:var(--space-xs);align-items:center"><span class="spin"></span> Planning how to teach each part (about half a minute)…</p>';
   const approved = m.status === 'approved', q = ((DV.mix || {}).quiz || {})[l.id];
-  const head = '<div class="mixhead"><div class="seg" role="group" aria-label="Style of this lecture">' + MIXPRESET.map(([k, t]) =>
-      '<button type="button" data-act="d-mixpreset" data-preset="' + k + '" class="' + (m.preset === k ? 'on' : '') + '" aria-pressed="' + (m.preset === k) + '"' + (busy ? ' disabled' : '') + '>' + t + '</button>').join('') + '</div>' +
+  const head = '<div class="mixhead"><span></span>' +      // the style comes from the lecture's one choice (slides / videos / own); no preset buttons
     (busy ? '<span class="small" style="display:flex;gap:var(--space-xs);align-items:center"><span class="spin"></span> ' + (j.action === 'approve' ? 'Making the NotebookLM prompts and the quiz…' : 'Planning…') + '</span>'
       : approved ? '<span class="chip green">' + ICON.check + 'Approved</span>' : '<span class="chip amber">Not approved yet</span>') + '</div>';
   const err = j && j.state === 'error' ? '<div class="banner red">' + ICON.alert + '<div>' + esc(j.error || '') + '</div></div>' : '';
@@ -1604,7 +1566,7 @@ function dstudent() {
     '<div class="banner navy">' + ICON.check + '<div>What students see: only what you approved.</div></div>' +
     '<h1 style="margin-top:var(--space-md)">' + esc(DV.run.course) + '</h1><p class="muted">Learning resources by lecture</p>' +
     (any ? '' : '<div class="card"><p class="muted">Nothing has been released yet. Approve resources on a lecture page and they appear here.</p></div>') +
-    rows.filter(shown).map(({ l, items }) => '<div class="card"><p class="small muted">Week ' + l.week + ', ' + esc(l.id) + '</p><h2>' + esc(l.topic) + '</h2>' + dsimStudentRows(l) +
+    rows.filter(shown).map(({ l, items }) => '<div class="card"><p class="small muted">' + lecName(l) + '</p><h2>' + esc(l.topic) + '</h2>' + dsimStudentRows(l) +
       (((DV.material || {})[l.id] || {}).status === 'approved' ? '<div class="row"><div><a href="' + dapi('/material/' + encodeURIComponent(l.id) + '/file/slides.pptx') + '" style="font-weight:600">Lecture slides (.pptx)</a><div class="rmeta"><span class="chip teal">For class</span></div></div></div>' : '') +
       items.map(x => { const seg = x.cover && x.cover.find(c => c.segs.length); const rt = ((DV.ratings || {})[l.id] || {})[x.key] || {};
         return '<div class="row"><div style="min-width:0"><a href="' + esc(x.url) + '" target="_blank" rel="noopener" style="font-weight:600">' + esc(x.title) + '</a>' +
@@ -1709,7 +1671,7 @@ async function dclick(act, b) {
   }
   if (act === 'd-start') { const r = await post(dapi('/start'), { lectures: [lid], refresh: b.dataset.refresh === '1' }); toast(r.ok && r.data.started.length ? 'The search has started.' : 'Nothing to search: choose resources or a guest first.'); return loadDelivery(false); }
   if (act === 'd-sameprev') { const r = await api(dapi('/previous/' + encodeURIComponent(lid))); if (!r.ok) { toast((r.data && r.data.problem) || 'Not available'); return; } PUI.draft[lid] = Object.assign(dblank(), r.data.answers); PUI.errs = {}; render(); toast('Filled in from the previous lecture. Press Save to keep it.'); return; }
-  if (act === 'd-bulk') { const r = await post(dapi('/bulk'), { lid, scope: b.dataset.scope }); if (!r.ok) { toast((r.data && r.data.problem) || 'Could not apply'); return; } toast(r.data.applied.length ? 'Applied to ' + r.data.applied.length + ' lecture' + (r.data.applied.length === 1 ? '' : 's') + ' without choices: ' + r.data.applied.join(', ') : 'Every lecture there already has choices; nothing changed.'); return loadDelivery(false); }
+  if (act === 'd-bulk') { const r = await post(dapi('/bulk'), { lid }); if (!r.ok) { toast((r.data && r.data.problem) || 'Could not apply'); return; } toast(r.data.applied.length ? 'Applied to ' + r.data.applied.length + ' lecture' + (r.data.applied.length === 1 ? '' : 's') + ' without choices: ' + r.data.applied.join(', ') : 'Every lecture already has a choice; nothing changed.'); return loadDelivery(false); }
   if (act === 'd-addlink') { const el = document.getElementById('attlink'); const v = (el && el.value || '').trim(); if (!/^https?:\/\/\S+$/.test(v)) { toast('Paste a link that starts with http'); return; } ddraft(lid).attachments.push(v); delete PUI.errs.attach; render(); return; }
   if (act === 'd-rmatt') { ddraft(lid).attachments.splice(+b.dataset.i, 1); render(); return; }
   if (act === 'd-approve') return dreview(lid, b.dataset.kind, b.dataset.key, 'approve', '', b.dataset.title);
@@ -1723,11 +1685,6 @@ async function dclick(act, b) {
   if (act === 'd-ownclose') { PUI.ownForm = null; render(); return; }
   if (act === 'd-ownsave') { const f = PUI.ownForm; const r = await post(dapi('/own'), { lid, title: f.title, url: f.url, kind: f.kind }); if (!r.ok) { f.err = (r.data && r.data.problem) || 'Could not add'; render(); return; } PUI.ownForm = null; toast('Added as approved'); return loadDelivery(false); }
   if (act === 'd-ownrm') { await post(dapi('/own'), { lid, remove: +b.dataset.i }); return loadDelivery(false); }
-  if (act === 'd-wkopen') { PUI.wk = PUI.wk ? null : { weeks: PUI.filter.week !== 'all' ? [+PUI.filter.week] : [], material: true, resources: true, ai: false, busy: false, err: null }; render(); return; }
-  if (act === 'd-wkclose') { PUI.wk = null; render(); return; }
-  if (act === 'd-wkall' && PUI.wk) { PUI.wk.weeks = [...new Set(LECS().map(l => l.week))]; render(); return; }
-  if (act === 'd-wknone' && PUI.wk) { PUI.wk.weeks = []; render(); return; }
-  if (act === 'd-wkgo' && PUI.wk) return dweeksGo();
   if (act === 'd-health') { await post(dapi('/health')); toast('Checking every approved link. This takes a minute.'); return loadDelivery(false); }
   if (act === 'd-deadreplace') return dreview(lid, b.dataset.kind, b.dataset.key, 'replace', 'The link no longer works', b.dataset.title);
   if (act === 'd-deaddismiss') { await post(dapi('/health/dismiss'), { url: b.dataset.url }); return loadDelivery(false); }
@@ -1738,6 +1695,7 @@ async function dclick(act, b) {
 }
 function dinput(t) {
   if (t.id === 'dnote' && DLID) { ddraft(DLID).note = t.value; return true; }
+  if (t.id === 'dslides' && DLID) { ddraft(DLID).slides = t.value ? +t.value : null; return true; }
   if (t.id === 'mixnote' && DLID) { PUI.mixNote[DLID] = t.value; return true; }
   if (t.id === 'rs' && PUI.openReason) { PUI.openReason.text = t.value; PUI.openReason.err = null; return true; }
   if (t.id === 'mrs' && PUI.mReason) { PUI.mReason.text = t.value; PUI.mReason.err = null; return true; }
@@ -1747,12 +1705,12 @@ function dinput(t) {
 }
 function dchange(t) {
   if (t.dataset.filter) { PUI.filter[t.dataset.filter] = t.type === 'checkbox' ? t.checked : t.value; store.set('profsagent-dfilter-' + DRID, JSON.stringify(PUI.filter)); render(); return true; }
-  if (t.dataset.wk != null && PUI.wk) { const k = +t.dataset.wk; PUI.wk.weeks = t.checked ? [...new Set(PUI.wk.weeks.concat(k))] : PUI.wk.weeks.filter(x => x !== k); PUI.wk.err = null; render(); return true; }
-  if (t.dataset.wkopt && PUI.wk) { PUI.wk[t.dataset.wkopt] = t.checked; PUI.wk.err = null; render(); return true; }
   if (t.dataset.mixstyle != null) { dmixstyle(t); return true; }
   if (PAGE !== 'dlec') return false;
   if (t.dataset.mixway || t.dataset.mixwhen) { dmixchange(t); return true; }
   const d = ddraft(DLID);
+  if (t.dataset.mode) { d.mode = t.dataset.mode; PUI.errs = {}; render(); return true; }
+  if (t.id === 'dslides') { d.slides = t.value ? +t.value : null; delete PUI.errs.slides; return true; }
   if (t.dataset.choice) { d[t.dataset.choice] = t.checked ? 'yes' : 'no'; PUI.errs = {}; render(); return true; }
   if (t.dataset.want) { d[t.dataset.want] = t.checked ? 'yes' : 'no'; delete PUI.errs.wants; render(); return true; }
   if (t.dataset.task) { d.attach_tasks = t.checked ? d.attach_tasks.concat(t.dataset.task) : d.attach_tasks.filter(x => x !== t.dataset.task); delete PUI.errs.tasks; render(); return true; }
@@ -2303,6 +2261,7 @@ app.addEventListener('click', async ev => {
     if (fs) { PUI.filter.status = fs.dataset.fstatus; store.set('profsagent-dfilter-' + DRID, JSON.stringify(PUI.filter)); render(); return; }
   }
   if (PAGE === 'dlec') {
+    const dp = ev.target.closest('[data-depth]'); if (dp) { ddraft(DLID).depth = dp.dataset.depth; render(); return; }
     const cf = ev.target.closest('[data-conf]'); if (cf) { ddraft(DLID).confidence = +cf.dataset.conf; render(); return; }
     const tb = ev.target.closest('[data-dtab]'); if (tb) { PUI.tab[DLID] = tb.dataset.dtab; render(); return; }
   }

@@ -16,6 +16,24 @@ import sys
 import traceback
 
 
+def _video_plans(rid: str, lectures: list[str] | None) -> list[str]:
+    """"Only videos" lectures (app delivery mode): their plan is proposed again with the clips preset, so every part a
+    checked YouTube stretch teaches is watched, stitched in part order (Vihan's mix.propose; slides stay the fallback)."""
+    from profsagent.app.delivery import mode_of
+    from profsagent.delivery import mix, survey
+    from profsagent.delivery.pipeline import Log
+    s = (survey.load(rid) or {}).get("lectures") or {}
+    done = []
+    for lid in lectures or []:
+        if mode_of(s.get(lid)) == "videos" and mix.load(rid, lid) is not None:
+            try:
+                mix.propose(rid, lid, preset="slides_clips", log=Log(rid))
+                done.append(lid)
+            except Exception as e:  # noqa: BLE001 — the default plan stays
+                Log(rid)(f"{lid}: video plan not redone ({type(e).__name__}: {e})")
+    return done
+
+
 def main(argv: list[str]) -> int:
     for s in (sys.stdout, sys.stderr):
         s.reconfigure(encoding="utf-8", errors="replace")
@@ -29,6 +47,7 @@ def main(argv: list[str]) -> int:
         if kind == "recommend":
             from profsagent.delivery import pipeline
             out = {"ok": pipeline.recommend(rid, lectures=args.get("lectures"), refresh=bool(args.get("refresh")))}
+            out["video_plans"] = _video_plans(rid, args.get("lectures"))
             try:
                 from profsagent.delivery.graph import write
                 out["graph"] = write(rid)

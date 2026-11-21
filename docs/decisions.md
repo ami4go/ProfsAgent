@@ -8,6 +8,39 @@ Mark anything still waiting for someone as **Open**.
 
 ---
 
+## 2026-11-18: lecture delivery simplified to three choices, lecture by lecture
+
+### 41. One choice per lecture: only slides, only videos, or my own slides; no week-wise screens
+- **Decision (Amit, 18 Nov):** the lecture page asks one question with three answers, and nothing is organised by week any more.
+  - **Only slides:** Parth's deliverable B, now with his new options: number of slides (optional, 5–60) and depth (basic, standard, deep).
+  - **Only videos:** Vihan's video engine. YouTube stretches checked against their transcripts, stitched part by part. The lecture plan is proposed with the `slides_clips` preset, so slides fill only the parts no clip teaches.
+  - **My own slides:** the professor uploads files or pastes a link. Nothing is generated.
+  - **Why:** the page offered 5 choices, 5 resource kinds, 5 file tasks, a confidence scale, a week batch panel, a course teaching style and 5 plan presets. Amit found it too cluttered.
+- **Changed (ours):**
+  - `app/delivery.py`:
+    - new `mode` (slides | videos | own), `slides` and `depth` in `survey.yaml`;
+    - `_with_mode` sets the old flags from the mode, so C's search, B's slides and the Claude Code hand-off read what they read before;
+    - `mode_of` reads answers saved before the modes existed;
+    - `material_options` passes the slide count and depth to `generate_material`;
+    - lectures are numbered (`n`);
+    - `bulk` copies to every undecided lecture, not to a week or module;
+    - `for_weeks` was removed.
+  - `app/server.py`:
+    - `/weeks` was removed;
+    - the save, Generate again and Redo routes pass the slide count and depth.
+  - `app/delivery_step.py`: `_video_plans` re-proposes "Only videos" plans with the clips preset after the search.
+  - `static/index.html` (patch: `Temporary/ui_plan/patch_delivery_modes.py`):
+    - three radio cards;
+    - the lecture list is "Lecture 1…N" with no week headings, week filter, week panel or teaching-style select;
+    - no plan preset buttons.
+  - `tests/test_app_delivery.py`: Vihan's week test is replaced by `test_three_delivery_modes_and_slide_options`. 66 app tests pass.
+- **Pulled the same day:** Parth's `01878ae` (typeset maths, computed running example, plan-then-slide writing, `--slides`/`--depth`) and `bcd54f0` (requirements, no Ollama fallback). The `updated-frontend` branch (React UI) was not merged, as Amit asked.
+- **Agreed by:** Amit (18 Nov).
+- **Open:**
+  - Vihan: his "Make material for chosen weeks" panel and route were removed at Amit's request.
+  - Vihan: guest speakers, readings and NotebookLM are no longer offered in the app. Their code is untouched.
+  - Lecture ids (`W06.L1`) are still week-based inside the pipeline; only the screens changed.
+
 ## 2026-11-07: the professor app redesigned with the Hallmark design skill
 
 ### 38. One calm system for every screen: fewer boxes, shorter screens, the same buttons and routes

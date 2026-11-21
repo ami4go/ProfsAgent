@@ -34,7 +34,35 @@ CHOICES = ["own_material", "attach_material", "generate_material", "assistance",
 WANTS = ["want_videos", "want_readings", "want_practice", "want_recorded_lecture", "want_clips"]
 C_KEYS = ["assistance", "guest_lecture"] + WANTS          # what C's search depends on (a change re-runs it)
 ATTACH_TASKS = ["slides", "summary", "quiz", "gap_check", "enrich"]
-KEEP = CHOICES + ["attachments", "attach_tasks"] + WANTS + ["confidence", "note"]
+KEEP = CHOICES + ["attachments", "attach_tasks"] + WANTS + ["confidence", "note", "mode", "slides", "depth"]
+# The three ways a lecture is delivered (Amit, 18 Nov): the app asks only this; the old per-choice flags above are derived
+# from it so C's search, B's slides and the Claude Code hand-off keep reading what they read before.
+MODES = ["slides", "videos", "own"]
+DEPTHS = ["basic", "standard", "high"]
+
+
+def mode_of(a: dict | None) -> str | None:
+    """The lecture's delivery mode; answers saved before the modes existed are read from their flags."""
+    a = a or {}
+    if a.get("mode") in MODES:
+        return a["mode"]
+    if _yes(a.get("generate_material")):
+        return "slides"
+    if _yes(a.get("assistance")):
+        return "videos"
+    if _yes(a.get("own_material")) or _yes(a.get("attach_material")):
+        return "own"
+    return None
+
+
+def material_options(a: dict | None) -> dict:
+    """Parth's B options a lecture's answers carry: total slide count and depth (content/generate.py)."""
+    a, o = a or {}, {"note": str((a or {}).get("note") or "")}
+    if isinstance(a.get("slides"), int) and 5 <= a["slides"] <= 60:
+        o["slides"] = a["slides"]
+    if a.get("depth") in DEPTHS:
+        o["depth"] = a["depth"]
+    return o
 KINDS = ["video", "recorded_lecture", "reading", "practice"]
 BLOOM = {1: "remember", 2: "understand", 3: "apply", 4: "analyse", 5: "evaluate", 6: "create"}
 EXAMPLE_SOURCE = "cs601-02"      # Vihan's run with real resource and speaker results (W01.L1, W01.L2, W02.L1)
@@ -210,7 +238,7 @@ def view(rid: str, runs: Path | None = None) -> dict:
         "run": {"id": rid, "course": (st.get("cco_compact") or {}).get("course_name") or meta.get("title"), "title": meta.get("title"),
                 "code": (runs / rid / "course_code.txt").read_text().strip() if (runs / rid / "course_code.txt").exists() else None,
                 "example_of": meta.get("example_of")},
-        "lectures": [_lecture(b) for b in briefs], "survey": survey, "results": results, "kits": kits, "notebooklm": nlm,
+        "lectures": [_lecture(b) | {"n": i + 1} for i, b in enumerate(briefs)], "survey": survey, "results": results, "kits": kits, "notebooklm": nlm,
         "log": {k: v[-8:] for k, v in logs.items()}, "jobs": _rj(d / "app_jobs.json", {"lectures": {}}),
         "own": _rj(d / "app_own_links.json", {}), "actions": _rj(d / "app_actions.json", {}),
         "ratings": _ratings(d), "health": {"checked_at": health.get("checked_at"),
@@ -246,22 +274,45 @@ def _simulations(rid: str, runs: Path) -> dict:
 
 
 # ------------------------------------------------------------------ S2: choices
+def _with_mode(a: dict) -> dict:
+    """Answers with a mode get the matching flags; nothing else is switched on."""
+    m = a.get("mode")
+    if m not in MODES:
+        return a
+    out = dict(a) | {k: "no" for k in CHOICES} | {w: "no" for w in WANTS}
+    if m == "slides":
+        out["generate_material"] = "yes"
+    elif m == "videos":
+        out.update(assistance="yes", want_videos="yes")
+    else:
+        out.update(own_material="yes", attach_material="yes")
+    return out
+
+
 def validate_choices(a: dict) -> dict[str, str]:
     e = {}
+    if a.get("mode") is not None and a.get("mode") not in MODES:
+        e["none"] = "Pick how this lecture is delivered."
+    a = _with_mode(a)
     if not any(a.get(k) == "yes" for k in CHOICES):
-        e["none"] = "Pick at least one way to deliver this lecture."
+        e["none"] = "Pick how this lecture is delivered."
     if a.get("attach_material") == "yes" and not a.get("attachments"):
         e["attach"] = "Add at least one file or link."
-    if a.get("attach_material") == "yes" and not a.get("attach_tasks"):
+    if a.get("attach_material") == "yes" and not a.get("attach_tasks") and a.get("mode") != "own":
         e["tasks"] = "Pick at least one thing to do with your material."
     if a.get("assistance") == "yes" and not any(a.get(w) == "yes" for w in WANTS):
         e["wants"] = "Pick at least one kind of resource."
     if a.get("confidence") not in (None, 1, 2, 3, 4, 5):
         e["confidence"] = "Confidence goes from 1 to 5."
+    if a.get("slides") not in (None, "") and not (str(a["slides"]).isdigit() and 5 <= int(a["slides"]) <= 60):
+        e["slides"] = "Number of slides: a whole number from 5 to 60, or leave it empty."
+    if a.get("depth") not in (None, "", *DEPTHS):
+        e["depth"] = "Depth is basic, standard or high."
     return e
 
 
 def _clean(a: dict) -> dict:
+    a = _with_mode(a)
     out = {}
     for k in CHOICES:
         out[k] = "yes" if a.get(k) == "yes" else "no"
@@ -271,6 +322,9 @@ def _clean(a: dict) -> dict:
     out["attach_tasks"] = [t for t in (a.get("attach_tasks") or []) if t in ATTACH_TASKS] if out["attach_material"] == "yes" else []
     out["confidence"] = a.get("confidence") if a.get("confidence") in (1, 2, 3, 4, 5) else None
     out["note"] = str(a.get("note") or "")[:1000]
+    out["mode"] = a.get("mode") if a.get("mode") in MODES else mode_of(out)
+    out["slides"] = int(a["slides"]) if str(a.get("slides") or "").isdigit() and out["mode"] == "slides" else None
+    out["depth"] = a.get("depth") if a.get("depth") in DEPTHS and out["mode"] == "slides" else None
     return out
 
 
@@ -302,63 +356,23 @@ def save_choices(rid: str, lid: str, answers: dict) -> dict:
     return {"saved": True, "start_c": start, "refresh": start and has_results, "start_b": start_b}
 
 
-def bulk(rid: str, lid: str, scope: str) -> dict:
-    """Copy one lecture's saved choices to the lectures of its week or module that have no choices yet."""
+def bulk(rid: str, lid: str, scope: str = "all") -> dict:
+    """Copy one lecture's saved choice to every other lecture that has none yet (files are not copied)."""
     from profsagent.delivery import survey as sv
     s = sv.load(rid)
-    briefs = {b["lecture_id"]: b for b in _rj(_d(rid) / "briefs.json", [])}
     src = sv._migrate(s["lectures"][lid])
     if not any(src.get(k) is not None for k in CHOICES):
-        return {"applied": [], "problem": "Save this lecture's choices first."}
-    key = "week" if scope == "week" else "module"
+        return {"applied": [], "problem": "Save this lecture's choice first."}
+    if mode_of(src) == "own":
+        return {"applied": [], "problem": "Your own slides belong to one lecture, so this choice is not copied."}
     done = []
     for other, a in s["lectures"].items():
-        if other == lid or briefs.get(other, {}).get(key) != briefs[lid].get(key) or any(sv._migrate(a).get(k) is not None for k in CHOICES):
+        if other == lid or any(sv._migrate(a).get(k) is not None for k in CHOICES):
             continue
         a.update({k: src.get(k) for k in KEEP if k not in ("attachments", "note")} | {"attachments": [], "note": ""})
-        if a.get("attach_material") == "yes":
-            a["attach_material"], a["attach_tasks"] = "no", []      # files belong to one lecture: not copied
         done.append(other)
     sv.save(rid, s)
     return {"applied": done}
-
-
-def for_weeks(rid: str, weeks: list[int], material: bool, resources: bool) -> dict:
-    """Turn on slides (B) and/or the resource search (C) for every lecture of the chosen weeks, then say what to start.
-    A lecture's saved choices are kept and only added to (nothing is switched off); a lecture with no choices gets just
-    what was asked, with the lecture page's default resource kinds (videos and readings). Returns {lectures: [{id,
-    start_c, refresh, start_b}], skipped: [{id, why}]} or {problem}."""
-    from profsagent.delivery import survey as sv
-    if not (material or resources):
-        return {"problem": "Pick slides, resources or both."}
-    want = {int(w) for w in weeks if str(w).isdigit()}
-    briefs = [b for b in _rj(_d(rid) / "briefs.json", []) if int(b.get("week") or 0) in want]
-    if not briefs:
-        return {"problem": "No lectures in those weeks."}
-    ensure(rid)
-    lectures = (sv.load(rid).get("lectures") or {})
-    out, skipped = [], []
-    for b in briefs:
-        lid = b["lecture_id"]
-        if lid not in lectures:
-            skipped.append({"id": lid, "why": "not in the lecture plan"})
-            continue
-        old = sv._migrate(lectures[lid])
-        a = {k: old.get(k) for k in KEEP}
-        if not any(old.get(k) is not None for k in CHOICES):
-            a.update({k: "no" for k in CHOICES} | {"want_videos": "yes", "want_readings": "yes"})
-        if material:
-            a["generate_material"] = "yes"
-        if resources:
-            a["assistance"] = "yes"
-            if not any(a.get(w) == "yes" for w in WANTS):
-                a.update(want_videos="yes", want_readings="yes")
-        r = save_choices(rid, lid, a)
-        if r.get("errors"):
-            skipped.append({"id": lid, "why": " ".join(r["errors"].values())})
-            continue
-        out.append({"id": lid, "start_c": bool(r["start_c"]), "refresh": bool(r["refresh"]), "start_b": bool(r["start_b"])})
-    return {"lectures": out, "skipped": skipped}
 
 
 def same_as_previous(rid: str, lid: str) -> dict:
@@ -467,7 +481,8 @@ def dismiss_dead(rid: str, url: str) -> None:
 
 
 # ------------------------------------------------------------------ B: lecture slides (Parth, profsagent.content)
-MATERIAL_FILES = {"slides.pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+MATERIAL_FILES = {"slides.pdf": "application/pdf", "slides.html": "text/html",   # Parth's typeset deck (KaTeX maths, measured layout)
+                  "slides.pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
                   "notes.md": "text/markdown", "quiz.json": "application/json"}
 
 

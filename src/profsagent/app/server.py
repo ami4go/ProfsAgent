@@ -304,7 +304,8 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True, del
         if out.get("start_c"):
             dmgr.queue_recommend(rid, [lid], refresh=out["refresh"])
         if out.get("start_b"):
-            dmgr.queue_material(rid, lid, {"note": str(answers.get("note") or ""), **({"review": "ai"} if answers.get("_ai_review") else {})})
+            saved = (dv.view(rid, mgr.runs)["survey"].get(lid) or {})
+            dmgr.queue_material(rid, lid, dv.material_options(saved) | ({"review": "ai"} if answers.get("_ai_review") else {}))
         return out
 
     # ---- B: lecture slides (Parth's deliverable B)
@@ -321,7 +322,7 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True, del
         course_dir(rid)
         lecture_id(lid)
         s = (dv.view(rid, mgr.runs)["survey"].get(lid) or {})
-        opts = {"note": str(s.get("note") or "")}
+        opts = dv.material_options(s | {k: body[k] for k in ("slides", "depth") if k in body})   # Parth's slide count and depth
         if body.get("ai_review"):
             opts["review"] = "ai"
         if str(body.get("feedback") or "").strip():
@@ -339,7 +340,7 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True, del
             return JSONResponse(out, status_code=409)
         if body.get("decision") == "redo":   # redo = generate again with the professor's instructions (Parth's B1 feedback)
             s = (dv.view(rid, mgr.runs)["survey"].get(lid) or {})
-            dmgr.queue_material(rid, lid, {"note": str(s.get("note") or ""), "feedback": str(body.get("reason")).strip(),
+            dmgr.queue_material(rid, lid, dv.material_options(s) | {"feedback": str(body.get("reason")).strip(),
                                            **({"review": "ai"} if body.get("ai_review") else {})})
         return out
 
@@ -352,7 +353,9 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True, del
         if not p.exists():
             raise HTTPException(404, "Not made yet")
         title = re.sub(r"[^A-Za-z0-9]+", "_", read_meta(d).get("title") or rid).strip("_")
-        return FileResponse(p, filename=f"{title}_{lid}_{name}", media_type=dv.MATERIAL_FILES[name], headers=NO_CACHE)
+        inline = name in ("slides.pdf", "slides.html")          # opened in the browser tab, not saved
+        return FileResponse(p, filename=f"{title}_{lid}_{name}", media_type=dv.MATERIAL_FILES[name], headers=NO_CACHE,
+                            content_disposition_type="inline" if inline else "attachment")
 
     @app.post("/api/delivery/{rid}/start")
     def delivery_start(rid: str, body: dict = Body(...)):
@@ -409,26 +412,8 @@ def create_app(manager: RunManager | None = None, start_worker: bool = True, del
     @app.post("/api/delivery/{rid}/bulk")
     def delivery_bulk(rid: str, body: dict = Body(...)):
         course_dir(rid)
-        out = dv.bulk(rid, lecture_id(body.get("lid", "")), "module" if body.get("scope") == "module" else "week")
+        out = dv.bulk(rid, lecture_id(body.get("lid", "")))
         return JSONResponse(out, status_code=409) if out.get("problem") else out
-
-    @app.post("/api/delivery/{rid}/weeks")
-    def delivery_weeks(rid: str, body: dict = Body(...)):
-        """Make the learning material for chosen weeks only: slides and/or the resource search for each of their lectures."""
-        course_dir(rid)
-        out = dv.for_weeks(rid, list(body.get("weeks") or [])[:20], bool(body.get("material")), bool(body.get("resources")))
-        if out.get("problem"):
-            return JSONResponse(out, status_code=409)
-        c = [x["id"] for x in out["lectures"] if x["start_c"]]
-        if c:
-            dmgr.queue_recommend(rid, c, refresh=any(x["refresh"] for x in out["lectures"] if x["start_c"]))
-        ai = {"review": "ai"} if body.get("ai_review") else {}
-        from profsagent.delivery import survey as sv
-        saved = sv.load(rid).get("lectures") or {}
-        for x in out["lectures"]:
-            if x["start_b"]:
-                dmgr.queue_material(rid, x["id"], {"note": str((saved.get(x["id"]) or {}).get("note") or ""), **ai})
-        return {**out, "started_resources": c, "started_slides": [x["id"] for x in out["lectures"] if x["start_b"]]}
 
     @app.get("/api/delivery/{rid}/previous/{lid}")
     def delivery_previous(rid: str, lid: str):

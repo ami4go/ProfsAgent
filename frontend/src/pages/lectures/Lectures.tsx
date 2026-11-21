@@ -56,7 +56,7 @@ function WeeksDialog({ v, rid, open, onClose, preset }: { v: DeliveryView; rid: 
         <div className="mt-3 flex gap-2"><Button size="sm" variant="ghost" onClick={() => setPicked(weeks)}>All weeks</Button><Button size="sm" variant="ghost" onClick={() => setPicked([])}>None</Button></div>
       </fieldset>
       <fieldset className="mt-5 space-y-2.5 border-t border-line pt-4">
-        <legend className="label-caps float-left mb-2 w-full">What to make</legend>
+        <legend className="label-caps float-left mb-2 w-full">What to make</legend><div className="clear-left" aria-hidden="true" />{/* the floated legend must not squeeze the grid/flex rows beside it */}
         <Checkbox checked={material} onChange={setMaterial} description="About 2–3 minutes a lecture">Slides, notes and quiz</Checkbox>
         <Checkbox checked={resources} onChange={setResources} description="About 3–6 minutes a lecture">Videos and readings, and the lecture plan</Checkbox>
         {material && <Checkbox checked={ai} onChange={setAi}>Have a second AI check the slides</Checkbox>}

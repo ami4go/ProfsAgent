@@ -141,7 +141,7 @@ function ChoicesCard({ v, rid, l, saved, onDone, act }: { v: DeliveryView; rid: 
     )
     if (k === 'assistance') return (
       <fieldset className="mt-3 border-t border-dashed border-line pt-3">
-        <legend className="float-left mb-2 w-full text-sm text-ink-3">What kind of resources?</legend>
+        <legend className="float-left mb-2 w-full text-sm text-ink-3">What kind of resources?</legend><div className="clear-left" aria-hidden="true" />{/* the floated legend must not squeeze the grid/flex rows beside it */}
         <div className="grid gap-2 sm:grid-cols-2">{WANTS.map((w) => <Checkbox key={w.key} checked={d[w.key] === 'yes'} onChange={(c) => set({ [w.key]: c ? 'yes' : 'no' })}>{w.label}</Checkbox>)}</div>
         <FieldError>{errs.wants}</FieldError>
       </fieldset>

@@ -1,0 +1,23 @@
+id: ml.nn.backprop_steps
+type: [1-step-through, 5-networks]
+title: "Backpropagation step by step on a tiny network"
+summary: "Set the inputs, class, weights and learning rate of a 2-2-2 ReLU network; step through the forward pass, every backprop gradient, a finite-difference check and one SGD step."
+shows_code: true                  # NumPy-style code beside the simulation, the current line lit
+version: 1.0.0
+status: draft                     # draft | team-checked | retired  (professor approval is per course, in the app)
+courses: []
+topics: [backpropagation, chain rule, computational graph, softmax cross-entropy, gradient checking, finite differences, stochastic gradient descent]
+interactivity: L3                 # own inputs, class, weights, mini-batch, learning rate and epsilon; predict questions
+engine: {name: stepper, path: _engines/stepper}
+files: {page_src: page.src.html, qa: qa.py}
+config:
+  inputs: [x1, x2, true class, up to 3 more examples (mini-batch of 1-4), W1, b1, W2, b2, learning rate, epsilon for the gradient check]
+  examples: [both hidden units on, hidden unit 2 off (exactly zero gradients), worked by hand (P = 1/2, L = ln 2), confident and wrong, a ReLU kink (z = 0, the gradient check fails there), mini-batch of 4, the same mini-batch with a learning rate that overshoots]
+checks:
+  independent: "live: forward-mode differentiation (dual numbers through plain scalar loops, no backward pass) recomputes the 12 gradients, the loss, the probabilities, the finite differences and the loss after the SGD step"
+  qa: "a NumPy implementation of forward, backward, finite differences, kink flags and the SGD step on 600 random inputs and weights (batch 1-4), to 1e-9; closed-form cases (P = 1/2 and L = ln 2; P = 3/4 and L = ln 4/3; a conflicting pair with zero gradient; a dead unit; the kink's half slope); descent for small learning rates; every preset's predict answers; the live check; fit at 1440x900 and 1280x720; keyboard; link and class example; phone; offline"
+sensitive: false
+offline: true
+class_example: true                # the stepper engine sends the setup to the app (share.js is loaded before it)
+changelog:
+  - {version: 1.0.0, date: 2026-11-11, by: "Claude Code (ML-2 comparison)", change: "first version, for W06.L1 (backpropagation and mini-batch SGD): forward pass, backward pass as upstream x local, centred finite-difference check, one SGD step; 7 examples"}

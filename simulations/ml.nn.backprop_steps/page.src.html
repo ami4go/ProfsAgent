@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Backpropagation step by step on a tiny network</title>
+<link rel="stylesheet" href="../_engines/stepper/stepper.css">
+<style>
+  /* drawn on the engine's chalkboard (stepper.css): chalk lines and colours */
+  .bp-stage { width: 100%; height: 100%; min-height: 0; display: flex; flex-direction: column; gap: 8px; }
+  .bp-fig { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; gap: 18px; }
+  .bp-fig > svg { width: 100%; height: 100%; display: block; }
+  .bp-fig > svg.bp-plot { flex: 1 1 420px; min-width: 0; max-width: 620px; }
+  .bp-fig > .bp-tablebox { flex: none; max-height: 100%; overflow: auto; }
+  /* the network */
+  .n-box { fill: rgba(0, 0, 0, .2); stroke: rgba(241, 240, 230, .55); stroke-width: 1.6; }
+  .n-box.active { stroke: var(--c-yellow); stroke-width: 2.8; } .n-box.compare { stroke: var(--c-blue); stroke-width: 2.4; }
+  .n-box.done { stroke: var(--c-green); stroke-width: 2.4; } .n-box.off { stroke-dasharray: 5 4; }
+  .n-name { fill: var(--chalk2); font: 12.5px var(--f-body); } .n-name.active { fill: var(--c-yellow); } .n-name.compare { fill: var(--c-blue); }
+  .n-val { fill: var(--chalk); font: 600 16px var(--f-mono); } .n-grad { fill: var(--c-pink); font: 600 14px var(--f-mono); white-space: pre; }
+  .st-code { font-size: 12px; }                      /* the code card fits 44 characters a line */
+  .n-val.sm, .n-grad.sm { font-size: 12.5px; } .n-val.off { fill: var(--chalk2); }
+  .n-tag { fill: var(--chalk2); font: italic 11.5px var(--f-body); }
+  .e { stroke: rgba(241, 240, 230, .42); stroke-width: 1.6; fill: none; }
+  .e.active { stroke: var(--c-yellow); stroke-width: 2.6; } .e.compare { stroke: var(--c-blue); stroke-width: 2.2; }
+  .e.done { stroke: var(--c-green); stroke-width: 2.2; } .e.muted { opacity: .25; } .e.blocked { stroke-dasharray: 4 4; opacity: .55; }
+  .e-bg { fill: var(--board); fill-opacity: .92; }
+  .e-w { fill: var(--chalk); font: 12.5px var(--f-mono); } .e-w.active { fill: var(--c-yellow); font-weight: 700; } .e-w.done { fill: var(--c-green); font-weight: 700; }
+  .e-g { fill: var(--c-pink); font: 600 12px var(--f-mono); white-space: pre; } .e-was { fill: var(--chalk2); font: 11px var(--f-mono); }
+  .e-tag { fill: var(--chalk2); font: 11.5px var(--f-mono); } .e-tag.active { fill: var(--c-yellow); font-weight: 700; }
+  .col-h { fill: var(--chalk2); font: 600 12.5px var(--f-mono); }
+  .b-lab { fill: var(--chalk2); font: 12px var(--f-mono); white-space: pre; } .b-lab.active { fill: var(--c-yellow); font-weight: 700; } .b-lab.done { fill: var(--c-green); font-weight: 700; }
+  .b-g { fill: var(--c-pink); font-weight: 600; }
+  .leg { fill: var(--chalk2); font: 12px var(--f-body); white-space: pre; }
+  .pd { font-family: 'Cambria Math', 'STIX Two Math', 'Times New Roman', serif; font-style: italic; font-weight: 400; } .leg-g { fill: var(--c-pink); } .leg-a { fill: var(--c-yellow); } .leg-c { fill: var(--c-blue); }
+  /* plots */
+  .p-frame { fill: rgba(0, 0, 0, .14); stroke: var(--chalk-dim); } .p-grid { stroke: rgba(241, 240, 230, .1); }
+  .p-tick { fill: var(--chalk2); font: 11.5px var(--f-mono); } .p-ax { fill: var(--chalk2); font: 12.5px var(--f-body); }
+  .p-line { fill: none; stroke: var(--c-yellow); stroke-width: 2.4; } .p-tan { fill: none; stroke: var(--c-blue); stroke-width: 1.8; stroke-dasharray: 6 4; }
+  .p-thr { stroke: var(--c-pink); stroke-width: 1.6; stroke-dasharray: 5 4; } .p-thr-l { fill: var(--c-pink); font: 12px var(--f-mono); }
+  .p-v { stroke: var(--chalk2); stroke-width: 1.2; stroke-dasharray: 3 4; }
+  .p-pt { stroke: var(--board2); stroke-width: 1.5; } .p-pt.pass { fill: var(--c-green); } .p-pt.fail { fill: var(--c-pink); } .p-pt.now { fill: var(--c-blue); }
+  .p-pt.up { fill: var(--c-pink); } .p-pt.down { fill: var(--c-green); }
+  .p-lab { fill: var(--chalk); font: 12px var(--f-body); } .p-lab.pass { fill: var(--c-green); } .p-lab.fail { fill: var(--c-pink); } .p-lab.tan { fill: var(--c-blue); }
+  .p-sep { stroke: rgba(241, 240, 230, .18); }
+  /* the matrices under the figure: the vectorised step */
+  .bp-strip { flex: none; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 10px; color: var(--chalk); }
+  .bp-m { display: inline-flex; flex-direction: column; align-items: center; gap: 1px; }
+  .bp-m .lab { font: 600 calc(12.5px * var(--s)) var(--f-mono); color: var(--chalk2); white-space: nowrap; }
+  .bp-m .lab.g { color: var(--c-pink); }
+  .bp-grid { display: grid; gap: 0 10px; padding: 1px 7px; border-left: 2px solid rgba(241, 240, 230, .6); border-right: 2px solid rgba(241, 240, 230, .6); border-radius: 5px; font: calc(13.5px * var(--s))/1.45 var(--f-mono); }
+  .bp-grid span { text-align: right; white-space: nowrap; } .bp-grid.g span { color: var(--c-pink); }
+  .bp-grid span.hi { color: var(--c-yellow); font-weight: 700; } .bp-grid span.z { opacity: .5; }
+  .bp-op { font: calc(17px * var(--s)) var(--f-mono); color: var(--chalk2); }
+  .bp-line { flex: 1 1 100%; text-align: center; font: calc(14px * var(--s))/1.4 var(--f-mono); color: var(--chalk); white-space: pre-wrap; }
+  .bp-line .up { color: var(--c-pink); } .bp-line .loc { color: var(--c-blue); } .bp-line .res { color: var(--c-yellow); font-weight: 700; }
+  .bp-line .ok { color: var(--c-green); font-weight: 700; } .bp-line .bad { color: var(--c-pink); font-weight: 700; } .bp-line .dim { color: var(--chalk2); }
+  /* the gradient-check table */
+  .bp-table { border-collapse: collapse; font: calc(12.5px * var(--s))/1.35 var(--f-mono); color: var(--chalk); }
+  .bp-table th, .bp-table td { padding: 2px 8px; text-align: right; border-bottom: 1px solid rgba(241, 240, 230, .12); white-space: nowrap; }
+  .bp-table th { color: var(--chalk2); font: 600 12px var(--f-body); }
+  .bp-table td:first-child, .bp-table th:first-child { text-align: left; }
+  .bp-table tr.todo td { opacity: .28; } .bp-table tr.now td { color: var(--c-yellow); }
+  .bp-table td.pass { color: var(--c-green); font-weight: 700; } .bp-table td.fail { color: var(--c-pink); font-weight: 700; }
+  @media (max-width: 900px) {
+    .bp-fig { flex-direction: column; align-items: stretch; overflow-x: auto; } .bp-fig > svg { height: auto; } .bp-fig > svg.bp-net { width: 720px; max-width: none; } .bp-fig > svg.bp-plot { flex: none; width: 100%; }
+    .bp-fig > .bp-tablebox { max-width: 100%; max-height: none; overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+<script src="../_engines/share/share.js"></script>
+<script src="../_engines/stepper/stepper.js"></script>
+<script>
+(() => {
+'use strict';
+const { h } = Stepper;
+const SVGNS = 'http://www.w3.org/2000/svg';
+const sv = (tag, attrs = {}, ...kids) => {
+  const e = document.createElementNS(SVGNS, tag);
+  for (const [k, v] of Object.entries(attrs)) if (v !== false && v != null) e.setAttribute(k, v);
+  for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(String(k)));
+  return e;
+};
+
+// ================================================================ numbers on screen
+const MINUS = '−';
+const sgn = (v, s) => (v < 0 ? MINUS : '') + s;
+function fv(v) {                       // a computed value: 3 decimals; exactly 0 shows as 0; tiny values in e-notation
+  if (v === 0) return '0';
+  const a = Math.abs(v);
+  return sgn(v, a >= 0.001 ? a.toFixed(3) : a.toExponential(1).replace('-', MINUS));
+}
+function fs(v) {                       // a typed value (input, weight): up to 3 decimals, no trailing zeros
+  if (v === 0) return '0';
+  const a = Math.abs(v);
+  return sgn(v, a >= 0.001 ? String(Number(a.toFixed(3))) : a.toExponential(1).replace('-', MINUS));
+}
+const fe = v => (v === 0 ? '0' : v >= 0.01 ? String(Number(v.toPrecision(2))) : v.toExponential(1).replace('-', MINUS));   // a relative error
+const feps = v => v.toExponential().replace('-', MINUS);                                                              // epsilon: 1e−5
+const fpar = v => (v < 0 ? '(' + fv(v) + ')' : fv(v));          // a negative factor in a product, in brackets
+const fl = v => sgn(v, Math.abs(v).toFixed(10));                  // the two losses of a finite difference
+const f8 = v => (v === 0 ? '0' : sgn(v, Math.abs(v).toPrecision(8)));
+
+// ================================================================ the network (row-vector convention, as in the lecture)
+// X (B x 2), W1 (2 x 2: input i -> hidden j), b1 (2), W2 (2 x 2: hidden j -> class k), b2 (2)
+const NUM = /^[+-]?(\d+\.?\d*|\.\d+)(e[+-]?\d+)?$/i;
+const nums = s => { const t = String(s == null ? '' : s).replace(/−/g, '-').trim(); return t ? t.split(/[\s,]+/).filter(Boolean).map(x => (NUM.test(x) ? Number(x) : NaN)) : []; };
+const EPS = ['1e-2', '1e-3', '1e-4', '1e-5', '1e-6', '1e-7', '1e-8', '1e-10', '1e-12'];
+const LIMIT = 10;
+function parse(v) {
+  const err = (field, message) => ({ error: { field, message } });
+  const one = (id, what) => { const a = nums(v[id]); return a.length === 1 && isFinite(a[0]) && Math.abs(a[0]) <= LIMIT ? a[0] : null; };
+  const x1 = one('x1'), x2 = one('x2');
+  if (x1 === null) return err('x1', `Type one number between ${MINUS}10 and 10.`);
+  if (x2 === null) return err('x2', `Type one number between ${MINUS}10 and 10.`);
+  const y = String(v.y).trim();
+  if (y !== '1' && y !== '2') return err('y', 'The true class is 1 or 2.');
+  const lr = nums(v.lr);
+  if (lr.length !== 1 || !(lr[0] > 0) || lr[0] > 50) return err('lr', 'A learning rate above 0 and at most 50.');
+  const eps = nums(v.eps);
+  if (eps.length !== 1 || !(eps[0] >= 1e-14) || eps[0] > 0.1) return err('eps', 'An ε between 1e-14 and 0.1.');
+  const mat = id => {
+    const rows = String(v[id] == null ? '' : v[id]).split(/[;|\n]/).map(r => r.trim()).filter(Boolean).map(nums);
+    if (rows.length !== 2 || rows.some(r => r.length !== 2 || r.some(x => !isFinite(x)))) return err(id, 'Two rows of two numbers, rows separated by ;  e.g. 0.5 -0.4; 0.3 0.8');
+    if (rows.flat().some(x => Math.abs(x) > LIMIT)) return err(id, `Keep every weight between ${MINUS}10 and 10.`);
+    return rows;
+  };
+  const vec = id => {
+    const a = nums(v[id]);
+    if (a.length !== 2 || a.some(x => !isFinite(x))) return err(id, 'Two numbers, e.g. 0.1 0.2');
+    if (a.some(x => Math.abs(x) > LIMIT)) return err(id, `Keep both between ${MINUS}10 and 10.`);
+    return a;
+  };
+  const W1 = mat('W1'); if (W1.error) return W1;
+  const b1 = vec('b1'); if (b1.error) return b1;
+  const W2 = mat('W2'); if (W2.error) return W2;
+  const b2 = vec('b2'); if (b2.error) return b2;
+  const X = [[x1, x2]], Y = [y === '1' ? 0 : 1];
+  const more = String(v.more == null ? '' : v.more).split(/[;|\n]/).map(r => r.trim()).filter(Boolean);
+  if (more.length > 3) return err('more', 'At most 3 more examples (a mini-batch of up to 4).');
+  for (const r of more) {
+    const a = nums(r);
+    if (a.length !== 3 || a.some(x => !isFinite(x)) || Math.abs(a[0]) > LIMIT || Math.abs(a[1]) > LIMIT || (a[2] !== 1 && a[2] !== 2))
+      return err('more', `“${r}”: each example is x1 x2 class (class 1 or 2), examples separated by ;`);
+    X.push([a[0], a[1]]); Y.push(a[2] - 1);
+  }
+  return { X, y: Y, B: X.length, W1, b1, W2, b2, lr: lr[0], eps: eps[0] };
+}
+
+// ---- small matrix helpers (the main implementation follows the vectorised equations)
+const matmul = (A, B) => A.map(r => B[0].map((_, j) => r.reduce((s, a, k) => s + a * B[k][j], 0)));
+const tr = A => A[0].map((_, j) => A.map(r => r[j]));
+const addRow = (A, b) => A.map(r => r.map((x, j) => x + b[j]));
+const colSum = A => A[0].map((_, j) => A.reduce((s, r) => s + r[j], 0));
+const mapM = (A, f) => A.map((r, i) => r.map((x, j) => f(x, i, j)));
+const clone = p => JSON.parse(JSON.stringify(p));
+
+function forward(p) {
+  const Z1 = addRow(matmul(p.X, p.W1), p.b1);
+  const H = mapM(Z1, z => (z > 0 ? z : 0));
+  const Z2 = addRow(matmul(H, p.W2), p.b2);
+  const LSE = Z2.map(r => { const m = Math.max(...r); return m + Math.log(r.reduce((s, z) => s + Math.exp(z - m), 0)); });
+  const P = mapM(Z2, (z, i) => Math.exp(z - LSE[i]));
+  const losses = Z2.map((r, i) => LSE[i] - r[p.y[i]]);                // -log P[i, y_i]
+  return { Z1, H, Z2, P, L: losses.reduce((s, x) => s + x, 0) / p.B, losses };
+}
+function backward(p, f) {
+  const Y = p.y.map(c => [c === 0 ? 1 : 0, c === 1 ? 1 : 0]);
+  const dZ2 = mapM(f.P, (q, i, j) => (q - Y[i][j]) / p.B);
+  const dW2 = matmul(tr(f.H), dZ2), db2 = colSum(dZ2);
+  const dH = matmul(dZ2, tr(p.W2));
+  const M = mapM(f.Z1, z => (z > 0 ? 1 : 0));
+  const dZ1 = mapM(dH, (d, i, j) => d * M[i][j]);
+  const dW1 = matmul(tr(p.X), dZ1), db1 = colSum(dZ1);
+  return { Y, dZ2, dW2, db2, dH, M, dZ1, dW1, db1 };
+}
+// the 12 parameters, in the order of the gradient check
+const PARAMS = [['W1', 0, 0], ['W1', 0, 1], ['W1', 1, 0], ['W1', 1, 1], ['b1', 0], ['b1', 1], ['W2', 0, 0], ['W2', 0, 1], ['W2', 1, 0], ['W2', 1, 1], ['b2', 0], ['b2', 1]];
+const GROUPS = [['W1', 0, 4], ['b1', 4, 6], ['W2', 6, 10], ['b2', 10, 12]];
+const pname = q => (q.length === 2 ? `${q[0]}[${q[1] + 1}]` : `${q[0]}[${q[1] + 1},${q[2] + 1}]`);
+const getP = (p, q) => (q.length === 2 ? p[q[0]][q[1]] : p[q[0]][q[1]][q[2]]);
+const setP = (p, q, val) => { const c = clone(p); if (q.length === 2) c[q[0]][q[1]] = val; else c[q[0]][q[1]][q[2]] = val; return c; };
+const gradOf = (g, q) => (q.length === 2 ? g['d' + q[0]][q[1]] : g['d' + q[0]][q[1]][q[2]]);
+const maskKey = p => forward(p).Z1.map(r => r.map(z => (z > 0 ? 1 : 0)).join('')).join('|');
+const REL_TINY = 1e-12, THRESHOLD = 1e-5, BOTH_ZERO = 1e-9;
+function gradcheck(p, g) {
+  const m0 = maskKey(p);
+  return PARAMS.map(q => {
+    const th = getP(p, q), pp = setP(p, q, th + p.eps), pm = setP(p, q, th - p.eps);
+    const Lp = forward(pp).L, Lm = forward(pm).L, num = (Lp - Lm) / (2 * p.eps), ana = gradOf(g, q);
+    const rel = Math.abs(ana - num) / Math.max(Math.abs(ana) + Math.abs(num), REL_TINY);
+    const kink = maskKey(pp) !== m0 || maskKey(pm) !== m0;        // the nudge switches a ReLU on or off
+    const tiny = Math.abs(ana) + Math.abs(num) < BOTH_ZERO;         // both about 0: a relative error means nothing
+    return { name: pname(q), th, Lp, Lm, num, ana, rel, kink, tiny, pass: rel < THRESHOLD || tiny };
+  });
+}
+function update(p, g) {
+  const c = clone(p);
+  c.W1 = mapM(p.W1, (w, i, j) => w - p.lr * g.dW1[i][j]); c.b1 = p.b1.map((b, j) => b - p.lr * g.db1[j]);
+  c.W2 = mapM(p.W2, (w, i, j) => w - p.lr * g.dW2[i][j]); c.b2 = p.b2.map((b, j) => b - p.lr * g.db2[j]);
+  return c;
+}
+function compute(values) {               // everything the page shows, as numbers (the automatic checks read this)
+  const p = parse(values); if (p.error) return p;
+  const f = forward(p), g = backward(p, f), gc = gradcheck(p, g), p2 = update(p, g), f2 = forward(p2);
+  const gnorm2 = PARAMS.reduce((s, q) => s + gradOf(g, q) ** 2, 0);
+  const along = [];                      // the loss along the update direction, theta - t g, for t in [0, 2 eta]
+  const T = 2 * p.lr;
+  for (let i = 0; i <= 80; i++) { const t = T * i / 80; along.push([t, forward(update({ ...p, lr: t }, g)).L]); }
+  return { p, f, g, gc, p2, f2, gnorm2, along };
+}
+
+// ================================================================ the independent check: forward-mode differentiation
+// Dual numbers carry the derivative with respect to all 12 parameters through plain scalar loops (no matrices, no
+// backward pass): forward mode needs the work of 12 forward passes where backprop needs one backward pass.
+function dualLoss(p) {
+  const n = 12, C = v => ({ v, d: new Float64Array(n) }), V = (v, i) => { const o = C(v); o.d[i] = 1; return o; };
+  const add = (a, b) => { const o = C(a.v + b.v); for (let i = 0; i < n; i++) o.d[i] = a.d[i] + b.d[i]; return o; };
+  const mulc = (a, c) => { const o = C(a.v * c); for (let i = 0; i < n; i++) o.d[i] = a.d[i] * c; return o; };
+  const mul = (a, b) => { const o = C(a.v * b.v); for (let i = 0; i < n; i++) o.d[i] = a.d[i] * b.v + a.v * b.d[i]; return o; };
+  const relu = a => (a.v > 0 ? a : C(0));
+  const exp = a => { const e = Math.exp(a.v), o = C(e); for (let i = 0; i < n; i++) o.d[i] = a.d[i] * e; return o; };
+  const log = a => { const o = C(Math.log(a.v)); for (let i = 0; i < n; i++) o.d[i] = a.d[i] / a.v; return o; };
+  const W1 = [[V(p.W1[0][0], 0), V(p.W1[0][1], 1)], [V(p.W1[1][0], 2), V(p.W1[1][1], 3)]], b1 = [V(p.b1[0], 4), V(p.b1[1], 5)];
+  const W2 = [[V(p.W2[0][0], 6), V(p.W2[0][1], 7)], [V(p.W2[1][0], 8), V(p.W2[1][1], 9)]], b2 = [V(p.b2[0], 10), V(p.b2[1], 11)];
+  let L = C(0);
+  const out = { Z1: [], H: [], Z2: [], P: [] };
+  for (let b = 0; b < p.B; b++) {
+    const x = p.X[b];
+    const z1 = [0, 1].map(j => add(add(mulc(W1[0][j], x[0]), mulc(W1[1][j], x[1])), b1[j]));
+    const hh = z1.map(relu);
+    const z2 = [0, 1].map(k => add(add(mul(hh[0], W2[0][k]), mul(hh[1], W2[1][k])), b2[k]));
+    const m = Math.max(z2[0].v, z2[1].v);
+    const lse = add(log(add(exp(add(z2[0], C(-m))), exp(add(z2[1], C(-m))))), C(m));
+    L = add(L, add(lse, mulc(z2[p.y[b]], -1)));
+    out.Z1.push(z1.map(a => a.v)); out.H.push(hh.map(a => a.v)); out.Z2.push(z2.map(a => a.v)); out.P.push(z2.map(a => Math.exp(a.v - lse.v)));
+  }
+  L = mulc(L, 1 / p.B);
+  return { ...out, L: L.v, grad: Array.from(L.d) };
+}
+function independentCheck(values, t) {
+  const p = parse(values); if (p.error) return { ok: false, text: p.error.message };
+  const close = (a, b, tol = 1e-10) => Math.abs(a - b) <= tol * Math.max(1, Math.abs(b));
+  const D = dualLoss(p), bad = [];
+  const same = (name, A, B2) => { if (!A.flat().every((x, i) => close(x, B2.flat()[i]))) bad.push(name); };
+  same('Z1', t.f.Z1, D.Z1); same('H', t.f.H, D.H); same('Z2', t.f.Z2, D.Z2); same('P', t.f.P, D.P);
+  if (!close(t.f.L, D.L)) bad.push('L');
+  const mine = PARAMS.map(q => gradOf(t.g, q));
+  PARAMS.forEach((q, i) => { if (!close(mine[i], D.grad[i])) bad.push('∂' + pname(q)); });
+  // the update and the new loss, with the forward-mode gradients
+  let p2 = p; PARAMS.forEach((q, i) => { p2 = setP(p2, q, getP(p, q) - p.lr * D.grad[i]); });
+  if (!close(t.f2.L, dualLoss(p2).L, 1e-9)) bad.push('new L');
+  // the finite differences, with the scalar-loop loss (rounding grows as 1/eps)
+  const tolFD = 1e-9 + 64 * 2.2e-16 * (1 + Math.abs(D.L)) / p.eps;
+  PARAMS.forEach((q, i) => {
+    const th = getP(p, q), n2 = (dualLoss(setP(p, q, th + p.eps)).L - dualLoss(setP(p, q, th - p.eps)).L) / (2 * p.eps);
+    if (Math.abs(n2 - t.gc[i].num) > tolFD) bad.push('finite difference of ' + pname(q));
+  });
+  return bad.length ? { ok: false, text: `the second implementation differs on ${bad.slice(0, 4).join(', ')}${bad.length > 4 ? ' …' : ''}` }
+    : { ok: true, text: 'forward-mode differentiation (dual numbers through plain loops, no backward pass) gives the same 12 gradients, and the same loss, probabilities, finite differences and new loss' };
+}
+
+// ================================================================ the steps
+const CODE = [
+  'Z1 = X @ W1 + b1  # (B,2)',
+  'H = np.maximum(Z1, 0)  # ReLU',
+  'Z2 = H @ W2 + b2  # scores, (B,2)',
+  'P = softmax(Z2)  # rows add to 1',
+  'L = -np.log(P[range(B), y]).mean()',
+  'dZ2 = (P - Y) / B  # Y one-hot',
+  'dW2 = H.T @ dZ2',
+  'db2 = dZ2.sum(axis=0)',
+  'dH = dZ2 @ W2.T',
+  'M = Z1 > 0  # ReLU mask',
+  'dZ1 = dH * M',
+  'dW1 = X.T @ dZ1',
+  'db1 = dZ1.sum(axis=0)',
+  'for th, g in zip(params, grads):',
+  '  n = (loss(th+e) - loss(th-e)) / (2*e)',
+  '  rel = abs(g-n)/max(abs(g)+abs(n), 1e-12)',
+  'for th, g in zip(params, grads):',
+  '  th -= lr * g  # SGD, in place',
+  'L_new = loss(X, y, params)',
+];
+const BW = ['dZ2', 'dW2', 'db2', 'dH', 'M', 'dZ1', 'dW1', 'db1'];
+const unitsOff = (f, b) => [0, 1].filter(j => f.Z1[b][j] <= 0);                  // for example b
+const allOff = f => [0, 1].filter(j => f.Z1.every(r => r[j] <= 0));             // off for the whole batch
+const ZERO = 1e-12;                                                               // below this a gradient is 0 up to rounding
+const signWord = v => (Math.abs(v) < ZERO ? 'zero' : v > 0 ? 'positive' : 'negative');
+const rounding = v => (v !== 0 && Math.abs(v) < ZERO ? ', which is 0 up to rounding' : '');
+const cls = k => `class ${k + 1}`;
+
+function run(values) {
+  const c = compute(values); if (c.error) return c;
+  const { p, f, g, gc, f2 } = c, B = p.B, one = B === 1, ex = one ? 'the example' : 'example 1';
+  const S = [], at = (fw, bw, o) => S.push({ fw, bw: BW.slice(0, bw), ...o });
+  const off1 = unitsOff(f, 0), offAll = allOff(f);
+  const xs = `x = (${fs(p.X[0][0])}, ${fs(p.X[0][1])})`;
+  at(0, 0, { line: 0, stage: 'setup', note: `${one ? 'One example' : `A mini-batch of ${B} examples`} goes through a 2–2–2 network: 2 inputs, 2 hidden ReLU units, 2 classes. ${one ? `It is ${xs}, ${cls(p.y[0])}.` : `Example 1 is ${xs}, ${cls(p.y[0])}.`} Press Next ▶ (or →).` });
+  // ---- forward
+  at(1, 0, { line: 1, stage: 'fwd', key: 'Z1', note: 'Forward: each hidden unit adds up its weighted inputs and its bias, Z1 = X W1 + b1.' });
+  at(2, 0, { line: 2, stage: 'fwd', key: 'H', note: off1.length === 0 ? `ReLU keeps positive values and turns the rest into 0. For ${ex}, both hidden units are on.`
+    : off1.length === 2 ? `ReLU turns every value ≤ 0 into 0. For ${ex}, both hidden units are off.`
+    : `ReLU turns every value ≤ 0 into 0. For ${ex}, hidden unit ${off1[0] + 1} is off: z = ${fv(f.Z1[0][off1[0]])}, so h = 0.` });
+  at(3, 0, { line: 3, stage: 'fwd', key: 'Z2', note: 'The output layer gives one score per class, Z2 = H W2 + b2.' });
+  const p0 = f.P[0], pred = Math.abs(f.Z2[0][0] - f.Z2[0][1]) < 1e-12 ? 'a tie (50/50)' : cls(p0[0] > p0[1] ? 0 : 1);
+  at(4, 0, { line: 4, stage: 'fwd', key: 'P', note: `Softmax turns the scores into probabilities that add up to 1: for ${ex}, P = (${fv(p0[0])}, ${fv(p0[1])}).`,
+    ask: { q: `Which class will the network favour for ${ex}?`, options: ['class 1', 'class 2', 'a tie (50/50)'], answer: pred,
+           why: `The scores are ${fv(f.Z2[0][0])} and ${fv(f.Z2[0][1])}; softmax keeps their order, so the larger score gets the larger probability.` } });
+  at(5, 0, { line: 5, stage: 'fwd', key: 'L', note: one ? `The loss is ${MINUS}log of the true class's probability: L = ${MINUS}log ${fv(p0[p.y[0]])} = ${fv(f.L)}.`
+    : `The loss is the mean of ${MINUS}log(probability of the true class) over the ${B} examples: L = ${fv(f.L)}.` });
+  // ---- backward
+  const dz = g.dZ2[0][p.y[0]];
+  at(5, 1, { line: 6, stage: 'bwd', key: 'dZ2', note: `Backward: softmax and cross-entropy together have the gradient dZ2 = (P ${MINUS} Y)/B. The true class gets (p ${MINUS} 1)/B, the other class p/B.`,
+    ask: { q: `For ${ex}, is the gradient of the true class's score negative, zero or positive?`, options: ['negative', 'zero', 'positive'], answer: signWord(dz),
+           why: `(p ${MINUS} 1)/B = (${fv(p0[p.y[0]])} ${MINUS} 1)/${B} = ${fv(dz)}: raising that score would lower the loss.` } });
+  at(5, 2, { line: 7, stage: 'bwd', key: 'dW2', note: 'A weight multiplies its input, so its gradient is that input (local) times the gradient arriving at the output (upstream): dW2 = Hᵀ dZ2.' });
+  at(5, 3, { line: 8, stage: 'bwd', key: 'db2', note: `A bias is added, and an add gate passes the gradient on unchanged: db2 = dZ2 summed over the ${one ? 'batch (here 1 row)' : B + ' examples'}.` });
+  at(5, 4, { line: 9, stage: 'bwd', key: 'dH', note: 'Each hidden unit feeds both scores, so the two gradients that come back are added: dH = dZ2 W2ᵀ.' });
+  const maskAns = off1.length === 0 ? 'neither' : off1.length === 2 ? 'both' : 'unit ' + (off1[0] + 1);
+  at(5, 5, { line: 10, stage: 'bwd', key: 'M', note: offAll.length ? `ReLU's local gradient is 1 where z > 0 and 0 where z ≤ 0. Unit ${offAll.map(j => j + 1).join(' and ')} ${offAll.length > 1 ? 'are' : 'is'} off${one ? '' : ' for every example'}, so ${offAll.length > 1 ? 'their' : 'its'} gradient stops here.`
+    : `ReLU's local gradient is 1 where z > 0 and 0 where z ≤ 0${off1.length || f.Z1.some(r => r.some(z => z <= 0)) ? ': a 0 blocks that example' : ': every unit is on, so everything passes'}.`,
+    ask: { q: `For ${ex}, which hidden unit passes no gradient back to its weights?`, options: ['unit 1', 'unit 2', 'neither', 'both'], answer: maskAns,
+           why: off1.length ? `Z1 for ${ex} is (${fv(f.Z1[0][0])}, ${fv(f.Z1[0][1])}); ReLU's slope is 0 where z ≤ 0.` : `Both values of Z1 are above 0 (${fv(f.Z1[0][0])}, ${fv(f.Z1[0][1])}), so ReLU's slope is 1 for both.` } });
+  at(5, 6, { line: 11, stage: 'bwd', key: 'dZ1', note: 'dZ1 = dH ⊙ M: ReLU routes the gradient back only through the units that were on.' });
+  const fj = offAll.length ? offAll[0] : 0, fi = 0;                    // the weight asked about: into an off unit if there is one
+  const gq = g.dW1[fi][fj];
+  at(5, 7, { line: 12, stage: 'bwd', key: 'dW1', focus: [fi, fj], note: offAll.length ? `One layer down, the same rule: dW1 = Xᵀ dZ1. The weights into unit ${fj + 1} get exactly 0.` : 'One layer down, the same rule: dW1 = Xᵀ dZ1.',
+    ask: { q: `What is the sign of the gradient of W1[${fi + 1},${fj + 1}], the weight from x1 into hidden unit ${fj + 1}?`, options: ['negative', 'zero', 'positive'], answer: signWord(gq),
+           why: (one ? `It is x1 × dZ1[${fj + 1}] = ${fpar(p.X[0][0])} × ${fpar(g.dZ1[0][fj])} = ${fv(gq)}` : `It is the sum over the batch of x1 × dZ1[·,${fj + 1}] = ${fv(gq)}`) + rounding(gq) + '.' } });
+  at(5, 8, { line: 13, stage: 'bwd', key: 'db1', note: 'db1 = dZ1 summed over the batch. One backward pass has given all 12 gradients, at about the cost of one forward pass.' });
+  // ---- gradient check
+  const nfail = gc.filter(r => !r.pass).length, worst = Math.max(...gc.map(r => r.rel)), kinks = gc.filter(r => !r.pass && r.kink).length;
+  at(5, 8, { line: 15, stage: 'fd', fd: 1, note: `Gradient check: nudge one parameter by ±ε (ε = ${feps(p.eps)}), run the forward pass twice, and take the slope (L(θ+ε) ${MINUS} L(θ${MINUS}ε)) / 2ε.` });
+  const askAll = { q: 'Before the other 11: will every one of the 12 parameters pass (relative error below 1e−5)?', options: ['yes', 'no'], answer: nfail === 0 ? 'yes' : 'no',
+    why: nfail === 0 ? `The largest relative error is ${fe(worst)}.` : `${nfail} fail: ${gc.filter(r => !r.pass).map(r => r.name).join(', ')}.` };
+  GROUPS.forEach(([name, a, b2], i) => at(5, 8, { line: 16, stage: 'fd', fd: b2, group: i, ask: i === 0 ? askAll : undefined,
+    note: `The ${b2 - a} entries of ${name}: ${2 * (b2 - a)} more forward passes. ${gc.slice(a, b2).every(r => r.pass) ? 'All agree with backprop.' : gc.slice(a, b2).filter(r => !r.pass).length + ' disagree.'}` }));
+  const verdict = nfail === 0 ? `All 12 relative errors are below 1e${MINUS}5 (largest ${fe(worst)}): backprop is right.`
+    : kinks === nfail ? `${nfail} fail, all at a ReLU kink: z is so close to 0 that the nudge switches a unit on or off. The loss has a corner there; backprop is not wrong.`
+    : `${nfail} of 12 fail. With ε = ${feps(p.eps)}, ${p.eps > 1e-4 ? 'the curvature of the loss (truncation error, about ε²) is too large' : 'rounding error (about 1e-16 / ε) is too large'}; try ε = 1e${MINUS}5.`;
+  at(5, 8, { line: 16, stage: 'fd', fd: 12, verdict: true, note: verdict });
+  // ---- one step of SGD
+  at(5, 8, { line: 18, stage: 'sgd', key: 'update', note: `One SGD step moves every parameter against its gradient, θ ← θ ${MINUS} η·g, with η = ${fs(p.lr)}.` });
+  const down = f2.L < f.L, same = f2.L === f.L;
+  at(5, 8, { line: 19, stage: 'sgd', key: 'Lnew', note: `The forward pass with the new weights gives L = ${fv(f2.L)}, ${same ? 'unchanged' : down ? 'down' : 'up'} from ${fv(f.L)}.${!down && !same ? ' The step was too long: it overshot the valley.' : ''}`,
+    ask: { q: `After this step with η = ${fs(p.lr)}, does the loss go down or up?`, options: ['down', 'up'], answer: down || same ? 'down' : 'up',
+           why: `L goes from ${fv(f.L)} to ${fv(f2.L)}. For a small η the change is about ${MINUS}η‖g‖² = ${fv(-p.lr * c.gnorm2)}.` } });
+  const summary = `<b>L ${fv(f.L)} → ${fv(f2.L)}</b> after one SGD step (η = ${fs(p.lr)}). Backprop and finite differences agree on <b>${12 - nfail} of 12</b> parameters`
+    + (nfail ? (kinks === nfail ? ' (the rest sit at a ReLU kink).' : '.') : ` (largest relative error ${fe(worst)}).`);
+  return { steps: S, ...c, summary, result: { L: f.L, L_new: f2.L, grad: PARAMS.map(q => gradOf(g, q)), passed: 12 - nfail } };
+}
+
+// ================================================================ drawing: the network
+function network(t, st, k) {
+  const { p, f, g } = t, B = p.B, big = B === 1, steps = t.steps;
+  const sgd = st.stage === 'sgd', fw = st.fw, bw = new Set(st.bw);
+  const nodeH = big ? 64 : 24 + 15 * B, c1 = 74, c2 = c1 + Math.max(124, nodeH + 46);
+  const H = c2 + nodeH / 2 + 50, W = 940;
+  const col = { X: [8, 78], Z1: [206, 104], H: [354, 104], Z2: [578, 104], P: [726, 104], L: [866, 68] };
+  const cy = [c1, c2], cL = (c1 + c2) / 2;
+  const key = st.key, edges = [], nodes = [], labels = [];
+  // what this step computes (yellow) and what it uses (blue)
+  const MARK = {
+    Z1: { X: 'compare', Z1: 'active', eW1: 'active' }, H: { Z1: 'compare', H: 'active', eR: 'active' },
+    Z2: { H: 'compare', Z2: 'active', eW2: 'active' }, P: { Z2: 'compare', P: 'active', eS: 'active' },
+    L: { P: 'compare', y: 'compare', L: 'active', eL: 'active' },
+    dZ2: { L: 'compare', P: 'compare', y: 'compare', Z2: 'active' }, dW2: { Z2: 'compare', H: 'compare', eW2: 'active' },
+    db2: { Z2: 'compare', b2: 'active' }, dH: { Z2: 'compare', eW2: 'compare', H: 'active' }, M: { Z1: 'active', eR: 'active' },
+    dZ1: { H: 'compare', eR: 'compare', Z1: 'active' }, dW1: { Z1: 'compare', X: 'compare', eW1: 'active' }, db1: { Z1: 'compare', b1: 'active' },
+    update: { eW1: 'done', eW2: 'done', b1: 'done', b2: 'done' },
+  }[key] || {};
+  const nextAsk = steps[k + 1] && steps[k + 1].ask && steps[k + 1].focus;             // the weight a question is about
+  const offAll = allOff(f);
+  // ---- a node box: name, then the value (white) and the gradient (pink) of each example
+  const box = (x, y, w, hh, name, vals, grads, mark, off) => {
+    const g0 = sv('g', {});
+    g0.append(sv('rect', { x, y, width: w, height: hh, rx: 9, class: 'n-box' + (mark ? ' ' + mark : '') + (off ? ' off' : '') }));
+    g0.append(sv('text', { x: x + w / 2, y: y + 16, 'text-anchor': 'middle', class: 'n-name' + (mark && mark !== 'done' ? ' ' + mark : '') }, name));
+    if (big) {
+      if (vals) g0.append(sv('text', { x: x + w / 2, y: y + 37, 'text-anchor': 'middle', class: 'n-val' + (off ? ' off' : '') }, vals[0]));
+      if (grads) g0.append(sv('text', { x: x + w / 2, y: y + 56, 'text-anchor': 'middle', class: 'n-grad' }, sv('tspan', { class: 'pd' }, '∂ '), grads[0]));
+    } else {
+      for (let b = 0; b < B; b++) {
+        const yy = y + 32 + 15 * b;
+        if (vals) g0.append(sv('text', { x: grads ? x + 7 : x + w / 2, y: yy, 'text-anchor': grads ? 'start' : 'middle', class: 'n-val sm' }, vals[b]));
+        if (grads) g0.append(sv('text', { x: x + w - 7, y: yy, 'text-anchor': 'end', class: 'n-grad sm' }, grads[b]));
+      }
+    }
+    return g0;
+  };
+  const colOf = (M, j, fmt) => M.map(r => fmt(r[j]));
+  const line = (x1, y1, x2, y2, mark) => sv('line', { x1, y1, x2, y2, class: 'e' + (mark ? ' ' + mark : '') });
+  const tag = (x, y, lines) => {           // a label on an edge: background, then lines [{text, cls}]
+    const w = Math.max(...lines.map(l => l.text.length + (l.d ? 2 : 0))) * 7.6 + 8, hh = lines.length * 14 + 4;
+    return sv('g', {}, sv('rect', { x: x - w / 2, y: y - hh / 2, width: w, height: hh, rx: 4, class: 'e-bg' }),
+      ...lines.map((l, i) => sv('text', { x, y: y - hh / 2 + 13 + 14 * i, 'text-anchor': 'middle', class: l.cls }, l.d ? sv('tspan', { class: 'pd' }, '∂ ') : null, l.text)));
+  };
+  // ---- column headings
+  const head = [['X', 'X'], ['Z1', 'Z1 = XW1+b1'], ['H', 'H = ReLU(Z1)'], ['Z2', 'Z2 = HW2+b2'], ['P', 'P = softmax'], ['L', 'loss L']];
+  head.forEach(([c, text]) => labels.push(sv('text', { x: col[c][0] + col[c][1] / 2, y: 16, 'text-anchor': 'middle', class: 'col-h' }, text)));
+  // ---- edges: W1 (X -> Z1) and W2 (H -> Z2) with their weights; ReLU (Z1 -> H); softmax (Z2 -> P); P -> L
+  const weightEdges = (from, to, Wn, eKey, gKey, newW) => {
+    for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) {
+      const x1 = col[from][0] + col[from][1], x2 = col[to][0], y1 = cy[i], y2 = cy[j];
+      const isFocus = nextAsk && eKey === 'eW1' && nextAsk[0] === i && nextAsk[1] === j;
+      const blocked = eKey === 'eW1' ? (bw.has('M') && offAll.includes(j)) : (fw >= 2 && offAll.includes(i));
+      let mark = isFocus ? 'active' : MARK[eKey] || (blocked ? 'blocked' : null);
+      edges.push(line(x1, y1, x2, y2, mark));
+      const tt = 0.3, lx = x1 + (x2 - x1) * tt, ly = y1 + (y2 - y1) * tt;
+      const ls = [];
+      if (sgd && key === 'update') { ls.push({ text: fs(newW[i][j]), cls: 'e-w done' }); ls.push({ text: 'was ' + fs(Wn[i][j]), cls: 'e-was' }); }
+      else {
+        ls.push({ text: fs(Wn[i][j]), cls: 'e-w' + (isFocus || mark === 'active' ? ' active' : '') });
+        if (bw.has(gKey)) ls.push({ text: fv(g[gKey][i][j]), cls: 'e-g', d: true });
+      }
+      labels.push(tag(lx, ly, ls));
+    }
+  };
+  weightEdges('X', 'Z1', p.W1, 'eW1', 'dW1', t.p2.W1);
+  weightEdges('H', 'Z2', p.W2, 'eW2', 'dW2', t.p2.W2);
+  for (let j = 0; j < 2; j++) {                                   // ReLU: one edge per unit
+    const x1 = col.Z1[0] + col.Z1[1], x2 = col.H[0], blocked = fw >= 2 && offAll.includes(j);
+    edges.push(line(x1, cy[j], x2, cy[j], MARK.eR || (blocked ? 'blocked' : null)));
+    const txt = bw.has('M') ? (big ? '×' + g.M[0][j] : '×M') : 'ReLU';
+    labels.push(sv('text', { x: (x1 + x2) / 2, y: cy[j] - 7, 'text-anchor': 'middle', class: 'e-tag' + (MARK.eR === 'active' ? ' active' : '') }, txt));
+  }
+  for (let j = 0; j < 2; j++) for (let k2 = 0; k2 < 2; k2++) edges.push(line(col.Z2[0] + col.Z2[1], cy[j], col.P[0], cy[k2], MARK.eS));
+  const used = new Set(p.y);
+  for (let k2 = 0; k2 < 2; k2++) edges.push(line(col.P[0] + col.P[1], cy[k2], col.L[0], cL, used.has(k2) ? MARK.eL : 'muted'));
+  const lH = big ? 64 : 48, yTop = cL + lH / 2 + 30, yH = big ? 46 : 46;
+  edges.push(line(col.L[0] + col.L[1] / 2, yTop, col.L[0] + col.L[1] / 2, cL + lH / 2, MARK.y ? 'compare' : null));
+  // ---- nodes
+  const showF = n => fw >= n, mk = n => MARK[n];
+  for (let i = 0; i < 2; i++) nodes.push(box(col.X[0], cy[i] - nodeH / 2, col.X[1], nodeH, 'x' + (i + 1), colOf(p.X, i, fs), null, mk('X')));
+  for (let j = 0; j < 2; j++) {
+    const off = fw >= 2 && offAll.includes(j);
+    nodes.push(box(col.Z1[0], cy[j] - nodeH / 2, col.Z1[1], nodeH, 'unit ' + (j + 1), showF(1) ? colOf(f.Z1, j, fv) : null, bw.has('dZ1') ? colOf(g.dZ1, j, fv) : null, mk('Z1'), off));
+    nodes.push(box(col.H[0], cy[j] - nodeH / 2, col.H[1], nodeH, 'unit ' + (j + 1), showF(2) ? colOf(f.H, j, fv) : null, bw.has('dH') ? colOf(g.dH, j, fv) : null, mk('H'), off));
+    nodes.push(box(col.Z2[0], cy[j] - nodeH / 2, col.Z2[1], nodeH, cls(j), showF(3) ? colOf(f.Z2, j, fv) : null, bw.has('dZ2') ? colOf(g.dZ2, j, fv) : null, mk('Z2')));
+    nodes.push(box(col.P[0], cy[j] - nodeH / 2, col.P[1], nodeH, cls(j), showF(4) ? colOf(f.P, j, fv) : null, null, mk('P')));
+    if (off && fw >= 2) labels.push(sv('text', { x: col.H[0] + col.H[1] / 2, y: cy[j] + nodeH / 2 + 15, 'text-anchor': 'middle', class: 'n-tag' }, B > 1 ? 'off for every example' : 'off: z ≤ 0'));
+  }
+  // the loss node and the true class under it
+  const Lbox = sv('g', {});
+  Lbox.append(sv('rect', { x: col.L[0], y: cL - lH / 2, width: col.L[1], height: lH, rx: 9, class: 'n-box' + (mk('L') ? ' ' + mk('L') : '') }));
+  Lbox.append(sv('text', { x: col.L[0] + col.L[1] / 2, y: cL - lH / 2 + 16, 'text-anchor': 'middle', class: 'n-name' + (mk('L') ? ' ' + mk('L') : '') }, 'L'));
+  if (showF(5)) Lbox.append(sv('text', { x: col.L[0] + col.L[1] / 2, y: cL - lH / 2 + 37, 'text-anchor': 'middle', class: 'n-val' + (big ? '' : ' sm') }, fv(f.L)));
+  if (bw.size && big) Lbox.append(sv('text', { x: col.L[0] + col.L[1] / 2, y: cL - lH / 2 + 56, 'text-anchor': 'middle', class: 'n-grad' }, sv('tspan', { class: 'pd' }, '∂ '), '1'));
+  nodes.push(Lbox);
+  nodes.push(box(col.L[0], yTop, col.L[1], yH, 'true y', [p.y.map(c => c + 1).join(' ')], null, mk('y')));
+  // biases under the Z nodes
+  const bias = (c, bv, gk, nb, mark) => {
+    for (let j = 0; j < 2; j++) {
+      const x = col[c][0] + col[c][1] / 2, y = cy[j] + nodeH / 2 + 15;
+      const t0 = sv('text', { x, y, 'text-anchor': 'middle', class: 'b-lab' + (mark ? ' ' + mark : '') });
+      if (sgd && key === 'update') t0.append(sv('tspan', {}, 'b ' + fs(nb[j])), sv('tspan', { class: 'e-was' }, '  was ' + fs(bv[j])));
+      else { t0.append(sv('tspan', {}, '+ b ' + fs(bv[j]))); if (bw.has(gk)) t0.append(sv('tspan', { class: 'b-g' }, '  '), sv('tspan', { class: 'b-g pd' }, '∂ '), sv('tspan', { class: 'b-g' }, fv(g[gk][j]))); }
+      labels.push(t0);
+    }
+  };
+  bias('Z1', p.b1, 'db1', t.p2.b1, MARK.b1); bias('Z2', p.b2, 'db2', t.p2.b2, MARK.b2);
+  // the legend
+  const lg = sv('text', { x: 8, y: H - 8, class: 'leg' });
+  lg.append(sv('tspan', {}, 'white: value (forward)    '), sv('tspan', { class: 'leg-g pd' }, '∂'), sv('tspan', { class: 'leg-g' }, ' pink: gradient of L (backward)    '),
+    sv('tspan', { class: 'leg-a' }, 'yellow: worked out now    '), sv('tspan', { class: 'leg-c' }, 'blue: used for it'));
+  if (!big) lg.append(sv('tspan', {}, '    one row per example'));
+  return sv('svg', { viewBox: `0 0 ${W} ${H}`, class: 'bp-net', role: 'img', 'aria-label': 'The network as a computational graph, with values and gradients' }, ...edges, ...labels, ...nodes, lg);
+}
+
+// ================================================================ drawing: plots
+function niceTicks(a, b, n = 5) {
+  const span = b - a || 1, raw = span / n, mag = 10 ** Math.floor(Math.log10(raw)), st = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => span / s <= n) || 10 * mag;
+  const out = []; for (let v = Math.ceil(a / st - 1e-9) * st; v <= b + 1e-9 * span; v += st) out.push(Math.abs(v) < 1e-12 * span ? 0 : v);
+  return out;
+}
+function plot(o) {
+  const W = o.W || 460, Hh = o.H || 300, ml = 58, mr = 14, mt = 16, mb = 44;
+  const [x0, x1] = o.x, [y0, y1] = o.y, X = v => ml + (W - ml - mr) * (v - x0) / (x1 - x0), Y = v => mt + (Hh - mt - mb) * (1 - (v - y0) / (y1 - y0));
+  const id = 'c' + Math.random().toString(36).slice(2, 8), kids = [];
+  kids.push(sv('defs', {}, sv('clipPath', { id }, sv('rect', { x: ml, y: mt, width: W - ml - mr, height: Hh - mt - mb }))));
+  kids.push(sv('rect', { x: ml, y: mt, width: W - ml - mr, height: Hh - mt - mb, class: 'p-frame' }));
+  for (const [v, lab] of o.yticks) { kids.push(sv('line', { x1: ml, x2: W - mr, y1: Y(v), y2: Y(v), class: 'p-grid' })); kids.push(sv('text', { x: ml - 6, y: Y(v) + 4, 'text-anchor': 'end', class: 'p-tick' }, lab)); }
+  for (const [v, lab] of o.xticks) kids.push(sv('text', { x: X(v), y: Hh - mb + 16, 'text-anchor': 'middle', class: 'p-tick' }, lab));
+  const inner = sv('g', { 'clip-path': `url(#${id})` });
+  for (const s of o.seps || []) inner.append(sv('line', { x1: X(s), x2: X(s), y1: mt, y2: Hh - mb, class: 'p-sep' }));
+  for (const l of o.hl || []) inner.append(sv('line', { x1: ml, x2: W - mr, y1: Y(l.y), y2: Y(l.y), class: l.cls }));
+  for (const l of o.vl || []) inner.append(sv('line', { x1: X(l.x), x2: X(l.x), y1: mt, y2: Hh - mb, class: l.cls }));
+  for (const l of o.lines || []) inner.append(sv('polyline', { points: l.pts.map(q => X(q[0]).toFixed(2) + ',' + Y(Math.max(y0 - (y1 - y0), Math.min(y1 + (y1 - y0), q[1]))).toFixed(2)).join(' '), class: l.cls }));
+  for (const q of o.pts || []) inner.append(sv('circle', { cx: X(q.x), cy: Y(q.y), r: q.r || 5.5, class: 'p-pt ' + (q.cls || '') }, q.title ? sv('title', {}, q.title) : null));
+  kids.push(inner);
+  for (const l of o.labels || []) kids.push(sv('text', { x: X(l.x) + (l.dx || 0), y: Y(l.y) + (l.dy || 0), 'text-anchor': l.anchor || 'start', class: 'p-lab ' + (l.cls || '') }, l.text));
+  kids.push(sv('text', { x: (ml + W - mr) / 2, y: Hh - 8, 'text-anchor': 'middle', class: 'p-ax' }, o.xlabel));
+  kids.push(sv('text', { x: 14, y: (mt + Hh - mb) / 2, 'text-anchor': 'middle', class: 'p-ax', transform: `rotate(-90 14 ${(mt + Hh - mb) / 2})` }, o.ylabel));
+  return sv('svg', { viewBox: `0 0 ${W} ${Hh}`, class: 'bp-plot', role: 'img', 'aria-label': o.aria || 'plot' }, ...kids);
+}
+const span = (a, b, pad = 0.08) => { const d = (b - a) || Math.max(1e-3, Math.abs(a) * 0.1); return [a - pad * d, b + pad * d]; };
+function sliceLossPlot(t) {                 // the loss as one weight moves: the gradient is its slope
+  const { p, gc } = t, q = PARAMS[0], th = getP(p, q), a = gc[0].ana, pts = [];
+  for (let i = 0; i <= 80; i++) { const d = -0.6 + 1.2 * i / 80; pts.push([th + d, forward(setP(p, q, th + d)).L]); }
+  const L0 = t.f.L, ys = pts.map(r => r[1]), [lo, hi] = span(Math.min(...ys), Math.max(...ys), 0.12);
+  return plot({ x: [th - 0.6, th + 0.6], y: [lo, hi], xlabel: `the weight W1[1,1] (now ${fs(th)})`, ylabel: 'loss L',
+    xticks: niceTicks(th - 0.6, th + 0.6, 5).map(v => [v, fs(v)]), yticks: niceTicks(lo, hi, 4).map(v => [v, fs(v)]),
+    lines: [{ pts, cls: 'p-line' }, { pts: [[th - 0.6, L0 - 0.6 * a], [th + 0.6, L0 + 0.6 * a]], cls: 'p-tan' }],
+    vl: [{ x: th, cls: 'p-v' }], pts: [{ x: th, y: L0, cls: 'now', title: 'now' }],
+    aria: 'Loss as W1[1,1] moves, with the tangent' });
+}
+function relPlot(t, upto) {                 // log10 of the relative error of each parameter, against the 1e-5 line
+  const { gc } = t, pts = [], labels = [];
+  gc.slice(0, upto).forEach((r, i) => {
+    const y = r.rel === 0 ? -16 : Math.max(-16, Math.min(0.5, Math.log10(r.rel)));
+    pts.push({ x: i + 1, y, cls: r.pass ? 'pass' : 'fail', title: `${r.name}: ${fe(r.rel)}` });
+    if (r.rel === 0) labels.push({ x: i + 1, y: -16, dy: -9, anchor: 'middle', text: '0', cls: 'pass' });
+  });
+  return plot({ x: [0.4, 12.6], y: [-16.5, 0.8], xlabel: 'parameter: W1 (4), b1 (2), W2 (4), b2 (2)', ylabel: 'relative error (log scale)',
+    xticks: [[2.5, 'W1'], [5.5, 'b1'], [8.5, 'W2'], [11.5, 'b2']], yticks: [[0, '1'], [-5, '1e−5'], [-10, '1e−10'], [-15, '1e−15']],
+    seps: [4.5, 6.5, 10.5], hl: [{ y: -5, cls: 'p-thr' }], pts, labels: labels.concat([{ x: 12.5, y: -5, dy: -6, anchor: 'end', text: 'pass below 1e−5', cls: 'fail' }]),
+    aria: 'Relative error of each parameter' });
+}
+function alongPlot(t) {                     // the loss along the update direction: where the step lands
+  const { p, f, f2, gnorm2, along } = t, T = 2 * p.lr, ys = along.map(r => r[1]);
+  const [lo, hi] = span(Math.min(...ys, f2.L), Math.max(...ys, f.L), 0.1), down = f2.L <= f.L;
+  return plot({ x: [0, T], y: [Math.max(lo, -0.05 * hi), hi], xlabel: `step length t, along ${MINUS}g (your η = ${fs(p.lr)})`, ylabel: 'loss L',
+    xticks: niceTicks(0, T, 5).map(v => [v, fs(v)]), yticks: niceTicks(Math.max(lo, 0), hi, 4).map(v => [v, fs(v)]),
+    lines: [{ pts: along, cls: 'p-line' }, { pts: [[0, f.L], [T, f.L - T * gnorm2]], cls: 'p-tan' }], vl: [{ x: p.lr, cls: 'p-v' }],
+    pts: [{ x: 0, y: f.L, cls: 'now', title: 'before' }, { x: p.lr, y: f2.L, cls: down ? 'down' : 'up', title: 'after' }],
+    labels: [{ x: 0, y: f.L, dx: 10, dy: -8, text: `before ${fv(f.L)}` }, { x: p.lr, y: f2.L, dx: p.lr > 0.6 * T ? -10 : 10, dy: down ? -10 : 18, anchor: p.lr > 0.6 * T ? 'end' : 'start', text: `after ${fv(f2.L)}`, cls: down ? 'pass' : 'fail' }], aria: 'Loss along the step' });
+}
+
+// ================================================================ drawing: the matrices of the step
+function mat(label, M, o = {}) {
+  const rows = M.length, cols = M[0].length, fmt = o.fmt || fv;
+  const grid = h('div', { class: 'bp-grid' + (o.g ? ' g' : ''), style: `grid-template-columns: repeat(${cols}, auto)` },
+    ...M.flatMap((r, i) => r.map((x, j) => h('span', { class: (o.hi && o.hi[0] === i && o.hi[1] === j) ? 'hi' : (o.zero && x === 0 ? 'z' : '') }, fmt(x)))));
+  return h('div', { class: 'bp-m' }, h('div', { class: 'lab' + (o.g ? ' g' : '') }, label), grid, h('div', { class: 'lab', style: 'font-weight:400;font-size:calc(11px * var(--s));opacity:.8' }, `${rows}×${cols}`));
+}
+const op = s => h('span', { class: 'bp-op' }, s);
+const sp = (cls, text) => h('span', { class: cls }, text);
+const lineEl = (...k) => h('div', { class: 'bp-line' }, ...k);
+const row = v => [v];
+const sumTerms = (as, bs) => as.map((a, i) => `${fpar(a)}×${fpar(bs[i])}`).join(' + ');
+function strip(t, st) {
+  const { p, f, g, gc } = t, B = p.B, Y = g.Y, key = st.key, one = B === 1, E = [];
+  const X = p.X;
+  if (st.stage === 'setup') {
+    E.push(mat('X', X, { fmt: fs }), mat('y', p.y.map(c => [c + 1]), { fmt: String }), mat('W1', p.W1, { fmt: fs }), mat('b1', row(p.b1), { fmt: fs }),
+      mat('W2', p.W2, { fmt: fs }), mat('b2', row(p.b2), { fmt: fs }));
+    E.push(lineEl(`W1[i,j]: input i → hidden unit j    W2[j,k]: hidden unit j → class k    η = ${fs(p.lr)}    ε = ${feps(p.eps)}`));
+  } else if (key === 'Z1') {
+    E.push(mat('X', X, { fmt: fs, hi: [0, 0] }), op('·'), mat('W1', p.W1, { fmt: fs }), op('+'), mat('b1', row(p.b1), { fmt: fs }), op('='), mat('Z1', f.Z1, { hi: [0, 0] }));
+    E.push(lineEl(`Z1[1,1] = x1·W1[1,1] + x2·W1[2,1] + b1[1] = ${fpar(X[0][0])}×${fpar(p.W1[0][0])} + ${fpar(X[0][1])}×${fpar(p.W1[1][0])} + ${fpar(p.b1[0])} = `, sp('res', fv(f.Z1[0][0]))));
+  } else if (key === 'H') {
+    E.push(op('max('), mat('Z1', f.Z1), op(', 0) ='), mat('H', f.H, { zero: true }));
+    const off = unitsOff(f, 0);
+    E.push(lineEl(off.length ? `unit ${off[0] + 1}: max(${fv(f.Z1[0][off[0]])}, 0) = ` : `unit 1: max(${fv(f.Z1[0][0])}, 0) = `, sp('res', off.length ? '0' : fv(f.H[0][0]))));
+  } else if (key === 'Z2') {
+    E.push(mat('H', f.H), op('·'), mat('W2', p.W2, { fmt: fs }), op('+'), mat('b2', row(p.b2), { fmt: fs }), op('='), mat('Z2', f.Z2, { hi: [0, 0] }));
+    E.push(lineEl(`Z2[1,1] = h1·W2[1,1] + h2·W2[2,1] + b2[1] = ${fpar(f.H[0][0])}×${fpar(p.W2[0][0])} + ${fpar(f.H[0][1])}×${fpar(p.W2[1][0])} + ${fpar(p.b2[0])} = `, sp('res', fv(f.Z2[0][0]))));
+  } else if (key === 'P') {
+    E.push(op('softmax('), mat('Z2', f.Z2), op(') ='), mat('P', f.P, { hi: [0, 0] }));
+    E.push(lineEl(`P[1,1] = e^${fpar(f.Z2[0][0])} / (e^${fpar(f.Z2[0][0])} + e^${fpar(f.Z2[0][1])}) = `, sp('res', fv(f.P[0][0])), sp('dim', '   each row adds up to 1')));
+  } else if (key === 'L') {
+    E.push(mat('P', f.P, { hi: [0, p.y[0]] }), mat('y', p.y.map(c => [c + 1]), { fmt: String }), op('→'), mat('−log P[b, y_b]', f.losses.map(v => [v])));
+    E.push(lineEl(one ? `L = ${MINUS}log P[1,${p.y[0] + 1}] = ${MINUS}log ${fv(f.P[0][p.y[0]])} = ` : `L = mean of the ${B} losses = `, sp('res', fv(f.L))));
+  } else if (key === 'dZ2') {
+    E.push(op('('), mat('P', f.P), op(MINUS), mat('Y', Y, { fmt: String }), op(`) / ${B} =`), mat('dZ2', g.dZ2, { g: true, hi: [0, p.y[0]] }));
+    E.push(lineEl(sp('loc', 'local: P − Y'), ' × ', sp('up', 'upstream: ∂L/∂L = 1'), `   dZ2[1,${p.y[0] + 1}] = (${fv(f.P[0][p.y[0]])} ${MINUS} 1)/${B} = `, sp('res', fv(g.dZ2[0][p.y[0]]))));
+  } else if (key === 'dW2') {
+    E.push(mat('Hᵀ', tr(f.H), { hi: [0, 0] }), op('·'), mat('dZ2', g.dZ2, { g: true }), op('='), mat('dW2', g.dW2, { g: true, hi: [0, 0] }));
+    E.push(lineEl(`dW2[1,1] = `, one ? h('span', {}, sp('loc', `h1 ${fpar(f.H[0][0])}`), ' × ', sp('up', `dZ2[1] ${fpar(g.dZ2[0][0])}`)) : `Σ_b H[b,1]·dZ2[b,1] = ${sumTerms(f.H.map(r => r[0]), g.dZ2.map(r => r[0]))}`, ' = ', sp('res', fv(g.dW2[0][0])),
+      sp('dim', one ? '   local (the other factor) × upstream' : '   a sum over the batch')));
+  } else if (key === 'db2') {
+    E.push(op('Σ rows of'), mat('dZ2', g.dZ2, { g: true }), op('='), mat('db2', row(g.db2), { g: true, hi: [0, 0] }));
+    E.push(lineEl(one ? 'db2 = dZ2 × 1 (the local gradient of an add is 1) = ' : `db2[1] = ${g.dZ2.map(r => fpar(r[0])).join(' + ')} = `, sp('res', fv(g.db2[0]))));
+  } else if (key === 'dH') {
+    E.push(mat('dZ2', g.dZ2, { g: true }), op('·'), mat('W2ᵀ', tr(p.W2), { fmt: fs }), op('='), mat('dH', g.dH, { g: true, hi: [0, 0] }));
+    E.push(lineEl(`dH[1,1] = `, sp('up', `dZ2[1,1]`), '·', sp('loc', 'W2[1,1]'), ' + ', sp('up', 'dZ2[1,2]'), '·', sp('loc', 'W2[1,2]'),
+      ` = ${fpar(g.dZ2[0][0])}×${fpar(p.W2[0][0])} + ${fpar(g.dZ2[0][1])}×${fpar(p.W2[0][1])} = `, sp('res', fv(g.dH[0][0]))));
+  } else if (key === 'M') {
+    E.push(op('M = 1['), mat('Z1', f.Z1), op('> 0] ='), mat('M', g.M, { fmt: String, zero: true }));
+    const off = unitsOff(f, 0), j = off.length ? off[0] : 0;
+    E.push(lineEl(`unit ${j + 1}: z = ${fv(f.Z1[0][j])} ${f.Z1[0][j] > 0 ? '> 0, slope 1' : '≤ 0, slope 0'} → M[1,${j + 1}] = `, sp('res', String(g.M[0][j]))));
+  } else if (key === 'dZ1') {
+    const off = unitsOff(f, 0), j = off.length ? off[0] : 0;
+    E.push(mat('dH', g.dH, { g: true }), op('⊙'), mat('M', g.M, { fmt: String, zero: true }), op('='), mat('dZ1', g.dZ1, { g: true, hi: [0, j], zero: true }));
+    E.push(lineEl(`dZ1[1,${j + 1}] = `, sp('up', `dH ${fpar(g.dH[0][j])}`), ' × ', sp('loc', `M ${g.M[0][j]}`), ' = ', sp('res', fv(g.dZ1[0][j])), sp('dim', '   ReLU routes: all or nothing')));
+  } else if (key === 'dW1') {
+    const [i, j] = st.focus;
+    E.push(mat('Xᵀ', tr(X), { fmt: fs, hi: [i, 0] }), op('·'), mat('dZ1', g.dZ1, { g: true, zero: true }), op('='), mat('dW1', g.dW1, { g: true, hi: [i, j], zero: true }));
+    E.push(lineEl(`dW1[${i + 1},${j + 1}] = `, one ? h('span', {}, sp('loc', `x${i + 1} ${fpar(X[0][i])}`), ' × ', sp('up', `dZ1[${j + 1}] ${fpar(g.dZ1[0][j])}`)) : `Σ_b X[b,${i + 1}]·dZ1[b,${j + 1}] = ${sumTerms(X.map(r => r[i]), g.dZ1.map(r => r[j]))}`,
+      ' = ', sp('res', fv(g.dW1[i][j])), sp('dim', one ? '   local (the other factor) × upstream' : '   a sum over the batch')));
+  } else if (key === 'db1') {
+    E.push(op('Σ rows of'), mat('dZ1', g.dZ1, { g: true, zero: true }), op('='), mat('db1', row(g.db1), { g: true, zero: true }));
+    E.push(lineEl(one ? 'db1 = dZ1 × 1 (the local gradient of an add is 1) = ' : `db1[1] = ${g.dZ1.map(r => fpar(r[0])).join(' + ')} = `, sp('res', fv(g.db1[0])), sp('dim', '   all 12 gradients are on the graph above')));
+  } else if (st.stage === 'fd' && st.fd === 1) {
+    const r = gc[0];
+    E.push(lineEl(sp('loc', `dashed: the tangent, slope = backprop's g = ${fv(r.ana)}`), sp('dim', '   yellow: the loss as W1[1,1] moves')));
+    E.push(lineEl(`θ = W1[1,1] = ${fs(r.th)}   L(θ+ε) = ${fl(r.Lp)}   L(θ${MINUS}ε) = ${fl(r.Lm)}`));
+    E.push(lineEl('numeric = ', sp('res', f8(r.num)), '   backprop = ', sp('up', f8(r.ana)), '   relative error = ', sp(r.pass ? 'ok' : 'bad', fe(r.rel))));
+  } else if (st.stage === 'fd') {
+    E.push(lineEl('relative error = |g ', MINUS, ' n| / max(|g| + |n|, 1e', MINUS, '12)   ·   pass if below 1e', MINUS, '5', st.verdict ? '' : '   ·   kink = the nudge switches a ReLU'));
+  } else if (key === 'update') {
+    const q = PARAMS[0];
+    E.push(lineEl(`W1[1,1]: ${fs(getP(p, q))} ${MINUS} ${fs(p.lr)} × ${fpar(gc[0].ana)} = `, sp('ok', fs(getP(t.p2, q))), sp('dim', '   and the same for all 12 parameters')));
+  } else if (key === 'Lnew') {
+    const d = t.f2.L - f.L;
+    E.push(lineEl(`L before = ${fv(f.L)}   L after = `, sp(d <= 0 ? 'ok' : 'bad', fv(t.f2.L)), `   change = ${fv(d)}`));
+    E.push(lineEl(sp('loc', `dashed: the straight line L ${MINUS} t‖g‖² that the gradient predicts (at t = η: ${fv(f.L - p.lr * t.gnorm2)})`)));
+  }
+  return h('div', { class: 'bp-strip' }, ...E);
+}
+function fdTable(t, st) {
+  const rows = t.gc.map((r, i) => {
+    const done = i < st.fd, now = st.group != null ? (i >= GROUPS[st.group][1] && i < GROUPS[st.group][2]) : (st.fd === 1 && i === 0);
+    return h('tr', { class: done ? (now && !st.verdict ? 'now' : '') : 'todo' }, h('td', {}, r.name),
+      h('td', {}, done ? f8(r.ana) : '…'), h('td', {}, done ? f8(r.num) : '…'), h('td', {}, done ? fe(r.rel) : '…'),
+      h('td', { class: done ? (r.pass ? 'pass' : 'fail') : '' }, done ? (r.pass ? (r.tiny && r.rel >= THRESHOLD ? '✓ both ≈ 0' : '✓') : (r.kink ? '✗ kink' : '✗')) : ''));
+  });
+  return h('div', { class: 'bp-tablebox' }, h('table', { class: 'bp-table', 'aria-label': 'Gradient check' },
+    h('tr', {}, h('th', {}, 'parameter'), h('th', {}, 'backprop g'), h('th', {}, 'numeric n'), h('th', {}, 'rel. error'), h('th', {}, '')), ...rows));
+}
+function render(view, st, k, t) {
+  let fig;
+  if (st.stage === 'fd') fig = [st.fd === 1 ? sliceLossPlot(t) : relPlot(t, st.fd), fdTable(t, st)];
+  else if (st.key === 'Lnew') fig = [alongPlot(t)];
+  else fig = [network(t, st, k)];
+  view.replaceChildren(h('div', { class: 'bp-stage' }, h('div', { class: 'bp-fig' }, ...fig), strip(t, st)));
+}
+
+const W_A = { W1: '0.5 -0.4; 0.3 0.8', b1: '0.1 0.2', W2: '0.7 -0.5; -0.6 0.4', b2: '0 0' };
+const BATCH = '1.5 -0.5 1; -0.5 1 2; 0.5 1.5 2';
+const api = Stepper.mount({
+  title: 'Backpropagation step by step on a tiny network',
+  intro: 'A 2–2–2 network with ReLU and softmax cross-entropy: the forward pass, every gradient of the backward pass as upstream × local, a finite-difference check, and one SGD step. Predict, then check.',
+  inputs: [
+    { id: 'x1', label: 'Input x1 (example 1)', kind: 'number', step: 0.1, min: -10, max: 10 },
+    { id: 'x2', label: 'Input x2 (example 1)', kind: 'number', step: 0.1, min: -10, max: 10 },
+    { id: 'y', label: 'True class (example 1)', kind: 'select', options: [['1', 'class 1'], ['2', 'class 2']] },
+    { id: 'more', label: 'More examples, for a mini-batch (optional)', kind: 'text', mono: true, help: 'Up to 3, each x1 x2 class, separated by ;  e.g. 1.5 -0.5 1; -0.5 1 2' },
+    { id: 'W1', label: 'W1 (rows: x1, x2; columns: hidden units 1, 2)', kind: 'text', mono: true, help: 'Two rows separated by ;' },
+    { id: 'b1', label: 'b1 (hidden units 1, 2)', kind: 'text', mono: true },
+    { id: 'W2', label: 'W2 (rows: hidden units; columns: classes)', kind: 'text', mono: true, help: 'Two rows separated by ;' },
+    { id: 'b2', label: 'b2 (classes 1, 2)', kind: 'text', mono: true },
+    { id: 'lr', label: 'Learning rate η', kind: 'number', step: 0.1, min: 0.001, max: 50 },
+    { id: 'eps', label: 'ε for the gradient check', kind: 'select', options: EPS.map(e => [e, e.replace('-', MINUS)]) },
+  ],
+  presets: [
+    { name: 'Both hidden units on', values: { x1: '1', x2: '0.5', y: '1', more: '', ...W_A, lr: '0.5', eps: '1e-5' } },
+    { name: 'Hidden unit 2 off: its gradients are exactly 0', values: { x1: '1.5', x2: '-0.5', y: '1', more: '', ...W_A, lr: '0.5', eps: '1e-5' } },
+    { name: 'Worked by hand: equal scores, P = (½, ½), L = ln 2', values: { x1: '1', x2: '1', y: '1', more: '', W1: '1 0.5; 0 0.5', b1: '0 0', W2: '1 0; 0 1', b2: '0 0', lr: '1', eps: '1e-5' } },
+    { name: 'Confident and wrong: a big loss', values: { x1: '2', x2: '1', y: '2', more: '', W1: W_A.W1, b1: W_A.b1, W2: '1.5 -1; -0.5 0.5', b2: '0 0', lr: '0.5', eps: '1e-5' } },
+    { name: 'A ReLU kink: z exactly 0 (the check fails there)', values: { x1: '1', x2: '1', y: '1', more: '', W1: '0.5 0.4; 0.3 -0.4', b1: '0.1 0', W2: W_A.W2, b2: '0 0', lr: '0.5', eps: '1e-5' } },
+    { name: 'Mini-batch of 4, η = 0.5', values: { x1: '1', x2: '0.5', y: '1', more: BATCH, ...W_A, lr: '0.5', eps: '1e-5' } },
+    { name: 'Same mini-batch, η = 8: the step overshoots', values: { x1: '1', x2: '0.5', y: '1', more: BATCH, ...W_A, lr: '8', eps: '1e-5' } },
+  ],
+  describe: v => { const c = compute(v); const B = c.error ? 1 : c.p.B; return `x = (${v.x1}, ${v.x2}), class ${v.y}${B > 1 ? `, mini-batch of ${B}` : ''}, η = ${v.lr}, ε = ${v.eps}`; },
+  code: CODE,
+  run,
+  render,
+  check: independentCheck,
+  playMs: 1100,
+});
+window.__bp = { api, parse, forward, backward, gradcheck, update, compute, dualLoss, independentCheck, run, PARAMS, CODE };   // for the automatic checks
+})();
+</script>
+</body>
+</html>

@@ -8,6 +8,38 @@ Mark anything still waiting for someone as **Open**.
 
 ---
 
+## 2026-11-19: Gemini first in every AI step; NVIDIA only as fallback
+
+### 43. Model order: Gemini, then NVIDIA, then Groq and the rest
+- **Decision (Amit, 19 Nov):** use the Gemini keys for everything. NVIDIA is used only when Gemini fails: busy (503), timed out, or out of quota.
+- **Changed:** `config/models.yaml`. The order is reordered in `check`, `read`, `verify`, `review` and all five `ytl_*` roles; `generate` and `extract` were already Gemini first. The old file is in `Temporary/models_before_gemini_first.yaml`.
+- **Still works:**
+  - **Reviewer and checker roles:** `review`, `verify` and `ytl_verify` exclude the generator's own model per call, so a Gemini 3.8 draft is checked by Gemini 3.6, and the other way round.
+  - **Not changed:** the judge panel (`judge_c` Groq, `judge_d` NVIDIA). Those judges are one fixed model each, from different families on purpose.
+- **Note:** NVIDIA still appears in logs whenever Gemini is overloaded. On 18–19 Nov, B6/B2 slide calls fell back to it after Gemini 503s.
+- **Open for Vihan:**
+  - `verify` had NVIDIA first to save the Gemini quota for reading videos, so D10 now spends Gemini calls.
+  - `ytl_grade` and `ytl_verify` had Groq first for speed.
+
+## 2026-11-18: Vihan's AI in SDLC course in the app
+
+### 42. Vihan's hand-written course is imported; the finished-course page shows the COs and LOs
+- **Decision (Amit, 18 Nov):** bring Vihan's new course design (`2613872`, AI in SDLC, 2 credits, 13 lectures, 3 COs, 12 LOs) into the app.
+  - Vihan's `b1d873f` (ytlecture: free YouTube search and the shortlist) is taken too.
+  - Only his two commits were applied: the patch `f8b8b2e..origin/video-engine-week-picker-ai501`. His branch also carries the React UI (`f8b8b2e`), which Amit does not want merged.
+- **Changed:**
+  - `runs/app-ai-in-sdlc-01/` (local, not committed) is a copy of `runs/ai-in-sdlc-01/state.json`. Vihan's folder is unchanged.
+  - The copy adds:
+    - approvals for the three gates, "by Vihan (hand-written design)";
+    - the fields the app's renderers read (`cco`, `defaults`, `narrative.course_description`, `target_students` as a dict);
+    - `proposal.md` (his `COURSE_DESIGN.md`) and `course_template.xlsx`. The PDF is built on download.
+  - `app/views.py` `gate3` returns `cos` (each with its `los`).
+  - `static/index.html` `coCard` shows them on the finished-course page, for every course.
+- **Open for Vihan:**
+  - `ytlecture/shortlist.py:459` uses a nested-quote f-string that needs Python 3.12. On Python 3.10 it is a SyntaxError, so 10 of his 35 tests fail here. **Fixed 22 Nov** (Amit asked to push with the fixes): the line now builds the string without nesting quotes.
+  - `yt-dlp` (his new requirement) is not installed on Amit's laptop.
+  - His ytlecture routes (`/api/delivery/{rid}/videos…`) are in `server.py`, but our "Only videos" choice still runs the older video engine. Linking the two is open.
+
 ## 2026-11-18: lecture delivery simplified to three choices, lecture by lecture
 
 ### 41. One choice per lecture: only slides, only videos, or my own slides; no week-wise screens
@@ -40,6 +72,49 @@ Mark anything still waiting for someone as **Open**.
   - Vihan: his "Make material for chosen weeks" panel and route were removed at Amit's request.
   - Vihan: guest speakers, readings and NotebookLM are no longer offered in the app. Their code is untouched.
   - Lecture ids (`W06.L1`) are still week-based inside the pipeline; only the screens changed.
+
+## 2026-11-11: Claude Code as the agent (ML-1 vs ML-2)
+
+### 40. ML-2's lecture delivery goes to the Claude Code session too
+- **Decision (Amit, 11 Nov):** ML-2's delivery buttons (find resources and guests, generate the slides, plan the lecture) are done by the Claude Code session, like its design.
+  - **The first test** is the backpropagation lecture in both courses: ML-1 W06.L3 and W07.L1, ML-2 W06.L1.
+  - **Why:** Amit started ML-2's delivery and the app ran it on Gemini, because only the design steps were routed.
+  - **What Claude Code decides itself:** how each part is taught, full slides with Manim animations embedded in the .pptx, a simulation, and videos checked against their transcripts. No narrated videos.
+- **Changed (ours):**
+  - **New:** `src/profsagent/agentcc/delivery.py`:
+    - `hand_off` writes a `kind: delivery` request and returns at once;
+    - `problems` checks the files the job must leave: the lecture file, LectureMix, LectureDeck, the slide files, and no hidden names;
+    - `finish` marks the request and the app's job done.
+  - **CLI:** `python -m profsagent.agentcc deliver <request>`.
+  - **App:**
+    - `app/delivery_step.py`: for such a run, the recommend, material and mix jobs only hand over;
+    - `app/delivery.py`: the job runner leaves a handed-over job "running" and moves on to the next one, so other courses are not held up.
+  - **Tests:** 2 more in `tests/test_agentcc.py` (6).
+- **Agreed by:** Amit (11 Nov).
+- **Open:**
+  - ML-2's first Gemini attempt at W06.L1 (started before this change) is to be stopped and moved to `Temporary/`.
+  - A new catalogue simulation, `ml.nn.backprop_steps`, goes in after ML-1's backpropagation lectures are done. The catalogue is shared, so ML-1 can be offered it later.
+
+### 39. A run can hand every AI step to a Claude Code session instead of the API models
+- **Decision (Amit, 11 Nov):** compare the pipeline with Claude Code doing the work itself.
+  - **The input:** one 14-field form for "Machine Learning" (Amit's outline) goes into two courses.
+  - **ML-1** uses today's code.
+  - **ML-2** (`run.agent: claude_code`) hands every AI step to the Claude Code session Amit is working in, not a new session per call. In one go the session thinks, searches the web, uses the course database and its skills, checks its own draft with the pipeline's validators and fixes it.
+  - **Hidden:** the real course (AI501, also listed as ECE363, ECE563, CSE343 and CSE543) is hidden from both runs with Vihan's `hold_out`, and it is the answer key.
+  - **The app looks the same** for both.
+- **Changed:**
+  - **New:** `src/profsagent/agentcc/` (ours):
+    - `bridge.AgentBridge` stands in for `LLMClient` (`structured`, `embed` on the local MiniLM, `generate`, `research`);
+    - `protocol` defines the files the run and the session exchange in `runs/<id>/agentcc/`;
+    - `python -m profsagent.agentcc watch | list | check | submit | kg`.
+  - **Vihan's code, small hooks only:**
+    - `agents/pipeline.py`: `make_runtime` / `attach_runtime` call `llm_for(run_dir, run_cfg)`, which returns `LLMClient` as before unless `run.agent` is `claude_code`. In `s2_positioning`, external research uses `rt.llm.research` when the client has one.
+    - `agents/loop.py`: `generate()` hands the whole step to the bridge for such a run. No R1 repair calls are made: the session checks its drafts against the same `engine.check` and `apply_fixers`.
+  - **Ours:** `app/formmap.py`: the form field `agent: claude_code` becomes `run.agent`.
+  - **Tests:** `tests/test_agentcc.py` (4).
+- **Checked:** the full suite passes (488). The 1 failure, `test_llm_check`, was there before this change.
+- **Agreed by:** Amit (11 Nov).
+- **For Vihan:** for every ordinary run nothing changes (`llm_for` returns your `LLMClient`). Please keep the `generate()` hook and the `research` hook if you restructure `loop.py` or `s2_positioning`.
 
 ## 2026-11-07: the professor app redesigned with the Hallmark design skill
 

@@ -456,6 +456,6 @@ def select(G: dict[str, dict], parts: list[dict], cands: dict, prior_of: dict[st
                        "authority": 5 - min(4, cands[v].get("tier", 4)), "level_ok": all(G[v][i]["level_ok"] for i in ps),
                        "likely_standalone": all(G[v][i]["standalone"] for i in ps),
                        "anchor": len(strong) >= 2 and (cands[v].get("duration_s") or 0) >= c.get("anchor_min_s", 1800),
-                       "reason": f"grades {', '.join(f'part {i}: {G[v][i]['g']}' for i in ps)}; {top['reason'][:120]}",
+                       "reason": "grades " + ", ".join(f"part {i}: {G[v][i]['g']}" for i in ps) + f"; {top['reason'][:120]}",
                        "where": {str(i): G[v][i]["where"] for i in ps if G[v][i]["where"]}})
     return chosen

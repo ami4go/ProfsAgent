@@ -683,6 +683,8 @@ class DeliveryManager:
             if rid in self.cancelled or not d.exists():
                 continue
             res = _rj(rf) or {"error": {"message": "the job's process ended without a result", "type": "StepCrashed"}}
+            if res.get("pending"):      # handed to the Claude Code session (agentcc/delivery.py): it marks the job done itself
+                continue
             if "ok" in res:
                 self._set(rid, lids, material=mat, mixl=mixl, state="done", error=None)
             else:

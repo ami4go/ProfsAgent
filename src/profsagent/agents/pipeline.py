@@ -13,6 +13,7 @@ import time
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from profsagent.agentcc.bridge import llm_for
 from profsagent.agents.loop import call, generate
 from profsagent.config import RUNS, bloom_lexicon, degree_bank, pedagogy, programme, regulations
 from profsagent.design import deterministic as det
@@ -64,7 +65,7 @@ def make_kg(llm: LLMClient | None, backend: str) -> KGClient:
 def make_runtime(run_id: str, form: dict, run_cfg: dict) -> Runtime:
     run_dir = RUNS / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
-    llm = LLMClient(run_dir / "llm_calls.jsonl")
+    llm = llm_for(run_dir, run_cfg)      # run.agent: claude_code hands every AI step to a Claude Code session (agentcc)
     engine.configure(run_cfg, llm, run_id)
     # run.kg_backend in the input file, else $KG_BACKEND, else Neo4j; recorded so --resume / --continue reuse it
     run_cfg["kg_backend"] = (run_cfg.get("kg_backend") or os.environ.get("KG_BACKEND") or "neo4j").lower()
@@ -80,8 +81,8 @@ def make_runtime(run_id: str, form: dict, run_cfg: dict) -> Runtime:
 def attach_runtime(run_id: str) -> Runtime:
     run_dir = RUNS / run_id
     st = json.loads((run_dir / "state.json").read_text(encoding="utf-8"))
-    llm = LLMClient(run_dir / "llm_calls.jsonl")
     cfg = st["run_cfg"]
+    llm = llm_for(run_dir, cfg)
     engine.configure(cfg, llm, run_id)
     g = DesignGraph.load(run_dir / "design_graph.json") if (run_dir / "design_graph.json").exists() else DesignGraph(cfg.get("project_id", "P0001"), run_dir / "design_graph.json")
     return Runtime(run_id=run_id, run_dir=run_dir, state=st, exclude={c.upper() for c in cfg.get("exclude_courses", [])},
@@ -202,7 +203,7 @@ def s2_positioning(rt: Runtime) -> None:
     elif rt.research_enabled:
         from profsagent.research.external import ExternalResearch
         try:
-            ext = ExternalResearch(rt.llm, rt.log).run(cc, rt.blocklist, rt.run_id)
+            ext = (rt.llm.research if hasattr(rt.llm, "research") else ExternalResearch(rt.llm, rt.log).run)(cc, rt.blocklist, rt.run_id)
             rpath.write_text(json.dumps(ext, indent=1, ensure_ascii=False, default=str), encoding="utf-8")
         except Exception as e:  # noqa: BLE001
             rt.log(f"  external research failed: {e}")

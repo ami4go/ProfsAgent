@@ -142,6 +142,8 @@ def to_pipeline(f: dict) -> tuple[dict, dict]:
         run_cfg["exclude_courses"] = held
         run_cfg["blocklist"]["course_codes"] = held
         run_cfg["blocklist"]["domains"] = [str(x) for x in (f.get("hold_out_domains") or [])][:8]
+    if _s(f.get("agent")).lower() == "claude_code":   # ML-2: every AI step is done by a Claude Code session (agentcc)
+        run_cfg["agent"] = "claude_code"
     if _s(f.get("reference_course")):
         run_cfg["reference_course"] = _s(f.get("reference_course"))
     return form, run_cfg

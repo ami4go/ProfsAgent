@@ -140,6 +140,8 @@ def generate(rt, pid: str, ctx: dict, *, apply: Callable[[dict, dict], dict], st
     change, repeats a rejected patch, or after `repair_stall_rounds` rejected patches in a row (config/models.yaml).
     Then, if `regenerate_on_stall` > 0 and nothing is frozen, the generator is called once more with the open errors
     as evidence, and its answer is kept only if it has fewer errors."""
+    if getattr(getattr(rt, "llm", None), "agent_bridge", False):     # a claude_code run: the session generates, checks and fixes in one go
+        return rt.llm.generate(rt, pid, ctx, apply=apply, stages=stages, frozen=frozen, role=role)
     lim = models_cfg().get("limits", {})
     obj, meta = call(rt, pid, ctx, role)
     comp = obj.model_dump()

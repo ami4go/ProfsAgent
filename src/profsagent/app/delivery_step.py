@@ -44,7 +44,10 @@ def main(argv: list[str]) -> int:
         os.environ["GROQ_API_KEYS"] = os.environ["GROQ_API_KEY"]
     args = json.loads(open(af, encoding="utf-8").read())
     try:
-        if kind == "recommend":
+        from profsagent.agentcc import delivery as agd
+        if kind in agd.JOBS and agd.is_agent(rid):    # a claude_code run: the session does the job; this step only hands it over
+            out = {"ok": agd.hand_off(rid, kind, args), "pending": True}
+        elif kind == "recommend":
             from profsagent.delivery import pipeline
             out = {"ok": pipeline.recommend(rid, lectures=args.get("lectures"), refresh=bool(args.get("refresh")))}
             out["video_plans"] = _video_plans(rid, args.get("lectures"))

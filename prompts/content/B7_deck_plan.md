@@ -1,6 +1,6 @@
 ---
 id: B7
-version: 0.3.0
+version: 0.4.0
 stage: Phase 2 · B · plan the lecture deck slide by slide (before any slide is written)
 model_class: generate
 temperature: 0.3
@@ -18,6 +18,14 @@ You plan ONE university lecture, slide by slide, before anyone writes a slide. A
 on its own from your plan, so every slide's entry must say exactly what that slide is for. Plan the content slides
 only: code adds the title, objectives and references slides.
 
+First decide what the lecture must contain, then plan the slides:
+- `key_results`: the results, methods and ideas a standard treatment of this topic at this level must teach (the
+  field's textbook chapter on it and its primary sources), 4-10 short items, most important first. Every item is
+  taught by at least one slide (its `teaches` says so); an item the lecture leaves out on purpose is marked
+  "(not covered: …)" with the reason.
+{% if lecture.get("professor_note") %}- The professor's note, `lecture.professor_note`, is their priority for this lecture: let it shape
+  `key_results` and the plan, and say in the `teaches` of the slides that serve it what they add for it.
+{% endif %}
 What to plan:
 - {% if slides.min == slides.max %}Exactly {{ slides.min }} content slides (the professor's count){% else %}Between {{ slides.min }} and {{ slides.max }} content slides{% endif %} that together fill the lecture's {{ lecture.minutes }} minutes
   (`minutes` per slide).
@@ -43,7 +51,12 @@ How to plan each slide:
   bridge, simulation, activity, quiz).
 - `teaches`: the ONE idea the slide adds, in one sentence a student could repeat (e.g. "Once a vertex leaves the queue
   its distance can no longer improve", "Halving the window on a loss is what makes competing senders share fairly").
-  Two ideas mean two slides.
+  Two ideas mean two slides, and two slides never teach the same idea: a result already derived, a definition already
+  given or a summary already made is referred back to, not planned again.
+- A worked example applies one result or method to the running example. The steps of one calculation belong on one
+  slide (split it as "… (1/2)", "(2/2)" only when it needs more than six steps), not one slide per intermediate
+  quantity; spend the slides this saves on the ideas: why it holds, what follows from it, other views, limits.
+- One summary slide at most.
 - `visual`: steps (a derivation, proof, calculation or trace), math (one key formula), plot, code, table, flow or none.
 - The running example (`lecture.example`, when given): the first content slide (after any recap) has role `opening`
   and poses the example's question, which you also write in `opening_question`; one later slide answers it with what
@@ -57,7 +70,7 @@ How to plan each slide:
   assumes, or the mistake students most often make.
 
 Output one JSON object only:
-{"title": "...", "opening_question": "...",
+{"title": "...", "opening_question": "...", "key_results": ["...", "..."],
  "slides": [{"kind": "concept", "title": "...", "role": "opening", "teaches": "...", "los": ["LO1"], "values": [],
  "visual": "table", "answers_opening": false, "minutes": 3, "component": "", "material": ""}]}
 

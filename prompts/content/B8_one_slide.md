@@ -1,6 +1,6 @@
 ---
 id: B8
-version: 0.3.0
+version: 0.4.0
 stage: Phase 2 · B · write ONE slide of a planned deck (called once per slide, in order)
 model_class: generate
 temperature: 0.3
@@ -34,6 +34,9 @@ Your slide:
   yet. role `limits` or `misconception`: what goes wrong, what it assumes or what students get wrong, shown on the
   example where possible. role `check`: one multiple-choice question on what the slides before it taught.
 - `slide.material`, when given: build the slide from it and cite its part in `sources`.
+{% if lecture.get("professor_note") %}- The professor's note, `lecture.professor_note`, is their priority for this lecture: where this slide can
+  serve it, it does.
+{% endif %}
 
 {% include "_depth.md" %}
 

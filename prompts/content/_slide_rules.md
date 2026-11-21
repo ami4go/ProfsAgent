@@ -1,6 +1,6 @@
 ---
 id: _slide_rules
-version: 0.2.0
+version: 0.3.0
 stage: Phase 2 · B · shared text, included by B1 and B8
 ---
 How to write a slide:
@@ -29,6 +29,9 @@ How to write a slide:
   `code` for a short snippet (at most 14 lines, real and runnable in spirit), `table` for a comparison or a state
   table (header row + at most 5 rows, 4 columns), `plot` for a chart of the running example's numbers (below). Use
   `none` when a figure would not help.
+  A figure is complete or absent: a flow has its steps, a table its header and every row filled to the same width,
+  a code figure its code. If you cannot fill it, use `none` and put the content in bullets or blocks. Never announce
+  content the slide does not show ("four criteria…", "the table below…") without showing all of it.
 
 The running example (`lecture.example`, when given: its title, story, conventions and computed values, each with a
 name, meaning (with the formula or rule that produced it) and value):

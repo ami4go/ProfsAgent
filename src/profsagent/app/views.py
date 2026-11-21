@@ -357,6 +357,9 @@ def gate3(st: dict, run_dir: Path) -> dict:
         "edited": _edited(st, "gate3_proposal"), "edit": edit,
         "description": (st.get("narrative") or {}).get("course_description"),
         "weeks": weeks,
+        "cos": [{"id": co["id"], "statement": co.get("statement"), "level": BLOOM.get(co.get("bloom_level"), ""),
+                 "los": [{"id": lo["id"], "statement": lo.get("statement"), "level": BLOOM.get(lo.get("bloom_level"), "")}
+                         for lo in st.get("los") or [] if lo.get("parent_co") == co["id"]]} for co in st.get("cos") or []],
         "hours": {"planned": (st.get("structure_meta") or {}).get("hours_total"), "available": feas.get("lecture_hours_available")},
         "assessment": assess, "assessment_total": round(sum(c.get("weight_pct") or 0 for c in comps), 1),
         "invigilated_pct": round(sum(c.get("weight_pct") or 0 for c in comps if c.get("proctored")), 1),

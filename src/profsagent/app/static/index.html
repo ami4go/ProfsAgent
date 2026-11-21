@@ -868,6 +868,13 @@ function gate2View(v) {
     v.cos.map(c => ed === 'co:' + c.id ? edCo(c.id) : coCard(c)).join('') +
     (ed === 'co:new' ? edCo(null) : canEdit() && !ed ? '<button class="btn" data-act="ed-open" data-sec="co:new" style="margin-top:var(--space-sm)">+ Add a course outcome</button>' : '');
 }
+// the course outcomes and, under each, its learning outcomes (finished course page)
+function coCard(v) {
+  if (!v.cos || !v.cos.length) return '';
+  return '<div class="card"><h2>Course outcomes and learning outcomes</h2>' + v.cos.map(c =>
+    '<div class="kv"><p><b class="mono" style="font-weight:600">' + esc(c.id) + '</b> ' + esc(c.statement) + (c.level ? ' <span class="chip navy">' + esc(c.level) + '</span>' : '') + '</p>' +
+    (c.los.length ? '<ul style="margin-top:var(--space-2xs)">' + c.los.map(l => '<li class="small"><span class="mono">' + esc(l.id) + '</span> ' + esc(l.statement) + (l.level ? ' <span class="muted tiny">(' + esc(l.level) + ')</span>' : '') + '</li>').join('') + '</ul>' : '') + '</div>').join('') + '</div>';
+}
 function gate3View(v, final) {
   const verified = v.books.filter(b => b.verified).length, ev = v.evaluation;
   const evText = ev ? { PASS: ['green', 'All checks pass'], REVIEW: ['amber', 'Mostly fine; some items need a person to confirm'],
@@ -936,7 +943,7 @@ function runPage() {
       '<a class="btn big" href="/api/runs/' + esc(RID) + '/download/pdf" target="_blank">' + ICON.down + 'Course sheet (PDF)</a>' +
       '<a class="btn big" href="/api/runs/' + esc(RID) + '/download/xlsx">' + ICON.down + 'IIIT-D Excel template</a></div>' +
       '<div class="done-links"><a class="link small" href="/api/runs/' + esc(RID) + '/download/md">Proposal as text (Markdown)</a><button class="link small" data-act="again">Start again with changes</button><a class="link small" href="#/new">Start another course</a></div>' +
-      (r.view ? '<h2 class="sec-h">The approved design</h2>' + gate3View(r.view, true) : '') + feedbackCard() + decisionsCard(r, true);
+      (r.view ? '<h2 class="sec-h">The approved design</h2>' + coCard(r.view) + gate3View(r.view, true) : '') + feedbackCard() + decisionsCard(r, true);
     return header() + courseBand(r) + stepBar(r) + '<div class="wrap" style="padding-top:var(--space-sm)">' + body + '</div>';
   }
   if (r.status === 'stopped') {

@@ -10,7 +10,7 @@ How AI, above all large language models and coding agents, is used in every phas
 
 **Central question:** How do you get reliable software out of tools that are fast, fluent and sometimes wrong?
 
-**Students:** B.Tech CSE/CSAI 3rd and 4th year and M.Tech CSE students who have taken CSE201 Advanced Programming.
+**Students:** B.Tech 3rd/4th year; M.Tech (BTECH-CSE, BTECH-CSAI, MTECH-CSE); assumed background: CSE201 Advanced Programming; basic software engineering practice (Git, unit tests).
 
 ## Prerequisites and positioning
 

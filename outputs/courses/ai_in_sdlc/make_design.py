@@ -260,18 +260,20 @@ resources = [
         "RCT: experienced developers were 19% slower with AI while believing they were faster.", arxiv="2507.09089"),
 ]
 
+DESCRIPTION = ("How AI, above all large language models and coding agents, is used in every phase of the software development "
+               "lifecycle: requirements, design, construction, code review, testing and debugging, security, delivery and "
+               "maintenance. Students use the tools on a team project, learn what they do reliably and where they fail, verify "
+               "their output with tests and reviews, and judge their effect and risks with published evidence and their own "
+               "measurements.")
 ped = pedagogy()
 CAT = json.load(open("D:/BTP/runs/cs601-02/state.json", encoding="utf-8"))
 state = {
     "cco_compact": {
         "course_name": "AI in SDLC",
-        "description": ("How AI, above all large language models and coding agents, is used in every phase of the software development "
-                        "lifecycle: requirements, design, construction, code review, testing and debugging, security, delivery and "
-                        "maintenance. Students use the tools on a team project, learn what they do reliably and where they fail, verify "
-                        "their output with tests and reviews, and judge their effect and risks with published evidence and their own "
-                        "measurements."),
+        "description": DESCRIPTION,
         "credits": CREDITS, "ltp": LTP, "weeks": WEEKS, "level": LEVEL,
-        "target_students": "B.Tech CSE/CSAI 3rd and 4th year and M.Tech CSE students who have taken CSE201 Advanced Programming",
+        "target_students": {"programmes": ["BTECH-CSE", "BTECH-CSAI", "MTECH-CSE"], "year": "B.Tech 3rd/4th year; M.Tech",
+                            "assumed_background": ["CSE201 Advanced Programming", "basic software engineering practice (Git, unit tests)"]},
         "central_question": "How do you get reliable software out of tools that are fast, fluent and sometimes wrong?",
     },
     "department": "CSE", "level": LEVEL, "credits": CREDITS, "ltp": LTP, "weeks": WEEKS, "midsem_after_week": 7, "lab_required": "yes",
@@ -307,6 +309,31 @@ state = {
                                  "lifecycle phase, verify their output and judge their effect and risks. Overlap is limited to the "
                                  "requirements, repair, testing and review topics, taught here hands-on with current tools.")}]},
     "resources": resources,
+    # the course form as the department's sheet reads it (written for this design, not filled in by ProfsAgent)
+    "cco": {"concerns": [], "missing": [], "ambiguities": [], "conflicts": [], "fields": {
+        "course_name": {"status": "given", "raw": "AI in SDLC", "value": "AI in SDLC"},
+        "short_description": {"status": "given", "raw": DESCRIPTION, "value": DESCRIPTION},
+        "target_students": {"status": "given", "raw": "B.Tech CSE/CSAI 3rd and 4th year; M.Tech CSE", "value": None,
+                            "programmes": ["BTECH-CSE", "BTECH-CSAI", "MTECH-CSE"], "unmapped_programmes": [],
+                            "assumed_background": ["CSE201 Advanced Programming", "basic software engineering practice (Git, unit tests)"]},
+        "level_or_code": {"status": "given", "raw": "4xx (code to be assigned)", "value": None, "code": None, "level": LEVEL},
+        "credits": {"status": "given", "raw": str(CREDITS), "value": CREDITS},
+        "ltp": {"status": "given", "raw": "1.5-0-1", "value": None, **LTP},
+        "semester_weeks": {"status": "given", "raw": str(WEEKS), "value": WEEKS},
+        "lab": {"status": "given", "raw": "Six 2-hour labs with AI coding tools", "value": None, "required": "yes",
+                "infrastructure": ["a free-tier AI coding assistant or agent for every student", "GitHub with Actions", "Python 3.11+ with pytest"]}}},
+    "defaults": {"ltp": LTP, "weeks": WEEKS, "credits": CREDITS, "level": LEVEL, "midsem_after_week": 7, "constraints": [], "assumptions": []},
+    "narrative": {"concerns": [], "missing": [], "grounding": [],
+        "course_description": DESCRIPTION,
+        "sequencing_rationale": ("The course follows the lifecycle: first how AI tools work and where they enter it, then requirements and "
+                                 "design, code and review, tests and debugging, and last security, delivery, maintenance, measurement and "
+                                 "policy. Each lecture builds on the artefacts of the one before, as the team project does."),
+        "assessment_rationale": ("Quizzes and the two exams (50%, proctored) check each student's own understanding; the labs practise each "
+                                 "module's skill with the tools; the team project carries the whole lifecycle and ends with measured "
+                                 "results and an AI-use policy, so the highest outcomes are assessed on real work."),
+        "positioning_rationale": ("Builds on CSE201 Advanced Programming. CSE701 (Topics in Software Engineering: AI in SE) is a 7xx research "
+                                  "course on data and ML for software engineering; this 2-credit 4xx course is hands-on practice with "
+                                  "current LLM assistants and agents across the lifecycle.")},
     "design_source": {
         "kind": "hand-authored by Claude at the user's request (not a ProfsAgent Phase 1 run)",
         "modelled_on": ["SWEBOK V4.0 lifecycle knowledge areas", "Generative AI for Effective Software Development (Springer 2024)",

@@ -319,6 +319,7 @@ table.t td:first-child{font-variant-numeric:tabular-nums}
 .rcard{border:1px solid var(--color-rule);border-radius:var(--radius-card);padding:var(--space-md);margin-top:var(--space-sm);overflow-wrap:break-word}
 .rcard.approved{border-color:var(--color-ok-line)}
 .rcard.rej{opacity:.7}
+.ytbar{height:6px;border-radius:var(--radius-pill);background:var(--color-rule);overflow:hidden;margin:var(--space-xs) 0 var(--space-sm)}.ytbar i{display:block;height:100%}.ytbar i.green{background:var(--green)}.ytbar i.amber{background:var(--amber)}.ytbar i.red{background:var(--red)}
 .rhead{display:flex;gap:var(--space-sm);align-items:flex-start;justify-content:space-between}
 .rank{font-size:var(--text-xs);font-weight:600;color:var(--color-ink-2);background:var(--color-paper-2);border-radius:var(--radius-inner);padding:var(--space-3xs) var(--space-xs);flex:none}
 .rtitle{font-weight:600;font-size:var(--text-md);line-height:1.35}
@@ -998,6 +999,7 @@ const dblank = () => ({ own_material: null, attach_material: null, generate_mate
   want_videos: 'yes', want_readings: 'yes', want_practice: 'no', want_recorded_lecture: 'no', want_clips: 'no', confidence: null, note: '',
   mode: null, slides: null, depth: null });
 let DV = null, DRID = null, DLID = null, DCOURSES = null, dpoll = null, dPendingRender = false;
+let DYT = null;   // the course's YouTube lectures (delivery mode 2): GET /api/delivery/{rid}/videos
 // the class-time bar (docs/10 §5): how a lecture's minutes are spent, from the lecture plan (parts and how each is taught)
 const WAY = { slides: 'Slides', video: 'Video', nlm: 'NotebookLM', inclass: 'In class', sim: 'Simulation', quiz: 'Recap and quiz' };
 // C's delivery mix (Vihan, delivery/mix.py): the way each part is taught, decided by the professor
@@ -1106,11 +1108,11 @@ function dlist() {
   return header() + '<div class="wrap wide">' + crumbs([['Your courses', '#/'], ['Lecture delivery', '#/delivery'], [DV.run.course]]) +
     '<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:var(--space-sm);flex-wrap:wrap;margin-top:var(--space-sm)"><div style="min-width:0"><h1>' + esc(DV.run.course) + '</h1>' +
     '</div>' +
-    '<div style="display:flex;gap:var(--space-xs);flex-wrap:wrap"><a class="btn" href="' + dhref('student') + '">Preview as a student</a>' +
+    '<div style="display:flex;gap:var(--space-xs);flex-wrap:wrap"><button class="btn" data-act="d-ytall"' + (dytBusy() ? ' disabled' : '') + '>' + (dytBusy() ? '<span class="spin"></span> Finding YouTube lectures…' : 'Find YouTube lectures') + '</button><a class="btn" href="' + dhref('student') + '">Preview as a student</a>' +
     '<button class="btn quiet" data-act="d-health"' + (['queued', 'running'].includes(hj.state) ? ' disabled' : '') + '>' + (['queued', 'running'].includes(hj.state) ? '<span class="spin"></span> Checking links…' : 'Check approved links') + '</button>' +
     '<button class="btn quiet" data-act="d-report">' + (PUI.report ? 'Hide' : 'Show') + ' the course report</button>' +
     '</div></div>' +
-    keysBanner() + dhealthSummary() + (PUI.report ? '<div class="card proposal">' + PUI.report + '</div>' : '') +
+    keysBanner() + dhealthSummary() + dytBanner() + (PUI.report ? '<div class="card proposal">' + PUI.report + '</div>' : '') +
     '<div class="filters">' +
     '<div class="seg" role="group" aria-label="Show lectures">' + [['all', 'All'], ['undecided', 'Needs a decision'], ['review', 'Ready to review'], ['decided', 'Decided']].map(([v, t]) =>
       '<button type="button" data-fstatus="' + v + '" class="' + (f.status === v ? 'on' : '') + '" aria-pressed="' + (f.status === v) + '">' + t + '<span class="n">' + counts[v] + '</span></button>').join('') + '</div>' +
@@ -1135,7 +1137,7 @@ function dlectureRow(l, bar) {
   const novel = l.novel && !mostlyNovel() ? ' <span class="chip star" title="No IIIT-D course teaches a close match, so it likely needs the most preparation">★ New topic</span>' : '';
   return '<a class="lec' + (bar ? '' : ' nobar') + '" href="' + dhref(l.id) + '"><span class="lid" title="' + esc(l.id) + '">' + lecName(l) + '</span><span style="min-width:0"><b style="font-weight:600">' + esc(l.topic) + '</b>' +
     '<span class="meta"><span class="small muted">' + esc(l.module) + (l.continues ? ', continues in the next lecture' : '') + '</span>' + novel + '</span></span>' +
-    '<span class="mins">' + Math.round(l.hours * 60) + ' min</span>' + (bar ? ctBar(ctParts(l.id)) : '') + '<span class="right">' + (dmode(a) ? '<span class="chip grey">' + D_MODE_SHORT[dmode(a)] + '</span>' : '') + status + '</span></a>';
+    '<span class="mins">' + Math.round(l.hours * 60) + ' min</span>' + (bar ? ctBar(ctParts(l.id)) : '') + '<span class="right">' + dytChip(l.id) + (dmode(a) ? '<span class="chip grey">' + D_MODE_SHORT[dmode(a)] + '</span>' : '') + status + '</span></a>';
 }
 function dhealthSummary() {
   const dead = (DV.health || {}).dead || [], hj = (DV.jobs || {}).health || {};
@@ -1162,7 +1164,7 @@ function dlec() {
     '<div class="summary">' + clampd(l.summary, 'sum:' + l.id) + '</div>' + dhealthAlert(l.id) +
     '<div class="lp"><div style="min-width:0">' +
     (parts ? dbarCard(l, parts) : '') + (editing ? dchoicesCard(l, d, !!a) : dhowCard(l, a)) +
-    (a && dneedsProgress(l) ? dprogressCard(l) : '') + (a ? dresultsCard(l) : '') + dsimCard(l) +
+    (a && dneedsProgress(l) ? dprogressCard(l) : '') + (a ? dresultsCard(l) : '') + dytCard(l) + dsimCard(l) +
     '</div><aside class="lp-aside">' + daside(l) + '</aside></div></div>';
 }
 function dbarCard(l, parts) {
@@ -1583,19 +1585,103 @@ function dstudent() {
           (rt.r ? '<p class="tiny muted">Rating saved</p>' : '<p class="tiny muted">Rate it</p>') + '</div></div>'; }).join('') + '</div>').join('') + '</div>';
 }
 
+// ---------------------------------- YouTube lectures (delivery mode 2: src/profsagent/ytlecture) ----------------------------------
+// A whole lecture taught by a playlist of YouTube clips: each part gets the minutes of a video that teach it, checked against the
+// transcript by a second model. Started for every lecture without a playlist, or for one lecture; it runs inside the app.
+const YT_STATUS = { ready: ['Ready', 'green'], usable_with_gaps: ['Usable', 'amber'], not_enough_video: ['Not enough video', 'red'] };
+const YT_TIER = ['', 'primary source', 'established educator', 'known channel', 'other channel'];
+const dytBusy = () => !!(DYT && DYT.job && DYT.job.state === 'running');
+const dytOf = lid => ((DYT || {}).lectures || []).find(x => x.lecture_id === lid) || null;
+function dytNow() {                            // the lecture the running search is on, from its log ("… · lectures W05.L1")
+  const j = (DYT || {}).job; if (!j || j.state !== 'running') return null;
+  for (let i = j.log.length - 1; i >= 0; i--) { const m = /· lectures ([A-Z0-9.]+)/.exec(j.log[i]); if (m) return m[1]; }
+  return null;
+}
+const dytQueued = lid => dytBusy() && (!DYT.job.lectures.length || DYT.job.lectures.includes(lid));
+function dytLabel(y) {                         // "usable" also covers a lecture with no empty part whose video fills under 65% of the slot
+  if (y.status !== 'usable_with_gaps') return (YT_STATUS[y.status] || ['Not enough video'])[0];
+  return y.gaps.length ? 'Usable, ' + y.gaps.length + ' part' + (y.gaps.length === 1 ? '' : 's') + ' without video' : 'Usable, under 65% of the slot';
+}
+function dytChip(lid) {
+  const y = dytOf(lid);
+  if (y) return '<span class="chip ' + (YT_STATUS[y.status] || ['', 'red'])[1] + '" title="' + esc(dytLabel(y)) + '">YouTube ' + y.video_min + '/' + y.slot_min + ' min</span>';
+  if (dytNow() === lid) return '<span class="chip navy"><span class="spin"></span> YouTube: finding</span>';
+  if (dytQueued(lid)) return '<span class="chip grey">YouTube: queued</span>';
+  return '';
+}
+function dytBanner() {
+  const y = DYT; if (!y) return '';
+  const j = y.job, L = LECS();
+  if (j && j.state === 'running') {
+    const n = j.lectures.length || L.length, done = y.lectures.filter(x => !j.lectures.length || j.lectures.includes(x.lecture_id)).length, now = dytNow();
+    return '<div class="banner navy"><span class="spin"></span><div><b style="font-weight:600">Finding YouTube lectures: ' + done + ' of ' + n + ' done' + (now ? ', now on ' + esc(now) : '') + '.</b> ' +
+      esc(j.log[j.log.length - 1] || '') + '<div style="margin-top:var(--space-2xs)"><button class="link small" data-act="d-toggle" data-id="ytlog">' + (PUI.show.ytlog ? 'Hide' : 'Show') +
+      ' what the search did</button></div>' + (PUI.show.ytlog ? '<pre class="log">' + esc(j.log.join('\n')) + '</pre>' : '') + '</div></div>';
+  }
+  if (j && j.state === 'failed') return '<div class="banner red">' + ICON.alert + '<div>The YouTube lecture search stopped: ' + esc(j.error || '') + ' Start it again: it continues where it stopped.</div></div>';
+  if (!y.lectures.length) return '';
+  const ready = y.lectures.filter(x => x.status === 'ready').length, mins = y.lectures.reduce((a, x) => a + x.video_min, 0);
+  return '<div class="banner green">' + ICON.check + '<div>YouTube lectures: ' + y.lectures.length + ' of ' + L.length + ' lectures have a playlist (' + ready + ' ready, ' +
+    (Math.round(mins / 6) / 10) + ' h of video). Open a lecture to watch its playlist' + (y.player ? ', or <a href="' + esc(y.player) + '" target="_blank" rel="noopener">open the player</a>' : '') + '.</div></div>';
+}
+function dytClip(lid, i, j, c) {
+  const key = 'yt:' + lid + ':' + i + ':' + j, url = 'https://www.youtube.com/watch?v=' + encodeURIComponent(c.video) + '&t=' + Math.floor(c.a) + 's';
+  const meta = [c.channel, YT_TIER[c.tier] || '', c.video_length ? 'video ' + c.video_length : '', c.check === 'transcript' ? 'checked against the transcript' : (c.check || '')].filter(Boolean);
+  return '<div class="rcard"><div class="rhead"><div style="min-width:0"><a href="' + esc(url) + '" target="_blank" rel="noopener"><b style="font-weight:600">' + esc(c.title) + '</b></a>' +
+    '<div class="rmeta"><span>' + esc(c.start) + '–' + esc(c.end) + '</span><span>' + Math.round(c.clip_s / 60) + ' min</span>' + meta.map(x => '<span>' + esc(x) + '</span>').join('') + '</div></div></div>' +
+    (c.why ? '<p class="small" style="margin-top:var(--space-xs)"><b style="font-weight:600">Why:</b> ' + esc(c.why) + '</p>' : '') +
+    (PUI.show[key] ? '<iframe class="yt" src="https://www.youtube-nocookie.com/embed/' + encodeURIComponent(c.video) + '?start=' + Math.floor(c.a) + '&end=' + Math.ceil(c.b) + '" title="' + esc(c.title) + '" allowfullscreen loading="lazy"></iframe>'
+      : '<div style="margin-top:var(--space-xs)"><button class="btn sm" data-act="d-ytplay" data-key="' + esc(key) + '">▶ Play ' + esc(c.start) + '–' + esc(c.end) + ' here</button></div>') + '</div>';
+}
+function dytCard(l) {
+  if (!DYT) return '';
+  const y = dytOf(l.id);
+  if (!y) {
+    const now = dytNow() === l.id, q = dytQueued(l.id);
+    if (!now && !q && dmode(DV.survey[l.id]) !== 'videos') return '';      // other lectures: the list's "Find YouTube lectures" covers them
+    return '<div class="card" id="youtube"><div class="card-h"><h2>YouTube lecture</h2></div><p class="small muted">' +
+      (now ? '<span class="spin"></span> Finding videos for this lecture now; the playlist appears here when it is done (20–30 minutes).' : q ? 'Queued in the running search.'
+        : 'Teach the whole lecture with a playlist of YouTube clips, each cut to the minutes that teach one part, checked against the transcript.') + '</p>' +
+      (!now && !q ? '<div class="acts"><button class="btn primary" data-act="d-ytone"' + (dytBusy() ? ' disabled' : '') + '>' + (dytBusy() ? 'Another search is running' : 'Find the YouTube lecture') + '</button></div>' : '') + '</div>';
+  }
+  const st = YT_STATUS[y.status] || ['', 'red'], pct = Math.min(100, Math.round(100 * y.video_min / Math.max(1, y.slot_min)));
+  const clips = y.parts.reduce((a, p) => a + p.clips.length, 0);
+  return '<div class="card" id="youtube"><div class="card-h"><h2>YouTube lecture</h2><span class="chip ' + st[1] + '">' + esc(dytLabel(y)) + '</span></div>' +
+    '<p class="small muted">' + y.video_min + ' of ' + y.slot_min + ' min of video, ' + clips + ' clip' + (clips === 1 ? '' : 's') + ' over ' + y.parts.length + ' parts' +
+    (DYT.player ? '. <a href="' + esc(DYT.player) + '" target="_blank" rel="noopener">Open the player</a>' : '') + '</p>' +
+    '<div class="ytbar" role="img" aria-label="' + pct + '% of the class time has video"><i class="' + st[1] + '" style="width:' + pct + '%"></i></div>' +
+    '<p>' + esc(y.recommendation) + '</p>' + (y.warnings || []).map(w => '<div class="banner amber">' + ICON.alert + '<div>' + esc(w) + '</div></div>').join('') +
+    y.parts.map((p, i) => '<div class="groupt"><h3>' + (i + 1) + '. ' + esc(p.title) + '</h3><span class="small muted">planned ' + p.minutes + ' min' +
+      (p.clips.length ? ', video ' + Math.round(p.clips.reduce((a, c) => a + c.clip_s, 0) / 60) + ' min' : '') + '</span></div>' +
+      (p.gap ? '<p class="small" style="color:var(--red)">No video passed the checks for this part: teach it live or with slides.</p>' : p.clips.map((c, j) => dytClip(l.id, i, j, c)).join(''))).join('') +
+    '</div>';
+}
+async function dytclick(act, b, lid) {
+  if (act === 'd-ytplay') { PUI.show[b.dataset.key] = true; render(); return; }
+  const have = new Set(((DYT || {}).lectures || []).map(x => x.lecture_id)), all = LECS().map(x => x.id);
+  const want = act === 'd-ytone' ? [lid] : all.filter(x => !have.has(x));
+  if (!want.length) { toast('Every lecture already has a YouTube playlist.'); return; }
+  b.disabled = true;
+  const r = await post(dapi('/videos/run'), { lectures: want.length === all.length ? [] : want });
+  if (!r.ok || (r.data && r.data.started === false)) { b.disabled = false; toast((r.data && (r.data.why || r.data.problem || r.data.detail)) || 'Could not start the search'); return; }
+  toast('Started: finding YouTube lectures for ' + want.length + ' lecture' + (want.length === 1 ? '' : 's') + '. Keep the app running.');
+  await loadDelivery(false);
+}
+
 // ---------------------------------- loading, polling, actions ----------------------------------
 async function loadDelivery(first) {
   clearTimeout(dpoll);
   const asked = DRID;
-  const r = await api(dapi(''));
+  const [r, yv] = await Promise.all([api(dapi('')), api(dapi('/videos'))]);
   if (!PAGE.startsWith('d') || asked !== DRID) return;
+  if (yv.ok) DYT = yv.data;
   if (!r.ok) { app.innerHTML = header() + '<div class="wrap"><h1>Lecture delivery is not available</h1><p class="muted">' + esc((r.data && (r.data.detail || r.data.problem)) || '') + '</p><a class="btn" href="#/delivery" style="margin-top:var(--space-sm)">Lecture delivery</a></div>'; return; }
   DV = r.data;
   if (!SCAT && PAGE === 'dlec') { await loadSimCatalogue(); if (!PAGE.startsWith('d') || asked !== DRID) return; }
   if (first) { try { Object.assign(PUI.filter, JSON.parse(store.get('profsagent-dfilter-' + DRID) || '{}')); } catch (e) {} }
   const typing = document.activeElement && ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName) && app.contains(document.activeElement);
   if (typing && !first) dPendingRender = true; else render();
-  if (dbusy()) dpoll = setTimeout(() => loadDelivery(false), 4000);
+  if (dbusy() || dytBusy()) dpoll = setTimeout(() => loadDelivery(false), dbusy() ? 4000 : 8000);
 }
 async function dreview(lid, kind, key, decision, reason, title) {
   PUI.busy = true; render();
@@ -1654,6 +1740,7 @@ async function dmixchange(t) {
 async function dclick(act, b) {
   const lid = DLID;
   if (act.startsWith('d-sim')) return dsimclick(act, b, lid);
+  if (act.startsWith('d-yt')) return dytclick(act, b, lid);
   if (act === 'd-editchoices') { PUI.editChoices[lid] = true; render(); const c = app.querySelector('[data-choice]'); if (c) c.focus(); return; }
   if (act === 'd-canceledit') { PUI.editChoices[lid] = false; delete PUI.draft[lid]; PUI.errs = {}; render(); return; }
   if (act === 'd-example') { b.disabled = true; const r = await post('/api/delivery/example'); if (r.ok) location.hash = '#/delivery/' + r.data.run_id; else { b.disabled = false; toast((r.data && r.data.detail) || 'Could not copy the example'); } return; }
@@ -2221,7 +2308,7 @@ async function route() {
     PAGE = 'dhome'; DCOURSES = null; const r = await api('/api/delivery'); if (me !== routeId) return; DCOURSES = r.ok ? r.data : { courses: [] }; render(); window.scrollTo(0, 0);
   } else if (h.startsWith('/delivery/')) {
     const parts = h.slice(10).split('/').map(decodeURIComponent);
-    if (DRID !== parts[0]) { DV = null; PUI.draft = {}; PUI.tab = {}; PUI.show = {}; PUI.report = null; }
+    if (DRID !== parts[0]) { DV = null; DYT = null; PUI.draft = {}; PUI.tab = {}; PUI.show = {}; PUI.report = null; }
     DRID = parts[0]; DLID = parts[1] && parts[1] !== 'student' ? parts[1] : null;
     PAGE = parts[1] === 'student' ? 'dstudent' : parts[2] === 'kit' ? 'dkit' : parts[2] === 'notebooklm' ? 'dnlm' : DLID ? 'dlec' : 'dlist';
     PUI.errs = {}; PUI.openReason = null; PUI.ownForm = null; PUI.kit = null; PUI.nlm = null; PUI.simReason = null;

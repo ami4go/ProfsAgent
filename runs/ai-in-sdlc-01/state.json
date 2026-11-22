@@ -10,7 +10,18 @@
   },
   "weeks": 13,
   "level": 4,
-  "target_students": "B.Tech CSE/CSAI 3rd and 4th year and M.Tech CSE students who have taken CSE201 Advanced Programming",
+  "target_students": {
+   "programmes": [
+    "BTECH-CSE",
+    "BTECH-CSAI",
+    "MTECH-CSE"
+   ],
+   "year": "B.Tech 3rd/4th year; M.Tech",
+   "assumed_background": [
+    "CSE201 Advanced Programming",
+    "basic software engineering practice (Git, unit tests)"
+   ]
+  },
   "central_question": "How do you get reliable software out of tools that are fast, fluent and sometimes wrong?"
  },
  "department": "CSE",
@@ -3613,6 +3624,97 @@
    }
   }
  ],
+ "cco": {
+  "concerns": [],
+  "missing": [],
+  "ambiguities": [],
+  "conflicts": [],
+  "fields": {
+   "course_name": {
+    "status": "given",
+    "raw": "AI in SDLC",
+    "value": "AI in SDLC"
+   },
+   "short_description": {
+    "status": "given",
+    "raw": "How AI, above all large language models and coding agents, is used in every phase of the software development lifecycle: requirements, design, construction, code review, testing and debugging, security, delivery and maintenance. Students use the tools on a team project, learn what they do reliably and where they fail, verify their output with tests and reviews, and judge their effect and risks with published evidence and their own measurements.",
+    "value": "How AI, above all large language models and coding agents, is used in every phase of the software development lifecycle: requirements, design, construction, code review, testing and debugging, security, delivery and maintenance. Students use the tools on a team project, learn what they do reliably and where they fail, verify their output with tests and reviews, and judge their effect and risks with published evidence and their own measurements."
+   },
+   "target_students": {
+    "status": "given",
+    "raw": "B.Tech CSE/CSAI 3rd and 4th year; M.Tech CSE",
+    "value": null,
+    "programmes": [
+     "BTECH-CSE",
+     "BTECH-CSAI",
+     "MTECH-CSE"
+    ],
+    "unmapped_programmes": [],
+    "assumed_background": [
+     "CSE201 Advanced Programming",
+     "basic software engineering practice (Git, unit tests)"
+    ]
+   },
+   "level_or_code": {
+    "status": "given",
+    "raw": "4xx (code to be assigned)",
+    "value": null,
+    "code": null,
+    "level": 4
+   },
+   "credits": {
+    "status": "given",
+    "raw": "2",
+    "value": 2
+   },
+   "ltp": {
+    "status": "given",
+    "raw": "1.5-0-1",
+    "value": null,
+    "L": 1.5,
+    "T": 0,
+    "P": 1
+   },
+   "semester_weeks": {
+    "status": "given",
+    "raw": "13",
+    "value": 13
+   },
+   "lab": {
+    "status": "given",
+    "raw": "Six 2-hour labs with AI coding tools",
+    "value": null,
+    "required": "yes",
+    "infrastructure": [
+     "a free-tier AI coding assistant or agent for every student",
+     "GitHub with Actions",
+     "Python 3.11+ with pytest"
+    ]
+   }
+  }
+ },
+ "defaults": {
+  "ltp": {
+   "L": 1.5,
+   "T": 0,
+   "P": 1
+  },
+  "weeks": 13,
+  "credits": 2,
+  "level": 4,
+  "midsem_after_week": 7,
+  "constraints": [],
+  "assumptions": []
+ },
+ "narrative": {
+  "concerns": [],
+  "missing": [],
+  "grounding": [],
+  "course_description": "How AI, above all large language models and coding agents, is used in every phase of the software development lifecycle: requirements, design, construction, code review, testing and debugging, security, delivery and maintenance. Students use the tools on a team project, learn what they do reliably and where they fail, verify their output with tests and reviews, and judge their effect and risks with published evidence and their own measurements.",
+  "sequencing_rationale": "The course follows the lifecycle: first how AI tools work and where they enter it, then requirements and design, code and review, tests and debugging, and last security, delivery, maintenance, measurement and policy. Each lecture builds on the artefacts of the one before, as the team project does.",
+  "assessment_rationale": "Quizzes and the two exams (50%, proctored) check each student's own understanding; the labs practise each module's skill with the tools; the team project carries the whole lifecycle and ends with measured results and an AI-use policy, so the highest outcomes are assessed on real work.",
+  "positioning_rationale": "Builds on CSE201 Advanced Programming. CSE701 (Topics in Software Engineering: AI in SE) is a 7xx research course on data and ML for software engineering; this 2-credit 4xx course is hands-on practice with current LLM assistants and agents across the lifecycle."
+ },
  "design_source": {
   "kind": "hand-authored by Claude at the user's request (not a ProfsAgent Phase 1 run)",
   "modelled_on": [

@@ -219,7 +219,7 @@ def triage(llm, lecture: dict, parts: list[dict], cands: list[dict], fast: bool,
 
 
 def grade_part(llm, lecture: dict, i: int, part: dict, parts: list[dict], cards: list[dict], fast: bool, level_note: str,
-               trace: Trace, run_id: str):
+               trace: Trace, run_id: str, excerpts: bool = False):
     """Y3G: grade each card 0-3 for ONE part (17 Nov: one call choosing ~10 of ~130 videos for all parts at once was
     too hard for the small models it fell to, and its 5-8K-token prompt was too long for Groq)."""
     from profsagent.ytlecture import shortlist as SL
@@ -227,7 +227,8 @@ def grade_part(llm, lecture: dict, i: int, part: dict, parts: list[dict], cards:
     pt = {"part": i, "title": part["title"], "teaches": part["teaches"], "must_cover": part.get("must_cover", [])[:6],
           "minutes": part["minutes"]}
     res, _ = ask(llm, "Y3G", {"lecture": {k: lecture[k] for k in ("lecture_id", "topic", "slot_minutes")}, "part": pt,
-                              "other_parts": others, "cards": "\n".join(SL.card_text(c) for c in cards), "fast_moving": fast, "level_note": level_note},
+                              "other_parts": others, "cards": "\n".join(SL.card_text(c) for c in cards), "fast_moving": fast, "level_note": level_note,
+                              "excerpts": excerpts},
                  Mx.Grades, trace, f"{lecture['lecture_id']}#{i}", run_id)
     return res
 

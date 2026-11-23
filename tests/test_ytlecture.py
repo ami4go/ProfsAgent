@@ -441,3 +441,97 @@ def test_topup_adds_a_differently_taught_clip_while_the_lecture_is_short():
     mixed = [mk(f"v{i}", "explains") for i in range(3)] + [mk("v4", "demonstrates")]
     used = [k["video"] for pp in choose(lec, mixed, vids, False, []) ["plan"] for k in pp["clips"]]
     assert len(used) == 3 and "v4" in used                  # short of 65%: a demo after two explanations is added
+
+
+# ---------------------------------------------------------------- 23 Nov: shortlisting from transcripts (txshort.py)
+def _fake_embed(texts):
+    import hashlib
+    import numpy as np
+    out = np.zeros((len(texts), 64), dtype=np.float32)
+    for k, t in enumerate(texts):
+        for w in t.lower().split():
+            out[k, int(hashlib.md5(w.strip(".,;").encode()).hexdigest(), 16) % 64] += 1
+    return out / (np.linalg.norm(out, axis=1, keepdims=True) + 1e-9)
+
+
+def _rows(spec):
+    """[(start, text)] every 10 s → caption rows."""
+    return [{"start": float(a), "dur": 10.0, "text": t} for a, t in spec]
+
+
+def _video_rows():
+    filler = "today we talk about many different things in general and the weather and some news"
+    topic = "gradient descent updates weights using the learning rate and the gradient of the loss"
+    return _rows([(10 * k, topic if 30 <= k < 42 else filler) for k in range(90)])     # topic at 5:00-7:00
+
+
+def test_windows_overlap_and_skip_empty():
+    from profsagent.ytlecture import txshort as TX
+    w = TX.windows(_video_rows(), 60, 30)
+    assert w[0][:2] == (0.0, 60.0) and w[1][:2] == (30.0, 90.0)
+    assert all(len(t.split()) >= 15 for _, _, t in w)
+
+
+def test_excerpt_and_spans_find_where_the_part_is_taught(monkeypatch):
+    from profsagent.ytlecture import shortlist as SL, txshort as TX
+    monkeypatch.setattr(SL, "_embed", _fake_embed)
+    rows = _video_rows()
+    part = {"title": "Gradient descent", "teaches": "how gradient descent updates weights", "minutes": 4,
+            "must_cover": ["learning rate", "gradient of the loss"]}
+    M = TX.match([part], {"v1": rows})["v1"]
+    ex = TX.excerpt(rows, M, 0, words=60)
+    assert 270 <= ex["a"] and ex["b"] <= 450 and "gradient" in ex["text"]
+    sp = TX.spans(M, 0, 4)
+    assert sp and sp[0][0] <= 300 and sp[0][1] >= 420 and sp[0][1] - sp[0][0] >= 0.8 * 240
+
+
+def test_transcript_fetch_shares_the_list_between_captions_and_browser(monkeypatch):
+    from profsagent.ytlecture import evidence as E2, txshort as TX
+    from profsagent.ytlecture.tools import Trace
+    monkeypatch.setattr(TX, "cached_rows", lambda v: [{"start": 0, "dur": 5, "text": "cached"}] if v == "c" else None)
+    monkeypatch.setattr(TX, "caption_slot_free", lambda: True)
+    known = set()
+
+    def cap(v):
+        if v == "nocap":
+            known.add(v)
+            return None
+        if v == "err":
+            return None                          # a failure, not "no captions": left to the browser
+        return [{"start": 0, "dur": 5, "text": "caption " + v}]
+    monkeypatch.setattr(TX.S, "transcript", cap)
+    monkeypatch.setattr(TX.S, "transcript_known", lambda v: v in known)
+    monkeypatch.setattr(E2, "browser_transcript", lambda v: {"rows": [{"start": 0, "dur": 5, "text": "panel " + v}]})
+    got = TX.fetch(["c", "a", "nocap", "err", "b"], Trace(), "L", max_s=20)
+    assert got["c"][0]["text"] == "cached" and got["err"] and got["a"] and got["b"]
+    assert got["nocap"] is None or got["nocap"][0]["text"].startswith("panel")
+
+
+def test_transcript_grade_sets_nominated_first_and_title_cards_for_wordless():
+    import numpy as np
+    from profsagent.ytlecture import txshort as TX
+    cands = {v: {"id": v, "channel": v, "title": v} for v in ("a", "b", "c", "n", "w")}
+    TXm = {v: {0: {"rel": r, "a": 0, "b": 60, "text": "x"}} for v, r in (("a", 0.6), ("b", 0.3), ("c", 0.1), ("n", 0.25))}
+    R = {"vids": [cands[v] for v in "abcnw"], "score": np.array([[0.5, 0.4, 0.3, 0.2, 0.45]])}
+    sets = TX.grade_sets(TXm, {}, [{"title": "p", "teaches": "t", "minutes": 5}], cands, R, {0: ["n"]})
+    assert sets[0][0] == "n" and "a" in sets[0] and "b" in sets[0]
+    assert "c" not in sets[0]                     # below min_rel
+    assert sets[0][-1] == "w"                     # the video without words comes as a title card
+
+
+def test_card_text_shows_the_excerpt():
+    from profsagent.ytlecture import shortlist as SL
+    v = {"id": "v1", "title": "Lecture 7", "channel": "MIT", "tier": 1, "duration_s": 3600, "published": "2024", "views": 5000,
+         "description": "long description"}
+    c = SL.card(v, {"title": "p", "teaches": "t"}, {"a": 300, "b": 420, "text": "the gradient is"})
+    t = SL.card_text(c)
+    assert "transcript, best match [5:00–7:00]" in t and "about:" not in t
+    c2 = SL.card(v, {"title": "p", "teaches": "t"}, None)
+    assert "transcript: none" in SL.card_text(c2)
+
+
+def test_span_regions_merge_focus_parts():
+    from profsagent.ytlecture.orchestrator import Orchestrator
+    sp = {"0": [[100, 400]], "1": [[430, 700], [2000, 2300]], "2": [[5000, 5300]]}
+    assert Orchestrator.span_regions(sp, [0, 1]) == [(100.0, 700.0), (2000.0, 2300.0)]
+    assert Orchestrator.span_regions(None, [0]) == []

@@ -109,6 +109,28 @@ shortlist:                            # step 5 since 17 Nov (src/profsagent/ytle
   budget_factor: 1.6                  # reading units = this x the shortlist size (1 unit ≤ 20 min, 1.5 ≤ 45, 2 ≤ 75, 2.5 longer)
   first_wave: 0.7                     # share of the units read first; the rest goes to the thin parts after verifying
   second_min_units: 3.0
+  excerpt_card_chapters: 6            # chapters on a card that also carries a transcript excerpt
+
+transcript_shortlist:                 # 23 Nov (src/profsagent/ytlecture/txshort.py): the grader reads what the videos SAY
+  enabled: true
+  videos: 40                          # candidates per lecture that get a transcript (title ranking cuts ~300 to these)
+  max_fetch_minutes: 15               # transcript downloads per lecture stop after this (cached ones are instant)
+  captions: true                      # caption API in a background thread (paced; resources.yaml transcripts.max_per_hour)
+  browser: true                       # the watch page's "Show transcript" panel in this thread, at the same time
+  min_videos: 6                       # fewer with words: grade the title cards as before
+  window_s: 60                        # transcript windows (~150 words: within the embedding model's input) ...
+  step_s: 30                          # ... overlapping by half
+  cross_weight: 0.5                   # rel = (1-w) x smoothed window similarity + w x cross-encoder(part, excerpt)
+  excerpt_words: 200                  # the excerpt the grader reads (~1.5 min of speech; 260 made ~6.5K-token
+                                      # grader prompts on W06.L1, over Groq's ~5.5K limit)
+  excerpt_cards: 8                    # excerpt cards per part ...
+  nominated_cards: 2                  # ... plus the nominated videos with words ...
+  title_cards: 2                      # ... plus the best videos without words, as title cards
+  min_rel: 0.2                        # an excerpt matching a part less than this is not shown for it
+  prior_weight: 0.5                   # x the quality prior (tier, authority, views, reputation) when ordering excerpts
+  spans_for_reading: true             # long videos are read where the words matched (no skim call)
+  span_min_sim: 0.3                   # a region needs a window at least this similar ...
+  span_drop: 0.08                     # ... and grows while its neighbours stay within this of the peak
 
 watch_page:
   min_interval_s: 1.5

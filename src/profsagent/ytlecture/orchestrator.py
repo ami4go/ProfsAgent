@@ -34,6 +34,7 @@ from profsagent.ytlecture import evidence as E
 from profsagent.ytlecture import innertube as IT
 from profsagent.ytlecture import shortlist as SL
 from profsagent.ytlecture import tools as T
+from profsagent.ytlecture import txshort as TX
 from profsagent.ytlecture.assemble import choose
 from profsagent.ytlecture.tools import Budget, Trace, cfg
 
@@ -537,8 +538,16 @@ class Orchestrator:
         lid = lecture["lecture_id"]
         nom = SL.nominations(self.llm, lecture, parts, R, fast, tr, self.run_id)
         lck["nominated"] = {str(i): v for i, v in nom.items()}
-        sets = SL.grade_sets(R, parts, nominated=nom)
-        G = SL.grade(self.llm, lecture, parts, sets, cands, fast, getattr(self, "_level", ""), tr, self.run_id)
+        # 23 Nov: the grader reads what the videos SAY (txshort.py); the title cards only when too few have transcripts
+        txr = TX.run(parts, cands, R, nom, tr, lid) if TX.tcfg().get("enabled", True) else None
+        if txr:
+            sets, ex, lck["tx_spans"] = txr
+            lck["tx_match"] = {v: {str(i): {"a": d["a"], "b": d["b"], "rel": round(d["rel"], 3)} for i, d in per.items()}
+                               for v, per in ex.items()}
+        else:
+            sets, ex = SL.grade_sets(R, parts, nominated=nom), None
+        lck["grade_mode"] = "transcript" if txr else "title"
+        G = SL.grade(self.llm, lecture, parts, sets, cands, fast, getattr(self, "_level", ""), tr, self.run_id, excerpts=ex)
         if not G:
             tr.step(lid, "grading returned nothing; one-call triage instead")
             return None
@@ -668,7 +677,8 @@ class Orchestrator:
                 todo.append((vid, ps))
         out: list[dict] = []
         with ThreadPoolExecutor(max_workers=max(1, cfg()["reading"]["workers"])) as pool:
-            futs = [(vid, pool.submit(self.read, lecture, parts, cands[vid], evs[vid], ps, tr)) for vid, ps in todo]
+            futs = [(vid, pool.submit(self.read, lecture, parts, cands[vid], evs[vid], ps, tr,
+                                      (lck.get("tx_spans") or {}).get(vid))) for vid, ps in todo]
             for vid, f in futs:
                 got = f.result()
                 if got is None:
@@ -714,7 +724,20 @@ class Orchestrator:
                 merged.append([a, b])
         return [(a, b) for a, b in merged]
 
-    def read(self, lecture: dict, parts: list[dict], v: dict, ev: dict, hint: list[int], tr: Trace) -> list[dict]:
+    @staticmethod
+    def span_regions(spans: dict | None, hint: list[int]) -> list[tuple[float, float]]:
+        """For a long video matched by transcript windows (txshort.spans): the regions of its focus parts, merged."""
+        out = sorted((float(a), float(b)) for i in hint for a, b in (spans or {}).get(str(i), []))
+        merged: list[list[float]] = []
+        for a, b in out:
+            if merged and a <= merged[-1][1] + 60:
+                merged[-1][1] = max(merged[-1][1], b)
+            else:
+                merged.append([a, b])
+        return [(a, b) for a, b in merged]
+
+    def read(self, lecture: dict, parts: list[dict], v: dict, ev: dict, hint: list[int], tr: Trace,
+             spans: dict | None = None) -> list[dict]:
         scope = f"{lecture['lecture_id']}/{v['id']}"
         if not ev["rows"] and not ev["chapters"]:
             tr.step(scope, "not read: no words and no chapters")
@@ -723,9 +746,14 @@ class Orchestrator:
         try:
             regions = []
             if ev["rows"] and dur > cfg()["reading"]["short_video_s"]:
-                regions = self.chapter_regions(parts, ev, hint)
+                # 23 Nov: where the words match the focus parts (found while shortlisting) beats chapter titles
+                regions = self.span_regions(spans, hint) if TX.tcfg().get("spans_for_reading", True) else []
                 if regions:
-                    tr.step(scope, "skim skipped: regions from chapters", regions=[(E.ts(a), E.ts(b)) for a, b in regions])
+                    tr.step(scope, "skim skipped: regions from the transcript match", regions=[(E.ts(a), E.ts(b)) for a, b in regions])
+                else:
+                    regions = self.chapter_regions(parts, ev, hint)
+                    if regions:
+                        tr.step(scope, "skim skipped: regions from chapters", regions=[(E.ts(a), E.ts(b)) for a, b in regions])
             if regions:
                 pass
             elif ev["rows"] and dur > cfg()["reading"]["short_video_s"]:

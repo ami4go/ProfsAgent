@@ -316,10 +316,11 @@ def grade_sets(R: dict, parts: list[dict], exclude: set[str] = frozenset(),
 
 
 # ---------------------------------------------------------------- the AI grades (cards per part)
-def card(v: dict, part: dict) -> dict:
-    """What the grader sees of one video. Long chapter lists are cut to the chapters nearest the part (in time order)."""
+def card(v: dict, part: dict, ex: dict | None = None) -> dict:
+    """What the grader sees of one video. Long chapter lists are cut to the chapters nearest the part (in time order).
+    With `ex` (23 Nov, txshort.py): the transcript excerpt that matches the part best, and fewer chapters."""
     ch = E.chapters_of(v)
-    n = scfg().get("card_chapters", 12)
+    n = scfg().get("card_chapters", 12) if ex is None else scfg().get("excerpt_card_chapters", 6)
     if len(ch) > n:
         s = _cos(_embed([part_text(part)]), _embed([c["title"] for c in ch]))[0]
         keep = sorted(np.argsort(-s)[:n])
@@ -328,7 +329,8 @@ def card(v: dict, part: dict) -> dict:
     return {"id": v["id"], "title": v["title"], "channel": v.get("channel", ""), "tier": v.get("tier", 4),
             "length": E.ts(v.get("duration_s") or 0), "year": (v.get("published") or "")[:4], "views": v.get("views"),
             "chapters": [f"{E.ts(c['start'])} {c['title'][:45]}" for c in ch], "chapters_from": kind,
-            "description": " ".join((v.get("description") or "").split())[:140]}
+            "description": "" if ex else " ".join((v.get("description") or "").split())[:140],
+            "excerpt": ex}
 
 
 def _short(n) -> str:
@@ -343,25 +345,34 @@ def card_text(c: dict) -> str:
         out += f"\n  chapters ({c['chapters_from']}): " + " · ".join(c["chapters"])
     if c["description"]:
         out += f"\n  about: {c['description']}"
+    if c.get("excerpt"):
+        ex = c["excerpt"]
+        out += f"\n  transcript, best match [{E.ts(ex['a'])}–{E.ts(ex['b'])}]: \"{ex['text']}\""
+    elif "excerpt" in c:
+        out += "\n  transcript: none (graded from the title and chapters)"
     return out
 
 
 def grade(llm, lecture: dict, parts: list[dict], sets: dict[int, list[str]], cands: dict, fast: bool, level_note: str,
-          trace, run_id: str) -> dict[str, dict[int, dict]]:
+          trace, run_id: str, excerpts: dict[str, dict[int, dict]] | None = None) -> dict[str, dict[int, dict]]:
     """{video_id: {part: {"g": mean grade 0-3, "n": calls, "where", "reason", "level_ok", "standalone"}}}. Each part is
     graded `orders` times, the cards reversed each time; the calls run in parallel over the free providers."""
     from profsagent.ytlecture import agents as A
     orders = scfg().get("grade_orders", 2)
     jobs = []
     for i, ids in sets.items():
-        cards = [card(cands[x], parts[i]) for x in ids if x in cands]
+        cards = [card(cands[x], parts[i], (excerpts or {}).get(x, {}).get(i)) for x in ids if x in cands]
+        if excerpts is None:              # the title-card grading: no transcript line at all
+            for c_ in cards:
+                c_.pop("excerpt", None)
         for o in range(orders):
             jobs.append((i, cards if o % 2 == 0 else cards[::-1]))
 
     def one(job):
         i, cards = job
         try:
-            return i, A.grade_part(llm, lecture, i, parts[i], parts, cards, fast, level_note, trace, run_id)
+            return i, A.grade_part(llm, lecture, i, parts[i], parts, cards, fast, level_note, trace, run_id,
+                                   excerpts=excerpts is not None)
         except Exception as e:  # noqa: BLE001 — one failed call: the other order still counts
             trace.step(lecture["lecture_id"], f"grading part {i} failed: {type(e).__name__}")
             return i, None

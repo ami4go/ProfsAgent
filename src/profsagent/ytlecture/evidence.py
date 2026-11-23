@@ -117,6 +117,14 @@ def browser_transcript(vid: str) -> dict | None:
     return None if "error" in v else v
 
 
+def browser_cached(vid: str) -> bool:
+    """A transcript panel read in the last 90 days is in the cache (reading it again sends nothing)."""
+    import time
+    from profsagent.delivery.common import read_json
+    d = read_json(S._cache_path("browser_tx", vid))
+    return bool(d) and time.time() - d.get("_at", 0) < 90 * 86400 and isinstance(d.get("v"), dict) and bool(d["v"].get("rows"))
+
+
 # ---------------------------------------------------------------- the watch page (key moments, most replayed)
 # The Data API has no chapters: only the description, which we parse. YouTube's automatic chapters ("key moments") and
 # the "most replayed" graph exist only in the watch page's embedded JSON, which one plain GET returns (no browser, no
@@ -265,6 +273,8 @@ def evidence(v: dict, trace: Trace, scope: str) -> dict:
     for src in cfg()["evidence"]["order"]:
         rows, extra = None, []
         if src == "captions":
+            if not S.transcript_known(vid) and browser_cached(vid):
+                continue          # 23 Nov: the shortlist already read this one's transcript panel; no caption request
             if S.transcripts_blocked():
                 continue
             rows = S.transcript(vid)
